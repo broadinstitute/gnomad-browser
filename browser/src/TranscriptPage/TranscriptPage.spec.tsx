@@ -76,7 +76,6 @@ describe.each([
     renderer.create(
       withDummyRouter(<TranscriptPage datasetId={datasetId} transcript={transcript} />)
     )
-
     const coverageQueries = apiCallsMatching(fetch, 'query TranscriptCoverage')
     expect(coverageQueries).toHaveLength(1)
     const [coverageQuery] = coverageQueries
