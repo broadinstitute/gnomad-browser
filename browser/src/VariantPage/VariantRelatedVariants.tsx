@@ -41,6 +41,7 @@ const isVariantEligibleForCooccurrence = (variant: any, datasetId: any) => {
 
   return (
     exomeAC <= 0.05 &&
+    !!variant.transcript_consequences &&
     variant.transcript_consequences.some((csq: any) =>
       CODING_AND_UTR_VEP_CONSEQUENCES.has(csq.major_consequence)
     )

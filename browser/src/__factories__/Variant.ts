@@ -1,5 +1,5 @@
 import { Factory } from 'fishery'
-import { Variant, SequencingType } from '../VariantPage/VariantPage'
+import { Variant, SequencingType, TranscriptConsequence } from '../VariantPage/VariantPage'
 
 const defaultHistogram = {
   bin_edges: [0.5],
@@ -7,6 +7,59 @@ const defaultHistogram = {
   n_larger: 0,
   n_smaller: 0,
 }
+
+const transcriptConsequenceFactory = Factory.define<TranscriptConsequence>(({ params }) => {
+  const {
+    consequence_terms = ['lof', 'plof'],
+    domains = ['aaa', 'bbb'],
+    gene_id = 'ENSG012345',
+    gene_version = '1',
+    gene_symbol = 'ABC1',
+    hgvs = '',
+    hgvsc = '',
+    hgvsp = '',
+    is_canonical = false,
+    is_mane_select = false,
+    is_mane_select_version = false,
+    lof = '',
+    lof_flags = '',
+    lof_filter = '',
+    major_consequence = '',
+    polyphen_prediction = '',
+    refseq_id = '',
+    refseq_version = '',
+    sift_prediction = '',
+    transcript_id = 'ENST012345',
+    transcript_version = '1',
+
+    canonical = false,
+  } = params
+
+  return {
+    consequence_terms,
+    domains,
+    gene_id,
+    gene_version,
+    gene_symbol,
+    hgvs,
+    hgvsc,
+    hgvsp,
+    is_canonical,
+    is_mane_select,
+    is_mane_select_version,
+    lof,
+    lof_flags,
+    lof_filter,
+    major_consequence,
+    polyphen_prediction,
+    refseq_id,
+    refseq_version,
+    sift_prediction,
+    transcript_id,
+    transcript_version,
+    canonical,
+  }
+})
 
 const variantFactory = Factory.define<Variant>(({ params, associations }) => {
   const {
@@ -22,7 +75,6 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
     in_silico_predictors = null,
     rsids = null,
     colocated_variants = [],
-    transcript_consequences = [],
     liftover = null,
     liftover_sources = null,
   } = params
@@ -33,6 +85,7 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
     non_coding_constraint = null,
     clinvar = null,
     coverage = { exome: null, genome: null },
+    transcript_consequences = [],
   } = associations
   return {
     reference_genome,
@@ -147,10 +200,24 @@ export const v3SequencingFactory = sequencingFactory.associations({
   },
 })
 
-export const v2VariantFactory = variantFactory
-  .params({ reference_genome: 'GRCh37' })
-  .associations({ exome: v2SequencingFactory.build(), genome: null })
+export const v2VariantFactory = variantFactory.params({ reference_genome: 'GRCh37' }).associations({
+  exome: v2SequencingFactory.build(),
+  genome: null,
+  transcript_consequences: [
+    transcriptConsequenceFactory
+      .params({ is_canonical: true, transcript_id: 'ENST123456' })
+      .build(),
+    transcriptConsequenceFactory.build(),
+  ],
+})
 
-export const v3VariantFactory = variantFactory
-  .params({ reference_genome: 'GRCh38' })
-  .associations({ exome: null, genome: v3SequencingFactory.build() })
+export const v3VariantFactory = variantFactory.params({ reference_genome: 'GRCh38' }).associations({
+  exome: null,
+  genome: v3SequencingFactory.build(),
+  transcript_consequences: [
+    transcriptConsequenceFactory
+      .params({ is_canonical: true, transcript_id: 'ENST123456' })
+      .build(),
+    transcriptConsequenceFactory.build(),
+  ],
+})
