@@ -59,7 +59,7 @@ const VariantPageTitle = ({ datasetId, variantId }: Props) => {
 
   let variantDescription = 'Variant'
   if (ref.length === 1 && alt.length === 1) {
-    variantDescription = 'Single nucleotide variant'
+    variantDescription = 'SNV'
   }
   if (ref.length < alt.length) {
     const insertionLength = alt.length - ref.length
@@ -72,7 +72,15 @@ const VariantPageTitle = ({ datasetId, variantId }: Props) => {
 
   return (
     <TitleWrapper>
-      <span>{variantDescription}</span>
+      {variantDescription === 'SNV' ? (
+        // @ts-expect-error TS(2322) -- error from gnomad-browser-toolkit component
+        <TooltipAnchor tooltip={'Single nucleotide variant'}>
+          <span>{variantDescription}</span>
+        </TooltipAnchor>
+      ) : (
+        <span>{variantDescription}</span>
+      )}
+
       <Separator style={{ width: '1ch' }}>:</Separator>
       {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
       <TooltipAnchor tooltip={variantId}>

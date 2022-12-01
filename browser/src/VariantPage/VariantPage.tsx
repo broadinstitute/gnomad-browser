@@ -687,7 +687,44 @@ type VariantPageProps = {
   variantId: string
 }
 
+// Returns the gene_id to be linked to in the Variant page header
+// The vast majority of cases have a single gene associated, the logic for those that don't is:
+//   If there is a mane select transcript, use that to determine which gene to link to
+//   If there is no mane select transcript, check if there is a single canonical transcript
+//     If there is a single canonical transcript, link to that gene
+// As such, if a variant has multiple associated genes, multiple canonical transcripts, and
+//   no MANE select transcript, the "Gene page" button will not appear as it is non-trivial,
+//   and users should navigate further down the page to the VEP consequences section
+const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) => {
+  if (!transcript_consequences) {
+    return null
+  }
+
+  const maneSelectTranscript = transcript_consequences.filter(
+    (transcript: TranscriptConsequence) => transcript.is_mane_select
+  )
+
+  if (maneSelectTranscript.length === 1) {
+    return {
+      ensembleId: maneSelectTranscript[0].gene_id
+    }
+  }
+
+  const canonicalTranscripts = transcript_consequences.filter(
+    (transcript: TranscriptConsequence) => transcript.is_canonical
+  )
+
+  if (canonicalTranscripts.length !== 1) {
+    return null
+  }
+
+  return {
+    ensembleId: canonicalTranscripts[0].gene_id,
+  }
+}
+
 const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
+  let gene = { ensembleId: '' }
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
@@ -746,6 +783,14 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               liftover: data.liftover,
               liftover_sources: data.liftover_sources,
             }
+
+            // In this branch, a variant was successfully loaded. Check the symbol
+            //   and ensemble ID to create a 'Gene page' button with the correct link
+            const geneData = checkGeneLink(variant.transcript_consequences)
+            if (geneData) {
+              gene.ensembleId = geneData.ensembleId
+            }
+
             pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
           }
 
@@ -763,17 +808,29 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                 }}
                 selectedDataset={datasetId}
                 extra={
-                  navigator.clipboard &&
-                  navigator.clipboard.writeText && (
-                    <Button
-                      onClick={() => {
-                        navigator.clipboard.writeText(variantId)
-                      }}
-                      style={{ margin: '0 1em' }}
-                    >
-                      Copy variant ID
-                    </Button>
-                  )
+                  <>
+                    {navigator.clipboard && navigator.clipboard.writeText && (
+                      <Button
+                        onClick={() => {
+                          navigator.clipboard.writeText(variantId)
+                        }}
+                        style={{ margin: '0 1em' }}
+                      >
+                        Copy variant ID
+                      </Button>
+                    )}
+
+                    {gene.ensembleId && (
+                      <Button
+                        onClick={() => {
+                          location.href = `/gene/${gene.ensembleId}?dataset=${datasetId}`
+                        }}
+                        style={{ margin: '0 1em 0 -0.33em' }}
+                      >
+                        Gene page
+                      </Button>
+                    )}
+                  </>
                 }
               >
                 <VariantPageTitle variantId={variantId} datasetId={datasetId} />
