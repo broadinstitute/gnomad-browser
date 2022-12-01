@@ -90,10 +90,10 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
     print(f"Updated production ingresses. browser: '{browser_deployment}', reads: '{reads_deployment}' ")
 
 
-def apply_ingress(browser_deployment: str = None, reads_deployment: str = None) -> None:
+def apply_ingress(browser_deployment: str = None, reads_deployment: str = None, quiet: bool = False) -> None:
     apply_services(browser_deployment, reads_deployment)
 
-    if input("Apply changes to production ingress (y/n) ").lower() == "y":
+    if quiet or input("Apply changes to production ingress (y/n) ").lower() == "y":
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.frontendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.ingress.yaml")])
 
@@ -114,6 +114,7 @@ def main(argv: typing.List[str]) -> None:
     apply_ingress_parser.set_defaults(action=apply_ingress)
     apply_ingress_parser.add_argument("--browser-deployment")
     apply_ingress_parser.add_argument("--reads-deployment")
+    apply_ingress_parser.add_argument("--quiet", action="store_true")
 
     args = parser.parse_args(argv)
 
