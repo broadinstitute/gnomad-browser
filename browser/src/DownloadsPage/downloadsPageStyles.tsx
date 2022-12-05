@@ -11,8 +11,20 @@ export const FileList = styled(List)`
   }
 `
 
-const BaseSectionTitle = styled.h2``
-export const SectionTitle = withAnchor(BaseSectionTitle)
+const BaseSectionTitle = styled.h2`
+  font-size: ${(props) =>
+    props.theme.type === 'release'
+      ? '2.25rem'
+      : props.theme.type === 'datasets'
+      ? '1.88rem'
+      : '1.5rem'};
+`
+
+export const SectionTitle = styled(withAnchor(BaseSectionTitle))``
+
+export const StyledParagraph = styled.p`
+  padding-bottom: 1rem;
+`
 
 export const ColumnsWrapper = styled.div`
   display: flex;
@@ -30,6 +42,10 @@ export const Column = styled.div`
   > h3 {
     margin-top: 0;
   }
+`
+
+export const DownloadsSection = styled.section`
+  margin-bottom: 5rem;
 `
 
 type ShowURLButtonProps = {

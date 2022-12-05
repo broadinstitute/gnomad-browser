@@ -5,11 +5,13 @@ import { Badge, ExternalLink, Link as StyledLink, List, ListItem } from '@gnomad
 import Link from '../Link'
 
 import {
+  DownloadsSection,
   FileList,
   GenericDownloadLinks,
   GetUrlButtons,
   IndexedFileDownloadLinks,
   SectionTitle,
+  StyledParagraph,
 } from './downloadsPageStyles'
 
 const genomeChromosomeVcfs = [
@@ -66,56 +68,24 @@ const hgdpAnd1kgChromosomeVcfs = [
   { chrom: 'Y', size: '8.42 GiB', md5: '407654bf8a3914582ee472762e0d2d11' },
 ]
 
-export default () => (
-  <React.Fragment>
-    <p>
+const GnomadV3Downloads = () => (
+  <>
+    <SectionTitle id="v3" theme={{ type: 'release' }}>
+      v3 Downloads
+    </SectionTitle>
+    <StyledParagraph>
       The gnomAD v3.1.2 data set contains 76,156 whole genomes (and no exomes), all mapped to the
       GRCh38 reference sequence.
-    </p>
+    </StyledParagraph>
 
-    <section>
-      <h2>Summary</h2>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <List>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-variants">Variants</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-coverage">Coverage</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-hgdp-1kg">HGDP + 1KG callset</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-ancestry-classification">Ancestry classification</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-local-ancestry">Local ancestry</StyledLink>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <StyledLink href="#v3-short-tandem-repeats">Short tandem repeats</StyledLink>
-        </ListItem>
-      </List>
-    </section>
+    <SectionTitle id="v3-core-dataset" theme={{ type: 'datasets' }}>
+      Core Dataset
+    </SectionTitle>
+    <StyledParagraph>
+      gnomAD database and features created and maintained by the gnomAD production team.
+    </StyledParagraph>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-variants">Variants</SectionTitle>
       <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
@@ -151,9 +121,9 @@ export default () => (
           </ListItem>
         ))}
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-coverage">Coverage</SectionTitle>
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -173,9 +143,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-hgdp-1kg">HGDP + 1KG callset</SectionTitle>
       <p>
         These files contain individual genotypes for all samples in the HGDP and 1KG subsets. For
@@ -240,9 +210,9 @@ export default () => (
           </ListItem>
         ))}
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
       <p>
         For details about these files, see the{' '}
@@ -286,9 +256,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-ancestry-classification">Ancestry classification</SectionTitle>
       <p>
         For more information about these files, see our blog post on{' '}
@@ -316,9 +286,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
       <p>
         For more information about these files, see our blog post on{' '}
@@ -338,9 +308,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
       <p>
         For more information about these files, see our blog post on{' '}
@@ -371,6 +341,63 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
-  </React.Fragment>
+    </DownloadsSection>
+
+    <SectionTitle id="v3-secondary-analyses" theme={{ type: 'datasets' }}>
+      Secondary Analyses
+    </SectionTitle>
+    <StyledParagraph>
+      Additional research analyses created using the core gnomAD releases in collaboration with
+      members of the gnomAD steering committee.
+    </StyledParagraph>
+
+    <DownloadsSection>
+      <SectionTitle id="v3-genomic-constraint">Genomic constraint</SectionTitle>
+      <p>For more information about these files, see the README included in the download.</p>
+      <FileList>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <GenericDownloadLinks
+            label="README"
+            gcsBucket="gnomad-nc-constraint-v31-paper"
+            path="/download_files/nc_constraint_gnomad_v31_README.docx"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <GenericDownloadLinks
+            label="Raw genomic constraint by 1kb regions"
+            gcsBucket="gnomad-nc-constraint-v31-paper"
+            path="/download_files/constraint_z_genome_1kb.raw.download.txt.gz"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <GenericDownloadLinks
+            label="QCed genomic constraint by 1kb regions"
+            gcsBucket="gnomad-nc-constraint-v31-paper"
+            path="/download_files/constraint_z_genome_1kb.qc.download.txt.gz"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <GenericDownloadLinks
+            label="Non-coding constraint for gene tissue enhancers"
+            gcsBucket="gnomad-nc-constraint-v31-paper"
+            path="/download_files/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
+            includeAWS={false}
+            includeAzure={false}
+          />
+        </ListItem>
+      </FileList>
+    </DownloadsSection>
+  </>
 )
+
+export default GnomadV3Downloads
