@@ -8,11 +8,7 @@ import DownloadsPage from './DownloadsPage'
 
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
-const downloadsTabs = ['#v2-', '#v2-liftover-', '#v3-', '#exac-', '#research-']
-
-downloadsTabs.forEach((tab) => {
-  test(`Downloads page with location '${tab}' indicated in url `, () => {
-    const tree = renderer.create(withDummyRouter(<DownloadsPage location={{ hash: tab }} />))
-    expect(tree).toMatchSnapshot()
-  })
+test('Downloads Page has no unexpected changes', () => {
+  const tree = renderer.create(withDummyRouter(<DownloadsPage />))
+  expect(tree).toMatchSnapshot()
 })
