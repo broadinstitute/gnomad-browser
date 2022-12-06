@@ -22,7 +22,7 @@ from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad_v2_constraint
 
-
+# TODO:FIXME: (rgrant) - original one! Uncomment later
 pipeline = Pipeline()
 
 ###############################################
@@ -65,6 +65,10 @@ pipeline.add_task(
     "/genes/genes_grch37_base.ht",
     {"gencode_path": pipeline.get_task("download_gencode_v19_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
     {"reference_genome": "GRCh37"},
+    # TODO:FIXME:
+    # 6th positional argument is subsettable
+    subsettable=True,
+    # True,
 )
 
 pipeline.add_task(
@@ -73,6 +77,10 @@ pipeline.add_task(
     "/genes/genes_grch38_base.ht",
     {"gencode_path": pipeline.get_task("download_gencode_v35_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
     {"reference_genome": "GRCh38"},
+    # TODO:FIXME:
+    # 6th positional argument is subsettable
+    subsettable=True,
+    # True,
 )
 
 ###############################################
@@ -111,6 +119,7 @@ pipeline.add_task(
         "exomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
         "genomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
     },
+    subsettable=True,
 )
 
 pipeline.add_task(
@@ -118,6 +127,7 @@ pipeline.add_task(
     get_canonical_transcripts,
     "/genes/canonical_transcripts_grch38.ht",
     {"genomes": "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"},
+    subsettable=True,
 )
 
 ###############################################

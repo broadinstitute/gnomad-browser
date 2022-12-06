@@ -73,7 +73,7 @@ class DownloadTask:
 
         return (False, None)
 
-    def run(self, force=False):
+    def run(self, force=False, create_test_datasets=False):
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
@@ -96,12 +96,13 @@ class DownloadTask:
 
 
 class Task:
-    def __init__(self, name, work, output_path, inputs=None, params=None):
+    def __init__(self, name, work, output_path, inputs=None, params=None, subsettable=False):
         self._name = name
         self._work = work
         self._output_path = output_path
         self._inputs = inputs or {}
         self._params = params or {}
+        self._subsettable = subsettable
 
     def get_output_path(self):
         return _pipeline_config["output_root"] + self._output_path
@@ -123,13 +124,32 @@ class Task:
 
         return (False, None)
 
-    def run(self, force=False):
+    # TODO:FIXME: (rgrant)
+    #   basically a getter that can be used to check when running a pipeline if you should add the args
+    def is_subsettable(self):
+        return self._subsettable
+
+    def run(self, force=False, create_test_datasets=False):
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
             logger.info("Running %s (%s)", self._name, reason)
             start = time.perf_counter()
-            result = self._work(**self.get_inputs(), **self._params)
+            # TODO: (rgrant) - is this where I do it:
+            #   actually, I don't even need the if - this is legit a if true, pass true, if false, pass false
+            #   so i can just hand off the value onto the `_work` method?
+            #   and the `_work` is actually a given pipeline
+
+            
+            if self.is_subsettable():
+                print("I am subsettable!")
+                # only pass this additional positional argument if the task itself supports subsetting
+                #   if test_datasets is false, still pass it - it doesn't matter
+                result = self._work(**self.get_inputs(), **self._params, create_test_datasets=create_test_datasets)
+            else:
+                result = self._work(**self.get_inputs(), **self._params)
+
+
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
@@ -162,9 +182,22 @@ class Pipeline:
     def get_all_tasks(self):
         return list(self._tasks.keys())
 
-    def run(self, force_tasks=None):
+    # TODO:FIXME: (rgrant) - here I should be able to add a new named arg
+    def run(self, force_tasks=None, create_test_datasets=False):
+        if create_test_datasets:
+            print("\n=== Running in Test Dataset mode\n")
         for task_name, task in self._tasks.items():
-            task.run(force=force_tasks and task_name in force_tasks)
+            # TODO:FIXME: (rgrant) here I just handed off create_test_datasets to task.run (line 126)
+            # TODO:FIXME: (rgrant) I should add a check for if this task is 'subsettable'
+            # if task.canBeSubsetted():
+            task.run(force=force_tasks and task_name in force_tasks, create_test_datasets=create_test_datasets)
+            # else:
+                # task.run(force=force_tasks and task_name in force_tasks)
+
+    # TODO:FIXME: (rgrant) - OLD UNTOUCHED ONE
+    # def run(self, force_tasks=None):
+    #     for task_name, task in self._tasks.items():
+    #         task.run(force=force_tasks and task_name in force_tasks)
 
     def set_outputs(self, outputs):
         for output_name, task_name in outputs.items():
@@ -185,6 +218,8 @@ def run_pipeline(pipeline):
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--force", choices=tasks, nargs="+")
     group.add_argument("--force-all", action="store_true")
+    # TODO:FIXME: (rgrant) - adding the argument to be parsed here
+    parser.add_argument("--create-test-datasets", action="store_true")
     args = parser.parse_args()
 
     _pipeline_config["output_root"] = args.output_root.rstrip("/")
@@ -194,6 +229,11 @@ def run_pipeline(pipeline):
         pipeline_args["force_tasks"] = tasks
     elif args.force:
         pipeline_args["force_tasks"] = args.force
+
+    # TODO: (rgrant) added to add the argument
+    #   possibly antipattern (if true, return true) - but I'm not sure of the alternative
+    if args.create_test_datasets:
+        pipeline_args["create_test_datasets"] = args.create_test_datasets
 
     hl.init()
 

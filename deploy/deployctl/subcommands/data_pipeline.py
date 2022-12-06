@@ -15,7 +15,7 @@ DATA_PIPELINE_DIRECTORY = os.path.abspath(
 
 
 def run_pipeline(
-    pipeline: str, cluster: str, dry_run: bool, other_args: typing.Optional[typing.List[str]] = None
+    pipeline: str, cluster: str, dry_run: bool, create_test_datasets: bool, other_args: typing.Optional[typing.List[str]] = None
 ) -> None:
     if not config.project:
         raise RuntimeError("project configuration is required")
@@ -51,6 +51,10 @@ def run_pipeline(
             f"--output-root={config.data_pipeline_output}",
         ]
 
+        # TODO:FIXME: (rgrant) added to get the plumbing to work!
+        if create_test_datasets:
+            command.extend(["--create-test-datasets"])
+
         if other_args:
             command.extend(other_args)
 
@@ -70,6 +74,14 @@ def main(argv: typing.List[str]) -> None:
     run_parser.add_argument("--cluster", required=True, help="Dataproc cluster to run the pipeline on")
     run_parser.add_argument("--dry-run", action="store_true", help="Print pipeline command without running it")
 
+    # TODO:FIXME: (rgrant) this is added to work towards allowing subset of data
+    #   added as a first class argument, seems to make sense? idk
+    run_parser.add_argument(
+        "--create-test-datasets",
+        action="store_true",
+        help="Run pipeline with smaller resulting datasets for development",
+    )
+
     if "--" in argv:
         divider_index = argv.index("--")
         other_args = argv[divider_index + 1 :]
@@ -87,5 +99,8 @@ def main(argv: typing.List[str]) -> None:
     try:
         action(**vars(args))
     except Exception as err:  # pylint: disable=broad-except
+        # TODO:FIXME: (rgrant) error in here? only errors when I do the --create-test-datasets as part of
+        #   other args
+        print("in here")
         print(f"Error: {err}", file=sys.stderr)
         sys.exit(1)

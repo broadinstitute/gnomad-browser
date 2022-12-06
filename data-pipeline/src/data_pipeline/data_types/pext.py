@@ -6,6 +6,8 @@ from collections import namedtuple
 import hail as hl
 from tqdm import tqdm
 
+import seeds
+
 
 TISSUE_NAME_MAP = {
     "Adipose_Subcutaneous": "adipose_subcutaneous",
@@ -80,13 +82,19 @@ def read_bases_tsv(filename):
             yield Row(gene=row[0], chrom=row[1], pos=int(row[2]), tissues=tissues)
 
 
-def prepare_base_level_pext(base_level_pext_path):
+def prepare_base_level_pext(base_level_pext_path, create_test_datasets=False):
     tmp_dir = os.path.expanduser("~")
 
     #
     # Step 1: rename fields, extract chrom/pos from locus, convert missing values to 0, export to TSV
     #
     ds = hl.read_table(base_level_pext_path)
+
+    if create_test_datasets:
+        print(f"\nGot create test datasets")
+        print(f"\nSize pre: {ds.count()}")
+        ds = ds.sample(seeds.SUBSAMPLE_FRACTION, seed=seeds.INTEGER)
+        print(f"\nSize post: {ds.count()}")
 
     ds = ds.select(
         gene_id=ds.ensg,
@@ -164,8 +172,8 @@ def prepare_base_level_pext(base_level_pext_path):
     return ds
 
 
-def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
-    ds = prepare_base_level_pext(base_level_pext_path)
+def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path, create_test_datasets=False):
+    ds = prepare_base_level_pext(base_level_pext_path, create_test_datasets)
 
     low_max_pext_genes = hl.import_table(low_max_pext_genes_path)
     low_max_pext_genes = low_max_pext_genes.aggregate(hl.agg.collect_as_set(low_max_pext_genes.ensg))

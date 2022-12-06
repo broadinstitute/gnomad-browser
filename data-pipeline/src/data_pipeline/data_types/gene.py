@@ -1,6 +1,11 @@
 import hail as hl
 
-from .locus import normalized_contig, x_position
+# TODO:FIXME: (rgrant) - ORIGINAL this "." is required to work in the pipeline 
+# from .locus import normalized_contig, x_position
+
+# TESTING - without the "." you can run this as a standalone
+from locus import normalized_contig, x_position
+import seeds
 
 
 def merge_overlapping_exons(regions):
@@ -220,8 +225,14 @@ def import_hgnc(path):
     return ds
 
 
-def prepare_genes(gencode_path, hgnc_path, reference_genome):
+# TODO:FIXME: (rgrant) testing here first, hopefully theres a way to AVOID adding this as an argument to every single possible task
+def prepare_genes(gencode_path, hgnc_path, reference_genome, create_test_datasets=False):
+
     genes = import_gencode(gencode_path, reference_genome)
+
+    # hmmm
+    genes = genes.sample(0.01, seed=seeds.INTEGER)
+
 
     hgnc = import_hgnc(hgnc_path)
     hgnc = hgnc.filter(hl.is_defined(hgnc.ensembl_id)).key_by("ensembl_id")
@@ -249,4 +260,41 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
         flags=hl.set([hl.or_missing(hl.set(chip_genes).contains(genes.gene_id), "chip")]).filter(hl.is_defined)
     )
 
+    if create_test_datasets:
+        print(f'received create test datasets')
+        downsampled_genes = genes.sample(0.01, seed=seeds.INTEGER)
+        handselected_genes = genes.filter(hl.set(seeds.GENES_SET).contains(genes.gene_id))
+        seeded_genes = downsampled_genes.union(handselected_genes).distinct()
+        return seeded_genes
+
     return genes
+
+
+
+# ======================================================
+
+# TODO:FIXME: (rgrant): DELETE ME LATER
+#   literally just run this locally right here to see if it works
+
+gencode_path = "/Users/rgrant/Downloads/output_external_sources_gencode.v19.annotation.gtf.gz"
+hgnc_path = "/Users/rgrant/Downloads/output_external_sources_hgnc.tsv"
+
+
+# print("\ntable 1")
+# result1.count()
+# result1.summarize()
+# result1 = prepare_genes(gencode_path, hgnc_path, "GRCh37")
+
+
+# print(f"\nRandom seed is: {seeds.INTEGER}")
+
+print("\ntable 2 - subsetted")
+result2 = prepare_genes(gencode_path, hgnc_path, "GRCh37", True)
+print(f"\n\nCount: {result2.count()}\n")
+# result2.summarize()
+print(result2.show(5))
+result2.describe()
+
+
+# TODO:FIXME: (rgrant) DEBUG:
+# print("testing")
