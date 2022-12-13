@@ -1,0 +1,15 @@
+bases:
+  - ../../base
+patchesJson6902:
+  - target:
+      version: v1
+      group: elasticsearch.k8s.elastic.co
+      kind: Elasticsearch
+      name: gnomad
+    path: resource_limits.yaml
+  - target:
+      version: v1
+      group: elasticsearch.k8s.elastic.co
+      kind: Elasticsearch
+      name: gnomad
+    path: loading_nodes.yaml
