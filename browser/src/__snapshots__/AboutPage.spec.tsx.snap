@@ -132,10 +132,6 @@ exports[`About Page has no unexpected changes 1`] = `
   width: calc( 45% - 15px );
 }
 
-.c9 {
-  width: calc( 70% - 15px );
-}
-
 .c8 {
   line-height: 1.5;
 }
@@ -168,22 +164,22 @@ exports[`About Page has no unexpected changes 1`] = `
   margin: 0.5em 0;
 }
 
-.c10 {
+.c9 {
   line-height: 1.5;
 }
 
-.c10 ul {
+.c9 ul {
   padding-left: 0;
   margin: 0;
   list-style-type: none;
 }
 
-.c10 ul ul {
+.c9 ul ul {
   padding-left: 20px;
   margin: 0.5em 0;
 }
 
-.c10 li {
+.c9 li {
   margin-bottom: 1rem;
 }
 
@@ -230,12 +226,6 @@ exports[`About Page has no unexpected changes 1`] = `
 
 @media (max-width:992px) {
   .c6 {
-    width: 100%;
-  }
-}
-
-@media (max-width:992px) {
-  .c9 {
     width: 100%;
   }
 }
@@ -547,15 +537,18 @@ The aggregation and release of summary data from the exomes and genomes collecte
     Funding
   </h2>
   <div
-    className="c9"
-    width="70%"
+    className="c5"
   >
     <div
-      aria-labelledby="funding"
-      className="c10"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "**Current Funding**
+      className="c6"
+      width="45%"
+    >
+      <div
+        aria-labelledby="funding"
+        className="c9"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "**Current Funding**
 
 - NIH/NHGRI U24HG011450<br/>(MPIs: Rehm and Daly)
 - NIH/NHGRI U01HG011755<br/>(MPIs: O’Donnell-Luria, Rehm and Talkowski)
@@ -576,12 +569,31 @@ The aggregation and release of summary data from the exomes and genomes collecte
 - BioMarin
 - Sanofi-Genzyme
 ",
+          }
         }
-      }
-    />
-    <p>
-      The vast majority of the data storage, computing resources, and human effort used to generate this call set were donated by the Broad Institute
-    </p>
+      />
+      <p>
+        The vast majority of the data storage, computing resources, and human effort used to generate this call set were donated by the Broad Institute
+      </p>
+    </div>
+    <div
+      className="c6"
+      width="45%"
+    >
+      <div
+        aria-labelledby="gcbr"
+        className="c9"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "![GCBR Logo](./GCBR-Logo-RGB.png)
+
+gnomAD is a Global Core Biodata Resource (GCBR).
+See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-selected-as-global-core-biodata-resource/) and learn more about GCBRs [here](https://globalbiodata.org/scientific-activities/global-core-biodata-resources/).
+",
+          }
+        }
+      />
+    </div>
   </div>
 </div>
 `;
