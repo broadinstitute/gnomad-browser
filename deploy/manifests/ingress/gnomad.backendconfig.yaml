@@ -1,0 +1,7 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: gnomad-backend-config
+spec:
+  securityPolicy:
+    name: 'deny-problematic-requests'

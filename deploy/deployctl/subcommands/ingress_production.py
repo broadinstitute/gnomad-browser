@@ -14,6 +14,8 @@ metadata:
   name: gnomad-browser
   labels:
     tier: production
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"80":"gnomad-backend-config"}}'
 spec:
   type: NodePort
   selector:
