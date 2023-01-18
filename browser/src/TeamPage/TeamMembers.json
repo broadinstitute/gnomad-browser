@@ -38,7 +38,7 @@
       "headshotSource": "ben_neale.jpg"
     },
     {
-      "name": "Anne O’Donnell-Luria, M.D., Ph.D.,",
+      "name": "Anne O'Donnell-Luria, M.D., Ph.D.,",
       "bio": "(co-I) is an Associate Member of the Broad Institute and Assistant Professor and Physician in the Division of Genetics and Genomics at Boston Children’s Hospital, Harvard Medical School. Her research focuses on rare disease variant and gene discovery. She has been a member of the gnomAD analysis team since January 2015, providing guidance in the development of gnomAD and browser features for clinical variant interpretation and use in medical genetics.",
       "headshotSource": "anne_odonnell.jpg"
     },
@@ -113,6 +113,112 @@
       "name": "Heiko Runz, M.D.,",
       "bio": "is the Senior Medical Director and head of Human Genetics at Biogen. He is a medical geneticist and basic researcher with a mission to implement genetics at the core of future medicine. His research focus is on translating genetic discoveries into functional insights and early-stage drug development programs across all therapeutic areas. Dr. Runz has a broad interdisciplinary background that tightly integrates technological innovation and applied medicine.",
       "headshotSource": "heiko_runz.jpg"
+    }
+  ],
+  "browser": [
+    {
+      "name": "Matt Solomonson",
+      "bio": "leads the gnomAD Browser team.",
+      "headshotSource": "matthew_solomonson.jpg",
+      "alsoOnCommittee": true
+    },
+    {
+      "name": "Phil Darnowsky",
+      "bio": "",
+      "headshotSource": "blank_profile.jpg"
+    },
+    {
+      "name": "Riley Grant",
+      "bio": "is an Associate Software Engineer at the Broad Institute, where he works on the gnomAD Browser. He's interested in encouraging collaboration through open source software and open access datasets.",
+      "headshotSource": "riley_grant.jpg"
+    },
+    {
+      "name": "Steve Jahl",
+      "bio": "is a Site Reliability Engineer working on keeping the gnomAD Browser stable, performant, and secure. Steve has worked previously as an SRE for a Boston-based fintech startup, and as a software engineer and systems administrator for research computing groups at MIT CSAIL and Harvard Medical School.",
+      "headshotSource": "steve_jahl.jpg"
+    },
+    {
+      "name": "Konrad Karczewski",
+      "bio": "works on the gnomAD browser.",
+      "headshotSource": "konrad_karczewski.jpg",
+      "alsoOnCommittee": true
+    },
+    {
+      "name": "Ben Weisburd",
+      "bio": "is a Data Scientist at the Broad Institute, where he works on short tandem repeats and other underexplored variant types in gnomAD and rare disease cohorts.",
+      "headshotSource": "ben_weisburd.jpg"
+    }
+  ],
+  "production": [
+    {
+      "name": "Grace Tiao",
+      "bio": "is the co-product owner for gnomAD and leads the gnomAD Methods team.",
+      "headshotSource": "grace_tiao.jpg",
+      "alsoOnCommittee": true
+    },
+    {
+      "name": "Katherine Chao",
+      "bio": "is the co-product owner for gnomAD.",
+      "headshotSource": "katherine_chao.jpg",
+      "alsoOnCommittee": true
+    },
+    {
+      "name": "Julia Goodrich, Ph.D.,",
+      "bio": "is a Computational Scientist in the Center for Genomic Medicine of Massachusetts General Hospital and an Associated Scientist at the Broad Institute. She works on developing methods for quality control and analysis of large-scale genomic datasets including gnomAD, and is technical lead for the production of gnomAD v3.1 and v4 releases.",
+      "headshotSource": "julia_goodrich.jpg"
+    },
+    {
+      "name": "Qin He, Ph.D.,",
+      "bio": "is a Computational Scientist at the Broad Institute. She works on designing and implementing the highest quality computational methods for handling the Genome Aggregation Database (gnomAD).",
+      "headshotSource": "qin_he.jpg"
+    },
+    {
+      "name": "Kristen Laricchia, MS,",
+      "bio": "is a Data Scientist at the Broad Institute, where she works on developing methods for quality control and analysis of the Genome Aggregation Database (gnomAD) and rare disease cohorts.",
+      "headshotSource": "kristen_laricchia.jpg"
+    },
+    {
+      "name": "Wenhan Lu, MS,",
+      "bio": "is a Computational Associate at the Broad Institute. She works on developing methods and pipelines to process large-scale sequencing callsets, including gnomAD and CCDG. Her work also focuses on developing statistical methods to help interpret the mechanisms of rare variants.",
+      "headshotSource": "wenhan_lu.jpg"
+    },
+    {
+      "name": "Tim Poterba, BS,",
+      "bio": "is a Principal Software Engineer on the Hail Team at the Broad Institute. He works on distributed data processing systems necessary to create, store, and productively analyze data resources as large as gnomAD.",
+      "headshotSource": "tim_poterba.jpg"
+    },
+    {
+      "name": "Chris Vittal",
+      "bio": "is Software Engineer on the Hail Team at the Broad Institute. He works on the query subsystem of the hail project focusing on representation of genetic data at rest and in flight to promote efficient, easy, and cost effective data processing.",
+      "headshotSource": "blank_profile.jpg"
+    },
+    {
+      "name": "Mike Wilson, BS,",
+      "bio": "is a Senior Associate Computational Scientist at the Broad institute.",
+      "headshotSource": "mike_wilson.jpg"
+    }
+  ],
+  "operations": [
+    {
+      "name": "Samantha Baxter, MS, LGC",
+      "bio": "is gnomAD's scientific operations manager.",
+      "headshotSource": "samantha_baxter.jpg",
+      "alsoOnCommittee": true
+    },
+    {
+      "name": "Sinéad Chapman, MS, MA, PMP,",
+      "bio": "is Director of Global Genetics Project Management in the Stanley Center of Psychiatric Research at the Broad Institute, where she leads a team of project managers. She brings years of institutional knowledge and experience to the curation of the gnomAD dataset in terms of project and sample compliance, data generation and collaborator relationships.",
+      "headshotSource": "sinead_chapman.jpg"
+    },
+    {
+      "name": "Christine Stevens, MA, PMP,",
+      "bio": "is Associate Director of Scientific Projects at the Broad Institute.  She possesses a diverse knowledge of Broad infrastructure, genomic technologies, funding regulations, compliance and genetic analyzes, and is well versed in project management, high-throughput processes, and large-scale data.  Her expertise led to a systemic way of curating data going into the gnomAD dataset.",
+      "headshotSource": "christine_stevens.jpg"
+    },
+    {
+      "name": "Lauren Witzgall, MS,",
+      "bio": "is Program Manager of Medical and Population Genetics at the Broad Institute where she runs the weekly Primer and Program Seminar Series. She oversees the development and implementation of the series, program governance and budget. On the operations side, she assists with IRB protocols and operation processes for gnomAD, focusing on collecting and analyzing memorandum of understandings and organizing.",
+      "headshotSource": "lauren_witzgall.jpg"
     }
   ]
 }
