@@ -1,4 +1,0 @@
-- **Samantha Baxter**
-- Sinéad Chapman
-- Christine Stevens
-- Lauren Witzgall
