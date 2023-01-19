@@ -12,7 +12,9 @@ from data_pipeline.data_types.transcript import (
     annotate_gene_transcripts_with_refseq_id,
     extract_transcripts,
 )
-from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
+
+# Removed Jan 19, 2023. Using the result hailtable of an older successful gtex task as a workaround
+# from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
 from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
@@ -121,28 +123,40 @@ pipeline.add_task(
 # Tissue expression
 ###############################################
 
-pipeline.add_download_task(
-    "download_gtex_v7_tpm_data",
-    "https://storage.googleapis.com/gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
-    "/external_sources/gtex/v7/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
-)
+# ====================================================================================
+# Commented out gtex steps January 19, 2023.
+# Per issue 914 (https://github.com/broadinstitute/gnomad-browser/issues/914)
+#
+# The current workaround is to keep using the resultant hailtable from before this
+#   step started failing, as the files have not changed. A newer hail version caused
+#   this step to start failing, and that known bug will likely not be fixed. Newer
+#   versions of gtex may be in a different format. For now this is the workaround as
+#   gtex hasn't changed in quite a while (Oct 2021), if a newer version of gtex comes
+#   out this can be revisited.
+# ====================================================================================
 
-pipeline.add_download_task(
-    "download_gtex_v7_sample_attributes",
-    "https://storage.googleapis.com/gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
-    "/external_sources/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
-)
+# pipeline.add_download_task(
+#     "download_gtex_v7_tpm_data",
+#     "https://storage.googleapis.com/gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+#     "/external_sources/gtex/v7/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+# )
 
-pipeline.add_task(
-    "prepare_gtex_v7_expression_data",
-    prepare_gtex_expression_data,
-    "/gtex/gtex_v7_tissue_expression.ht",
-    {
-        "transcript_tpms_path": pipeline.get_task("download_gtex_v7_tpm_data"),
-        "sample_annotations_path": pipeline.get_task("download_gtex_v7_sample_attributes"),
-    },
-    {"tmp_path": "/tmp"},
-)
+# pipeline.add_download_task(
+#     "download_gtex_v7_sample_attributes",
+#     "https://storage.googleapis.com/gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
+#     "/external_sources/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
+# )
+
+# pipeline.add_task(
+#     "prepare_gtex_v7_expression_data",
+#     prepare_gtex_expression_data,
+#     "/gtex/gtex_v7_tissue_expression.ht",
+#     {
+#         "transcript_tpms_path": pipeline.get_task("download_gtex_v7_tpm_data"),
+#         "sample_annotations_path": pipeline.get_task("download_gtex_v7_sample_attributes"),
+#     },
+#     {"tmp_path": "/tmp"},
+# )
 
 pipeline.add_task(
     "prepare_pext",
@@ -202,7 +216,8 @@ pipeline.add_task(
     "/genes/genes_grch37_annotated_2.ht",
     {
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
-        "gtex_tissue_expression_path": pipeline.get_task("prepare_gtex_v7_expression_data"),
+        # Direct link to previous resultant gtex hailtable as a workaround
+        "gtex_tissue_expression_path": "gs://gnomad-browser-data-pipeline/output/gtex/2023-01-19-backup/gtex_v7_tissue_expression.ht",
     },
 )
 
