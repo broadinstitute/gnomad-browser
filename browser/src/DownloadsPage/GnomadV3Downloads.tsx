@@ -266,7 +266,7 @@ export default () => (
             label="chrM sites VCF"
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="4.77 MiB"
-            md5="fbdf6807628c13b5379b359f12a39c61"
+            md5="d0ef2bd882ae44236897d743cb5528cf"
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
