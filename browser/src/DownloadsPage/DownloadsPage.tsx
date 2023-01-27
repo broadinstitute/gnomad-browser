@@ -10,6 +10,9 @@ import { SectionTitle, StyledParagraph } from './downloadsPageStyles'
 
 import DownloadsPageTableOfContents from './TableOfContents'
 
+// @ts-expect-error
+import styles from './DownloadsPage.module.css'
+
 import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
@@ -61,6 +64,9 @@ const BottomSpacer = styled.div`
 `
 
 const DownloadsPage = () => {
+  // Load stylesheet to make smooth scroll behavior active
+  const style = styles.html
+
   return (
     <InfoPage>
       <DocumentTitle title="Downloads" />
