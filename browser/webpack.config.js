@@ -83,6 +83,10 @@ const config = {
           loader: '@gnomad/markdown-loader',
         },
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: { extensions: ['.tsx', '.ts', '.js'], ...extraResolveOptions },
