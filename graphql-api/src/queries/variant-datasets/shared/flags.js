@@ -22,7 +22,11 @@ const getFlagsForGeneContext = (variant, geneId) => {
     // than a non-coding transcript with a pLoF VEP annotation. LOFTEE does not annotate
     // non-coding transcripts. Check for mostSevereConsequenceInGene.lof to avoid showing an
     // LC pLoF flag next to a non-pLoF VEP consequence.
-    if (!lofConsequencesInGene.some((csq) => csq.lof === 'HC') && mostSevereConsequenceInGene.lof) {
+    if (
+      !lofConsequencesInGene.some((csq) => csq.lof === 'HC') &&
+      mostSevereConsequenceInGene.lof &&
+      mostSevereConsequenceInGene.lof !== 'OS'
+    ) {
       flags.push('lc_lof')
     }
 
@@ -56,7 +60,11 @@ const getFlagsForRegionContext = (variant) => {
     // than a non-coding transcript with a pLoF VEP annotation. LOFTEE does not annotate
     // non-coding transcripts. Check for mostSevereConsequence.lof to avoid showing an
     // LC pLoF flag next to a non-pLoF VEP consequence.
-    if (!lofConsequences.some((csq) => csq.lof === 'HC') && mostSevereConsequence.lof) {
+    if (
+      !lofConsequences.some((csq) => csq.lof === 'HC') &&
+      mostSevereConsequence.lof &&
+      mostSevereConsequence.lof !== 'OS'
+    ) {
       flags.push('lc_lof')
     }
 

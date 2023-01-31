@@ -35,7 +35,7 @@ export const FLAGS_CONFIG: Record<string, Flag> = {
     label: 'OS pLoF',
     level: 'info',
     formatTooltip: () =>
-      'Variant predicted to create or disrupt a splice site outside the canonical splice site (beta)',
+      'Other Splice Predicted Loss-of-Function: this variant is predicted to create or disrupt a splice site outside the canonical splice site (beta)',
   },
   mnv: {
     label: 'MNV',
