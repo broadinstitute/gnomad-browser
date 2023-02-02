@@ -84,7 +84,8 @@ def main(argv: typing.List[str]) -> None:
     load_parser.set_defaults(action=load_datasets)
     load_parser.add_argument("--cluster-name", default="gnomad")
     load_parser.add_argument("--dataproc-cluster", required=True)
-    load_parser.add_argument("--secret", default="gnomad-elasticsearch-password")
+    # TODO:FIXME: added a hacky fix here so that it uses your new password
+    load_parser.add_argument("--secret", default="gnomad-elasticsearch-password-rgrant")
     load_parser.add_argument("datasets")
 
     args = parser.parse_args(argv)

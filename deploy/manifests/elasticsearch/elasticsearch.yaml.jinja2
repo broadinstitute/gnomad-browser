@@ -122,14 +122,14 @@ spec:
             - name: elasticsearch
               env:
                 - name: ES_JAVA_OPTS
-                  value: '-Xms26g -Xmx26g'
+                  value: '-Xms10g -Xmx10g'
               resources:
                 requests:
-                  cpu: 6
-                  memory: 52Gi
+                  cpu: 3
+                  memory: 20Gi
                 limits:
-                  cpu: 7
-                  memory: 52Gi
+                  cpu: 4
+                  memory: 20Gi
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data
@@ -139,7 +139,7 @@ spec:
             storageClassName: standard
             resources:
               requests:
-                storage: 1750Gi
+                storage: 400Gi
 {% if n_ingest_pods > 0 %}
     - name: ingest
       count: {{ n_ingest_pods }}

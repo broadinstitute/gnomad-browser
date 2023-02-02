@@ -35,7 +35,10 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             f"--project={config.project}",
             f"--region={config.region}",
             f"--zone={config.zone}",
-            f"--subnet={config.network_name}-dataproc",
+            # TODO: hacky fix
+            # f"--subnet={config.network_name}-dataproc",
+            # TODO:FIXME: added here manually to have it conect to the right place
+            f"--subnet=rgrant-dev-dataproc-subnet",
             "--tags=dataproc-node",
             "--max-idle=1h",
             f"--packages={','.join(requirements)}",
