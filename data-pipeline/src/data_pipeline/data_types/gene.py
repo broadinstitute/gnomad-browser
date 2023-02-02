@@ -1,6 +1,6 @@
 import hail as hl
 
-# TODO:FIXME: (rgrant) - ORIGINAL this "." is required to work in the pipeline 
+# TODO:FIXME: (rgrant) - ORIGINAL this "." is required to work in the pipeline
 # from .locus import normalized_contig, x_position
 
 # TESTING - without the "." you can run this as a standalone
@@ -233,7 +233,6 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome, create_test_dataset
     # hmmm
     genes = genes.sample(0.01, seed=seeds.INTEGER)
 
-
     hgnc = import_hgnc(hgnc_path)
     hgnc = hgnc.filter(hl.is_defined(hgnc.ensembl_id)).key_by("ensembl_id")
     genes = genes.annotate(**hgnc[genes.gene_id])
@@ -261,14 +260,13 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome, create_test_dataset
     )
 
     if create_test_datasets:
-        print(f'received create test datasets')
+        print(f"received create test datasets")
         downsampled_genes = genes.sample(0.01, seed=seeds.INTEGER)
         handselected_genes = genes.filter(hl.set(seeds.GENES_SET).contains(genes.gene_id))
         seeded_genes = downsampled_genes.union(handselected_genes).distinct()
         return seeded_genes
 
     return genes
-
 
 
 # ======================================================

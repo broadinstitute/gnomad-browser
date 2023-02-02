@@ -1,10 +1,9 @@
 import hail as hl
 import pandas as pd
 
-# "." is required for importing when running pipeline 
-# from .seeds 
-import seeds   # this is temp for running locally as a standalone script
-
+# "." is required for importing when running pipeline
+# from .seeds
+import seeds  # this is temp for running locally as a standalone script
 
 
 def get_canonical_transcripts(create_test_datasets=False, **sites_table_paths):
@@ -51,7 +50,7 @@ def get_canonical_transcripts(create_test_datasets=False, **sites_table_paths):
 # TODO:FIXME: (rgrant): DELETE ME LATER
 #   literally just run this locally right here to see if it works
 
-g37exomes  = "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
+g37exomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
 g37genomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht"
 g38genomes = "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"
 

@@ -140,7 +140,6 @@ class Task:
             #   so i can just hand off the value onto the `_work` method?
             #   and the `_work` is actually a given pipeline
 
-            
             if self.is_subsettable():
                 print("I am subsettable!")
                 # only pass this additional positional argument if the task itself supports subsetting
@@ -148,7 +147,6 @@ class Task:
                 result = self._work(**self.get_inputs(), **self._params, create_test_datasets=create_test_datasets)
             else:
                 result = self._work(**self.get_inputs(), **self._params)
-
 
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
@@ -192,7 +190,7 @@ class Pipeline:
             # if task.canBeSubsetted():
             task.run(force=force_tasks and task_name in force_tasks, create_test_datasets=create_test_datasets)
             # else:
-                # task.run(force=force_tasks and task_name in force_tasks)
+            # task.run(force=force_tasks and task_name in force_tasks)
 
     # TODO:FIXME: (rgrant) - OLD UNTOUCHED ONE
     # def run(self, force_tasks=None):
