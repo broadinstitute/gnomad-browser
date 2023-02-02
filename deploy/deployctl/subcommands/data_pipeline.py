@@ -15,7 +15,11 @@ DATA_PIPELINE_DIRECTORY = os.path.abspath(
 
 
 def run_pipeline(
-    pipeline: str, cluster: str, dry_run: bool, create_test_datasets: bool, other_args: typing.Optional[typing.List[str]] = None
+    pipeline: str,
+    cluster: str,
+    dry_run: bool,
+    create_test_datasets: bool,
+    other_args: typing.Optional[typing.List[str]] = None,
 ) -> None:
     if not config.project:
         raise RuntimeError("project configuration is required")
@@ -99,8 +103,6 @@ def main(argv: typing.List[str]) -> None:
     try:
         action(**vars(args))
     except Exception as err:  # pylint: disable=broad-except
-        # TODO:FIXME: (rgrant) error in here? only errors when I do the --create-test-datasets as part of
-        #   other args
         print("in here")
         print(f"Error: {err}", file=sys.stderr)
         sys.exit(1)
