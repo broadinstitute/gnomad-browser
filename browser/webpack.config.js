@@ -3,6 +3,7 @@ const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { EnvironmentPlugin } = require('webpack')
+const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
 const extraResolveOptions = isDev
@@ -47,19 +48,22 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(j|t)sx?$/,
+        test: /\.tsx?$/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          tsconfigRaw: tsConfig,
+        },
+      },
+      {
+        test: /\.(j)sx?$/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
             options: {
               rootMode: 'upward',
-            },
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              configFile: 'tsconfig.build.json',
             },
           },
         ],
