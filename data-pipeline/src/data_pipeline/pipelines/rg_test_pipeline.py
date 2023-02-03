@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 import hail as hl
 
 from pipeline import Pipeline, Task, run_pipeline

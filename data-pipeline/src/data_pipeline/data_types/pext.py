@@ -6,7 +6,14 @@ from collections import namedtuple
 import hail as hl
 from tqdm import tqdm
 
+
+# import .seeds
+
+# FIXME: temp (rgrant) import this way to be imported after setting python path in local
+#   testing
+# pylint: disable=import-error
 import seeds
+
 
 
 TISSUE_NAME_MAP = {
@@ -91,7 +98,7 @@ def prepare_base_level_pext(base_level_pext_path, create_test_datasets=False):
     ds = hl.read_table(base_level_pext_path)
 
     if create_test_datasets:
-        print(f"\nGot create test datasets")
+        print("\nGot create test datasets")
         print(f"\nSize pre: {ds.count()}")
         ds = ds.sample(seeds.SUBSAMPLE_FRACTION, seed=seeds.INTEGER)
         print(f"\nSize post: {ds.count()}")

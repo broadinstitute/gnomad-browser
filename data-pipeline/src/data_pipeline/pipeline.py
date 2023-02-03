@@ -74,6 +74,7 @@ class DownloadTask:
         return (False, None)
 
     def run(self, force=False, create_test_datasets=False):
+        # pylint: disable=unused-argument
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:

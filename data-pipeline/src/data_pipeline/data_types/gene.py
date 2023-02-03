@@ -4,7 +4,9 @@ import hail as hl
 # from .locus import normalized_contig, x_position
 
 # TESTING - without the "." you can run this as a standalone
+# pylint: disable=import-error
 from locus import normalized_contig, x_position
+# pylint: disable=import-error
 import seeds
 
 
@@ -260,7 +262,7 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome, create_test_dataset
     )
 
     if create_test_datasets:
-        print(f"received create test datasets")
+        print("received create test datasets")
         downsampled_genes = genes.sample(0.01, seed=seeds.INTEGER)
         handselected_genes = genes.filter(hl.set(seeds.GENES_SET).contains(genes.gene_id))
         seeded_genes = downsampled_genes.union(handselected_genes).distinct()
@@ -274,8 +276,8 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome, create_test_dataset
 # TODO:FIXME: (rgrant): DELETE ME LATER
 #   literally just run this locally right here to see if it works
 
-gencode_path = "/Users/rgrant/Downloads/output_external_sources_gencode.v19.annotation.gtf.gz"
-hgnc_path = "/Users/rgrant/Downloads/output_external_sources_hgnc.tsv"
+gencode_path_var = "/Users/rgrant/Downloads/output_external_sources_gencode.v19.annotation.gtf.gz"
+hgnc_path_var = "/Users/rgrant/Downloads/output_external_sources_hgnc.tsv"
 
 
 # print("\ntable 1")
@@ -287,7 +289,7 @@ hgnc_path = "/Users/rgrant/Downloads/output_external_sources_hgnc.tsv"
 # print(f"\nRandom seed is: {seeds.INTEGER}")
 
 print("\ntable 2 - subsetted")
-result2 = prepare_genes(gencode_path, hgnc_path, "GRCh37", True)
+result2 = prepare_genes(gencode_path_var, hgnc_path_var, "GRCh37", True)
 print(f"\n\nCount: {result2.count()}\n")
 # result2.summarize()
 print(result2.show(5))

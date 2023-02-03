@@ -3,6 +3,9 @@ import pandas as pd
 
 # "." is required for importing when running pipeline
 # from .seeds
+
+
+# pylint: disable=import-error
 import seeds  # this is temp for running locally as a standalone script
 
 
