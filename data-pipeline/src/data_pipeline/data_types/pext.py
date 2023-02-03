@@ -15,7 +15,6 @@ from tqdm import tqdm
 import seeds
 
 
-
 TISSUE_NAME_MAP = {
     "Adipose_Subcutaneous": "adipose_subcutaneous",
     "Adipose_Visceral_Omentum_": "adipose_visceral_omentum",

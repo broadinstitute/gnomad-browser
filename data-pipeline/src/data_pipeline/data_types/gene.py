@@ -6,6 +6,7 @@ import hail as hl
 # TESTING - without the "." you can run this as a standalone
 # pylint: disable=import-error
 from locus import normalized_contig, x_position
+
 # pylint: disable=import-error
 import seeds
 
