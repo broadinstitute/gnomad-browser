@@ -15,7 +15,8 @@ from data_pipeline.data_types.transcript import (
 
 # Removed Jan 19, 2023. Using the result hailtable of an older successful gtex task as a workaround
 # from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
-from data_pipeline.data_types.pext import prepare_pext_data
+# Removed Feb 07, 2023. Using the result hailtable of an older successful pext task as a workaround
+# from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
