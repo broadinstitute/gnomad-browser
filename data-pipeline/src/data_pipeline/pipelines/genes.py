@@ -158,15 +158,25 @@ pipeline.add_task(
 #     {"tmp_path": "/tmp"},
 # )
 
-pipeline.add_task(
-    "prepare_pext",
-    prepare_pext_data,
-    "/pext_grch37.ht",
-    {
-        "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
-        "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
-    },
-)
+# ====================================================================================
+# Commented out pext steps February 07, 2023.
+# Per similar reasons as to issue 914 (above)
+#
+# The current workaround is to keep using the resultant hailtable from before this
+#   step started failing, as the files have not changed. A newer hail version caused
+#   this step to start failing, and that known bug will likely not be fixed. Pext,
+#   similarly to gtex, is unlikely to change.
+# ====================================================================================
+
+# pipeline.add_task(
+#     "prepare_pext",
+#     prepare_pext_data,
+#     "/pext_grch37.ht",
+#     {
+#         "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
+#         "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
+#     },
+# )
 
 ###############################################
 # Constraint
@@ -206,7 +216,12 @@ pipeline.add_task(
     {
         "table_path": pipeline.get_task("prepare_grch37_genes"),
         "canonical_transcript": pipeline.get_task("get_grch37_canonical_transcripts"),
-        "pext": pipeline.get_task("prepare_pext"),
+        # Direct link to previous resultant pext hailtable as a workaround
+        #    todo: (rgrant) when no one is actively developing anything with pipelines
+        #      I'd love to move the pext hailtable into a pext/ directory, similar
+        #      to gtex. That way we could make a backup of the final pext table in the
+        #      directory just in case.
+        "pext": "gs://gnomad-browser-data-pipeline/output/pext_grch37.ht",
     },
 )
 
