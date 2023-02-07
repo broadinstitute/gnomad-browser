@@ -1,12 +1,7 @@
 import hail as hl
 import pandas as pd
 
-# "." is required for importing when running pipeline
-# from .seeds
-
-
-# pylint: disable=import-error
-import seeds  # this is temp for running locally as a standalone script
+from .seeds import SUBSAMPLE_FRACTION, INTEGER
 
 
 def get_canonical_transcripts(create_test_datasets=False, **sites_table_paths):
@@ -24,7 +19,7 @@ def get_canonical_transcripts(create_test_datasets=False, **sites_table_paths):
         if create_test_datasets:
             print(f"\nReceived create test datasets, downsampling table: {path}")
             print(f"\nTable count pre: {sites_table.count()}")
-            sites_table = sites_table.sample(seeds.SUBSAMPLE_FRACTION, seed=seeds.INTEGER)
+            sites_table = sites_table.sample(SUBSAMPLE_FRACTION, seed=INTEGER)
             print(f"\nTable count post: {sites_table.count()}")
 
         table_canonical_transcripts = sites_table.aggregate(
@@ -53,15 +48,15 @@ def get_canonical_transcripts(create_test_datasets=False, **sites_table_paths):
 # TODO:FIXME: (rgrant): DELETE ME LATER
 #   literally just run this locally right here to see if it works
 
-g37exomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
-g37genomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht"
-g38genomes = "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"
+# g37exomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
+# g37genomes = "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht"
+# g38genomes = "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht"
 
-result = get_canonical_transcripts(create_test_datasets=True, exomes=g37exomes, genomes=g37genomes)
+# result = get_canonical_transcripts(create_test_datasets=True, exomes=g37exomes, genomes=g37genomes)
 # result = get_canonical_transcripts(create_test_datasets=True, genomes=g38genomes)
-print(f"\n\nCount: {result.count()}\n")
-print(result.show(5))
-result.describe()
+# print(f"\n\nCount: {result.count()}\n")
+# print(result.show(5))
+# result.describe()
 
 # TODO:FIXME: (rgrant) DEBUG:
 # print("testing")

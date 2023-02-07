@@ -12,7 +12,8 @@ from tqdm import tqdm
 # FIXME: temp (rgrant) import this way to be imported after setting python path in local
 #   testing
 # pylint: disable=import-error
-import seeds
+# import seeds
+from .seeds import SUBSAMPLE_FRACTION, INTEGER
 
 
 TISSUE_NAME_MAP = {
@@ -88,6 +89,7 @@ def read_bases_tsv(filename):
             yield Row(gene=row[0], chrom=row[1], pos=int(row[2]), tissues=tissues)
 
 
+# TODO: this step is no longer being subset - remove all logic from this before merging
 def prepare_base_level_pext(base_level_pext_path, create_test_datasets=False):
     tmp_dir = os.path.expanduser("~")
 
@@ -99,7 +101,7 @@ def prepare_base_level_pext(base_level_pext_path, create_test_datasets=False):
     if create_test_datasets:
         print("\nGot create test datasets")
         print(f"\nSize pre: {ds.count()}")
-        ds = ds.sample(seeds.SUBSAMPLE_FRACTION, seed=seeds.INTEGER)
+        ds = ds.sample(SUBSAMPLE_FRACTION, seed=INTEGER)
         print(f"\nSize post: {ds.count()}")
 
     ds = ds.select(
