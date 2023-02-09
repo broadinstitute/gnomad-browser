@@ -18,6 +18,9 @@ from data_pipeline.data_types.pext import prepare_pext_data
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad_v2_constraint
+from data_pipeline.datasets.gnomad_v2.gnomad_v2_regional_missense_constraint import (
+    prepare_gnomad_v2_regional_missense_constraint,
+)
 
 from data_pipeline.pipelines.variant_cooccurrence_counts import (
     annotate_table_with_variant_cooccurrence_counts,
@@ -196,6 +199,13 @@ pipeline.add_task(
     "prepare_homozygous_variant_cooccurrence_counts",
     prepare_homozygous_variant_cooccurrence_counts,
     "/genes/homozygous_variant_cooccurrence_counts.ht",
+
+# TODO: added section to add regional missense constraint - remove after run on prod
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/all_rmc.ht"},
 )
 
 ###############################################
@@ -255,6 +265,7 @@ pipeline.add_task(
         "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
         "exac_regional_missense_constraint": pipeline.get_task("prepare_exac_regional_missense_constraint"),
         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
+        "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
     },
     {"join_on": "preferred_transcript_id"},
 )
