@@ -1,0 +1,18 @@
+type GnomadV2RegionalMissenseConstraintRegion {
+  chrom: String
+  start: Int
+  stop: Int
+  aa_start: String
+  aa_stop: String
+  obs_mis: Int
+  exp_mis: Float
+  obs_exp: Float
+  chisq_diff_null: Float
+  p_value: Float
+}
+
+type GnomadV2RegionalMissenseConstraint {
+  has_no_rmc_evidence: Boolean
+  passed_qc: Boolean
+  regions: [GnomadV2RegionalMissenseConstraintRegion]
+}
