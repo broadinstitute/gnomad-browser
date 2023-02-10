@@ -99,6 +99,8 @@ export type Gene = GeneMetadata & {
     id: string
   }[]
   exac_regional_missense_constraint_regions?: any
+  // TODO: add better typing
+  gnomad_v2_regional_missense_constraint_regions?: any
   variants: Variant[]
   structural_variants: StructuralVariant[]
   clinvar_variants: ClinvarVariant[]
@@ -554,6 +556,13 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
             constrainedRegions={gene.exac_regional_missense_constraint_regions}
+            exons={gene.exons}
+          />
+        )}
+
+        {datasetId === 'gnomad_r2_1' && gene.gnomad_v2_regional_missense_constraint_regions && (
+          <RegionalConstraintTrack
+            constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions}
             exons={gene.exons}
           />
         )}

@@ -220,6 +220,14 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
+    gnomad_v2_regional_missense_constraint_regions {
+      start
+      stop
+      obs_mis
+      exp_mis
+      obs_exp
+      chisq_diff_null
+    }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
     }
