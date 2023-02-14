@@ -128,7 +128,7 @@ def export_table_to_elasticsearch(
 
     # https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings
     request_body = {
-        "mappings": {type_name: mapping},
+        "mappings": mapping,
         "settings": {
             "index.codec": "best_compression",
             "index.mapping.total_fields.limit": 10000,

@@ -2,14 +2,14 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: {{ cluster_name }}
+  namespace: elasticsearch
 spec:
-  version: 6.8.22
+  version: 7.17.8
   http:
     tls:
       selfSignedCertificate:
         disabled: true
-  secureSettings:
-    - secretName: es-snapshots-gcs-credentials
+  podDisruptionBudget: {}
   nodeSets:
     - name: master
       count: 3
@@ -18,11 +18,17 @@ spec:
         node.data: false
         node.ingest: false
         node.ml: false
+        cluster.routing.allocation.disk.watermark.low: '50gb'
+        cluster.routing.allocation.disk.watermark.high: '25gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: master
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -56,6 +62,10 @@ spec:
         node.data: false
         node.ingest: false
         node.ml: false
+        cluster.routing.allocation.disk.watermark.low: '50gb'
+        cluster.routing.allocation.disk.watermark.high: '25gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       volumeClaimTemplates:
       - metadata:
           name: elasticsearch-data
@@ -71,6 +81,8 @@ spec:
           labels:
             role: coordinating
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -88,20 +100,23 @@ spec:
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
     - name: data-green
-      count: 2
+      count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.master: false
         node.data: true
         node.ingest: false
         node.ml: false
-        cluster.routing.allocation.disk.watermark.low: '100gb'
-        cluster.routing.allocation.disk.watermark.high: '50gb'
+        cluster.routing.allocation.disk.watermark.low: '50gb'
+        cluster.routing.allocation.disk.watermark.high: '25gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: data
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -148,11 +163,17 @@ spec:
         node.data: true
         node.ingest: true
         node.ml: false
+        cluster.routing.allocation.disk.watermark.low: '50gb'
+        cluster.routing.allocation.disk.watermark.high: '25gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: ingest
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

@@ -45,7 +45,13 @@ def get_elasticsearch_password(cluster_name: str) -> None:
 def load_datasets(cluster_name: str, dataproc_cluster: str, secret: str, datasets: str):
     # Matches service name in deploy/manifests/elasticsearch.load-balancer.yaml.jinja2
     elasticsearch_load_balancer_ip = kubectl(
-        ["get", "service", f"{cluster_name}-elasticsearch-lb", "--output=jsonpath={.status.loadBalancer.ingress[0].ip}"]
+        [
+            "-n=elasticsearch",
+            "get",
+            "service",
+            f"{cluster_name}-elasticsearch-lb",
+            "--output=jsonpath={.status.loadBalancer.ingress[0].ip}",
+        ]
     )
 
     subprocess.check_call(
