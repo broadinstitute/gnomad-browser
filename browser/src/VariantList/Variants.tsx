@@ -20,6 +20,7 @@ import VariantTable from './VariantTable'
 import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
+import VariantsByBinALaClinvar from './VariantsByBinALaClinvar'
 
 const DEFAULT_COLUMNS = [
   'source',
@@ -212,6 +213,14 @@ const Variants = ({
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
       </TrackPageSection>
+
+      <br />
+      <br />
+      <VariantsByBinALaClinvar variants={renderedVariants}/>
+      <br />
+      <br />
+
+
       <Cursor onClick={onNavigatorClick}>
         <VariantTrack
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.
