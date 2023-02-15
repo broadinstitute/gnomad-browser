@@ -808,7 +808,7 @@ exports[`Help Page has no unexpected changes 1`] = `
         <label
           htmlFor="help-search"
           style={
-            Object {
+            {
               "border": "0",
               "clip": "rect(0 0 0 0)",
               "height": "1px",
@@ -825,7 +825,7 @@ exports[`Help Page has no unexpected changes 1`] = `
         </label>
         <div
           style={
-            Object {
+            {
               "display": "inline-block",
               "width": "100%",
             }
@@ -1077,9 +1077,9 @@ exports[`Help Page has no unexpected changes 1`] = `
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
-question: \\"What's the difference between gnomAD v2 and v3?\\"
+question: "What's the difference between gnomAD v2 and v3?"
 ---
 
 The gnomAD v2.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence. The gnomAD v3.1 data set contains 76,156 whole genomes (and no exomes), all mapped to the GRCh38 reference sequence. Most of the genomes from v2 are included in v3.1.
@@ -1104,7 +1104,7 @@ The gnomAD v2.1 data set contains data from 125,748 exomes and 15,708 whole geno
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are the restrictions on data usage?'
 ---
@@ -1113,7 +1113,7 @@ These usage guidelines are based on goodwill. They are not a legal contract, but
 
 There are no restrictions or embargoes on the publication of results derived from the gnomAD database. However, we encourage people to [check with the consortium](mailto:gnomad@broadinstitute.org) before embarking on large-scale analyses, to see if we already have something currently underway that overlaps with your plans.
 
-The data released by gnomAD are available free of restrictions under the [Creative Commons Zero Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/) . This means that you can use it for any purpose without legally having to give attribution. However, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible. Attribution supports future efforts to release other data. It also reduces the amount of \\"orphaned data\\", helping retain links to authoritative sources.
+The data released by gnomAD are available free of restrictions under the [Creative Commons Zero Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/) . This means that you can use it for any purpose without legally having to give attribution. However, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible. Attribution supports future efforts to release other data. It also reduces the amount of "orphaned data", helping retain links to authoritative sources.
 
 Screenshots of the website may also be used without restriction. As with any use of gnomAD data, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible.
 ",
@@ -1137,7 +1137,7 @@ Screenshots of the website may also be used without restriction. As with any use
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How should I cite discoveries made using gnomAD data?'
 ---
@@ -1168,7 +1168,7 @@ There is no need to include us as authors on your manuscript, unless we contribu
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'I have identified a rare variant in gnomAD that I believe is associated with a specific clinical phenotype. What phenotype data are available for these individuals?'
 ---
@@ -1195,7 +1195,7 @@ Most of the individuals who have contributed data to gnomAD were not fully conse
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Can I get access to individual-level genotype data from gnomAD?'
 ---
@@ -1222,7 +1222,7 @@ Many of the samples in gnomAD have individual-level sequencing data deposited in
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Can I contribute data to gnomAD?'
 ---
@@ -1253,7 +1253,7 @@ All investigators who contribute data to gnomAD join the gnomAD Consortium. See 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why is a particular variant found in some versions of ExAC/gnomAD but not others?'
 ---
@@ -1284,17 +1284,17 @@ Variant QC: Some variants present in previous releases may now be filtered becau
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Where can I find more details on the QC pipeline?'
 ---
 
 More details on our QC process can be found in our blog posts:
 
-- [\\"gnomAD v3.1\\"](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/)
-- [\\"gnomAD v3.0\\"](https://gnomad.broadinstitute.org/news/2019-10-gnomad-v3-0/)
-- [\\"gnomAD v2.1\\"](https://gnomad.broadinstitute.org/news/2018-10-gnomad-v2-1/)
-- [\\"The genome Aggregation Database (gnomAD)\\"](https://gnomad.broadinstitute.org/news/2017-02-the-genome-aggregation-database/)
+- ["gnomAD v3.1"](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/)
+- ["gnomAD v3.0"](https://gnomad.broadinstitute.org/news/2019-10-gnomad-v3-0/)
+- ["gnomAD v2.1"](https://gnomad.broadinstitute.org/news/2018-10-gnomad-v2-1/)
+- ["The genome Aggregation Database (gnomAD)"](https://gnomad.broadinstitute.org/news/2017-02-the-genome-aggregation-database/)
 ",
                       }
                     }
@@ -1316,7 +1316,7 @@ More details on our QC process can be found in our blog posts:
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Should I switch to the latest version of gnomAD?'
 ---
@@ -1347,7 +1347,7 @@ Finally, gnomAD v3.1 was mapped to GRCh38, so if your data is also on this build
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How do I evaluate variants in a gene that has a pseudogene? Were any steps taken to distinguish the gene from the pseudogene?'
 ---
@@ -1374,7 +1374,7 @@ Short read sequencing can produce mapping issues when a gene has a highly homolo
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How do you pronounce gnomAD?'
 ---
@@ -1382,7 +1382,7 @@ question: 'How do you pronounce gnomAD?'
 ˈnōˌmad
 
 <audio controls>
-   <source src=\\"https://ssl.gstatic.com/dictionary/static/sounds/20160317/nomad--_us_1.mp3\\" />
+   <source src="https://ssl.gstatic.com/dictionary/static/sounds/20160317/nomad--_us_1.mp3" />
    Your browser does not support the audio element.
 </audio>
 ",
@@ -1450,12 +1450,12 @@ question: 'How do you pronounce gnomAD?'
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How was the expected number of variants determined?'
 ---
 
-We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the [gnomAD flagship paper](\\"https://broad.io/gnomad_lof). Note that the expected variant counts for bases with a median depth <1 were removed from the totals.
+We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the [gnomAD flagship paper]("https://broad.io/gnomad_lof). Note that the expected variant counts for bases with a median depth <1 were removed from the totals.
 ",
                       }
                     }
@@ -1477,7 +1477,7 @@ We used a depth corrected probability of mutation for each gene to predict the e
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Which variants are included in the observed counts?'
 ---
@@ -1504,7 +1504,7 @@ We included single nucleotide changes that occurred in the canonical transcript 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why are there fewer variants in the constraint table than displayed on the gene page?'
 ---
@@ -1531,7 +1531,7 @@ We only included variants that were found in the canonical transcript of the gen
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What is included in pLoF?'
 ---
@@ -1558,7 +1558,7 @@ Nonsense, splice acceptor, and splice donor variants caused by single nucleotide
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why are constraint metrics missing for this gene or annotated with a note?'
 ---
@@ -1596,12 +1596,12 @@ Possible reasons that one might observe the deviations listed above include mism
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What is a LOEUF score?'
 ---
 
-LOEUF stands for the \\"loss-of-function observed/expected upper bound fraction.\\" It is a conservative estimate of the observed/expected ratio, based on the upper bound of a Poisson-derived confidence interval around the ratio. Low LOEUF scores indicate strong selection against predicted loss-of-function (pLoF) variation in a given gene, while high LOEUF scores suggest a relatively higher tolerance to inactivation. Its advantage over pLI is that it can be used as a continuous value rather than a dichotomous scale (e.g. pLI > 0.9) - if such a single cutoff is still desired, pLI is a perfectly fine metric to use. At large sample sizes, the observed/expected ratio will be a more appropriate measure for selection, but at the moment, LOEUF provides a good compromise of point estimate and significance measure.
+LOEUF stands for the "loss-of-function observed/expected upper bound fraction." It is a conservative estimate of the observed/expected ratio, based on the upper bound of a Poisson-derived confidence interval around the ratio. Low LOEUF scores indicate strong selection against predicted loss-of-function (pLoF) variation in a given gene, while high LOEUF scores suggest a relatively higher tolerance to inactivation. Its advantage over pLI is that it can be used as a continuous value rather than a dichotomous scale (e.g. pLI > 0.9) - if such a single cutoff is still desired, pLI is a perfectly fine metric to use. At large sample sizes, the observed/expected ratio will be a more appropriate measure for selection, but at the moment, LOEUF provides a good compromise of point estimate and significance measure.
 ",
                       }
                     }
@@ -1623,12 +1623,12 @@ LOEUF stands for the \\"loss-of-function observed/expected upper bound fraction.
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How do you pronounce LOEUF?'
 ---
 
-LOEUF is pronounced like its French-inspired name \\"l'œuf\\". Another accepted pronunciation is \\"luff\\".
+LOEUF is pronounced like its French-inspired name "l'œuf". Another accepted pronunciation is "luff".
 ",
                       }
                     }
@@ -1650,7 +1650,7 @@ LOEUF is pronounced like its French-inspired name \\"l'œuf\\". Another accepted
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are the fields included in constraint files?'
 ---
@@ -1721,7 +1721,7 @@ Descriptions of the fields in these files can be found in the Supplementary Data
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What genome build is the gnomAD data based on?'
 ---
@@ -1748,7 +1748,7 @@ gnomAD v2 is based on [GRCh37/hg19](ftp://ftp.broadinstitute.org/pub/seq/referen
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What version of GENCODE was used to annotate variants?'
 ---
@@ -1775,7 +1775,7 @@ gnomAD v3.1 uses version 35 (annotated with VEP version 101). For v3.0 we used v
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Are all the individuals in 1000 Genomes included?'
 ---
@@ -1802,7 +1802,7 @@ The majority of samples from the 1000 Genomes Project for which *exome sequencin
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Are all the individuals in the Exome Variant Server included?'
 ---
@@ -1829,12 +1829,12 @@ No. We were not given permission from NHLBI to include individuals from several 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Do the cancer samples in the database include tumor exomes, or is this from germline samples only?'
 ---
 
-All of the \\"cancer\\" samples in the current release of ExAC are blood (\\"germline\\") samples from TCGA. We excluded any sample labeled as tumor. However, note that some sample/label swaps may have occurred in TCGA; in addition, it is possible that in some patients the blood samples are contaminated by circulating tumor cells.
+All of the "cancer" samples in the current release of ExAC are blood ("germline") samples from TCGA. We excluded any sample labeled as tumor. However, note that some sample/label swaps may have occurred in TCGA; in addition, it is possible that in some patients the blood samples are contaminated by circulating tumor cells.
 ",
                       }
                     }
@@ -2809,12 +2809,12 @@ All of the \\"cancer\\" samples in the current release of ExAC are blood (\\"ger
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
-question: 'What ethnicities are represented in the \\"other\\" population?'
+question: 'What ethnicities are represented in the "other" population?'
 ---
 
-Individuals were classified as \\"other\\" if they did not unambiguously cluster with the major populations (i.e. afr, ami, amr, asj, eas, fin, mid, nfe, sas) in a principal component analysis (PCA).
+Individuals were classified as "other" if they did not unambiguously cluster with the major populations (i.e. afr, ami, amr, asj, eas, fin, mid, nfe, sas) in a principal component analysis (PCA).
 ",
                       }
                     }
@@ -2836,7 +2836,7 @@ Individuals were classified as \\"other\\" if they did not unambiguously cluster
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How are population names abbreviated?'
 ---
@@ -2891,7 +2891,7 @@ Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
                     >
                       <div
                         style={
-                          Object {
+                          {
                             "height": "100%",
                             "width": "100%",
                           }
@@ -2913,7 +2913,7 @@ Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
                       </p>
                       <div
                         style={
-                          Object {
+                          {
                             "height": "100%",
                             "width": "100%",
                           }
@@ -2928,7 +2928,7 @@ Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
                       </p>
                       <div
                         style={
-                          Object {
+                          {
                             "height": "100%",
                             "width": "100%",
                           }
@@ -2955,12 +2955,12 @@ Population names in the VCF and Hail Table are abbreviated to 3 letter IDs:
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How is sex determined for gnomAD samples?'
 ---
 
-Please note that as of v3.1, we have changed the labels we use to classify individuals by chromosomal sex from \\"male\\" and \\"female\\" to \\"XY\\" and \\"XX\\", respectively. While we have always used the terms \\"male\\" and \\"female\\" to refer to an individual's chromosomal sex and not to gender, we recognize that this terminology is overloaded and could cause confusion to users. We also note that the terms \\"male\\" and \\"female,\\" when referring to chromosomal sex, can be applied to individuals with sex chromosomal aneuploidies, such as 47,XYY or 45,X. Since we remove samples with sex chromosomal aneuploidies from gnomAD during the QC process, we felt the most straightforward sex classification labels were \\"XX\\" and \\"XY\\". These changes are now reflected in both the v3.1 download files and in the browser.
+Please note that as of v3.1, we have changed the labels we use to classify individuals by chromosomal sex from "male" and "female" to "XY" and "XX", respectively. While we have always used the terms "male" and "female" to refer to an individual's chromosomal sex and not to gender, we recognize that this terminology is overloaded and could cause confusion to users. We also note that the terms "male" and "female," when referring to chromosomal sex, can be applied to individuals with sex chromosomal aneuploidies, such as 47,XYY or 45,X. Since we remove samples with sex chromosomal aneuploidies from gnomAD during the QC process, we felt the most straightforward sex classification labels were "XX" and "XY". These changes are now reflected in both the v3.1 download files and in the browser.
 
 We used a combination of X-chromosome homozygosity (F-stat, [impute_sex function in Hail](https://hail.is/docs/0.2/methods/genetics.html?highlight=impute_sex#hail.methods.impute_sex) ) and X and Y chromosomes normalized coverage to assign sex for each gnomAD sample. Note that we used different combination of metrics (mostly due to their availability) for the different gnomAD datasets (see below for details). The F-stat was computed for each sample using high-confidence QC SNVs (bi-allelic SNVs, LD-pruned to r<sup>2</sup> < 0.1, with allele frequency > 0.1% and call rate > 99%) on non-pseudoautosomal regions (non-PAR) of the X chromosome. The normalized coverage was computed as the mean coverage on sex chromosomes / mean coverage on chromosome 20. The exact metrics and threshold used for sex assignment were as follows:
 
@@ -3005,7 +3005,7 @@ We used a combination of X-chromosome homozygosity (F-stat, [impute_sex function
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How is ancestry determined for gnomAD samples?'
 ---
@@ -3032,7 +3032,7 @@ See [ancestry documentation](/help/ancestry).
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How many XX/XY individuals have this variant? Can it be assumed that hemizygous variants come only from XY individuals?'
 ---
@@ -3059,7 +3059,7 @@ Sex for genomes was determined by X heterozygosity. Sex for exomes was based on 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Are there related individuals in gnomAD?'
 ---
@@ -3086,12 +3086,12 @@ Pairwise relatedness between samples was determined using [Hail's pc_relate](htt
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
-question: \\"Why doesn't the amino acid position and consequence on the gene page match what I expect for my transcript and how does gnomAD choose which transcript to use for annotating variants?\\"
+question: "Why doesn't the amino acid position and consequence on the gene page match what I expect for my transcript and how does gnomAD choose which transcript to use for annotating variants?"
 ---
 
-The gene page summarizes the most severe functional consequence and protein-level change regardless of the transcript. gnomAD v3.1 uses the MANE Select transcript as the primary transcript for annotating HGVS nomenclature/consequence, if the severity of the functional consequences are equivalent across transcripts. MANE stands for Matched Annotation from NCBI and EMBL-EBI and MANE Select identifies one high-quality representative transcript per protein-coding gene that is well-supported by experimental data and represents the biology of the gene. More background on the MANE project can be found [here](https://www.ncbi.nlm.nih.gov/refseq/MANE/). If no MANE Select transcript exists, the Ensembl canonical transcript is selected. A \\"†\\" denotes a consequence that is for a non-MANE Select transcript (or non-canonical transcript if no MANE Select exists). On the gene page you can select which transcript you would like to view. The MANE Select transcript (or canonical if no MANE Select exists) is marked by \\"\\\\*\\". Please note that v2 still uses the canonical transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts are annotated using GENCODE v35 for gnomAD v3.1 and GENCODE v19 for v2. Please note, the browser represents transcript versions from GENCODE v35, which may differ from more recent versions selected by the MANE Select project. Please check the version number listed by the \\"MANE Select transcript\\" attribute at the top of the gene summary page and check if it is the same or different from the version listed in the browser's \\"Show Transcript\\" list to be warned of possible discrepancies. These issues will be fixed in gnomAD v4 which will be a larger exome dataset on GRCh38 and MANE Select, sourced by Ensembl directly, will be used throughout the database where available.
+The gene page summarizes the most severe functional consequence and protein-level change regardless of the transcript. gnomAD v3.1 uses the MANE Select transcript as the primary transcript for annotating HGVS nomenclature/consequence, if the severity of the functional consequences are equivalent across transcripts. MANE stands for Matched Annotation from NCBI and EMBL-EBI and MANE Select identifies one high-quality representative transcript per protein-coding gene that is well-supported by experimental data and represents the biology of the gene. More background on the MANE project can be found [here](https://www.ncbi.nlm.nih.gov/refseq/MANE/). If no MANE Select transcript exists, the Ensembl canonical transcript is selected. A "†" denotes a consequence that is for a non-MANE Select transcript (or non-canonical transcript if no MANE Select exists). On the gene page you can select which transcript you would like to view. The MANE Select transcript (or canonical if no MANE Select exists) is marked by "\\*". Please note that v2 still uses the canonical transcript because MANE Select transcripts are derived from GRCh38. Also, our transcripts are annotated using GENCODE v35 for gnomAD v3.1 and GENCODE v19 for v2. Please note, the browser represents transcript versions from GENCODE v35, which may differ from more recent versions selected by the MANE Select project. Please check the version number listed by the "MANE Select transcript" attribute at the top of the gene summary page and check if it is the same or different from the version listed in the browser's "Show Transcript" list to be warned of possible discrepancies. These issues will be fixed in gnomAD v4 which will be a larger exome dataset on GRCh38 and MANE Select, sourced by Ensembl directly, will be used throughout the database where available.
 ",
                       }
                     }
@@ -3113,7 +3113,7 @@ The gene page summarizes the most severe functional consequence and protein-leve
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why is a transcript shown in the browser not the correct length and/or appears to be annotated incorrectly?'
 ---
@@ -3140,7 +3140,7 @@ Our transcript annotations are based on GENCODE v35 for gnomAD v3.1, GENCODE v29
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What do the flags on the browser mean?'
 ---
@@ -3187,7 +3187,7 @@ Flags that will appear in the variant table on gene/region pages:
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why is this variant linked to the wrong dbSNP rsID?'
 ---
@@ -3221,9 +3221,9 @@ Several other classes of problem relates to fundamental issues with dbSNP. We ge
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
-question: \\"I can find my variant of interest by searching for the particular variant, but why doesn't it show up in the variant table when I type the gene into the search bar?\\"
+question: "I can find my variant of interest by searching for the particular variant, but why doesn't it show up in the variant table when I type the gene into the search bar?"
 ---
 
 A gene search in the new browser will return variants in the CDS regions of the gene or within 75 base pairs of a CDS region. This behavior means that not all intronic or UTR variants will appear when doing a gene search or downloading the CSV tables, leading to fewer variants being displayed on the browser than what is present in the downloadable VCFs (which will contain all variants). You can also do a region search (example: [https://gnomad.broadinstitute.org/region/1-55510000-55512000](/region/1-55510000-55512000)) to bring up intronic variants. We are working on an option to include UTR variants in the results.
@@ -3248,7 +3248,7 @@ A gene search in the new browser will return variants in the CDS regions of the 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why are some variants depleted for homozygotes/out of Hardy-Weinberg Equilibrium (HWE)?'
 ---
@@ -3277,7 +3277,7 @@ The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Can I filter out a particular cohort for my analysis?'
 ---
@@ -3304,7 +3304,7 @@ Unfortunately, for many reasons (including consent and data usage restrictions) 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How do I query a batch of variants? Do you have an API?'
 ---
@@ -3331,7 +3331,7 @@ We currently do not have a way to submit batch queries on the browser, but we ar
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'When are exomes going to be available on GRCh38?'
 ---
@@ -3358,7 +3358,7 @@ This is to come in 2022 with gnomAD v4! At this time, we have GRCh38 lifted-over
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How do I download the data?'
 ---
@@ -3385,7 +3385,7 @@ Please visit our [downloads page](/downloads).
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: How do I access the gnomAD Hail Table frequency annotation?
 ---
@@ -3450,13 +3450,13 @@ To access the frequency data contained in the 'freq' array for a specific group 
    </td>
    <td>gnomAD inferred sub-continental ancestries
    </td>
-   <td><span style=\\"text-decoration:underline;\\">Exomes</span>
+   <td><span style="text-decoration:underline;">Exomes</span>
 <p>
 <em>nfe options</em>: bgr, est, nwe, onf, seu, swe
 <p>
 <em>eas options</em>: kor, jpn, oea
 <p>
-<span style=\\"text-decoration:underline;\\">Genomes</span> 
+<span style="text-decoration:underline;">Genomes</span> 
 <p>
 <em>nfe options</em>: est, nwe, seu, onf
    </td>
@@ -3625,7 +3625,7 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How was coverage calculated?'
 ---
@@ -3666,7 +3666,7 @@ Coverage was calculated separately for exomes and genomes on a ~10% subset of th
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Is my variant missing because it was not called in any of the samples or did the site just lack coverage?'
 ---
@@ -3693,7 +3693,7 @@ The best way to tell if a variant is missing because of a lack of coverage vs mi
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why does a variant show a large drop in AN compared to surrounding variants in gnomAD v2?'
 ---
@@ -3720,7 +3720,7 @@ Sometimes a large apparent drop in AN can occur because a variant was called in 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are your calling intervals? What intervals are used for the genomes coding-only files?'
 ---
@@ -3794,12 +3794,12 @@ The calling intervals for our exomes include the bait-covered regions ±50 bp. T
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'How are variants called on the mitochondrial DNA (mtDNA)?'
 ---
 
-Mitochondrial DNA variants are called using a specialized GATK pipeline that addresses challenges specific to the mtDNA. Homoplasmic and heteroplasmic variants are called using the GATK MuTect2 variant caller in a special \\"mitochondrial mode\\", with extensive filtering of samples and variants as described in our [\\"gnomAD v3.1 Mitochondrial DNA Variants\\" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/).
+Mitochondrial DNA variants are called using a specialized GATK pipeline that addresses challenges specific to the mtDNA. Homoplasmic and heteroplasmic variants are called using the GATK MuTect2 variant caller in a special "mitochondrial mode", with extensive filtering of samples and variants as described in our ["gnomAD v3.1 Mitochondrial DNA Variants" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/).
 ",
                       }
                     }
@@ -3821,12 +3821,12 @@ Mitochondrial DNA variants are called using a specialized GATK pipeline that add
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why is the total allele number lower for mtDNA versus nuclear variants?'
 ---
 
-The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples passed mitochondrial-specific filters. Samples were excluded if they showed (i) low mtDNA molecules per cell (as these samples have excess heteroplasmic variants likely due to misalignment of nuclear sequences of mitochondrial origin, NUMTs); or (ii) high mtDNA molecules per cell to exclude cell lines (as these samples have excess numbers of heteroplasmic variants likely due to mutation / selection during cell culture); or (iii) mitochondrial contamination exceeding 2% (problematic for calling heteroplasmic variants). We note that samples with low overall contamination may show high mtDNA contamination, e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line with 1000 mtDNA molecules/cell. See our [\\"gnomAD v3.1 Mitochondrial DNA Variants\\" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/) for details.
+The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples passed mitochondrial-specific filters. Samples were excluded if they showed (i) low mtDNA molecules per cell (as these samples have excess heteroplasmic variants likely due to misalignment of nuclear sequences of mitochondrial origin, NUMTs); or (ii) high mtDNA molecules per cell to exclude cell lines (as these samples have excess numbers of heteroplasmic variants likely due to mutation / selection during cell culture); or (iii) mitochondrial contamination exceeding 2% (problematic for calling heteroplasmic variants). We note that samples with low overall contamination may show high mtDNA contamination, e.g. a blood sample with 1% nuclear contamination could have 10% mtDNA contamination if the blood sample has 100 mtDNA molecules/cell and the contaminating sample is a cell line with 1000 mtDNA molecules/cell. See our ["gnomAD v3.1 Mitochondrial DNA Variants" blog post](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/) for details.
 ",
                       }
                     }
@@ -3848,12 +3848,12 @@ The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples 
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are NUMTs and why are they problematic?'
 ---
 
-Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtDNA that have integrated into the nuclear genome over the course of human evolution. Many ancient NUMTs are part of the reference human genome assembly; however, hundreds of polymorphic NUMTs exist that are present only in some individuals. Reads derived from NUMTs (particularly polymorphic NUMTs) often mis-align to the mtDNA and conversely, reads genuinely arising from the mtDNA genome can mis-align to the NUMTs in the reference genome. NUMTs present problems for calling variants in the mtDNA because reads that mis-align to the mtDNA will often generate false positive calls. For example, in a sample with 30x autosomal coverage and 1500x mtDNA coverage, a homozygous NUMT that mis-aligns to the mtDNA can result in false positive calls at 2% apparent heteroplasmy (30/1530 reads). Other bases in the same NUMT can cause a truly homoplasmic mtDNA allele to be falsely called at 98% heteroplasmy (with the 2% REF alleles deriving from the NUMT mis-alignment). This is one reason why we call all variants 95-100% heteroplasmy as \\"homoplasmic or near-homoplasmic\\" -- since the REF alleles could be derived from NUMTs or from sequencing errors. NUMTs are a larger problem for samples with few mtDNA molecules/cell, which is why we exclude samples with < 50 mtDNA copies/cell.
+Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtDNA that have integrated into the nuclear genome over the course of human evolution. Many ancient NUMTs are part of the reference human genome assembly; however, hundreds of polymorphic NUMTs exist that are present only in some individuals. Reads derived from NUMTs (particularly polymorphic NUMTs) often mis-align to the mtDNA and conversely, reads genuinely arising from the mtDNA genome can mis-align to the NUMTs in the reference genome. NUMTs present problems for calling variants in the mtDNA because reads that mis-align to the mtDNA will often generate false positive calls. For example, in a sample with 30x autosomal coverage and 1500x mtDNA coverage, a homozygous NUMT that mis-aligns to the mtDNA can result in false positive calls at 2% apparent heteroplasmy (30/1530 reads). Other bases in the same NUMT can cause a truly homoplasmic mtDNA allele to be falsely called at 98% heteroplasmy (with the 2% REF alleles deriving from the NUMT mis-alignment). This is one reason why we call all variants 95-100% heteroplasmy as "homoplasmic or near-homoplasmic" -- since the REF alleles could be derived from NUMTs or from sequencing errors. NUMTs are a larger problem for samples with few mtDNA molecules/cell, which is why we exclude samples with < 50 mtDNA copies/cell.
 ",
                       }
                     }
@@ -3875,7 +3875,7 @@ Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtD
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Why are no variants reported below 10% heteroplasmy?'
 ---
@@ -3902,12 +3902,12 @@ In gnomAD v3.1 we chose to filter out variants with heteroplasmy below 10%, sinc
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are haplogroups?'
 ---
 
-mtDNA does not recombine and is inherited maternally. mtDNA sequences have historically been grouped together based on sequence similarity into \\"haplogroups.\\". There are over 5000 haplogroups from diverse populations available in the [Phylotree](https://www.phylotree.org/) database. Each gnomAD sample is assigned to a specific haplogroup via [Haplogrep](https://github.com/seppinho/haplogrep-cmd).
+mtDNA does not recombine and is inherited maternally. mtDNA sequences have historically been grouped together based on sequence similarity into "haplogroups.". There are over 5000 haplogroups from diverse populations available in the [Phylotree](https://www.phylotree.org/) database. Each gnomAD sample is assigned to a specific haplogroup via [Haplogrep](https://github.com/seppinho/haplogrep-cmd).
 ",
                       }
                     }
@@ -3929,12 +3929,12 @@ mtDNA does not recombine and is inherited maternally. mtDNA sequences have histo
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What is a haplogroup-defining variant?'
 ---
 
-Variants that are homoplasmic in any of the ~5000 haplogroups in the [Phylotree](https://www.phylotree.org/) database are termed \\"haplogroup-defining\\".
+Variants that are homoplasmic in any of the ~5000 haplogroups in the [Phylotree](https://www.phylotree.org/) database are termed "haplogroup-defining".
 ",
                       }
                     }
@@ -3956,7 +3956,7 @@ Variants that are homoplasmic in any of the ~5000 haplogroups in the [Phylotree]
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are haplogroup-specific frequencies?'
 ---
@@ -3983,7 +3983,7 @@ For each variant, we report the overall population frequency across all gnomAD s
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What nuclear ancestral populations are represented?'
 ---
@@ -4864,14 +4864,14 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'What are the meanings of the mitochondrial-specific filters and flags?'
 ---
 
-Mitochondrial variants were subjected to mitochondrial-specific filters and flags. Filters are used to exclude specific genotypes, variants, or sites from population counts. Genotype filters exclude alleles in individual samples (e.g. poor base quality or low heteroplasmy in that sample), whereas variant filters exclude the allele in all individuals for a given variant, and site filters exclude all variants at a given position (eg all indel and SNP variants overlapping chrM:310). Flags are warnings applied to PASS variants to aid interpretation. The number of filtered genotypes is reported in the excluded allele count (\\"excluded_AC\\"), and a histogram is available on variant pages to view the counts of specific filters across different heteroplasmy levels, but these genotypes are not used for allele count and allele frequency calculations.
+Mitochondrial variants were subjected to mitochondrial-specific filters and flags. Filters are used to exclude specific genotypes, variants, or sites from population counts. Genotype filters exclude alleles in individual samples (e.g. poor base quality or low heteroplasmy in that sample), whereas variant filters exclude the allele in all individuals for a given variant, and site filters exclude all variants at a given position (eg all indel and SNP variants overlapping chrM:310). Flags are warnings applied to PASS variants to aid interpretation. The number of filtered genotypes is reported in the excluded allele count ("excluded_AC"), and a histogram is available on variant pages to view the counts of specific filters across different heteroplasmy levels, but these genotypes are not used for allele count and allele frequency calculations.
 
-- artifact_prone_site (site-level filter): This is one of 6 specific mtDNA positions (301, 302, 310, 316, 3107, 16182) where sequence context makes it difficult to distinguish true variants from technical artifacts, and therefore all variants overlapping these sites are filtered out. The homopolymer tracts at location chrM:300-317 (AAACCCCCCCTCCCCCGC) cause Illumina sequencing errors in all samples and cause (i) a large coverage dip in this region, (ii) reads with many apparent indels near position chrM:310T, and (iii) apparent substitutions of chrM:301A→C, chrM:302A→C, chrM:310T→C, and chrM:316G→C. Similarly, homopolymer tracts at location chrM:16180-16193 (AAAACCCCCTCCCC) cause errors and apparent indels at position chrM:16182. The reference genome contains \\"N\\" at position chrM:3107, which causes misalignment of many reads.
+- artifact_prone_site (site-level filter): This is one of 6 specific mtDNA positions (301, 302, 310, 316, 3107, 16182) where sequence context makes it difficult to distinguish true variants from technical artifacts, and therefore all variants overlapping these sites are filtered out. The homopolymer tracts at location chrM:300-317 (AAACCCCCCCTCCCCCGC) cause Illumina sequencing errors in all samples and cause (i) a large coverage dip in this region, (ii) reads with many apparent indels near position chrM:310T, and (iii) apparent substitutions of chrM:301A→C, chrM:302A→C, chrM:310T→C, and chrM:316G→C. Similarly, homopolymer tracts at location chrM:16180-16193 (AAAACCCCCTCCCC) cause errors and apparent indels at position chrM:16182. The reference genome contains "N" at position chrM:3107, which causes misalignment of many reads.
 
 - indel_stack (variant filter): Similar to artifact-prone sites, certain indels create a homopolymer tract that causes a drop in coverage and technical sequencing artifacts in multiple individuals. For example, an individual with an insertion at position chrM:5892 would typically show multiple alternate alleles (e.g., REF=T, ALT= TC, TCC, TCCC, TCCCCC, TCCCCC, TCCCCCCCC), which represents a multi-allelic call in this sample. Indels that are only present within multi-allelic calls across all samples in the callset are filtered out using this flag. For example, of the 182 different indel variants observed at position chrM:5892, 102 are only detected within multi-allelic calls and are filtered out as indel_stack, whereas alternate variants such as chrM:5892T→TC and chrM:5892T→TCC are not always in multi-allelic calls and will pass filters.
 
@@ -4879,11 +4879,11 @@ Mitochondrial variants were subjected to mitochondrial-specific filters and flag
 
 - common_low_heteroplasmy (variant warning flag): This flag is present if the variant is found at an overall frequency of .001 across all samples with a PASS genotype and heteroplasmy level > 0% and < 50% (includes variants < 1% heteroplasmy which are subsequently filtered). This flag indicates that low-heteroplasmy alleles at these variants are likely to be enriched for sequencing errors and NUMT misalignments (which are common across samples), however homoplasmic alleles at these variants will be high quality and can be trusted.
 
-- base_qual (genotype filter): Median base quality for alternate allele was below minimum (using default of 20 for \\"min-median-base-quality\\" parameter)
+- base_qual (genotype filter): Median base quality for alternate allele was below minimum (using default of 20 for "min-median-base-quality" parameter)
 
 - heteroplasmy_below_min_het_threshold (genotype filter): Heteroplasmy level was below 10% in this sample
 
-- position (genotype filter): Median distance of variant allele from end of reads was below minimum (using default of 1 for \\"min-median-read-position\\" parameter)
+- position (genotype filter): Median distance of variant allele from end of reads was below minimum (using default of 1 for "min-median-read-position" parameter)
 
 - strand_bias (genotype filter): Evidence for alternate allele comes from one read direction only
 
@@ -4911,7 +4911,7 @@ Mitochondrial variants were subjected to mitochondrial-specific filters and flag
                   <div
                     className="c18"
                     dangerouslySetInnerHTML={
-                      Object {
+                      {
                         "__html": "---
 question: 'Can I download all the mtDNA variants?'
 ---

@@ -252,7 +252,7 @@ exports[`About Page has no unexpected changes 1`] = `
   <div
     className="c3"
     dangerouslySetInnerHTML={
-      Object {
+      {
         "__html": "The Genome Aggregation Database (gnomAD), originally launched in 2014 as the Exome Aggregation Consortium (ExAC), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The project is overseen by co-directors Heidi Rehm and Mark Daly, and steering committee members Samantha Baxter, Katherine Chao, Konrad Karczewski, Daniel MacArthur, Benjamin Neale, Anne O'Donnell-Luria, Kaitlin Samocha, Matthew Solomonson,  Michael Talkowski, and Grace Tiao. To learn more about the team that produces gnomAD please see our [team page](/team). A list of investigators and groups that have contributed data is available below.
 
 The gnomAD database is composed of exome and genome sequences from around the world. We have removed cohorts that were recruited for pediatric disease, as well as their first- and second-degree relatives, so these data sets should serve as useful reference sets of allele frequencies for severe pediatric disease studies - however, note that some individuals with severe disease may still be included in the data sets such as biobanks, albeit likely at a frequency equivalent to or lower than that seen in the general population.
@@ -261,7 +261,7 @@ All of the raw data from these projects have been reprocessed through equivalent
 
 For the specific details on any of our releases, including methods for annotation and QC, the calling of [structural variants](https://gnomad.broadinstitute.org/news/2019-03-structural-variants-in-gnomad/), [mitochondrial variants](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/), and [STRs](https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/) as well as guidance for use of gnomAD-specific metrics and browser features, please see our [blog posts](https://gnomad.broadinstitute.org/news/), [help page](/help) and [publications](/publications).
 
-The aggregation and release of summary data from the exomes and genomes collected by the Genome Aggregation Database has been approved by the Partners IRB (protocol 2013P001339, \\"Large-scale aggregation of human genomic data\\").
+The aggregation and release of summary data from the exomes and genomes collected by the Genome Aggregation Database has been approved by the Partners IRB (protocol 2013P001339, "Large-scale aggregation of human genomic data").
 
 <br />
 
@@ -296,7 +296,7 @@ The aggregation and release of summary data from the exomes and genomes collecte
         aria-labelledby="principal-investigators"
         className="c7"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "- Maria Abreu
 - Carlos A Aguilar Salinas
 - Tariq Ahmad
@@ -458,7 +458,7 @@ The aggregation and release of summary data from the exomes and genomes collecte
         aria-labelledby="contributing-projects"
         className="c8"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "- 1000 Genomes
 - 1958 Birth Cohort
 - African American Coronary Artery Calcification project (AACAC)
@@ -547,7 +547,7 @@ The aggregation and release of summary data from the exomes and genomes collecte
         aria-labelledby="funding"
         className="c9"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "**Current Funding**
 
 - NIH/NHGRI U24HG011450<br/>(MPIs: Rehm and Daly)
@@ -584,7 +584,7 @@ The aggregation and release of summary data from the exomes and genomes collecte
         aria-labelledby="gcbr"
         className="c9"
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "![GCBR Logo](./GCBR-Logo-RGB.png)
 
 gnomAD is a Global Core Biodata Resource (GCBR).

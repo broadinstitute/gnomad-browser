@@ -1642,7 +1642,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="data-generation-contributors"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- **Eric Banks**
 - Sam Bryant
 - Louis Bergelson
@@ -1674,7 +1674,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="broad-genomics-platform"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- **Stacey Gabriel**
 - Kristen Connolly
 - Steven Ferriera
@@ -1695,7 +1695,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="structural-variation-contributors"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- **Ryan Collins**
 - **Harrison Brand**
 - Eric Banks
@@ -1724,7 +1724,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="mitochondrial-variants-contributors"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- **Sarah E. Calvo**
 - **Nicole Lake**
 - Eric Banks
@@ -1754,7 +1754,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="production-and-analysis-contributors"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- Ryan Collins
 - Siwei Chen
 - Laura Gauthier
@@ -1782,7 +1782,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="ethics-contributors"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- **Stacey Donnelly**
 - Kelly Flannagan
 - Namrata Gupta
@@ -1816,7 +1816,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               aria-labelledby="alumni"
               className="c16"
               dangerouslySetInnerHTML={
-                Object {
+                {
                   "__html": "- Jessica Alföldi (operations)
 - Irina Armean (production and analysis)
 - Beryl Cummings (production and analysis)
