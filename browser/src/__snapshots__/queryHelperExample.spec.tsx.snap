@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`query helpers get out the data you put in 1`] = `
+<div>
+  The fake query results go here: 
+  My content is as follows:
+  <pre>
+    ["a",{"one":"two"},999]
+  </pre>
+</div>
+`;
