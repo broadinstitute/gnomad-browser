@@ -2,7 +2,7 @@
 
 exports[`renderRoundedNumber allows for arbitrary formatting of tooltip 1`] = `
 <TooltipAnchor
-  tooltip="I AM A ROUND NUMBER AS FOLLOWS: \\"1.200\\" THANK YOU FOR YOUR TIME"
+  tooltip="I AM A ROUND NUMBER AS FOLLOWS: "1.200" THANK YOU FOR YOUR TIME"
   tooltipComponent={[Function]}
 >
   <TooltipHint>

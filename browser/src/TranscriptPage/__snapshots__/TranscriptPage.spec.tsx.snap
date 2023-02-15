@@ -295,7 +295,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -319,7 +319,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -327,7 +327,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -431,7 +431,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -472,14 +472,14 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -565,7 +565,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -579,7 +579,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -600,7 +600,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -624,7 +624,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -929,7 +929,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -953,7 +953,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -961,7 +961,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -1065,7 +1065,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1106,14 +1106,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -1199,7 +1199,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -1213,7 +1213,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -1234,7 +1234,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -1258,7 +1258,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -1563,7 +1563,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1587,7 +1587,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -1595,7 +1595,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -1699,7 +1699,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1740,14 +1740,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -1833,7 +1833,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -1847,7 +1847,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -1868,7 +1868,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -1892,7 +1892,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -2197,7 +2197,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2221,7 +2221,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -2229,7 +2229,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -2333,7 +2333,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2374,14 +2374,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -2467,7 +2467,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -2481,7 +2481,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -2502,7 +2502,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -2526,7 +2526,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -2831,7 +2831,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2855,7 +2855,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -2863,7 +2863,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -2967,7 +2967,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -3008,14 +3008,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -3101,7 +3101,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -3115,7 +3115,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -3136,7 +3136,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -3160,7 +3160,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -3465,7 +3465,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -3489,7 +3489,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -3497,7 +3497,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -3601,7 +3601,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -3642,14 +3642,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -3735,7 +3735,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -3749,7 +3749,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -3770,7 +3770,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -3794,7 +3794,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -4099,7 +4099,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4123,7 +4123,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -4131,7 +4131,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -4235,7 +4235,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4275,14 +4275,14 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -4368,7 +4368,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -4382,7 +4382,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -4403,7 +4403,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -4427,7 +4427,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -4732,7 +4732,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4756,7 +4756,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -4764,7 +4764,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -4868,7 +4868,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4908,14 +4908,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -5001,7 +5001,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -5015,7 +5015,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -5036,7 +5036,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -5060,7 +5060,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -5365,7 +5365,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -5389,7 +5389,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -5397,7 +5397,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -5501,7 +5501,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -5541,14 +5541,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -5634,7 +5634,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -5648,7 +5648,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -5669,7 +5669,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -5693,7 +5693,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -5998,7 +5998,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6022,7 +6022,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -6030,7 +6030,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -6134,7 +6134,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6174,14 +6174,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -6267,7 +6267,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -6281,7 +6281,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -6302,7 +6302,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -6326,7 +6326,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -6631,7 +6631,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6655,7 +6655,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -6663,7 +6663,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -6767,7 +6767,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6807,14 +6807,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -6900,7 +6900,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -6914,7 +6914,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -6935,7 +6935,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -6959,7 +6959,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -7264,7 +7264,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -7288,7 +7288,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -7296,7 +7296,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -7400,7 +7400,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -7440,14 +7440,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -7533,7 +7533,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -7547,7 +7547,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -7568,7 +7568,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -7592,7 +7592,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -7897,7 +7897,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -7921,7 +7921,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -7929,7 +7929,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -8033,7 +8033,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8074,14 +8074,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -8167,7 +8167,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -8181,7 +8181,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -8202,7 +8202,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -8226,7 +8226,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -8531,7 +8531,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8555,7 +8555,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -8563,7 +8563,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -8667,7 +8667,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8708,14 +8708,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -8801,7 +8801,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -8815,7 +8815,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -8836,7 +8836,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -8860,7 +8860,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -9165,7 +9165,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -9189,7 +9189,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -9197,7 +9197,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -9301,7 +9301,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -9342,14 +9342,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -9435,7 +9435,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
       </div>
       <div
         style={
-          Object {
+          {
             "margin": "1em 0",
           }
         }
@@ -9449,7 +9449,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -9470,7 +9470,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -9494,7 +9494,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }

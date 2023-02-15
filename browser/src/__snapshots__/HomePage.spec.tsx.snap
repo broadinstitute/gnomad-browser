@@ -220,14 +220,14 @@ exports[`Home Page has no unexpected changes 1`] = `
     </select>
     <span
       style={
-        Object {
+        {
           "flexGrow": 1,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "display": "inline-block",
             "width": "100%",
           }
@@ -253,7 +253,7 @@ exports[`Home Page has no unexpected changes 1`] = `
   </div>
   <div
     style={
-      Object {
+      {
         "borderBottom": "1px solid #666",
         "height": "1em",
         "margin": "1em 0 2em",
@@ -263,7 +263,7 @@ exports[`Home Page has no unexpected changes 1`] = `
   >
     <span
       style={
-        Object {
+        {
           "background": "#fafafa",
           "padding": "0 0.5em",
           "position": "relative",
@@ -277,7 +277,7 @@ exports[`Home Page has no unexpected changes 1`] = `
   <ul
     className="c6"
     style={
-      Object {
+      {
         "marginBottom": "2em",
       }
     }
@@ -329,7 +329,7 @@ exports[`Home Page has no unexpected changes 1`] = `
   </p>
   <h2
     style={
-      Object {
+      {
         "fontSize": "1em",
       }
     }

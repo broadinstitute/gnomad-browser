@@ -391,7 +391,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -415,7 +415,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -423,7 +423,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -469,7 +469,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -567,7 +567,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -608,14 +608,14 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -711,7 +711,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -738,7 +738,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -766,7 +766,7 @@ exports[`GenePage with dataset "exac" has no unexpected changes 1`] = `
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -1167,7 +1167,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1191,7 +1191,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -1199,7 +1199,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -1245,7 +1245,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -1343,7 +1343,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1384,14 +1384,14 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -1487,7 +1487,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -1514,7 +1514,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -1542,7 +1542,7 @@ exports[`GenePage with dataset "gnomad_r2_1" has no unexpected changes 1`] = `
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -1943,7 +1943,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -1967,7 +1967,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -1975,7 +1975,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -2021,7 +2021,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -2119,7 +2119,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2160,14 +2160,14 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -2263,7 +2263,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -2290,7 +2290,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -2318,7 +2318,7 @@ exports[`GenePage with dataset "gnomad_r2_1_controls" has no unexpected changes 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -2719,7 +2719,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2743,7 +2743,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -2751,7 +2751,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -2797,7 +2797,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -2895,7 +2895,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -2936,14 +2936,14 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -3039,7 +3039,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -3066,7 +3066,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -3094,7 +3094,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_cancer" has no unexpected change
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -3495,7 +3495,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -3519,7 +3519,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -3527,7 +3527,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -3573,7 +3573,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -3671,7 +3671,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -3712,14 +3712,14 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -3815,7 +3815,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -3842,7 +3842,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -3870,7 +3870,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_neuro" has no unexpected changes
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -4271,7 +4271,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4295,7 +4295,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -4303,7 +4303,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -4349,7 +4349,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -4447,7 +4447,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -4488,14 +4488,14 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -4591,7 +4591,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -4618,7 +4618,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -4646,7 +4646,7 @@ exports[`GenePage with dataset "gnomad_r2_1_non_topmed" has no unexpected change
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -5047,7 +5047,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -5071,7 +5071,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -5079,7 +5079,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -5125,7 +5125,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -5223,7 +5223,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -5263,14 +5263,14 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -5366,7 +5366,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -5393,7 +5393,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -5421,7 +5421,7 @@ exports[`GenePage with dataset "gnomad_r3" has no unexpected changes 1`] = `
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -5822,7 +5822,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -5846,7 +5846,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -5854,7 +5854,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -5900,7 +5900,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -5998,7 +5998,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6038,14 +6038,14 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -6141,7 +6141,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -6168,7 +6168,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -6196,7 +6196,7 @@ exports[`GenePage with dataset "gnomad_r3_controls_and_biobanks" has no unexpect
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -6597,7 +6597,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6621,7 +6621,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -6629,7 +6629,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -6675,7 +6675,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -6773,7 +6773,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -6813,14 +6813,14 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -6916,7 +6916,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -6943,7 +6943,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -6971,7 +6971,7 @@ exports[`GenePage with dataset "gnomad_r3_non_cancer" has no unexpected changes 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -7372,7 +7372,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -7396,7 +7396,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -7404,7 +7404,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -7450,7 +7450,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -7548,7 +7548,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -7588,14 +7588,14 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -7691,7 +7691,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -7718,7 +7718,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -7746,7 +7746,7 @@ exports[`GenePage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -8147,7 +8147,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8171,7 +8171,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -8179,7 +8179,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -8225,7 +8225,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -8323,7 +8323,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8363,14 +8363,14 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -8466,7 +8466,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -8493,7 +8493,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -8521,7 +8521,7 @@ exports[`GenePage with dataset "gnomad_r3_non_topmed" has no unexpected changes 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -8922,7 +8922,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -8946,7 +8946,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -8954,7 +8954,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -9000,7 +9000,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -9098,7 +9098,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -9138,14 +9138,14 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -9241,7 +9241,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -9268,7 +9268,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -9296,7 +9296,7 @@ exports[`GenePage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -9697,7 +9697,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -9721,7 +9721,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -9729,7 +9729,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -9775,7 +9775,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -9873,7 +9873,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -9903,14 +9903,14 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -10006,7 +10006,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -10033,7 +10033,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -10061,7 +10061,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1" has no unexpected changes 1`] = 
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -10462,7 +10462,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -10486,7 +10486,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -10494,7 +10494,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -10540,7 +10540,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -10638,7 +10638,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -10668,14 +10668,14 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -10771,7 +10771,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -10798,7 +10798,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -10826,7 +10826,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_controls" has no unexpected chang
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
@@ -11227,7 +11227,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -11251,7 +11251,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
     >
       <div
         style={
-          Object {
+          {
             "maxWidth": "50%",
           }
         }
@@ -11259,7 +11259,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
         <dl
           className="AttributeList-sc-1yjjegy-0 boDRvX"
           style={
-            Object {
+            {
               "marginTop": "1.25em",
             }
           }
@@ -11305,7 +11305,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
                 />
                 <span
                   style={
-                    Object {
+                    {
                       "border": "0",
                       "clip": "rect(0 0 0 0)",
                       "height": "1px",
@@ -11403,7 +11403,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
             />
             <span
               style={
-                Object {
+                {
                   "border": "0",
                   "clip": "rect(0 0 0 0)",
                   "height": "1px",
@@ -11433,14 +11433,14 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
     <div
       className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
       style={
-        Object {
+        {
           "width": 994,
         }
       }
     >
       <div
         style={
-          Object {
+          {
             "height": 220,
           }
         }
@@ -11536,7 +11536,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
             <div
               className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
               style={
-                Object {
+                {
                   "width": 115,
                 }
               }
@@ -11563,7 +11563,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
             <div
               className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
               style={
-                Object {
+                {
                   "width": 799,
                 }
               }
@@ -11591,7 +11591,7 @@ exports[`GenePage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpected chan
       </div>
       <div
         style={
-          Object {
+          {
             "height": "auto",
           }
         }
