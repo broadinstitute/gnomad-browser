@@ -31,7 +31,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial trans
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <div>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 GnomadConstraintTable__Table-sc-wceq7l-0 brbax"
@@ -393,7 +393,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -808,7 +808,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -1173,7 +1173,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -1196,7 +1196,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -1593,7 +1593,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -1958,7 +1958,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -1981,7 +1981,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -2378,7 +2378,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -2743,7 +2743,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -2766,7 +2766,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -3163,7 +3163,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -3528,7 +3528,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -3551,7 +3551,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -4164,7 +4164,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <div>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 GnomadConstraintTable__Table-sc-wceq7l-0 brbax"
@@ -4526,7 +4526,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -4941,7 +4941,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -5306,7 +5306,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -5329,7 +5329,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -5726,7 +5726,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -6091,7 +6091,7 @@ Array [
   </div>,
   <p
     style={
-      Object {
+      {
         "marginBottom": 0,
       }
     }
@@ -6114,7 +6114,7 @@ Array [
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
-Array [
+[
   <p>
     Constraint is based on the full gnomAD dataset, not the selected subset.
   </p>,
@@ -6511,7 +6511,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 `;
 
 exports[`ConstraintTable with exac dataset and gene with available constraints has no unexpected changes 1`] = `
-Array [
+[
   <table
     className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
   >

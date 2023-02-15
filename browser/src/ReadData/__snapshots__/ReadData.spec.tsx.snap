@@ -164,7 +164,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes 1`] = `
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -362,7 +362,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -568,7 +568,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -774,7 +774,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -980,7 +980,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1186,7 +1186,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1362,7 +1362,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes 1`
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1560,7 +1560,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1758,7 +1758,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1956,7 +1956,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2154,7 +2154,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2352,7 +2352,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2528,7 +2528,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2726,7 +2726,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2924,7 +2924,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
