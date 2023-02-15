@@ -8,6 +8,27 @@ export const forAllDatasets = (
   describe.each(allDatasetIds)(contextDescription, tests)
 }
 
+export const forDatasetsMatching = (
+  inclusionPattern: RegExp,
+  contextDescription: string,
+  tests: (datasetId: DatasetId) => void
+) => {
+  const matchingDatasets: DatasetId[] = allDatasetIds.filter((datasetId) =>
+    inclusionPattern.test(datasetId)
+  )
+  describe.each(matchingDatasets)(contextDescription, tests)
+}
+export const forDatasetsNotMatching = (
+  exclusionPattern: RegExp,
+  contextDescription: string,
+  tests: (datasetId: DatasetId) => void
+) => {
+  const matchingDatasets: DatasetId[] = allDatasetIds.filter(
+    (datasetId) => !exclusionPattern.test(datasetId)
+  )
+  describe.each(matchingDatasets)(contextDescription, tests)
+}
+
 export const forAllDatasetsExcept = (
   datasetIdsToExclude: DatasetId[],
   contextDescription: string,
