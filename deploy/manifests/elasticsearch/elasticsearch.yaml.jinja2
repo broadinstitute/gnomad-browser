@@ -2,7 +2,6 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: {{ cluster_name }}
-  namespace: elasticsearch
 spec:
   version: 7.17.8
   http:
@@ -35,9 +34,9 @@ spec:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: cloud.google.com/gke-nodepool
-                        operator: NotIn
+                        operator: In
                         values:
-                          - es-data
+                          - main-pool
           initContainers:
             - name: sysctl
               securityContext:
@@ -89,9 +88,9 @@ spec:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: cloud.google.com/gke-nodepool
-                        operator: NotIn
+                        operator: In
                         values:
-                          - es-data
+                          - main-pool
           initContainers:
             - name: sysctl
               securityContext:
