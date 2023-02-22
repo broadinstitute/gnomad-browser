@@ -46,7 +46,6 @@ def load_datasets(cluster_name: str, dataproc_cluster: str, secret: str, dataset
     # Matches service name in deploy/manifests/elasticsearch.load-balancer.yaml.jinja2
     elasticsearch_load_balancer_ip = kubectl(
         [
-            "-n=elasticsearch",
             "get",
             "service",
             f"{cluster_name}-elasticsearch-lb",
