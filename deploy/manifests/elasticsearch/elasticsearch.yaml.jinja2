@@ -13,12 +13,9 @@ spec:
     - name: master
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: true
-        node.data: false
-        node.ingest: false
-        node.ml: false
-        cluster.routing.allocation.disk.watermark.low: '50gb'
-        cluster.routing.allocation.disk.watermark.high: '25gb'
+        node.roles: ["master"]
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
         ingest.geoip.downloader.enabled: false
       podTemplate:
@@ -57,12 +54,9 @@ spec:
     - name: coordinating-nodes
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: false
-        node.ingest: false
-        node.ml: false
-        cluster.routing.allocation.disk.watermark.low: '50gb'
-        cluster.routing.allocation.disk.watermark.high: '25gb'
+        node.roles: []
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
         ingest.geoip.downloader.enabled: false
       volumeClaimTemplates:
@@ -101,12 +95,9 @@ spec:
     - name: data-green
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: true
-        node.ingest: false
-        node.ml: false
-        cluster.routing.allocation.disk.watermark.low: '50gb'
-        cluster.routing.allocation.disk.watermark.high: '25gb'
+        node.roles: ["data"]
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
         ingest.geoip.downloader.enabled: false
       podTemplate:
@@ -158,12 +149,9 @@ spec:
     - name: ingest
       count: {{ n_ingest_pods }}
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: true
-        node.ingest: true
-        node.ml: false
-        cluster.routing.allocation.disk.watermark.low: '50gb'
-        cluster.routing.allocation.disk.watermark.high: '25gb'
+        node.roles: ["data", "ingest"]
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
         ingest.geoip.downloader.enabled: false
       podTemplate:
