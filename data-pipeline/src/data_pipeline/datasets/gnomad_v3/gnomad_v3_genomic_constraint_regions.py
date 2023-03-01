@@ -16,7 +16,6 @@ def prepare_gnomad_v3_genomic_constraint_regions(genomic_constraint_region_table
         expected=hl.float(ds.expected),
         oe=hl.float(ds.oe),
         z=hl.float(ds.z),
-        coding_prop=hl.float(ds.coding_prop),
     )
 
     ds = ds.key_by("element_id")
