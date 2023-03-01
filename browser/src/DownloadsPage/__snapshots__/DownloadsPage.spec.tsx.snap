@@ -17398,11 +17398,31 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Google"
               className="c10"
-              href="https://storage.googleapis.com/gnomad-nc-constraint-v31-paper/download_files/nc_constraint_gnomad_v31_README.docx"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/genomic_constraint/nc_constraint_gnomad_v31_README.docx"
               rel="noopener noreferrer"
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download README from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/genomic_constraint/nc_constraint_gnomad_v31_README.docx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download README from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/genomic_constraint/nc_constraint_gnomad_v31_README.docx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -17419,11 +17439,31 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Raw genomic constraint by 1kb regions from Google"
               className="c10"
-              href="https://storage.googleapis.com/gnomad-nc-constraint-v31-paper/download_files/constraint_z_genome_1kb.raw.download.txt.gz"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.raw.download.txt.gz"
               rel="noopener noreferrer"
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download Raw genomic constraint by 1kb regions from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.raw.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Raw genomic constraint by 1kb regions from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.raw.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -17440,11 +17480,31 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download QCed genomic constraint by 1kb regions from Google"
               className="c10"
-              href="https://storage.googleapis.com/gnomad-nc-constraint-v31-paper/download_files/constraint_z_genome_1kb.qc.download.txt.gz"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.qc.download.txt.gz"
               rel="noopener noreferrer"
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download QCed genomic constraint by 1kb regions from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.qc.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download QCed genomic constraint by 1kb regions from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.qc.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -17461,11 +17521,31 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Non-coding constraint for gene tissue enhancers from Google"
               className="c10"
-              href="https://storage.googleapis.com/gnomad-nc-constraint-v31-paper/download_files/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/genomic_constraint/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
               rel="noopener noreferrer"
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download Non-coding constraint for gene tissue enhancers from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/genomic_constraint/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Non-coding constraint for gene tissue enhancers from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/genomic_constraint/constraint_z_enh_gene_roadmaplinks.all.download.txt.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
