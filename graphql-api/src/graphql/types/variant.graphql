@@ -126,7 +126,6 @@ type NonCodingConstraintRegion {
   expected: Float!
   oe: Float!
   z: Float!
-  coding_prop: Float!
 }
 
 type Variant {

@@ -11,7 +11,7 @@ pipeline.add_task(
     prepare_gnomad_v3_genomic_constraint_regions,
     "/constraint/gnomad_v3_genomic_constraint_regions.ht",
     {
-        "genomic_constraint_region_table_path": "gs://gnomad-browser-data-pipeline/output/2022-10-14-ncc/constraint_z_genome_1kb_filtered.browser.txt"
+        "genomic_constraint_region_table_path": "gs://gcp-public-data--gnomad/release/3.1/secondary_analyses/genomic_constraint/constraint_z_genome_1kb.qc.download.txt.gz"
     },
 )
 
