@@ -1,5 +1,6 @@
 import { Factory } from 'fishery'
-import { GeneMetadata, Transcript } from '../types'
+import { GeneMetadata } from '../GenePage/GenePage'
+import { Transcript } from '../TranscriptPage/TranscriptPage'
 import geneMetadataFactory from './GeneMetadata'
 
 const transcriptFactory = Factory.define<Transcript, GeneMetadata>(({ transientParams }) => ({

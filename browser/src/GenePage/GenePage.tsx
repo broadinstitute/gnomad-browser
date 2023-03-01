@@ -1,5 +1,3 @@
-import { Gene } from '../types'
-
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
@@ -36,6 +34,67 @@ import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import TissueExpressionTrack from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
+
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
+import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
+
+export type Strand = '+' | '-'
+
+export type GeneMetadata = {
+  gene_id: string
+  gene_version: string
+  symbol: string
+  mane_select_transcript?: {
+    ensembl_id: string
+    ensembl_version: string
+    refseq_id: string
+    refseq_version: string
+  }
+  canonical_transcript_id: string | null
+  flags: string[]
+}
+
+export type Gene = GeneMetadata & {
+  reference_genome: ReferenceGenome
+  name?: string
+  chrom: string
+  strand: Strand
+  start: number
+  stop: number
+  exons: {
+    feature_type: string
+    start: number
+    stop: number
+  }[]
+  transcripts: {
+    transcript_id: string
+    transcript_version: string
+    exons: {
+      feature_type: string
+      start: number
+      stop: number
+    }[]
+  }[]
+  flags: string[]
+  gnomad_constraint?: GnomadConstraint
+  exac_constraint?: ExacConstraint
+  pext?: {
+    regions: {
+      start: number
+      stop: number
+      mean: number
+      tissues: {
+        [key: string]: number
+      }
+    }[]
+    flags: string[]
+  }
+  short_tandem_repeats?: {
+    id: string
+  }[]
+  exac_regional_missense_constraint_regions?: any
+}
 
 const GeneName = styled.span`
   overflow: hidden;

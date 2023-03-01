@@ -4,8 +4,7 @@ import renderer from 'react-test-renderer'
 
 import { Factory } from 'fishery'
 
-import { Gene, Transcript } from '../types'
-import TranscriptPage from './TranscriptPage'
+import TranscriptPage, { Transcript } from './TranscriptPage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
