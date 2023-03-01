@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { GeneMetadata } from '../types'
+import { GeneMetadata } from '../GenePage/GenePage'
 
 import { ExternalLink } from '@gnomad/ui'
 
