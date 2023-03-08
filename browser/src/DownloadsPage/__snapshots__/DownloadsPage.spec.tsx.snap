@@ -17551,6 +17551,1077 @@ exports[`Downloads Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
+            href="#v3-hgdp-1kg-tutorials"
+            id="v3-hgdp-1kg-tutorials"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          HGDP + 1KG tutorials
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see the 
+        <a
+          className="c10"
+          href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          README
+        </a>
+         
+        and the 
+        <a
+          className="c10"
+          href="https://docs.google.com/spreadsheets/d/179I6AUPOQ09jdsFbKcwcDQugFt4pmL-NNOD_3_rsidA/edit?usp=sharing"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          File Descriptions.
+        </a>
+      </p>
+      <p>
+        <b>
+          Please note:
+        </b>
+         while these files were generated from the
+        <a
+          className="c13"
+          href="/downloads#v3-hgdp-1kg"
+        >
+           HGDP + 1KG callset
+        </a>
+         files above, the quality control steps may differ slightly. This would lead to minor differences in sample counts. See the tutorials for details.
+      </p>
+      <ul
+        className="c20"
+      >
+        <li
+          className="c21"
+        >
+          <a
+            className="c10"
+            href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            README
+          </a>
+        </li>
+        <li
+          className="c21"
+        >
+          <a
+            className="c10"
+            href="https://docs.google.com/spreadsheets/d/179I6AUPOQ09jdsFbKcwcDQugFt4pmL-NNOD_3_rsidA/edit?usp=sharing"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            File Descriptions
+          </a>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Dense Hail MatrixTable
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Dense Hail MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Dense Hail MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Dense Hail MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Sample metadata TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Sample metadata TSV from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Sample metadata TSV from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Sample metadata TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Subset of the HGDP+1KG callset MatrixTable
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Subset of the HGDP+1KG callset MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Subset of the HGDP+1KG callset MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Subset of the HGDP+1KG callset MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Related sample IDs Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Related sample IDs Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Related sample IDs Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Related sample IDs Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Principal component analysis (PCA) PC score tables GCS Bucket
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Principal component analysis (PCA) PC score tables GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Principal component analysis (PCA) PC score tables GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Principal component analysis (PCA) PC score tables GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            PCA outliers table
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download PCA outliers table from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download PCA outliers table from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download PCA outliers table from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            PCA PC score tables without outliers GCS Buckets
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for PCA PC score tables without outliers GCS Buckets"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for PCA PC score tables without outliers GCS Buckets"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for PCA PC score tables without outliers GCS Buckets"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Variants and unrelated samples MatrixTable
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variants and unrelated samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variants and unrelated samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Variants and unrelated samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Variants and related samples MatrixTable
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variants and related samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variants and related samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Variants and related samples MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Population-level statistical summary TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Population-level statistical summary TSV from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Population-level statistical summary TSV from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Population-level statistical summary TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Doubleton counts CSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Doubleton counts CSV from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Doubleton counts CSV from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Doubleton counts CSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Variants and unrelated sample PLINK files
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variants and unrelated sample PLINK files"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variants and unrelated sample PLINK files"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Variants and unrelated sample PLINK files"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Population-level mean fixation index table
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Population-level mean fixation index table from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Population-level mean fixation index table from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Population-level mean fixation index table from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Gambian Genome Variation Project MatrixTable
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Gambian Genome Variation Project MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Gambian Genome Variation Project MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Gambian Genome Variation Project MatrixTable"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Principal component analysis (PCA) variant loadings Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Principal component analysis (PCA) variant loadings Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Principal component analysis (PCA) variant loadings Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Principal component analysis (PCA) variant loadings Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Random forest (RF) model PKL
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Random forest (RF) model PKL from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) model PKL from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) model PKL from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/pca/gnomad.v3.1.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            HGDP+1KG and GVV intersection Matrix Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for HGDP+1KG and GVV intersection Matrix Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for HGDP+1KG and GVV intersection Matrix Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for HGDP+1KG and GVV intersection Matrix Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Super population labels TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Super population labels TSV from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/data_intersection/hgdp_1kg_sample_info.unrelateds.pca_outliers_removed.with_project.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Super population labels TSV from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/data_intersection/hgdp_1kg_sample_info.unrelateds.pca_outliers_removed.with_project.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Super population labels TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/data_intersection/hgdp_1kg_sample_info.unrelateds.pca_outliers_removed.with_project.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Phased haplotypes of HGDP+1KG dataset GCS Bucket
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Phased haplotypes of HGDP+1KG dataset GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Phased haplotypes of HGDP+1KG dataset GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Phased haplotypes of HGDP+1KG dataset GCS Bucket"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <h3>
+          Pre-QC plotting tables
+        </h3>
+        <li
+          className="c21"
+        >
+          <span>
+            Pre-QC column fields Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Pre-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Pre-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Pre-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Pre-QC expected heterozygosity Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Pre-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Pre-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Pre-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Pre-QC actual heterozygosity Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Pre-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Pre-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Pre-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <h3>
+          Post-QC plotting tables
+        </h3>
+        <li
+          className="c21"
+        >
+          <span>
+            Post-QC column fields Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Post-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Post-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Post-QC column fields Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Post-QC expected heterozygosity Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Post-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Post-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Post-QC expected heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Post-QC actual heterozygosity Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Post-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Post-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Post-QC actual heterozygosity Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Post-QC site frequency spectrum table
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Post-QC site frequency spectrum table from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Post-QC site frequency spectrum table from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Post-QC site frequency spectrum table from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
     <span
       className="c6"
     >
