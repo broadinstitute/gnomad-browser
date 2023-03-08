@@ -11,6 +11,7 @@ import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
+import { Variant } from './VariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -118,15 +119,7 @@ const getDefaultSelectedSequencingType = (variant: any) => {
 
 type GnomadAgeDistributionProps = {
   datasetId: string
-  variant: {
-    chrom: string
-    exome?: {
-      age_distribution: AgeDistributionPropType
-    }
-    genome?: {
-      age_distribution: AgeDistributionPropType
-    }
-  }
+  variant: Variant
 }
 
 const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProps) => {

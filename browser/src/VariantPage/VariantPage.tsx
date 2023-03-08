@@ -8,13 +8,13 @@ import {
   hasNonCodingConstraints,
   labelForDataset,
   referenceGenome,
+  ReferenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { BaseQuery } from '../Query'
-import Link from '../Link'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
@@ -34,7 +34,6 @@ import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
-import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const Section = styled.section`
   width: 100%;
@@ -54,15 +53,38 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
 `
-
 export type NonCodingConstraint = {
+  chrom: string
   start: number
   stop: number
+  element_id: string
   possible: number
   observed: number
   expected: number
   oe: number
   z: number
+  coding_prop: number
+}
+
+export type ClinvarSubmission = {
+  clinical_significance: string
+  conditions: {
+    medgen_id?: string
+    name: string
+  }[]
+  last_evaluated: string
+  review_status: string
+  submitter_name: string
+}
+
+export type ClinvarVariant = {
+  clinical_significance: string
+  clinvar_variation_id: string
+  gold_stars: number
+  last_evaluated: string | null
+  release_date: string
+  review_status: string
+  submissions: ClinvarSubmission[]
 }
 
 export type StructuralVariant = {
@@ -73,25 +95,6 @@ export type StructuralVariant = {
   hemizygote_count: number | null
   ac_hemi: number | null
   ac_hom: number | null
-}
-
-export type ClinvarVariant = {
-  clinical_significance: string
-  clinvar_variation_id: string
-  gold_stars: number
-  last_evaluated?: string
-  release_date: string
-  review_status: string
-  submissions: {
-    clinical_significance: string
-    conditions?: {
-      medgen_id?: string
-      name: string
-    }[]
-    last_evaluated?: string
-    review_status: string
-    submitter_name: string
-  }[]
 }
 
 export type Histogram = {
@@ -107,6 +110,8 @@ export type Population = {
   an: number
   ac_hemi: number | null
   ac_hom: number
+  homozygote_count: number
+  hemizygote_count: number | null
 }
 
 export type LocalAncestryPopulation = {
@@ -150,6 +155,8 @@ export type SequencingType = {
   an: number
   ac_hemi: number | null
   ac_hom: number
+  homozygote_count: number | null
+  hemizygote_count: number | null
   faf95: Faf95
   filters: string[]
   populations: Population[]
@@ -163,7 +170,7 @@ export type LofCuration = {
   gene_version: string
   gene_symbol: string | null
   verdict: string
-  flags: string[]
+  flags: string[] | null
   project: string
 }
 
@@ -238,22 +245,12 @@ export type Variant = {
     exome: Coverage | null
     genome: Coverage | null
   }
+  non_coding_constraint: NonCodingConstraint | null
 }
 
 type VariantPageContentProps = {
   datasetId: DatasetId
-  variant: {
-    variant_id: string
-    chrom: string
-    flags: string[]
-    clinvar?: any
-    exome?: any
-    genome?: any
-    lof_curations?: any[]
-    in_silico_predictors?: any[]
-    non_coding_constraint: NonCodingConstraint | null
-    transcript_consequences?: any[]
-  }
+  variant: Variant
 }
 
 const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
@@ -301,7 +298,7 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
           Population Frequencies <InfoButton topic="ancestry" />
         </h2>
         {datasetId.startsWith('gnomad_r3') &&
-          (variant.genome.local_ancestry_populations || []).length > 0 && (
+          ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (
             <div
               style={{
                 padding: '0 1em',
@@ -369,8 +366,7 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
       {variant.clinvar && (
         <Section>
           <h2>ClinVar</h2>
-          {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
-          <VariantClinvarInfo variant={variant} />
+          <VariantClinvarInfo clinvar={variant.clinvar} />
         </Section>
       )}
 
