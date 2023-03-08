@@ -13,6 +13,7 @@ import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/dat
 
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
+import { Variant } from './VariantPage'
 
 // ================================================================================================
 // Metric descriptions
@@ -808,68 +809,17 @@ const AutosizedSiteQualityMetricsHistogram = withSize()(({ size, ...props }) => 
 
 type VariantSiteQualityMetricsDistributionProps = {
   datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  variant: Variant
 }
 
 type VariantSiteQualityMetricsTableProps = {
   datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  variant: Variant
 }
 
 type VariantSiteQualityMetricsProps = {
   datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  variant: Variant
 }
 
 const LegendWrapper = styled.div`
@@ -1058,7 +1008,7 @@ const VariantSiteQualityMetricsTable = ({
   const isVariantInExomes = Boolean(variant.exome)
   const isVariantInGenomes = Boolean(variant.genome)
 
-  const exomeMetricValues = variant.exome
+  const exomeMetricValues: Record<string, number> | null = variant.exome
     ? variant.exome.quality_metrics.site_quality_metrics.reduce(
         (acc, m) => ({
           ...acc,
@@ -1067,7 +1017,7 @@ const VariantSiteQualityMetricsTable = ({
         {}
       )
     : null
-  const genomeMetricValues = variant.genome
+  const genomeMetricValues: Record<string, number> | null = variant.genome
     ? variant.genome.quality_metrics.site_quality_metrics.reduce(
         (acc, m) => ({
           ...acc,
@@ -1095,19 +1045,15 @@ const VariantSiteQualityMetricsTable = ({
             <th scope="row">{renderMetric(metric, datasetId)}</th>
             {isVariantInExomes && (
               <td>
-                {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
-                {exomeMetricValues[metric] != null
-                  ? // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-                    formatMetricValue(exomeMetricValues[metric], metric)
+                {exomeMetricValues![metric] != null
+                  ? formatMetricValue(exomeMetricValues![metric], metric)
                   : '–'}
               </td>
             )}
             {isVariantInGenomes && (
               <td>
-                {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
-                {genomeMetricValues[metric] != null
-                  ? // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-                    formatMetricValue(genomeMetricValues[metric], metric)
+                {genomeMetricValues![metric] != null
+                  ? formatMetricValue(genomeMetricValues![metric], metric)
                   : '–'}
               </td>
             )}

@@ -7,20 +7,11 @@ import { GnomadPopulationsTable } from './GnomadPopulationsTable'
 import LocalAncestryPopulationsTable from './LocalAncestryPopulationsTable'
 import HGDPPopulationsTable from './HGDPPopulationsTable'
 import TGPPopulationsTable from './TGPPopulationsTable'
+import { Variant } from './VariantPage'
 
 type Props = {
   datasetId: string
-  variant: {
-    chrom: string
-    exome?: {
-      populations: any[]
-      local_ancestry_populations?: any[]
-    }
-    genome?: {
-      populations: any[]
-      local_ancestry_populations?: any[]
-    }
-  }
+  variant: Variant
 }
 
 const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
@@ -115,7 +106,6 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
                 return <p>Local ancestry is not available for subsets of gnomAD v3.</p>
               }
 
-              // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
               if (localAncestryPopulations.length === 0) {
                 return (
                   <p>
@@ -128,7 +118,6 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
 
               return (
                 <TableWrapper>
-                  {/* @ts-expect-error TS(2322) FIXME: Type 'any[] | undefined' is not assignable to type... Remove this comment to see the full error message */}
                   <LocalAncestryPopulationsTable populations={localAncestryPopulations} />
                 </TableWrapper>
               )

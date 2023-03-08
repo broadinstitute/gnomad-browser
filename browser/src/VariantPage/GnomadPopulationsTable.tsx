@@ -6,6 +6,7 @@ import { Checkbox } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import { PopulationsTable } from './PopulationsTable'
+import { Population } from './VariantPage'
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -102,20 +103,8 @@ const nestPopulations = (populations: any) => {
 
 type OwnGnomadPopulationsTableProps = {
   datasetId: string
-  exomePopulations: {
-    id: string
-    ac: number
-    an: number
-    ac_hemi?: number
-    ac_hom: number
-  }[]
-  genomePopulations: {
-    id: string
-    ac: number
-    an: number
-    ac_hemi?: number
-    ac_hom: number
-  }[]
+  exomePopulations: Population[]
+  genomePopulations: Population[]
   showHemizygotes?: boolean
   showHomozygotes?: boolean
 }
@@ -144,13 +133,8 @@ export class GnomadPopulationsTable extends Component<
   }
 
   render() {
-    const {
-      datasetId,
-      exomePopulations,
-      genomePopulations,
-      showHemizygotes,
-      showHomozygotes,
-    } = this.props
+    const { datasetId, exomePopulations, genomePopulations, showHemizygotes, showHomozygotes } =
+      this.props
     const { includeExomes, includeGenomes } = this.state
 
     let includedPopulations: any = []
