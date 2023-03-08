@@ -6,7 +6,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 // These next imports must appear in this order
-import { jest } from '@jest/globals'
+import { jest, expect } from '@jest/globals'
 import { mockQueries } from '../../tests/__helpers__/queries'
 import Query, { BaseQuery } from './Query'
 
@@ -29,7 +29,6 @@ const {
   resetMockApiResponses,
   simulateApiResponse,
   setMockApiResponses,
-  mockApiCalls,
 } = mockQueries()
 
 // You can do this on a test-by-test basis too, rather than beforeEach.
