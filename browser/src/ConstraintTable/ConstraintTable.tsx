@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Gene } from '../GenePage/GenePage'
+import { Transcript } from '../TranscriptPage/TranscriptPage'
 
 import Link from '../Link'
 
@@ -62,8 +63,9 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
     return <p>Constraint not yet available for gnomAD v3.</p>
   }
 
-  const { transcriptId, transcriptVersion, transcriptDescription } =
-    transcriptDetails(geneOrTranscript)
+  const { transcriptId, transcriptVersion, transcriptDescription } = transcriptDetails(
+    geneOrTranscript
+  )
 
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
   const exacConstraint = geneOrTranscript.exac_constraint

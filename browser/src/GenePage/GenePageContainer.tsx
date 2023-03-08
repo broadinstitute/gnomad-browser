@@ -230,7 +230,6 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   }
 
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseQuery operationName={operationName} query={query} variables={variables}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
