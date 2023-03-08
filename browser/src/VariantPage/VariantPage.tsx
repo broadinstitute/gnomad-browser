@@ -513,7 +513,6 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
       <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
       <BaseQuery
         key={datasetId}
-        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
         operationName={operationName}
         query={variantQuery}
         variables={{

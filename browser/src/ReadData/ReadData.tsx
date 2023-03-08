@@ -461,7 +461,6 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   `
 
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseQuery query={query} url="/reads/">
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
