@@ -13,7 +13,9 @@
     "test:jest": "jest",
     "test:jest:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:cypress:headless": "cd browser && cypress run",
-    "test:full": "yarn test:jest && yarn test:cypress:headless"
+    "test:full": "yarn test:jest && yarn test:cypress:headless",
+    "typecheck": "yarn run tsc --noEmit",
+    "typecheck:watch": "yarn run tsc -w --noEmit"
   },
   "engines": {
     "node": ">=14.15.2 <15.0.0"
