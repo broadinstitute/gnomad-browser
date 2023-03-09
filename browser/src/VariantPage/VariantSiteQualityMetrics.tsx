@@ -13,7 +13,7 @@ import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/dat
 
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
-import { Variant } from './VariantPage'
+import { Variant, SequencingType } from './VariantPage'
 
 // ================================================================================================
 // Metric descriptions
@@ -23,8 +23,7 @@ const qualityMetricDescriptions = {
   BaseQRankSum: 'Z-score from Wilcoxon rank sum test of alternate vs. reference base qualities.',
   ClippingRankSum:
     'Z-score from Wilcoxon rank sum test of alternate vs. reference number of hard clipped bases.',
-  DP:
-    'Depth of informative coverage for each sample; reads with MQ=255 or with bad mates are filtered.',
+  DP: 'Depth of informative coverage for each sample; reads with MQ=255 or with bad mates are filtered.',
   FS: "Phred-scaled p-value of Fisher's exact test for strand bias.",
   InbreedingCoeff:
     'Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation.',
@@ -55,15 +54,16 @@ const getSiteQualityMetricDescription = (datasetId: any) => {
 // Data munging
 // ================================================================================================
 
-const prepareDataGnomadV3 = ({ metric, variant }: any) => {
+const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
   let key: any
   let description
 
-  const genomeMetricValue = variant.genome.quality_metrics.site_quality_metrics.find(
+  const genomeMetric = genome.quality_metrics.site_quality_metrics.find(
     (m: any) => m.metric === metric
-  ).value
+  )
+  const genomeMetricValue = genomeMetric && genomeMetric.value
 
-  const { ac, an } = variant.genome
+  const { ac, an } = genome
   if (metric === 'SiteQuality' || metric === 'AS_QUALapprox') {
     if (ac === 1) {
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_singleton`
@@ -121,7 +121,7 @@ const prepareDataGnomadV3 = ({ metric, variant }: any) => {
   } else if (metric === 'InbreedingCoeff') {
     const af = an === 0 ? 0 : ac / an
     if (af < 0.0005) {
-      key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-under_0.0005`
+      key = `InbreedingCoeff-under_0.0005`
       description = 'InbreedingCoeff for all variants with AF < 0.0005.'
     } else {
       key = 'InbreedingCoeff-over_0.0005'
@@ -338,9 +338,17 @@ const prepareDataExac = ({ metric, variant }: any) => {
   return { binEdges, exomeBinValues, exomeMetricValue, description }
 }
 
-const prepareData = ({ datasetId, metric, variant }: any) => {
+const prepareData = ({
+  datasetId,
+  metric,
+  variant,
+}: {
+  datasetId: string
+  metric: string
+  variant: Variant
+}) => {
   if (datasetId.startsWith('gnomad_r3')) {
-    return prepareDataGnomadV3({ metric, variant })
+    return prepareDataGnomadV3({ metric, genome: variant.genome! })
   }
 
   if (datasetId.startsWith('gnomad_r2')) {
@@ -437,6 +445,7 @@ const yTickFormat = (n: any) => {
 }
 
 const formatMetricValue = (value: any, metric: any) => {
+  console.log(`METRIC: ${metric}`)
   if (
     metric === 'SiteQuality' ||
     metric === 'AS_QUALapprox' ||
