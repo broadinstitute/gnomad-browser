@@ -13449,6 +13449,1848 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
 </div>
 `;
 
+exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 dRYfBS"
+>
+  <div
+    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+    >
+      <h1
+        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+      >
+        <span
+          className="VariantPageTitle__TitleWrapper-sc-16g6pnt-0 bAAXLa"
+        >
+          <span>
+            Single nucleotide variant
+          </span>
+          <span
+            className="VariantPageTitle__Separator-sc-16g6pnt-1 jsfCLA"
+            style={
+              {
+                "width": "1ch",
+              }
+            }
+          >
+            :
+          </span>
+          <span
+            className="VariantPageTitle__VariantIdWrapper-sc-16g6pnt-2 jxIjmG"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <span>
+              13
+              -
+              123
+            </span>
+            <span
+              className="VariantPageTitle__VariantIdSeparator-sc-16g6pnt-3 gwKaru"
+            >
+              -
+            </span>
+            <span
+              className="VariantPageTitle__TitleAlleles-sc-16g6pnt-4 dgrTjT"
+            >
+              A
+              -
+              C
+            </span>
+          </span>
+          <span
+            className="VariantPageTitle__Separator-sc-16g6pnt-1 jsfCLA"
+          >
+             
+          </span>
+          <span>
+            (
+            GRCh37
+            )
+          </span>
+        </span>
+      </h1>
+    </div>
+    <div
+      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+    >
+      <span
+        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+      >
+        Dataset
+      </span>
+      <ul
+        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+      >
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_short_variant"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_short_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="gnomad_r2_1"
+                href="/?dataset=gnomad_r2_1"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                gnomAD v2.1.1
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  141,456 samples
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="gnomad_r2_1_non_topmed"
+                href="/?dataset=gnomad_r2_1_non_topmed"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                gnomAD v2.1.1 (non-TOPMed)
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  135,743 samples
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="gnomad_r2_1_non_cancer"
+                href="/?dataset=gnomad_r2_1_non_cancer"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                gnomAD v2.1.1 (non-cancer)
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  134,187 samples
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="gnomad_r2_1_non_neuro"
+                href="/?dataset=gnomad_r2_1_non_neuro"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                gnomAD v2.1.1 (non-neuro)
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  114,704 samples
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="gnomad_r2_1_controls"
+                href="/?dataset=gnomad_r2_1_controls"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                gnomAD v2.1.1 (controls)
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  60,146 samples
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                data-item="exac"
+                href="/?dataset=exac"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                ExAC v1.0
+                <div
+                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                >
+                  60,706 samples
+                </div>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span>
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    className="VariantPage__FlexWrapper-sc-hd87ur-2 bjkoAa"
+  >
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 fqvCSG"
+    >
+      <div
+        className="TableWrapper-sc-1ep26r3-0 edvjZa"
+      >
+        <div>
+          <table
+            className="ExacVariantOccurrenceTable__Table-sc-1i3jn4b-0 dvPJZS"
+          >
+            <tbody>
+              <tr>
+                <td />
+                <th
+                  scope="col"
+                >
+                  Exomes
+                </th>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Filters
+                  </span>
+                </th>
+                <td>
+                  <span
+                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                  >
+                    Pass
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Count
+                  </span>
+                </th>
+                <td>
+                  0
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Number
+                  </span>
+                </th>
+                <td>
+                  0
+                   *
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Frequency
+                  </span>
+                </th>
+                <td>
+                  0
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Number of homozygotes
+                  </span>
+                </th>
+                <td>
+                  0
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Mean depth of coverage
+                  </span>
+                </th>
+                <td>
+                  –
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <span
+              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+            >
+              Warning
+            </span>
+             This variant is covered in fewer than 50% of individuals in ExAC. Allele frequency estimates may not be reliable.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 fqvCSG"
+    >
+      <h2>
+        External Resources
+      </h2>
+      <ul
+        className="List-sc-4j87st-0 fQRmhM"
+      >
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A123-123&position=chr13%3A98-148"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            UCSC
+          </a>
+        </li>
+      </ul>
+      <h2>
+        Feedback
+      </h2>
+      <a
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        href="mailto:gnomad@broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Report an issue with this variant
+      </a>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 CMQAN"
+    >
+      <h2>
+        Population Frequencies 
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
+      <div
+        className="TableWrapper-sc-1ep26r3-0 edvjZa"
+      >
+        <table
+          className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+        >
+          <thead>
+            <tr>
+              <th
+                aria-sort="none"
+                colSpan={2}
+                scope="col"
+              >
+                <button
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Population
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                className="right-align"
+                scope="col"
+              >
+                <button
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Count
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                className="right-align"
+                scope="col"
+              >
+                <button
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Number
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                className="right-align"
+                scope="col"
+              >
+                <button
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Number of Homozygotes
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-sort="descending"
+                scope="col"
+                style={
+                  {
+                    "paddingLeft": "25px",
+                  }
+                }
+              >
+                <button
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    Allele Frequency
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr
+              className="border"
+            >
+              <th
+                colSpan={2}
+                scope="row"
+              >
+                Total
+              </th>
+              <td
+                className="right-align"
+              >
+                0
+              </td>
+              <td
+                className="right-align"
+              >
+                0
+              </td>
+              <td
+                className="right-align"
+              >
+                0
+              </td>
+              <td
+                style={
+                  {
+                    "paddingLeft": "25px",
+                  }
+                }
+              >
+                0.000
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <div
+          className="GnomadPopulationsTable__ControlSection-sc-1ghxck9-0 bsALfR"
+        >
+          Include:
+          <label
+            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            htmlFor="includeExomePopulations"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              disabled={true}
+              id="includeExomePopulations"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Exomes
+          </label>
+          <label
+            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            htmlFor="includeGenomePopulations"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              disabled={true}
+              id="includeGenomePopulations"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Genomes
+          </label>
+        </div>
+      </div>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 CMQAN"
+    >
+      <h2>
+        Related Variants
+      </h2>
+      <div
+        className="VariantRelatedVariants__Wrapper-sc-y59fw8-0 bOggsA"
+      >
+        <div
+          className="VariantRelatedVariants__Item-sc-y59fw8-1 kqiRIK"
+        >
+          <h3>
+            Nearby Variants
+          </h3>
+          <p>
+            <a
+              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              href="/region/13-103-143"
+              onClick={[Function]}
+            >
+              View variants located within 20 bases of this variant.
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 CMQAN"
+    >
+      <h2>
+        Variant Effect Predictor
+      </h2>
+      <div>
+        <p>
+          This variant falls on 
+          0
+           transcript
+          s
+           in 
+          0
+           
+          gene
+          s
+          .
+        </p>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+          >
+            Note
+          </span>
+           The gene symbols shown below are provided by VEP and may differ from the symbol shown on gene pages.
+        </p>
+        <ol
+          className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 cXJgYo"
+        />
+      </div>
+    </section>
+    <div
+      className="VariantPage__FlexWrapper-sc-hd87ur-2 bjkoAa"
+    />
+    <div
+      className="VariantPage__FlexWrapper-sc-hd87ur-2 bjkoAa"
+    >
+      <section
+        className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 fqvCSG"
+      >
+        <h2>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+        <div>
+          <div
+            className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 kOKZpq"
+          >
+            <ul
+              className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+            >
+              <li
+                className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              >
+                <svg
+                  height={16}
+                  width={16}
+                >
+                  <rect
+                    fill="#428bca"
+                    height={16}
+                    stroke="#000"
+                    width={16}
+                    x={0}
+                    y={0}
+                  />
+                </svg>
+                <span
+                  style={
+                    {
+                      "marginLeft": "0.25em",
+                    }
+                  }
+                >
+                  Exome
+                </span>
+              </li>
+              <li
+                className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              >
+                <svg
+                  height={16}
+                  width={16}
+                >
+                  <rect
+                    fill="#73ab3d"
+                    height={16}
+                    stroke="#000"
+                    width={16}
+                    x={0}
+                    y={0}
+                  />
+                </svg>
+                <span
+                  style={
+                    {
+                      "marginLeft": "0.25em",
+                    }
+                  }
+                >
+                  Genome
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            style={
+              {
+                "height": "100%",
+                "width": "100%",
+              }
+            }
+          />
+          <div
+            className="ControlSection__Wrapper-sc-rro5al-1 dSZUkP"
+          >
+            <span
+              className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+            >
+              <div
+                className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
+              >
+                <label
+                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  htmlFor="age-distribution-include-heterozygotes"
+                >
+                  <input
+                    checked={true}
+                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    disabled={false}
+                    id="age-distribution-include-heterozygotes"
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  Include heterozygous variant carriers
+                </label>
+                <label
+                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  htmlFor="age-distribution-include-homozygotes"
+                >
+                  <input
+                    checked={true}
+                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    disabled={false}
+                    id="age-distribution-include-homozygotes"
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  Include homozygous variant carriers
+                </label>
+                <label
+                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  htmlFor="age-distribution-show-all-individuals"
+                >
+                  <input
+                    checked={false}
+                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    disabled={true}
+                    id="age-distribution-show-all-individuals"
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  Compare to all individuals
+                </label>
+              </div>
+            </span>
+            <span
+              className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+            >
+              <label
+                htmlFor="age-distribution-sequencing-type"
+              >
+                Sequencing types: 
+                <select
+                  className="Select-sc-1lkyg9e-0 ivadCR"
+                  disabled={true}
+                  id="age-distribution-sequencing-type"
+                  onChange={[Function]}
+                  value="e"
+                >
+                  <option
+                    value="eg"
+                  >
+                    Exome and Genome
+                  </option>
+                  <option
+                    value="e"
+                  >
+                    Exome
+                  </option>
+                  <option
+                    value="g"
+                  >
+                    Genome
+                  </option>
+                </select>
+              </label>
+            </span>
+          </div>
+        </div>
+      </section>
+    </div>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 fqvCSG"
+    >
+      <h2>
+        Genotype Quality Metrics
+      </h2>
+      <div>
+        <div>
+          <div
+            role="tablist"
+          >
+            <ul
+              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            >
+              <li>
+                <div
+                  aria-controls="genotype_quality-panel"
+                  aria-selected={true}
+                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  id="genotype_quality"
+                  onFocus={[Function]}
+                  role="tab"
+                  tabIndex={0}
+                >
+                  <div
+                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  >
+                    Genotype quality
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div
+                  aria-controls="genotype_depth-panel"
+                  aria-selected={false}
+                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  id="genotype_depth"
+                  onFocus={[Function]}
+                  role="tab"
+                  tabIndex={-1}
+                >
+                  <div
+                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  >
+                    Depth
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div
+              aria-describedby="genotype_quality"
+              aria-hidden={false}
+              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              id="genotype_quality-panel"
+              onKeyDown={[Function]}
+              role="tabpanel"
+              style={{}}
+            >
+              <div
+                className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
+              >
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Exome
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#73ab3d"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Genome
+                    </span>
+                  </li>
+                </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="genotype-quality-legend-swatch-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="genotype-quality-legend-swatch-mask"
+                        >
+                          <rect
+                            fill="url(#genotype-quality-legend-swatch-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#genotype-quality-legend-swatch-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </div>
+            <div
+              aria-describedby="genotype_depth"
+              aria-hidden={true}
+              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              id="genotype_depth-panel"
+              onKeyDown={[Function]}
+              role="tabpanel"
+              style={
+                {
+                  "display": "none",
+                }
+              }
+            >
+              <div
+                className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
+                style={
+                  {
+                    "marginTop": "1em",
+                  }
+                }
+              >
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Exome
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#73ab3d"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Genome
+                    </span>
+                  </li>
+                </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="depth-legend-swatch-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="depth-legend-swatch-mask"
+                        >
+                          <rect
+                            fill="url(#depth-legend-swatch-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#depth-legend-swatch-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="ControlSection__Wrapper-sc-rro5al-1 dSZUkP"
+        >
+          <span
+            className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+          >
+            <label
+              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              htmlFor="genotype-quality-metrics-show-all-individuals"
+            >
+              <input
+                checked={true}
+                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                disabled={false}
+                id="genotype-quality-metrics-show-all-individuals"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Compare to all individuals
+            </label>
+          </span>
+          <span
+            className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+          >
+            <label
+              htmlFor="genotype-quality-metrics-sequencing-type"
+            >
+              Sequencing types: 
+              <select
+                className="Select-sc-1lkyg9e-0 ivadCR"
+                disabled={true}
+                id="genotype-quality-metrics-sequencing-type"
+                onChange={[Function]}
+                value="e"
+              >
+                <option
+                  value="eg"
+                >
+                  Exome and Genome
+                </option>
+                <option
+                  value="e"
+                >
+                  Exome
+                </option>
+                <option
+                  value="g"
+                >
+                  Genome
+                </option>
+              </select>
+            </label>
+          </span>
+        </div>
+        <p>
+          Note: This plot may include low-quality genotypes that were excluded from allele counts in the tables above.
+        </p>
+      </div>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 fqvCSG"
+    >
+      <h2>
+        Site Quality Metrics
+      </h2>
+      <div>
+        <div
+          role="tablist"
+        >
+          <ul
+            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+          >
+            <li>
+              <div
+                aria-controls="distribution-panel"
+                aria-selected={true}
+                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                id="distribution"
+                onFocus={[Function]}
+                role="tab"
+                tabIndex={0}
+              >
+                <div
+                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                >
+                  Metric distribution
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                aria-controls="values-panel"
+                aria-selected={false}
+                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                id="values"
+                onFocus={[Function]}
+                role="tab"
+                tabIndex={-1}
+              >
+                <div
+                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                >
+                  All metric values
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div
+            aria-describedby="distribution"
+            aria-hidden={false}
+            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            id="distribution-panel"
+            onKeyDown={[Function]}
+            role="tabpanel"
+            style={{}}
+          >
+            <div>
+              <div
+                className="VariantSiteQualityMetrics__LegendWrapper-sc-186wx2k-2 gDWfxF"
+              >
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Exome
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#73ab3d"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Genome
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <div
+                style={
+                  {
+                    "marginBottom": "0.5rem",
+                    "overflow": "hidden",
+                  }
+                }
+              />
+              <div
+                className="ControlSection__Wrapper-sc-rro5al-1 dSZUkP"
+              >
+                <span
+                  className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+                >
+                  <label
+                    htmlFor="site-quality-metrics-metric"
+                  >
+                    Metric: 
+                    <select
+                      className="Select-sc-1lkyg9e-0 ivadCR"
+                      id="site-quality-metrics-metric"
+                      onChange={[Function]}
+                      value="SiteQuality"
+                    >
+                      <option
+                        value="BaseQRankSum"
+                      >
+                        BaseQRankSum
+                      </option>
+                      <option
+                        value="ClippingRankSum"
+                      >
+                        ClippingRankSum
+                      </option>
+                      <option
+                        value="DP"
+                      >
+                        DP
+                      </option>
+                      <option
+                        value="FS"
+                      >
+                        FS
+                      </option>
+                      <option
+                        value="InbreedingCoeff"
+                      >
+                        InbreedingCoeff
+                      </option>
+                      <option
+                        value="MQ"
+                      >
+                        MQ
+                      </option>
+                      <option
+                        value="MQRankSum"
+                      >
+                        MQRankSum
+                      </option>
+                      <option
+                        value="QD"
+                      >
+                        QD
+                      </option>
+                      <option
+                        value="ReadPosRankSum"
+                      >
+                        ReadPosRankSum
+                      </option>
+                      <option
+                        value="SiteQuality"
+                      >
+                        SiteQuality
+                      </option>
+                      <option
+                        value="VQSLOD"
+                      >
+                        VQSLOD
+                      </option>
+                    </select>
+                  </label>
+                </span>
+                <span
+                  className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
+                >
+                  <label
+                    htmlFor="site-quality-metrics-sequencing-type"
+                  >
+                    Sequencing types: 
+                    <select
+                      className="Select-sc-1lkyg9e-0 ivadCR"
+                      disabled={true}
+                      id="site-quality-metrics-sequencing-type"
+                      onChange={[Function]}
+                      value="e"
+                    >
+                      <option
+                        value="eg"
+                      >
+                        Exome and Genome
+                      </option>
+                      <option
+                        value="e"
+                      >
+                        Exome
+                      </option>
+                      <option
+                        value="g"
+                      >
+                        Genome
+                      </option>
+                    </select>
+                  </label>
+                </span>
+              </div>
+              <p>
+                Value: 
+                0 (exome samples)
+              </p>
+              <p>
+                This is the site quality distribution for all variants with 0 &lt;= AF &lt; 0.0001.
+              </p>
+              <p>
+                Note: These are site-level quality metrics, they may be unpredictable for multi-allelic sites.
+              </p>
+            </div>
+          </div>
+          <div
+            aria-describedby="values"
+            aria-hidden={true}
+            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            id="values-panel"
+            onKeyDown={[Function]}
+            role="tabpanel"
+            style={
+              {
+                "display": "none",
+              }
+            }
+          >
+            <table
+              className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+              style={
+                {
+                  "width": "100%",
+                }
+              }
+            >
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                  >
+                    Metric
+                  </th>
+                  <th
+                    scope="col"
+                  >
+                    Exome samples
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      BaseQRankSum
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      ClippingRankSum
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      DP
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      FS
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      InbreedingCoeff
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      MQ
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      MQRankSum
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      QD
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      ReadPosRankSum
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      SiteQuality
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                  >
+                    <span
+                      className="VariantSiteQualityMetrics__TooltipHint-sc-186wx2k-3 fDuBFy"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      VQSLOD
+                    </span>
+                  </th>
+                  <td>
+                    0
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      className="VariantPage__Section-sc-hd87ur-0 CMQAN"
+    >
+      <h2>
+        Read Data
+      </h2>
+      <div>
+        <p>
+          No read data available for this variant.
+        </p>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+          >
+            Note
+          </span>
+           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+        </p>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
 exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
   className="Page-w7h773-0 dRYfBS"

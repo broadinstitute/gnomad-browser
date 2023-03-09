@@ -82,6 +82,19 @@ forDatasetsMatching(/gnomad_r2/, 'VariantPage with dataset %s', (datasetId) => {
   })
 })
 
-forDatasetsNotMatching(/gnomad_r[23]/, 'VariantPage with dataset %s', () => {
-  test.todo('be correct')
+describe('VariantPage with dataset exac', () => {
+  test('has no unexpected changes', () => {
+    const variant = v2VariantFactory.build()
+
+    setMockApiResponses({
+      GnomadVariant: () => ({ variant }),
+      ReadData: () => ({
+        variant_0: { exome: null, genome: [] },
+      }),
+    })
+    const tree = renderer.create(
+      withDummyRouter(<VariantPage datasetId="exac" variantId={variant.variant_id} />)
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })
