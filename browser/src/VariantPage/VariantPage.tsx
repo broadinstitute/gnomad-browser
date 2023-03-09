@@ -253,7 +253,7 @@ type VariantPageContentProps = {
   variant: Variant
 }
 
-const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
   return (
     <FlexWrapper>
       <ResponsiveSection>
