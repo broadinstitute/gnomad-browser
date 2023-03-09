@@ -98,6 +98,30 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
   }
 })
 
+export const v2SequencingFactory = sequencingFactory.associations({
+  quality_metrics: {
+    allele_balance: { alt: defaultHistogram },
+    genotype_depth: { all: defaultHistogram, alt: defaultHistogram },
+    genotype_quality: { all: defaultHistogram, alt: defaultHistogram },
+    site_quality_metrics: [
+      { metric: 'BaseQRankSum', value: 0 },
+      { metric: 'ClippingRankSum', value: 0 },
+      { metric: 'DP', value: 0 },
+      { metric: 'FS', value: 0 },
+      { metric: 'InbreedingCoeff', value: 0 },
+      { metric: 'MQ', value: 0 },
+      { metric: 'MQRankSum', value: 0 },
+      { metric: 'pab_max', value: 0 },
+      { metric: 'QD', value: 0 },
+      { metric: 'ReadPosRankSum', value: 0 },
+      { metric: 'RF', value: 0 },
+      { metric: 'SiteQuality', value: 0 },
+      { metric: 'SOR', value: 0 },
+      { metric: 'VQSLOD', value: 0 },
+    ],
+  },
+})
+
 export const v3SequencingFactory = sequencingFactory.associations({
   quality_metrics: {
     allele_balance: { alt: defaultHistogram },
@@ -120,8 +144,10 @@ export const v3SequencingFactory = sequencingFactory.associations({
   },
 })
 
+export const v2VariantFactory = variantFactory
+  .params({ reference_genome: 'GRCh37' })
+  .associations({ exome: v2SequencingFactory.build(), genome: null })
+
 export const v3VariantFactory = variantFactory
   .params({ reference_genome: 'GRCh38' })
   .associations({ exome: null, genome: v3SequencingFactory.build() })
-
-export default variantFactory
