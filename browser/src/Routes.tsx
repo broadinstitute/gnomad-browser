@@ -179,6 +179,13 @@ const Routes = () => {
         }}
       />
 
+      {/* Redirect legacy citations page to publications page */}
+      <Route
+        exact
+        path="/help/how-should-i-cite-discoveries-made-using-gnomad-data"
+        render={() => <Redirect to="/publications" />}
+      />
+
       <Route
         exact
         path="/help/:topic"
