@@ -21,7 +21,6 @@ describe('Home Page', () => {
     cy.contains('gnomAD v3.1.2')
     cy.contains('gnomAD SVs v2.1')
     cy.contains('ExAC')
-
   })
 
   // json for each header page for ease of iterating for tests
@@ -52,7 +51,7 @@ describe('Home Page', () => {
       {
         pageTitle: 'Publications',
         pageUrl: '/publications',
-        pageHeader: 'publications by the gnomAD group',
+        pageHeader: 'publications from the gnomAD group',
       },
       {
         pageTitle: 'Feedback',
