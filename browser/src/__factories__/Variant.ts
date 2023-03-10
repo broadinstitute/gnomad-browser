@@ -79,12 +79,17 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
       genotype_depth: { all: defaultHistogram, alt: defaultHistogram },
       genotype_quality: { all: defaultHistogram, alt: defaultHistogram },
     },
-    faf95 = { popmax: 0, popmax_population: 'nfe' },
+    faf95 = {
+      popmax: 0,
+      popmax_population: 'nfe',
+    },
   } = associations
 
   return {
     ac,
     an,
+    ac_hemi,
+    ac_hom,
     homozygote_count,
     hemizygote_count,
     filters,
@@ -92,8 +97,6 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
     local_ancestry_populations,
     age_distribution,
     quality_metrics,
-    ac_hemi,
-    ac_hom,
     faf95,
   }
 })

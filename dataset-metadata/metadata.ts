@@ -27,15 +27,31 @@ const fullDatasetIds = allDatasetIds.filter(
   (datasetId) => datasetId === 'exac' || datasetId.match(/_r\d+(_\d+)*$/)
 )
 
-export type DatasetMetadata = {
+type DatasetMetadata = {
+  referenceGenome: ReferenceGenome
   label: string
   isSubset: boolean
   hasShortVariants: boolean
   hasStructuralVariants: boolean
   hasConstraints: boolean
   hasNonCodingConstraints: boolean
+  hasExome: boolean
   hasExomeCoverage: boolean
-  referenceGenome: ReferenceGenome
+  hasLocalAncestryPopulations: boolean
+  isLiftoverSource: boolean
+  isLiftoverTarget: boolean
+  isV3Subset: boolean
+  usesGrch37: boolean
+  usesGrch38: boolean
+  isV2: boolean
+  isV3: boolean
+  isExac: boolean
+  hasGenome: boolean
+  metricsIncludeLowQualityGenotypes: boolean
+  has1000GenomesPopulationFrequencies: boolean
+  hasAlleleBalance: boolean
+  hasRelatedVariants: boolean
+  showAllIndividualsInAgeDistributionByDefault: boolean
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -45,12 +61,29 @@ const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
 const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   label: datasetLabels[datasetId],
   isSubset: !fullDatasetIds.includes(datasetId),
+  isV3Subset: !fullDatasetIds.includes(datasetId) && datasetId.startsWith('gnomad_r3'),
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasConstraints: !datasetId.startsWith('gnomad_r3'),
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3'),
   referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
+  hasExome: !datasetId.startsWith('gnomad_r3'),
   hasExomeCoverage: !datasetId.startsWith('gnomad_r3'),
+  hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3'),
+  isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
+  isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
+  usesGrch37: !datasetId.startsWith('gnomad_r3'),
+  usesGrch38: datasetId.startsWith('gnomad_r3'),
+  isV2: datasetId.startsWith('gnomad_r2'),
+  isV3: datasetId.startsWith('gnomad_r3'),
+  isExac: datasetId === 'exac',
+  hasGenome: datasetId.startsWith('gnomad_r2'),
+  metricsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2') || datasetId === 'exac',
+  has1000GenomesPopulationFrequencies:
+    datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3_non_v2',
+  hasAlleleBalance: datasetId !== 'exac',
+  hasRelatedVariants: datasetId !== 'gnomad_r2_1',
+  showAllIndividualsInAgeDistributionByDefault: datasetId !== 'exac',
 })
 
 const metadata = allDatasetIds.reduce(
@@ -75,6 +108,8 @@ export const hasConstraints = (datsetId: DatasetId) => getMetadata(datsetId, 'ha
 export const hasNonCodingConstraints = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasNonCodingConstraints')
 
+export const hasExome = (datsetId: DatasetId) => getMetadata(datsetId, 'hasExome')
+
 export const hasExomeCoverage = (datsetId: DatasetId) => getMetadata(datsetId, 'hasExomeCoverage')
 
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
@@ -82,4 +117,39 @@ export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId,
 export const hasStructuralVariants = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasStructuralVariants')
 
+export const hasLocalAncestryPopulations = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasLocalAncestryPopulations')
+
+export const isLiftoverSource = (datasetId: DatasetId) => getMetadata(datasetId, 'isLiftoverSource')
+
+export const isLiftoverTarget = (datasetId: DatasetId) => getMetadata(datasetId, 'isLiftoverTarget')
+
 export const referenceGenome = (datasetId: DatasetId) => getMetadata(datasetId, 'referenceGenome')
+
+export const usesGrch37 = (datasetId: DatasetId) => getMetadata(datasetId, 'usesGrch37')
+
+export const usesGrch38 = (datasetId: DatasetId) => getMetadata(datasetId, 'usesGrch38')
+
+export const isV3Subset = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3Subset')
+
+export const isV2 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV2')
+
+export const isV3 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3')
+
+export const isExac = (datasetId: DatasetId) => getMetadata(datasetId, 'isExac')
+
+export const hasGenome = (datasetId: DatasetId) => getMetadata(datasetId, 'hasExome')
+
+export const metricsIncludeLowQualityGenotypes = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'metricsIncludeLowQualityGenotypes')
+
+export const has1000GenomesPopulationFrequencies = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'has1000GenomesPopulationFrequencies')
+
+export const hasAlleleBalance = (datasetId: DatasetId) => getMetadata(datasetId, 'hasAlleleBalance')
+
+export const hasRelatedVariants = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasRelatedVariants')
+
+export const showAllIndividualsInAgeDistributionByDefault = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'showAllIndividualsInAgeDistributionByDefault')

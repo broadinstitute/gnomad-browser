@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { Checkbox } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
-
 import { PopulationsTable } from './PopulationsTable'
 import { Population } from './VariantPage'
+import { DatasetId, hasGenome } from '@gnomad/dataset-metadata/metadata'
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -102,7 +102,7 @@ const nestPopulations = (populations: any) => {
 }
 
 type OwnGnomadPopulationsTableProps = {
-  datasetId: string
+  datasetId: DatasetId
   exomePopulations: Population[]
   genomePopulations: Population[]
   showHemizygotes?: boolean
@@ -146,7 +146,7 @@ export class GnomadPopulationsTable extends Component<
     }
 
     let populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
-    if (datasetId.startsWith('gnomad_r2_1') && includeGenomes) {
+    if (hasGenome(datasetId) && includeGenomes) {
       populations = populations.map((pop) => {
         if (pop.id === 'eas') {
           // If the variant is only present in genomes, sub-continental populations won't be present at all.
@@ -181,7 +181,7 @@ export class GnomadPopulationsTable extends Component<
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
-        {datasetId.startsWith('gnomad_r2_1') && includeGenomes && (
+        {hasGenome(datasetId) && includeGenomes && (
           <p>
             * Allele frequencies for some sub-continental populations were not computed for genome
             samples.
