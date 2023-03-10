@@ -7,6 +7,12 @@ import { Checkbox, Select } from '@gnomad/ui'
 
 import gnomadV2AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v2/ageDistribution.json'
 import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3/ageDistribution.json'
+import {
+  DatasetId,
+  isV2,
+  isV3,
+  showAllIndividualsInAgeDistributionByDefault,
+} from '@gnomad/dataset-metadata/metadata'
 
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
@@ -75,9 +81,9 @@ const prepareVariantData = ({
 
 const prepareOverallData = ({ datasetId, includeExomes, includeGenomes }: any) => {
   let overallAgeDistribution = null
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (isV3(datasetId)) {
     overallAgeDistribution = gnomadV3AgeDistribution
-  } else if (datasetId.startsWith('gnomad_r2')) {
+  } else if (isV2(datasetId)) {
     overallAgeDistribution = gnomadV2AgeDistribution
   }
 
@@ -118,7 +124,7 @@ const getDefaultSelectedSequencingType = (variant: any) => {
 }
 
 type GnomadAgeDistributionProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: Variant
 }
 
@@ -131,7 +137,9 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
   const [includeHomozygotes, setIncludeHomozygotes] = useState(true)
 
   const showVariantCarriers = includeHeterozygotes || includeHomozygotes
-  const [showAllIndividuals, setShowAllIndividuals] = useState(datasetId !== 'exac')
+  const [showAllIndividuals, setShowAllIndividuals] = useState(
+    showAllIndividualsInAgeDistributionByDefault(datasetId)
+  )
 
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const binEdges = (variant.exome || variant.genome).age_distribution.het.bin_edges

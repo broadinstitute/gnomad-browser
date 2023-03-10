@@ -5,6 +5,7 @@ import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import VariantLiftover from './VariantLiftover'
 import { Variant } from './VariantPage'
+import { hasRelatedVariants } from '@gnomad/dataset-metadata/metadata'
 
 const CODING_AND_UTR_VEP_CONSEQUENCES = new Set([
   'transcript_ablation',
@@ -32,7 +33,7 @@ const CODING_AND_UTR_VEP_CONSEQUENCES = new Set([
 ])
 
 const isVariantEligibleForCooccurrence = (variant: any, datasetId: any) => {
-  if (datasetId !== 'gnomad_r2_1') {
+  if (hasRelatedVariants(datasetId)) {
     return false
   }
 

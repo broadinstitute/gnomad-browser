@@ -10,6 +10,12 @@ import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
 import { Variant } from './VariantPage'
 
+import {
+  DatasetId,
+  metricsIncludeLowQualityGenotypes,
+  hasAlleleBalance,
+} from '@gnomad/dataset-metadata/metadata'
+
 const LegendWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -61,7 +67,7 @@ const getDefaultSelectedSequencingType = (variant: any) => {
 }
 
 type VariantGenotypeQualityMetricsProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: Variant
 }
 
@@ -244,7 +250,7 @@ const VariantGenotypeQualityMetrics = ({
     },
   ]
 
-  if (datasetId !== 'exac') {
+  if (hasAlleleBalance(datasetId)) {
     tabs.push({
       id: 'allele_balance',
       label: 'Allele balance for heterozygotes',
@@ -316,7 +322,7 @@ const VariantGenotypeQualityMetrics = ({
         </label>
       </ControlSection>
 
-      {(datasetId.startsWith('gnomad_r2') || datasetId === 'exac') && (
+      {metricsIncludeLowQualityGenotypes(datasetId) && (
         <p>
           Note: This plot may include low-quality genotypes that were excluded from allele counts in
           the tables above.

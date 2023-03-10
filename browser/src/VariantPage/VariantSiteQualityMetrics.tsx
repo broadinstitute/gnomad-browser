@@ -14,6 +14,7 @@ import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/dat
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
 import { Variant, SequencingType } from './VariantPage'
+import { DatasetId, isV2, isV3, isExac } from '@gnomad/dataset-metadata/metadata'
 
 // ================================================================================================
 // Metric descriptions
@@ -45,7 +46,7 @@ const qualityMetricDescriptions = {
 }
 
 const getSiteQualityMetricDescription = (datasetId: any) => {
-  return datasetId.startsWith('gnomad_r2') || datasetId === 'exac'
+  return isV2(datasetId) || isExac(datasetId)
     ? 'Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
     : 'Sum of PL[0] values; used to approximate the Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
 }
@@ -343,19 +344,19 @@ const prepareData = ({
   metric,
   variant,
 }: {
-  datasetId: string
+  datasetId: DatasetId
   metric: string
   variant: Variant
 }) => {
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (isV3(datasetId)) {
     return prepareDataGnomadV3({ metric, genome: variant.genome! })
   }
 
-  if (datasetId.startsWith('gnomad_r2')) {
+  if (isV2(datasetId)) {
     return prepareDataGnomadV2({ metric, variant })
   }
 
-  if (datasetId === 'exac') {
+  if (isExac(datasetId)) {
     return prepareDataExac({ metric, variant })
   }
 
@@ -363,7 +364,7 @@ const prepareData = ({
 }
 
 const getAvailableMetrics = (datasetId: any) => {
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (isV3(datasetId)) {
     return [
       'SiteQuality',
       'InbreedingCoeff',
@@ -380,7 +381,7 @@ const getAvailableMetrics = (datasetId: any) => {
     ]
   }
 
-  if (datasetId.startsWith('gnomad_r2')) {
+  if (isV2(datasetId)) {
     return [
       'BaseQRankSum',
       'ClippingRankSum',
@@ -399,7 +400,7 @@ const getAvailableMetrics = (datasetId: any) => {
     ]
   }
 
-  if (datasetId === 'exac') {
+  if (isExac(datasetId)) {
     return [
       'BaseQRankSum',
       'ClippingRankSum',
@@ -817,17 +818,17 @@ const AutosizedSiteQualityMetricsHistogram = withSize()(({ size, ...props }) => 
 ))
 
 type VariantSiteQualityMetricsDistributionProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: Variant
 }
 
 type VariantSiteQualityMetricsTableProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: Variant
 }
 
 type VariantSiteQualityMetricsProps = {
-  datasetId: string
+  datasetId: DatasetId
   variant: Variant
 }
 
@@ -965,7 +966,7 @@ const VariantSiteQualityMetricsDistribution = ({
 
       {selectedMetric === 'SiteQuality' && <p>{description}</p>}
 
-      {!datasetId.startsWith('gnomad_r3') && (
+      {!isV3(datasetId) && (
         <p>
           Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
           sites.
