@@ -9,6 +9,14 @@ import {
   labelForDataset,
   referenceGenome,
   ReferenceGenome,
+  hasExome,
+  hasLocalAncestryPopulations,
+  isLiftoverSource,
+  isLiftoverTarget,
+  usesGrch37,
+  usesGrch38,
+  isV3Subset,
+  isExac,
 } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
@@ -53,6 +61,7 @@ const FlexWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
 `
+
 export type NonCodingConstraint = {
   chrom: string
   start: number
@@ -258,14 +267,14 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
     <FlexWrapper>
       <ResponsiveSection>
         <TableWrapper>
-          {datasetId === 'exac' ? (
+          {isExac(datasetId) ? (
             // @ts-expect-error TS(2741) FIXME: Property 'coverage' is missing in type '{ variant_... Remove this comment to see the full error message
             <ExacVariantOccurrenceTable variant={variant} />
           ) : (
             <GnomadVariantOccurrenceTable
               datasetId={datasetId}
               variant={variant}
-              showExomes={!datasetId.startsWith('gnomad_r3')}
+              showExomes={hasExome(datasetId)}
             />
           )}
         </TableWrapper>
@@ -297,7 +306,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <h2>
           Population Frequencies <InfoButton topic="ancestry" />
         </h2>
-        {datasetId.startsWith('gnomad_r3') &&
+        {hasLocalAncestryPopulations(datasetId) &&
           ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (
             <div
               style={{
@@ -377,7 +386,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
               <h2>
                 Age Distribution <InfoButton topic="age" />
               </h2>
-              {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
+              {isV3Subset(datasetId) && (
                 <p>
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
                 </p>
@@ -689,9 +698,9 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
         query={variantQuery}
         variables={{
           datasetId,
-          includeLocalAncestry: datasetId === 'gnomad_r3',
-          includeLiftoverAsSource: datasetId.startsWith('gnomad_r2_1'),
-          includeLiftoverAsTarget: datasetId.startsWith('gnomad_r3'),
+          includeLocalAncestry: hasLocalAncestryPopulations(datasetId),
+          includeLiftoverAsSource: isLiftoverSource(datasetId),
+          includeLiftoverAsTarget: isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
           variantId,
         }}
@@ -745,10 +754,10 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               <GnomadPageHeading
                 datasetOptions={{
                   // Include ExAC for GRCh37 datasets
-                  includeExac: !datasetId.startsWith('gnomad_r3'),
+                  includeExac: usesGrch37(datasetId),
                   // Include gnomAD versions based on the same reference genome as the current dataset
-                  includeGnomad2: !datasetId.startsWith('gnomad_r3'),
-                  includeGnomad3: datasetId.startsWith('gnomad_r3'),
+                  includeGnomad2: usesGrch37(datasetId),
+                  includeGnomad3: usesGrch38(datasetId),
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
                 }}
