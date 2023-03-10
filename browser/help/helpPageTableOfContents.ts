@@ -3,7 +3,7 @@ export type FaqTopic = {
   topics: string[]
 }
 
-const helpPageTableOfContents: { topics: string[], faq: FaqTopic[] } = {
+const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
   topics: [
     'dataset-selection',
     'variant-qc',
@@ -25,7 +25,6 @@ const helpPageTableOfContents: { topics: string[], faq: FaqTopic[] } = {
       topics: [
         'whats-the-difference-between-gnomad-v2-and-v3',
         'what-are-the-restrictions-on-data-usage',
-        'how-should-i-cite-discoveries-made-using-gnomad-data',
         'i-have-identified-a-rare-variant-what-phenotype-data-are-available',
         'can-i-get-access-to-individual-level-genotype-data-from-gnomad',
         'can-i-contribute-data-to-gnomad',
