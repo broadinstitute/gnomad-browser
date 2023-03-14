@@ -7624,6 +7624,60 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             Microsoft
           </button>
         </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Variant co-occurrence by gene (homozygous rare variants)
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variant co-occurrence by gene (homozygous rare variants)"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variant co-occurrence by gene (homozygous rare variants)"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c21"
+        >
+          <span>
+            Variant co-occurrence by gene (two heterozygous rare variants)
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variant co-occurrence by gene (two heterozygous rare variants)"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variant co-occurrence by gene (two heterozygous rare variants)"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
       </ul>
     </section>
     <section
