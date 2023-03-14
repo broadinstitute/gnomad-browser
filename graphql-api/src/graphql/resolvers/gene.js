@@ -5,13 +5,21 @@ const {
   fetchGenesMatchingText,
 } = require('../../queries/gene-queries')
 
+const addDefaultVariantCooccurrenceCounts = (gene) => {
+  return {
+    heterozygous_variant_cooccurrence_counts: [],
+    homozygous_variant_cooccurrence_counts: [],
+    ...gene,
+  }
+}
+
 const resolveGene = async (_, args, ctx) => {
   if (args.gene_id) {
     const gene = await fetchGeneById(ctx.esClient, args.gene_id, args.reference_genome)
     if (!gene) {
       throw new UserVisibleError('Gene not found')
     }
-    return gene
+    return addDefaultVariantCooccurrenceCounts(gene)
   }
 
   if (args.gene_symbol) {
@@ -19,7 +27,7 @@ const resolveGene = async (_, args, ctx) => {
     if (!gene) {
       throw new UserVisibleError('Gene not found')
     }
-    return gene
+    return addDefaultVariantCooccurrenceCounts(gene)
   }
 
   throw new UserVisibleError("One of 'gene_id' or 'gene_symbol' is required")
