@@ -589,6 +589,22 @@ const GnomadV2Downloads = () => {
               path="/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"
             />
           </ListItem>
+          {/* @ts-expect-error */}
+          <ListItem>
+            <GetUrlButtons
+              label="Variant co-occurrence by gene (homozygous rare variants)"
+              path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error */}
+          <ListItem>
+            <GetUrlButtons
+              label="Variant co-occurrence by gene (two heterozygous rare variants)"
+              path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
+              includeAzure={false}
+            />
+          </ListItem>
         </FileList>
       </DownloadsSection>
 
