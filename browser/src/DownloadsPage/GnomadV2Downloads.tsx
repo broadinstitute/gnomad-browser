@@ -362,104 +362,6 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-lof-curation-results">Loss-of-function curation results</SectionTitle>
-        <p>
-          For information on loss-of-function curation results, see{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
-            <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
-            Nature 581, 434–443 (2020)
-          </ExternalLink>{' '}
-          (all homozygous LoF curation results) and{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
-            <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
-            Nature 581, 452–458 (2020)
-          </ExternalLink>{' '}
-          (haploinsufficient genes LoF curation results).
-        </p>
-
-        <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="All homozygous LoF curation results"
-              path="/truth-sets/source/lof-curation/all_homozygous_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="Lysosomal storage disease genes LoF curation results"
-              path="/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="AP4 LoF curation results"
-              path="/truth-sets/source/lof-curation/AP4_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="FIG4 LoF curation results"
-              path="/truth-sets/source/lof-curation/FIG4_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="MCOLN1 LoF curation results"
-              path="/truth-sets/source/lof-curation/MCOLN1_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="Haploinsufficient genes LoF curation results"
-              path="/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="Metabolic conditions genes LoF curation results"
-              path="/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="gnomAD addendum LoF curation results"
-              path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
-            />
-          </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GenericDownloadLinks
-              label="NSD1 LoF curation results"
-              path="/truth-sets/source/lof-curation/NSD1_curation_results.csv"
-            />
-          </ListItem>
-        </FileList>
-      </DownloadsSection>
-
-      <DownloadsSection>
-        <SectionTitle id="v2-variant-cooccurrence">Variant co-occurrence</SectionTitle>
-        <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <ListItem>
-            <GetUrlButtons
-              label="Variant co-occurrence Hail Table"
-              path="/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"
-            />
-          </ListItem>
-        </FileList>
-      </DownloadsSection>
-
-      <DownloadsSection>
         <SectionTitle id="v2-linkage-disequilibrium">Linkage disequilibrium</SectionTitle>
         <LDFiles />
       </DownloadsSection>
@@ -672,6 +574,104 @@ const GnomadV2Downloads = () => {
             <GenericDownloadLinks
               label="Base-level pext TSV"
               path="/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.tsv.bgz"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-variant-cooccurrence">Variant co-occurrence</SectionTitle>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Variant co-occurrence Hail Table"
+              path="/release/2.1.1/ht/exomes_phased_counts_0.05_3_prime_UTR_variant_vp.ht"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-lof-curation-results">Loss-of-function curation results</SectionTitle>
+        <p>
+          For information on loss-of-function curation results, see{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
+            <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
+            Nature 581, 434–443 (2020)
+          </ExternalLink>{' '}
+          (all homozygous LoF curation results) and{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+            <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
+            Nature 581, 452–458 (2020)
+          </ExternalLink>{' '}
+          (haploinsufficient genes LoF curation results).
+        </p>
+
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="All homozygous LoF curation results"
+              path="/truth-sets/source/lof-curation/all_homozygous_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Lysosomal storage disease genes LoF curation results"
+              path="/truth-sets/source/lof-curation/lysosomal_storage_disease_genes_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="AP4 LoF curation results"
+              path="/truth-sets/source/lof-curation/AP4_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="FIG4 LoF curation results"
+              path="/truth-sets/source/lof-curation/FIG4_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="MCOLN1 LoF curation results"
+              path="/truth-sets/source/lof-curation/MCOLN1_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Haploinsufficient genes LoF curation results"
+              path="/truth-sets/source/lof-curation/haploinsufficient_genes_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Metabolic conditions genes LoF curation results"
+              path="/truth-sets/source/lof-curation/metabolic_conditions_genes_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="gnomAD addendum LoF curation results"
+              path="/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="NSD1 LoF curation results"
+              path="/truth-sets/source/lof-curation/NSD1_curation_results.csv"
             />
           </ListItem>
         </FileList>
