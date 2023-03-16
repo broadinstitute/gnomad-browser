@@ -178,7 +178,9 @@ VariantsInGene.defaultProps = {
 const operationName = 'VariantsInGene'
 const query = `
 query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
-  
+  meta {
+    clinvar_release_date
+  }
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     clinvar_variants {
       clinical_significance
@@ -321,9 +323,9 @@ const ConnectedVariantsInGene = ({
       return (
         <VariantsInGene
           {...otherProps}
-          // clinvarReleaseDate={data.meta.clinvar_release_date}
+          clinvarReleaseDate={data.meta.clinvar_release_date}
           // Dates in ClinVar date are formatted YYYY-MM-DD
-          clinvarReleaseDate={'2023-02-19'}
+          // clinvarReleaseDate={'2023-02-19'}
           clinvarVariants={data.gene.clinvar_variants}
           datasetId={datasetId}
           gene={gene}

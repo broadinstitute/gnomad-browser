@@ -49,7 +49,10 @@ type BaseQueryProps = {
 
 export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   static defaultProps = {
-    url: '/api/',
+    // TODO:FIXME: (rgrant) for dev cluster -- modify default Query to point to live prod API to allow for fetching of
+    //                                         unmodified data with the warm cache of prod
+    // url: '/api/',
+    url: 'https://gnomad.broadinstitute.org/api',
     operationName: null,
     variables: {},
   }
@@ -203,7 +206,10 @@ Query.defaultProps = {
   loadingMessage: 'Loading',
   loadingPlaceholderHeight: undefined,
   success: () => true,
-  url: '/api/',
+  // TODO:FIXME: (rgrant) for dev cluster -- modify default Query to point to live prod API to allow for fetching of
+  //                                         unmodified data with the warm cache of prod
+  // url: '/api/',
+  url: 'https://gnomad.broadinstitute.org/api',
   variables: {},
   operationName: null,
 }
