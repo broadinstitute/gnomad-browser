@@ -228,6 +228,38 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
+    gnomad_v2_regional_missense_constraint_regions_0_01 {
+      start
+      stop
+      obs_mis
+      exp_mis
+      obs_exp
+      chisq_diff_null
+    }
+    gnomad_v2_regional_missense_constraint_regions_0_0001 {
+      start
+      stop
+      obs_mis
+      exp_mis
+      obs_exp
+      chisq_diff_null
+    }
+    gnomad_v2_regional_missense_constraint_regions_0_00001 {
+      start
+      stop
+      obs_mis
+      exp_mis
+      obs_exp
+      chisq_diff_null
+    }
+    ccr_region {
+			start
+			stop
+			obs_mis
+			exp_mis
+			obs_exp
+			chisq_diff_null
+    }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
     }

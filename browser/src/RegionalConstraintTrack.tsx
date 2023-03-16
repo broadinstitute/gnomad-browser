@@ -206,7 +206,7 @@ type OwnRegionalConstraintTrackProps = {
 // type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
 //   typeof RegionalConstraintTrack.defaultProps
 
-const RegionalConstraintTrack = ({ constrainedRegions, exons }: any) => {
+const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLegend }: any) => {
   const constrainedExons = regionIntersections([
     constrainedRegions,
     exons.filter((exon: any) => exon.feature_type === 'CDS'),
@@ -217,16 +217,16 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons }: any) => {
       <Track
         renderLeftPanel={() => (
           <SidePanel>
-            <span>Regional missense constraint</span>
+            {/* <span>Regional missense constraint</span> */}
+            {label && <span>{label}</span>}
+            {!label && <span>Regional missense constraint</span>}
             <InfoButton topic="regional-constraint" />
           </SidePanel>
         )}
       >
         {({ scalePosition, width }: any) => (
           <>
-            <TopPanel>
-              <Legend />
-            </TopPanel>
+            <TopPanel>{includeLegend && <Legend />}</TopPanel>
             <PlotWrapper>
               <svg height={35} width={width}>
                 {constrainedExons.map((region: any) => {

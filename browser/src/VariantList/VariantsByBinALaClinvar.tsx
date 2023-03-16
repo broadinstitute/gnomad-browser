@@ -1,11 +1,33 @@
 import React, { useState, useMemo } from 'react'
+import styled from 'styled-components'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
+
+import { List, ListItem } from '@gnomad/ui'
 
 import VariantFilterControls from './VariantFilterControls'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import filterVariants from './filterVariants'
 import BinnedVariantsPlot from '../BinnedVariantsPlot'
+
+const TooltipContent = styled.div`
+  line-height: 1;
+  text-align: left;
+
+  ${List} {
+    /* margin-top: 0; */
+  }
+
+  ${ListItem} {
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  p {
+    margin-bottom: 0.5em;
+  }
+`
 
 const consequenceCategories = ['lof', 'missense', 'synonymous', 'other']
 
@@ -65,7 +87,23 @@ const VariantsByBinALaClinvar = ({ variants }: any) => {
             scalePosition={scalePosition}
             width={width}
             formatTooltip={(bin: any) => {
-              return <span>Oh yeah</span>
+              return (
+                <TooltipContent>
+                  This bin contains:
+                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+                  <List>
+                    {consequenceCategories.map((category) => {
+                      return (
+                        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+                        <ListItem key={category}>
+                          {bin[category]} {category} variant
+                          {bin[category] !== 1 ? 's' : ''}
+                        </ListItem>
+                      )
+                    })}
+                  </List>
+                </TooltipContent>
+              )
             }}
           />
         )

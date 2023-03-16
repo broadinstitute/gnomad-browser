@@ -101,6 +101,11 @@ export type Gene = GeneMetadata & {
   exac_regional_missense_constraint_regions?: any
   // TODO: add better typing
   gnomad_v2_regional_missense_constraint_regions?: any
+  gnomad_v2_regional_missense_constraint_regions_0_01?: any
+  gnomad_v2_regional_missense_constraint_regions_0_0001?: any
+  gnomad_v2_regional_missense_constraint_regions_0_00001?: any
+  ccr_region?: any
+  // TODO: (rgrant) remove above for final
   variants: Variant[]
   structural_variants: StructuralVariant[]
   clinvar_variants: ClinvarVariant[]
@@ -560,12 +565,72 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {datasetId === 'gnomad_r2_1' && gene.gnomad_v2_regional_missense_constraint_regions && (
+        {/* {datasetId === 'gnomad_r2_1' && gene.gnomad_v2_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
             constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions}
             exons={gene.exons}
           />
+        )} */}
+
+        {/* TODO:FIXME: My new temporary stuff */}
+        {datasetId === 'gnomad_r2_1' && gene.exac_regional_missense_constraint_regions && (
+          <RegionalConstraintTrack
+            constrainedRegions={gene.exac_regional_missense_constraint_regions}
+            exons={gene.exons}
+            label={'ExAC RMC'}
+            includeLegend={true}
+          />
         )}
+
+        <br />
+
+        {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_0_01 && (
+            <RegionalConstraintTrack
+              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_01}
+              exons={gene.exons}
+              label={'gnomAD RMC (p = 0.01)'}
+              includeLegend={true}
+            />
+          )}
+
+        <br />
+
+        {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_0_0001 && (
+            <RegionalConstraintTrack
+              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_0001}
+              exons={gene.exons}
+              label={'gnomAD RMC (p = 0.001)'}
+              includeLegend={false}
+            />
+          )}
+
+        <br />
+
+        {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_0_00001 && (
+            <RegionalConstraintTrack
+              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_00001}
+              exons={gene.exons}
+              label={'gnomAD RMC (p = 0.0001)'}
+              includeLegend={false}
+            />
+          )}
+
+        <br />
+
+        {datasetId === 'gnomad_r2_1' &&
+          gene.ccr_region && (
+            <RegionalConstraintTrack
+              constrainedRegions={gene.ccr_region}
+              exons={gene.exons}
+              label={'CCR Regions'}
+              includeLegend={false}
+            />
+          )}
+
+        <br />
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
