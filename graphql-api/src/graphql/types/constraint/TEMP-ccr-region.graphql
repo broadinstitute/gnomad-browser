@@ -1,0 +1,9 @@
+type CCRRegion {
+	start: Int!
+	stop: Int!
+	obs_mis: Int
+	exp_mis: Float
+	obs_exp: Float
+	chisq_diff_null: Float
+	symbol: String
+}

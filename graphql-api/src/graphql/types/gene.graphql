@@ -66,6 +66,12 @@ type Gene {
 
   gnomad_constraint: GnomadConstraint
   gnomad_v2_regional_missense_constraint_regions: [GnomadRegionalMissenseConstraintRegion!]
+  gnomad_v2_regional_missense_constraint_regions_0_01: [GnomadRegionalMissenseConstraintRegion!]
+  gnomad_v2_regional_missense_constraint_regions_0_0001: [GnomadRegionalMissenseConstraintRegion!]
+  gnomad_v2_regional_missense_constraint_regions_0_00001: [GnomadRegionalMissenseConstraintRegion!]
+  ccr_region: [CCRRegion!]
+
+
   exac_constraint: ExacConstraint
   exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
 
