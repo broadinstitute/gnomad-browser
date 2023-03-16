@@ -12,29 +12,29 @@ from data_pipeline.helpers.elasticsearch_export import export_table_to_elasticse
 from data_pipeline.pipeline import _pipeline_config
 
 from data_pipeline.pipelines.clinvar_grch37 import pipeline as clinvar_grch37_pipeline
-from data_pipeline.pipelines.clinvar_grch38 import pipeline as clinvar_grch38_pipeline
-from data_pipeline.pipelines.exac_coverage import pipeline as exac_coverage_pipeline
-from data_pipeline.pipelines.exac_variants import pipeline as exac_variants_pipeline
+# from data_pipeline.pipelines.clinvar_grch38 import pipeline as clinvar_grch38_pipeline
+# from data_pipeline.pipelines.exac_coverage import pipeline as exac_coverage_pipeline
+# from data_pipeline.pipelines.exac_variants import pipeline as exac_variants_pipeline
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
 from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as gnomad_v2_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v2_lof_curation_results import pipeline as gnomad_v2_lof_curation_results_pipeline
 from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_variants_pipeline
 from data_pipeline.pipelines.gnomad_v2_variant_cooccurrence import pipeline as gnomad_v2_variant_cooccurrence_pipeline
-from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
-from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
-from data_pipeline.pipelines.gnomad_v3_local_ancestry import pipeline as gnomad_v3_local_ancestry_pipeline
-from data_pipeline.pipelines.gnomad_v3_genomic_constraint_regions import (
-    pipeline as gnomad_v3_genomic_constraint_regions_pipeline,
-)
-from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
-from data_pipeline.pipelines.gnomad_v3_mitochondrial_variants import (
-    pipeline as gnomad_v3_mitochondrial_variants_pipeline,
-)
-from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
-    pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
-)
-from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
+# from data_pipeline.pipelines.gnomad_v3_coverage import pipeline as gnomad_v3_coverage_pipeline
+# from data_pipeline.pipelines.gnomad_v3_variants import pipeline as gnomad_v3_variants_pipeline
+# from data_pipeline.pipelines.gnomad_v3_local_ancestry import pipeline as gnomad_v3_local_ancestry_pipeline
+# from data_pipeline.pipelines.gnomad_v3_genomic_constraint_regions import (
+    # pipeline as gnomad_v3_genomic_constraint_regions_pipeline,
+# )
+# from data_pipeline.pipelines.liftover import pipeline as liftover_pipeline
+# from data_pipeline.pipelines.gnomad_v3_mitochondrial_variants import (
+    # pipeline as gnomad_v3_mitochondrial_variants_pipeline,
+# )
+# from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
+    # pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
+# )
+# from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
