@@ -34,8 +34,8 @@ const {
 // You can do this on a test-by-test basis too, rather than beforeEach.
 beforeEach(() => {
   Query.mockImplementation(
-    jest.fn(({ children, operationName, variables }) =>
-      simulateApiResponse('Query', children, operationName, variables)
+    jest.fn(({ query, children, operationName, variables }) =>
+      simulateApiResponse('Query', query, children, operationName, variables)
     )
   )
   // The semicolon is due to a quirk of JS/TS parsing--try taking it out and
@@ -43,8 +43,8 @@ beforeEach(() => {
   // Also, it's not clear why we have to cast BaseQuery here but not Query
   // above.
   ;(BaseQuery as any).mockImplementation(
-    jest.fn(({ children, operationName, variables }) =>
-      simulateApiResponse('BaseQuery', children, operationName, variables)
+    jest.fn(({ query, children, operationName, variables }) =>
+      simulateApiResponse('BaseQuery', query, children, operationName, variables)
     )
   )
 })
