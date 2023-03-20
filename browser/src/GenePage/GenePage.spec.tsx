@@ -33,13 +33,13 @@ const {
 
 beforeEach(() => {
   Query.mockImplementation(
-    jest.fn(({ children, operationName, variables }) =>
-      simulateApiResponse('Query', children, operationName, variables)
+    jest.fn(({ children, operationName, variables, query }) =>
+      simulateApiResponse('Query', query, children, operationName, variables)
     )
   )
   ;(BaseQuery as any).mockImplementation(
-    jest.fn(({ children, operationName, variables }) =>
-      simulateApiResponse('BaseQuery', children, operationName, variables)
+    jest.fn(({ children, operationName, variables, query }) =>
+      simulateApiResponse('BaseQuery', query, children, operationName, variables)
     )
   )
 })
