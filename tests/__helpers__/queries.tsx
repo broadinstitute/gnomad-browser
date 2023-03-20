@@ -28,6 +28,7 @@ export const mockQueries = () => {
 
   const simulateApiResponse = (
     mockedComponentName: string,
+    query: string,
     children: Children,
     operationName: string,
     variables: Record<string, any>
@@ -38,7 +39,11 @@ export const mockQueries = () => {
       const mockApiResponse = mockApiResponseFactory()
       return <>{children({ data: mockApiResponse })}</>
     }
-    throw new Error(`${mockedComponentName} got unmocked operation "${operationName}"`)
+    throw new Error(
+      `${mockedComponentName} got unmocked operation "${JSON.stringify(
+        operationName
+      )}"\nquery was:\n\n${JSON.stringify(query)}`
+    )
   }
 
   const setMockApiResponses = (newResponses: MockApiResponses) => {

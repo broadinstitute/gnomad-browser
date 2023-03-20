@@ -435,7 +435,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   }
 
   const query = `
-    {
+    query ReadData {
       ${variantIds
         .map(
           (
@@ -461,7 +461,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   `
 
   return (
-    <BaseQuery query={query} url="/reads/">
+    <BaseQuery operationName="ReadData" query={query} url="/reads/">
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return <StatusMessage>Loading reads...</StatusMessage>
