@@ -13,6 +13,8 @@ import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
+import { Gene } from './GenePage'
+import { hasStructuralVariants } from '../../../dataset-metadata/metadata'
 
 const TranscriptsInfoWrapper = styled.div`
   display: flex;
@@ -34,24 +36,7 @@ const RightPanel = styled.div`
 
 type OwnProps = {
   datasetId: string
-  gene: {
-    gene_id: string
-    reference_genome: 'GRCh37' | 'GRCh38'
-    transcripts: {
-      transcript_id: string
-      transcript_version: string
-      exons: {
-        feature_type: string
-        start: number
-        stop: number
-      }[]
-    }[]
-    canonical_transcript_id?: string
-    mane_select_transcript?: {
-      ensembl_id: string
-      ensembl_version: string
-    }
-  }
+  gene: Gene
   includeNonCodingTranscripts: boolean
   includeUTRs: boolean
   preferredTranscriptId?: string
@@ -125,7 +110,7 @@ const GeneTranscriptsTrack = ({
       <TranscriptsTrack
         ref={transcriptsTrack}
         renderTranscriptLeftPanel={
-          datasetId.startsWith('gnomad_sv')
+          hasStructuralVariants(datasetId)
             ? ({ transcript }: any) => (
                 <TranscriptLabel>
                   {transcript.transcript_id}.{transcript.transcript_version}

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { coverageDataset } from '../coverage'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { referenceGenome, isExac } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -88,10 +88,9 @@ const GeneCoverageTrack = ({
         const exomeCoverage = includeExomeCoverage ? data.gene.coverage.exome : null
         const genomeCoverage = includeGenomeCoverage ? data.gene.coverage.genome : null
 
-        const coverageConfig =
-          datasetId === 'exac'
-            ? coverageConfigClassic(exomeCoverage, genomeCoverage)
-            : coverageConfigNew(exomeCoverage, genomeCoverage)
+        const coverageConfig = isExac(datasetId)
+          ? coverageConfigClassic(exomeCoverage, genomeCoverage)
+          : coverageConfigNew(exomeCoverage, genomeCoverage)
 
         return (
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.

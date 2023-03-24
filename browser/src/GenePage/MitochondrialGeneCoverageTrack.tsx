@@ -1,6 +1,11 @@
 import React from 'react'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  referenceGenome,
+  hasMitochondrialGenomeCoverage,
+} from '@gnomad/dataset-metadata/metadata'
 
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -27,7 +32,7 @@ type Props = {
 }
 
 const MitochondrialGeneCoverageTrack = ({ datasetId, geneId }: Props) => {
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialGenomeCoverage(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial genome coverage is not available in {labelForDataset(datasetId)}

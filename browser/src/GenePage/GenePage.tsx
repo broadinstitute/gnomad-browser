@@ -16,7 +16,15 @@ import VariantCooccurrenceCountsTable, {
   HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
   HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
 } from './VariantCooccurrenceCountsTable'
-import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasExomeCoverage,
+  labelForDataset,
+  hasStructuralVariants,
+  ReferenceGenome,
+  hasExons,
+  isExac,
+} from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -39,7 +47,6 @@ import StructuralVariantsInGene from './StructuralVariantsInGene'
 import TissueExpressionTrack from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
 
-import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
 import { Variant, ClinvarVariant, StructuralVariant } from '../VariantPage/VariantPage'
@@ -210,7 +217,9 @@ type TableSelectorProps = {
   setSelectedTableName: Dispatch<SetStateAction<TableName>>
 }
 
+// prettier-ignore
 const BaseTableSelector = styled.div<TableSelectorProps>
+
 const TableSelector = BaseTableSelector.attrs(
   ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
     onClick: () => setSelectedTableName(ownTableName),
@@ -303,7 +312,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
     (tx) => !tx.exons.some((exon) => exon.feature_type === 'CDS')
   )
 
-  const regionViewerRegions = datasetId.startsWith('gnomad_sv')
+  const regionViewerRegions = !hasExons(datasetId)
     ? [
         {
           start: Math.max(1, gene.start - 75),
@@ -406,12 +415,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             width={overviewWidth}
           />
         )}
-        zoomDisabled={datasetId.startsWith('gnomad_sv')}
+        zoomDisabled={!hasExons(datasetId)}
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
+        {!hasExons(datasetId) ? (
           <RegionCoverageTrack
             chrom={gene.chrom}
             datasetId={datasetId}
@@ -551,7 +560,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
+        {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
             height={15}
             regions={gene.exac_regional_missense_constraint_regions}
@@ -559,7 +568,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         )}
 
         {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
+        {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (
           <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
