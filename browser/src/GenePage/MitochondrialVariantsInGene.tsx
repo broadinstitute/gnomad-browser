@@ -2,7 +2,11 @@ import React from 'react'
 
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  labelForDataset,
+  referenceGenome,
+  hasMitochondrialVariants,
+} from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -84,7 +88,7 @@ type Props = OwnProps & typeof MitochondrialVariantsInGene.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'MitochondrialVariantsInGene' implicitly has type ... Remove this comment to see the full error message
 const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Props) => {
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}

@@ -25,7 +25,7 @@ import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { GeneMetadata, Strand } from '../GenePage/GenePage'
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
-
+import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
 export type Transcript = {
   transcript_id: string
   transcript_version: string
@@ -42,6 +42,7 @@ export type Transcript = {
   gnomad_constraint?: GnomadConstraint
   exac_constraint?: ExacConstraint
   gene: GeneMetadata
+  gtex_tissue_expression: GtexTissueExpression | null
 }
 
 const TranscriptInfoColumnWrapper = styled.div`

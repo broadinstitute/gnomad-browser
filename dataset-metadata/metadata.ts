@@ -52,6 +52,10 @@ type DatasetMetadata = {
   hasAlleleBalance: boolean
   hasRelatedVariants: boolean
   showAllIndividualsInAgeDistributionByDefault: boolean
+  hasExons: boolean
+  hasShortTandemRepeats: boolean
+  hasMitochondrialGenomeCoverage: boolean
+  hasMitochondrialVariants: boolean
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -84,6 +88,10 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasAlleleBalance: datasetId !== 'exac',
   hasRelatedVariants: datasetId !== 'gnomad_r2_1',
   showAllIndividualsInAgeDistributionByDefault: datasetId !== 'exac',
+  hasExons: !datasetId.startsWith('gnomad_sv'),
+  hasShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
+  hasMitochondrialGenomeCoverage: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
+  hasMitochondrialVariants: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -153,3 +161,14 @@ export const hasRelatedVariants = (datasetId: DatasetId) =>
 
 export const showAllIndividualsInAgeDistributionByDefault = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'showAllIndividualsInAgeDistributionByDefault')
+
+export const hasExons = (datasetId: DatasetId) => getMetadata(datasetId, 'hasExons')
+
+export const hasShortTandemRepeats = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasShortTandemRepeats')
+
+export const hasMitochondrialGenomeCoverage = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasMitochondrialGenomeCoverage')
+
+export const hasMitochondrialVariants = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasMitochondrialVariants')
