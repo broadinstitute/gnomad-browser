@@ -359,12 +359,12 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -378,14 +378,14 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -406,7 +406,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -993,12 +993,12 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -1012,14 +1012,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -1040,7 +1040,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1627,12 +1627,12 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -1646,14 +1646,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -1674,7 +1674,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2261,12 +2261,12 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -2280,14 +2280,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -2308,7 +2308,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2895,12 +2895,12 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -2914,14 +2914,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -2942,7 +2942,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3529,12 +3529,12 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -3548,14 +3548,14 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -3576,7 +3576,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -4163,12 +4163,12 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -4182,14 +4182,14 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -4210,7 +4210,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -4796,12 +4796,12 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -4815,14 +4815,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -4843,7 +4843,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -5429,12 +5429,12 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -5448,14 +5448,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -5476,7 +5476,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -6062,12 +6062,12 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -6081,14 +6081,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -6109,7 +6109,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -6695,12 +6695,12 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -6714,14 +6714,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -6742,7 +6742,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -7328,12 +7328,12 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -7347,14 +7347,14 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -7375,7 +7375,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -7961,12 +7961,12 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -7980,14 +7980,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -8008,7 +8008,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -8595,12 +8595,12 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -8614,14 +8614,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -8642,7 +8642,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -9229,12 +9229,12 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/gene/dummy_gene-1"
+                href="/gene/dummy_gene"
                 onClick={[Function]}
               >
                 FAKEGENE
                  (
-                dummy_gene-1
+                dummy_gene
                 .
                 5.6.7.8
                 )
@@ -9248,14 +9248,14 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
             <dd>
               <a
                 className="Link-sc-14lgydv-0-Link jBvaYQ"
-                href="/region/13-9-15"
+                href="/region/13-123-321"
                 onClick={[Function]}
               >
                 13
                 :
-                9
+                123
                 -
-                15
+                321
               </a>
             </dd>
           </div>
@@ -9276,7 +9276,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
                
               <a
                 className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A9-15"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
               >
