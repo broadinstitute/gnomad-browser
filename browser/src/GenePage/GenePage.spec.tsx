@@ -1,14 +1,18 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { jest, describe, expect } from '@jest/globals'
+import { jest, describe, expect, test } from '@jest/globals'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import geneFactory from '../__factories__/Gene'
+import transcriptFactory from '../__factories__/Transcript'
+
 import GenePage from './GenePage'
-import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import GenePageContainer from './GenePageContainer'
+import GeneTranscriptsTrack from './GeneTranscriptsTrack'
+import { DatasetId, ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { forDatasetsMatching, forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
@@ -179,3 +183,47 @@ describe.each([
     expect(exomeCoverageArg).toEqual(expectedResult)
   })
 })
+
+describe.each([
+  ['exac', 'GRCh37', false],
+  ['gnomad_r2_1', 'GRCh37', false],
+  ['gnomad_r2_1_controls', 'GRCh37', false],
+  ['gnomad_r2_1_non_cancer', 'GRCh37', false],
+  ['gnomad_r2_1_non_neuro', 'GRCh37', false],
+  ['gnomad_r2_1_non_topmed', 'GRCh37', false],
+  ['gnomad_sv_r2_1', 'GRCh37', false],
+  ['gnomad_sv_r2_1_controls', 'GRCh37', false],
+  ['gnomad_sv_r2_1_non_neuro', 'GRCh37', false],
+  ['gnomad_r3', 'GRCh38', true],
+  ['gnomad_r3_controls_and_biobanks', 'GRCh38', true],
+  ['gnomad_r3_non_cancer', 'GRCh38', true],
+  ['gnomad_r3_non_neuro', 'GRCh38', true],
+  ['gnomad_r3_non_topmed', 'GRCh38', true],
+  ['gnomad_r3_non_v2', 'GRCh38', true],
+] as [DatasetId, ReferenceGenome, boolean][])(
+  'gene query with dataset %s',
+  (datasetId, expectedReferenceGenome, expectedIncludeShortTandemRepeats) => {
+    beforeEach(() => {
+      setMockApiResponses({
+        Gene: () => ({}),
+      })
+    })
+
+    test(`uses ${expectedReferenceGenome} reference genome`, () => {
+      renderer.create(<GenePageContainer datasetId={datasetId} geneIdOrSymbol="ABC123" />)
+      const queries = mockApiCalls()
+      expect(queries).toHaveLength(1)
+      expect(queries[0].variables.referenceGenome).toEqual(expectedReferenceGenome)
+    })
+
+    const verb = expectedIncludeShortTandemRepeats ? 'includes' : 'does not include'
+    test(`${verb} short tandem repeats`, () => {
+      renderer.create(<GenePageContainer datasetId={datasetId} geneIdOrSymbol="ABC123" />)
+      const queries = mockApiCalls()
+      expect(queries).toHaveLength(1)
+      expect(queries[0].variables.includeShortTandemRepeats).toEqual(
+        expectedIncludeShortTandemRepeats
+      )
+    })
+  }
+)

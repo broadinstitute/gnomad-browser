@@ -1,7 +1,7 @@
 import { Factory } from 'fishery'
-import { GeneMetadata } from '../GenePage/GenePage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import geneMetadataFactory from './GeneMetadata'
+import { gtexTissueExpressionFactory } from './TissueExpression'
 
 const transcriptFactory = Factory.define<Transcript>(({ params, associations }) => {
   const {
@@ -14,7 +14,11 @@ const transcriptFactory = Factory.define<Transcript>(({ params, associations }) 
     stop = 321,
   } = params
 
-  const { exons = [], gene = geneMetadataFactory.build() } = associations
+  const {
+    exons = [],
+    gene = geneMetadataFactory.build(),
+    gtex_tissue_expression = gtexTissueExpressionFactory.build(),
+  } = associations
 
   return {
     transcript_id,
@@ -26,6 +30,7 @@ const transcriptFactory = Factory.define<Transcript>(({ params, associations }) 
     stop,
     exons,
     gene,
+    gtex_tissue_expression,
   }
 })
 
