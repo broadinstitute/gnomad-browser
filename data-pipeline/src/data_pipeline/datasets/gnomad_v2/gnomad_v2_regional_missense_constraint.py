@@ -1,7 +1,7 @@
 import hail as hl
 
 
-def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=''):
+def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=""):
 
     ds = hl.read_table(path)
 
@@ -13,7 +13,9 @@ def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=''):
         stop=hl.max(ds.interval.start.position, ds.interval.end.position),
     )
 
-    ds = ds.transmute(obs_mis=ds.section_obs, exp_mis=ds.section_exp, obs_exp=ds.section_oe, chisq_diff_null=ds.section_chisq)
+    ds = ds.transmute(
+        obs_mis=ds.section_obs, exp_mis=ds.section_exp, obs_exp=ds.section_oe, chisq_diff_null=ds.section_chisq
+    )
 
     ds = ds.transmute(transcript_id=ds.transcript.split("\\.")[0])
 
@@ -22,8 +24,8 @@ def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=''):
     ds = ds.annotate(regions=hl.sorted(ds.regions, lambda region: region.start))
 
     ds = ds.select(gnomad_v2_regional_missense_constraint_regions=ds.regions)
-    if annotation_name is not '':
-        ds = ds.rename({'gnomad_v2_regional_missense_constraint_regions': annotation_name})
+    if annotation_name is not "":
+        ds = ds.rename({"gnomad_v2_regional_missense_constraint_regions": annotation_name})
 
     return ds
 

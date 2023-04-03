@@ -202,6 +202,7 @@ pipeline.add_task(
     "prepare_homozygous_variant_cooccurrence_counts",
     prepare_homozygous_variant_cooccurrence_counts,
     "/genes/homozygous_variant_cooccurrence_counts.ht",
+)
 
 # TODO: added section to add regional missense constraint - remove after run on prod
 pipeline.add_task(
@@ -211,17 +212,13 @@ pipeline.add_task(
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/all_rmc.ht"},
 )
 
-
-
-
-# TODO: ========================
 # TODO: added section to add regional missense constraint - remove after run on prod
 pipeline.add_task(
     "prepare_gnomad_v2_regional_missense_constraint_0_01",
     prepare_gnomad_v2_regional_missense_constraint,
     "/constraint/gnomad_v2_regional_missense_constraint_01.ht",
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/rmc_0_01/all_rmc.ht"},
-    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_01"}
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_01"},
 )
 
 # TODO: added section to add regional missense constraint - remove after run on prod
@@ -230,7 +227,7 @@ pipeline.add_task(
     prepare_gnomad_v2_regional_missense_constraint,
     "/constraint/gnomad_v2_regional_missense_constraint_0001.ht",
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/rmc_0_0001/all_rmc.ht"},
-    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_0001"}
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_0001"},
 )
 
 # TODO: added section to add regional missense constraint - remove after run on prod
@@ -239,11 +236,9 @@ pipeline.add_task(
     prepare_gnomad_v2_regional_missense_constraint,
     "/constraint/gnomad_v2_regional_missense_constraint_00001.ht",
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/rmc_0_00001/all_rmc.ht"},
-    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_00001"}
-
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_00001"},
 )
 # TODO: ========================
-
 
 
 # TODO:TODO:
@@ -254,9 +249,8 @@ pipeline.add_task(
     {
         "path_autosomes": "gs://gnomad-rgrant-data-pipeline/output/external_sources/ccrs.autosomes.90orhigher.v2.20180420.bed",
         "path_xchroms": "gs://gnomad-rgrant-data-pipeline/output/external_sources/ccrs.xchrom.90orhigher.v2.20180420.bed",
-    }
+    },
 )
-
 
 
 ###############################################
@@ -319,12 +313,17 @@ pipeline.add_task(
         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
         "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
         # 0.01
-        "gnomad_v2_regional_missense_constraint_0_01": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint_0_01"),
+        "gnomad_v2_regional_missense_constraint_0_01": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_0_01"
+        ),
         # 0.0001
-        "gnomad_v2_regional_missense_constraint_0_0001": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint_0_0001"),
+        "gnomad_v2_regional_missense_constraint_0_0001": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_0_0001"
+        ),
         # 0.00001
-        "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint_0_00001"),
-
+        "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_0_00001"
+        ),
     },
     {"join_on": "preferred_transcript_id"},
 )
@@ -353,7 +352,7 @@ pipeline.add_task(
         "table_path": "gs://gnomad-rgrant-data-pipeline/output/genes/genes_grch37_annotated_5.ht",
         "gnomad_v2_ccr_for_comparison": pipeline.get_task("prepare_gnomad_v2_ccr_for_comparison"),
     },
-    {"join_on": "symbol"}
+    {"join_on": "symbol"},
 )
 
 # pipeline.add_task(
