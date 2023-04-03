@@ -224,6 +224,22 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
+    gnomad_v2_regional_missense_constraint {
+      passed_qc
+      has_no_rmc_evidence
+      regions {
+        chrom
+        start
+        stop
+        aa_start
+        aa_stop
+        obs_mis
+        exp_mis
+        obs_exp
+        chisq_diff_null
+        p_value
+      }
+    }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
     }

@@ -1,6 +1,9 @@
-import { regionIntersections } from './RegionalConstraintTrack'
+import { describe, expect, test } from '@jest/globals'
 
-describe('RegionalConstraintTrack', () => {
+// eslint-disable-next-line import/no-unresolved, import/extensions
+import { regionIntersections } from './RegionalMissenseConstraintTrack'
+
+describe('RegionaMissenseConstraintTrack', () => {
   test('regionIntersections', () => {
     const testCases = [
       {

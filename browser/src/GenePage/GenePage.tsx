@@ -19,6 +19,7 @@ import {
   ReferenceGenome,
   hasExons,
   isExac,
+  isV2,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import VariantCooccurrenceCountsTable, {
@@ -31,6 +32,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
+import RegionalMissenseConstraintTrack, { RegionalMissenseConstraint} from '../RegionalMissenseConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -106,6 +108,7 @@ export type Gene = GeneMetadata & {
     id: string
   }[]
   exac_regional_missense_constraint_regions?: any
+  gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
   variants: Variant[]
   structural_variants: StructuralVariant[]
   clinvar_variants: ClinvarVariant[]
@@ -563,8 +566,15 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
-            constrainedRegions={gene.exac_regional_missense_constraint_regions}
-            exons={gene.exons}
+            height={15}
+            regions={gene.exac_regional_missense_constraint_regions}
+          />
+        )}
+
+        {isV2(datasetId) && (
+          <RegionalMissenseConstraintTrack
+            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
+            gene={gene}
           />
         )}
 
