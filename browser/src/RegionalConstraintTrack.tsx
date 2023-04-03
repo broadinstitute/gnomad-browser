@@ -104,6 +104,7 @@ function regionColor(region: any) {
 
 const LegendWrapper = styled.div`
   display: flex;
+
   @media (max-width: 600px) {
     flex-direction: column;
     align-items: center;
