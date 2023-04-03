@@ -28,7 +28,10 @@ const config = {
   ELASTICSEARCH_REQUEST_TIMEOUT: JSON.parse(env.ELASTICSEARCH_REQUEST_TIMEOUT || '30') * 1000,
   // Cache
   CACHE_REDIS_URL: env.CACHE_REDIS_URL,
-  CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
+  // TODO:FIXME: (rgrant) for dev cluster -- set cache timeout to ~0s to allow for dev cluster deployments without caching
+  // CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
+  CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1,
+
   // Web server
   PORT: JSON.parse(env.PORT || '8000'),
   TRUST_PROXY: parseProxyConfig(env.TRUST_PROXY || 'false'),

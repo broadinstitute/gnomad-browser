@@ -11,7 +11,7 @@ const { isHttpError } = require('http-errors')
 const config = require('../config')
 const logger = require('../logger')
 
-const { applyRateLimits } = require('./rate-limiting')
+// const { applyRateLimits } = require('./rate-limiting')
 const schema = require('./schema')
 
 const customParseFn = (...args) => {
@@ -173,14 +173,15 @@ module.exports = ({ context }) =>
         }
       }
 
+      // TODO:FIXME: (rgrant) for dev cluster -- remove rate limit step to allow for cacheless dev cluster deployment
       // Apply rate limit before executing query.
-      try {
-        await applyRateLimits(request)
-      } catch (error) {
-        // Throw GraphQLErrors from GraphQL execution.
-        // Errors must be wrapped in GraphQLError for customFormatErrorFn to handle them correctly.
-        throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
-      }
+      // try {
+      //   await applyRateLimits(request)
+      // } catch (error) {
+      //   // Throw GraphQLErrors from GraphQL execution.
+      //   // Errors must be wrapped in GraphQLError for customFormatErrorFn to handle them correctly.
+      //   throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
+      // }
 
       return execute(args)
     },
