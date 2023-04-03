@@ -43,4 +43,5 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        # TODO:FIXME: (rgrant) for dev cluster -- manually connect to name 'main-pool' in dev cluster
+        cloud.google.com/gke-nodepool: 'main-pool'

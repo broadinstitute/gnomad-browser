@@ -10,6 +10,7 @@ spec:
         disabled: true
   secureSettings:
     - secretName: es-snapshots-gcs-credentials
+  podDisruptionBudget: {}
   nodeSets:
     - name: master
       count: 3

@@ -22,13 +22,13 @@ spec:
             - name: PORT
               value: '8000'
             - name: ELASTICSEARCH_URL
-              value: http://gnomad-es-http:9200  # FIXME: This depends on using "gnomad" as the ES cluster name
+              value: http://gnomad-es-http:9200 # FIXME: This depends on using "gnomad" as the ES cluster name
             - name: ELASTICSEARCH_USERNAME
               value: elastic
             - name: ELASTICSEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: gnomad-es-elastic-user  # FIXME: This depends on using "gnomad" as the ES cluster name
+                  name: gnomad-es-elastic-user # FIXME: This depends on using "gnomad" as the ES cluster name
                   key: elastic
             - name: CACHE_REDIS_URL
               value: redis://redis:6379/1
@@ -68,4 +68,5 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 10
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        # TODO:FIXME: (rgrant) for dev cluster -- manually connect to name 'main-pool' in dev cluster
+        cloud.google.com/gke-nodepool: 'main-pool'
