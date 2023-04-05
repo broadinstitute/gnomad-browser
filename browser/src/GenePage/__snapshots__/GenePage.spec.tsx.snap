@@ -1370,6 +1370,11 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="StatusMessage-sc-neg7mh-0 hJFlwG"
       >
@@ -2750,6 +2755,11 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="StatusMessage-sc-neg7mh-0 hJFlwG"
       >
@@ -4130,6 +4140,11 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="StatusMessage-sc-neg7mh-0 hJFlwG"
       >
@@ -5521,6 +5536,11 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -6935,6 +6955,11 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -8349,6 +8374,11 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -9763,6 +9793,11 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -11177,6 +11212,11 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -12591,6 +12631,11 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -14004,6 +14049,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -15417,6 +15467,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -16830,6 +16885,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -18243,6 +18303,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -19656,6 +19721,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
@@ -21069,6 +21139,11 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
       >
