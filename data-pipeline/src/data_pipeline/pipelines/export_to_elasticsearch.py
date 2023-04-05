@@ -109,95 +109,95 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     # gnomAD v3
     ##############################################################################################################
-    "gnomad_v3_variants": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(hl.read_table(gnomad_v3_variants_pipeline.get_output("variants").get_output_path()))
-        ),
-        "args": {
-            "index": "gnomad_v3_variants",
-            "index_fields": [
-                "document_id",
-                "variant_id",
-                "rsids",
-                "caid",
-                "locus",
-                "transcript_consequences.gene_id",
-                "transcript_consequences.transcript_id",
-            ],
-            "id_field": "document_id",
-            "num_shards": 48,
-            "block_size": 1_000,
-        },
-    },
-    "gnomad_v3_genome_coverage": {
-        "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v3_coverage_pipeline.get_output("genome_coverage").get_output_path())
-        ),
-        "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
-    },
-    "gnomad_v3_local_ancestry": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(gnomad_v3_local_ancestry_pipeline.get_output("local_ancestry").get_output_path())
-            )
-        ),
-        "args": {
-            "index": "gnomad_v3_local_ancestry",
-            "index_fields": ["document_id", "locus", "variant_id"],
-            "id_field": "document_id",
-            "num_shards": 4,
-            "block_size": 10_000,
-        },
-    },
+    # "gnomad_v3_variants": {
+    #     "get_table": lambda: subset_table(
+    #         add_variant_document_id(hl.read_table(gnomad_v3_variants_pipeline.get_output("variants").get_output_path()))
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_variants",
+    #         "index_fields": [
+    #             "document_id",
+    #             "variant_id",
+    #             "rsids",
+    #             "caid",
+    #             "locus",
+    #             "transcript_consequences.gene_id",
+    #             "transcript_consequences.transcript_id",
+    #         ],
+    #         "id_field": "document_id",
+    #         "num_shards": 48,
+    #         "block_size": 1_000,
+    #     },
+    # },
+    # "gnomad_v3_genome_coverage": {
+    #     "get_table": lambda: subset_table(
+    #         hl.read_table(gnomad_v3_coverage_pipeline.get_output("genome_coverage").get_output_path())
+    #     ),
+    #     "args": {"index": "gnomad_v3_genome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    # },
+    # "gnomad_v3_local_ancestry": {
+    #     "get_table": lambda: subset_table(
+    #         add_variant_document_id(
+    #             hl.read_table(gnomad_v3_local_ancestry_pipeline.get_output("local_ancestry").get_output_path())
+    #         )
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_local_ancestry",
+    #         "index_fields": ["document_id", "locus", "variant_id"],
+    #         "id_field": "document_id",
+    #         "num_shards": 4,
+    #         "block_size": 10_000,
+    #     },
+    # },
     ##############################################################################################################
     # v3 mitochondria
     ##############################################################################################################
-    "gnomad_v3_mitochondrial_variants": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(gnomad_v3_mitochondrial_variants_pipeline.get_output("variants").get_output_path())
-            )
-        ),
-        "args": {
-            "index": "gnomad_v3_mitochondrial_variants",
-            "index_fields": [
-                "document_id",
-                "variant_id",
-                "rsids",
-                "locus",
-                "transcript_consequences.gene_id",
-                "transcript_consequences.transcript_id",
-            ],
-            "id_field": "document_id",
-            "num_shards": 1,
-            "block_size": 1_000,
-        },
-    },
-    "gnomad_v3_mitochondrial_coverage": {
-        "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v3_mitochondrial_coverage_pipeline.get_output("coverage").get_output_path())
-        ),
-        "args": {
-            "index": "gnomad_v3_mitochondrial_coverage",
-            "id_field": "xpos",
-            "num_shards": 1,
-            "block_size": 10_000,
-        },
-    },
+    # "gnomad_v3_mitochondrial_variants": {
+    #     "get_table": lambda: subset_table(
+    #         add_variant_document_id(
+    #             hl.read_table(gnomad_v3_mitochondrial_variants_pipeline.get_output("variants").get_output_path())
+    #         )
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_mitochondrial_variants",
+    #         "index_fields": [
+    #             "document_id",
+    #             "variant_id",
+    #             "rsids",
+    #             "locus",
+    #             "transcript_consequences.gene_id",
+    #             "transcript_consequences.transcript_id",
+    #         ],
+    #         "id_field": "document_id",
+    #         "num_shards": 1,
+    #         "block_size": 1_000,
+    #     },
+    # },
+    # "gnomad_v3_mitochondrial_coverage": {
+    #     "get_table": lambda: subset_table(
+    #         hl.read_table(gnomad_v3_mitochondrial_coverage_pipeline.get_output("coverage").get_output_path())
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_mitochondrial_coverage",
+    #         "id_field": "xpos",
+    #         "num_shards": 1,
+    #         "block_size": 10_000,
+    #     },
+    # },
     ##############################################################################################################
     # gnomAD v3 short tandem repeats
     ##############################################################################################################
-    "gnomad_v3_short_tandem_repeats": {
-        "get_table": lambda: hl.read_table(
-            gnomad_v3_short_tandem_repeats_pipeline.get_output("short_tandem_repeats").get_output_path()
-        ),
-        "args": {
-            "index": "gnomad_v3_short_tandem_repeats",
-            "index_fields": ["id", "gene.ensembl_id", "reference_region"],
-            "id_field": "id",
-            "num_shards": 1,
-        },
-    },
+    # "gnomad_v3_short_tandem_repeats": {
+    #     "get_table": lambda: hl.read_table(
+    #         gnomad_v3_short_tandem_repeats_pipeline.get_output("short_tandem_repeats").get_output_path()
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_short_tandem_repeats",
+    #         "index_fields": ["id", "gene.ensembl_id", "reference_region"],
+    #         "id_field": "id",
+    #         "num_shards": 1,
+    #     },
+    # },
     ##############################################################################################################
     # gnomAD SV v2
     ##############################################################################################################
@@ -285,54 +285,54 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     # ExAC
     ##############################################################################################################
-    "exac_variants": {
-        "get_table": lambda: subset_table(
-            add_variant_document_id(hl.read_table(exac_variants_pipeline.get_output("variants").get_output_path()))
-        ),
-        "args": {
-            "index": "exac_variants",
-            "index_fields": [
-                "document_id",
-                "variant_id",
-                "rsids",
-                "caid",
-                "locus",
-                "transcript_consequences.gene_id",
-                "transcript_consequences.transcript_id",
-            ],
-            "id_field": "document_id",
-            "num_shards": 16,
-            "block_size": 1_000,
-        },
-    },
-    "exac_exome_coverage": {
-        "get_table": lambda: subset_table(
-            hl.read_table(exac_coverage_pipeline.get_output("exome_coverage").get_output_path())
-        ),
-        "args": {"index": "exac_exome_coverage", "id_field": "xpos", "num_shards": 16, "block_size": 10_000},
-    },
+    # "exac_variants": {
+    #     "get_table": lambda: subset_table(
+    #         add_variant_document_id(hl.read_table(exac_variants_pipeline.get_output("variants").get_output_path()))
+    #     ),
+    #     "args": {
+    #         "index": "exac_variants",
+    #         "index_fields": [
+    #             "document_id",
+    #             "variant_id",
+    #             "rsids",
+    #             "caid",
+    #             "locus",
+    #             "transcript_consequences.gene_id",
+    #             "transcript_consequences.transcript_id",
+    #         ],
+    #         "id_field": "document_id",
+    #         "num_shards": 16,
+    #         "block_size": 1_000,
+    #     },
+    # },
+    # "exac_exome_coverage": {
+    #     "get_table": lambda: subset_table(
+    #         hl.read_table(exac_coverage_pipeline.get_output("exome_coverage").get_output_path())
+    #     ),
+    #     "args": {"index": "exac_exome_coverage", "id_field": "xpos", "num_shards": 16, "block_size": 10_000},
+    # },
     ##############################################################################################################
     # ClinVar
     ##############################################################################################################
-    "clinvar_grch38_variants": {
-        "get_table": lambda: truncate_clinvar_variant_ids(
-            subset_table(hl.read_table(clinvar_grch38_pipeline.get_output("clinvar_variants").get_output_path()))
-        ),
-        "args": {
-            "index": "clinvar_grch38_variants",
-            "id_field": "clinvar_variation_id",
-            "index_fields": [
-                "clinvar_variation_id",
-                "variant_id",
-                "chrom",
-                "pos",
-                "transcript_consequences.gene_id",
-                "transcript_consequences.transcript_id",
-            ],
-            "num_shards": 2,
-            "block_size": 2_000,
-        },
-    },
+    # "clinvar_grch38_variants": {
+    #     "get_table": lambda: truncate_clinvar_variant_ids(
+    #         subset_table(hl.read_table(clinvar_grch38_pipeline.get_output("clinvar_variants").get_output_path()))
+    #     ),
+    #     "args": {
+    #         "index": "clinvar_grch38_variants",
+    #         "id_field": "clinvar_variation_id",
+    #         "index_fields": [
+    #             "clinvar_variation_id",
+    #             "variant_id",
+    #             "chrom",
+    #             "pos",
+    #             "transcript_consequences.gene_id",
+    #             "transcript_consequences.transcript_id",
+    #         ],
+    #         "num_shards": 2,
+    #         "block_size": 2_000,
+    #     },
+    # },
     "clinvar_grch37_variants": {
         "get_table": lambda: truncate_clinvar_variant_ids(
             subset_table(hl.read_table(clinvar_grch37_pipeline.get_output("clinvar_variants").get_output_path()))
@@ -355,34 +355,34 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     # Liftover
     ##############################################################################################################
-    "liftover": {
-        "get_table": lambda: add_liftover_document_id(
-            hl.read_table(liftover_pipeline.get_output("liftover").get_output_path())
-        ),
-        "args": {
-            "index": "liftover",
-            # "index_fields": [] # Index all fields
-            "id_field": "document_id",
-            "num_shards": 8,
-            "block_size": 1_000,
-        },
-    },
+    # "liftover": {
+    #     "get_table": lambda: add_liftover_document_id(
+    #         hl.read_table(liftover_pipeline.get_output("liftover").get_output_path())
+    #     ),
+    #     "args": {
+    #         "index": "liftover",
+    #         # "index_fields": [] # Index all fields
+    #         "id_field": "document_id",
+    #         "num_shards": 8,
+    #         "block_size": 1_000,
+    #     },
+    # },
     ##############################################################################################################
     # Genomic / Non Coding Constraints
     ##############################################################################################################
-    "gnomad_v3_genomic_constraint_regions": {
-        "get_table": lambda: subset_table(
-            hl.read_table(
-                gnomad_v3_genomic_constraint_regions_pipeline.get_output(
-                    "gnomad_v3_genomic_constraint_regions"
-                ).get_output_path()
-            )
-        ),
-        "args": {
-            "index": "gnomad_v3_genomic_constraint_regions",
-            "id_field": "element_id",
-        },
-    },
+    # "gnomad_v3_genomic_constraint_regions": {
+    #     "get_table": lambda: subset_table(
+    #         hl.read_table(
+    #             gnomad_v3_genomic_constraint_regions_pipeline.get_output(
+    #                 "gnomad_v3_genomic_constraint_regions"
+    #             ).get_output_path()
+    #         )
+    #     ),
+    #     "args": {
+    #         "index": "gnomad_v3_genomic_constraint_regions",
+    #         "id_field": "element_id",
+    #     },
+    # },
 }
 
 

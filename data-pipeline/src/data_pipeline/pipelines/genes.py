@@ -1,19 +1,20 @@
-import hail as hl
+# import hail as hl
 
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.helpers import annotate_table
 
-from data_pipeline.data_types.gene import prepare_genes
-from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
-from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
+# from data_pipeline.data_types.gene import prepare_genes
+# from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
+# from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
 from data_pipeline.data_types.transcript import (
-    annotate_gene_transcripts_with_tissue_expression,
-    annotate_gene_transcripts_with_refseq_id,
+    # annotate_gene_transcripts_with_tissue_expression,
+    # annotate_gene_transcripts_with_refseq_id,
     extract_transcripts,
 )
-from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
-from data_pipeline.data_types.pext import prepare_pext_data
+
+# from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
+# from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
