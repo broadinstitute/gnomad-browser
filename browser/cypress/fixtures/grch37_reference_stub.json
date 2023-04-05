@@ -1342,6 +1342,12 @@
         "flags": []
       },
       "exac_regional_missense_constraint_regions": null,
+      "gnomad_v2_regional_missense_constraint_regions": [],
+      "gnomad_v2_regional_missense_constraint_regions_0_01": [],
+      "gnomad_v2_regional_missense_constraint_regions_0_0001": [],
+      "gnomad_v2_regional_missense_constraint_regions_0_00001": [],
+      "ccr_region": [],
+
       "heterozygous_variant_cooccurrence_counts": [
         {
           "csq": "lof_lof",
