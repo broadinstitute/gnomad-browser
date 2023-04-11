@@ -46,7 +46,7 @@ type DatasetMetadata = {
   isV2: boolean
   isV3: boolean
   isExac: boolean
-  hasGenome: boolean
+  hasV2Genome: boolean
   metricsIncludeLowQualityGenotypes: boolean
   has1000GenomesPopulationFrequencies: boolean
   hasAlleleBalance: boolean
@@ -81,7 +81,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   isV2: datasetId.startsWith('gnomad_r2'),
   isV3: datasetId.startsWith('gnomad_r3'),
   isExac: datasetId === 'exac',
-  hasGenome: datasetId.startsWith('gnomad_r2'),
+  hasV2Genome: datasetId.startsWith('gnomad_r2'),
   metricsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2') || datasetId === 'exac',
   has1000GenomesPopulationFrequencies:
     datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3_non_v2',
@@ -146,7 +146,7 @@ export const isV3 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3')
 
 export const isExac = (datasetId: DatasetId) => getMetadata(datasetId, 'isExac')
 
-export const hasGenome = (datasetId: DatasetId) => getMetadata(datasetId, 'hasExome')
+export const hasV2Genome = (datasetId: DatasetId) => getMetadata(datasetId, 'hasV2Genome')
 
 export const metricsIncludeLowQualityGenotypes = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'metricsIncludeLowQualityGenotypes')

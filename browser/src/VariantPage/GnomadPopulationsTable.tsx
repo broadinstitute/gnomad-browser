@@ -6,7 +6,7 @@ import { Checkbox } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { PopulationsTable } from './PopulationsTable'
 import { Population } from './VariantPage'
-import { DatasetId, hasGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -146,7 +146,7 @@ export class GnomadPopulationsTable extends Component<
     }
 
     let populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
-    if (hasGenome(datasetId) && includeGenomes) {
+    if (hasV2Genome(datasetId) && includeGenomes) {
       populations = populations.map((pop) => {
         if (pop.id === 'eas') {
           // If the variant is only present in genomes, sub-continental populations won't be present at all.
@@ -181,7 +181,7 @@ export class GnomadPopulationsTable extends Component<
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
-        {hasGenome(datasetId) && includeGenomes && (
+        {hasV2Genome(datasetId) && includeGenomes && (
           <p>
             * Allele frequencies for some sub-continental populations were not computed for genome
             samples.
