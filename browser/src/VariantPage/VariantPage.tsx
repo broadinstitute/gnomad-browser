@@ -15,6 +15,7 @@ import {
   isLiftoverTarget,
   usesGrch37,
   usesGrch38,
+  isV3,
   isV3Subset,
   isExac,
 } from '@gnomad/dataset-metadata/metadata'
@@ -706,7 +707,7 @@ const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) 
 
   if (maneSelectTranscript.length === 1) {
     return {
-      ensembleId: maneSelectTranscript[0].gene_id
+      ensembleId: maneSelectTranscript[0].gene_id,
     }
   }
 
@@ -735,7 +736,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
         query={variantQuery}
         variables={{
           datasetId,
-          includeLocalAncestry: hasLocalAncestryPopulations(datasetId),
+          includeLocalAncestry: isV3(datasetId) && !isV3Subset(datasetId),
           includeLiftoverAsSource: isLiftoverSource(datasetId),
           includeLiftoverAsTarget: isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
