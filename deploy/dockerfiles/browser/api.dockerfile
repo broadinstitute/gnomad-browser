@@ -17,6 +17,9 @@ RUN yarn install --production --frozen-lockfile && yarn cache clean
 # Copy source
 COPY --chown=node:node dataset-metadata /app/dataset-metadata
 COPY --chown=node:node graphql-api/src /app/graphql-api/src
+COPY --chown=node:node tsconfig.json /app/graphql-api/tsconfig.json
+COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
 
-# Run
+# Build JS from TS source
+RUN yarn run tsc -p /app/graphql-api/tsconfig.build.json
 CMD ["node", "graphql-api/src/app.js"]

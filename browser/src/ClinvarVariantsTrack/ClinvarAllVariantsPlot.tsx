@@ -82,6 +82,8 @@ type ClinvarAllVariantsPlotProps = {
   onClickVariant: (...args: any[]) => any
 }
 
+type Category = 'frameshift' | 'other_lof' | 'missense' | 'splice_region' | 'other'
+
 const ClinvarAllVariantsPlot = ({
   scalePosition,
   transcripts,
@@ -89,7 +91,7 @@ const ClinvarAllVariantsPlot = ({
   width,
   onClickVariant,
 }: ClinvarAllVariantsPlotProps) => {
-  const [highlightedCategory, _setHighlightedCategory] = useState(null)
+  const [highlightedCategory, _setHighlightedCategory] = useState<Category | null>(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const setHighlightedCategory = useCallback(debounce(_setHighlightedCategory, 150), [
@@ -301,7 +303,6 @@ const ClinvarAllVariantsPlot = ({
     <svg height={plotHeight + 25} width={width}>
       <g transform="translate(0, 9)">
         <g
-          // @ts-expect-error TS(2345) FIXME: Argument of type '"frameshift"' is not assignable ... Remove this comment to see the full error message
           onMouseEnter={() => setHighlightedCategory('frameshift')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
@@ -314,7 +315,6 @@ const ClinvarAllVariantsPlot = ({
         </g>
         <g
           transform="translate(86,0)"
-          // @ts-expect-error TS(2345) FIXME: Argument of type '"other_lof"' is not assignable t... Remove this comment to see the full error message
           onMouseEnter={() => setHighlightedCategory('other_lof')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
@@ -326,7 +326,6 @@ const ClinvarAllVariantsPlot = ({
         </g>
         <g
           transform="translate(165,0)"
-          // @ts-expect-error TS(2345) FIXME: Argument of type '"missense"' is not assignable to... Remove this comment to see the full error message
           onMouseEnter={() => setHighlightedCategory('missense')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
@@ -338,7 +337,6 @@ const ClinvarAllVariantsPlot = ({
         </g>
         <g
           transform="translate(318,0)"
-          // @ts-expect-error TS(2345) FIXME: Argument of type '"splice_region"' is not assignab... Remove this comment to see the full error message
           onMouseEnter={() => setHighlightedCategory('splice_region')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
@@ -350,7 +348,6 @@ const ClinvarAllVariantsPlot = ({
         </g>
         <g
           transform="translate(406,0)"
-          // @ts-expect-error TS(2345) FIXME: Argument of type '"other"' is not assignable to pa... Remove this comment to see the full error message
           onMouseEnter={() => setHighlightedCategory('other')}
           onMouseLeave={() => setHighlightedCategory(null)}
         >
