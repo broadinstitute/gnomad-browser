@@ -118,7 +118,7 @@ type ZoomRegionOverviewProps = {
     start: number
     stop: number
   }
-  onChangeZoomRegion?: (...args: any[]) => any
+  onChangeZoomRegion: (...args: any[]) => any
   onChangeZoomRegionDebounceDelay?: number
 }
 
@@ -146,7 +146,6 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedOnChangeZoomRegionCallback = useCallback(
-      // @ts-expect-error TS(2345) FIXME: Argument of type '((...args: any[]) => any) | unde... Remove this comment to see the full error message
       debounce(onChangeZoomRegionCallback, onChangeZoomRegionDebounceDelay),
       [onChangeZoomRegionDebounceDelay]
     )

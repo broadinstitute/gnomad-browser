@@ -33,5 +33,7 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive --no-progress
       - name: Run ESLint
         run: yarn run eslint graphql-api
+      - name: Type check
+        run: yarn run ts-node ./browser/build/buildHelp.ts && yarn run typecheck
       - name: Run tests
         run: yarn run jest --selectProjects graphql-api
