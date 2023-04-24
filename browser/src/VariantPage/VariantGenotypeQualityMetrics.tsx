@@ -5,16 +5,15 @@ import styled from 'styled-components'
 
 import { Checkbox, Select, Tabs } from '@gnomad/ui'
 
-import Legend, { StripedSwatch } from '../Legend'
-import StackedHistogram from '../StackedHistogram'
-import ControlSection from './ControlSection'
-import { Variant } from './VariantPage'
-
 import {
   DatasetId,
   metricsIncludeLowQualityGenotypes,
   hasAlleleBalance,
 } from '@gnomad/dataset-metadata/metadata'
+import Legend, { StripedSwatch } from '../Legend'
+import StackedHistogram from '../StackedHistogram'
+import ControlSection from './ControlSection'
+import { Variant } from './VariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -362,8 +361,8 @@ type GenotypeQualityMetricPropType = {
 }
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ allele_balance: Req... Remove this comment to see the full error message
-const GenotypeQualityMetricPropType: PropTypes.Requireable<GenotypeQualityMetricPropType> = PropTypes.shape(
-  {
+const GenotypeQualityMetricPropType: PropTypes.Requireable<GenotypeQualityMetricPropType> =
+  PropTypes.shape({
     allele_balance: PropTypes.shape({
       alt: HistogramPropType,
     }),
@@ -375,7 +374,6 @@ const GenotypeQualityMetricPropType: PropTypes.Requireable<GenotypeQualityMetric
       all: HistogramPropType,
       alt: HistogramPropType,
     }).isRequired,
-  }
-)
+  })
 
 export default VariantGenotypeQualityMetrics

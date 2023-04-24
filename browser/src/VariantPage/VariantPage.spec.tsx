@@ -1,9 +1,9 @@
 import React from 'react'
 import { jest, expect, test } from '@jest/globals'
+import renderer from 'react-test-renderer'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
-import renderer from 'react-test-renderer'
-import { forDatasetsMatching, forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
+import { forDatasetsMatching } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 import VariantPage from './VariantPage'
 import { v2VariantFactory, v3VariantFactory } from '../__factories__/Variant'
@@ -13,18 +13,14 @@ jest.mock('../Query', () => {
 
   return {
     __esModule: true,
-    ...(originalModule as Object),
+    ...(originalModule as object),
     default: jest.fn(),
     BaseQuery: jest.fn(),
   }
 })
 
-const {
-  resetMockApiCalls,
-  resetMockApiResponses,
-  simulateApiResponse,
-  setMockApiResponses,
-} = mockQueries()
+const { resetMockApiCalls, resetMockApiResponses, simulateApiResponse, setMockApiResponses } =
+  mockQueries()
 
 beforeEach(() => {
   Query.mockImplementation(

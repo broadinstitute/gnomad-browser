@@ -77,7 +77,9 @@ const MitochondrialVariants = ({
   const renderedTableColumns = useMemo(() => {
     const columnsForContext = getColumnsForContext(context)
     if ((columnsForContext as any).clinical_significance) {
-      ;(columnsForContext as any).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+      ;(
+        columnsForContext as any
+      ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
       )} release`
     }
@@ -133,10 +135,10 @@ const MitochondrialVariants = ({
     () => filterMitochondrialVariants(variants, filter, renderedTableColumns),
     [variants, filter, renderedTableColumns]
   )
-  const renderedVariants = useMemo(() => sortMitochondrialVariants(filteredVariants, sortState), [
-    filteredVariants,
-    sortState,
-  ])
+  const renderedVariants = useMemo(
+    () => sortMitochondrialVariants(filteredVariants, sortState),
+    [filteredVariants, sortState]
+  )
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)

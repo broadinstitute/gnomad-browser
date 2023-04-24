@@ -22,7 +22,7 @@ const GNOMAD_V2_VARIANT_INDEX = 'gnomad_v2_variants'
 // ================================================================================================
 
 // eslint-disable-next-line no-unused-vars
-const countVariantsInRegion = async (esClient, region, subset) => {
+const countVariantsInRegion = async (esClient, region, _subset) => {
   const response = await esClient.count({
     index: GNOMAD_V2_VARIANT_INDEX,
     type: '_doc',

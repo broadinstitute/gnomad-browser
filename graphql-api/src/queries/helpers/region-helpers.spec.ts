@@ -1,4 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
+
 const { extendRegions, mergeOverlappingRegions, totalRegionSize } = require('./region-helpers')
 
 describe('extendRegions', () => {

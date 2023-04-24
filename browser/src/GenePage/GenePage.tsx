@@ -11,11 +11,6 @@ import { Track } from '@gnomad/region-viewer'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
-import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import VariantCooccurrenceCountsTable, {
-  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
-  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
-} from './VariantCooccurrenceCountsTable'
 import {
   DatasetId,
   hasExomeCoverage,
@@ -25,6 +20,11 @@ import {
   hasExons,
   isExac,
 } from '@gnomad/dataset-metadata/metadata'
+import ConstraintTable from '../ConstraintTable/ConstraintTable'
+import VariantCooccurrenceCountsTable, {
+  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
+} from './VariantCooccurrenceCountsTable'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'

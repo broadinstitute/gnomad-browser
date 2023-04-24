@@ -86,6 +86,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   }
 
   igvBrowser: any
+
   tracksLoaded: any
 
   constructor(props: ReadDataProps) {

@@ -1,12 +1,12 @@
 import React from 'react'
 
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import {
   labelForDataset,
   referenceGenome,
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
+import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'

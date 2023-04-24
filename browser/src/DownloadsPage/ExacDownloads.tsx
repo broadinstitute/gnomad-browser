@@ -1,6 +1,6 @@
-import React, { useRef, useImperativeHandle } from 'react'
+import React from 'react'
 
-import { Link, List, ListItem } from '@gnomad/ui'
+import { ListItem } from '@gnomad/ui'
 
 import {
   DownloadsSection,

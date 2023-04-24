@@ -13,6 +13,7 @@ export const FileList = styled(List)`
 
 const BaseSectionTitle = styled.h2`
   font-size: ${(props) =>
+    // eslint-disable-next-line no-nested-ternary
     props.theme.type === 'release'
       ? '2.25rem'
       : props.theme.type === 'datasets'

@@ -3,8 +3,6 @@ import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { ExternalLink } from '@gnomad/ui'
-
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
 

@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 
 const operationName = 'RegionCoverage'

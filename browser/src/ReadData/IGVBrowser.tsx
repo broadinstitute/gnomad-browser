@@ -69,7 +69,9 @@ class IGVBrowser extends Component<Props> {
   }
 
   browser: any
+
   el: any
+
   mounted: any
 
   componentDidMount() {

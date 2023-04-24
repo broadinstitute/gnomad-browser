@@ -17,19 +17,15 @@ jest.mock('./Query', () => {
 
   return {
     __esModule: true,
-    ...(originalModule as Object),
+    ...(originalModule as object),
     default: jest.fn(),
     BaseQuery: jest.fn(),
   }
 })
 
 // This is the API that your tests will use to interact with the mock queries
-const {
-  resetMockApiCalls,
-  resetMockApiResponses,
-  simulateApiResponse,
-  setMockApiResponses,
-} = mockQueries()
+const { resetMockApiCalls, resetMockApiResponses, simulateApiResponse, setMockApiResponses } =
+  mockQueries()
 
 // You can do this on a test-by-test basis too, rather than beforeEach.
 beforeEach(() => {

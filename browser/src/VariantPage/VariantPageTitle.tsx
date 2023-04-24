@@ -74,7 +74,7 @@ const VariantPageTitle = ({ datasetId, variantId }: Props) => {
     <TitleWrapper>
       {variantDescription === 'SNV' ? (
         // @ts-expect-error TS(2322) -- error from gnomad-browser-toolkit component
-        <TooltipAnchor tooltip={'Single nucleotide variant'}>
+        <TooltipAnchor tooltip="Single nucleotide variant">
           <span>{variantDescription}</span>
         </TooltipAnchor>
       ) : (

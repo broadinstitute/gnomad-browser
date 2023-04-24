@@ -65,7 +65,7 @@ const BottomSpacer = styled.div`
 
 const DownloadsPage = () => {
   // Load stylesheet to make smooth scroll behavior active
-  const style = styles.html
+  const _style = styles.html
 
   return (
     <InfoPage>
