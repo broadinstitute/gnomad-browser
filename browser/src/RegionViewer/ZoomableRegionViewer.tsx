@@ -47,10 +47,10 @@ const ZoomableRegionViewer = ({
 }: Props) => {
   const overviewRef = useRef(null)
 
-  const visibleRegions = useMemo(() => getVisibleRegions(regions, zoomRegion), [
-    regions,
-    zoomRegion,
-  ])
+  const visibleRegions = useMemo(
+    () => getVisibleRegions(regions, zoomRegion),
+    [regions, zoomRegion]
+  )
 
   const isZoomed =
     zoomRegion &&

@@ -1,10 +1,9 @@
 import React from 'react'
 import { Factory } from 'fishery'
-import geneFactory from '../__factories__/Gene'
-import transcriptFactory from '../__factories__/Transcript'
-
 import { describe, expect } from '@jest/globals'
 import renderer from 'react-test-renderer'
+import geneFactory from '../__factories__/Gene'
+import transcriptFactory from '../__factories__/Transcript'
 
 import { forAllDatasets, forAllDatasetsExcept } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'

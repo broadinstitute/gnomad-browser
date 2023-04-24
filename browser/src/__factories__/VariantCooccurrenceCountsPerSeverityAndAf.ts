@@ -6,9 +6,6 @@ import {
   HeterozygousCountCellSchema,
   HomozygousCountCellSchema,
   VariantCooccurrenceAfCutoff,
-} from '../GenePage/VariantCooccurrenceCountsTable'
-
-import {
   heterozygousVariantCooccurrenceSeverities,
   heterozygousVariantCooccurrenceAfCutoffs,
   homozygousVariantCooccurrenceSeverities,
@@ -50,7 +47,7 @@ const buildCounts = (
   afCutoffs: readonly VariantCooccurrenceAfCutoff[],
   cellBuilder: (severity: VariantCooccurrenceSeverity, afCutoff: VariantCooccurrenceAfCutoff) => any
 ) => {
-  let result: any = {}
+  const result: any = {}
   severities.forEach((severity) => {
     result[severity] = {}
     afCutoffs.forEach((afCutoff) => {
@@ -60,22 +57,20 @@ const buildCounts = (
   return result
 }
 
-export const HeterozygousVariantCooccurrenceCountsPerSeverityAndAfFactory = Factory.define<
-  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
->(() => {
-  return buildCounts(
-    heterozygousVariantCooccurrenceSeverities,
-    heterozygousVariantCooccurrenceAfCutoffs,
-    buildFakeHeterozygousCounts
-  ) as HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
-})
+export const HeterozygousVariantCooccurrenceCountsPerSeverityAndAfFactory =
+  Factory.define<HeterozygousVariantCooccurrenceCountsPerSeverityAndAf>(() => {
+    return buildCounts(
+      heterozygousVariantCooccurrenceSeverities,
+      heterozygousVariantCooccurrenceAfCutoffs,
+      buildFakeHeterozygousCounts
+    ) as HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  })
 
-export const HomozygousVariantCooccurrenceCountsPerSeverityAndAfFactory = Factory.define<
-  HomozygousVariantCooccurrenceCountsPerSeverityAndAf
->(() => {
-  return buildCounts(
-    homozygousVariantCooccurrenceSeverities,
-    homozygousVariantCooccurrenceAfCutoffs,
-    buildFakeHomozygousCounts
-  ) as HomozygousVariantCooccurrenceCountsPerSeverityAndAf
-})
+export const HomozygousVariantCooccurrenceCountsPerSeverityAndAfFactory =
+  Factory.define<HomozygousVariantCooccurrenceCountsPerSeverityAndAf>(() => {
+    return buildCounts(
+      homozygousVariantCooccurrenceSeverities,
+      homozygousVariantCooccurrenceAfCutoffs,
+      buildFakeHomozygousCounts
+    ) as HomozygousVariantCooccurrenceCountsPerSeverityAndAf
+  })

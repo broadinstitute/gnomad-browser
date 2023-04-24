@@ -137,7 +137,7 @@ const HmtVarInfo = ({ variant }: HmtVarInfoProps) => {
   )
 }
 
-type HmtVarInfoErrorBoundaryProps = {}
+type HmtVarInfoErrorBoundaryProps = object
 
 type HmtVarInfoErrorBoundaryState = any
 

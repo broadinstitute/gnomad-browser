@@ -55,6 +55,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   currentRequest: any
+
   mounted: any
 
   state = {

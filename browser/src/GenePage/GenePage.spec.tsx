@@ -1,18 +1,16 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { jest, describe, expect, test } from '@jest/globals'
-import { mockQueries } from '../../../tests/__helpers__/queries'
-import Query, { BaseQuery } from '../Query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { DatasetId, ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { mockQueries } from '../../../tests/__helpers__/queries'
+import Query, { BaseQuery } from '../Query'
 
 import geneFactory from '../__factories__/Gene'
-import transcriptFactory from '../__factories__/Transcript'
 
 import GenePage from './GenePage'
 import GenePageContainer from './GenePageContainer'
-import GeneTranscriptsTrack from './GeneTranscriptsTrack'
-import { DatasetId, ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { forDatasetsMatching, forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
@@ -21,7 +19,7 @@ jest.mock('../Query', () => {
 
   return {
     __esModule: true,
-    ...(originalModule as Object),
+    ...(originalModule as object),
     default: jest.fn(),
     BaseQuery: jest.fn(),
   }

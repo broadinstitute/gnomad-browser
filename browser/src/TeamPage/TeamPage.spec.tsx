@@ -1,4 +1,4 @@
-import { jest, describe, expect, test } from '@jest/globals'
+import { jest, expect, test } from '@jest/globals'
 import 'jest-styled-components'
 
 import React from 'react'

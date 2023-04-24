@@ -11,10 +11,10 @@ import exacSiteQualityMetricDistributions from '@gnomad/dataset-metadata/dataset
 import gnomadV2SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v2/siteQualityMetricDistributions.json'
 import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3/siteQualityMetricDistributions.json'
 
+import { DatasetId, isV2, isV3, isExac } from '@gnomad/dataset-metadata/metadata'
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
 import { Variant, SequencingType } from './VariantPage'
-import { DatasetId, isV2, isV3, isExac } from '@gnomad/dataset-metadata/metadata'
 
 // ================================================================================================
 // Metric descriptions
@@ -446,7 +446,6 @@ const yTickFormat = (n: any) => {
 }
 
 const formatMetricValue = (value: any, metric: any) => {
-  console.log(`METRIC: ${metric}`)
   if (
     metric === 'SiteQuality' ||
     metric === 'AS_QUALapprox' ||

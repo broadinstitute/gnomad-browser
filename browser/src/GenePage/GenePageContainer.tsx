@@ -274,13 +274,15 @@ type RolledUpVariantCooccurrenceCounts = {
 const rollUpVariantCooccurrenceCounts = (
   unrolledGene: UnrolledVariantCooccurrenceCounts
 ): RolledUpVariantCooccurrenceCounts => {
-  let heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
-  let homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
+  const heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
+  const homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
 
   unrolledGene.heterozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
-    const severity = unrolledGeneCount['csq']
-    const afCutoff = unrolledGeneCount['af_cutoff']
-    const data = unrolledGeneCount['data']
+    const severity = unrolledGeneCount.csq
+    const afCutoff = unrolledGeneCount.af_cutoff
+    const data = unrolledGeneCount.data
 
     heterozygous_variant_cooccurrence_counts[severity] =
       heterozygous_variant_cooccurrence_counts[severity] || {}
@@ -288,9 +290,9 @@ const rollUpVariantCooccurrenceCounts = (
   })
 
   unrolledGene.homozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
-    const severity = unrolledGeneCount['csq']
-    const afCutoff = unrolledGeneCount['af_cutoff']
-    const data = unrolledGeneCount['data']
+    const severity = unrolledGeneCount.csq
+    const afCutoff = unrolledGeneCount.af_cutoff
+    const data = unrolledGeneCount.data
 
     homozygous_variant_cooccurrence_counts[severity] =
       homozygous_variant_cooccurrence_counts[severity] || {}

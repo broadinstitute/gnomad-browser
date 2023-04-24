@@ -5,8 +5,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -76,7 +76,9 @@ const Variants = ({
   const renderedTableColumns = useMemo(() => {
     const columnsForContext = getColumnsForContext(context)
     if ((columnsForContext as any).clinical_significance) {
-      ;(columnsForContext as any).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+      ;(
+        columnsForContext as any
+      ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
       )} release`
     }

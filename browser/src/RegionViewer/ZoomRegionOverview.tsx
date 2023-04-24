@@ -49,7 +49,7 @@ const draggable = (C: any) => {
 
     render() {
       // @ts-expect-error TS(2339) FIXME: Property 'onDrag' does not exist on type 'Readonly... Remove this comment to see the full error message
-      const { onDrag, ...otherProps } = this.props
+      const { onDrag: _onDrag, ...otherProps } = this.props
       return (
         <C
           {...otherProps}

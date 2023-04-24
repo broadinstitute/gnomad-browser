@@ -15,7 +15,7 @@ const returnConstraintsThreshold = 150_000
 
 const fetchNccConstraintsByRegion = async (esClient, region) => {
   // eslint-disable-next-line no-unused-vars
-  const { reference_genome: referenceGenome, chrom, start, stop } = region
+  const { chrom, start, stop } = region
 
   const constraintRegionSize = 1_000
 

@@ -3,7 +3,11 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  hasNonCodingConstraints,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -21,8 +25,6 @@ import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import VariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
-
-import { hasNonCodingConstraints } from '@gnomad/dataset-metadata/metadata'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
