@@ -8,7 +8,15 @@ import { Link as StyledLink } from '@gnomad/ui'
 const StyledRRLink = StyledLink.withComponent(RRLink)
 
 const Link = withRouter((props: any) => {
-  const { location, history, match, preserveSelectedDataset, staticContext, to, ...rest } = props
+  const {
+    location,
+    history: _history,
+    match: _match,
+    preserveSelectedDataset,
+    staticContext: _staticContext,
+    to,
+    ...rest
+  } = props
   let finalTo = to
 
   if (preserveSelectedDataset) {

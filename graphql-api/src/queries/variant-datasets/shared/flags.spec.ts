@@ -1,4 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
+
 const { getFlagsForContext } = require('./flags')
 
 describe('LOFTEE', () => {

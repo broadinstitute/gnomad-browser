@@ -32,7 +32,7 @@ jest.mock('../Query', () => ({
       mockGraphqlResponse = { data: result }
       return children(mockGraphqlResponse)
     }
-    throw `mocked BaseQuery got unexpected URL "${url}"`
+    throw new Error(`mocked BaseQuery got unexpected URL "${url}"`)
   },
 }))
 

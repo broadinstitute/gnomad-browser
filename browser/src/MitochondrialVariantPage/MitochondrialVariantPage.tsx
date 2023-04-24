@@ -46,7 +46,7 @@ const ResponsiveSection = styled.section`
 `
 
 const VariantType = ({ variantId }: any) => {
-  const [chrom, pos, ref, alt] = variantId.split('-') // eslint-disable-line no-unused-vars
+  const [_chrom, _pos, ref, alt] = variantId.split('-')
   if (!ref || !alt) {
     return 'Variant'
   }

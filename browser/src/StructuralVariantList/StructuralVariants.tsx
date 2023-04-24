@@ -144,10 +144,10 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
     () => filterStructuralVariants(variants, filter, renderedTableColumns),
     [variants, filter, renderedTableColumns]
   )
-  const renderedVariants = useMemo(() => sortVariants(filteredVariants, sortState), [
-    filteredVariants,
-    sortState,
-  ])
+  const renderedVariants = useMemo(
+    () => sortVariants(filteredVariants, sortState),
+    [filteredVariants, sortState]
+  )
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)

@@ -2,10 +2,8 @@ import { jest, describe, expect } from '@jest/globals'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { Factory } from 'fishery'
-
-import TranscriptPage, { Transcript } from './TranscriptPage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import TranscriptPage from './TranscriptPage'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'

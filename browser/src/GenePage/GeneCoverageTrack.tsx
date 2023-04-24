@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { coverageDataset } from '../coverage'
 import { referenceGenome, isExac } from '@gnomad/dataset-metadata/metadata'
+import { coverageDataset } from '../coverage'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'

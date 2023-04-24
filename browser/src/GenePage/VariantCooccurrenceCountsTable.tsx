@@ -261,7 +261,7 @@ const HomozygousCountCell: HomozygousDataCell = ({
   const counts: HomozygousCountCellSchema = (variant_cooccurrence_counts[severity] &&
     variant_cooccurrence_counts[severity]![afCutoff]) || { hom_total: 0 }
 
-  return <td key={afCutoff}>{counts['hom_total']}</td>
+  return <td key={afCutoff}>{counts.hom_total}</td>
 }
 
 const RowContent = <
@@ -335,7 +335,8 @@ const VariantCooccurrenceCountsTableContent = <
           <th colSpan={afCutoffs.length}>Allele frequency</th>
         </tr>
         <tr>
-          <th></th>
+          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+          <th />
           {afCutoffs.map((afCutoff) => (
             <th key={`${afCutoff}`}>&le;&nbsp;{AF_CUTOFF_LABELS[afCutoff]}</th>
           ))}

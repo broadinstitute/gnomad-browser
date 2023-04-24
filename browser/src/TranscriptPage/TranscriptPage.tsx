@@ -4,8 +4,13 @@ import styled from 'styled-components'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 
+import {
+  DatasetId,
+  hasExomeCoverage,
+  labelForDataset,
+  ReferenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GeneFlags from '../GenePage/GeneFlags'
@@ -21,11 +26,11 @@ import TranscriptCoverageTrack from './TranscriptCoverageTrack'
 import TranscriptInfo from './TranscriptInfo'
 import TranscriptTrack from './TranscriptTrack'
 import VariantsInTranscript from './VariantsInTranscript'
-import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { GeneMetadata, Strand } from '../GenePage/GenePage'
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
 import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
+
 export type Transcript = {
   transcript_id: string
   transcript_version: string

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Badge, ExternalLink, Link as StyledLink, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
 
 import Link from '../Link'
 

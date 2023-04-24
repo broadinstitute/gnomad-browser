@@ -130,19 +130,21 @@ const RegionControls = ({ region, onChange, ...otherProps }: RegionControlsProps
   </Wrapper>
 )
 
-const GnomadRegionControls = withRouter(({ history, location, match, ...otherProps }: any) => (
-  <RegionControls
-    {...otherProps}
-    onChange={(region) => {
-      const regionId = `${region.chrom}-${region.start}-${region.stop}`
-      const currentParams = queryString.parse(location.search)
-      const next = {
-        pathname: `/region/${regionId}`,
-        search: queryString.stringify({ dataset: currentParams.dataset }),
-      }
-      history.push(next)
-    }}
-  />
-))
+const GnomadRegionControls = withRouter(
+  ({ history, location, match: _match, ...otherProps }: any) => (
+    <RegionControls
+      {...otherProps}
+      onChange={(region) => {
+        const regionId = `${region.chrom}-${region.start}-${region.stop}`
+        const currentParams = queryString.parse(location.search)
+        const next = {
+          pathname: `/region/${regionId}`,
+          search: queryString.stringify({ dataset: currentParams.dataset }),
+        }
+        history.push(next)
+      }}
+    />
+  )
+)
 
 export default GnomadRegionControls

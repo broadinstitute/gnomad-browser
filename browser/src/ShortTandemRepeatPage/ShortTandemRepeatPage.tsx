@@ -75,14 +75,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
   const [selectedScaleType, setSelectedScaleType] = useState('linear')
 
-  const [
-    selectedGenotypeDistributionRepeatUnits,
-    setSelectedGenotypeDistributionRepeatUnits,
-  ] = useState(
-    shortTandemRepeat.genotype_distribution.repeat_units.length === 1
-      ? shortTandemRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
-      : ''
-  )
+  const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
+    useState(
+      shortTandemRepeat.genotype_distribution.repeat_units.length === 1
+        ? shortTandemRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
+        : ''
+    )
 
   const [selectedDisease, setSelectedDisease] = useState(
     shortTandemRepeat.associated_diseases[0].name

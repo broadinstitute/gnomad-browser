@@ -3,13 +3,12 @@ import styled from 'styled-components'
 
 import queryString from 'query-string'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
+// @ts-expect-error
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
-import Link from './Link'
-
-// @ts-expect-error
+// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
+import Link from './Link'
 
 import InfoButton from './help/InfoButton'
 
@@ -86,8 +85,8 @@ export const Legend = () => {
       )}
       <span>
         Z Score{' '}
-        <TooltipAnchor key={`Legend`} tooltipComponent={LegendTooltip}>
-          <img src={QuestionMarkIcon} height={'12'} alt="" aria-hidden="true" />
+        <TooltipAnchor key="Legend" tooltipComponent={LegendTooltip}>
+          <img src={QuestionMarkIcon} height="12" alt="" aria-hidden="true" />
         </TooltipAnchor>
       </span>
       <svg width={330} height={25}>
@@ -100,7 +99,7 @@ export const Legend = () => {
         <text x={220} y={-4} fontSize="10" dy="1.2em">
           constrained
         </text>
-        <text x={110} y={10} fontSize="10" dy="1.2em" textAnchor="middle"></text>
+        <text x={110} y={10} fontSize="10" dy="1.2em" textAnchor="middle" />
         <text x={135} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
           2.18
         </text>
@@ -198,10 +197,12 @@ const RegionalGenomicConstraintTrack = ({
               <PlotWrapper>
                 <svg height={height} width={width}>
                   <text x={width / 2} y={height / 2} dy="0.33rem" textAnchor="middle">
-                    {(stop - start > returnConstraintsThreshold) && `The genomic constraint track is only displayed for regions with a size of ${
-                      returnConstraintsThreshold / 1000
-                    }kb or smaller. Zoom in or adjust the region to see this track.`}
-                    {(stop - start <= returnConstraintsThreshold) && `There is no genomic constraint data for this region`}
+                    {stop - start > returnConstraintsThreshold &&
+                      `The genomic constraint track is only displayed for regions with a size of ${
+                        returnConstraintsThreshold / 1000
+                      }kb or smaller. Zoom in or adjust the region to see this track.`}
+                    {stop - start <= returnConstraintsThreshold &&
+                      `There is no genomic constraint data for this region`}
                   </text>
                 </svg>
               </PlotWrapper>

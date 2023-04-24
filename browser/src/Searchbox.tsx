@@ -45,7 +45,7 @@ export default withRouter((props: any) => {
   const {
     history,
     location,
-    match,
+    _match,
     placeholder = 'Search by gene, region, or variant',
     width,
     ...rest

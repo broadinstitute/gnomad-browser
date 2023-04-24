@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { Checkbox } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 import { PopulationsTable } from './PopulationsTable'
 import { Population } from './VariantPage'
-import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 
 const ControlSection = styled.div`
   margin-top: 1em;

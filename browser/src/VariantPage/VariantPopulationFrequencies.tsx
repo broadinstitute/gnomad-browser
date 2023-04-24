@@ -2,18 +2,18 @@ import React from 'react'
 
 import { Tabs } from '@gnomad/ui'
 
-import TableWrapper from '../TableWrapper'
-import { GnomadPopulationsTable } from './GnomadPopulationsTable'
-import LocalAncestryPopulationsTable from './LocalAncestryPopulationsTable'
-import HGDPPopulationsTable from './HGDPPopulationsTable'
-import TGPPopulationsTable from './TGPPopulationsTable'
-import { Variant } from './VariantPage'
 import {
   DatasetId,
   hasLocalAncestryPopulations,
   isSubset,
   has1000GenomesPopulationFrequencies,
 } from '@gnomad/dataset-metadata/metadata'
+import TableWrapper from '../TableWrapper'
+import { GnomadPopulationsTable } from './GnomadPopulationsTable'
+import LocalAncestryPopulationsTable from './LocalAncestryPopulationsTable'
+import HGDPPopulationsTable from './HGDPPopulationsTable'
+import TGPPopulationsTable from './TGPPopulationsTable'
+import { Variant } from './VariantPage'
 
 type Props = {
   datasetId: DatasetId

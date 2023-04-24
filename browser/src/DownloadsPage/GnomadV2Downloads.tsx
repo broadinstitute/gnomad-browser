@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Badge, ExternalLink, Link, List, ListItem, Select } from '@gnomad/ui'
+import { Badge, ExternalLink, ListItem, Select } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 

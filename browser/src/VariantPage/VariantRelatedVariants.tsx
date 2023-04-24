@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { hasRelatedVariants } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
 import VariantLiftover from './VariantLiftover'
 import { Variant } from './VariantPage'
-import { hasRelatedVariants } from '@gnomad/dataset-metadata/metadata'
 
 const CODING_AND_UTR_VEP_CONSEQUENCES = new Set([
   'transcript_ablation',
