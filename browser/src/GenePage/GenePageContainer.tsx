@@ -347,7 +347,7 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   return (
     // TODO:FIXME: (rgrant) for dev cluster -- modify 'Gene' query to manually query its own dev cluster deployment API
     //                                         to fetch new Gene data (RMC, CCR) loaded in the dev ES Gene index
-    <BaseQuery operationName={operationName} query={query} variables={variables} url={'/api/'}>
+    <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://localhost:8010/api'}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (

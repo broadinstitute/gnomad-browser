@@ -84,22 +84,41 @@ const RegionAttributeList = styled.dl`
   }
 `
 
+// TODO:TODO:FIXME: (rgrant, Apr 25 2023: old color scale)
+// const colorScale = {
+//   "not_significant": "#e2e2e2",
+//   "least": "#d7191c",
+//   "less": "#fdae61",
+//   "middle": "#ffffbf",
+//   "greater": "#abdda4",
+//   "greatest": "#2b83ba",
+// }
+
+const colorScale = {
+  not_significant: '#e2e2e2',
+  least: '#A50F15',
+  less: '#DE2D26',
+  middle: '#FB6A4A',
+  greater: '#FCAE91',
+  greatest: '#FEE5D9',
+}
+
 function regionColor(region: any) {
   // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
   let color
   if (region.obs_exp > 0.8) {
-    color = '#2b83ba'
+    color = colorScale.greatest
   } else if (region.obs_exp > 0.6) {
-    color = '#abdda4'
+    color = colorScale.greater
   } else if (region.obs_exp > 0.4) {
-    color = '#ffffbf'
+    color = colorScale.middle
   } else if (region.obs_exp > 0.2) {
-    color = '#fdae61'
+    color = colorScale.less
   } else {
-    color = '#d7191c'
+    color = colorScale.least
   }
 
-  return region.chisq_diff_null < 10.8 ? '#e2e2e2' : color
+  return region.chisq_diff_null < 10.8 ? colorScale.not_significant : color
 }
 
 const LegendWrapper = styled.div`
@@ -116,11 +135,11 @@ const Legend = () => {
     <LegendWrapper>
       <span>Observed / Expected</span>
       <svg width={170} height={25}>
-        <rect x={10} y={0} width={30} height={10} stroke="#000" fill="#d7191c" />
-        <rect x={40} y={0} width={30} height={10} stroke="#000" fill="#fdae61" />
-        <rect x={70} y={0} width={30} height={10} stroke="#000" fill="#ffffbf" />
-        <rect x={100} y={0} width={30} height={10} stroke="#000" fill="#abdda4" />
-        <rect x={130} y={0} width={30} height={10} stroke="#000" fill="#2b83ba" />
+        <rect x={10} y={0} width={30} height={10} stroke="#000" fill={colorScale.least} />
+        <rect x={40} y={0} width={30} height={10} stroke="#000" fill={colorScale.less} />
+        <rect x={70} y={0} width={30} height={10} stroke="#000" fill={colorScale.middle} />
+        <rect x={100} y={0} width={30} height={10} stroke="#000" fill={colorScale.greater} />
+        <rect x={130} y={0} width={30} height={10} stroke="#000" fill={colorScale.greatest} />
         <text x={10} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
           0.0
         </text>
@@ -141,7 +160,7 @@ const Legend = () => {
         </text>
       </svg>
       <svg width={170} height={25}>
-        <rect x={10} y={0} width={20} height={10} stroke="#000" fill="#e2e2e2" />
+        <rect x={10} y={0} width={20} height={10} stroke="#000" fill={colorScale.not_significant} />
         <text x={35} y={0} fontSize="10" dy="1em" textAnchor="start">
           Not significant ({'\u03a7\u00b2'} &lt; 10.8)
         </text>
@@ -207,6 +226,40 @@ type OwnRegionalConstraintTrackProps = {
 //   typeof RegionalConstraintTrack.defaultProps
 
 const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLegend }: any) => {
+  // TODO:FIXME: Temp for mockups
+  if (!constrainedRegions) {
+    return (
+      <Wrapper>
+        <Track
+          renderLeftPanel={() => (
+            <SidePanel>
+              {label && <span>{label}</span>}
+              {!label && <span>Regional missense constraint</span>}
+              <InfoButton topic="regional-constraint" />
+            </SidePanel>
+          )}
+        >
+          {({ scalePosition, width }: any) => (
+            <>
+              <PlotWrapper>
+                <svg height={35} width={width}>
+                  <text x={width / 2} y={35 / 2} dy="0.33rem" textAnchor="middle">
+                    {`This gene was not searched for regional missense constraint, see the help text for additional information.`}
+                  </text>
+                </svg>
+              </PlotWrapper>
+            </>
+          )}
+        </Track>
+      </Wrapper>
+    )
+  }
+
+  // TODO:FIXME: Temp for mockups
+  if (constrainedRegions.length === 1) {
+    return <p>TODO: There's only 1!!!</p>
+  }
+
   const constrainedExons = regionIntersections([
     constrainedRegions,
     exons.filter((exon: any) => exon.feature_type === 'CDS'),
@@ -264,13 +317,16 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLege
                     return (
                       <g key={`${region.start}-${region.stop}`}>
                         <line x1={startX} y1={2} x2={startX} y2={11} stroke="#424242" />
-                        <line x1={startX} y1={7} x2={midX - 15} y2={7} stroke="#424242" />
-                        <line x1={midX + 15} y1={7} x2={stopX} y2={7} stroke="#424242" />
+                        <line x1={startX} y1={7} x2={stopX} y2={7} stroke="#424242" />
                         <line x1={stopX} y1={2} x2={stopX} y2={11} stroke="#424242" />
                         {regionWidth > 30 && (
-                          <text x={midX} y={8} dy="0.33em" textAnchor="middle">
-                            {region.obs_exp.toFixed(2)}
-                          </text>
+                          <>
+                            <rect x={midX - 15} y={3} width={30} height={5} fill="#fafafa" />
+                            <text x={midX} y={8} dy="0.33em" textAnchor="middle">
+                              {region.obs_exp.toFixed(2)}
+                            </text>
+                          </>
+
                         )}
                       </g>
                     )

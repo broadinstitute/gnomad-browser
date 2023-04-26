@@ -77,7 +77,9 @@ const Variants = ({
   const renderedTableColumns = useMemo(() => {
     const columnsForContext = getColumnsForContext(context)
     if ((columnsForContext as any).clinical_significance) {
-      ;(columnsForContext as any).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+      ;(
+        columnsForContext as any
+      ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
       )} release`
     }
@@ -214,12 +216,13 @@ const Variants = ({
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
       </TrackPageSection>
 
+      {/* TODO:TODO:FIXME: (rgrant, Apr 25, 2023: Removed for mockups) */}
+      {/* 
       <br />
       <br />
       <VariantsByBinALaClinvar variants={renderedVariants}/>
       <br />
-      <br />
-
+      <br /> */}
 
       <Cursor onClick={onNavigatorClick}>
         <VariantTrack
