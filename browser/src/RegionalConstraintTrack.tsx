@@ -94,14 +94,38 @@ const RegionAttributeList = styled.dl`
 //   "greatest": "#2b83ba",
 // }
 
+// TODO: temp Using Nick's preferred site for color scale - Blue? Maybe bad
+// https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=5
+// const colorScale = {
+//   not_significant: '#e2e2e2',
+//   least: '#045a8d',
+//   less: '#2b8cbe',
+//   middle: '#74a9cf',
+//   greater: '#bdc9e1',
+//   greatest: '#f1eef6',
+// }
+
+// TODO: temp Using Nick's preferred site for color scale - Red/Yellow
+// https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
 const colorScale = {
+  // not_significant: '#b2b2b2',
   not_significant: '#e2e2e2',
-  least: '#A50F15',
-  less: '#DE2D26',
-  middle: '#FB6A4A',
-  greater: '#FCAE91',
-  greatest: '#FEE5D9',
+  least: '#bd0026',
+  less: '#f03b20',
+  middle: '#fd8d3c',
+  greater: '#fecc5c',
+  greatest: '#ffffb2',
 }
+
+// TODO: temp Using Lily's color scale
+// const colorScale = {
+//   not_significant: '#e2e2e2',
+//   least: '#A50F15',
+//   less: '#DE2D26',
+//   middle: '#FB6A4A',
+//   greater: '#FCAE91',
+//   greatest: '#FEE5D9',
+// }
 
 function regionColor(region: any) {
   // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
@@ -176,6 +200,8 @@ type RegionTooltipProps = {
   region: {
     obs_exp?: number
     chisq_diff_null?: number
+    start: number
+    stop: number
   }
 }
 
@@ -195,6 +221,16 @@ const RegionTooltip = ({ region }: RegionTooltipProps) => (
         {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
         {region.chisq_diff_null !== null && region.chisq_diff_null < 10.8 && ' (not significant)'}
       </dd>
+    </div>
+    <div>
+      <dt>Break start:</dt>
+      {/* TODO: UPDATE TO GET REAL CHROM INFO */}
+      <dd>{`12-${region.start}-G`}</dd>
+    </div>
+    <div>
+      <dt>Break stop:</dt>
+      {/* TODO: UPDATE TO GET REAL CHROM INFO */}
+      <dd>{`12-${region.stop}-A`}</dd>
     </div>
   </RegionAttributeList>
 )
@@ -227,37 +263,44 @@ type OwnRegionalConstraintTrackProps = {
 
 const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLegend }: any) => {
   // TODO:FIXME: Temp for mockups
-  if (!constrainedRegions) {
-    return (
-      <Wrapper>
-        <Track
-          renderLeftPanel={() => (
-            <SidePanel>
-              {label && <span>{label}</span>}
-              {!label && <span>Regional missense constraint</span>}
-              <InfoButton topic="regional-constraint" />
-            </SidePanel>
-          )}
-        >
-          {({ scalePosition, width }: any) => (
-            <>
-              <PlotWrapper>
-                <svg height={35} width={width}>
-                  <text x={width / 2} y={35 / 2} dy="0.33rem" textAnchor="middle">
-                    {`This gene was not searched for regional missense constraint, see the help text for additional information.`}
-                  </text>
-                </svg>
-              </PlotWrapper>
-            </>
-          )}
-        </Track>
-      </Wrapper>
-    )
-  }
+  // if (!constrainedRegions) {
+  //   return (
+  //     <Wrapper>
+  //       <Track
+  //         renderLeftPanel={() => (
+  //           <SidePanel>
+  //             {label && <span>{label}</span>}
+  //             {!label && <span>Regional missense constraint</span>}
+  //             <InfoButton topic="regional-constraint" />
+  //           </SidePanel>
+  //         )}
+  //       >
+  //         {({ scalePosition, width }: any) => (
+  //           <>
+  //             <PlotWrapper>
+  //               <svg height={35} width={width}>
+  //                 <text x={width / 2} y={35 / 2} dy="0.33rem" textAnchor="middle">
+  //                   {`This gene was not searched for regional missense constraint, see the help text for additional information.`}
+  //                 </text>
+  //               </svg>
+  //             </PlotWrapper>
+  //           </>
+  //         )}
+  //       </Track>
+  //     </Wrapper>
+  //   )
+  // }
 
   // TODO:FIXME: Temp for mockups
-  if (constrainedRegions.length === 1) {
-    return <p>TODO: There's only 1!!!</p>
+  // if (constrainedRegions.length === 1) {
+  //   return <p>TODO: There's only 1!!!</p>
+  // }
+
+  //gnomad.broadinstitute.org/region/1-55505221-55530525
+
+  // TODO: FIXME: legit hardcoded this
+  if (!constrainedRegions) {
+    constrainedRegions = [{ start: 55505221, stop: 55530525, obs_exp: 0.96, chisq_diff_null: 0.5 }]
   }
 
   const constrainedExons = regionIntersections([
@@ -319,14 +362,13 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLege
                         <line x1={startX} y1={2} x2={startX} y2={11} stroke="#424242" />
                         <line x1={startX} y1={7} x2={stopX} y2={7} stroke="#424242" />
                         <line x1={stopX} y1={2} x2={stopX} y2={11} stroke="#424242" />
-                        {regionWidth > 30 && (
+                        {regionWidth > 40 && (
                           <>
                             <rect x={midX - 15} y={3} width={30} height={5} fill="#fafafa" />
                             <text x={midX} y={8} dy="0.33em" textAnchor="middle">
                               {region.obs_exp.toFixed(2)}
                             </text>
                           </>
-
                         )}
                       </g>
                     )
