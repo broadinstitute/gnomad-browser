@@ -49,7 +49,7 @@ type BaseQueryProps = {
 
 export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   static defaultProps = {
-    url: '/api/',
+    url: 'https://gnomad.broadinstitute.org/api/',
     operationName: null,
     variables: {},
   }
@@ -204,7 +204,7 @@ Query.defaultProps = {
   loadingMessage: 'Loading',
   loadingPlaceholderHeight: undefined,
   success: () => true,
-  url: '/api/',
+  url: 'https://gnomad.broadinstitute.org/api/',
   variables: {},
   operationName: null,
 }
