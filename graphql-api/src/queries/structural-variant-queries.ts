@@ -1,6 +1,7 @@
 import { UserVisibleError } from '../errors'
 
 import gnomadSvV2Queries from './structural-variant-datasets/gnomad-sv-v2-queries'
+import gnomadSvV3Queries from './structural-variant-datasets/gnomad-sv-v3-queries'
 
 type QueryArgs = [any, any]
 
@@ -12,6 +13,14 @@ const datasetQueries = {
       gnomadSvV2Queries.fetchStructuralVariantsByGene(...args, 'all'),
     fetchStructuralVariantsByRegion: (...args: QueryArgs) =>
       gnomadSvV2Queries.fetchStructuralVariantsByRegion(...args, 'all'),
+  },
+  gnomad_sv_r3: {
+    fetchStructuralVariantById: (...args: QueryArgs) =>
+      gnomadSvV3Queries.fetchStructuralVariantById(...args),
+    fetchStructuralVariantsByGene: (...args: QueryArgs) =>
+      gnomadSvV3Queries.fetchStructuralVariantsByGene(...args),
+    fetchStructuralVariantsByRegion: (...args: QueryArgs) =>
+      gnomadSvV3Queries.fetchStructuralVariantsByRegion(...args),
   },
 }
 
