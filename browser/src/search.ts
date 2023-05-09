@@ -15,7 +15,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
     // Structural Variants
     // ==============================================================================================
 
-    if (isStructuralVariantId(query)) {
+    if (isStructuralVariantId(dataset, query)) {
       const structuralVariantId = query.toUpperCase()
       return Promise.resolve([
         {

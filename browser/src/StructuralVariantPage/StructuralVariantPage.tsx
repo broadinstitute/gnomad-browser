@@ -40,9 +40,9 @@ type StructuralVariantPageProps = {
 const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProps) => (
   // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
   <Page>
-    <DocumentTitle title={`${variant.variant_id} | ${labelForDataset(datasetId)}`} />
+    <DocumentTitle title={`${variant.variant_id.toUpperCase()} | ${labelForDataset(datasetId)}`} />
     <GnomadPageHeading datasetOptions={{ includeShortVariants: false }} selectedDataset={datasetId}>
-      Structural variant: {variant.variant_id}
+      Structural variant: {variant.variant_id.toUpperCase()}
     </GnomadPageHeading>
     <Wrapper>
       <ResponsiveSection>
@@ -101,7 +101,7 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
         </h2>
         {variant.age_distribution ? (
           <React.Fragment>
-            {datasetId !== 'gnomad_sv_r2_1' && (
+            {datasetId !== 'gnomad_sv_r2_1' && datasetId !== 'gnomad_sv_r3' && (
               <p>Age distribution is based on the full SV dataset, not the selected subset.</p>
             )}
             <StructuralVariantAgeDistribution variant={variant} />
@@ -124,6 +124,7 @@ const ConnectedStructuralVariantPage = ({
   variantId,
 }: ConnectedStructuralVariantPageProps) => {
   const operationName = 'StructuralVariant'
+  const url = datasetId === 'gnomad_sv_r3' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
   const query = `
     query ${operationName}($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
       structural_variant(dataset: $datasetId, variantId: $variantId) {
@@ -201,6 +202,7 @@ const ConnectedStructuralVariantPage = ({
       loadingMessage="Loading variant"
       errorMessage="Unable to load variant"
       success={(data: any) => data.structural_variant}
+      url={url}
     >
       {({ data }: any) => {
         return <StructuralVariantPage datasetId={datasetId} variant={data.structural_variant} />

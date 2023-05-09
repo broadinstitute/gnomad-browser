@@ -10,9 +10,24 @@ const rankedConsequences = [
     category: 'dup_lof',
   },
   {
+    term: 'intragenic_exon_dup',
+    label: 'int. exon duplication',
+    category: 'dup_lof',
+  },
+  {
+    term: 'partial_exon_dup',
+    label: 'partial exon duplication',
+    category: 'dup_lof',
+  },
+  {
     term: 'copy_gain',
     label: 'copy gain',
     category: 'copy_gain',
+  },
+  {
+    term: 'tss_dup',
+    label: 'TSS duplication',
+    category: 'other',
   },
   {
     term: 'dup_partial',
@@ -20,7 +35,27 @@ const rankedConsequences = [
     category: 'other',
   },
   {
+    term: 'breakend_exonic',
+    label: 'exonic breakend',
+    category: 'other',
+  },
+  {
+    term: 'noncoding_breakpoint',
+    label: 'noncoding breakpoint',
+    category: 'other',
+  },
+  {
+    term: 'noncoding_span',
+    label: 'noncoding span',
+    category: 'other',
+  },
+  {
     term: 'msv_exon_ovr',
+    label: 'MCNV overlap',
+    category: 'other',
+  },
+  {
+    term: 'msv_exon_overlap',
     label: 'MCNV overlap',
     category: 'other',
   },

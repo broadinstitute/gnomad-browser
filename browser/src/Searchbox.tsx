@@ -37,6 +37,9 @@ const getDefaultSearchDataset = (selectedDataset: any) => {
     if (selectedDataset === 'exac') {
       return 'exac'
     }
+    if (selectedDataset === 'gnomad_sv_r3') {
+      return 'gnomad_sv_r3'
+    }
   }
   return 'gnomad_r2_1'
 }
@@ -82,6 +85,7 @@ export default withRouter((props: any) => {
         <option value="gnomad_r3">gnomAD v3.1.2</option>
         <option value="gnomad_r2_1">gnomAD v2.1.1</option>
         <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
+        <option value="gnomad_sv_r3">gnomAD SVs v3</option>
         <option value="exac">ExAC</option>
       </Select>
       <span style={{ flexGrow: 1 }}>

@@ -11,6 +11,7 @@ enum DatasetId {
   gnomad_r2_1_non_cancer
   gnomad_r2_1_non_topmed
   exac
+  gnomad_sv_r3
 }
 
 enum StructuralVariantDatasetId {
