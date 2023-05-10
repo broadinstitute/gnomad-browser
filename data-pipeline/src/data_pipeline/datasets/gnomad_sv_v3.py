@@ -84,14 +84,14 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
         variant_id=ds.rsid.replace("^gnomAD-SV_v3_", ""),
         reference_genome="GRCh38",
         # Start
-        chrom=ds.locus.contig,
+        chrom=ds.locus.contig.replace("chr", ""),
         pos=ds.locus.position,
         xpos=x_position(ds.locus.contig, ds.locus.position),
         # End
         end=ds.info.END,
         xend=x_position(ds.locus.contig, ds.info.END),
         # Start 2
-        chrom2=ds.info.CHR2,
+        chrom2=hl.if_else(ds.info.CHR2 == hl.missing(hl.tint32), hl.missing(hl.tstr), ds.info.CHR2.replace("chr", "")),
         pos2=ds.info.POS2,
         xpos2=x_position(ds.info.CHR2, ds.info.POS2),
         # End 2
