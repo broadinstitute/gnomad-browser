@@ -76,6 +76,7 @@ def main(argv: typing.List[str]) -> None:
     apply_parser.set_defaults(action=apply_elasticsearch)
     apply_parser.add_argument("--cluster-name", default="gnomad")
     apply_parser.add_argument("--n-ingest-pods", type=int, default=0)
+    apply_parser.add_argument("--namespace", default="default")
 
     get_parser = subparsers.add_parser("get")
     get_parser.set_defaults(action=get_elasticsearch_cluster)
