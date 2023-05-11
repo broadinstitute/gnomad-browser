@@ -43,4 +43,4 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        cloud.google.com/gke-nodepool: 'main-pool'
