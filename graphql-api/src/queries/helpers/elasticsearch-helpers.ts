@@ -11,7 +11,6 @@ export const fetchAllSearchResults = async (client: any, searchParams: any) => {
 
   const size = searchParams.size || 1000
   const scroll = searchParams.scroll || '30s'
-
   responseQueue.push(
     await client.search({
       ...searchParams,

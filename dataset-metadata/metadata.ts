@@ -71,7 +71,8 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasConstraints: !datasetId.startsWith('gnomad_r3'),
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3'),
-  referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
+  referenceGenome:
+    datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r3' ? 'GRCh38' : 'GRCh37',
   hasExome: !datasetId.startsWith('gnomad_r3'),
   hasExomeCoverage: !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3'),

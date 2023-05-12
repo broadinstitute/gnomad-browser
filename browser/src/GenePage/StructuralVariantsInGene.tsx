@@ -46,6 +46,10 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       }
     }
   `
+  const url =
+    datasetId === 'gnomad_sv_r3'
+      ? 'http://localhost:8010/api'
+      : 'https://gnomad.broadinstitute.org/api/'
 
   return (
     <Query
@@ -59,6 +63,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
       success={(data: any) => data.gene && data.gene.structural_variants}
+      url={url}
     >
       {({ data }: any) => {
         return (
