@@ -23,10 +23,7 @@ type Props = OwnProps & typeof StructuralVariantsInRegion.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'StructuralVariantsInRegion' implicitly has type '... Remove this comment to see the full error message
 const StructuralVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: Props) => {
-  const url =
-    datasetId === 'gnomad_sv_r3'
-      ? 'http://localhost:8010/api'
-      : 'https://gnomad.broadinstitute.org/api/'
+  const url = datasetId === 'gnomad_sv_r3' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
 
   const operationName = 'StructuralVariantsInRegion'
   const query = `

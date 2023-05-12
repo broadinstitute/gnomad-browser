@@ -46,10 +46,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       }
     }
   `
-  const url =
-    datasetId === 'gnomad_sv_r3'
-      ? 'http://localhost:8010/api'
-      : 'https://gnomad.broadinstitute.org/api/'
+  const url = datasetId === 'gnomad_sv_r3' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
 
   return (
     <Query
