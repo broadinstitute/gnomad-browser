@@ -67,7 +67,8 @@ type DatasetMetadata = {
   hasConstraints: boolean
   hasNonCodingConstraints: boolean
   hasExome: boolean
-  hasExomeCoverage: boolean
+  genesHaveExomeCoverage: boolean
+  transcriptsHaveExomeCoverage: boolean
   hasLocalAncestryPopulations: boolean
   isLiftoverSource: boolean
   isLiftoverTarget: boolean
@@ -107,7 +108,8 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3'),
   referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
   hasExome: !datasetId.startsWith('gnomad_r3'),
-  hasExomeCoverage: !datasetId.startsWith('gnomad_r3'),
+  genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
+  transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3'),
   isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
   isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
@@ -157,7 +159,11 @@ export const hasNonCodingConstraints = (datasetId: DatasetId) =>
 
 export const hasExome = (datsetId: DatasetId) => getMetadata(datsetId, 'hasExome')
 
-export const hasExomeCoverage = (datsetId: DatasetId) => getMetadata(datsetId, 'hasExomeCoverage')
+export const genesHaveExomeCoverage = (datsetId: DatasetId) =>
+  getMetadata(datsetId, 'genesHaveExomeCoverage')
+
+export const transcriptsHaveExomeCoverage = (datsetId: DatasetId) =>
+  getMetadata(datsetId, 'transcriptsHaveExomeCoverage')
 
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
 

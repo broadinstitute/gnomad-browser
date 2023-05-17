@@ -13,7 +13,7 @@ import { Badge, Button } from '@gnomad/ui'
 
 import {
   DatasetId,
-  hasExomeCoverage,
+  genesHaveExomeCoverage,
   labelForDataset,
   hasStructuralVariants,
   ReferenceGenome,
@@ -434,7 +434,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <GeneCoverageTrack
             datasetId={datasetId}
             geneId={geneId}
-            includeExomeCoverage={hasExomeCoverage(datasetId)}
+            includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
           />
         )}
 

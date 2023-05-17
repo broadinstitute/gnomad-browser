@@ -6,7 +6,7 @@ import { TranscriptPlot } from '@gnomad/track-transcripts'
 
 import {
   DatasetId,
-  hasExomeCoverage,
+  transcriptsHaveExomeCoverage,
   labelForDataset,
   ReferenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
@@ -227,7 +227,7 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
           <TranscriptCoverageTrack
             datasetId={datasetId}
             transcriptId={transcript.transcript_id}
-            includeExomeCoverage={hasExomeCoverage(datasetId)}
+            includeExomeCoverage={transcriptsHaveExomeCoverage(datasetId)}
           />
         )}
 
