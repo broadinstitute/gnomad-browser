@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
-import { coverageDataset } from '../coverage'
+import { referenceGenome, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -73,8 +72,8 @@ const RegionCoverageTrack = ({
         chrom,
         start,
         stop,
-        datasetId: coverageDataset(datasetId),
-        referenceGenome: referenceGenome(coverageDataset(datasetId)),
+        datasetId: coverageDatasetId(datasetId),
+        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
         includeExomeCoverage,
         includeGenomeCoverage,
       }}

@@ -9,6 +9,8 @@ import {
   labelForDataset,
   ReferenceGenome,
   referenceGenome,
+  coverageDatasetId,
+  allDatasetIds,
 } from './metadata'
 
 describe.each([
@@ -160,4 +162,28 @@ describe.each([
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} exome coverage`, () =>
     expect(hasExomeCoverage(datasetId)).toEqual(expectedResult))
+})
+
+const expectedCoverageDatasetIds: Record<DatasetId, DatasetId> = {
+  exac: 'exac',
+  gnomad_r2_1: 'gnomad_r2_1',
+  gnomad_r2_1_controls: 'gnomad_r2_1',
+  gnomad_r2_1_non_cancer: 'gnomad_r2_1',
+  gnomad_r2_1_non_neuro: 'gnomad_r2_1',
+  gnomad_r2_1_non_topmed: 'gnomad_r2_1',
+  gnomad_r3: 'gnomad_r3',
+  gnomad_r3_controls_and_biobanks: 'gnomad_r3',
+  gnomad_r3_non_cancer: 'gnomad_r3',
+  gnomad_r3_non_neuro: 'gnomad_r3',
+  gnomad_r3_non_topmed: 'gnomad_r3',
+  gnomad_r3_non_v2: 'gnomad_r3',
+  gnomad_sv_r2_1: 'gnomad_r2_1',
+  gnomad_sv_r2_1_controls: 'gnomad_r2_1',
+  gnomad_sv_r2_1_non_neuro: 'gnomad_r2_1',
+}
+
+describe.each(allDatasetIds)('coverageDataset for dataset %s', (datasetId: DatasetId) => {
+  const expectedCoverageDatasetId = expectedCoverageDatasetIds[datasetId]
+  test(`is ${expectedCoverageDatasetId}`, () =>
+    expect(coverageDatasetId(datasetId)).toEqual(expectedCoverageDatasetId))
 })
