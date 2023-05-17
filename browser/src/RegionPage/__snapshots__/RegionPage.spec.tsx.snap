@@ -93,7 +93,6 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="exac"
       start={345}
       stop={456}
@@ -268,17 +267,6 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -377,7 +365,6 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a m
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r2_1"
       start={345}
       stop={456}
@@ -552,17 +539,6 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a n
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -661,7 +637,6 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r2_1_controls"
       start={345}
       stop={456}
@@ -836,17 +811,6 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -945,7 +909,6 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r2_1_non_cancer"
       start={345}
       stop={456}
@@ -1120,17 +1083,6 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -1229,7 +1181,6 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r2_1_non_neuro"
       start={345}
       stop={456}
@@ -1404,17 +1355,6 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -1513,7 +1453,6 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r2_1_non_topmed"
       start={345}
       stop={456}
@@ -1688,17 +1627,6 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -1797,7 +1725,6 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a mit
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3"
       start={345}
       stop={456}
@@ -1988,17 +1915,6 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a non
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -2097,7 +2013,6 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3_controls_and_biobanks"
       start={345}
       stop={456}
@@ -2288,17 +2203,6 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -2397,7 +2301,6 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3_non_cancer"
       start={345}
       stop={456}
@@ -2588,17 +2491,6 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -2697,7 +2589,6 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3_non_neuro"
       start={345}
       stop={456}
@@ -2888,17 +2779,6 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -2997,7 +2877,6 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3_non_topmed"
       start={345}
       stop={456}
@@ -3188,17 +3067,6 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -3297,7 +3165,6 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_r3_non_v2"
       start={345}
       stop={456}
@@ -3488,17 +3355,6 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
           "stop": 456,
         }
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
-      }
     />
   </GnomadRegionViewer>
 </TrackPage>
@@ -3597,7 +3453,6 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_sv_r2_1"
       start={345}
       stop={456}
@@ -3881,7 +3736,6 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_sv_r2_1_controls"
       start={345}
       stop={456}
@@ -4165,7 +4019,6 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      chrom="M"
       datasetId="gnomad_sv_r2_1_non_neuro"
       start={345}
       stop={456}
