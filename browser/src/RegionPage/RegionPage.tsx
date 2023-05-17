@@ -7,6 +7,8 @@ import {
   DatasetId,
   labelForDataset,
   hasNonCodingConstraints,
+  regionsHaveExomeCoverage,
+  isSVs,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -146,9 +148,7 @@ const RegionPage = ({ datasetId, region }: Props) => {
           <RegionCoverageTrack
             datasetId={datasetId}
             chrom={chrom}
-            includeExomeCoverage={
-              !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
-            }
+            includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
             start={start}
             stop={stop}
           />
@@ -171,7 +171,7 @@ const RegionPage = ({ datasetId, region }: Props) => {
         )}
 
         {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
+        {isSVs(datasetId) ? (
           <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
         ) : region.chrom === 'M' ? (
           <MitochondrialVariantsInRegion
