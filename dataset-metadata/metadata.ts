@@ -27,6 +27,16 @@ const fullDatasetIds = allDatasetIds.filter(
   (datasetId) => datasetId === 'exac' || datasetId.match(/_r\d+(_\d+)*$/)
 )
 
+const extractReadsDatasetId = (datasetId: DatasetId) => {
+  if (datasetId.startsWith('gnomad_r3')) {
+    return 'gnomad_r3'
+  }
+  if (datasetId.startsWith('gnomad_r2')) {
+    return 'gnomad_r2'
+  }
+  return datasetId
+}
+
 type DatasetMetadata = {
   referenceGenome: ReferenceGenome
   label: string
@@ -56,6 +66,9 @@ type DatasetMetadata = {
   hasShortTandemRepeats: boolean
   hasMitochondrialGenomeCoverage: boolean
   hasMitochondrialVariants: boolean
+  hasNonCodingReadData: boolean
+  readsDatasetId: string
+  readsIncludeLowQualityGenotypes: boolean
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -92,6 +105,9 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
   hasMitochondrialGenomeCoverage: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
   hasMitochondrialVariants: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
+  hasNonCodingReadData: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
+  readsDatasetId: extractReadsDatasetId(datasetId),
+  readsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2'),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -172,3 +188,11 @@ export const hasMitochondrialGenomeCoverage = (datasetId: DatasetId) =>
 
 export const hasMitochondrialVariants = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasMitochondrialVariants')
+
+export const hasNonCodingReadData = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasNonCodingReadData')
+
+export const readsDatasetId = (datasetId: DatasetId) => getMetadata(datasetId, 'readsDatasetId')
+
+export const readsIncludeLowQualityGenotypes = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'readsIncludeLowQualityGenotypes')
