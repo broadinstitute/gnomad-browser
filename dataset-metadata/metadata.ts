@@ -37,6 +37,27 @@ const extractReadsDatasetId = (datasetId: DatasetId) => {
   return datasetId
 }
 
+const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
+  // Coverage is not broken down by subset for gnomAD 3.1
+  // Map all subset datasets to the main dataset.
+  if (datasetId.startsWith('gnomad_r3')) {
+    return 'gnomad_r3'
+  }
+
+  // Coverage is not broken down by subset for gnomAD 2.1
+  // Map all subset datasets to the main dataset.
+  if (datasetId.startsWith('gnomad_r2_1')) {
+    return 'gnomad_r2_1'
+  }
+
+  // SVs should show gnomAD 2.1 coverage
+  if (datasetId.startsWith('gnomad_sv')) {
+    return 'gnomad_r2_1'
+  }
+
+  return datasetId
+}
+
 type DatasetMetadata = {
   referenceGenome: ReferenceGenome
   label: string
@@ -69,6 +90,7 @@ type DatasetMetadata = {
   hasNonCodingReadData: boolean
   readsDatasetId: string
   readsIncludeLowQualityGenotypes: boolean
+  coverageDatasetId: DatasetId
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -108,6 +130,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasNonCodingReadData: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
   readsDatasetId: extractReadsDatasetId(datasetId),
   readsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2'),
+  coverageDatasetId: extractCoverageDatasetId(datasetId),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -196,3 +219,6 @@ export const readsDatasetId = (datasetId: DatasetId) => getMetadata(datasetId, '
 
 export const readsIncludeLowQualityGenotypes = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'readsIncludeLowQualityGenotypes')
+
+export const coverageDatasetId = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'coverageDatasetId')
