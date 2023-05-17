@@ -69,6 +69,7 @@ type DatasetMetadata = {
   hasExome: boolean
   genesHaveExomeCoverage: boolean
   transcriptsHaveExomeCoverage: boolean
+  regionsHaveExomeCoverage: boolean
   hasLocalAncestryPopulations: boolean
   isLiftoverSource: boolean
   isLiftoverTarget: boolean
@@ -78,6 +79,7 @@ type DatasetMetadata = {
   isV2: boolean
   isV3: boolean
   isExac: boolean
+  isSVs: boolean
   hasV2Genome: boolean
   metricsIncludeLowQualityGenotypes: boolean
   has1000GenomesPopulationFrequencies: boolean
@@ -110,6 +112,8 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasExome: !datasetId.startsWith('gnomad_r3'),
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
+  regionsHaveExomeCoverage:
+    !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3'),
   isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
   isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
@@ -117,6 +121,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   usesGrch38: datasetId.startsWith('gnomad_r3'),
   isV2: datasetId.startsWith('gnomad_r2'),
   isV3: datasetId.startsWith('gnomad_r3'),
+  isSVs: datasetId.startsWith('gnomad_sv'),
   isExac: datasetId === 'exac',
   hasV2Genome: datasetId.startsWith('gnomad_r2'),
   metricsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2') || datasetId === 'exac',
@@ -165,6 +170,9 @@ export const genesHaveExomeCoverage = (datsetId: DatasetId) =>
 export const transcriptsHaveExomeCoverage = (datsetId: DatasetId) =>
   getMetadata(datsetId, 'transcriptsHaveExomeCoverage')
 
+export const regionsHaveExomeCoverage = (datsetId: DatasetId) =>
+  getMetadata(datsetId, 'regionsHaveExomeCoverage')
+
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
 
 export const hasStructuralVariants = (datasetId: DatasetId) =>
@@ -190,6 +198,8 @@ export const isV2 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV2')
 export const isV3 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3')
 
 export const isExac = (datasetId: DatasetId) => getMetadata(datasetId, 'isExac')
+
+export const isSVs = (datasetId: DatasetId) => getMetadata(datasetId, 'isSVs')
 
 export const hasV2Genome = (datasetId: DatasetId) => getMetadata(datasetId, 'hasV2Genome')
 
