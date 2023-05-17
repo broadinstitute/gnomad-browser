@@ -20,6 +20,7 @@ export type MockApiResponses = Record<string, any>
 export type MockApiRequest = {
   operationName: string
   variables: Record<string, any>
+  query: string
 }
 
 export const mockQueries = () => {
@@ -33,7 +34,7 @@ export const mockQueries = () => {
     operationName: string,
     variables: Record<string, any>
   ) => {
-    mockApiRequests.push({ operationName, variables })
+    mockApiRequests.push({ operationName, variables, query })
     const mockApiResponseFactory = mockApiResponses[operationName]
     if (mockApiResponseFactory) {
       const mockApiResponse = mockApiResponseFactory()
@@ -53,6 +54,7 @@ export const mockQueries = () => {
   const resetMockApiResponses = () => setMockApiResponses({})
 
   const mockApiCalls = () => mockApiRequests
+
   const resetMockApiCalls = () => {
     mockApiRequests = []
   }

@@ -4,7 +4,13 @@ import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
 
-import { DatasetId, isSubset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  isSubset,
+  hasNonCodingReadData,
+  readsDatasetId as getReadsDatasetId,
+  readsIncludeLowQualityGenotypes,
+} from '@gnomad/dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
@@ -270,7 +276,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
       return (
         <div>
           <p>No read data available for this variant.</p>
-          {(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) && (
+          {!hasNonCodingReadData(datasetId) && (
             <p>
               <Badge level="info">Note</Badge> Read data for non-coding regions is not available in
               gnomAD v2.1.1 and ExAC.
@@ -337,7 +343,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
           , so they accurately represent what HaplotypeCaller was seeing when it called this
           variant.
         </p>
-        {datasetId.startsWith('gnomad_r2') && (
+        {readsIncludeLowQualityGenotypes(datasetId) && (
           <p>
             <Badge level="info">Note</Badge> Reads shown here may include low quality genotypes that
             were excluded from allele counts.
@@ -426,14 +432,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   }
 
   // Reads are not broken down by subset.
-  let readsDatasetId: any
-  if (datasetId.startsWith('gnomad_r3')) {
-    readsDatasetId = 'gnomad_r3'
-  } else if (datasetId.startsWith('gnomad_r2')) {
-    readsDatasetId = 'gnomad_r2'
-  } else {
-    readsDatasetId = datasetId
-  }
+  const readsDatasetId = getReadsDatasetId(datasetId)
 
   const query = `
     query ReadData {

@@ -29,8 +29,13 @@ jest.mock('../../../graphql-api/src/cache', () => ({
   withCache: (wrappedFunction: any) => wrappedFunction,
 }))
 
-const { resetMockApiCalls, resetMockApiResponses, simulateApiResponse, setMockApiResponses } =
-  mockQueries()
+const {
+  resetMockApiCalls,
+  resetMockApiResponses,
+  simulateApiResponse,
+  setMockApiResponses,
+  mockApiCalls,
+} = mockQueries()
 
 beforeEach(() => {
   Query.mockImplementation(
@@ -53,7 +58,7 @@ afterEach(() => {
 jest.mock('./IGVBrowser', () => () => null)
 
 forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
-  test('has no unexpected changes', () => {
+  test('has no unexpected changes with exome data present', () => {
     setMockApiResponses({
       ReadData: () =>
         readsApiOutputFactory
@@ -67,5 +72,39 @@ forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
       withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
     )
     expect(tree).toMatchSnapshot()
+  })
+
+  test('has no unexpected changes with exome and genome data both missing', () => {
+    setMockApiResponses({
+      ReadData: () =>
+        readsApiOutputFactory
+          .params({
+            variant_0: { exome: null, genome: null },
+          })
+          .build(),
+    })
+
+    const tree = renderer.create(
+      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
+  test('queries against the correct dataset', () => {
+    setMockApiResponses({
+      ReadData: () =>
+        readsApiOutputFactory
+          .params({
+            variant_0: { exome: exomeReadApiOutputFactory.buildList(1) },
+          })
+          .build(),
+    })
+
+    renderer.create(
+      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
+    )
+
+    const { query } = mockApiCalls()[0]
+    expect(query).toMatchSnapshot()
   })
 })
