@@ -5,7 +5,7 @@ import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const CountCell = styled.span`
   display: inline-block;
@@ -48,7 +48,7 @@ const useSort = (defaultSortKey: any) => {
 }
 
 type MitochondrialVariantPopulationFrequenciesTableProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantPopulationFrequenciesTable = ({
@@ -86,7 +86,6 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     )
   }
 
-  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const renderedPopulations = variant.populations
     .map((population) => ({
       ...population,
