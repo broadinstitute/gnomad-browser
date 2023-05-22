@@ -3,10 +3,10 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 import { NcbiReference, ClinvarReference } from '../VariantPage/ReferenceList'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 type Props = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantReferenceList = ({ variant }: Props) => {

@@ -9,7 +9,7 @@ import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 
 import gnomadV3MitochondrialVariantSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantSiteQualityMetricDistributions.json'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const formatMetricValue = (value: any) => {
   if (Math.abs(value) < 0.001) {
@@ -247,7 +247,7 @@ const AutosizedSiteQualityMetricsHistogram = withSize()(({ size, ...props }) => 
 ))
 
 type MitochondrialVariantSiteQualityMetricsDistributionProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 // ================================================================================================
@@ -314,7 +314,7 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
 }
 
 type MitochondrialVariantSiteQualityMetricsTableProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 // ================================================================================================
@@ -347,7 +347,7 @@ const MitochondrialVariantSiteQualityMetricsTable = ({
 }
 
 type MitochondrialVariantSiteQualityMetricsProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 // ================================================================================================
