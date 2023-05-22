@@ -58,6 +58,16 @@ const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
   return datasetId
 }
 
+const extractVariantFeedbackDescription = (datasetId: DatasetId): string | null => {
+  if (datasetId.startsWith('gnomad_r3')) {
+    return 'gnomAD v3'
+  }
+  if (datasetId.startsWith('gnomad_r2') || datasetId.startsWith('gnomad_sv_r2')) {
+    return 'gnomAD v2'
+  }
+  return null
+}
+
 type DatasetMetadata = {
   referenceGenome: ReferenceGenome
   label: string
@@ -94,6 +104,7 @@ type DatasetMetadata = {
   readsDatasetId: string
   readsIncludeLowQualityGenotypes: boolean
   coverageDatasetId: DatasetId
+  variantFeedbackDescription: string | null
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
@@ -138,6 +149,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   readsDatasetId: extractReadsDatasetId(datasetId),
   readsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2'),
   coverageDatasetId: extractCoverageDatasetId(datasetId),
+  variantFeedbackDescription: extractVariantFeedbackDescription(datasetId),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -238,3 +250,6 @@ export const readsIncludeLowQualityGenotypes = (datasetId: DatasetId) =>
 
 export const coverageDatasetId = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'coverageDatasetId')
+
+export const variantFeedbackDescription = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'variantFeedbackDescription')
