@@ -3,10 +3,10 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 type Props = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantAttributeList = ({ variant }: Props) => (

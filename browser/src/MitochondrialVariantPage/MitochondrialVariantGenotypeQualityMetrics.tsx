@@ -7,7 +7,7 @@ import { Checkbox, Select, Tabs } from '@gnomad/ui'
 import Legend, { StripedSwatch } from '../Legend'
 import Link from '../Link'
 import StackedHistogram from '../StackedHistogram'
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const LegendWrapper = styled.div`
 `
 
 type MitochondrialVariantGenotypeDepthProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantGenotypeDepth = ({ variant }: MitochondrialVariantGenotypeDepthProps) => {
@@ -93,7 +93,7 @@ const MitochondrialVariantGenotypeDepth = ({ variant }: MitochondrialVariantGeno
 }
 
 type MitochondrialVariantGenotypeQualityFiltersProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantGenotypeQualityFilters = ({
@@ -168,7 +168,7 @@ const MitochondrialVariantGenotypeQualityFilters = ({
 }
 
 type MitochondrialVariantGenotypeQualityMetricsProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantGenotypeQualityMetrics = ({

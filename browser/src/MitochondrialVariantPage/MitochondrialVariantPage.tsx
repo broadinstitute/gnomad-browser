@@ -13,10 +13,10 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGenotypeQualityMetrics'
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
 import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
@@ -66,9 +66,39 @@ const VariantId = styled.span`
   white-space: nowrap;
 `
 
+export type MitochondrialVariant = {
+  alt: string
+  an: number
+  ac_hom: number
+  ac_hom_mnv: number
+  ac_het: number
+  excluded_ac: number | null
+  flags: string[] | null
+  haplogroup_defining: boolean | null
+  haplogroups: {
+    id: string
+    an: number
+    ac_hom: number
+    ac_het: number
+  }[]
+  max_heteroplasmy: number | null
+  populations: {
+    id: string
+    an: number
+    ac_het: number
+    ac_hom: number
+  }[]
+  pos: number
+  ref: string
+  reference_genome: string
+  variant_id: string
+  rsids: string[] | null
+  clinvar: ClinvarVariant | null
+}
+
 type MitochondrialVariantPageProps = {
   datasetId: DatasetId
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPageProps) => (

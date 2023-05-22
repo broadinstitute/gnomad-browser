@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { BaseTable, Checkbox, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const CountCell = styled.span`
   display: inline-block;
@@ -30,7 +30,7 @@ const Table = styled(BaseTable)`
 `
 
 type Props = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 type State = any
@@ -81,9 +81,10 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
     const { variant } = this.props
     const { showAC0Haplogroups, sortAscending, sortBy } = this.state
 
-    const renderedHaplogroups = (showAC0Haplogroups
-      ? variant.haplogroups
-      : variant.haplogroups.filter((haplogroup) => haplogroup.ac_hom + haplogroup.ac_het > 0)
+    const renderedHaplogroups = (
+      showAC0Haplogroups
+        ? variant.haplogroups
+        : variant.haplogroups.filter((haplogroup) => haplogroup.ac_hom + haplogroup.ac_het > 0)
     )
       .map((haplogroup) => ({
         ...haplogroup,
