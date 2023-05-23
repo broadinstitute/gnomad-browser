@@ -30,11 +30,11 @@ spec:
               containerPort: 80
           resources:
             requests:
-              cpu: "50m"
-              memory: "4Gi"
+              cpu: '50m'
+              memory: '4Gi'
             limits:
-              cpu: "100m"
-              memory: "4Gi"
+              cpu: '100m'
+              memory: '4Gi'
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -48,7 +48,7 @@ spec:
           image: gnomad-reads-api
           env:
             - name: PORT
-              value: "8000"
+              value: '8000'
             - name: TRUST_PROXY
               valueFrom:
                 configMapKeyRef:
@@ -59,11 +59,11 @@ spec:
               containerPort: 8000
           resources:
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: '50m'
+              memory: '128Mi'
             limits:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: '100m'
+              memory: '256Mi'
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -74,10 +74,10 @@ spec:
             - name: readviz
               mountPath: /readviz
       nodeSelector:
-        cloud.google.com/gke-nodepool: "main-pool"
+        cloud.google.com/gke-nodepool: 'main-pool'
       volumes:
         - name: readviz
           gcePersistentDisk:
             fsType: ext4
-            pdName: readviz-data-2022-01-20
+            pdName: readviz-data-2022-01-20-new
             readOnly: true
