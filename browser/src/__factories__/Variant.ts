@@ -1,7 +1,12 @@
 import { Factory } from 'fishery'
-import { Variant, SequencingType, TranscriptConsequence } from '../VariantPage/VariantPage'
+import {
+  Variant,
+  SequencingType,
+  TranscriptConsequence,
+  Histogram,
+} from '../VariantPage/VariantPage'
 
-const defaultHistogram = {
+export const defaultHistogram: Histogram = {
   bin_edges: [0.5],
   bin_freq: [100],
   n_larger: 0,
