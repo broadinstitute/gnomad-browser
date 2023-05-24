@@ -61,14 +61,15 @@ const MitochondrialVariantAttributeList = ({ variant }: Props) => (
     >
       {variant.an === 0 ? 0 : (variant.ac_het / variant.an).toPrecision(4)}
     </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item
-      label="Max Observed Heteroplasmy"
-      tooltip="Maximum heteroplasmy level observed across all individuals (range 0.10 - 1.00)."
-    >
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-      {variant.max_heteroplasmy.toPrecision(4)}
-    </AttributeList.Item>
+    {variant.max_heteroplasmy && (
+      /* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */
+      <AttributeList.Item
+        label="Max Observed Heteroplasmy"
+        tooltip="Maximum heteroplasmy level observed across all individuals (range 0.10 - 1.00)."
+      >
+        {variant.max_heteroplasmy.toPrecision(4)}
+      </AttributeList.Item>
+    )}
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item
       label="Excluded Allele Count"
