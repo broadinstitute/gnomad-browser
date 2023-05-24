@@ -13,7 +13,7 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
-import { ClinvarVariant } from '../VariantPage/VariantPage'
+import { ClinvarVariant, Histogram, TranscriptConsequence } from '../VariantPage/VariantPage'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
@@ -71,6 +71,7 @@ export type MitochondrialVariant = {
   an: number
   ac_hom: number
   ac_hom_mnv: number
+  age_distribution: { het: Histogram; hom: Histogram } | null
   ac_het: number
   excluded_ac: number | null
   flags: string[] | null
@@ -94,6 +95,22 @@ export type MitochondrialVariant = {
   variant_id: string
   rsids: string[] | null
   clinvar: ClinvarVariant | null
+  site_quality_metrics: {
+    name: string
+    value: number | null
+  }[]
+  genotype_quality_filters: {
+    name: string
+    filtered: Histogram | null
+  }[]
+  genotype_quality_metrics: {
+    name: string
+    all: Histogram | null
+    alt: Histogram | null
+  }[]
+  transcript_consequences: TranscriptConsequence[] | null
+  heteroplasmy_distribution: Histogram
+  filters: string[] | null
 }
 
 type MitochondrialVariantPageProps = {
@@ -171,7 +188,6 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
     <Wrapper>
       <ResponsiveSection>
         <h2>Heteroplasmy Distribution</h2>
-        {/* @ts-expect-error TS(2741) FIXME: Property 'heteroplasmy_distribution' is missing in... Remove this comment to see the full error message */}
         <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
@@ -204,8 +220,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>Site Quality Metrics</h2>
-        {/* @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; variant: MitochondrialV... Remove this comment to see the full error message */}
-        <MitochondrialVariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
+        <MitochondrialVariantSiteQualityMetrics variant={variant} />
       </ResponsiveSection>
     </Wrapper>
     <Section>
