@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Checkbox, Select, Tabs } from '@gnomad/ui'
 
-import Legend, { StripedSwatch } from '../Legend'
+import Legend, { StripedSwatch, SeriesLegendProps } from '../Legend'
 import Link from '../Link'
 import StackedHistogram from '../StackedHistogram'
 import { MitochondrialVariant } from './MitochondrialVariantPage'
@@ -23,11 +23,10 @@ type MitochondrialVariantGenotypeDepthProps = {
 const MitochondrialVariantGenotypeDepth = ({ variant }: MitochondrialVariantGenotypeDepthProps) => {
   const [showAllIndividuals, setShowAllIndividuals] = useState(true)
 
-  const series = [{ label: 'Variant carriers', color: '#73ab3d' }]
+  const series: SeriesLegendProps[] = [{ label: 'Variant carriers', color: '#73ab3d' }]
   if (showAllIndividuals) {
     series.push({
       label: 'All individuals',
-      // @ts-expect-error TS(2345) FIXME: Argument of type '{ label: string; swatch: JSX.Ele... Remove this comment to see the full error message
       swatch: <StripedSwatch id="depth-legend-swatch" color="#73ab3d" />,
     })
   }

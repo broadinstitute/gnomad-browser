@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { ExternalLink } from '@gnomad/ui'
 
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { LofteeFilter, LofteeFlag } from '../VariantPage/Loftee'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const AttributeName = styled.dt`
   display: inline;
@@ -137,7 +138,7 @@ const HmtVarInfo = ({ variant }: HmtVarInfoProps) => {
   )
 }
 
-type HmtVarInfoErrorBoundaryProps = object
+type HmtVarInfoErrorBoundaryProps = { children: ReactNode }
 
 type HmtVarInfoErrorBoundaryState = any
 
@@ -155,7 +156,6 @@ class HmtVarInfoErrorBoundary extends React.Component<
   }
 
   render() {
-    // @ts-expect-error TS(2339) FIXME: Property 'children' does not exist on type 'Readon... Remove this comment to see the full error message
     const { children } = this.props
     const { error } = this.state
 
@@ -181,6 +181,7 @@ const MITOTIP_TRNA_PREDICTIONS = {
   possibly_pathogenic: 'Possibly pathogenic',
   likely_pathogenic: 'Likely pathogenic',
 }
+export type MitotipTrnaPrediction = keyof typeof MITOTIP_TRNA_PREDICTIONS
 
 const PON_MT_TRNA_PREDICTIONS = {
   neutral: 'Neutral',
@@ -188,15 +189,11 @@ const PON_MT_TRNA_PREDICTIONS = {
   likely_pathogenic: 'Likely pathogenic',
   pathogenic: 'Pathogenic',
 }
+export type PonMtTrnaPrediction = keyof typeof PON_MT_TRNA_PREDICTIONS
 
 type MitochondrialVariantTranscriptConsequenceProps = {
   consequence: any
-  variant: {
-    mitotip_score?: number
-    mitotip_trna_prediction?: string
-    pon_ml_probability_of_pathogenicity?: number
-    pon_mt_trna_prediction?: string
-  }
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantTranscriptConsequence = ({
@@ -215,11 +212,9 @@ const MitochondrialVariantTranscriptConsequence = ({
               </ExternalLink>
             </AttributeName>
             <AttributeValue>
-              {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
               {MITOTIP_TRNA_PREDICTIONS[variant.mitotip_trna_prediction] ||
                 variant.mitotip_trna_prediction}{' '}
-              ( {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-              {variant.mitotip_score.toPrecision(3)})
+              {variant.mitotip_score && <>{variant.mitotip_score.toPrecision(3)}</>}
             </AttributeValue>
           </div>
         )}
@@ -232,16 +227,15 @@ const MitochondrialVariantTranscriptConsequence = ({
               </ExternalLink>
             </AttributeName>
             <AttributeValue>
-              {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
               {PON_MT_TRNA_PREDICTIONS[variant.pon_mt_trna_prediction] ||
                 variant.pon_mt_trna_prediction}{' '}
-              ( {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-              {variant.pon_ml_probability_of_pathogenicity.toPrecision(3)})
+              {variant.pon_ml_probability_of_pathogenicity &&
+                variant.pon_ml_probability_of_pathogenicity.toPrecision(3)}
+              )
             </AttributeValue>
           </div>
         )}
         <HmtVarInfoErrorBoundary>
-          {/* @ts-expect-error TS(2739) FIXME: Type '{ mitotip_score?: number | undefined; mitoti... Remove this comment to see the full error message */}
           <HmtVarInfo variant={variant} />
         </HmtVarInfoErrorBoundary>
       </AttributeList>
