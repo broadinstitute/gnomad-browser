@@ -77,6 +77,11 @@ const VariantId = styled.span`
   white-space: nowrap;
 `
 
+export type GenotypeQualityFilter = {
+  name: string
+  filtered: Histogram | null
+}
+
 export type MitochondrialVariant = {
   alt: string
   an: number
@@ -110,10 +115,7 @@ export type MitochondrialVariant = {
     name: string
     value: number | null
   }[]
-  genotype_quality_filters: {
-    name: string
-    filtered: Histogram | null
-  }[]
+  genotype_quality_filters: GenotypeQualityFilter[]
   genotype_quality_metrics: {
     name: string
     all: Histogram | null

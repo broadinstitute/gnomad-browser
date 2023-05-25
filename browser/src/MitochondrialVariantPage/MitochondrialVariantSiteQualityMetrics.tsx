@@ -258,54 +258,58 @@ type Metric = keyof typeof gnomadV3MitochondrialVariantSiteQualityMetricDistribu
 const MitochondrialVariantSiteQualityMetricsDistribution = ({
   variant,
 }: MitochondrialVariantSiteQualityMetricsDistributionProps) => {
-  const [selectedMetric, setSelectedMetric] = useState<Metric>('Mean Depth')
+  const [selectedMetricName, setSelectedMetricName] = useState<Metric>('Mean Depth')
 
-  const selectedMetricValue = (variant as any).site_quality_metrics.find(
-    ({ name }: any) => name === selectedMetric
-  ).value
-
-  const binEdges =
-    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_edges
-  const binValues = [
-    0, // n_smaller does not appear in gnomadV3MitochondrialVariantSiteQualityMetricDistributions
-    ...gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_freq,
-    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_larger || 0,
-  ]
-
-  return (
-    <div>
-      {/* spacer to align plot with genotype quality metrics */}
-      <div style={{ height: '16px', marginBottom: '1em', marginTop: '1em' }} />
-
-      <AutosizedSiteQualityMetricsHistogram
-        // @ts-expect-error TS(2322) FIXME: Type '{ metric: string; binEdges: any; binValues: ... Remove this comment to see the full error message
-        metric={selectedMetric}
-        binEdges={binEdges}
-        binValues={binValues}
-        metricValue={selectedMetricValue}
-        xLabel={selectedMetric}
-      />
-
-      <div>
-        <label htmlFor="mt-site-quality-metrics-metric">
-          Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Select
-            id="mt-site-quality-metrics-metric"
-            onChange={(e: any) => {
-              setSelectedMetric(e.target.value)
-            }}
-            value={selectedMetric}
-          >
-            {(variant as any).site_quality_metrics.map((metric: any) => (
-              <option key={metric.name} value={metric.name}>
-                {metric.name} ({metric.value !== null ? formatMetricValue(metric.value) : '–'})
-              </option>
-            ))}
-          </Select>
-        </label>
-      </div>
-    </div>
+  const selectedMetric = variant.site_quality_metrics.find(
+    ({ name }) => name === selectedMetricName
   )
+  if (selectedMetric && selectedMetric.value !== null) {
+    const selectedMetricValue = selectedMetric.value
+
+    const binEdges =
+      gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetricName].bin_edges
+    const binValues = [
+      0, // n_smaller does not appear in gnomadV3MitochondrialVariantSiteQualityMetricDistributions
+      ...gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetricName].bin_freq,
+      gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetricName].n_larger || 0,
+    ]
+
+    return (
+      <div>
+        {/* spacer to align plot with genotype quality metrics */}
+        <div style={{ height: '16px', marginBottom: '1em', marginTop: '1em' }} />
+
+        <AutosizedSiteQualityMetricsHistogram
+          // @ts-expect-error TS(2322) FIXME: Type '{ metric: string; binEdges: any; binValues: ... Remove this comment to see the full error message
+          metric={selectedMetricName}
+          binEdges={binEdges}
+          binValues={binValues}
+          metricValue={selectedMetricValue}
+          xLabel={selectedMetricName}
+        />
+
+        <div>
+          <label htmlFor="mt-site-quality-metrics-metric">
+            Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            <Select
+              id="mt-site-quality-metrics-metric"
+              onChange={(e: any) => {
+                setSelectedMetricName(e.target.value)
+              }}
+              value={selectedMetricName}
+            >
+              {variant.site_quality_metrics.map((metric: any) => (
+                <option key={metric.name} value={metric.name}>
+                  {metric.name} ({metric.value !== null ? formatMetricValue(metric.value) : '–'})
+                </option>
+              ))}
+            </Select>
+          </label>
+        </div>
+      </div>
+    )
+  }
+  return null
 }
 
 type MitochondrialVariantSiteQualityMetricsTableProps = {
@@ -329,7 +333,7 @@ const MitochondrialVariantSiteQualityMetricsTable = ({
         </tr>
       </thead>
       <tbody>
-        {(variant as any).site_quality_metrics.map((metric: any) => (
+        {variant.site_quality_metrics.map((metric: any) => (
           <tr key={metric.name}>
             <th scope="row">{metric.name}</th>
             <td>{metric.value != null ? formatMetricValue(metric.value) : '–'}</td>

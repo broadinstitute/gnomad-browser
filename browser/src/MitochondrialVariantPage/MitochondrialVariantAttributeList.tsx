@@ -16,8 +16,8 @@ const MitochondrialVariantAttributeList = ({ variant }: Props) => (
       label="Filters"
       tooltip="Quality control filters that this variant failed (if any)"
     >
-      {(variant as any).filters.length ? (
-        (variant as any).filters.map((f: any) => (
+      {variant.filters && variant.filters.length ? (
+        variant.filters.map((f: any) => (
           <Badge key={f} level="warning">
             {f}
           </Badge>
