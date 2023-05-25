@@ -5,23 +5,31 @@ import { ListItem, OrderedList } from '@gnomad/ui'
 
 import Link from '../Link'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 import MitochondrialVariantTranscriptConsequence from './MitochondrialVariantTranscriptConsequence'
+import { TranscriptConsequence } from '../VariantPage/VariantPage'
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
  */
-const groupConsequences = (consequences: any, key: any) => {
+const groupConsequences = (
+  consequences: TranscriptConsequence[],
+  key: 'major_consequence' | 'gene_id'
+) => {
   const uniqueValues = consequences
-    .map((csq: any) => csq[key])
-    .filter((value: any, index: any, values: any) => index === values.indexOf(value))
+    .map((csq) => csq[key])
+    .filter((value, index, values) => index === values.indexOf(value))
 
-  const groupedConsequences = consequences.reduce((acc: any, csq: any) => {
-    if (!acc[csq[key]]) {
-      acc[csq[key]] = []
+  const groupedConsequences = consequences.reduce((acc, csq) => {
+    const accKey = csq[key]
+    if (accKey) {
+      if (!acc[accKey]) {
+        acc[accKey] = []
+      }
+      acc[accKey].push(csq)
     }
-    acc[csq[key]].push(csq)
     return acc
-  }, {})
+  }, {} as Record<string, TranscriptConsequence[]>)
 
   return uniqueValues.map((value: any) => ({
     value,
@@ -69,9 +77,7 @@ const ConsequenceListItem = styled.li`
 `
 
 type MitochondrialVariantTranscriptConsequenceListProps = {
-  variant: {
-    transcript_consequences: any[]
-  }
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantTranscriptConsequenceList = ({
@@ -85,7 +91,6 @@ const MitochondrialVariantTranscriptConsequenceList = ({
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <OrderedList>
             {groupConsequences(consequences, 'gene_id').map(
-              // @ts-expect-error TS(7031) FIXME: Binding element 'geneId' implicitly has an 'any' t... Remove this comment to see the full error message
               ({ value: geneId, consequences: consequencesInGene }) => {
                 const geneSymbol = consequencesInGene[0].gene_symbol
                 return (

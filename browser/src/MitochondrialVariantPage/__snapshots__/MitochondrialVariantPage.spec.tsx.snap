@@ -122,8 +122,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -1373,7 +1372,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -1463,8 +1461,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -2714,7 +2711,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -2804,8 +2800,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -4055,7 +4050,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -4145,8 +4139,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -5396,7 +5389,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -5486,8 +5478,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -6737,7 +6728,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -6827,8 +6817,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -8078,7 +8067,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -8168,8 +8156,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -9419,7 +9406,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -9509,8 +9495,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -10760,7 +10745,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>
@@ -10850,8 +10834,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
         className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
       >
         Single nucleotide variant
-        :
-         
+        : 
         <span
           className="MitochondrialVariantPage__VariantId-sc-1h2n2ff-3 dvZmAo"
         >
@@ -12101,7 +12084,6 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                     >
                       Mean Depth
                        (
-                       
                       0
                       )
                     </option>

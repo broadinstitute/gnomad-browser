@@ -33,10 +33,19 @@ type Props = {
   variant: MitochondrialVariant
 }
 
-type State = any
+type HaplogroupWithAf = MitochondrialVariant['haplogroups'][number] & {
+  af_hom: number
+  af_het: number
+}
+
+type State = {
+  showAC0Haplogroups: boolean
+  sortBy: keyof HaplogroupWithAf
+  sortAscending: boolean
+}
 
 class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, State> {
-  state = {
+  state: State = {
     showAC0Haplogroups: false,
     sortBy: 'af_hom',
     sortAscending: false,
@@ -51,13 +60,12 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
 
   renderColumnHeader(key: any, label: any, tooltip: any) {
     const { sortAscending, sortBy } = this.state
-    let ariaSortAttr = 'none'
+    let ariaSortAttr: React.AriaAttributes['aria-sort'] = 'none'
     if (sortBy === key) {
       ariaSortAttr = sortAscending ? 'ascending' : 'descending'
     }
 
     return tooltip ? (
-      // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; "aria-sort": string; sc... Remove this comment to see the full error message
       <th aria-sort={ariaSortAttr} scope="col">
         {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
         <TooltipAnchor tooltip={tooltip}>
@@ -68,7 +76,6 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
         </TooltipAnchor>
       </th>
     ) : (
-      // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; "aria-sort": string; sc... Remove this comment to see the full error message
       <th aria-sort={ariaSortAttr} scope="col">
         <button type="button" onClick={() => this.setSortBy(key)}>
           {label}
@@ -96,8 +103,7 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
 
         return sortBy === 'id'
           ? haplogroup1.id.localeCompare(haplogroup2.id)
-          : // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            haplogroup1[sortBy] - haplogroup2[sortBy]
+          : haplogroup1[sortBy] - haplogroup2[sortBy]
       })
 
     const totalAlleleNumber = renderedHaplogroups
