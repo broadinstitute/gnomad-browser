@@ -107,7 +107,12 @@ type HmtVarInfoProps = {
 }
 
 const HmtVarInfo = ({ variant }: HmtVarInfoProps) => {
-  const [response, setResponse] = useState(null)
+  type HmtResponse = {
+    pathogenicity: string | undefined
+    disease_score: number
+  }
+
+  const [response, setResponse] = useState<HmtResponse | null>(null)
 
   const url = `https://www.hmtvar.uniba.it/api/main/mutation/${variant.ref}${variant.pos}${variant.alt}`
 
@@ -125,13 +130,13 @@ const HmtVarInfo = ({ variant }: HmtVarInfoProps) => {
           <ExternalLink href="https://www.hmtvar.uniba.it/">HmtVar</ExternalLink>
         </AttributeName>
         <AttributeValue>
-          {(response as any).pathogenicity
-            ? (response as any).pathogenicity
+          {response.pathogenicity
+            ? response.pathogenicity
                 .split('_')
                 .map((w: any) => w.charAt(0).toUpperCase() + w.slice(1))
                 .join(' ')
             : '–'}{' '}
-          ({(response as any).disease_score.toPrecision(3)})
+          ({response.disease_score.toPrecision(3)})
         </AttributeValue>
       </div>
     )
