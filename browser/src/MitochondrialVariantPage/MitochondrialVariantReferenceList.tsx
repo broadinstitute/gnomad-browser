@@ -42,7 +42,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
         <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
       {/* Show MitoVisualize links only for RNA gene variants */}
-      {((variant as any).transcript_consequences || []).some(
+      {(variant.transcript_consequences || []).some(
         (csq: any) => csq.gene_symbol.startsWith('MT-T') || csq.gene_symbol.startsWith('MT-R')
       ) && (
         // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
