@@ -189,8 +189,7 @@ const SiteQualityMetricsHistogram = ({
               fontSize={12}
               textAnchor={labelOnLeft ? 'end' : 'start'}
             >
-              {/* @ts-expect-error TS(2554) FIXME: Expected 1 arguments, but got 2. */}
-              {formatMetricValue(metricValue, metric)}
+              {formatMetricValue(metricValue)}
             </text>
           </>
         )}
@@ -254,24 +253,22 @@ type MitochondrialVariantSiteQualityMetricsDistributionProps = {
 // Metrics components
 // ================================================================================================
 
+type Metric = keyof typeof gnomadV3MitochondrialVariantSiteQualityMetricDistributions
+
 const MitochondrialVariantSiteQualityMetricsDistribution = ({
   variant,
 }: MitochondrialVariantSiteQualityMetricsDistributionProps) => {
-  const [selectedMetric, setSelectedMetric] = useState('Mean Depth')
+  const [selectedMetric, setSelectedMetric] = useState<Metric>('Mean Depth')
 
   const selectedMetricValue = (variant as any).site_quality_metrics.find(
     ({ name }: any) => name === selectedMetric
   ).value
 
   const binEdges =
-    // @ts-expect-error
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_edges
   const binValues = [
-    // @ts-expect-error
-    gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_smaller || 0,
-    // @ts-expect-error
+    0, // n_smaller does not appear in gnomadV3MitochondrialVariantSiteQualityMetricDistributions
     ...gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].bin_freq,
-    // @ts-expect-error
     gnomadV3MitochondrialVariantSiteQualityMetricDistributions[selectedMetric].n_larger || 0,
   ]
 
@@ -301,9 +298,7 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
           >
             {(variant as any).site_quality_metrics.map((metric: any) => (
               <option key={metric.name} value={metric.name}>
-                {metric.name} ({' '}
-                {/* @ts-expect-error TS(2554) FIXME: Expected 1 arguments, but got 2. */}
-                {metric.value !== null ? formatMetricValue(metric.value, metric.name) : '–'})
+                {metric.name} ({metric.value !== null ? formatMetricValue(metric.value) : '–'})
               </option>
             ))}
           </Select>
@@ -337,8 +332,7 @@ const MitochondrialVariantSiteQualityMetricsTable = ({
         {(variant as any).site_quality_metrics.map((metric: any) => (
           <tr key={metric.name}>
             <th scope="row">{metric.name}</th>
-            {/* @ts-expect-error TS(2554) FIXME: Expected 1 arguments, but got 2. */}
-            <td>{metric.value != null ? formatMetricValue(metric.value, metric.name) : '–'}</td>
+            <td>{metric.value != null ? formatMetricValue(metric.value) : '–'}</td>
           </tr>
         ))}
       </tbody>

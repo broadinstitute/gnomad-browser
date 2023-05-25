@@ -19,6 +19,10 @@ const mitochondrialVariantFactory = Factory.define<MitochondrialVariant>(
       pos = 123,
       ref = 'A',
       rsids = null,
+      mitotip_trna_prediction = null,
+      pon_mt_trna_prediction = null,
+      mitotip_score = null,
+      pon_ml_probability_of_pathogenicity = null,
     } = params
 
     const {
@@ -59,6 +63,10 @@ const mitochondrialVariantFactory = Factory.define<MitochondrialVariant>(
       transcript_consequences,
       heteroplasmy_distribution,
       filters,
+      mitotip_trna_prediction,
+      pon_mt_trna_prediction,
+      mitotip_score,
+      pon_ml_probability_of_pathogenicity,
     }
   }
 )

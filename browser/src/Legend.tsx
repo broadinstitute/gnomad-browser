@@ -28,12 +28,14 @@ const LegendSwatch = ({ color }: LegendSwatchProps) => (
   </svg>
 )
 
+export type SeriesLegendProps = {
+  color?: string
+  label: string
+  swatch?: React.ReactNode
+}
+
 type LegendProps = {
-  series: {
-    color?: string
-    label: string
-    swatch?: React.ReactNode
-  }[]
+  series: SeriesLegendProps[]
 }
 
 const Legend = ({ series }: LegendProps) => (

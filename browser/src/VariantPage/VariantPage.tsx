@@ -110,8 +110,8 @@ export type StructuralVariant = {
 export type Histogram = {
   bin_edges: number[]
   bin_freq: number[]
-  n_smaller: number | null
-  n_larger: number | null
+  n_smaller: number
+  n_larger: number
 }
 
 export type Population = {
