@@ -3,7 +3,11 @@ import React from 'react'
 import { isRegionId, parseRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
-import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  referenceGenome,
+  hasShortTandemRepeats,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
 import RegionPage from './RegionPage'
@@ -72,7 +76,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
         start,
         stop,
         referenceGenome: referenceGenome(datasetId),
-        includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
+        includeShortTandemRepeats: hasShortTandemRepeats(datasetId),
         shortTandemRepeatDatasetId: 'gnomad_r3',
       }}
       loadingMessage="Loading region"
