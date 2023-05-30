@@ -58,7 +58,7 @@ type NonCodingConstraint = {
   z: number
 }
 
-type Region = {
+export type Region = {
   reference_genome: 'GRCh37' | 'GRCh38'
   chrom: string
   start: number
