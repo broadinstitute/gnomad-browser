@@ -1,0 +1,406 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MitochondrialVariantsInRegion with dataset exac has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  ExAC v1.0
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1 has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v2.1.1
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v2.1.1 (controls)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v2.1.1 (non-cancer)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v2.1.1 (non-neuro)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v2.1.1 (non-TOPMed)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/region/M-123-456?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this region in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_controls_and_biobanks has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_cancer has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_neuro has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_topmed has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_non_neuro has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this region.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
