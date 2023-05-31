@@ -18,6 +18,11 @@ const transcriptFactory = Factory.define<Transcript>(({ params, associations }) 
     exons = [],
     gene = geneMetadataFactory.build(),
     gtex_tissue_expression = gtexTissueExpressionFactory.build(),
+    gnomad_constraint = null,
+    exac_constraint = null,
+    variants = [],
+    clinvar_variants = [],
+    mitochondrial_variants = [],
   } = associations
 
   return {
@@ -31,6 +36,11 @@ const transcriptFactory = Factory.define<Transcript>(({ params, associations }) 
     exons,
     gene,
     gtex_tissue_expression,
+    gnomad_constraint,
+    exac_constraint,
+    variants,
+    mitochondrial_variants,
+    clinvar_variants,
   }
 })
 
