@@ -30,6 +30,8 @@ import { GeneMetadata, Strand } from '../GenePage/GenePage'
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
 import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
+import { Variant, ClinvarVariant } from '../VariantPage/VariantPage'
+import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
 
 export type Transcript = {
   transcript_id: string
@@ -44,10 +46,13 @@ export type Transcript = {
     start: number
     stop: number
   }[]
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
+  gnomad_constraint: GnomadConstraint | null
+  exac_constraint: ExacConstraint | null
   gene: GeneMetadata
   gtex_tissue_expression: GtexTissueExpression | null
+  variants: Variant[]
+  mitochondrial_variants: MitochondrialVariant[]
+  clinvar_variants: ClinvarVariant[]
 }
 
 const TranscriptInfoColumnWrapper = styled.div`
