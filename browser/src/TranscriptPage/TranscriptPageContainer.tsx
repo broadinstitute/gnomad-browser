@@ -1,7 +1,11 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  referenceGenome,
+  hasStructuralVariants,
+} from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import TranscriptPage from './TranscriptPage'
 
@@ -103,7 +107,7 @@ const TranscriptPageContainer = ({ datasetId, transcriptId }: Props) => (
       const { transcript } = data
 
       // Cannot query structural variants by transcript, redirect to gene page
-      if (datasetId.startsWith('gnomad_sv')) {
+      if (hasStructuralVariants(datasetId)) {
         return <Redirect to={`/gene/${transcript.gene.gene_id}?dataset=${datasetId}`} />
       }
 
