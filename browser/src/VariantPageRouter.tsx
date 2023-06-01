@@ -5,15 +5,19 @@ import { Redirect } from 'react-router-dom'
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
 import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  hasStructuralVariants,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
 import useRequest from './useRequest'
 import StatusMessage from './StatusMessage'
 import { fetchVariantSearchResults } from './search'
 
-const MitochondrialVariantPage = lazy(() =>
-  import('./MitochondrialVariantPage/MitochondrialVariantPage')
+const MitochondrialVariantPage = lazy(
+  () => import('./MitochondrialVariantPage/MitochondrialVariantPage')
 )
 const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
 const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
@@ -103,7 +107,7 @@ type VariantPageRouterProps = {
 }
 
 const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
-  if (datasetId.startsWith('gnomad_sv')) {
+  if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
   }
 
