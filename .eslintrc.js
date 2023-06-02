@@ -27,10 +27,8 @@ module.exports = {
     // https://github.com/airbnb/javascript/blob/6d05dd898acfec3299cc2be8b6188be542824965/packages/eslint-config-airbnb/rules/react.js#L489
     'react/static-property-placement': ['error', 'static public field'],
     // Does not handle initial state derived from props in constructor
-    'react/state-in-constructor': 'off',
     // TODO: Use shorthand
     'react/jsx-fragments': 'off',
-    'react/jsx-props-no-spreading': 'off',
     camelcase: 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
@@ -48,10 +46,13 @@ module.exports = {
     'react/no-unused-prop-types': 'off',
     'no-restricted-globals': 'off',
     '@typescript-eslint/no-extra-semi': 'off',
+    'import/order': 'off',
     // Rules disabled below this line are ones that we might want to re-enable
     // someday but that will entail more work, either because lots of distinct
     // LOCs will have to be updated, or because it's not immediately obvious
     // why eslint is flagging something.
+    'react/state-in-constructor': 'off',
+    'react/jsx-props-no-spreading': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
