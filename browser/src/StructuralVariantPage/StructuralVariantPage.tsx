@@ -124,7 +124,10 @@ const ConnectedStructuralVariantPage = ({
   variantId,
 }: ConnectedStructuralVariantPageProps) => {
   const operationName = 'StructuralVariant'
-  const url = datasetId === 'gnomad_sv_r3' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
+  const url =
+    datasetId === 'gnomad_sv_r3'
+      ? 'http://localhost:8010/api'
+      : 'https://gnomad.broadinstitute.org/api/'
 
   const query = `
     query ${operationName}($datasetId: StructuralVariantDatasetId!, $variantId: String!) {
