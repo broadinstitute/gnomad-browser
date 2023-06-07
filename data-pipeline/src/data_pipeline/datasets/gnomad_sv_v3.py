@@ -38,9 +38,7 @@ RANKED_CONSEQUENCES = [
     "UTR",
     "PROMOTER",
     "INTRONIC",
-    "NONCODING_BREAKPOINT",
     "INV_SPAN",
-    "NONCODING_SPAN",
     "INTERGENIC",
     "NEAREST_TSS",
 ]
@@ -91,7 +89,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
         end=ds.info.END,
         xend=x_position(ds.locus.contig, ds.info.END),
         # Start 2
-        chrom2=hl.if_else(ds.info.CHR2 == hl.missing(hl.tint32), hl.missing(hl.tstr), ds.info.CHR2.replace("chr", "")),
+        chrom2=hl.if_else(ds.info.CHR2 == hl.missing(hl.tstr), hl.missing(hl.tstr), ds.info.CHR2.replace("chr", "")),
         pos2=ds.info.POS2,
         xpos2=x_position(ds.info.CHR2, ds.info.POS2),
         # End 2

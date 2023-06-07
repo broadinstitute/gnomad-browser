@@ -10,7 +10,9 @@ from data_pipeline.datasets.gnomad_sv_v3 import (
 pipeline = Pipeline()
 
 # TK permanent home for these
-vcf_path_template = "gs://gnomadev-data-pipeline-output/pwd-2022-12-06/external_sources/gnomAD.v3.SV.chr{id}.vcf.gz"
+vcf_path_template = (
+    "gs://gnomadev-data-pipeline-output/pwd-2022-12-06/external_sources/gnomad_v3_SV/gnomAD.v3.SV.chr{id}.vcf.gz"
+)
 
 autosome_ids = list(range(1, 23))
 allosome_ids = ["X", "Y"]
