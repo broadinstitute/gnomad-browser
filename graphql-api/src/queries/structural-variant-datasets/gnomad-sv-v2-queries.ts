@@ -7,7 +7,7 @@ const GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX = 'gnomad_structural_variants_v2'
 // Variant query
 // ================================================================================================
 
-const fetchStructuralVariantById = async (esClient: any, variantId: any, subset: any) => {
+const fetchStructuralVariantById = async (esClient: any, variantId: string, subset: string) => {
   const response = await esClient.search({
     index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
     type: '_doc',
