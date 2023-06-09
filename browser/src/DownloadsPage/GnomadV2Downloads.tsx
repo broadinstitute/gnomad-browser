@@ -582,6 +582,13 @@ const GnomadV2Downloads = () => {
       <DownloadsSection>
         <SectionTitle id="v2-variant-cooccurrence">Variant co-occurrence</SectionTitle>
         <FileList>
+          {/* @ts-expect-error */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="README"
+              path="/release/2.1.1/secondary_analyses/variant_cooccurrence/readme_for_download_tables.txt"
+            />
+          </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
@@ -594,7 +601,6 @@ const GnomadV2Downloads = () => {
             <GetUrlButtons
               label="Variant co-occurrence by gene (homozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error */}
@@ -602,7 +608,6 @@ const GnomadV2Downloads = () => {
             <GetUrlButtons
               label="Variant co-occurrence by gene (two heterozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
