@@ -1,6 +1,6 @@
 import { promisify } from 'util'
 
-import redis from 'redis'
+import { Redis } from 'ioredis'
 
 import config from './config'
 import logger from './logger'
@@ -9,16 +9,18 @@ let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
 let setCacheExpiration = () => Promise.resolve()
 
-if (config.CACHE_REDIS_URL) {
-  const cacheDb = redis.createClient({
-    url: config.CACHE_REDIS_URL,
-    retry_strategy:
-      process.env.NODE_ENV === 'development'
-        ? ({ attempt }: any) => {
-            logger.info('Retrying connection to cache database')
-            return Math.min(attempt * 100, 3000)
-          }
-        : ({ attempt }: any) => Math.min(attempt * 100, 3000),
+if (config.READ_CACHE_REDIS_URL) {
+  const readCacheDb = new Redis({
+    sentinels: [{ host: config.READ_CACHE_REDIS_URL, port: 26379 }],
+    name: 'mymaster',
+    role: 'slave',
+    db: 1,
+  })
+
+  const writeCacheDb = new Redis({
+    sentinels: [{ host: config.WRITE_CACHE_REDIS_URL, port: 26379 }],
+    name: 'mymaster',
+    db: 1,
   })
 
   const withTimeout = (fn: any, timeout: any) => {
@@ -33,10 +35,16 @@ if (config.CACHE_REDIS_URL) {
       ])
   }
 
-  fetchCacheValue = withTimeout(promisify(cacheDb.get).bind(cacheDb), config.CACHE_REQUEST_TIMEOUT)
-  setCacheValue = withTimeout(promisify(cacheDb.set).bind(cacheDb), config.CACHE_REQUEST_TIMEOUT)
+  fetchCacheValue = withTimeout(
+    promisify(readCacheDb.get).bind(readCacheDb),
+    config.CACHE_REQUEST_TIMEOUT
+  )
+  setCacheValue = withTimeout(
+    promisify(writeCacheDb.set).bind(writeCacheDb),
+    config.CACHE_REQUEST_TIMEOUT
+  )
   setCacheExpiration = withTimeout(
-    promisify(cacheDb.expire).bind(cacheDb),
+    promisify(writeCacheDb.expire).bind(writeCacheDb),
     config.CACHE_REQUEST_TIMEOUT
   )
 } else {
