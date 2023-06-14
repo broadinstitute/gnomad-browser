@@ -24,7 +24,7 @@ def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=""):
     ds = ds.annotate(regions=hl.sorted(ds.regions, lambda region: region.start))
 
     ds = ds.select(gnomad_v2_regional_missense_constraint_regions=ds.regions)
-    if annotation_name is not "":
+    if annotation_name != "":
         ds = ds.rename({"gnomad_v2_regional_missense_constraint_regions": annotation_name})
 
     return ds
@@ -49,3 +49,39 @@ def prepare_gnomad_v2_regional_missense_constraint(path, annotation_name=""):
 # path2 = "gs://gnomad-rgrant-data-pipeline/output/genes/genes_grchy37_annotated_5.ht"
 # ds = hl.read_table(path2)
 # print(ds.describe())
+
+
+path =  "gs://gnomad-rgrant-data-pipeline/output/constraint/rmc_0_0001/all_rmc.ht"
+ds = hl.read_table(path)
+print("\n===\nRaw table describe:")
+print(ds.describe())
+print(ds.count())
+
+dsUnique = ds.key_by("transcript").distinct()
+rawUnique = dsUnique.count()
+print(f"\n\nUnique # of transcript_id's in Raw is: {rawUnique}")
+
+# if rawUnique == 6,388 I am in business, and then I need to find a way to determine what
+#   is not included in the table
+
+print("\n-----\n")
+
+# ds2 = prepare_gnomad_v2_regional_missense_constraint(path)
+# print("\n===\nProcessed table describe:")
+# print(ds2.describe())
+# # print(ds2.head(5).show(5))
+# # COUNT IS: 6,388
+# # print(ds2.count())
+
+# ds2Unique = ds.select("transcript_id").distinct()
+# processedUnique = ds2Unique.count()
+# print
+
+
+# print("\n-----\n")
+
+# this format should have been OK, no PCSK9?
+# ds2filt = ds2.filter(ds2.transcript_id == 'ENST00000302118')
+# print("\n===\nFiltered processed table describe:")
+# print(ds2filt.describe())
+# print(ds2filt.count())

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
-import { TooltipAnchor } from '@gnomad/ui'
+import { ExternalLink, TooltipAnchor } from '@gnomad/ui'
 
 import InfoButton from './help/InfoButton'
 
@@ -28,7 +28,6 @@ export const regionIntersections = (regionArrays: any) => {
 
     if (maxStart < minStop) {
       const next = Object.assign(
-        // @ts-expect-error
         ...[
           {},
           ...sortedRegionsArrays.map(
@@ -84,31 +83,8 @@ const RegionAttributeList = styled.dl`
   }
 `
 
-// TODO:TODO:FIXME: (rgrant, Apr 25 2023: old color scale)
-// const colorScale = {
-//   "not_significant": "#e2e2e2",
-//   "least": "#d7191c",
-//   "less": "#fdae61",
-//   "middle": "#ffffbf",
-//   "greater": "#abdda4",
-//   "greatest": "#2b83ba",
-// }
-
-// TODO: temp Using Nick's preferred site for color scale - Blue? Maybe bad
-// https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=5
-// const colorScale = {
-//   not_significant: '#e2e2e2',
-//   least: '#045a8d',
-//   less: '#2b8cbe',
-//   middle: '#74a9cf',
-//   greater: '#bdc9e1',
-//   greatest: '#f1eef6',
-// }
-
-// TODO: temp Using Nick's preferred site for color scale - Red/Yellow
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
 const colorScale = {
-  // not_significant: '#b2b2b2',
   not_significant: '#e2e2e2',
   least: '#bd0026',
   less: '#f03b20',
@@ -117,18 +93,7 @@ const colorScale = {
   greatest: '#ffffb2',
 }
 
-// TODO: temp Using Lily's color scale
-// const colorScale = {
-//   not_significant: '#e2e2e2',
-//   least: '#A50F15',
-//   less: '#DE2D26',
-//   middle: '#FB6A4A',
-//   greater: '#FCAE91',
-//   greatest: '#FEE5D9',
-// }
-
-function regionColor(region: any) {
-  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
+function regionColor(region: ConstraintRegion) {
   let color
   if (region.obs_exp > 0.8) {
     color = colorScale.greatest
@@ -196,44 +161,84 @@ const Legend = () => {
 const renderNumber = (number: any) =>
   number === undefined || number === null ? '-' : number.toPrecision(4)
 
-type RegionTooltipProps = {
-  region: {
-    obs_exp?: number
-    chisq_diff_null?: number
-    start: number
-    stop: number
-  }
+type ConstraintRegion = {
+  start: number
+  stop: number
+  obs_exp: number
+  obs_mis: number
+  exp_mis: number
+  chisq_diff_null: number
 }
 
-const RegionTooltip = ({ region }: RegionTooltipProps) => (
-  <RegionAttributeList>
-    <div>
-      <dt>O/E missense:</dt>
-      <dd>{renderNumber(region.obs_exp)}</dd>
-    </div>
-    <div>
-      <dt>
-        &chi;
-        <sup>2</sup>:
-      </dt>
-      <dd>
-        {renderNumber(region.chisq_diff_null)}
-        {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-        {region.chisq_diff_null !== null && region.chisq_diff_null < 10.8 && ' (not significant)'}
-      </dd>
-    </div>
-    <div>
-      <dt>Break start:</dt>
-      {/* TODO: UPDATE TO GET REAL CHROM INFO */}
-      <dd>{`12-${region.start}-G`}</dd>
-    </div>
-    <div>
-      <dt>Break stop:</dt>
-      {/* TODO: UPDATE TO GET REAL CHROM INFO */}
-      <dd>{`12-${region.stop}-A`}</dd>
-    </div>
-  </RegionAttributeList>
-)
+type RegionTooltipProps = {
+  region: ConstraintRegion
+  gene: {
+    chrom: number
+  }
+  isTranscript: boolean
+}
+
+const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
+  if (isTranscript) {
+    return (
+      <RegionAttributeList>
+        <div>
+          <dt>O/E missense:</dt>
+          <dd>{renderNumber(region.obs_exp)}</dd>
+        </div>
+        <br />
+        <div>The observed/expected ratio for this gene is transcript wide.</div>
+      </RegionAttributeList>
+    )
+  } else {
+    return (
+      <RegionAttributeList>
+        <div>
+          <dt>O/E missense:</dt>
+          <dd>{renderNumber(region.obs_exp)}</dd>
+        </div>
+        <div>
+          <dt>Observed:</dt>
+          <dd>{region.obs_mis}</dd>
+        </div>
+        <div>
+          <dt>Expected:</dt>
+          <dd>{renderNumber(region.exp_mis)}</dd>
+        </div>
+        <div>
+          <dt>
+            &chi;
+            <sup>2</sup>:
+          </dt>
+          <dd>
+            {renderNumber(region.chisq_diff_null)}
+            {region.chisq_diff_null !== null &&
+              region.chisq_diff_null < 10.8 &&
+              ' (not significant)'}
+          </dd>
+        </div>
+        <div>
+          <dt>Region start locus:</dt>
+          {/* TODO: UPDATE TO GET REAL CHROM INFO */}
+          <dd>{`${gene.chrom}-${region.start}`}</dd>
+        </div>
+        <div>
+          <dt>Region start amino acid number:</dt>
+          <dd>{`{{ -5 }}`}</dd>
+        </div>
+        <div>
+          <dt>Region stop locus:</dt>
+          {/* TODO: UPDATE TO GET REAL CHROM INFO */}
+          <dd>{`${gene.chrom}-${region.stop}`}</dd>
+        </div>
+        <div>
+          <dt>Region stop amino acid number:</dt>
+          <dd>{`{{ -5 }}`}</dd>
+        </div>
+      </RegionAttributeList>
+    )
+  }
+}
 
 const SidePanel = styled.div`
   display: flex;
@@ -258,49 +263,89 @@ type OwnRegionalConstraintTrackProps = {
   }[]
 }
 
+type RegionalConstraintTrack = {
+  constrainedRegions: ConstraintRegion[]
+  geneInfo: {
+    chrom: string
+    start: number
+    stop: number
+    oe_mis: number | null
+    obs_mis: number | null
+    exp_mis: number | null
+  }
+  exons: {
+    // TODO: import from elsewhere?
+    feature_type: string
+    start: number
+    stop: number
+  }
+  label: string
+  includeLegend: boolean
+}
+
 // type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
 //   typeof RegionalConstraintTrack.defaultProps
 
-const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLegend }: any) => {
-  // TODO:FIXME: Temp for mockups
-  // if (!constrainedRegions) {
-  //   return (
-  //     <Wrapper>
-  //       <Track
-  //         renderLeftPanel={() => (
-  //           <SidePanel>
-  //             {label && <span>{label}</span>}
-  //             {!label && <span>Regional missense constraint</span>}
-  //             <InfoButton topic="regional-constraint" />
-  //           </SidePanel>
-  //         )}
-  //       >
-  //         {({ scalePosition, width }: any) => (
-  //           <>
-  //             <PlotWrapper>
-  //               <svg height={35} width={width}>
-  //                 <text x={width / 2} y={35 / 2} dy="0.33rem" textAnchor="middle">
-  //                   {`This gene was not searched for regional missense constraint, see the help text for additional information.`}
-  //                 </text>
-  //               </svg>
-  //             </PlotWrapper>
-  //           </>
-  //         )}
-  //       </Track>
-  //     </Wrapper>
-  //   )
-  // }
+const RegionalConstraintTrack = ({
+  constrainedRegions,
+  geneInfo,
+  exons,
+  label,
+  includeLegend,
+}: any) => {
+  // TODO: the way you'd abstract this is:
+  //  - you make some type of `svg` and call it 'content'
+  //      then you can conditioanlly set the SVG based on the 3 cases
+  //      and just render {content} in the return statement
 
-  // TODO:FIXME: Temp for mockups
-  // if (constrainedRegions.length === 1) {
-  //   return <p>TODO: There's only 1!!!</p>
-  // }
+  // TODO: This is legit hardcoded to PCSK4 - change this to if not found (if constrainedRegions is null)
+  if (geneInfo.start === 1481427 && geneInfo.stop === 1490751) {
+    return (
+      <Track
+        renderLeftPanel={() => (
+          <SidePanel>
+            {label && <span>{label}</span>}
+            {!label && <span>Regional missense constraint</span>}
+            <InfoButton topic="regional-constraint" />
+          </SidePanel>
+        )}
+      >
+        {({ scalePosition, width }: any) => (
+          <>
+            <PlotWrapper>
+              <svg height={35} width={width}>
+                <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
+                  <tspan>This gene was not searched for RMC. See the </tspan>
+                  <tspan fill="#0000ff">
+                    {/* @ts-expect-error - gnomad-browser-toolkit */}
+                    <ExternalLink href={`https://gnomad.broadinstitute.org`}>
+                      v2 RMC blog post
+                    </ExternalLink>
+                  </tspan>
+                  <tspan> for addtional information.</tspan>
+                </text>
+              </svg>
+            </PlotWrapper>
+          </>
+        )}
+      </Track>
+    )
+  }
 
-  //gnomad.broadinstitute.org/region/1-55505221-55530525
-
-  // TODO: FIXME: legit hardcoded this
+  // If this prop was passed, RMC was not run for this gene, use the gene level
+  //   constraint data to display info
   if (!constrainedRegions) {
-    constrainedRegions = [{ start: 55505221, stop: 55530525, obs_exp: 0.96, chisq_diff_null: 0.5 }]
+    constrainedRegions = [
+      {
+        start: geneInfo.start,
+        stop: geneInfo.stop,
+        // TODO: this is bad - gnomad_constraint can be null!
+        obs_exp: geneInfo.oe_mis,
+        obs_mis: geneInfo.obs_mis,
+        exp_mis: geneInfo.exp_mis,
+        chisq_diff_null: 13, // TODO: this is bad also, think about this logic
+      },
+    ]
   }
 
   const constrainedExons = regionIntersections([
@@ -325,7 +370,7 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLege
             <TopPanel>{includeLegend && <Legend />}</TopPanel>
             <PlotWrapper>
               <svg height={35} width={width}>
-                {constrainedExons.map((region: any) => {
+                {constrainedExons.map((region: ConstraintRegion) => {
                   const startX = scalePosition(region.start)
                   const stopX = scalePosition(region.stop)
                   const regionWidth = stopX - startX
@@ -335,6 +380,8 @@ const RegionalConstraintTrack = ({ constrainedRegions, exons, label, includeLege
                       key={`${region.start}-${region.stop}`}
                       // @ts-expect-error
                       region={region}
+                      gene={geneInfo}
+                      isTranscript={constrainedRegions.length === 1}
                       tooltipComponent={RegionTooltip}
                     >
                       <g>

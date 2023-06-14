@@ -5,8 +5,7 @@ import queryString from 'query-string'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
-import { TooltipAnchor } from '@gnomad/ui'
-import Link from './Link'
+import { ExternalLink, TooltipAnchor } from '@gnomad/ui'
 
 // @ts-expect-error
 import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'

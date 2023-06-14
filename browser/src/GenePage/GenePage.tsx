@@ -565,83 +565,29 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {/* {datasetId === 'gnomad_r2_1' && gene.gnomad_v2_regional_missense_constraint_regions && (
-          <RegionalConstraintTrack
-            constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions}
-            exons={gene.exons}
-          />
-        )} */}
-
-        {/* TODO:FIXME: My new temporary stuff */}
-
-        {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
-        {/* {datasetId === 'gnomad_r2_1' && gene.exac_regional_missense_constraint_regions && (
-          <RegionalConstraintTrack
-            constrainedRegions={gene.exac_regional_missense_constraint_regions}
-            exons={gene.exons}
-            label={'ExAC RMC'}
-            includeLegend={true}
-          />
-        )} */}
-        {/* <br /> */}
-
-        {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
-        {/* {datasetId === 'gnomad_r2_1' &&
-          gene.gnomad_v2_regional_missense_constraint_regions_0_01 && (
-            <RegionalConstraintTrack
-              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_01}
-              exons={gene.exons}
-              label={'gnomAD RMC (p = 0.01)'}
-              includeLegend={true}
-            />
-          )} */}
-
-        {/* <br /> */}
-
         {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
         {/* "Freeze 5 (0.001) generally looks the best" - seems to be the consensus */}
-        {datasetId === 'gnomad_r2_1' &&
-        // TODO: removed to let the "not-searched" message show
-          // gene.gnomad_v2_regional_missense_constraint_regions_0_0001 && 
-          (
-            <RegionalConstraintTrack
-              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_0001}
-              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
-              exons={gene.transcripts.filter( (t:any) => t.transcript_id === gene.canonical_transcript_id)[0].exons}
-              // exons={gene.exons}
-              label={'Regional missense constraint'}
-              includeLegend={true}
-              // label={'gnomAD RMC (p = 0.001)'}
-              // includeLegend={false}
-            />
-          )}
-
-        {/* <br /> */}
-
-        {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
-        {/* {datasetId === 'gnomad_r2_1' &&
-          gene.gnomad_v2_regional_missense_constraint_regions_0_00001 && (
-            <RegionalConstraintTrack
-              constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_00001}
-              exons={gene.exons}
-              label={'gnomAD RMC (p = 0.0001)'}
-              includeLegend={false}
-            />
-          )} */}
-
-        {/* <br /> */}
-
-        {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
-        {/* {datasetId === 'gnomad_r2_1' && gene.ccr_region && (
+        {datasetId === 'gnomad_r2_1' && (
           <RegionalConstraintTrack
-            constrainedRegions={gene.ccr_region}
-            exons={gene.exons}
-            label={'CCR Regions'}
-            includeLegend={false}
+            constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_0001}
+            geneInfo={{
+              chrom: gene.chrom,
+              start: gene.start,
+              stop: gene.stop,
+              oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+              obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+              exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+            }}
+            // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+            exons={
+              gene.transcripts.filter(
+                (t: any) => t.transcript_id === gene.canonical_transcript_id
+              )[0].exons
+            }
+            label={'Regional missense constraint'}
+            includeLegend={true}
           />
-        )} */}
-
-        {/* <br /> */}
+        )}
 
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
