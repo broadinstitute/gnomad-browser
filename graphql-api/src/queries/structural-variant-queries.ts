@@ -1,23 +1,52 @@
 import { isEmpty } from 'lodash'
 
-import { UserVisibleError } from '../errors'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX = 'gnomad_structural_variants_v2'
+const GNOMAD_STRUCTURAL_VARIANTS_V3_INDEX = 'gnomad_structural_variants_v3'
 
-type SvDatasetId = 'gnomad_sv_r2_1' | 'gnomad_sv_r2_1_controls' | 'gnomad_sv_r2_1_non_neuro'
+type SvDatasetId =
+  | 'gnomad_sv_r2_1'
+  | 'gnomad_sv_r2_1_controls'
+  | 'gnomad_sv_r2_1_non_neuro'
+  | 'gnomad_sv_r3'
 type Subset = 'all' | 'controls' | 'non_neuro'
-type QuerySpecifier = { index: string; subset: Subset }
+type DatasetDependentQueryParams = {
+  index: string
+  subset: Subset
+  variantIdParams: (variantId: string) => any
+}
 
-const querySpecifiers: Record<SvDatasetId, QuerySpecifier> = {
-  gnomad_sv_r2_1: { index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX, subset: 'all' },
-  gnomad_sv_r2_1_controls: { index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX, subset: 'controls' },
-  gnomad_sv_r2_1_non_neuro: { index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX, subset: 'non_neuro' },
+const v2VariantIdParams = (variantId: string) => ({ variant_id: variantId })
+const v3VariantIdParams = (variantId: string) => ({
+  variant_id_upper_case: variantId.toUpperCase(),
+})
+
+const datasetDependentQueryParams: Record<SvDatasetId, DatasetDependentQueryParams> = {
+  gnomad_sv_r2_1: {
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
+    subset: 'all',
+    variantIdParams: v2VariantIdParams,
+  },
+  gnomad_sv_r2_1_controls: {
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
+    subset: 'controls',
+    variantIdParams: v2VariantIdParams,
+  },
+  gnomad_sv_r2_1_non_neuro: {
+    index: GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX,
+    subset: 'non_neuro',
+    variantIdParams: v2VariantIdParams,
+  },
+  gnomad_sv_r3: {
+    index: GNOMAD_STRUCTURAL_VARIANTS_V3_INDEX,
+    subset: 'all',
+    variantIdParams: v3VariantIdParams,
+  },
 } as const
 
-export type GeneQueryParams = { symbol: string; reference_genome: string }
+export type GeneQueryParams = { symbol: string }
 export type RegionQueryParams = {
-  reference_genome: string
   chrom: number
   start: number
   stop: number
@@ -30,14 +59,14 @@ export const fetchStructuralVariantById = async (
   datasetId: SvDatasetId,
   variantId: string
 ) => {
-  const { index, subset } = querySpecifiers[datasetId]
+  const { index, subset, variantIdParams } = datasetDependentQueryParams[datasetId]
   const response = await esClient.search({
     index,
     type: '_doc',
     body: {
       query: {
         bool: {
-          filter: { term: { variant_id: variantId } },
+          filter: { term: variantIdParams(variantId) },
         },
       },
     },
@@ -96,12 +125,7 @@ export const fetchStructuralVariantsByGene = async (
   datasetId: SvDatasetId,
   gene: GeneQueryParams
 ) => {
-  if (gene.reference_genome !== 'GRCh37') {
-    throw new UserVisibleError(
-      `gnomAD v2 structural variants are not available on ${gene.reference_genome}`
-    )
-  }
-  const { index, subset } = querySpecifiers[datasetId]
+  const { index, subset } = datasetDependentQueryParams[datasetId]
   const hits = await fetchAllSearchResults(esClient, {
     index,
     type: '_doc',
@@ -145,12 +169,7 @@ export const fetchStructuralVariantsByRegion = async (
   datasetId: SvDatasetId,
   region: RegionQueryParams
 ) => {
-  if (region.reference_genome !== 'GRCh37') {
-    throw new UserVisibleError(
-      `gnomAD v2 structural variants are not available on ${region.reference_genome}`
-    )
-  }
-  const { index, subset } = querySpecifiers[datasetId]
+  const { index, subset } = datasetDependentQueryParams[datasetId]
   const hits = await fetchAllSearchResults(esClient, {
     index,
     type: '_doc',
