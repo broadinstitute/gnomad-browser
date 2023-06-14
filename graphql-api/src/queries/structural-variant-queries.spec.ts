@@ -10,12 +10,15 @@ const datasetIds = [
   'gnomad_sv_r2_1',
   'gnomad_sv_r2_1_controls',
   'gnomad_sv_r2_1_non_neuro',
+  'gnomad_sv_r3',
 ] as const
+type SvDatasetId = (typeof datasetIds)[number]
 
-const subsets: Record<(typeof datasetIds)[number], string> = {
+const subsets: Record<SvDatasetId, string> = {
   gnomad_sv_r2_1: 'all',
   gnomad_sv_r2_1_controls: 'controls',
   gnomad_sv_r2_1_non_neuro: 'non_neuro',
+  gnomad_sv_r3: 'all',
 }
 
 const responseWithHits = (hits: any[]) => {
@@ -50,21 +53,29 @@ const makeMockClient = (response: any) => {
   return { search: mockSearch, clearScroll: () => {}, scroll: () => minimalResponse }
 }
 
+const expectedIndex = (datasetId: SvDatasetId) =>
+  datasetId === 'gnomad_sv_r3' ? 'gnomad_structural_variants_v3' : 'gnomad_structural_variants_v2'
+
 describe('fetchStructuralVariantById', () => {
   const variantId = 'dummy-variant'
 
   describe.each(datasetIds)('with datasetId %s', (datasetId) => {
     test('constructs the correct ES query', async () => {
+      const expectedVariantIdParams =
+        datasetId === 'gnomad_sv_r3'
+          ? { variant_id_upper_case: 'DUMMY-VARIANT' }
+          : { variant_id: 'dummy-variant' }
+
       const mockClient = makeMockClient(minimalResponse)
       await fetchStructuralVariantById(mockClient, datasetId, variantId)
 
       expect(mockClient.search).toHaveBeenCalledWith({
-        index: 'gnomad_structural_variants_v2',
+        index: expectedIndex(datasetId),
         type: '_doc',
         body: {
           query: {
             bool: {
-              filter: { term: { variant_id: variantId } },
+              filter: { term: expectedVariantIdParams },
             },
           },
         },
@@ -199,7 +210,7 @@ describe('fetchStructuralVariantById', () => {
 })
 
 describe('fetchStructuralVariantsByGene', () => {
-  const gene = { symbol: 'dummy-gene', reference_genome: 'GRCh37' }
+  const gene = { symbol: 'dummy-gene' }
 
   describe.each(datasetIds)('with dataset %s', (datasetId) => {
     test('constructs the correct ES query', async () => {
@@ -208,7 +219,7 @@ describe('fetchStructuralVariantsByGene', () => {
       await fetchStructuralVariantsByGene(mockClient, datasetId, gene)
 
       expect(mockClient.search).toHaveBeenCalledWith({
-        index: 'gnomad_structural_variants_v2',
+        index: expectedIndex(datasetId),
         type: '_doc',
         size: 10000,
         scroll: '30s',
@@ -309,7 +320,6 @@ describe('fetchStructuralVariantsByRegion', () => {
       xstart: 126,
       stop: 456,
       xstop: 453,
-      reference_genome: 'GRCh37',
     }
 
     describe.each(datasetIds)('with datasetId %s', () => {
@@ -320,7 +330,7 @@ describe('fetchStructuralVariantsByRegion', () => {
         await fetchStructuralVariantsByRegion(mockClient, datasetId, region)
 
         expect(mockClient.search).toHaveBeenCalledWith({
-          index: 'gnomad_structural_variants_v2',
+          index: expectedIndex(datasetId),
           type: '_doc',
           size: 10000,
           scroll: '30s',
