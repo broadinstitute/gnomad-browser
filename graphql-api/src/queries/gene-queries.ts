@@ -48,7 +48,7 @@ export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenc
     size: 1,
   })
 
-  if (response.body.hits.total === 0) {
+  if (response.body.hits.total.value === 0) {
     return null
   }
 
@@ -134,7 +134,7 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
     size: 5,
   })
 
-  if (response.body.hits.total === 0) {
+  if (response.body.hits.total.value === 0) {
     return []
   }
 

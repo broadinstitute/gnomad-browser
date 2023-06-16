@@ -22,6 +22,14 @@ The setup step installs the [Elastic Cloud on Kubernetes (ECK)](https://www.elas
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
 
+Create a kubernetes service account to use for elasticsearch snapshotting, run: `kubectl create serviceaccount es-snaps`
+
+Annotate that service account to associate it with the GCP Service Account that can write to your snapthot storage:
+
+```
+  kubectl annotate sa es-snaps iam.gke.io/gcp-service-account=your-service-acct@your-project.iam.gserviceaccount.com
+```
+
 To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
 After creating the cluster, store the password in a secret so that Dataproc jobs can access it.

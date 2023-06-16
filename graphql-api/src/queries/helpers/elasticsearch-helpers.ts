@@ -24,7 +24,7 @@ export const fetchAllSearchResults = async (client: any, searchParams: any) => {
     const response = responseQueue.shift()
     allResults = allResults.concat(response.body.hits.hits)
 
-    if (allResults.length === response.body.hits.total) {
+    if (allResults.length === response.body.hits.total.value) {
       // eslint-disable-next-line no-await-in-loop
       await client.clearScroll({
         scrollId: response.body._scroll_id, // eslint-disable-line no-underscore-dangle
@@ -48,10 +48,9 @@ export const fetchAllSearchResults = async (client: any, searchParams: any) => {
 export const fetchIndexMetadata = async (esClient: any, index: any) => {
   const response = await esClient.indices.getMapping({
     index,
-    type: '_doc',
   })
 
   // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
   // eslint-disable-next-line no-underscore-dangle
-  return Object.values(response.body)[0].mappings._doc._meta
+  return Object.values(response.body)[0].mappings._meta
 }

@@ -2,36 +2,38 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: {{ cluster_name }}
+  namespace: {{ namespace }}
 spec:
-  version: 6.8.22
+  version: 7.17.10
   http:
     tls:
       selfSignedCertificate:
         disabled: true
-  secureSettings:
-    - secretName: es-snapshots-gcs-credentials
   nodeSets:
     - name: master
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: true
-        node.data: false
-        node.ingest: false
-        node.ml: false
+        node.roles: ["master"]
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: master
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: cloud.google.com/gke-nodepool
-                        operator: NotIn
+                        operator: In
                         values:
-                          - es-data
+                          - main-pool
           initContainers:
             - name: sysctl
               securityContext:
@@ -52,10 +54,11 @@ spec:
     - name: coordinating-nodes
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: false
-        node.ingest: false
-        node.ml: false
+        node.roles: []
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       volumeClaimTemplates:
       - metadata:
           name: elasticsearch-data
@@ -71,15 +74,17 @@ spec:
           labels:
             role: coordinating
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
                       - key: cloud.google.com/gke-nodepool
-                        operator: NotIn
+                        operator: In
                         values:
-                          - es-data
+                          - main-pool
           initContainers:
             - name: sysctl
               securityContext:
@@ -90,18 +95,18 @@ spec:
     - name: data-green
       count: 2
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: true
-        node.ingest: false
-        node.ml: false
+        node.roles: ["data"]
         cluster.routing.allocation.disk.watermark.low: '100gb'
         cluster.routing.allocation.disk.watermark.high: '50gb'
         cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: data
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -144,15 +149,18 @@ spec:
     - name: ingest
       count: {{ n_ingest_pods }}
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
-        node.master: false
-        node.data: true
-        node.ingest: true
-        node.ml: false
+        node.roles: ["data", "ingest"]
+        cluster.routing.allocation.disk.watermark.low: '100gb'
+        cluster.routing.allocation.disk.watermark.high: '50gb'
+        cluster.routing.allocation.disk.watermark.flood_stage: '10gb'
+        ingest.geoip.downloader.enabled: false
       podTemplate:
         metadata:
           labels:
             role: ingest
         spec:
+          automountServiceAccountToken: true
+          serviceAccountName: es-snaps
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

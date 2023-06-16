@@ -13,7 +13,7 @@ from deployctl.shell import kubectl, get_most_recent_tag, image_exists, get_k8s_
 KUSTOMIZATION_TEMPLATE = """---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - ../../base
 commonLabels:
   deployment: '{deployment_name}'
