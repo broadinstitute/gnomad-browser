@@ -350,3 +350,36 @@ query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: Datas
   [Function]
 </mockConstructor>
 `;
+
+exports[`MitochondrialRegionCoverageTrack with dataset gnomad_sv_r3 queries with appropriate params 1`] = `
+<mockConstructor
+  errorMessage="Unable to load coverage"
+  loadingMessage="Loading coverage"
+  loadingPlaceholderHeight={220}
+  operationName="MitochondrialCoverageInRegion"
+  query="
+query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  region(chrom: "M", start: $start, stop: $stop, reference_genome: $referenceGenome) {
+    mitochondrial_coverage(dataset: $datasetId) {
+      pos
+      mean
+      median
+      over_100
+      over_1000
+    }
+  }
+}
+"
+  success={[Function]}
+  variables={
+    {
+      "datasetId": "gnomad_sv_r3",
+      "referenceGenome": "GRCh38",
+      "start": 123,
+      "stop": 456,
+    }
+  }
+>
+  [Function]
+</mockConstructor>
+`;

@@ -6510,6 +6510,42 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r3" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for gnomAD v3.
+</p>
+`;
+
 exports[`ConstraintTable with exac dataset and gene with available constraints has no unexpected changes 1`] = `
 [
   <table
