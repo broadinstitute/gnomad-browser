@@ -203,6 +203,7 @@ const expectedCoverageDatasetIds: Record<DatasetId, DatasetId> = {
   gnomad_sv_r2_1: 'gnomad_r2_1',
   gnomad_sv_r2_1_controls: 'gnomad_r2_1',
   gnomad_sv_r2_1_non_neuro: 'gnomad_r2_1',
+  gnomad_sv_r3: 'gnomad_r3',
 }
 
 describe.each(allDatasetIds)('coverageDataset for dataset %s', (datasetId: DatasetId) => {

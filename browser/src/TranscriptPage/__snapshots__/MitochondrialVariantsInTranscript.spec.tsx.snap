@@ -404,3 +404,36 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1_non_neuro
   </div>,
 ]
 `;
+
+exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r3 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this transcript.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
