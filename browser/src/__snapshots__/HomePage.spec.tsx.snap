@@ -205,6 +205,11 @@ exports[`Home Page has no unexpected changes 1`] = `
         >
           gnomAD v3.1.2
         </option>
+        <option
+          value="gnomad_sv_r3"
+        >
+          gnomAD SVs v3
+        </option>
       </optgroup>
       <optgroup
         label="GRCh37"
