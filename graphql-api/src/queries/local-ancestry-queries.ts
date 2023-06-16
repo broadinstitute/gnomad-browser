@@ -30,7 +30,7 @@ export const fetchLocalAncestryPopulationsByVariant = async (
     size: 1,
   })
 
-  if (response.body.hits.total === 0) {
+  if (response.body.hits.total.value === 0) {
     return { exome: [], genome: [] }
   }
 

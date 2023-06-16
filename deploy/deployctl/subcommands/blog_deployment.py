@@ -10,7 +10,7 @@ from deployctl.shell import kubectl, get_most_recent_tag, image_exists
 KUSTOMIZATION_TEMPLATE = """---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - ../base
 images:
   - name: gnomad-blog

@@ -63,12 +63,12 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     size: 1,
   })
 
-  if (response.body.hits.total === 0) {
+  if (response.body.hits.total.value === 0) {
     throw new UserVisibleError('Variant not found')
   }
 
   // An rsID may match multiple variants
-  if (response.body.hits.total > 1) {
+  if (response.body.hits.total.value > 1) {
     throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
   }
 
