@@ -6,7 +6,7 @@ import AttributeList from '../AttributeList'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const FILTER_LABELS = {
   LOW_CALL_RATE: 'Low Call Rate',
@@ -120,7 +120,7 @@ ComplexTypeHelpButton.defaultProps = {
 }
 
 type StructuralVariantAttributeListProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeListProps) => (

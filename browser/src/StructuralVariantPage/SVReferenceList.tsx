@@ -2,13 +2,13 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const ucscUrl = (chrom: any, pos: any, end: any) =>
   `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${pos}-${end}`
 
 type SVUCSCLinksProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const SVUCSCLinks = ({ variant }: SVUCSCLinksProps) => {
@@ -49,7 +49,7 @@ const SVUCSCLinks = ({ variant }: SVUCSCLinksProps) => {
 }
 
 type SVReferenceListProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const SVReferenceList = ({ variant }: SVReferenceListProps) => (

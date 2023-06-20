@@ -6,6 +6,7 @@ import { ExternalLink, Page } from '@gnomad/ui'
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
+import { Histogram } from '../VariantPage/VariantPage'
 import InfoButton from '../help/InfoButton'
 import Query from '../Query'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -13,7 +14,6 @@ import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPl
 import StructuralVariantAgeDistribution from './StructuralVariantAgeDistribution'
 import StructuralVariantAttributeList from './StructuralVariantAttributeList'
 import StructuralVariantConsequenceList from './StructuralVariantConsequenceList'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
 import StructuralVariantGenotypeQualityMetrics from './StructuralVariantGenotypeQualityMetrics'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
 import SVReferenceList from './SVReferenceList'
@@ -32,9 +32,47 @@ const ResponsiveSection = styled.section`
   }
 `
 
+export type StructuralVariant = {
+  age_distribution?: {
+    het: Histogram
+    hom: Histogram
+  }
+  algorithms?: string[]
+  alts?: string[]
+  ac: number
+  an: number
+  chrom: string
+  chrom2?: string
+  consequences: {
+    consequence: string
+    genes: string[]
+  }[]
+  copy_numbers?: {
+    copy_number: number
+    ac: number
+  }[]
+  cpx_intervals?: string[]
+  cpx_type?: string
+  end: number
+  end2?: number
+  evidence: string[]
+  filters?: string[]
+  genes: string[]
+  genotype_quality?: {
+    all: Histogram
+    alt: Histogram
+  }
+  length: number
+  pos: number
+  pos2?: number
+  qual: number
+  type: string
+  variant_id: string
+}
+
 type StructuralVariantPageProps = {
   datasetId: DatasetId
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProps) => (
@@ -68,7 +106,6 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
       <Wrapper>
         <ResponsiveSection>
           <h2>Copy Number Distribution</h2>
-          {/* @ts-expect-error TS(2322) FIXME: Type '{ variant: StructuralVariantDetailPropType; ... Remove this comment to see the full error message */}
           <MultiallelicCopyNumberVariantPlot variant={variant} />
         </ResponsiveSection>
       </Wrapper>

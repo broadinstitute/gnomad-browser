@@ -6,7 +6,7 @@ import { Checkbox } from '@gnomad/ui'
 
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const LegendWrapper = styled.div`
 `
 
 type Props = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantGenotypeQualityMetrics = ({ variant }: Props) => {
