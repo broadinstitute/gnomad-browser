@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const populationNames = {
   afr: 'African/African American',
@@ -65,7 +65,7 @@ const addPopulationNames = (populations: any) => {
 }
 
 type StructuralVariantPopulationsTableProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantPopulationsTable = ({ variant }: StructuralVariantPopulationsTableProps) => {
