@@ -65,7 +65,6 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
     .range([0, width - (margin.left + margin.right)])
 
   const yScale = scaleLinear()
-    // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number)[]' is not assi... Remove this comment to see the full error message
     .domain([0, max(variant.copy_numbers, (d: any) => d.ac) || 1])
     .range([height - (margin.top + margin.bottom), margin.top])
 

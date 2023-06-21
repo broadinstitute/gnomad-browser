@@ -127,9 +127,7 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
   <AttributeList style={{ marginTop: '1.25em' }}>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Filter">
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
       {variant.filters.length > 0 ? (
-        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
         variant.filters.map((filter) => (
           // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           <Badge key={filter} level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
@@ -200,7 +198,6 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
         </AttributeList.Item>
         {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
         <AttributeList.Item label="Rearranged Segments">
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
           {variant.cpx_intervals.join(', ')}
         </AttributeList.Item>
       </React.Fragment>
