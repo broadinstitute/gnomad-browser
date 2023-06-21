@@ -97,6 +97,7 @@ type DatasetMetadata = {
   isV3: boolean
   isExac: boolean
   isSVs: boolean
+  isV3SVs: boolean
   hasV2Genome: boolean
   metricsIncludeLowQualityGenotypes: boolean
   has1000GenomesPopulationFrequencies: boolean
@@ -122,6 +123,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   label: datasetLabels[datasetId],
   isSubset: !fullDatasetIds.includes(datasetId),
   isV3Subset: !fullDatasetIds.includes(datasetId) && datasetId.startsWith('gnomad_r3'),
+  isV3SVs: datasetId === 'gnomad_sv_r3',
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
@@ -265,3 +267,5 @@ export const coverageDatasetId = (datasetId: DatasetId) =>
 
 export const variantFeedbackDescription = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'variantFeedbackDescription')
+
+export const isV3SVs = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3SVs')
