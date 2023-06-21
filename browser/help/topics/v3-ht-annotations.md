@@ -32,6 +32,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **freq_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
+- **vrs_version**: The Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) version that was used to compute IDs on the callset.
 
 **Row fields**:
 
@@ -135,6 +136,11 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **monoallelic**: All samples are homozygous alternate for the variant.
   - **AS_VQSLOD**: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
   - **InbreedingCoeff**: Inbreeding coefficient, the excess heterozygosity at a variant site, computed as 1 - (the number of heterozygous genotypes) / (the number of heterozygous genotypes expected under Hardy-Weinberg equilibrium).
+  - **vrs**: Struct containing information related to the Global Alliance for Genomic Health (GA4GH) Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) standard.
+    - **VRS_Allele_IDS**: The computed identifiers for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+    - **VRS_Starts**: Interresidue coordinates used as the location starts for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+    - **VRS_Ends**: Interresidue coordinates used as the location ends for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+    - **VRS_States**: The literal sequence states used for the GA4GH VRS Alleles corresponding to the values in the alleles column.
 - **vep**: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
 - **vqsr**: VQSR related variant annotations.
   - **AS_VQSLOD**: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
