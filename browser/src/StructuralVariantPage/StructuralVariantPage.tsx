@@ -33,38 +33,45 @@ const ResponsiveSection = styled.section`
 `
 
 export type StructuralVariant = {
-  age_distribution?: {
+  age_distribution: {
     het: Histogram
     hom: Histogram
-  }
-  algorithms?: string[]
-  alts?: string[]
+  } | null
+  algorithms: string[]
+  alts: string[] | null
   ac: number
   an: number
   chrom: string
-  chrom2?: string
+  chrom2: string | null
   consequences: {
     consequence: string
     genes: string[]
   }[]
-  copy_numbers?: {
+  copy_numbers: {
     copy_number: number
     ac: number
   }[]
-  cpx_intervals?: string[]
-  cpx_type?: string
+  cpx_intervals: string[]
+  cpx_type: string | null
   end: number
-  end2?: number
+  end2: number | null
   evidence: string[]
-  filters?: string[]
+  filters: string[]
   genes: string[]
-  genotype_quality?: {
+  genotype_quality: {
     all: Histogram
     alt: Histogram
-  }
+  } | null
   length: number
+  populations: {
+    id: string
+    ac: number
+    an: number
+    ac_hemi: number
+    ac_hom: number
+  }[]
   pos: number
-  pos2?: number
+  pos2: number | null
   qual: number
   type: string
   variant_id: string
