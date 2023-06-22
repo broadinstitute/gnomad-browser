@@ -247,7 +247,11 @@ const ConnectedStructuralVariantPage = ({
       success={(data: any) => data.structural_variant}
     >
       {({ data }: any) => {
-        return <StructuralVariantPage datasetId={datasetId} variant={data.structural_variant} />
+        const variant = {
+          ...data.structural_variant,
+          variant_id: data.structural_variant.variant_id.toUpperCase(),
+        }
+        return <StructuralVariantPage datasetId={datasetId} variant={variant} />
       }}
     </Query>
   )
