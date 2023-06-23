@@ -104,6 +104,7 @@ export type Gene = GeneMetadata & {
   gnomad_v2_regional_missense_constraint_regions_0_01?: any
   gnomad_v2_regional_missense_constraint_regions_0_0001?: any
   gnomad_v2_regional_missense_constraint_regions_0_00001?: any
+  gnomad_v2_regional_missense_constraint_regions__20230622_demo?: any
   ccr_region?: any
   // TODO: (rgrant) remove above for final
   variants: Variant[]
@@ -565,11 +566,13 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {/* TODO:TODO:FIXME: (rgrant: Apr 25, 2023 - Remove later, this is for mockups) */}
-        {/* "Freeze 5 (0.001) generally looks the best" - seems to be the consensus */}
+
+
+
+        {/* TODO:FIXME: (rgrant: Jun 22, 2023 - Remove later, this is for mockups) */}
         {datasetId === 'gnomad_r2_1' && (
           <RegionalConstraintTrack
-            constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions_0_0001}
+            constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions__20230622_demo}
             geneInfo={{
               chrom: gene.chrom,
               start: gene.start,

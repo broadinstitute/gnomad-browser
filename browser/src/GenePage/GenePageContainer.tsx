@@ -220,7 +220,42 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
-    gnomad_v2_regional_missense_constraint_regions {
+    gnomad_v2_regional_missense_constraint_regions__20230622_demo {
+      start
+      stop
+      chrom
+      start_aa
+      stop_aa
+      obs_exp
+      chisq_diff_null
+    }
+    short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
+      id
+    }
+    heterozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+        two_het_total
+	in_cis
+	in_trans
+	unphased
+      }
+    }
+    homozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+	hom_total
+      }
+    }
+  }
+}
+`
+
+/*
+
+gnomad_v2_regional_missense_constraint_regions {
       start
       stop
       obs_mis
@@ -260,29 +295,8 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
 			obs_exp
 			chisq_diff_null
     }
-    short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
-      id
-    }
-    heterozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-        two_het_total
-	in_cis
-	in_trans
-	unphased
-      }
-    }
-    homozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-	hom_total
-      }
-    }
-  }
-}
-`
+
+*/
 
 type Props = {
   datasetId: DatasetId
@@ -347,7 +361,9 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   return (
     // TODO:FIXME: (rgrant) for dev cluster -- modify 'Gene' query to manually query its own dev cluster deployment API
     //                                         to fetch new Gene data (RMC, CCR) loaded in the dev ES Gene index
-    <BaseQuery operationName={operationName} query={query} variables={variables} url={'/api/'}>
+    // <BaseQuery operationName={operationName} query={query} variables={variables} url={'/api/'}>
+    <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://localhost:8010/api/'}>
+
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (

@@ -162,8 +162,11 @@ const renderNumber = (number: any) =>
   number === undefined || number === null ? '-' : number.toPrecision(4)
 
 type ConstraintRegion = {
+  chrom: string
   start: number
   stop: number
+  start_aa: string
+  stop_aa: string
   obs_exp: number
   obs_mis: number
   exp_mis: number
@@ -178,13 +181,32 @@ type RegionTooltipProps = {
   isTranscript: boolean
 }
 
+// TODO:FIXME:
+// (rgrant: jun 22, 2023) - remove this helper by programatically doing this when you load the data
+const getFirstOrLastAA = (aa1: string, aa2: string, lastHuh: boolean) => {
+  const num1 = parseInt(aa1.slice(3), 10)
+  const num2 = parseInt(aa2.slice(3), 10)
+
+  let first = aa1
+  let last = aa2
+  
+  if (num1 > num2) {
+    first = aa2
+    last = aa1
+  }
+
+  return lastHuh ? last : first
+}
+
 const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
   if (isTranscript) {
     return (
       <RegionAttributeList>
         <div>
-          <dt>O/E missense:</dt>
-          <dd>{renderNumber(region.obs_exp)}</dd>
+          <dt>Missense observed/expected:</dt>
+          <dd>{`${renderNumber(region.obs_exp)} (${region.obs_mis}/${renderNumber(
+            region.exp_mis
+          )})`}</dd>
         </div>
         <br />
         <div>The observed/expected ratio for this gene is transcript wide.</div>
@@ -194,16 +216,8 @@ const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
     return (
       <RegionAttributeList>
         <div>
-          <dt>O/E missense:</dt>
-          <dd>{renderNumber(region.obs_exp)}</dd>
-        </div>
-        <div>
-          <dt>Observed:</dt>
-          <dd>{region.obs_mis}</dd>
-        </div>
-        <div>
-          <dt>Expected:</dt>
-          <dd>{renderNumber(region.exp_mis)}</dd>
+          <dt>Missense observed/expected:</dt>
+          <dd>{`${renderNumber(region.obs_exp)} (-12.34/-56.78)`}</dd>
         </div>
         <div>
           <dt>
@@ -218,22 +232,16 @@ const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
           </dd>
         </div>
         <div>
-          <dt>Region start locus:</dt>
-          {/* TODO: UPDATE TO GET REAL CHROM INFO */}
-          <dd>{`${gene.chrom}-${region.start}`}</dd>
+          <dt>Coordinates:</dt>
+          <dd>{`${region.chrom}:${region.start}-${region.stop}`}</dd>
         </div>
         <div>
-          <dt>Region start amino acid number:</dt>
-          <dd>{`{{ -5 }}`}</dd>
-        </div>
-        <div>
-          <dt>Region stop locus:</dt>
-          {/* TODO: UPDATE TO GET REAL CHROM INFO */}
-          <dd>{`${gene.chrom}-${region.stop}`}</dd>
-        </div>
-        <div>
-          <dt>Region stop amino acid number:</dt>
-          <dd>{`{{ -5 }}`}</dd>
+          <dt>Amino acids:</dt>
+          <dd>{`${getFirstOrLastAA(region.start_aa, region.stop_aa, false)}-${getFirstOrLastAA(
+            region.start_aa,
+            region.stop_aa,
+            true
+          )}`}</dd>
         </div>
       </RegionAttributeList>
     )
@@ -256,8 +264,11 @@ const TopPanel = styled.div`
 type OwnRegionalConstraintTrackProps = {
   height?: number
   regions: {
+    chrom: string
     start: number
     stop: number
+    start_aa: string
+    stop_aa: string
     obs_exp: number
     chisq_diff_null: number
   }[]
@@ -299,7 +310,7 @@ const RegionalConstraintTrack = ({
   //      and just render {content} in the return statement
 
   // TODO: This is legit hardcoded to PCSK4 - change this to if not found (if constrainedRegions is null)
-  if (geneInfo.start === 1481427 && geneInfo.stop === 1490751) {
+  if (!constrainedRegions) {
     return (
       <Track
         renderLeftPanel={() => (
@@ -314,12 +325,14 @@ const RegionalConstraintTrack = ({
           <>
             <PlotWrapper>
               <svg height={35} width={width}>
-                <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
-                  <tspan>This gene was not searched for RMC. See the </tspan>
+                <text x={width / 2} y={35 / 2 + 5} dy="1.0rem" textAnchor="middle">
+                  <tspan>
+                    This gene was not searched for evidence of regional missense constraint. See our{' '}
+                  </tspan>
                   <tspan fill="#0000ff">
                     {/* @ts-expect-error - gnomad-browser-toolkit */}
-                    <ExternalLink href={`https://gnomad.broadinstitute.org`}>
-                      v2 RMC blog post
+                    <ExternalLink href={`https://gnomad.broadinstitute.org/help`}>
+                      help page
                     </ExternalLink>
                   </tspan>
                   <tspan> for addtional information.</tspan>
@@ -334,7 +347,7 @@ const RegionalConstraintTrack = ({
 
   // If this prop was passed, RMC was not run for this gene, use the gene level
   //   constraint data to display info
-  if (!constrainedRegions) {
+  if (constrainedRegions.length === 1) {
     constrainedRegions = [
       {
         start: geneInfo.start,
@@ -343,7 +356,8 @@ const RegionalConstraintTrack = ({
         obs_exp: geneInfo.oe_mis,
         obs_mis: geneInfo.obs_mis,
         exp_mis: geneInfo.exp_mis,
-        chisq_diff_null: 13, // TODO: this is bad also, think about this logic
+        chisq_diff_null: null,
+        // chisq_diff_null: 13, // TODO: this is bad also, think about this logic
       },
     ]
   }
@@ -352,6 +366,8 @@ const RegionalConstraintTrack = ({
     constrainedRegions,
     exons.filter((exon: any) => exon.feature_type === 'CDS'),
   ])
+
+  console.log(constrainedRegions)
 
   return (
     <Wrapper>

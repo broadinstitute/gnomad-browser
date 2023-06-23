@@ -193,17 +193,17 @@ pipeline.add_task(
     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
 )
 
-pipeline.add_task(
-    "prepare_heterozygous_variant_cooccurrence_counts",
-    prepare_heterozygous_variant_cooccurrence_counts,
-    "/genes/heterozygous_variant_cooccurrence_counts.ht",
-)
+# pipeline.add_task(
+#     "prepare_heterozygous_variant_cooccurrence_counts",
+#     prepare_heterozygous_variant_cooccurrence_counts,
+#     "/genes/heterozygous_variant_cooccurrence_counts.ht",
+# )
 
-pipeline.add_task(
-    "prepare_homozygous_variant_cooccurrence_counts",
-    prepare_homozygous_variant_cooccurrence_counts,
-    "/genes/homozygous_variant_cooccurrence_counts.ht",
-)
+# pipeline.add_task(
+#     "prepare_homozygous_variant_cooccurrence_counts",
+#     prepare_homozygous_variant_cooccurrence_counts,
+#     "/genes/homozygous_variant_cooccurrence_counts.ht",
+# )
 
 # TODO: added section to add regional missense constraint - remove after run on prod
 pipeline.add_task(
@@ -239,6 +239,20 @@ pipeline.add_task(
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/rmc_0_00001/all_rmc.ht"},
     {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_0_00001"},
 )
+
+
+# TODO: added section to add regional missense constraint - remove after run on prod
+# FIXME: Added June 22nd, 2023. This is closest to the final needed annotation, all other ones above this were previous iterations.
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230622_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230622_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230622_rmc_demo/demo_release.ht"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions__20230622_demo"},
+)
+
+
+
 # TODO: ========================
 
 
@@ -325,36 +339,40 @@ pipeline.add_task(
         "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task(
             "prepare_gnomad_v2_regional_missense_constraint_0_00001"
         ),
+        # TODO:FIXME: this is the only one that matters now, really
+        "gnomad_v2_regional_missense_constraint_20230622_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230622_demo"
+        )
     },
     {"join_on": "preferred_transcript_id"},
 )
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_5",
-    annotate_table_with_variant_cooccurrence_counts,
-    "/genes/genes_grch37_annotated_5.ht",
-    {
-        "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
-        "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
-        ),
-        "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
-        ),
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_5",
+#     annotate_table_with_variant_cooccurrence_counts,
+#     "/genes/genes_grch37_annotated_5.ht",
+#     {
+#         "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
+#         "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_heterozygous_variant_cooccurrence_counts"
+#         ),
+#         "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_homozygous_variant_cooccurrence_counts"
+#         ),
+#     },
+# )
 
 # TODO:FIXME: (rgrant) Apr 03, 2023 when rebasing. Needed as add'l task? Review after rebase.
-pipeline.add_task(
-    "annotate_grch37_genes_step_6",
-    annotate_table,
-    "/genes/genes_grch37_annotated_6.ht",
-    {
-        "table_path": "gs://gnomad-rgrant-data-pipeline/output/genes/genes_grch37_annotated_5.ht",
-        "gnomad_v2_ccr_for_comparison": pipeline.get_task("prepare_gnomad_v2_ccr_for_comparison"),
-    },
-    {"join_on": "symbol"},
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_6",
+#     annotate_table,
+#     "/genes/genes_grch37_annotated_6.ht",
+#     {
+#         "table_path": "gs://gnomad-rgrant-data-pipeline/output/genes/genes_grch37_annotated_5.ht",
+#         "gnomad_v2_ccr_for_comparison": pipeline.get_task("prepare_gnomad_v2_ccr_for_comparison"),
+#     },
+#     {"join_on": "symbol"},
+# )
 
 # pipeline.add_task(
 #     "annotate_grch38_genes_step_1",
@@ -384,20 +402,20 @@ pipeline.add_task(
 #     {"table_path": pipeline.get_task("annotate_grch38_genes_step_2")},
 # )
 
-pipeline.add_task(
-    "annotate_grch38_genes_step_4",
-    annotate_table_with_variant_cooccurrence_counts,
-    "/genes/genes_grch38_annotated_4.ht",
-    {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_3"),
-        "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
-        ),
-        "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
-        ),
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch38_genes_step_4",
+#     annotate_table_with_variant_cooccurrence_counts,
+#     "/genes/genes_grch38_annotated_4.ht",
+#     {
+#         "genes_path": pipeline.get_task("annotate_grch38_genes_step_3"),
+#         "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_heterozygous_variant_cooccurrence_counts"
+#         ),
+#         "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_homozygous_variant_cooccurrence_counts"
+#         ),
+#     },
+# )
 
 ###############################################
 # Extract transcripts
@@ -408,7 +426,7 @@ pipeline.add_task(
     extract_transcripts,
     "/genes/transcripts_grch37_base.ht",
     # {"genes_path": pipeline.get_task("annotate_grch37_genes_step_4")},
-    {"genes_path": pipeline.get_task("annotate_grch37_genes_step_5")},
+    {"genes_path": pipeline.get_task("annotate_grch37_genes_step_4")},
 )
 
 # pipeline.add_task(
@@ -439,8 +457,8 @@ pipeline.add_task(
 
 pipeline.set_outputs(
     {
-        "genes_grch37": "annotate_grch37_genes_step_6",
-        "genes_grch38": "annotate_grch38_genes_step_4",
+        "genes_grch37": "annotate_grch37_genes_step_4",
+        # "genes_grch38": "annotate_grch38_genes_step_4",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         # "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
