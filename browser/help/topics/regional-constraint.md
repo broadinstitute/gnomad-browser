@@ -10,9 +10,9 @@ title: 'Regional constraint'
 
 ### Overall interpretation
 
-We searched for regions within transcripts that were intolerant of missense variation within the ExAC dataset. We used the observed and expected missense variation in each transcript in a likelihood ratio test to identify those transcipts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of expected missense variation). Missense constraint values closer to zero indicate increased intolerance against missense variation.
+We searched for regions within transcripts that were intolerant of missense variation within the gnomAD v2.1.1 dataset. We used the observed and expected missense variation in each transcript in a likelihood ratio test to identify those transcripts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of expected missense variation). Missense constraint values closer to zero indicate increased intolerance against missense variation.
 
-Note that these data currently reflect the regional constraint seen in the ExAC dataset. They will be updated to gnomAD in the near future.
+Note that these data currently reflect the regional constraint seen in gnomAD v2.1.1, which was mapped to GRCh37. We will update to GRCh38 in the near future.
 
 More details can be found in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).
 
