@@ -22,14 +22,13 @@ We used 18,629 canonical transcripts of protein-coding genes as defined by GENCO
 
 ### Observed missense variants
 
-The observed number of missense variants per exon was determined by extracting all variants from ExAC that met the following criteria:
-* Defined as a missense change by the predicted amino acid substitution. Variants that would be considered “initiator_codon_variants” and “stop_lost” by annotation programs such as Variant Effect Predictor (VEP) are therefore
-included in the total.
-* Caused by a single nucleotide change.
-* Had an adjusted allele count ≤ 123, corresponding to a minor allele frequency (MAF) < 0.1% in ExAC. The adjusted allele count only includes individuals with a depth (DP) ≥ 10 and a genotype quality (GQ) ≥ 20.
-* Had a VQSLOD ≥ -2.632.
+The observed number of missense variants per base was determined by extracting all variants from gnomAD v2.1.1 that met the following criteria:
+* Defined as a missense change ("missense_variant") by the Variant Effect Predictor (VEP)
+* Had an allele count > 0
+* Had an allele frequency of < 0.001 across all genetic ancestry groups in the gnomAD v2.1.1 exomes
+* Passed all variant QC filters
+* Had a median coverage > 0 in the gnomAD v2.1.1 exomes
 
-Variants in exons with a median depth < 1 were removed from the total counts.
 
 ### Expected variant count
 
