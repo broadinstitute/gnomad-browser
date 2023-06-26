@@ -32,7 +32,7 @@ The observed number of missense variants per base was determined by extracting a
 
 ### Expected variant count
 
-We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in section 4.1 of the supplement in [Lek et al Nature 2016](https://www.nature.com/articles/nature19057) and [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353). Expected variants in exons with a median depth < 1 were removed from the total counts.
+We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the supplement of [Karczewski et al Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
 
 ### Identification of missense constrained regions
 
