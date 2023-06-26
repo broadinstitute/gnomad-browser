@@ -3,7 +3,10 @@ id: regional-constraint
 title: 'Regional constraint'
 ---
 
-Important: Currently regional constraint is only available / displayed when selecting the ExAC dataset. In addition, it is only displayed for genes that exhibit regional missense constraint.
+**Important**: The regional missense constraint track is currently only available / displayed when selecting the gnomAD v2 dataset. In addition, there are three distinct views:
+- Regional constraint information for genes that exhibit evidence of regional missense constraint (RMC)
+- Transcript-wide missense information for genes that were searched for but did not exhibit any evidence of RMC
+- Text for [outlier genes](https://gnomad.broadinstitute.org/help/why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note) not searched for evidence of RMC
 
 ### Overall interpretation
 
