@@ -33,7 +33,7 @@ More details can be found in the supplement of [Lek et al Nature 2016](https://w
 
 #### Transcripts included in the analyses
 
-We used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,704 transcripts. Additionally, we excluded 517 transcripts that had zero observed variants when removing exons with a median depth < 1 as well as 558 transcripts that had too many or too few synonymous, missense, or loss-of-function variants as determined by a Z score. When all outliers were removed, there were 18,629 transcripts left for analyses.
+We used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,704 transcripts. Additionally, we excluded 517 transcripts that had zero observed variants when removing exons with a median depth < 1 as well as 556 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10-4 and 10-3, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10-4 and 10-3, respectively). When all outliers were removed, there were 18,629 transcripts left for analyses.
 
 #### Observed variant count
 
