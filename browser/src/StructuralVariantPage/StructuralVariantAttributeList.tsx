@@ -7,6 +7,7 @@ import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
 import { StructuralVariant } from './StructuralVariantPage'
+import { textOrMissingTextWarning } from '../missingContent'
 
 const FILTER_LABELS = {
   LOW_CALL_RATE: 'Low Call Rate',
@@ -55,6 +56,18 @@ const COMPLEX_TYPE_LABELS = {
   piDUP_FR: 'Palindromic inverted duplication',
   piDUP_RF: 'Palindromic inverted duplication',
 }
+
+const algorithmLabel = (algorithm: string) =>
+  textOrMissingTextWarning('algorithm label', ALGORITHM_LABELS, algorithm)
+
+const complexTypeLabel = (complexType: string) =>
+  textOrMissingTextWarning('complex type label', COMPLEX_TYPE_LABELS, complexType)
+
+const filterLabel = (filter: string) =>
+  textOrMissingTextWarning('filter label', FILTER_LABELS, filter)
+
+const filterDescription = (filter: string) =>
+  textOrMissingTextWarning('filter description', FILTER_DESCRIPTIONS, filter)
 
 type OwnPointLinkProps = {
   chrom: string
@@ -129,10 +142,8 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
     <AttributeList.Item label="Filter">
       {variant.filters.length > 0 ? (
         variant.filters.map((filter) => (
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-          <Badge key={filter} level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
-            {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-            {FILTER_LABELS[filter] || filter}
+          <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
+            {filterLabel(filter)}
           </Badge>
         ))
       ) : (
@@ -188,12 +199,11 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
           .join(', ')})`}
       <InfoButton topic={`sv-class_${variant.type}`} />
     </AttributeList.Item>
-    {variant.type === 'CPX' && (
+    {variant.type === 'CPX' && variant.cpx_type && (
       <React.Fragment>
         {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
         <AttributeList.Item label="Complex SV Class">
-          {/* @ts-expect-error TS(2538) FIXME: Type 'undefined' cannot be used as an index type. */}
-          {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]}){' '}
+          {variant.cpx_type} ({complexTypeLabel(variant.cpx_type)}){' '}
           <ComplexTypeHelpButton complexType={variant.cpx_type} />
         </AttributeList.Item>
         {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
@@ -209,8 +219,7 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
     </AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Algorithms">
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-      {variant.algorithms.map((a) => ALGORITHM_LABELS[a]).join(', ')}
+      {variant.algorithms.map((a) => algorithmLabel(a)).join(', ')}
     </AttributeList.Item>
   </AttributeList>
 )
