@@ -1,5 +1,575 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex variant has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 dRYfBS"
+>
+  <div
+    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+    >
+      <h1
+        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+      >
+        Structural variant: 
+        CPX_21_999
+      </h1>
+    </div>
+    <div
+      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+    >
+      <span
+        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+      >
+        Dataset
+      </span>
+      <ul
+        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+      >
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_sv_dataset"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_structural_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1"
+                  href="/?dataset=gnomad_sv_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    10,847 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_non_neuro"
+                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    8,342 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_controls"
+                  href="/?dataset=gnomad_sv_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    5,192 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span>
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <dl
+        className="AttributeList-sc-1yjjegy-0 boDRvX"
+        style={
+          {
+            "marginTop": "1.25em",
+          }
+        }
+      >
+        <div>
+          <dt>
+            Filter
+          </dt>
+          <dd>
+            <span
+              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+            >
+              Pass
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Count
+          </dt>
+          <dd>
+            123
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Number
+          </dt>
+          <dd>
+            345
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Frequency
+          </dt>
+          <dd>
+            0.3565
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Quality score
+          </dt>
+          <dd>
+            99
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Position
+          </dt>
+          <dd>
+            <a
+              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              href="/region/21-123-456"
+              onClick={[Function]}
+            >
+              21
+              :
+              123
+              -
+              456
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Size
+          </dt>
+          <dd>
+            333 bp
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Class
+          </dt>
+          <dd>
+            complex
+             
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Complex SV Class
+          </dt>
+          <dd>
+            CCR
+             (
+            Complex chromosomal rearrangement
+            )
+             
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Rearranged Segments
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Evidence
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Algorithms
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        External Resources
+      </h2>
+      <ul
+        className="List-sc-4j87st-0 fQRmhM"
+      >
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            UCSC
+          </a>
+        </li>
+      </ul>
+      <h2>
+        Feedback
+      </h2>
+      <a
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        href="mailto:gnomad@broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Report an issue with this variant
+      </a>
+    </section>
+  </div>
+  <section>
+    <h2>
+      Population Frequencies
+    </h2>
+    <table
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            colSpan={2}
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              Population
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Count
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Number of Homozygotes
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Frequency
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr
+          className="border"
+        >
+          <th
+            colSpan={2}
+            scope="row"
+          >
+            Total
+          </th>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Consequences
+      </h2>
+      <p>
+        This variant has consequences in 
+        0
+         gene
+        s
+        .
+      </p>
+      <ol
+        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+      />
+    </section>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Genotype Quality
+      </h2>
+      <p>
+        Genotype quality is available for this variant.
+      </p>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Age Distribution 
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
+      <p>
+        Age data is not available for this variant.
+      </p>
+    </section>
+  </div>
+</div>
+`;
+
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
   className="Page-w7h773-0 dRYfBS"
@@ -907,574 +1477,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             target="_blank"
           >
             second position
-          </a>
-        </li>
-      </ul>
-      <h2>
-        Feedback
-      </h2>
-      <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-        href="mailto:gnomad@broadinstitute.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Report an issue with this variant
-      </a>
-    </section>
-  </div>
-  <section>
-    <h2>
-      Population Frequencies
-    </h2>
-    <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
-    >
-      <thead>
-        <tr>
-          <th
-            aria-sort="none"
-            colSpan={2}
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              Population
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Count
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Number
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Number of Homozygotes
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="descending"
-            scope="col"
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Frequency
-              </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr
-          className="border"
-        >
-          <th
-            colSpan={2}
-            scope="row"
-          >
-            Total
-          </th>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            0.000
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </section>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Consequences
-      </h2>
-      <p>
-        This variant has consequences in 
-        0
-         gene
-        s
-        .
-      </p>
-      <ol
-        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
-      />
-    </section>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Genotype Quality
-      </h2>
-      <p>
-        Genotype quality is available for this variant.
-      </p>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </h2>
-      <p>
-        Age data is not available for this variant.
-      </p>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type CPX has no unexpected changes 1`] = `
-<div
-  className="Page-w7h773-0 dRYfBS"
->
-  <div
-    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
-  >
-    <div
-      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
-    >
-      <h1
-        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
-      >
-        Structural variant: 
-        CPX_21_999
-      </h1>
-    </div>
-    <div
-      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
-    >
-      <span
-        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
-      >
-        Dataset
-      </span>
-      <ul
-        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
-      >
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="current_sv_dataset"
-            href="/?dataset=gnomad_sv_r2_1"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-          >
-            gnomAD SVs v2.1
-          </a>
-        </li>
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            aria-expanded={false}
-            aria-haspopup="true"
-            aria-label="More datasets"
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="other_structural_variant"
-            href="/"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            <span
-              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-            </span>
-          </a>
-          <ul
-            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
-          >
-            <li>
-              <div
-                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              >
-                GRCh37
-              </div>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1"
-                  href="/?dataset=gnomad_sv_r2_1"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    10,847 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_non_neuro"
-                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (non-neuro)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    8,342 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_controls"
-                  href="/?dataset=gnomad_sv_r2_1_controls"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (controls)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    5,192 samples
-                  </div>
-                </a>
-              </li>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <span>
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </span>
-    </div>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <dl
-        className="AttributeList-sc-1yjjegy-0 boDRvX"
-        style={
-          {
-            "marginTop": "1.25em",
-          }
-        }
-      >
-        <div>
-          <dt>
-            Filter
-          </dt>
-          <dd>
-            <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
-            >
-              Pass
-            </span>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Count
-          </dt>
-          <dd>
-            123
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Number
-          </dt>
-          <dd>
-            345
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Frequency
-          </dt>
-          <dd>
-            0.3565
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Quality score
-          </dt>
-          <dd>
-            99
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Position
-          </dt>
-          <dd>
-            <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
-              href="/region/21-123-456"
-              onClick={[Function]}
-            >
-              21
-              :
-              123
-              -
-              456
-            </a>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Size
-          </dt>
-          <dd>
-            333 bp
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Class
-          </dt>
-          <dd>
-            complex
-             
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
-                }
-              >
-                More information
-              </span>
-            </button>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Complex SV Class
-          </dt>
-          <dd>
-             (
-            )
-             
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Rearranged Segments
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Evidence
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Algorithms
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-      </dl>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        External Resources
-      </h2>
-      <ul
-        className="List-sc-4j87st-0 fQRmhM"
-      >
-        <li
-          className="List__ListItem-sc-4j87st-1 gGPLUe"
-        >
-          <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            UCSC
           </a>
         </li>
       </ul>
@@ -4984,6 +4986,576 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 </div>
 `;
 
+exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a complex variant has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 dRYfBS"
+>
+  <div
+    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+    >
+      <h1
+        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+      >
+        Structural variant: 
+        CPX_21_999
+      </h1>
+    </div>
+    <div
+      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+    >
+      <span
+        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+      >
+        Dataset
+      </span>
+      <ul
+        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+      >
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_sv_dataset"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_structural_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1"
+                  href="/?dataset=gnomad_sv_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    10,847 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_non_neuro"
+                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    8,342 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_controls"
+                  href="/?dataset=gnomad_sv_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    5,192 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span>
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <dl
+        className="AttributeList-sc-1yjjegy-0 boDRvX"
+        style={
+          {
+            "marginTop": "1.25em",
+          }
+        }
+      >
+        <div>
+          <dt>
+            Filter
+          </dt>
+          <dd>
+            <span
+              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+            >
+              Pass
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Count
+          </dt>
+          <dd>
+            123
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Number
+          </dt>
+          <dd>
+            345
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Frequency
+          </dt>
+          <dd>
+            0.3565
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Quality score
+          </dt>
+          <dd>
+            99
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Position
+          </dt>
+          <dd>
+            <a
+              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              href="/region/21-123-456"
+              onClick={[Function]}
+            >
+              21
+              :
+              123
+              -
+              456
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Size
+          </dt>
+          <dd>
+            333 bp
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Class
+          </dt>
+          <dd>
+            complex
+             
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Complex SV Class
+          </dt>
+          <dd>
+            CCR
+             (
+            Complex chromosomal rearrangement
+            )
+             
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Rearranged Segments
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Evidence
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Algorithms
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        External Resources
+      </h2>
+      <ul
+        className="List-sc-4j87st-0 fQRmhM"
+      >
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            UCSC
+          </a>
+        </li>
+      </ul>
+      <h2>
+        Feedback
+      </h2>
+      <a
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        href="mailto:gnomad@broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Report an issue with this variant
+      </a>
+    </section>
+  </div>
+  <section>
+    <h2>
+      Population Frequencies
+    </h2>
+    <table
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            colSpan={2}
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              Population
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Count
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Number of Homozygotes
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Frequency
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr
+          className="border"
+        >
+          <th
+            colSpan={2}
+            scope="row"
+          >
+            Total
+          </th>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Consequences
+      </h2>
+      <p>
+        This variant has consequences in 
+        0
+         gene
+        s
+        .
+      </p>
+      <ol
+        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+      />
+    </section>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Genotype Quality
+      </h2>
+      <p>
+        Genotype quality is available for this variant.
+      </p>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Age Distribution 
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
+      <p>
+        Age data is not available for this variant.
+      </p>
+    </section>
+  </div>
+</div>
+`;
+
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
   className="Page-w7h773-0 dRYfBS"
@@ -5891,574 +6463,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             target="_blank"
           >
             second position
-          </a>
-        </li>
-      </ul>
-      <h2>
-        Feedback
-      </h2>
-      <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-        href="mailto:gnomad@broadinstitute.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Report an issue with this variant
-      </a>
-    </section>
-  </div>
-  <section>
-    <h2>
-      Population Frequencies
-    </h2>
-    <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
-    >
-      <thead>
-        <tr>
-          <th
-            aria-sort="none"
-            colSpan={2}
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              Population
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Count
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Number
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Number of Homozygotes
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="descending"
-            scope="col"
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Frequency
-              </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr
-          className="border"
-        >
-          <th
-            colSpan={2}
-            scope="row"
-          >
-            Total
-          </th>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            0.000
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </section>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Consequences
-      </h2>
-      <p>
-        This variant has consequences in 
-        0
-         gene
-        s
-        .
-      </p>
-      <ol
-        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
-      />
-    </section>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Genotype Quality
-      </h2>
-      <p>
-        Genotype quality is available for this variant.
-      </p>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </h2>
-      <p>
-        Age data is not available for this variant.
-      </p>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type CPX has no unexpected changes 1`] = `
-<div
-  className="Page-w7h773-0 dRYfBS"
->
-  <div
-    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
-  >
-    <div
-      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
-    >
-      <h1
-        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
-      >
-        Structural variant: 
-        CPX_21_999
-      </h1>
-    </div>
-    <div
-      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
-    >
-      <span
-        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
-      >
-        Dataset
-      </span>
-      <ul
-        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
-      >
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="current_sv_dataset"
-            href="/?dataset=gnomad_sv_r2_1_controls"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-          >
-            gnomAD SVs v2.1 (controls)
-          </a>
-        </li>
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            aria-expanded={false}
-            aria-haspopup="true"
-            aria-label="More datasets"
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="other_structural_variant"
-            href="/"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            <span
-              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-            </span>
-          </a>
-          <ul
-            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
-          >
-            <li>
-              <div
-                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              >
-                GRCh37
-              </div>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1"
-                  href="/?dataset=gnomad_sv_r2_1"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    10,847 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_non_neuro"
-                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (non-neuro)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    8,342 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_controls"
-                  href="/?dataset=gnomad_sv_r2_1_controls"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (controls)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    5,192 samples
-                  </div>
-                </a>
-              </li>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <span>
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </span>
-    </div>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <dl
-        className="AttributeList-sc-1yjjegy-0 boDRvX"
-        style={
-          {
-            "marginTop": "1.25em",
-          }
-        }
-      >
-        <div>
-          <dt>
-            Filter
-          </dt>
-          <dd>
-            <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
-            >
-              Pass
-            </span>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Count
-          </dt>
-          <dd>
-            123
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Number
-          </dt>
-          <dd>
-            345
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Frequency
-          </dt>
-          <dd>
-            0.3565
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Quality score
-          </dt>
-          <dd>
-            99
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Position
-          </dt>
-          <dd>
-            <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
-              href="/region/21-123-456"
-              onClick={[Function]}
-            >
-              21
-              :
-              123
-              -
-              456
-            </a>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Size
-          </dt>
-          <dd>
-            333 bp
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Class
-          </dt>
-          <dd>
-            complex
-             
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
-                }
-              >
-                More information
-              </span>
-            </button>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Complex SV Class
-          </dt>
-          <dd>
-             (
-            )
-             
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Rearranged Segments
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Evidence
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Algorithms
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-      </dl>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        External Resources
-      </h2>
-      <ul
-        className="List-sc-4j87st-0 fQRmhM"
-      >
-        <li
-          className="List__ListItem-sc-4j87st-1 gGPLUe"
-        >
-          <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            UCSC
           </a>
         </li>
       </ul>
@@ -9968,6 +9972,576 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 </div>
 `;
 
+exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a complex variant has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 dRYfBS"
+>
+  <div
+    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+    >
+      <h1
+        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+      >
+        Structural variant: 
+        CPX_21_999
+      </h1>
+    </div>
+    <div
+      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+    >
+      <span
+        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+      >
+        Dataset
+      </span>
+      <ul
+        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+      >
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_sv_dataset"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_structural_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1"
+                  href="/?dataset=gnomad_sv_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    10,847 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_non_neuro"
+                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    8,342 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_controls"
+                  href="/?dataset=gnomad_sv_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    5,192 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span>
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <dl
+        className="AttributeList-sc-1yjjegy-0 boDRvX"
+        style={
+          {
+            "marginTop": "1.25em",
+          }
+        }
+      >
+        <div>
+          <dt>
+            Filter
+          </dt>
+          <dd>
+            <span
+              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+            >
+              Pass
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Count
+          </dt>
+          <dd>
+            123
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Number
+          </dt>
+          <dd>
+            345
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Allele Frequency
+          </dt>
+          <dd>
+            0.3565
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Quality score
+          </dt>
+          <dd>
+            99
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Position
+          </dt>
+          <dd>
+            <a
+              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              href="/region/21-123-456"
+              onClick={[Function]}
+            >
+              21
+              :
+              123
+              -
+              456
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Size
+          </dt>
+          <dd>
+            333 bp
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Class
+          </dt>
+          <dd>
+            complex
+             
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Complex SV Class
+          </dt>
+          <dd>
+            CCR
+             (
+            Complex chromosomal rearrangement
+            )
+             
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Rearranged Segments
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Evidence
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Algorithms
+          </dt>
+          <dd>
+            
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        External Resources
+      </h2>
+      <ul
+        className="List-sc-4j87st-0 fQRmhM"
+      >
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            UCSC
+          </a>
+        </li>
+      </ul>
+      <h2>
+        Feedback
+      </h2>
+      <a
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        href="mailto:gnomad@broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Report an issue with this variant
+      </a>
+    </section>
+  </div>
+  <section>
+    <h2>
+      Population Frequencies
+    </h2>
+    <table
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            colSpan={2}
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              Population
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Count
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            className="right-align"
+            scope="col"
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Number of Homozygotes
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            <button
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                Allele Frequency
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr
+          className="border"
+        >
+          <th
+            colSpan={2}
+            scope="row"
+          >
+            Total
+          </th>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            className="right-align"
+          >
+            0
+          </td>
+          <td
+            style={
+              {
+                "paddingLeft": "25px",
+              }
+            }
+          >
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Consequences
+      </h2>
+      <p>
+        This variant has consequences in 
+        0
+         gene
+        s
+        .
+      </p>
+      <ol
+        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+      />
+    </section>
+  </div>
+  <div
+    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
+  >
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Genotype Quality
+      </h2>
+      <p>
+        Genotype quality is available for this variant.
+      </p>
+    </section>
+    <section
+      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
+    >
+      <h2>
+        Age Distribution 
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
+      <p>
+        Age data is not available for this variant.
+      </p>
+    </section>
+  </div>
+</div>
+`;
+
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
   className="Page-w7h773-0 dRYfBS"
@@ -10875,574 +11449,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             target="_blank"
           >
             second position
-          </a>
-        </li>
-      </ul>
-      <h2>
-        Feedback
-      </h2>
-      <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-        href="mailto:gnomad@broadinstitute.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Report an issue with this variant
-      </a>
-    </section>
-  </div>
-  <section>
-    <h2>
-      Population Frequencies
-    </h2>
-    <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
-    >
-      <thead>
-        <tr>
-          <th
-            aria-sort="none"
-            colSpan={2}
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              Population
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Count
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Number
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="none"
-            className="right-align"
-            scope="col"
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Number of Homozygotes
-              </span>
-            </button>
-          </th>
-          <th
-            aria-sort="descending"
-            scope="col"
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            <button
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-              >
-                Allele Frequency
-              </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr
-          className="border"
-        >
-          <th
-            colSpan={2}
-            scope="row"
-          >
-            Total
-          </th>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            className="right-align"
-          >
-            0
-          </td>
-          <td
-            style={
-              {
-                "paddingLeft": "25px",
-              }
-            }
-          >
-            0.000
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </section>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Consequences
-      </h2>
-      <p>
-        This variant has consequences in 
-        0
-         gene
-        s
-        .
-      </p>
-      <ol
-        className="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
-      />
-    </section>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Genotype Quality
-      </h2>
-      <p>
-        Genotype quality is available for this variant.
-      </p>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </h2>
-      <p>
-        Age data is not available for this variant.
-      </p>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type CPX has no unexpected changes 1`] = `
-<div
-  className="Page-w7h773-0 dRYfBS"
->
-  <div
-    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
-  >
-    <div
-      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
-    >
-      <h1
-        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
-      >
-        Structural variant: 
-        CPX_21_999
-      </h1>
-    </div>
-    <div
-      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
-    >
-      <span
-        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
-      >
-        Dataset
-      </span>
-      <ul
-        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
-      >
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="current_sv_dataset"
-            href="/?dataset=gnomad_sv_r2_1_non_neuro"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-          >
-            gnomAD SVs v2.1 (non-neuro)
-          </a>
-        </li>
-        <li
-          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
-        >
-          <a
-            aria-expanded={false}
-            aria-haspopup="true"
-            aria-label="More datasets"
-            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="other_structural_variant"
-            href="/"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            <span
-              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-            </span>
-          </a>
-          <ul
-            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
-          >
-            <li>
-              <div
-                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              >
-                GRCh37
-              </div>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1"
-                  href="/?dataset=gnomad_sv_r2_1"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    10,847 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_non_neuro"
-                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (non-neuro)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    8,342 samples
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r2_1_controls"
-                  href="/?dataset=gnomad_sv_r2_1_controls"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD SVs v2.1 (controls)
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    5,192 samples
-                  </div>
-                </a>
-              </li>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <span>
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-          onClick={[Function]}
-          type="button"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
-          >
-            More information
-          </span>
-        </button>
-      </span>
-    </div>
-  </div>
-  <div
-    className="StructuralVariantPage__Wrapper-sc-61jf9a-0 eTwXhR"
-  >
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <dl
-        className="AttributeList-sc-1yjjegy-0 boDRvX"
-        style={
-          {
-            "marginTop": "1.25em",
-          }
-        }
-      >
-        <div>
-          <dt>
-            Filter
-          </dt>
-          <dd>
-            <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
-            >
-              Pass
-            </span>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Count
-          </dt>
-          <dd>
-            123
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Number
-          </dt>
-          <dd>
-            345
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Allele Frequency
-          </dt>
-          <dd>
-            0.3565
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Quality score
-          </dt>
-          <dd>
-            99
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Position
-          </dt>
-          <dd>
-            <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
-              href="/region/21-123-456"
-              onClick={[Function]}
-            >
-              21
-              :
-              123
-              -
-              456
-            </a>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Size
-          </dt>
-          <dd>
-            333 bp
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Class
-          </dt>
-          <dd>
-            complex
-             
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
-                }
-              >
-                More information
-              </span>
-            </button>
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Complex SV Class
-          </dt>
-          <dd>
-             (
-            )
-             
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Rearranged Segments
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Evidence
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Algorithms
-          </dt>
-          <dd>
-            
-          </dd>
-        </div>
-      </dl>
-    </section>
-    <section
-      className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 ifjMLx"
-    >
-      <h2>
-        External Resources
-      </h2>
-      <ul
-        className="List-sc-4j87st-0 fQRmhM"
-      >
-        <li
-          className="List__ListItem-sc-4j87st-1 gGPLUe"
-        >
-          <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            UCSC
           </a>
         </li>
       </ul>
