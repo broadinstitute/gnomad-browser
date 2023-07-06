@@ -41,7 +41,7 @@ afterEach(() => {
 })
 
 forDatasetsMatching(/gnomad_sv_r2/, 'StructuralVariantPage with dataset %s', (datasetId) => {
-  describe.each(['DEL', 'DUP', 'MCNV', 'INS', 'INV', 'CPX'])(
+  describe.each(['DEL', 'DUP', 'MCNV', 'INS', 'INV'])(
     'with non-interchromosomal variant of type %s',
     (variantType: string) => {
       test('has no unexpected changes', () => {
@@ -84,4 +84,24 @@ forDatasetsMatching(/gnomad_sv_r2/, 'StructuralVariantPage with dataset %s', (da
       })
     }
   )
+
+  describe('with a complex variant', () => {
+    test('has no unexpected changes', () => {
+      const variant = svFactory.build({
+        type: 'CPX',
+        cpx_type: 'CCR',
+      })
+      setMockApiResponses({
+        StructuralVariant: () => ({
+          structural_variant: variant,
+        }),
+      })
+      const tree = renderer.create(
+        withDummyRouter(
+          <StructuralVariantPage datasetId={datasetId} variantId={variant.variant_id} />
+        )
+      )
+      expect(tree).toMatchSnapshot()
+    })
+  })
 })
