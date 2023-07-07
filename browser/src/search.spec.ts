@@ -96,6 +96,51 @@ describe('fetchSearchResults', () => {
     ])
   })
 
+  it("sorts gene search results with genes that start with the query ahead of those that don't", async () => {
+    // @ts-expect-error TS(2339) FIXME: Property 'mockReturnValue' does not exist on type ... Remove this comment to see the full error message
+    global.fetch.mockReturnValue(
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            data: {
+              gene_search: [
+                { ensembl_id: 'ENSG000004', symbol: 'ABCD3' },
+                { ensembl_id: 'ENSG000001', symbol: 'QRST3' },
+                { ensembl_id: 'ENSG000005', symbol: 'LMNO2' },
+                { ensembl_id: 'ENSG000002', symbol: 'QRST1' },
+                { ensembl_id: 'ENSG000006', symbol: 'ZXCV1' },
+                { ensembl_id: 'ENSG000003', symbol: 'QRST2' },
+              ],
+            },
+          }),
+      })
+    )
+
+    expect(await fetchSearchResults('gnomad_r3', 'QRS')).toEqual([
+      { label: 'QRST1', value: '/gene/ENSG000002?dataset=gnomad_r3' },
+      {
+        label: 'QRST2',
+        value: '/gene/ENSG000003?dataset=gnomad_r3',
+      },
+      {
+        label: 'QRST3',
+        value: '/gene/ENSG000001?dataset=gnomad_r3',
+      },
+      {
+        label: 'ABCD3',
+        value: '/gene/ENSG000004?dataset=gnomad_r3',
+      },
+      {
+        label: 'LMNO2',
+        value: '/gene/ENSG000005?dataset=gnomad_r3',
+      },
+      {
+        label: 'ZXCV1',
+        value: '/gene/ENSG000006?dataset=gnomad_r3',
+      },
+    ])
+  })
+
   it('should return a link to variant co-occurrence for two variant IDs', async () => {
     expect(await fetchSearchResults('gnomad_r2_1', '1-55505647-G-T and 1-55523855-G-A')).toEqual([
       {
