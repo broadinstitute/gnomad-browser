@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Searchbox, Select } from '@gnomad/ui'
 
 import { fetchSearchResults } from './search'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ export default withRouter((props: any) => {
 
   const currentParams = queryString.parse(location.search)
   const defaultSearchDataset = getDefaultSearchDataset(currentParams.dataset)
-  const [searchDataset, setSearchDataset] = useState(defaultSearchDataset)
+  const [searchDataset, setSearchDataset] = useState<DatasetId>(defaultSearchDataset)
 
   // Update search dataset when active dataset changes.
   // Cannot rely on props for this because the top bar does not re-render.

@@ -6,10 +6,10 @@ import {
   isRsId,
 } from '@gnomad/identifiers'
 
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
-export const fetchSearchResults = (dataset: any, query: any) => {
+export const fetchSearchResults = (dataset: DatasetId, query: string) => {
   if (dataset.startsWith('gnomad_sv')) {
     // ==============================================================================================
     // Structural Variants
@@ -153,22 +153,18 @@ export const fetchSearchResults = (dataset: any, query: any) => {
           throw new Error('Unable to retrieve search results')
         }
 
-        const genes = response.data.gene_search
+        const genes = response.data.gene_search as { ensembl_id: string; symbol: string }[]
 
-        const geneSymbolCounts = {}
-        genes.forEach((gene: any) => {
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        const geneSymbolCounts: Record<string, number> = {}
+        genes.forEach((gene) => {
           if (geneSymbolCounts[gene.symbol] === undefined) {
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             geneSymbolCounts[gene.symbol] = 0
           }
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           geneSymbolCounts[gene.symbol] += 1
         })
 
-        return genes.map((gene: any) => ({
+        return genes.map((gene) => ({
           label:
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
 
           value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
