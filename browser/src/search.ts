@@ -163,12 +163,29 @@ export const fetchSearchResults = (dataset: DatasetId, query: string) => {
           geneSymbolCounts[gene.symbol] += 1
         })
 
-        return genes.map((gene) => ({
-          label:
-            geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
+        return genes
+          .sort((gene1, gene2) => {
+            const symbolPrefix = query.toUpperCase()
+            const symbol1 = gene1.symbol.toUpperCase()
+            const symbol2 = gene2.symbol.toUpperCase()
 
-          value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
-        }))
+            if (symbol1.startsWith(symbolPrefix) && !symbol2.startsWith(symbolPrefix)) {
+              return -1
+            }
+
+            if (!symbol1.startsWith(symbolPrefix) && symbol2.startsWith(symbolPrefix)) {
+              return 1
+            }
+            return symbol1.localeCompare(symbol2)
+          })
+          .map((gene) => ({
+            label:
+              geneSymbolCounts[gene.symbol] > 1
+                ? `${gene.symbol} (${gene.ensembl_id})`
+                : gene.symbol,
+
+            value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
+          }))
       })
   }
 
