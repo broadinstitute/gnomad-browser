@@ -26,8 +26,8 @@ The observed number of missense variants per base was determined by extracting a
 * Defined as a missense change ("missense_variant") by the Variant Effect Predictor (VEP)
 * Had an allele count > 0
 * Had an allele frequency of < 0.001 across all genetic ancestry groups in the gnomAD v2.1.1 exomes
-* Passed all variant QC filters
 * Had a median coverage > 0 in the gnomAD v2.1.1 exomes
+* Passed all variant QC filters
 
 
 ### Expected variant count
