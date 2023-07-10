@@ -22,7 +22,7 @@ We used 18,629 canonical transcripts of protein-coding genes as defined by GENCO
 
 ### Observed missense variants
 
-The observed number of missense variants per base was determined by extracting all variants from gnomAD v2.1.1 that met the following criteria:
+The observed number of rare missense variants per base in gnomAD v2.1.1 was determined by extracting all variants that met the following criteria:
 * Defined as a missense change ("missense_variant") by the Variant Effect Predictor (VEP)
 * Had an allele count > 0
 * Had an allele frequency of < 0.001 across all genetic ancestry groups in the gnomAD v2.1.1 exomes
