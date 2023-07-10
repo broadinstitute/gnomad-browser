@@ -34,6 +34,6 @@ The observed number of missense variants per base was determined by extracting a
 
 We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the supplement of [Karczewski et al Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
 
-### Identification of missense constrained regions
+### Identification of missense-constrained regions
 
 We used likelihood ratio tests to identify regions within transcripts that were intolerant of missense variation. Briefly, we searched for significant breaks between base pairs that would split the transcript into two or more regions with varying levels of missense constraint. We used a likelihood ratio test to determine if splitting a transcript into multiple regions was significantly better at modeling the gene's observed variation than the null model (assuming no regional variability in missense constraint). For these analyses, we assumed that observed counts should follow a Poisson distribution around the expected number. More details of this analysis are included in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).
