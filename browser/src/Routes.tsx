@@ -10,7 +10,7 @@ import DocumentTitle from './DocumentTitle'
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
-const FeedbackPage = lazy(() => import('./FeedbackPage'))
+const ContactPage = lazy(() => import('./ContactPage'))
 const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
@@ -26,8 +26,8 @@ const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
 const ShortTandemRepeatPage = lazy(() => import('./ShortTandemRepeatPage/ShortTandemRepeatPage'))
 const ShortTandemRepeatsPage = lazy(() => import('./ShortTandemRepeatsPage/ShortTandemRepeatsPage'))
-const VariantCooccurrencePage = lazy(() =>
-  import('./VariantCooccurrencePage/VariantCooccurrencePage')
+const VariantCooccurrencePage = lazy(
+  () => import('./VariantCooccurrencePage/VariantCooccurrencePage')
 )
 
 // Other pages
@@ -161,9 +161,9 @@ const Routes = () => {
 
       <Route exact path="/publications" component={PublicationsPage} />
 
-      <Route exact path="/feedback" component={FeedbackPage} />
+      <Route exact path="/contact" component={ContactPage} />
 
-      <Route exact path="/contact" render={() => <Redirect to="/feedback" />} />
+      <Route exact path="/feedback" render={() => <Redirect to="/contact" />} />
 
       <Route exact path="/mou" component={MOUPage} />
 
