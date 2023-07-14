@@ -482,6 +482,18 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             UCSC
           </a>
         </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
+          </a>
+        </li>
       </ul>
       <h2>
         Feedback
@@ -9146,6 +9158,18 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             target="_blank"
           >
             UCSC
+          </a>
+        </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
           </a>
         </li>
       </ul>
@@ -17817,6 +17841,18 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             UCSC
           </a>
         </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
+          </a>
+        </li>
       </ul>
       <h2>
         Feedback
@@ -26484,6 +26520,18 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             target="_blank"
           >
             UCSC
+          </a>
+        </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
           </a>
         </li>
       </ul>
@@ -35155,6 +35203,18 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             UCSC
           </a>
         </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
+          </a>
+        </li>
       </ul>
       <h2>
         Feedback
@@ -43822,6 +43882,18 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             target="_blank"
           >
             UCSC
+          </a>
+        </li>
+        <li
+          className="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            All of Us
           </a>
         </li>
       </ul>
