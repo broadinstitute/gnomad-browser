@@ -4,11 +4,11 @@ import 'jest-styled-components'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import FeedbackPage from './FeedbackPage'
+import ContactPage from './ContactPage'
 
 import { withDummyRouter } from '../../tests/__helpers__/router'
 
-test('Feedback Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<FeedbackPage />))
+test('Contact Page has no unexpected changes', () => {
+  const tree = renderer.create(withDummyRouter(<ContactPage />))
   expect(tree).toMatchSnapshot()
 })

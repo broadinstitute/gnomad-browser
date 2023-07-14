@@ -132,8 +132,8 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/feedback" onClick={closeMenu}>
-            Feedback
+          <Link to="/contact" onClick={closeMenu}>
+            Contact
           </Link>
         </li>
         <li>

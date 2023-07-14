@@ -54,8 +54,8 @@ describe('Home Page', () => {
         pageHeader: 'publications from the gnomAD group',
       },
       {
-        pageTitle: 'Feedback',
-        pageUrl: '/feedback',
+        pageTitle: 'Contact',
+        pageUrl: '/contact',
         pageHeader: 'Tell us how you use gnomAD',
       },
       {

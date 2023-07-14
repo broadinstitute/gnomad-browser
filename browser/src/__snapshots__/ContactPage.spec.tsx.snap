@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Feedback Page has no unexpected changes 1`] = `
+exports[`Contact Page has no unexpected changes 1`] = `
 .c3 {
   color: #1173bb;
   -webkit-text-decoration: none;
@@ -96,7 +96,7 @@ exports[`Feedback Page has no unexpected changes 1`] = `
     <h1
       className="c2"
     >
-      Feedback
+      Contact
     </h1>
   </div>
   <p>
@@ -136,17 +136,23 @@ exports[`Feedback Page has no unexpected changes 1`] = `
     >
       GitHub
     </a>
+    .
+  </p>
+  <p>
+    For questions about gnomAD, check out the
      
-    or by 
     <a
       className="c3"
-      href="mailto:gnomad@broadinstitute.org"
+      href="/help"
       rel="noopener noreferrer"
       target="_blank"
     >
-      email
+      help page
     </a>
     .
+  </p>
+  <p>
+    Note that, for many reasons (including consent and data usage restrictions), we do not have (and cannot share) phenotype information. Overall, we have limited information that we can share for some cohorts, such as last known age in bins of 5 years (when known) and chromosomal sex.
   </p>
   <p>
     Follow us on Twitter
