@@ -7,8 +7,8 @@ import InfoPage from './InfoPage'
 
 export default () => (
   <InfoPage>
-    <DocumentTitle title="Feedback" />
-    <PageHeading>Feedback</PageHeading>
+    <DocumentTitle title="Contact" />
+    <PageHeading>Contact</PageHeading>
 
     <p>
       Tell us how you use gnomAD and your wish list by filling out{' '}
@@ -27,9 +27,21 @@ export default () => (
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
         GitHub
-      </ExternalLink>{' '}
+      </ExternalLink>
+      .
+    </p>
+
+    <p>
+      For questions about gnomAD, check out the{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      or by <ExternalLink href="mailto:gnomad@broadinstitute.org">email</ExternalLink>.
+      <ExternalLink href="/help">help page</ExternalLink>.
+    </p>
+
+    <p>
+      Note that, for many reasons (including consent and data usage restrictions), we do not have
+      (and cannot share) phenotype information. Overall, we have limited information that we can
+      share for some cohorts, such as last known age in bins of 5 years (when known) and chromosomal
+      sex.
     </p>
 
     <p>
