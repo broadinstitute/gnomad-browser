@@ -71,6 +71,7 @@ export const ReferenceList = ({ variant }: Props) => {
   const ucscURL = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&highlight=${ucscReferenceGenomeId}.chr${chrom}%3A${pos}-${
     pos + (ref.length - 1)
   }&position=chr${chrom}%3A${pos - 25}-${pos + (ref.length - 1) + 25}`
+  const allOfUsURL = `https://databrowser.researchallofus.org/variants/${variant.variant_id}`
 
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
@@ -94,6 +95,14 @@ export const ReferenceList = ({ variant }: Props) => {
           >
             ClinGen Allele Registry ({variant.caid})
           </ExternalLink>
+        </ListItem>
+      )}
+
+      {variant.reference_genome === 'GRCh38' && (
+        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
+        <ListItem>
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href={allOfUsURL}>All of Us</ExternalLink>
         </ListItem>
       )}
     </List>
