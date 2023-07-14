@@ -33,15 +33,17 @@ export const NcbiReference = (variantRsids: string[]) => {
         // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
         <ListItem>
           dbSNP ({' '}
-          {(variantRsids
-            .map((rsid) => (
-              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-              <ExternalLink key={rsid} href={`https://www.ncbi.nlm.nih.gov/snp/${rsid}`}>
-                {rsid}
-              </ExternalLink>
-            ))
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-            .reduce((acc, el) => [...acc, ', ', el], []) as any).slice(1)}
+          {(
+            variantRsids
+              .map((rsid) => (
+                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
+                <ExternalLink key={rsid} href={`https://www.ncbi.nlm.nih.gov/snp/${rsid}`}>
+                  {rsid}
+                </ExternalLink>
+              ))
+              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+              .reduce((acc, el) => [...acc, ', ', el], []) as any
+          ).slice(1)}
           )
         </ListItem>
       )}
