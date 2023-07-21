@@ -5,8 +5,8 @@ title: 'Regional constraint'
 
 **Important**: The regional missense constraint track is currently only available / displayed when selecting the gnomAD v2 dataset. In addition, there are three distinct views:
 - Regional missense constraint information for genes that exhibit evidence of regional variability in missense intolerance
-- Transcript-wide missense constraint information for genes that were searched for but did not exhibit any evidence of regional differences in missense constraint
-- Text for [outlier genes](https://gnomad.broadinstitute.org/help/why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note) not searched for regional differences in missense constraint
+- Transcript-wide missense constraint information for genes that were searched for but did not exhibit any evidence of regional differences in missense intolerance
+- Text for [outlier genes](https://gnomad.broadinstitute.org/help/why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note) not searched for regional differences in missense intolerance
 
 ### Overall interpretation
 
