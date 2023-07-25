@@ -25,6 +25,7 @@ import variantResolvers from './resolvers/variants'
 import variantFieldResolvers from './resolvers/variant-fields'
 import variantCooccurrenceResolvers from './resolvers/variant-cooccurrence'
 import cnvCoverageResolvers from './resolvers/cnv-coverage'
+import vaResolvers from './resolvers/va'
 
 const typeDefs = mergeTypeDefs([
   ...loadFilesSync(path.join(__dirname, './types')),
@@ -54,6 +55,7 @@ const resolvers = mergeResolvers([
   variantResolvers,
   variantFieldResolvers,
   variantCooccurrenceResolvers,
+  vaResolvers,
 ])
 
 const schema = makeExecutableSchema({

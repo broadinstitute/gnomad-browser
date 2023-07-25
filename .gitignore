@@ -29,3 +29,5 @@ hail-*.log
 
 # vscode settings
 **/.vscode/
+
+graphql-api/unversioned_config.json
