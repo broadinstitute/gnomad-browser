@@ -33,3 +33,5 @@ hail-*.log
 # Playright test dirs
 /tests/playwright/
 /playwright/.cache/
+
+graphql-api/unversioned_config.json
