@@ -1,0 +1,205 @@
+type VRSNumber {
+  type: String!
+  value: Int!
+}
+
+type VRSDefiniteRange {
+  type: String!
+  min: VRSNumber!
+  max: VRSNumber!
+}
+
+enum VRSComparator {
+  LTE
+  GTE
+}
+
+type VRSIndefiniteRange {
+  type: String!
+  value: VRSNumber!
+  comparator: VRSComparator!
+}
+
+union VRSNumberlike = VRSDefiniteRange | VRSIndefiniteRange | VRSNumber
+
+type VRSSequenceInterval {
+  type: String!
+  start: VRSNumberlike!
+  end: VRSNumberlike!
+}
+
+type VRSSimpleInterval {
+  type: String!
+  start: Int!
+  end: Int!
+}
+
+type VRSCytobandInterval {
+  type: String!
+  start: String!
+  end: String!
+}
+
+type VRSLiteralSequenceExpression {
+  type: String!
+  id: String!
+  sequence: String!
+}
+
+type VRSSequenceLocation {
+  type: String!
+  id: String!
+  sequence_id: String!
+  interval: VRSNumberlike!
+}
+
+type VRSDerivedSequenceExpression {
+  type: String!
+  location: VRSSequenceLocation!
+  reverse_complement: Boolean!
+}
+
+union VRSSingleSequenceExpression = VRSDerivedSequenceExpression | VRSLiteralSequenceExpression
+
+type VRSRepeatedSequenceExpression {
+  type: String!
+  seq_expr: VRSSingleSequenceExpression!
+  count: VRSNumberlike!
+}
+
+type VRSChromosomeLocation {
+  type: String!
+  species_id: String!
+  chr: String!
+  interval: VRSCytobandInterval!
+}
+
+union VRSLocation = VRSChromosomeLocation | VRSSequenceLocation
+
+type VRSCURIE {
+  value: String!
+}
+
+union VRSUncomposedSequenceExpression =
+    VRSDerivedSequenceExpression
+  | VRSLiteralSequenceExpression
+  | VRSRepeatedSequenceExpression
+
+type VRSComposedSequenceExpression {
+  type: String!
+  components: [VRSUncomposedSequenceExpression!]!
+}
+
+type VRSSequenceState {
+  type: String!
+  sequence: String!
+}
+
+union VRSAlleleLocation = VRSCURIE | VRSChromosomeLocation | VRSSequenceLocation
+
+union VRSAlleleState =
+    VRSComposedSequenceExpression
+  | VRSDerivedSequenceExpression
+  | VRSLiteralSequenceExpression
+  | VRSRepeatedSequenceExpression
+  | VRSSequenceState
+
+type VRSAllele {
+  type: String!
+  location: VRSAlleleLocation!
+  state: VRSAlleleState!
+}
+
+type VRSGene {
+  type: String!
+  gene_id: VRSCURIE!
+}
+
+union VRSCopyNumberSubject = VRSCURIE | VRSChromosomeLocation | VRSGene | VRSSequenceLocation
+
+type VRSCopyNumberChange {
+  type: String!
+  id: VRSCURIE
+  subject: VRSCopyNumberSubject!
+  copy_change: String!
+}
+
+type VRSCopyNumberCount {
+  type: String!
+  id: VRSCURIE
+  subject: VRSCopyNumberSubject!
+  copies: VRSNumberlike!
+}
+
+union VRSHaplotypeMember = VRSAllele | VRSCURIE
+
+type VRSHaplotype {
+  id: VRSCURIE
+  type: String!
+  members: [VRSHaplotypeMember!]!
+}
+
+union VRSGenotypeMemberVariation = VRSAllele | VRSHaplotype
+
+type VRSGenotypeMember {
+  type: String!
+  count: VRSNumberlike!
+  variation: VRSGenotypeMemberVariation!
+}
+
+type VRSGenotype {
+  id: VRSCURIE
+  type: String!
+  members: [VRSGenotypeMember!]!
+  count: VRSNumberlike!
+}
+
+type VRSText {
+  id: VRSCURIE
+  type: String!
+  definition: String!
+}
+
+union VRSVariationSetMember =
+    VRSAllele
+  | VRSCURIE
+  | VRSCopyNumberChange
+  | VRSCopyNumberCount
+  | VRSGenotype
+  | VRSHaplotypeMember
+  | VRSText
+  | VRSVariationSet
+
+type VRSVariationSet {
+  type: String!
+  members: [VRSVariationSetMember!]!
+}
+
+union VRSVariation =
+    VRSAllele
+  | VRSCopyNumberChange
+  | VRSCopyNumberCount
+  | VRSGenotype
+  | VRSHaplotype
+  | VRSText
+  | VRSVariationSet
+
+union VRSMolecularVariation = VRSAllele | VRSHaplotype
+
+union VRSUtilityVariation = VRSText | VRSVariationSet
+
+union VRSSystematicVariation = VRSCopyNumberChange | VRSCopyNumberCount | VRSGenotype
+
+union VRSSequenceExpression =
+    VRSComposedSequenceExpression
+  | VRSDerivedSequenceExpression
+  | VRSLiteralSequenceExpression
+  | VRSRepeatedSequenceExpression
+
+union VRSFeature = VRSGene
+
+type VRSSimpleInterval {
+  type: String!
+  start: Int!
+  end: Int!
+}
