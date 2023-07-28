@@ -388,6 +388,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
             ) : (
               <VariantCooccurrenceCountsTable
+                datasetId={datasetId}
                 heterozygous_variant_cooccurrence_counts={
                   gene.heterozygous_variant_cooccurrence_counts!
                 }

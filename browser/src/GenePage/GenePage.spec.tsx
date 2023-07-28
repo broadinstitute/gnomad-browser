@@ -3,7 +3,11 @@ import renderer from 'react-test-renderer'
 import { jest, describe, expect, test } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DatasetId, ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasVariantCoocurrence,
+  ReferenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 
@@ -89,7 +93,11 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
 
     await userEvent.click(cooccurrenceButton)
     expect(screen.queryByText(constraintModeMatcher)).toBeNull()
-    expect(screen.queryAllByText(cooccurrenceModeMatcher)).not.toEqual([])
+    if (hasVariantCoocurrence(datasetId)) {
+      expect(screen.queryAllByText(cooccurrenceModeMatcher)).not.toEqual([])
+    } else {
+      expect(screen.queryAllByText(cooccurrenceModeMatcher)).toEqual([])
+    }
 
     await userEvent.click(constraintButton)
     expect(screen.queryByText(constraintModeMatcher)).not.toBeNull()

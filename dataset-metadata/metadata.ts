@@ -75,6 +75,7 @@ type DatasetMetadata = {
   hasShortVariants: boolean
   hasStructuralVariants: boolean
   hasConstraints: boolean
+  hasVariantCoocurrence: boolean
   hasNonCodingConstraints: boolean
   hasExome: boolean
   genesHaveExomeCoverage: boolean
@@ -118,6 +119,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasConstraints: !datasetId.startsWith('gnomad_r3'),
+  hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3'),
   referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
   hasExome: !datasetId.startsWith('gnomad_r3'),
@@ -170,6 +172,9 @@ export const isSubset = (datasetId: DatasetId) => getMetadata(datasetId, 'isSubs
 export const labelForDataset = (datasetId: DatasetId) => getMetadata(datasetId, 'label')
 
 export const hasConstraints = (datsetId: DatasetId) => getMetadata(datsetId, 'hasConstraints')
+
+export const hasVariantCoocurrence = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasVariantCoocurrence')
 
 export const hasNonCodingConstraints = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasNonCodingConstraints')
