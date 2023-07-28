@@ -23,7 +23,7 @@ import {
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
-import ClinvarVariantPropType from './ClinvarVariantPropType'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 const TopPanel = styled.div`
   display: flex;
@@ -90,24 +90,22 @@ const SelectCategoryButton = styled(Button)`
 type Props = {
   referenceGenome: 'GRCh37' | 'GRCh38'
   transcripts: any[]
-  variants: ClinvarVariantPropType[]
+  variants: ClinvarVariant[]
 }
 
 const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) => {
   const [selectedVariant, setSelectedVariant] = useState(null)
 
-  const [
-    includedClinicalSignificanceCategories,
-    setIncludedClinicalSignificanceCategories,
-  ] = useState(
-    CLINICAL_SIGNIFICANCE_CATEGORIES.reduce(
-      (acc, category) => ({
-        ...acc,
-        [category]: true,
-      }),
-      {}
+  const [includedClinicalSignificanceCategories, setIncludedClinicalSignificanceCategories] =
+    useState(
+      CLINICAL_SIGNIFICANCE_CATEGORIES.reduce(
+        (acc, category) => ({
+          ...acc,
+          [category]: true,
+        }),
+        {}
+      )
     )
-  )
 
   const [includedConsequenceCategories, setIncludedConsequenceCategories] = useState(
     VEP_CONSEQUENCE_CATEGORIES.reduce(

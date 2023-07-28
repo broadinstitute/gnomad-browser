@@ -9,7 +9,7 @@ import {
   clinvarVariantClinicalSignificanceCategory,
   clinvarVariantConsequenceCategory,
 } from './clinvarVariantCategories'
-import ClinvarVariantPropType from './ClinvarVariantPropType'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import ClinvarVariantTooltip from './ClinvarVariantTooltip'
 
 // For a description of HGVS frameshift notation, see
@@ -77,7 +77,7 @@ type ClinvarAllVariantsPlotProps = {
       stop: number
     }[]
   }[]
-  variants: ClinvarVariantPropType[]
+  variants: ClinvarVariant[]
   width: number
   onClickVariant: (...args: any[]) => any
 }
