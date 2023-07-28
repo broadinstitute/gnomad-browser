@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 
-import ClinvarVariantPropType from './ClinvarVariantPropType'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 const ClinvarVariantTooltipWrapper = styled.div`
   max-width: 100%;
@@ -64,7 +64,7 @@ const renderGnomadAF = (variant: any) => {
 }
 
 type ClinvarVariantTooltipProps = {
-  variant: ClinvarVariantPropType
+  variant: ClinvarVariant
 }
 
 const ClinvarVariantTooltip = ({ variant }: ClinvarVariantTooltipProps) => (
