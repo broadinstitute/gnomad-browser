@@ -390,7 +390,7 @@ const GnomadV2Downloads = () => {
           <ListItem>
             <GenericDownloadLinks
               label="Random forest (RF) model"
-              path="/release/2.1/pca/gnomad.r2.1.RF_fit.pkl"
+              path="/release/2.1/pca/gnomad.r2.1.RF_fit.onnx"
             />
           </ListItem>
         </FileList>
