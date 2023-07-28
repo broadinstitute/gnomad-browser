@@ -2,6 +2,7 @@ import React, { useState, Dispatch, SetStateAction, ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { BaseTable, TooltipAnchor, TooltipHint, Button } from '@gnomad/ui'
+import { DatasetId, hasVariantCoocurrence } from '@gnomad/dataset-metadata/metadata'
 
 export const heterozygousVariantCooccurrenceSeverities = [
   'lof_lof',
@@ -505,13 +506,19 @@ const HomozygousCaption = () => (
 )
 
 const VariantCooccurrenceCountsTable = ({
+  datasetId,
   heterozygous_variant_cooccurrence_counts,
   homozygous_variant_cooccurrence_counts,
 }: {
+  datasetId: DatasetId
   heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
   homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
 }) => {
   const [tableMode, setTableMode] = useState<TableMode>('normal')
+
+  if (!hasVariantCoocurrence(datasetId)) {
+    return <p>Variant co-occurrence is only available for gnomAD v2.</p>
+  }
 
   const buttonLabel = tableMode === 'normal' ? 'expand' : 'collapse'
   const clickCallback = () => toggleTableMode(tableMode, setTableMode)
