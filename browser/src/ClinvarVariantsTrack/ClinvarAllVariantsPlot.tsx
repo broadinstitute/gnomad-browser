@@ -8,13 +8,24 @@ import {
   CLINICAL_SIGNIFICANCE_CATEGORY_COLORS,
   clinvarVariantClinicalSignificanceCategory,
   clinvarVariantConsequenceCategory,
+  ClinicalSignificance,
 } from './clinvarVariantCategories'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import ClinvarVariantTooltip from './ClinvarVariantTooltip'
+import { Transcript } from '../TranscriptPage/TranscriptPage'
+
+const symbolColor = (clinical_significance: ClinicalSignificance) =>
+  CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[clinical_significance]
 
 // For a description of HGVS frameshift notation, see
 // https://varnomen.hgvs.org/recommendations/protein/variant/frameshift/
-const getFrameshiftTerminationSitePosition = (variant: any, transcript: any) => {
+const getFrameshiftTerminationSitePosition = (
+  variant: ClinvarVariant,
+  transcript?: Transcript
+): number => {
+  if (!transcript || !variant.hgvsp) {
+    return variant.pos
+  }
   const match = /^p\.[a-z]{3}(\d+)[a-z]{3,}?fsTer(\d+|\?)$/i.exec(variant.hgvsp)
 
   // If HGVSp annotation does not match a frameshift, draw the termination site at the variant's position
@@ -27,7 +38,7 @@ const getFrameshiftTerminationSitePosition = (variant: any, transcript: any) => 
   // Codon within the new reading frame of the termination site
   const terminationSitePosition = match[2]
 
-  const exons = transcript.exons.sort((e1: any, e2: any) => e1.start - e2.start)
+  const exons = transcript.exons.sort((e1, e2) => e1.start - e2.start)
 
   // Codon numbers in HGVSp notation start from the 5' end for the + strand and the 3' end for the - strand.
   if (transcript.strand === '-') {
@@ -35,9 +46,7 @@ const getFrameshiftTerminationSitePosition = (variant: any, transcript: any) => 
   }
 
   // Codon positions extracted from HGVS notation start at the CDS region and may extend into the downstream UTR
-  const codingAndDownstreamExons = exons.slice(
-    exons.findIndex((e: any) => e.feature_type === 'CDS')
-  )
+  const codingAndDownstreamExons = exons.slice(exons.findIndex((e) => e.feature_type === 'CDS'))
 
   // Termination site position may be "?" if the new reading frame does not encounter a stop codon
   // In this case, place the termination site at the end of the transcript
@@ -53,7 +62,7 @@ const getFrameshiftTerminationSitePosition = (variant: any, transcript: any) => 
 
   let remainingOffset = baseOffset
   // Termination site should always fall within an exon
-  const exonContainingTerminationSite = codingAndDownstreamExons.find((e: any) => {
+  const exonContainingTerminationSite = codingAndDownstreamExons.find((e) => {
     const exonSize = e.stop - e.start + 1
     if (remainingOffset < exonSize) {
       return true
@@ -63,26 +72,29 @@ const getFrameshiftTerminationSitePosition = (variant: any, transcript: any) => 
   })
 
   return transcript.strand === '-'
-    ? exonContainingTerminationSite.stop - remainingOffset
-    : exonContainingTerminationSite.start + remainingOffset
+    ? /* @ts-expect-error */
+      exonContainingTerminationSite.stop - remainingOffset
+    : /* @ts-expect-error */
+      exonContainingTerminationSite.start + remainingOffset
 }
 
 type ClinvarAllVariantsPlotProps = {
   scalePosition: (...args: any[]) => any
-  transcripts: {
-    transcript_id: string
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
-    }[]
-  }[]
+  transcripts: Transcript[]
   variants: ClinvarVariant[]
   width: number
   onClickVariant: (...args: any[]) => any
 }
 
 type Category = 'frameshift' | 'other_lof' | 'missense' | 'splice_region' | 'other'
+
+type VariantRenderingDetails = {
+  variant: ClinvarVariant
+  xStart: number
+  xEnd: number
+  y: number
+  clinicalSignificance: ClinicalSignificance
+}
 
 const ClinvarAllVariantsPlot = ({
   scalePosition,
@@ -98,7 +110,7 @@ const ClinvarAllVariantsPlot = ({
     _setHighlightedCategory,
   ])
 
-  const variantsByCategory = {
+  const variantsByClinicalSignificance: Record<ClinicalSignificance, ClinvarVariant[]> = {
     pathogenic: [],
     uncertain: [],
     benign: [],
@@ -107,47 +119,37 @@ const ClinvarAllVariantsPlot = ({
 
   variants.forEach((variant) => {
     const category = clinvarVariantClinicalSignificanceCategory(variant)
-    // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'never'.
-    variantsByCategory[category].push({ ...variant, category })
+    variantsByClinicalSignificance[category].push(variant)
   })
 
-  const layers = [
-    variantsByCategory.pathogenic,
-    variantsByCategory.uncertain,
-    variantsByCategory.benign,
-    variantsByCategory.other,
-  ]
+  const layerOrdering: ClinicalSignificance[] = ['pathogenic', 'uncertain', 'benign', 'other']
 
-  const rows: any = []
+  const rows: VariantRenderingDetails[][] = []
   const pointSpacing = 9
   const rowHeight = 10
-  layers.forEach((variantsInLayer) => {
-    variantsInLayer.forEach((variant) => {
-      let xStart: any
-      let xEnd: any
+  layerOrdering.forEach((layerName) => {
+    variantsByClinicalSignificance[layerName].forEach((variant) => {
+      let xStart: number
+      let xEnd: number
 
-      if ((variant as any).major_consequence === 'frameshift_variant') {
+      if (variant.major_consequence === 'frameshift_variant') {
         // For transcripts on the negative strand, the termination site will be at a lower global position
         // than the variant's position.
-        const pos1 = scalePosition((variant as any).pos)
-        const pos2 = scalePosition(
-          getFrameshiftTerminationSitePosition(
-            variant,
-            transcripts.find((t: any) => t.transcript_id === (variant as any).transcript_id)
-          )
-        )
+        const pos1 = scalePosition(variant.pos)
+        const transcript = transcripts.find((t) => t.transcript_id === variant.transcript_id)
+        const pos2 = transcript
+          ? scalePosition(getFrameshiftTerminationSitePosition(variant, transcript))
+          : pos1
         xStart = Math.min(pos1, pos2)
         xEnd = Math.max(pos1, pos2)
       } else {
-        xStart = scalePosition((variant as any).pos)
+        xStart = scalePosition(variant.pos)
         xEnd = xStart
       }
 
       let rowIndex = rows.findIndex(
-        (rowPoints: any) =>
-          !rowPoints.some(
-            (p: any) => xStart < p.xEnd + pointSpacing && xEnd >= p.xStart - pointSpacing
-          )
+        (rowPoints) =>
+          !rowPoints.some((p) => xStart < p.xEnd + pointSpacing && xEnd >= p.xStart - pointSpacing)
       )
 
       if (rowIndex === -1) {
@@ -159,15 +161,13 @@ const ClinvarAllVariantsPlot = ({
         variant,
         xStart,
         xEnd,
+        clinicalSignificance: layerName,
         y: rowHeight * (rowIndex + 0.5),
       })
     })
   })
 
   const plotHeight = rows.length * rowHeight
-
-  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-  const symbolColor = (variant: any) => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[variant.category]
 
   const circle = useMemo(() => symbol().size(32).type(symbolCircle)(), [])
   const cross = useMemo(() => symbol().size(40).type(symbolCross)(), [])
@@ -183,10 +183,10 @@ const ClinvarAllVariantsPlot = ({
    * - Synonymous / non-coding: circle
    * - Other: star
    */
-  const renderMarker = (point: any) => {
-    const { variant } = point
+  const renderMarker = (point: VariantRenderingDetails) => {
+    const { variant, clinicalSignificance } = point
     const category = clinvarVariantConsequenceCategory(variant)
-    const fill = symbolColor(variant)
+    const fill = symbolColor(clinicalSignificance)
     let opacity = 1
     if (
       highlightedCategory &&
@@ -199,15 +199,15 @@ const ClinvarAllVariantsPlot = ({
     }
 
     if (category === 'frameshift') {
-      const transcript = transcripts.find((t: any) => t.transcript_id === variant.transcript_id)
+      const transcript = transcripts.find((t) => t.transcript_id === variant.transcript_id)
       const terminationSitePosition = getFrameshiftTerminationSitePosition(variant, transcript)
       const frameshiftMinPos = Math.min(variant.pos, terminationSitePosition)
       const frameshiftMaxPos = Math.max(variant.pos, terminationSitePosition)
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       const frameshiftExonRegions = transcript.exons
-        .sort((e1: any, e2: any) => e1.start - e2.start)
-        .filter((e: any) => e.start <= frameshiftMaxPos && e.stop >= frameshiftMinPos)
-        .map((e: any) => ({
+        .sort((e1, e2) => e1.start - e2.start)
+        .filter((e) => e.start <= frameshiftMaxPos && e.stop >= frameshiftMinPos)
+        .map((e) => ({
           start: Math.max(e.start, frameshiftMinPos),
           stop: Math.min(e.stop, frameshiftMaxPos),
         }))
@@ -224,7 +224,7 @@ const ClinvarAllVariantsPlot = ({
             opacity={opacity}
             style={{ cursor: 'pointer' }}
           />
-          {frameshiftExonRegions.map((r: any, i: any, regions: any) => {
+          {frameshiftExonRegions.map((r, i, regions) => {
             const lineY = plotHeight - point.y
             return (
               <React.Fragment key={`${r.start}-${r.stop}`}>
@@ -359,11 +359,10 @@ const ClinvarAllVariantsPlot = ({
         </g>
       </g>
       <g transform="translate(0, 25)">
-        {/* @ts-expect-error TS(7006) FIXME: Parameter 'points' implicitly has an 'any' type. */}
         {rows.map((points, rowIndex) => (
           // eslint-disable-next-line react/no-array-index-key
           <React.Fragment key={rowIndex}>
-            {points.map((point: any) => (
+            {points.map((point) => (
               <TooltipAnchor
                 key={point.variant.variant_id}
                 tooltipComponent={ClinvarVariantTooltip}

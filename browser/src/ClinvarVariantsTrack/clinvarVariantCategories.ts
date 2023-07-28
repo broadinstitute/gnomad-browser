@@ -25,7 +25,9 @@ const CLINICAL_SIGNIFICANCE_GROUPS = {
     'not provided',
     'association not found',
   ]),
-}
+} as const
+
+export type ClinicalSignificance = keyof typeof CLINICAL_SIGNIFICANCE_GROUPS
 
 export const clinvarVariantClinicalSignificanceCategory = (variant: any) => {
   const clinicalSignificances = variant.clinical_significance.split(', ')
