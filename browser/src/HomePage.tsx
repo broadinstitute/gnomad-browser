@@ -200,9 +200,12 @@ export default () => (
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-        <ExternalLink href="https://arxiv.org/abs/2107.11458">
-          <em>Variant interpretation using population databases: lessons from gnomAD.</em> arXiv{' '}
-          2107.11458 [q-bio.GN] (2021).
+        <ExternalLink href="https://onlinelibrary.wiley.com/doi/10.1002/humu.24309">
+          <em>
+            Gudmundsson et al. Variant interpretation using population databases: Lessons from
+            gnomAD.
+          </em>{' '}
+          Hum Mutat. 2022 Aug;43(8):1012-1030.
         </ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
