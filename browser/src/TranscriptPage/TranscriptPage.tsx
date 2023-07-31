@@ -33,6 +33,12 @@ import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
 import { Variant, ClinvarVariant } from '../VariantPage/VariantPage'
 import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
 
+export type Exon = {
+  feature_type: string
+  start: number
+  stop: number
+}
+
 export type Transcript = {
   transcript_id: string
   transcript_version: string
@@ -41,11 +47,7 @@ export type Transcript = {
   strand: Strand
   start: number
   stop: number
-  exons: {
-    feature_type: string
-    start: number
-    stop: number
-  }[]
+  exons: Exon[]
   gnomad_constraint: GnomadConstraint | null
   exac_constraint: ExacConstraint | null
   gene: GeneMetadata
