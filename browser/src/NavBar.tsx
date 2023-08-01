@@ -138,7 +138,7 @@ const NavBar = () => {
         </li>
         <li>
           <Link to="/help" onClick={closeMenu}>
-            Help
+            Help/FAQ
           </Link>
         </li>
       </Menu>
