@@ -26,6 +26,8 @@ about: Report a bug or unexpected behavior
 
 <!-- What was actually on the screen after your interaction, focusing on the difference between that and the expected state above. -->
 
+<!--
+
 Any of the following information will be helpful:
 
 - Screenshots
