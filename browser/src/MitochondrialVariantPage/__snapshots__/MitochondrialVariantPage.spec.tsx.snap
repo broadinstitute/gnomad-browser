@@ -195,9 +195,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -8249,9 +8259,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -16303,9 +16323,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -24357,9 +24387,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -32411,9 +32451,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -40465,9 +40515,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -48519,9 +48579,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -56573,9 +56643,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -64627,9 +64707,19 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
               >
                 gnomAD v3.1.2
                 <div
-                  className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 bmbXNu"
                 >
-                  76,156 samples
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    76,156 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>

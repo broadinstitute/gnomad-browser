@@ -13,6 +13,7 @@ import {
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
+  referenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -123,6 +124,12 @@ const SubNavigationLink = styled.a`
   }
 `.withComponent(Link)
 
+const ItemDescriptions = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
 const ItemDescription = styled.div`
   margin-top: 0.125em;
   margin-left: 5px;
@@ -130,19 +137,19 @@ const ItemDescription = styled.div`
   opacity: 0.6;
 `
 
+type ChildDataset = {
+  id: string; label: string; url: string; description: string; referenceGenome?: string
+}
+
 type Props = {
   items: (
     | {
-        id: string
-        isActive?: boolean
-        label: string
-        url: string | any
-      }
-    | {
-        id: string
-        isActive?: boolean
-        label: string
-      }
+      id: string
+      isActive?: boolean
+      label: string
+      url: string | any
+      children: ChildDataset[]
+    }
   )[]
 }
 
@@ -378,7 +385,7 @@ class NavigationMenu extends Component<Props, State> {
                   </TopLevelNavigationLink>
                   {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                   <SubNavigationMenu isExpanded={isExpanded}>
-                    {(item as any).children.map((childItem: any) => (
+                    {(item).children.map((childItem) => (
                       <li key={childItem.id}>
                         <SubNavigationLink
                           data-item={childItem.id}
@@ -391,9 +398,14 @@ class NavigationMenu extends Component<Props, State> {
                           onKeyDown={this.onKeyDownSubMenuItem}
                         >
                           {childItem.label}
-                          {childItem.description && (
-                            <ItemDescription>{childItem.description}</ItemDescription>
-                          )}
+                          <ItemDescriptions>
+                            {childItem.description && (
+                              <ItemDescription>{childItem.description}</ItemDescription>
+                            )}
+                            {childItem.referenceGenome && (
+                              <ItemDescription>Build {childItem.referenceGenome}</ItemDescription>
+                            )}
+                          </ItemDescriptions>
                         </SubNavigationLink>
                       </li>
                     ))}
@@ -438,12 +450,13 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         isActive: hasShortVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
+        referenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
         isActive: hasShortVariants(selectedDataset),
         label: 'More datasets',
-        children: [] as { id: string; label: string; url: string; description: string }[],
+        children: [] as ChildDataset[],
       },
     ]
 
@@ -454,6 +467,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         label: labelForDataset('gnomad_r3'),
         url: datasetLink('gnomad_r3'),
         description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+        referenceGenome: referenceGenome('gnomad_r3'),
       })
     }
 
@@ -465,12 +479,14 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           label: labelForDataset('gnomad_r3_non_cancer'),
           url: datasetLink('gnomad_r3_non_cancer'),
           description: `${sampleCounts.gnomad_r3_non_cancer.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r3_non_cancer'),
         },
         {
           id: 'gnomad_r3_non_neuro',
           label: labelForDataset('gnomad_r3_non_neuro'),
           url: datasetLink('gnomad_r3_non_neuro'),
           description: `${sampleCounts.gnomad_r3_non_neuro.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r3_non_neuro'),
         },
         {
           id: 'gnomad_r3_non_v2',
@@ -500,6 +516,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         label: labelForDataset('gnomad_r2_1'),
         url: datasetLink('gnomad_r2_1'),
         description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
+        referenceGenome: referenceGenome('gnomad_r2_1'),
       })
     }
 

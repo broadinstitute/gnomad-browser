@@ -200,22 +200,22 @@ exports[`Home Page has no unexpected changes 1`] = `
       <option
         value="gnomad_r3"
       >
-        gnomAD v3.1.2
+        gnomAD v3.1.2 (GRCh38)
       </option>
       <option
         value="gnomad_r2_1"
       >
-        gnomAD v2.1.1
+        gnomAD v2.1.1 (GRCh37)
       </option>
       <option
         value="gnomad_sv_r2_1"
       >
-        gnomAD SVs v2.1
+        gnomAD SVs v2.1 (GRCh37)
       </option>
       <option
         value="exac"
       >
-        ExAC
+        ExAC (GRCh37)
       </option>
     </select>
     <span
