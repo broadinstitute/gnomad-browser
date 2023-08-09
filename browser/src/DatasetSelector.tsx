@@ -493,18 +493,21 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           label: labelForDataset('gnomad_r3_non_v2'),
           url: datasetLink('gnomad_r3_non_v2'),
           description: `${sampleCounts.gnomad_r3_non_v2.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r3_non_v2'),
         },
         {
           id: 'gnomad_r3_non_topmed',
           label: labelForDataset('gnomad_r3_non_topmed'),
           url: datasetLink('gnomad_r3_non_topmed'),
           description: `${sampleCounts.gnomad_r3_non_topmed.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r3_non_topmed'),
         },
         {
           id: 'gnomad_r3_controls_and_biobanks',
           label: labelForDataset('gnomad_r3_controls_and_biobanks'),
           url: datasetLink('gnomad_r3_controls_and_biobanks'),
           description: `${sampleCounts.gnomad_r3_controls_and_biobanks.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r3_controls_and_biobanks'),
         }
       )
     }
@@ -528,24 +531,28 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           label: labelForDataset('gnomad_r2_1_non_topmed'),
           url: datasetLink('gnomad_r2_1_non_topmed'),
           description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r2_1_non_topmed'),
         },
         {
           id: 'gnomad_r2_1_non_cancer',
           label: labelForDataset('gnomad_r2_1_non_cancer'),
           url: datasetLink('gnomad_r2_1_non_cancer'),
           description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r2_1_non_cancer'),
         },
         {
           id: 'gnomad_r2_1_non_neuro',
           label: labelForDataset('gnomad_r2_1_non_neuro'),
           url: datasetLink('gnomad_r2_1_non_neuro'),
           description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r2_1_non_neuro'),
         },
         {
           id: 'gnomad_r2_1_controls',
           label: labelForDataset('gnomad_r2_1_controls'),
           url: datasetLink('gnomad_r2_1_controls'),
           description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
+          referenceGenome: referenceGenome('gnomad_r2_1_controls'),
         }
       )
     }
@@ -557,6 +564,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         label: labelForDataset('exac'),
         url: datasetLink('exac'),
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
+        referenceGenome: referenceGenome('exac'),
       })
     }
 
@@ -585,18 +593,21 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             label: labelForDataset('gnomad_sv_r2_1'),
             url: datasetLink('gnomad_sv_r2_1'),
             description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples`,
+            referenceGenome: referenceGenome('gnomad_sv_r2_1'),
           },
           {
             id: 'gnomad_sv_r2_1_non_neuro',
             label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
             url: datasetLink('gnomad_sv_r2_1_non_neuro'),
             description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples`,
+            referenceGenome: referenceGenome('gnomad_sv_r2_1_non_neuro'),
           },
           {
             id: 'gnomad_sv_r2_1_controls',
             label: labelForDataset('gnomad_sv_r2_1_controls'),
             url: datasetLink('gnomad_sv_r2_1_controls'),
             description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
+            referenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
         ],
       }
