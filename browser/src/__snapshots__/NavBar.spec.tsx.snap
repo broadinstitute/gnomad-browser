@@ -328,9 +328,25 @@ exports[`NavBar has no unexpected changes 1`] = `
     </li>
     <li>
       <a
+        href="/policies"
+        onClick={[Function]}
+      >
+        Policies
+      </a>
+    </li>
+    <li>
+      <a
+        href="/publications"
+        onClick={[Function]}
+      >
+        Publications
+      </a>
+    </li>
+    <li>
+      <a
         href="https://gnomad.broadinstitute.org/news/"
       >
-        News
+        Blog
       </a>
     </li>
     <li>
@@ -346,22 +362,6 @@ exports[`NavBar has no unexpected changes 1`] = `
         onClick={[Function]}
       >
         Downloads
-      </a>
-    </li>
-    <li>
-      <a
-        href="/policies"
-        onClick={[Function]}
-      >
-        Policies
-      </a>
-    </li>
-    <li>
-      <a
-        href="/publications"
-        onClick={[Function]}
-      >
-        Publications
       </a>
     </li>
     <li>
