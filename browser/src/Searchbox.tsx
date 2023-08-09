@@ -76,14 +76,14 @@ export default withRouter((props: any) => {
         onChange={(e: any) => {
           setSearchDataset(e.target.value)
           if (innerSearchbox.current) {
-            ;(innerSearchbox.current as any).updateResults()
+            ; (innerSearchbox.current as any).updateResults()
           }
         }}
       >
-        <option value="gnomad_r3">gnomAD v3.1.2</option>
-        <option value="gnomad_r2_1">gnomAD v2.1.1</option>
-        <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
-        <option value="exac">ExAC</option>
+        <option value="gnomad_r3">gnomAD v3.1.2 (GRCh38)</option>
+        <option value="gnomad_r2_1">gnomAD v2.1.1 (GRCh37)</option>
+        <option value="gnomad_sv_r2_1">gnomAD SVs v2.1 (GRCh37)</option>
+        <option value="exac">ExAC (GRCh37)</option>
       </Select>
       <span style={{ flexGrow: 1 }}>
         <Searchbox
