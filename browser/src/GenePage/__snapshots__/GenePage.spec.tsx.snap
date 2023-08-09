@@ -175,6 +175,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -196,6 +202,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -216,6 +228,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -265,6 +283,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -285,6 +309,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -307,6 +337,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -328,6 +364,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -348,6 +390,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -414,6 +462,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -435,6 +489,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -455,6 +515,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -1639,6 +1705,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1660,6 +1732,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1680,6 +1758,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -1729,6 +1813,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1749,6 +1839,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -1771,6 +1867,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1792,6 +1894,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1812,6 +1920,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -1878,6 +1992,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1899,6 +2019,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -1919,6 +2045,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -3103,6 +3235,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3124,6 +3262,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3144,6 +3288,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -3193,6 +3343,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3213,6 +3369,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -3235,6 +3397,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3256,6 +3424,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3276,6 +3450,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -3342,6 +3522,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3363,6 +3549,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -3383,6 +3575,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -4567,6 +4765,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4588,6 +4792,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4608,6 +4818,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -4657,6 +4873,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4677,6 +4899,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -4699,6 +4927,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4720,6 +4954,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4740,6 +4980,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -4806,6 +5052,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4827,6 +5079,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -4847,6 +5105,12 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -6065,6 +6329,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6086,6 +6356,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6106,6 +6382,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -6155,6 +6437,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6175,6 +6463,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -6197,6 +6491,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6218,6 +6518,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6238,6 +6544,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -6304,6 +6616,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6325,6 +6643,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -6345,6 +6669,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -7563,6 +7893,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7584,6 +7920,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7604,6 +7946,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -7653,6 +8001,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7673,6 +8027,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -7695,6 +8055,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7716,6 +8082,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7736,6 +8108,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -7802,6 +8180,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7823,6 +8207,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -7843,6 +8233,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -9061,6 +9457,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9082,6 +9484,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9102,6 +9510,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -9151,6 +9565,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9171,6 +9591,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -9193,6 +9619,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9214,6 +9646,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9234,6 +9672,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -9300,6 +9744,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9321,6 +9771,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -9341,6 +9797,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -10559,6 +11021,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10580,6 +11048,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10600,6 +11074,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -10649,6 +11129,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10669,6 +11155,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -10691,6 +11183,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10712,6 +11210,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10732,6 +11236,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -10798,6 +11308,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10819,6 +11335,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -10839,6 +11361,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -12057,6 +12585,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12078,6 +12612,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12098,6 +12638,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -12147,6 +12693,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12167,6 +12719,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -12189,6 +12747,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12210,6 +12774,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12230,6 +12800,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -12296,6 +12872,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12317,6 +12899,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -12337,6 +12925,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -13555,6 +14149,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13576,6 +14176,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13596,6 +14202,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -13645,6 +14257,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13665,6 +14283,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -13687,6 +14311,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13708,6 +14338,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13728,6 +14364,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -13794,6 +14436,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13815,6 +14463,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -13835,6 +14489,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -15052,6 +15712,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15073,6 +15739,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15093,6 +15765,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -15142,6 +15820,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15162,6 +15846,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -15184,6 +15874,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15205,6 +15901,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15225,6 +15927,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -15291,6 +15999,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15312,6 +16026,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -15332,6 +16052,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -16549,6 +17275,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16570,6 +17302,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16590,6 +17328,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -16639,6 +17383,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16659,6 +17409,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -16681,6 +17437,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16702,6 +17464,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16722,6 +17490,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -16788,6 +17562,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16809,6 +17589,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -16829,6 +17615,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -18046,6 +18838,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18067,6 +18865,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18087,6 +18891,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -18136,6 +18946,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18156,6 +18972,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -18178,6 +19000,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18199,6 +19027,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18219,6 +19053,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -18285,6 +19125,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18306,6 +19152,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -18326,6 +19178,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -19543,6 +20401,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19564,6 +20428,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19584,6 +20454,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -19633,6 +20509,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19653,6 +20535,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -19675,6 +20563,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19696,6 +20590,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19716,6 +20616,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -19782,6 +20688,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19803,6 +20715,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -19823,6 +20741,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -21040,6 +21964,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       57,344 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21061,6 +21991,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       40,433 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21081,6 +22017,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       16,465 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh38
                     </div>
                   </div>
                 </a>
@@ -21130,6 +22072,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       135,743 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21150,6 +22098,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       134,187 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -21172,6 +22126,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       114,704 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21193,6 +22153,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       60,146 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21213,6 +22179,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       60,706 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>
@@ -21279,6 +22251,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       10,847 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21300,6 +22278,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     >
                       8,342 samples
                     </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
+                    </div>
                   </div>
                 </a>
               </li>
@@ -21320,6 +22304,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                     >
                       5,192 samples
+                    </div>
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    >
+                      Build 
+                      GRCh37
                     </div>
                   </div>
                 </a>

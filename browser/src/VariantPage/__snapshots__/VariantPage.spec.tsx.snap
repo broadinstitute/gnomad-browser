@@ -236,6 +236,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -257,6 +263,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -277,6 +289,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -8956,6 +8974,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -8977,6 +9001,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -8997,6 +9027,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -17679,6 +17715,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -17700,6 +17742,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -17720,6 +17768,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -26402,6 +26456,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -26423,6 +26483,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -26443,6 +26509,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -35125,6 +35197,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -35146,6 +35224,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -35166,6 +35250,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -43848,6 +43938,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   >
                     57,344 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -43869,6 +43965,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   >
                     40,433 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
+                  </div>
                 </div>
               </a>
             </li>
@@ -43889,6 +43991,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     16,465 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh38
                   </div>
                 </div>
               </a>
@@ -52517,6 +52625,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -52537,6 +52651,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -52559,6 +52679,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -52580,6 +52706,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -52600,6 +52732,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -59578,6 +59716,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -59598,6 +59742,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -59620,6 +59770,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -59641,6 +59797,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -59661,6 +59823,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -68339,6 +68507,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -68359,6 +68533,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -68381,6 +68561,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -68402,6 +68588,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -68422,6 +68614,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -77100,6 +77298,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -77120,6 +77324,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -77142,6 +77352,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -77163,6 +77379,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -77183,6 +77405,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -85861,6 +86089,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -85881,6 +86115,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -85903,6 +86143,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -85924,6 +86170,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -85944,6 +86196,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -94622,6 +94880,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   >
                     135,743 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -94642,6 +94906,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     134,187 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>
@@ -94664,6 +94934,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   >
                     114,704 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -94685,6 +94961,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   >
                     60,146 samples
                   </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
+                  </div>
                 </div>
               </a>
             </li>
@@ -94705,6 +94987,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
                   >
                     60,706 samples
+                  </div>
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                  >
+                    Build 
+                    GRCh37
                   </div>
                 </div>
               </a>

@@ -306,6 +306,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -327,6 +333,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -347,6 +359,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -396,6 +414,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -416,6 +440,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -438,6 +468,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -459,6 +495,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -479,6 +521,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -545,6 +593,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -566,6 +620,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -586,6 +646,12 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -901,6 +967,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -922,6 +994,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -942,6 +1020,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -991,6 +1075,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1011,6 +1101,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -1033,6 +1129,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1054,6 +1156,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1074,6 +1182,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -1140,6 +1254,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1161,6 +1281,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1181,6 +1307,12 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -1496,6 +1628,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -1517,6 +1655,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -1537,6 +1681,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -1586,6 +1736,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1606,6 +1762,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -1628,6 +1790,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1649,6 +1817,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1669,6 +1843,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -1735,6 +1915,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1756,6 +1942,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -1776,6 +1968,12 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2091,6 +2289,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -2112,6 +2316,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -2132,6 +2342,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -2181,6 +2397,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2201,6 +2423,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2223,6 +2451,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2244,6 +2478,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2264,6 +2504,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2330,6 +2576,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2351,6 +2603,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2371,6 +2629,12 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2686,6 +2950,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -2707,6 +2977,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -2727,6 +3003,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -2776,6 +3058,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2796,6 +3084,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2818,6 +3112,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2839,6 +3139,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2859,6 +3165,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -2925,6 +3237,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2946,6 +3264,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -2966,6 +3290,12 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -3281,6 +3611,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -3302,6 +3638,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -3322,6 +3664,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -3371,6 +3719,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3391,6 +3745,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -3413,6 +3773,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3434,6 +3800,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3454,6 +3826,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -3520,6 +3898,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3541,6 +3925,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3561,6 +3951,12 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -3876,6 +4272,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -3897,6 +4299,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -3917,6 +4325,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -3966,6 +4380,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -3986,6 +4406,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -4008,6 +4434,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4029,6 +4461,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4049,6 +4487,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -4115,6 +4559,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4136,6 +4586,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4156,6 +4612,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -4471,6 +4933,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -4492,6 +4960,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -4512,6 +4986,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -4561,6 +5041,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4581,6 +5067,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -4603,6 +5095,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4624,6 +5122,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4644,6 +5148,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -4710,6 +5220,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4731,6 +5247,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -4751,6 +5273,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5066,6 +5594,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -5087,6 +5621,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -5107,6 +5647,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -5156,6 +5702,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5176,6 +5728,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5198,6 +5756,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5219,6 +5783,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5239,6 +5809,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5305,6 +5881,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5326,6 +5908,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5346,6 +5934,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5661,6 +6255,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -5682,6 +6282,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -5702,6 +6308,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -5751,6 +6363,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5771,6 +6389,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5793,6 +6417,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5814,6 +6444,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5834,6 +6470,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -5900,6 +6542,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5921,6 +6569,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -5941,6 +6595,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -6256,6 +6916,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -6277,6 +6943,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -6297,6 +6969,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -6346,6 +7024,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6366,6 +7050,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -6388,6 +7078,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6409,6 +7105,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6429,6 +7131,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -6495,6 +7203,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6516,6 +7230,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6536,6 +7256,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -6851,6 +7577,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -6872,6 +7604,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -6892,6 +7630,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -6941,6 +7685,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -6961,6 +7711,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -6983,6 +7739,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7004,6 +7766,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7024,6 +7792,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -7090,6 +7864,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7111,6 +7891,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7131,6 +7917,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -7446,6 +8238,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -7467,6 +8265,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -7487,6 +8291,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -7536,6 +8346,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7556,6 +8372,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -7578,6 +8400,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7599,6 +8427,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7619,6 +8453,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -7685,6 +8525,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7706,6 +8552,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -7726,6 +8578,12 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8041,6 +8899,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -8062,6 +8926,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -8082,6 +8952,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -8131,6 +9007,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8151,6 +9033,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8173,6 +9061,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8194,6 +9088,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8214,6 +9114,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8280,6 +9186,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8301,6 +9213,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8321,6 +9239,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8636,6 +9560,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               57,344 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -8657,6 +9587,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               40,433 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
+            </div>
           </div>
         </a>
       </li>
@@ -8677,6 +9613,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
               className="c8"
             >
               16,465 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh38
             </div>
           </div>
         </a>
@@ -8726,6 +9668,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               135,743 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8746,6 +9694,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
               className="c8"
             >
               134,187 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8768,6 +9722,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               114,704 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8789,6 +9749,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               60,146 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8809,6 +9775,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
               className="c8"
             >
               60,706 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
@@ -8875,6 +9847,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               10,847 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8896,6 +9874,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             >
               8,342 samples
             </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
+            </div>
           </div>
         </a>
       </li>
@@ -8916,6 +9900,12 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
               className="c8"
             >
               5,192 samples
+            </div>
+            <div
+              className="c8"
+            >
+              Build 
+              GRCh37
             </div>
           </div>
         </a>
