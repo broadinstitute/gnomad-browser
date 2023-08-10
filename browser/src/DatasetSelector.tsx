@@ -127,7 +127,7 @@ const SubNavigationLink = styled.a`
 const ItemDescriptions = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 
 const ItemDescription = styled.div`
@@ -403,7 +403,7 @@ class NavigationMenu extends Component<Props, State> {
                               <ItemDescription>{childItem.description}</ItemDescription>
                             )}
                             {childItem.referenceGenome && (
-                              <ItemDescription>Build {childItem.referenceGenome}</ItemDescription>
+                              <ItemDescription>({childItem.referenceGenome})</ItemDescription>
                             )}
                           </ItemDescriptions>
                         </SubNavigationLink>
