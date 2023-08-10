@@ -12,6 +12,7 @@ import {
   svConsequenceLabels,
 } from './structuralVariantConsequences'
 import { svTypeColors, svTypeLabels } from './structuralVariantTypes'
+import { Context } from './StructuralVariants'
 
 const renderConsequence = (variant: any, key: any, { colorKey, highlightWords }: any) => {
   const { consequence } = variant
@@ -100,7 +101,7 @@ const structuralVariantTableColumns = [
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hom'),
     render: (variant: any) => renderAlleleCountCell(variant, 'ac_hom'),
-    shouldShowInContext: (context: any) => context.chrom !== 'Y',
+    shouldShowInContext: (context: Context) => context.chrom !== 'Y',
   },
 
   {
@@ -178,30 +179,11 @@ const structuralVariantTableColumns = [
 
 export default structuralVariantTableColumns
 
-const getContextType = (context: any) => {
-  if (context.transcript_id) {
-    return 'transcript'
-  }
-  if (context.gene_id) {
-    return 'gene'
-  }
-  return 'region'
-}
-
-export const getColumnsForContext = (context: any) => {
-  const contextType = getContextType(context)
+export const getColumnsForContext = (context: Context) => {
   const columns = structuralVariantTableColumns
     .filter(
-      (column) =>
-        // @ts-expect-error TS(2554) FIXME: Expected 1 arguments, but got 2.
-        column.shouldShowInContext === undefined || column.shouldShowInContext(context, contextType)
+      (column) => column.shouldShowInContext === undefined || column.shouldShowInContext(context)
     )
-    .map((column) => ({
-      ...column,
-      description: (column as any).descriptionInContext
-        ? (column as any).descriptionInContext(context, contextType)
-        : (column as any).description,
-    }))
     .reduce((acc, column) => ({ ...acc, [column.key]: column }), {})
 
   return columns
