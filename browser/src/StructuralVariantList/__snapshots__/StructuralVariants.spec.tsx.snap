@@ -1,0 +1,473 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StructuralVariants has no unexpected changes 1`] = `
+<div>
+  <StructuralVariants__ControlWrapper>
+    <span
+      style={
+        {
+          "marginRight": "0.5em",
+        }
+      }
+    >
+      Color variants by
+    </span>
+    <SegmentedControl
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
+      disabled={false}
+      id="sv-color-key"
+      onChange={[Function]}
+      options={
+        [
+          {
+            "label": "Consequence",
+            "value": "consequence",
+          },
+          {
+            "label": "Class",
+            "value": "type",
+          },
+        ]
+      }
+      textColor="#000"
+      value="type"
+    />
+  </StructuralVariants__ControlWrapper>
+  <StructuralVariants__Wrapper>
+    <ForwardRef
+      highlightedVariant={null}
+      numTracksRendered={3}
+      onHover={[Function]}
+      onScroll={[Function]}
+      trackColor={[Function]}
+      trackHeight={14}
+      variants={
+        [
+          {
+            "ac": 123,
+            "age_distribution": null,
+            "algorithms": [],
+            "alts": null,
+            "an": 345,
+            "chrom": "21",
+            "chrom2": undefined,
+            "consequences": [],
+            "copy_numbers": [],
+            "cpx_intervals": [],
+            "cpx_type": null,
+            "end": 456,
+            "end2": undefined,
+            "evidence": [],
+            "filters": [],
+            "genes": [],
+            "genotype_quality": null,
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "pos2": undefined,
+            "qual": 99,
+            "type": "DUP",
+            "variant_id": "DUP_21_999",
+          },
+          {
+            "ac": 123,
+            "age_distribution": null,
+            "algorithms": [],
+            "alts": null,
+            "an": 345,
+            "chrom": "21",
+            "chrom2": undefined,
+            "consequences": [],
+            "copy_numbers": [],
+            "cpx_intervals": [],
+            "cpx_type": null,
+            "end": 456,
+            "end2": undefined,
+            "evidence": [],
+            "filters": [],
+            "genes": [],
+            "genotype_quality": null,
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "pos2": undefined,
+            "qual": 99,
+            "type": "DUP",
+            "variant_id": "DUP_21_999",
+          },
+          {
+            "ac": 123,
+            "age_distribution": null,
+            "algorithms": [],
+            "alts": null,
+            "an": 345,
+            "chrom": "21",
+            "chrom2": undefined,
+            "consequences": [],
+            "copy_numbers": [],
+            "cpx_intervals": [],
+            "cpx_type": null,
+            "end": 456,
+            "end2": undefined,
+            "evidence": [],
+            "filters": [],
+            "genes": [],
+            "genotype_quality": null,
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "pos2": undefined,
+            "qual": 99,
+            "type": "DUP",
+            "variant_id": "DUP_21_999",
+          },
+        ]
+      }
+    />
+  </StructuralVariants__Wrapper>
+  <StructuralVariants__Wrapper>
+    <PositionAxisTrack />
+  </StructuralVariants__Wrapper>
+  <TrackPage__TrackPageSection
+    style={
+      {
+        "fontSize": "14px",
+      }
+    }
+  >
+    <StructuralVariants__Wrapper>
+      <StructuralVariantFilterControls
+        colorKey="type"
+        onChange={[Function]}
+        value={
+          {
+            "includeConsequenceCategories": {
+              "copy_gain": true,
+              "dup_lof": true,
+              "lof": true,
+              "other": true,
+            },
+            "includeFilteredVariants": false,
+            "includeTypes": {
+              "CPX": true,
+              "DEL": true,
+              "DUP": true,
+              "INS": true,
+              "INV": true,
+              "MCNV": true,
+              "OTH": true,
+            },
+            "searchText": "",
+          }
+        }
+      />
+      <div>
+        <ExportStructuralVariantsButton
+          exportFileName="somefile.tar.gz"
+          variants={
+            [
+              {
+                "ac": 123,
+                "age_distribution": null,
+                "algorithms": [],
+                "alts": null,
+                "an": 345,
+                "chrom": "21",
+                "chrom2": undefined,
+                "consequences": [],
+                "copy_numbers": [],
+                "cpx_intervals": [],
+                "cpx_type": null,
+                "end": 456,
+                "end2": undefined,
+                "evidence": [],
+                "filters": [],
+                "genes": [],
+                "genotype_quality": null,
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "pos2": undefined,
+                "qual": 99,
+                "type": "DUP",
+                "variant_id": "DUP_21_999",
+              },
+              {
+                "ac": 123,
+                "age_distribution": null,
+                "algorithms": [],
+                "alts": null,
+                "an": 345,
+                "chrom": "21",
+                "chrom2": undefined,
+                "consequences": [],
+                "copy_numbers": [],
+                "cpx_intervals": [],
+                "cpx_type": null,
+                "end": 456,
+                "end2": undefined,
+                "evidence": [],
+                "filters": [],
+                "genes": [],
+                "genotype_quality": null,
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "pos2": undefined,
+                "qual": 99,
+                "type": "DUP",
+                "variant_id": "DUP_21_999",
+              },
+              {
+                "ac": 123,
+                "age_distribution": null,
+                "algorithms": [],
+                "alts": null,
+                "an": 345,
+                "chrom": "21",
+                "chrom2": undefined,
+                "consequences": [],
+                "copy_numbers": [],
+                "cpx_intervals": [],
+                "cpx_type": null,
+                "end": 456,
+                "end2": undefined,
+                "evidence": [],
+                "filters": [],
+                "genes": [],
+                "genotype_quality": null,
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "pos2": undefined,
+                "qual": 99,
+                "type": "DUP",
+                "variant_id": "DUP_21_999",
+              },
+            ]
+          }
+        />
+        <Button
+          onClick={[Function]}
+          style={
+            {
+              "marginLeft": "1ch",
+            }
+          }
+        >
+          Configure table
+        </Button>
+      </div>
+    </StructuralVariants__Wrapper>
+    <StructuralVariants__Wrapper
+      style={
+        {
+          "minHeight": 115,
+        }
+      }
+    >
+      <ForwardRef
+        cellData={
+          {
+            "colorKey": "type",
+            "highlightWords": [
+              "",
+            ],
+          }
+        }
+        columns={
+          [
+            {
+              "compareFunction": [Function],
+              "getSearchTerms": [Function],
+              "heading": "Variant ID",
+              "isRowHeader": true,
+              "isSortable": true,
+              "key": "variant_id",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "grow": 0,
+              "heading": "Source",
+              "isSortable": false,
+              "key": "source",
+              "minWidth": 70,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "getSearchTerms": [Function],
+              "heading": "Consequence",
+              "isSortable": true,
+              "key": "consequence",
+              "minWidth": 160,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "getSearchTerms": [Function],
+              "heading": "Class",
+              "isSortable": true,
+              "key": "class",
+              "minWidth": 130,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Position",
+              "isSortable": true,
+              "key": "pos",
+              "minWidth": 200,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Size",
+              "isSortable": true,
+              "key": "length",
+              "minWidth": 100,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Allele Count",
+              "isSortable": true,
+              "key": "ac",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Allele Number",
+              "isSortable": true,
+              "key": "an",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Allele Frequency",
+              "isSortable": true,
+              "key": "af",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "contextNotes": "Not shown when viewing Y chromosome",
+              "heading": "Number of Homozygotes",
+              "isSortable": true,
+              "key": "homozygote_count",
+              "minWidth": 100,
+              "render": [Function],
+              "shouldShowInContext": [Function],
+              "tooltip": undefined,
+            },
+          ]
+        }
+        numRowsRendered={3}
+        onHoverVariant={[Function]}
+        onRequestSort={[Function]}
+        onScroll={[Function]}
+        rowHeight={25}
+        shouldHighlightRow={[Function]}
+        sortKey="variant_id"
+        sortOrder="ascending"
+        variants={
+          [
+            {
+              "ac": 123,
+              "age_distribution": null,
+              "algorithms": [],
+              "alts": null,
+              "an": 345,
+              "chrom": "21",
+              "chrom2": undefined,
+              "consequences": [],
+              "copy_numbers": [],
+              "cpx_intervals": [],
+              "cpx_type": null,
+              "end": 456,
+              "end2": undefined,
+              "evidence": [],
+              "filters": [],
+              "genes": [],
+              "genotype_quality": null,
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "pos2": undefined,
+              "qual": 99,
+              "type": "DUP",
+              "variant_id": "DUP_21_999",
+            },
+            {
+              "ac": 123,
+              "age_distribution": null,
+              "algorithms": [],
+              "alts": null,
+              "an": 345,
+              "chrom": "21",
+              "chrom2": undefined,
+              "consequences": [],
+              "copy_numbers": [],
+              "cpx_intervals": [],
+              "cpx_type": null,
+              "end": 456,
+              "end2": undefined,
+              "evidence": [],
+              "filters": [],
+              "genes": [],
+              "genotype_quality": null,
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "pos2": undefined,
+              "qual": 99,
+              "type": "DUP",
+              "variant_id": "DUP_21_999",
+            },
+            {
+              "ac": 123,
+              "age_distribution": null,
+              "algorithms": [],
+              "alts": null,
+              "an": 345,
+              "chrom": "21",
+              "chrom2": undefined,
+              "consequences": [],
+              "copy_numbers": [],
+              "cpx_intervals": [],
+              "cpx_type": null,
+              "end": 456,
+              "end2": undefined,
+              "evidence": [],
+              "filters": [],
+              "genes": [],
+              "genotype_quality": null,
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "pos2": undefined,
+              "qual": 99,
+              "type": "DUP",
+              "variant_id": "DUP_21_999",
+            },
+          ]
+        }
+      />
+    </StructuralVariants__Wrapper>
+  </TrackPage__TrackPageSection>
+</div>
+`;

@@ -64,8 +64,12 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
+export interface Context {
+  chrom: string
+}
+
 type StructuralVariantsProps = {
-  context: any
+  context: Context
   exportFileName: string
   variants: StructrualVariantPropType[]
 }
@@ -177,7 +181,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
     }
   }, [])
 
-  const [colorKey, setColorKey] = useState('consequence')
+  const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
     // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
     (variant) => {
