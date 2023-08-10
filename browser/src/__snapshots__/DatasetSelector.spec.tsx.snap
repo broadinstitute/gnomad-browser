@@ -136,10 +136,10 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -228,8 +228,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -255,8 +256,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -282,8 +284,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -309,8 +312,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -336,8 +340,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -363,8 +368,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -390,8 +396,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -417,8 +424,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -444,8 +452,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -471,8 +480,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -498,8 +508,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -525,8 +536,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -596,8 +608,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -623,8 +636,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -650,8 +664,9 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -797,10 +812,10 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -889,8 +904,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -916,8 +932,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -943,8 +960,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -970,8 +988,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -997,8 +1016,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1024,8 +1044,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1051,8 +1072,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1078,8 +1100,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1105,8 +1128,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1132,8 +1156,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1159,8 +1184,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1186,8 +1212,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1257,8 +1284,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1284,8 +1312,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1311,8 +1340,9 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1458,10 +1488,10 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -1550,8 +1580,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1577,8 +1608,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1604,8 +1636,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1631,8 +1664,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1658,8 +1692,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1685,8 +1720,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -1712,8 +1748,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1739,8 +1776,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1766,8 +1804,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1793,8 +1832,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1820,8 +1860,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1847,8 +1888,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1918,8 +1960,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1945,8 +1988,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -1972,8 +2016,9 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2119,10 +2164,10 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -2211,8 +2256,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2238,8 +2284,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2265,8 +2312,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2292,8 +2340,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2319,8 +2368,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2346,8 +2396,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2373,8 +2424,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2400,8 +2452,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2427,8 +2480,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2454,8 +2508,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2481,8 +2536,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2508,8 +2564,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2579,8 +2636,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2606,8 +2664,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2633,8 +2692,9 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -2780,10 +2840,10 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -2872,8 +2932,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2899,8 +2960,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2926,8 +2988,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2953,8 +3016,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -2980,8 +3044,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3007,8 +3072,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3034,8 +3100,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3061,8 +3128,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3088,8 +3156,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3115,8 +3184,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3142,8 +3212,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3169,8 +3240,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3240,8 +3312,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3267,8 +3340,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3294,8 +3368,9 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3441,10 +3516,10 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -3533,8 +3608,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3560,8 +3636,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3587,8 +3664,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3614,8 +3692,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3641,8 +3720,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3668,8 +3748,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -3695,8 +3776,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3722,8 +3804,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3749,8 +3832,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3776,8 +3860,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3803,8 +3888,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3830,8 +3916,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3901,8 +3988,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3928,8 +4016,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -3955,8 +4044,9 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4102,10 +4192,10 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -4194,8 +4284,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4221,8 +4312,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4248,8 +4340,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4275,8 +4368,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4302,8 +4396,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4329,8 +4424,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4356,8 +4452,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4383,8 +4480,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4410,8 +4508,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4437,8 +4536,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4464,8 +4564,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4491,8 +4592,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4562,8 +4664,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4589,8 +4692,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4616,8 +4720,9 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -4763,10 +4868,10 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -4855,8 +4960,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4882,8 +4988,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4909,8 +5016,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4936,8 +5044,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4963,8 +5072,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -4990,8 +5100,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5017,8 +5128,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5044,8 +5156,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5071,8 +5184,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5098,8 +5212,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5125,8 +5240,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5152,8 +5268,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5223,8 +5340,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5250,8 +5368,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5277,8 +5396,9 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5424,10 +5544,10 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -5516,8 +5636,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5543,8 +5664,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5570,8 +5692,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5597,8 +5720,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5624,8 +5748,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5651,8 +5776,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -5678,8 +5804,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5705,8 +5832,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5732,8 +5860,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5759,8 +5888,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5786,8 +5916,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5813,8 +5944,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5884,8 +6016,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5911,8 +6044,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -5938,8 +6072,9 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6085,10 +6220,10 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -6177,8 +6312,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6204,8 +6340,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6231,8 +6368,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6258,8 +6396,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6285,8 +6424,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6312,8 +6452,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6339,8 +6480,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6366,8 +6508,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6393,8 +6536,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6420,8 +6564,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6447,8 +6592,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6474,8 +6620,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6545,8 +6692,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6572,8 +6720,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6599,8 +6748,9 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -6746,10 +6896,10 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -6838,8 +6988,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6865,8 +7016,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6892,8 +7044,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6919,8 +7072,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6946,8 +7100,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -6973,8 +7128,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7000,8 +7156,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7027,8 +7184,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7054,8 +7212,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7081,8 +7240,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7108,8 +7268,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7135,8 +7296,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7206,8 +7368,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7233,8 +7396,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7260,8 +7424,9 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7407,10 +7572,10 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -7499,8 +7664,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7526,8 +7692,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7553,8 +7720,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7580,8 +7748,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7607,8 +7776,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7634,8 +7804,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -7661,8 +7832,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7688,8 +7860,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7715,8 +7888,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7742,8 +7916,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7769,8 +7944,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7796,8 +7972,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7867,8 +8044,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7894,8 +8072,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -7921,8 +8100,9 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8068,10 +8248,10 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -8160,8 +8340,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8187,8 +8368,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8214,8 +8396,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8241,8 +8424,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8268,8 +8452,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8295,8 +8480,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8322,8 +8508,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8349,8 +8536,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8376,8 +8564,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8403,8 +8592,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8430,8 +8620,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8457,8 +8648,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8528,8 +8720,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8555,8 +8748,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8582,8 +8776,9 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -8729,10 +8924,10 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -8821,8 +9016,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8848,8 +9044,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8875,8 +9072,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8902,8 +9100,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8929,8 +9128,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8956,8 +9156,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -8983,8 +9184,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9010,8 +9212,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9037,8 +9240,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9064,8 +9268,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9091,8 +9296,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9118,8 +9324,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9189,8 +9396,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9216,8 +9424,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9243,8 +9452,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9390,10 +9600,10 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
 .c8 {
@@ -9482,8 +9692,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9509,8 +9720,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9536,8 +9748,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9563,8 +9776,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9590,8 +9804,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9617,8 +9832,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh38
+              )
             </div>
           </div>
         </a>
@@ -9644,8 +9860,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9671,8 +9888,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9698,8 +9916,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9725,8 +9944,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9752,8 +9972,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9779,8 +10000,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9850,8 +10072,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9877,8 +10100,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
@@ -9904,8 +10128,9 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              Build 
+              (
               GRCh37
+              )
             </div>
           </div>
         </a>
