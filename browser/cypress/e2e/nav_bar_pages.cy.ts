@@ -15,12 +15,12 @@ describe('Home Page', () => {
     cy.contains('About')
 
     // Check content contained in dataset selector dropdown
-    cy.contains('gnomAD v2.1.1 (GRCh37)')
-    cy.get('select').eq(1).select(['gnomAD v3.1.2 (GRCh38)'])
-    cy.contains('gnomAD v2.1.1 (GRCh37)')
-    cy.contains('gnomAD v3.1.2 (GRCh38)')
-    cy.contains('gnomAD SVs v2.1 (GRCh37)')
-    cy.contains('ExAC (GRCh37)')
+    cy.contains('gnomAD v2.1.1')
+    cy.get('select').eq(1).select(['gnomAD v3.1.2'])
+    cy.contains('gnomAD v2.1.1')
+    cy.contains('gnomAD v3.1.2')
+    cy.contains('gnomAD SVs v2.1')
+    cy.contains('ExAC')
   })
 
   // json for each header page for ease of iterating for tests
