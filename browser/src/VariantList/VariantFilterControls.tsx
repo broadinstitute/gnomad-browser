@@ -70,6 +70,7 @@ type Props = {
     includeFilteredVariants: boolean
     includeSNVs: boolean
     includeIndels: boolean
+    includeContext: boolean
     searchText: string
   }
 }
@@ -159,7 +160,7 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
           <span>
             <Checkbox
               checked={value.includeFilteredVariants}
-              id="qc-variant-fil;ter"
+              id="qc-variant-filter"
               label="Filtered variants"
               onChange={(includeFilteredVariants) => {
                 onChange({ ...value, includeFilteredVariants })
@@ -167,6 +168,14 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
             />
             <InfoButton topic="include-filtered-variants" />
           </span>
+          <Checkbox
+              checked={value.includeContext}
+              id="context-variant-filter"
+              label="Context"
+              onChange={(includeContext) => {
+                onChange({ ...value, includeContext })
+              }}
+            />
         </CheckboxSection>
       </CheckboxFiltersWrapper>
 

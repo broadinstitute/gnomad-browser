@@ -1,6 +1,24 @@
 import { getCategoryFromConsequence } from '../vepConsequences'
 
-const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
+type Categories = {
+  lof: true,
+  missense: true,
+  synonymous: true,
+  other: true,
+}
+
+export type VariantFilterState = {
+includeCategories: Categories
+includeFilteredVariants: false,
+includeSNVs: true,
+includeIndels: true,
+includeExomes: true,
+includeGenomes: true,
+includeContext: true,
+searchText: '',
+}
+
+const filterVariants = (variants: any, filter: VariantFilterState, selectedColumns: any) => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =
@@ -40,7 +58,7 @@ const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
 
   filteredVariants = filteredVariants.filter((v: any) => v.exome || v.genome)
 
-  if (filter.searchText) {
+  if (filter.searchText ) {
     const searchColumns = selectedColumns.filter((column: any) => !!column.getSearchTerms)
     const getVariantSearchTerms = (variant: any) =>
       searchColumns

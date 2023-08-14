@@ -108,7 +108,9 @@ const Variants = ({
     includeIndels: true,
     includeExomes: true,
     includeGenomes: true,
+    includeContext: true,
     searchText: '',
+    
   })
 
   const [sortState, setSortState] = useState({
@@ -164,6 +166,8 @@ const Variants = ({
   )
 
   const [positionLastClicked, setPositionLastClicked] = useState(null)
+  const [termLastSearched, setTermLastSearched] = useState(null)
+
   // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
   const onNavigatorClick = useCallback((position) => {
     setSortState({
@@ -172,6 +176,18 @@ const Variants = ({
     })
     setPositionLastClicked(position)
   }, [])
+  
+    // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
+  const onSearchResult = useCallback((position) => {
+    console.log("Searched row:", position);
+  
+    setSortState({
+      sortKey: 'variant_id',
+      sortOrder: 'ascending',
+    });
+    setTermLastSearched(position);
+  }, []);
+
 
   useEffect(() => {
     if (positionLastClicked === null) {
