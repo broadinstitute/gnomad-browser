@@ -73,9 +73,11 @@ type Props = {
     includeContext: boolean
     searchText: string
   }
+  jumpToRow: (...args: any[]) => any
+  position: number
 }
 
-const VariantFilterControls = ({ onChange, value }: Props) => {
+const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
   const searchInput = useRef(null)
 
   return (
@@ -169,13 +171,13 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
             <InfoButton topic="include-filtered-variants" />
           </span>
           <Checkbox
-              checked={value.includeContext}
-              id="context-variant-filter"
-              label="Context"
-              onChange={(includeContext) => {
-                onChange({ ...value, includeContext })
-              }}
-            />
+            checked={value.includeContext}
+            id="context-variant-filter"
+            label="Preserve context"
+            onChange={(includeContext) => {
+              onChange({ ...value, includeContext })
+            }}
+          />
         </CheckboxSection>
       </CheckboxFiltersWrapper>
 
@@ -187,6 +189,7 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
           style={{ marginBottom: '1em', width: '210px' }}
           value={value.searchText}
           onChange={(searchText) => {
+            jumpToRow(position)
             onChange({ ...value, searchText })
           }}
         />
@@ -198,7 +201,7 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
             // preventDefault to avoid typing a "/" in the search input
             e.preventDefault()
             if (searchInput.current) {
-              ;(searchInput.current as any).focus()
+              ; (searchInput.current as any).focus()
             }
           }}
         />

@@ -1,21 +1,21 @@
 import { getCategoryFromConsequence } from '../vepConsequences'
 
 type Categories = {
-  lof: true,
-  missense: true,
-  synonymous: true,
-  other: true,
+  lof: boolean,
+  missense: boolean,
+  synonymous: boolean,
+  other: boolean,
 }
 
 export type VariantFilterState = {
-includeCategories: Categories
-includeFilteredVariants: false,
-includeSNVs: true,
-includeIndels: true,
-includeExomes: true,
-includeGenomes: true,
-includeContext: true,
-searchText: '',
+  includeCategories: Categories
+  includeFilteredVariants: boolean,
+  includeSNVs: boolean,
+  includeIndels: boolean,
+  includeExomes: boolean,
+  includeGenomes: boolean,
+  includeContext: boolean,
+  searchText: string,
 }
 
 const filterVariants = (variants: any, filter: VariantFilterState, selectedColumns: any) => {
@@ -30,7 +30,7 @@ const filterVariants = (variants: any, filter: VariantFilterState, selectedColum
   if (!isEveryConsequenceCategorySelected) {
     filteredVariants = variants.filter((variant: any) => {
       const category = getCategoryFromConsequence(variant.consequence) || 'other'
-      return filter.includeCategories[category]
+      return (filter.includeCategories as any)[category] // TODO: fix this
     })
   }
 
@@ -58,7 +58,7 @@ const filterVariants = (variants: any, filter: VariantFilterState, selectedColum
 
   filteredVariants = filteredVariants.filter((v: any) => v.exome || v.genome)
 
-  if (filter.searchText ) {
+  if (filter.searchText && !filter.includeContext) {
     const searchColumns = selectedColumns.filter((column: any) => !!column.getSearchTerms)
     const getVariantSearchTerms = (variant: any) =>
       searchColumns

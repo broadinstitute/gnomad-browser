@@ -13,7 +13,7 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
-import filterVariants from './filterVariants'
+import filterVariants, { VariantFilterState } from './filterVariants'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
@@ -41,6 +41,37 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
+
+function getFirstIndexFromSearchText(filter: VariantFilterState, variants: any[], variantTableColumns: any) {
+  const searchColumns = variantTableColumns.filter((column: any) => !!column.getSearchTerms)
+  const getVariantSearchTerms = (variant: any) =>
+    searchColumns
+      .flatMap((column: any) => column.getSearchTerms(variant))
+      .filter(Boolean)
+      .map((s: any) => s.toLowerCase())
+
+  const searchTerms = filter.searchText
+    .toLowerCase()
+    .split(',')
+    .map((s: any) => s.trim())
+    .filter((s: any) => s.length > 0)
+
+  const searchedVariants = variants.filter((variant: any) =>
+    getVariantSearchTerms(variant).some((variantTerm: any) =>
+      searchTerms.some((searchTerm: any) => variantTerm.includes(searchTerm))
+    )
+  )
+
+  if (searchedVariants.length > 0) {
+    const firstVariant = searchedVariants[0]
+    return variants.findIndex((variant: any) => variant.pos === firstVariant.pos)
+
+  } else {
+    return 0 // TODO: what to put here?
+  }
+}
+
+
 
 type OwnVariantsProps = {
   children?: React.ReactNode
@@ -76,7 +107,7 @@ const Variants = ({
   const renderedTableColumns = useMemo(() => {
     const columnsForContext = getColumnsForContext(context)
     if ((columnsForContext as any).clinical_significance) {
-      ;(
+      ; (
         columnsForContext as any
       ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
@@ -110,7 +141,6 @@ const Variants = ({
     includeGenomes: true,
     includeContext: true,
     searchText: '',
-    
   })
 
   const [sortState, setSortState] = useState({
@@ -144,6 +174,11 @@ const Variants = ({
     return sortVariants(filteredVariants, sortState)
   }, [filteredVariants, sortState])
 
+
+  const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
+
+  console.log(searchIndex)
+
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
@@ -176,11 +211,11 @@ const Variants = ({
     })
     setPositionLastClicked(position)
   }, [])
-  
-    // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
+
+  // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
   const onSearchResult = useCallback((position) => {
     console.log("Searched row:", position);
-  
+
     setSortState({
       sortKey: 'variant_id',
       sortOrder: 'ascending',
@@ -212,7 +247,18 @@ const Variants = ({
 
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
-  }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [positionLastClicked, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (termLastSearched === null) {
+      return
+    }
+
+    if (searchIndex > 10) {
+      // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+      table.current.scrollToDataRow(searchIndex + 10)
+    }
+  }, [termLastSearched, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
@@ -253,7 +299,7 @@ const Variants = ({
       <PositionAxisTrack />
 
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
-        <VariantFilterControls onChange={setFilter} value={filter} />
+        <VariantFilterControls onChange={setFilter} value={filter} jumpToRow={onSearchResult} position={searchIndex} />
         <div>
           <ExportVariantsButton
             datasetId={datasetId}
