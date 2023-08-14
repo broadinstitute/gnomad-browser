@@ -92,7 +92,7 @@ const GeneReferences = ({ gene }: Props) => {
             <ListItem>
               {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink
-                href={`https://decipher.sanger.ac.uk/gene/${geneId}/overview/protein-genomic-info`}
+                href={`https://deciphergenomics.org/gene/${geneId}/overview/protein-genomic-info`}
               >
                 DECIPHER
               </ExternalLink>
