@@ -13,13 +13,14 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
-import filterVariants, { VariantFilterState } from './filterVariants'
+import filterVariants, { VariantFilterState, getFilteredVariants } from './filterVariants'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
+import { Variant } from '../VariantPage/VariantPage'
 
 const DEFAULT_COLUMNS = [
   'source',
@@ -42,36 +43,21 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-function getFirstIndexFromSearchText(filter: VariantFilterState, variants: any[], variantTableColumns: any) {
-  const searchColumns = variantTableColumns.filter((column: any) => !!column.getSearchTerms)
-  const getVariantSearchTerms = (variant: any) =>
-    searchColumns
-      .flatMap((column: any) => column.getSearchTerms(variant))
-      .filter(Boolean)
-      .map((s: any) => s.toLowerCase())
-
-  const searchTerms = filter.searchText
-    .toLowerCase()
-    .split(',')
-    .map((s: any) => s.trim())
-    .filter((s: any) => s.length > 0)
-
-  const searchedVariants = variants.filter((variant: any) =>
-    getVariantSearchTerms(variant).some((variantTerm: any) =>
-      searchTerms.some((searchTerm: any) => variantTerm.includes(searchTerm))
-    )
-  )
+function getFirstIndexFromSearchText(
+  filter: VariantFilterState,
+  variants: Variant[],
+  variantTableColumns: any
+) {
+  const searchedVariants = getFilteredVariants(filter, variants, variantTableColumns)
 
   if (searchedVariants.length > 0) {
     const firstVariant = searchedVariants[0]
-    return variants.findIndex((variant: any) => variant.pos === firstVariant.pos)
-
+    return variants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
   } else {
-    return 0 // TODO: what to put here?
+    return 0
   }
+
 }
-
-
 
 type OwnVariantsProps = {
   children?: React.ReactNode
@@ -79,13 +65,13 @@ type OwnVariantsProps = {
   context: any
   datasetId: string
   exportFileName?: string
-  variants: any[]
+  variants: Variant[]
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'VariantsProps' circularly references i... Remove this comment to see the full error message
 type VariantsProps = OwnVariantsProps & typeof Variants.defaultProps
 
-// @ts-expect-error TS(7022) FIXME: 'Variants' implicitly has type 'any' because it do... Remove this comment to see the full error message
+// @ts-expect-error TS(7022) FIXME: 'variants' implicitly has type 'any' because it do... Remove this comment to see the full error message
 const Variants = ({
   children,
   clinvarReleaseDate,
@@ -107,7 +93,7 @@ const Variants = ({
   const renderedTableColumns = useMemo(() => {
     const columnsForContext = getColumnsForContext(context)
     if ((columnsForContext as any).clinical_significance) {
-      ; (
+      ;(
         columnsForContext as any
       ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
@@ -174,10 +160,7 @@ const Variants = ({
     return sortVariants(filteredVariants, sortState)
   }, [filteredVariants, sortState])
 
-
   const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
-
-  console.log(searchIndex)
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
@@ -203,26 +186,16 @@ const Variants = ({
   const [positionLastClicked, setPositionLastClicked] = useState(null)
   const [termLastSearched, setTermLastSearched] = useState(null)
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
-  const onNavigatorClick = useCallback((position) => {
+  const createCallback = (sortKey: string, stateSetter: any) => (position: number) => {
     setSortState({
-      sortKey: 'variant_id',
+      sortKey,
       sortOrder: 'ascending',
     })
-    setPositionLastClicked(position)
-  }, [])
+    stateSetter(position)
+  }
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
-  const onSearchResult = useCallback((position) => {
-    console.log("Searched row:", position);
-
-    setSortState({
-      sortKey: 'variant_id',
-      sortOrder: 'ascending',
-    });
-    setTermLastSearched(position);
-  }, []);
-
+  const onNavigatorClick = useCallback(createCallback('variant_id', setPositionLastClicked), [])
+  const onSearchResult = useCallback(createCallback('variant_id', setTermLastSearched), [])
 
   useEffect(() => {
     if (positionLastClicked === null) {
@@ -235,7 +208,7 @@ const Variants = ({
     }
 
     index = renderedVariants.findIndex(
-      (variant: any, i: any) =>
+      (variant: Variant, i: any) =>
         renderedVariants[i + 1] &&
         positionLastClicked >= variant.pos &&
         positionLastClicked <= renderedVariants[i + 1].pos
@@ -247,7 +220,7 @@ const Variants = ({
 
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
-  }, [positionLastClicked, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (termLastSearched === null) {
@@ -299,7 +272,12 @@ const Variants = ({
       <PositionAxisTrack />
 
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
-        <VariantFilterControls onChange={setFilter} value={filter} jumpToRow={onSearchResult} position={searchIndex} />
+        <VariantFilterControls
+          onChange={setFilter}
+          value={filter}
+          jumpToRow={onSearchResult}
+          position={searchIndex}
+        />
         <div>
           <ExportVariantsButton
             datasetId={datasetId}

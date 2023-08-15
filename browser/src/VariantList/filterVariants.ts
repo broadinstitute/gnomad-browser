@@ -1,3 +1,4 @@
+import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
 
 type Categories = {
@@ -18,7 +19,33 @@ export type VariantFilterState = {
   searchText: string,
 }
 
-const filterVariants = (variants: any, filter: VariantFilterState, selectedColumns: any) => {
+export function getFilteredVariants(
+  filter: VariantFilterState,
+  variants: Variant[],
+  variantTableColumns: any
+){
+  const searchColumns = variantTableColumns.filter((column: any) => !!column.getSearchTerms)
+  const getVariantSearchTerms = (variant: Variant) =>
+    searchColumns
+      .flatMap((column: any) => column.getSearchTerms(variant))
+      .filter(Boolean)
+      .map((s: any) => s.toLowerCase())
+
+  const searchTerms = filter.searchText
+    .toLowerCase()
+    .split(',')
+    .map((s: any) => s.trim())
+    .filter((s: any) => s.length > 0)
+
+  return variants.filter((variant: Variant) =>
+    getVariantSearchTerms(variant).some((variantTerm: string) =>
+      searchTerms.some((searchTerm: string) => variantTerm.includes(searchTerm))
+    )
+  )
+}
+
+
+const filterVariants = (variants: Variant[], filter: VariantFilterState, selectedColumns: any) => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =
@@ -35,7 +62,7 @@ const filterVariants = (variants: any, filter: VariantFilterState, selectedColum
   }
 
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
       genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
@@ -43,44 +70,27 @@ const filterVariants = (variants: any, filter: VariantFilterState, selectedColum
   }
 
   if (!filter.includeExomes) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       exome: null,
     }))
   }
 
   if (!filter.includeGenomes) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       genome: null,
     }))
   }
 
-  filteredVariants = filteredVariants.filter((v: any) => v.exome || v.genome)
+  filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
 
   if (filter.searchText && !filter.includeContext) {
-    const searchColumns = selectedColumns.filter((column: any) => !!column.getSearchTerms)
-    const getVariantSearchTerms = (variant: any) =>
-      searchColumns
-        .flatMap((column: any) => column.getSearchTerms(variant))
-        .filter(Boolean)
-        .map((s: any) => s.toLowerCase())
-
-    const searchTerms = filter.searchText
-      .toLowerCase()
-      .split(',')
-      .map((s: any) => s.trim())
-      .filter((s: any) => s.length > 0)
-
-    filteredVariants = filteredVariants.filter((variant: any) =>
-      getVariantSearchTerms(variant).some((variantTerm: any) =>
-        searchTerms.some((searchTerm: any) => variantTerm.includes(searchTerm))
-      )
-    )
+     filteredVariants = getFilteredVariants(filter, variants, selectedColumns)
   }
 
   // Indel and Snp filters.
-  filteredVariants = filteredVariants.filter((v: any) => {
+  filteredVariants = filteredVariants.filter((v: Variant) => {
     const splits = v.variant_id.split('-')
     // ref and alt are extracted from variant id.
     const refLength = splits[2].length
