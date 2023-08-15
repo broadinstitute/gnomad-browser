@@ -46,17 +46,15 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
 function getFirstIndexFromSearchText(
   filter: VariantFilterState,
   variants: Variant[],
-  variantTableColumns: any
+  variantsTableColumns: any
 ) {
-  const searchedVariants = getFilteredVariants(filter, variants, variantTableColumns)
+  const searchedVariants = getFilteredVariants(filter, variants, variantsTableColumns)
 
   if (searchedVariants.length > 0) {
     const firstVariant = searchedVariants[0]
     return variants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
-  } else {
-    return 0
   }
-
+  return 0
 }
 
 type OwnVariantsProps = {
@@ -186,16 +184,16 @@ const Variants = ({
   const [positionLastClicked, setPositionLastClicked] = useState(null)
   const [termLastSearched, setTermLastSearched] = useState(null)
 
-  const createCallback = (sortKey: string, stateSetter: any) => (position: number) => {
+  const createCallback = useCallback((sortByKey: string, stateSetter: any) => (position: number) => {
     setSortState({
-      sortKey,
+      sortKey: sortByKey,
       sortOrder: 'ascending',
-    })
-    stateSetter(position)
-  }
+    });
+    stateSetter(position);
+  }, [])
 
-  const onNavigatorClick = useCallback(createCallback('variant_id', setPositionLastClicked), [])
-  const onSearchResult = useCallback(createCallback('variant_id', setTermLastSearched), [])
+  const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
+  const onSearchResult = createCallback('variant_id', setTermLastSearched)
 
   useEffect(() => {
     if (positionLastClicked === null) {
