@@ -170,14 +170,16 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
             />
             <InfoButton topic="include-filtered-variants" />
           </span>
+          <span>
           <Checkbox
             checked={value.includeContext}
             id="context-variant-filter"
-            label="Preserve context"
+            label="Preserve search context"
             onChange={(includeContext) => {
               onChange({ ...value, includeContext })
             }}
           />
+          </span>
         </CheckboxSection>
       </CheckboxFiltersWrapper>
 
