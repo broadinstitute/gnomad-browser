@@ -15,7 +15,6 @@ from deployctl.subcommands import ingress_demo
 from deployctl.subcommands import ingress_production
 from deployctl.subcommands import reads_deployments
 from deployctl.subcommands import reads_images
-from deployctl.subcommands import setup
 
 
 def main():
@@ -34,7 +33,6 @@ def main():
         "data-pipeline": data_pipeline,
         "dataproc-cluster": dataproc_cluster,
         "elasticsearch": elasticsearch,
-        "setup": setup,
     }
 
     parser.add_argument("subcommand", choices=list(subcommands.keys()))
