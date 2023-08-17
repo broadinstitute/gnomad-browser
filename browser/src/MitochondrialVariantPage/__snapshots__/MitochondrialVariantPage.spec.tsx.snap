@@ -185,32 +185,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -8250,32 +8246,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -16315,32 +16307,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -24380,32 +24368,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -32445,32 +32429,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -40510,32 +40490,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -48575,32 +48551,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -56640,32 +56612,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -64705,32 +64673,28 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
