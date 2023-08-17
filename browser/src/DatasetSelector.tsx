@@ -124,11 +124,6 @@ const SubNavigationLink = styled.a`
   }
 `.withComponent(Link)
 
-const ItemDescriptions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-`
 
 const ItemDescription = styled.div`
   margin-top: 0.125em;
@@ -137,20 +132,29 @@ const ItemDescription = styled.div`
   opacity: 0.6;
 `
 
+const GroupedNav = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+`
 type ChildDataset = {
-  id: string; label: string; url: string; description: string; referenceGenome?: string
+  id: string
+  label: string
+  url: string
+  description: string
+  referenceGenome?: string
 }
 
 type Props = {
-  items: (
-    | {
-      id: string
-      isActive?: boolean
-      label: string
-      url: string | any
-      children: ChildDataset[]
-    }
-  )[]
+  items: ({
+    id: string
+    isActive?: boolean
+    label: string
+    url: string | any
+    children: ChildDataset[]
+  })[]
 }
 
 type State = any
@@ -385,28 +389,32 @@ class NavigationMenu extends Component<Props, State> {
                   </TopLevelNavigationLink>
                   {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                   <SubNavigationMenu isExpanded={isExpanded}>
-                    {(item).children.map((childItem) => (
-                      <li key={childItem.id}>
-                        <SubNavigationLink
-                          data-item={childItem.id}
-                          to={childItem.url}
-                          onBlur={this.onBlur}
-                          onClick={() => {
-                            this.setState({ expandedItem: null })
-                            this.focusItem(item.id)
-                          }}
-                          onKeyDown={this.onKeyDownSubMenuItem}
-                        >
-                          {childItem.label}
-                          <ItemDescriptions>
-                            {childItem.description && (
-                              <ItemDescription>{childItem.description}</ItemDescription>
-                            )}
-                            {childItem.referenceGenome && (
-                              <ItemDescription>({childItem.referenceGenome})</ItemDescription>
-                            )}
-                          </ItemDescriptions>
-                        </SubNavigationLink>
+                    {Array.from(
+                      new Set(item.children.map((childItem) => childItem.referenceGenome))
+                    ).map((referenceGenome) => (
+                      <li key={referenceGenome}>
+                        <GroupedNav>{referenceGenome}</GroupedNav>
+                          {item.children
+                            .filter((childItem) => childItem.referenceGenome === referenceGenome)
+                            .map((childItem) => (
+                              <li key={childItem.id}>
+                                <SubNavigationLink
+                                  data-item={childItem.id}
+                                  to={childItem.url}
+                                  onBlur={this.onBlur}
+                                  onClick={() => {
+                                    this.setState({ expandedItem: null })
+                                    this.focusItem(item.id)
+                                  }}
+                                  onKeyDown={this.onKeyDownSubMenuItem}
+                                >
+                                  {childItem.label}
+                                  {childItem.description && (
+                                    <ItemDescription>{childItem.description}</ItemDescription>
+                                  )}
+                                </SubNavigationLink>
+                              </li>
+                            ))}
                       </li>
                     ))}
                   </SubNavigationMenu>

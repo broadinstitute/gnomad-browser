@@ -138,172 +138,113 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -8882,172 +8823,113 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -17629,172 +17511,113 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -26376,172 +26199,113 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -35123,172 +34887,113 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -43870,172 +43575,113 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3"
-                href="/?dataset=gnomad_r3"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v3.1.2
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     76,156 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_cancer"
-                href="/?dataset=gnomad_r3_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     74,023 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_neuro"
-                href="/?dataset=gnomad_r3_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     67,442 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_v2"
-                href="/?dataset=gnomad_r3_non_v2"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-v2)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-v2)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     57,344 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_non_topmed"
-                href="/?dataset=gnomad_r3_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     40,433 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r3_controls_and_biobanks"
-                href="/?dataset=gnomad_r3_controls_and_biobanks"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v3.1.2 (controls/biobanks)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v3.1.2 (controls/biobanks)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     16,465 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh38
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -52617,172 +52263,113 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -59714,172 +59301,113 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -68511,172 +68039,113 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -77308,172 +76777,113 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -86105,172 +85515,113 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
@@ -94902,172 +94253,113 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
             <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1"
-                href="/?dataset=gnomad_r2_1"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
-                gnomAD v2.1.1
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     141,456 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_topmed"
-                href="/?dataset=gnomad_r2_1_non_topmed"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-TOPMed)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-TOPMed)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     135,743 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_cancer"
-                href="/?dataset=gnomad_r2_1_non_cancer"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-cancer)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-cancer)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     134,187 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_non_neuro"
-                href="/?dataset=gnomad_r2_1_non_neuro"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (non-neuro)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     114,704 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="gnomad_r2_1_controls"
-                href="/?dataset=gnomad_r2_1_controls"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                gnomAD v2.1.1 (controls)
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  gnomAD v2.1.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,146 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                data-item="exac"
-                href="/?dataset=exac"
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-              >
-                ExAC v1.0
-                <div
-                  className="DatasetSelector__ItemDescriptions-sc-1p2fxbn-6 ipTECm"
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="exac"
+                  href="/?dataset=exac"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
                 >
+                  ExAC v1.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     60,706 samples
                   </div>
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-7 lcdOUU"
-                  >
-                    (
-                    GRCh37
-                    )
-                  </div>
-                </div>
-              </a>
+                </a>
+              </li>
             </li>
           </ul>
         </li>
