@@ -6,9 +6,30 @@
 
 ## Create GCP resources
 
+Creating the base GCP resources (GKE cluster, GCS buckets, VPC networks, service accounts) is done via the [gnomad-vpc](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-vpc) and [gnomad-browser-infra](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-browser-infra) terraform modules.
+
+If you are simply deploying a new browser app instance, and don't need to provision infrastructure, you can skip this step.
+
+Example configurations for those two modules are as follows. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
+
+```hcl
+module "gnomad-browser-vpc" {
+  source              = "github.com/broadinstitute/tgg-terraform-modules//gnomad-vpc?ref=main"
+  network_name_prefix = "gnomad-mynetwork"
+}
+
+module "gnomad-browser-infra" {
+  source                                = "github.com/broadinstitute/tgg-terraform-modules//gnomad-browser-infra?ref=main"
+  infra_prefix                          = "gnomad-mybrowser"
+  vpc_network_name                      = "gnomad-mynetwork"
+  vpc_subnet_name                       = "gnomad-mynetwork-gke"
+  project_id                            = "my-gcp-project"
+  gke_pods_range_slice                  = "10.164.0.0/14"
+  gke_services_range_slice              = "10.168.0.0/20"
+}
 ```
-./deployctl setup
-```
+
+Then, run `terraform init` and `terraform apply`.
 
 ## Prepare data
 
