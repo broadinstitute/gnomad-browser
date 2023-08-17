@@ -174,7 +174,7 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
           <Checkbox
             checked={value.includeContext}
             id="context-variant-filter"
-            label="Preserve search context"
+            label="Display neighboring variants"
             onChange={(includeContext) => {
               onChange({ ...value, includeContext })
             }}
