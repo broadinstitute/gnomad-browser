@@ -111,24 +111,24 @@ const NavBar = () => {
         </li>
         {/* two <a> tags instead of <Link>s because the blog is a separate application */}
         <li>
-          <a href="https://gnomad.broadinstitute.org/news/">News</a>
+        <Link to="/policies" onClick={closeMenu}>
+            Policies
+          </Link>
+        </li>
+        <li>
+        <Link to="/publications" onClick={closeMenu}>
+            Publications
+          </Link>
+        </li>
+        <li>
+        <a href="https://gnomad.broadinstitute.org/news/">Blog</a>
         </li>
         <li>
           <a href="https://gnomad.broadinstitute.org/news/changelog/">Changelog</a>
         </li>
         <li>
-          <Link to="/downloads" onClick={closeMenu}>
+        <Link to="/downloads" onClick={closeMenu}>
             Downloads
-          </Link>
-        </li>
-        <li>
-          <Link to="/policies" onClick={closeMenu}>
-            Policies
-          </Link>
-        </li>
-        <li>
-          <Link to="/publications" onClick={closeMenu}>
-            Publications
           </Link>
         </li>
         <li>

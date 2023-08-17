@@ -95,6 +95,25 @@ export type ClinvarVariant = {
   release_date: string
   review_status: string
   submissions: ClinvarSubmission[]
+  gnomad: null | {
+    exome: null | {
+      ac: number
+      an: number
+      filters: string[]
+    }
+    genome: null | {
+      ac: number
+      an: number
+      filters: string[]
+    }
+  }
+  hgvsc: null | string
+  hgvsp: null | string
+  in_gnomad: boolean
+  major_consequence: null | string
+  pos: number
+  transcript_id: string
+  variant_id: string
 }
 
 export type StructuralVariant = {
