@@ -204,15 +204,14 @@ const Variants = ({
 
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
-    console.log("pos last clicked", positionLastClicked);
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function getFirstIndexFromSearchText(
-    filter: VariantFilterState,
-    variants: Variant[],
+    searchFilter: VariantFilterState,
+    variantSearched: Variant[],
     variantsTableColumns: any
   ) {
-    const searchedVariants = getFilteredVariants(filter, variants, variantsTableColumns)
+    const searchedVariants = getFilteredVariants(searchFilter, variantSearched, variantsTableColumns)
   
     if (searchedVariants.length > 0) {
       const firstVariant = searchedVariants[0]
@@ -234,10 +233,8 @@ const Variants = ({
     
 
     if (searchIndex > 10) {
-      console.log(searchIndex);
       // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
       table.current.scrollToDataRow(searchIndex + 10)
-      console.log(searchIndex + 10);
     }
   }, [termLastSearched, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
