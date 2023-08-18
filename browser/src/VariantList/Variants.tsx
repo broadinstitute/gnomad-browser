@@ -43,19 +43,6 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-function getFirstIndexFromSearchText(
-  filter: VariantFilterState,
-  variants: Variant[],
-  variantsTableColumns: any
-) {
-  const searchedVariants = getFilteredVariants(filter, variants, variantsTableColumns)
-
-  if (searchedVariants.length > 0) {
-    const firstVariant = searchedVariants[0]
-    return variants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
-  }
-  return 0
-}
 
 type OwnVariantsProps = {
   children?: React.ReactNode
@@ -158,7 +145,6 @@ const Variants = ({
     return sortVariants(filteredVariants, sortState)
   }, [filteredVariants, sortState])
 
-  const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
@@ -218,16 +204,40 @@ const Variants = ({
 
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
+    console.log("pos last clicked", positionLastClicked);
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function getFirstIndexFromSearchText(
+    filter: VariantFilterState,
+    variants: Variant[],
+    variantsTableColumns: any
+  ) {
+    const searchedVariants = getFilteredVariants(filter, variants, variantsTableColumns)
+  
+    if (searchedVariants.length > 0) {
+      const firstVariant = searchedVariants[0]
+      const firstIndex = variants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
+      if (positionLastClicked !== null && firstVariant.pos < positionLastClicked) {
+        return firstIndex - 20
+      }
+      return firstIndex
+    }
+    return 0
+  }
+
+  const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
 
   useEffect(() => {
     if (termLastSearched === null) {
       return
     }
+    
 
     if (searchIndex > 10) {
+      console.log(searchIndex);
       // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
       table.current.scrollToDataRow(searchIndex + 10)
+      console.log(searchIndex + 10);
     }
   }, [termLastSearched, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
