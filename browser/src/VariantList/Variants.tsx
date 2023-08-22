@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
-import { labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
@@ -21,6 +21,7 @@ import variantTableColumns, { getColumnsForContext } from './variantTableColumns
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 import { Variant } from '../VariantPage/VariantPage'
+import { Gene } from '../GenePage/GenePage'
 
 const DEFAULT_COLUMNS = [
   'source',
@@ -43,20 +44,22 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-
 type OwnVariantsProps = {
   children?: React.ReactNode
   clinvarReleaseDate: string
-  context: any
-  datasetId: string
+  context: Gene
+  datasetId: DatasetId
   exportFileName?: string
   variants: Variant[]
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'VariantsProps' circularly references i... Remove this comment to see the full error message
-type VariantsProps = OwnVariantsProps & typeof Variants.defaultProps
+const variantsDefaultProps = {
+  children: null,
+  exportFileName: 'variants',
+}
 
-// @ts-expect-error TS(7022) FIXME: 'variants' implicitly has type 'any' because it do... Remove this comment to see the full error message
+type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
+
 const Variants = ({
   children,
   clinvarReleaseDate,
@@ -145,7 +148,6 @@ const Variants = ({
     return sortVariants(filteredVariants, sortState)
   }, [filteredVariants, sortState])
 
-
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
@@ -170,13 +172,16 @@ const Variants = ({
   const [positionLastClicked, setPositionLastClicked] = useState(null)
   const [termLastSearched, setTermLastSearched] = useState(null)
 
-  const createCallback = useCallback((sortByKey: string, stateSetter: any) => (position: number) => {
-    setSortState({
-      sortKey: sortByKey,
-      sortOrder: 'ascending',
-    });
-    stateSetter(position);
-  }, [])
+  const createCallback = useCallback(
+    (sortByKey: string, stateSetter: any) => (position: number) => {
+      setSortState({
+        sortKey: sortByKey,
+        sortOrder: 'ascending',
+      })
+      stateSetter(position)
+    },
+    []
+  )
 
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
   const onSearchResult = createCallback('variant_id', setTermLastSearched)
@@ -192,7 +197,7 @@ const Variants = ({
     }
 
     index = renderedVariants.findIndex(
-      (variant: Variant, i: any) =>
+      (variant: Variant, i: number) =>
         renderedVariants[i + 1] &&
         positionLastClicked >= variant.pos &&
         positionLastClicked <= renderedVariants[i + 1].pos
@@ -201,7 +206,6 @@ const Variants = ({
     if (index === -1) {
       index = renderedVariants.length - 1
     }
-
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -211,15 +215,19 @@ const Variants = ({
     variantSearched: Variant[],
     variantsTableColumns: any
   ) {
-    const searchedVariants = getFilteredVariants(searchFilter, variantSearched, variantsTableColumns)
-  
+    const searchedVariants = getFilteredVariants(
+      searchFilter,
+      variantSearched,
+      variantsTableColumns
+    )
+
     if (searchedVariants.length > 0) {
       const firstVariant = searchedVariants[0]
-      const firstIndex = variants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
+      const firstIndex = renderedVariants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
       if (positionLastClicked !== null && firstVariant.pos < positionLastClicked) {
-        return firstIndex - 20
+        return firstIndex - 10
       }
-      return firstIndex
+      return firstIndex + 10
     }
     return 0
   }
@@ -230,12 +238,9 @@ const Variants = ({
     if (termLastSearched === null) {
       return
     }
-    
-
-    if (searchIndex > 10) {
       // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-      table.current.scrollToDataRow(searchIndex + 10)
-    }
+      table.current.scrollToDataRow(searchIndex)
+    
   }, [termLastSearched, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
@@ -356,9 +361,6 @@ const Variants = ({
   )
 }
 
-Variants.defaultProps = {
-  children: undefined,
-  exportFileName: 'variants',
-}
+Variants.defaultProps = variantsDefaultProps
 
 export default Variants
