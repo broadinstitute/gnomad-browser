@@ -1,41 +1,47 @@
 import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
+import { VariantTableColumn } from './variantTableColumns'
 
 type Categories = {
-  lof: boolean,
-  missense: boolean,
-  synonymous: boolean,
-  other: boolean,
+  lof: boolean
+  missense: boolean
+  synonymous: boolean
+  other: boolean
 }
 
 export type VariantFilterState = {
   includeCategories: Categories
-  includeFilteredVariants: boolean,
-  includeSNVs: boolean,
-  includeIndels: boolean,
-  includeExomes: boolean,
-  includeGenomes: boolean,
-  includeContext: boolean,
-  searchText: string,
+  includeFilteredVariants: boolean
+  includeSNVs: boolean
+  includeIndels: boolean
+  includeExomes: boolean
+  includeGenomes: boolean
+  includeContext: boolean
+  searchText: string
 }
 
 export function getFilteredVariants(
   filter: VariantFilterState,
   variants: Variant[],
-  variantTableColumns: any
-){
-  const searchColumns = variantTableColumns.filter((column: any) => !!column.getSearchTerms)
+  variantTableColumns: VariantTableColumn[]
+) {
+  const searchColumns = variantTableColumns.filter((column) => !!column.getSearchTerms)
   const getVariantSearchTerms = (variant: Variant) =>
     searchColumns
-      .flatMap((column: any) => column.getSearchTerms(variant))
+      .flatMap((column) => {
+        if (column.getSearchTerms) {
+          return column.getSearchTerms(variant)
+        }
+        return []
+      })
       .filter(Boolean)
       .map((s: any) => s.toLowerCase())
 
   const searchTerms = filter.searchText
     .toLowerCase()
     .split(',')
-    .map((s: any) => s.trim())
-    .filter((s: any) => s.length > 0)
+    .map((s: string) => s.trim())
+    .filter((s: string) => s.length > 0)
 
   return variants.filter((variant: Variant) =>
     getVariantSearchTerms(variant).some((variantTerm: string) =>
@@ -43,7 +49,6 @@ export function getFilteredVariants(
     )
   )
 }
-
 
 const filterVariants = (variants: Variant[], filter: VariantFilterState, selectedColumns: any) => {
   let filteredVariants = variants
@@ -86,7 +91,7 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
   filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
 
   if (filter.searchText && !filter.includeContext) {
-     filteredVariants = getFilteredVariants(filter, variants, selectedColumns)
+    filteredVariants = getFilteredVariants(filter, variants, selectedColumns)
   }
 
   // Indel and Snp filters.
