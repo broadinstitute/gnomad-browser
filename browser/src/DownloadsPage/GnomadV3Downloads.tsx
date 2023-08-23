@@ -552,7 +552,7 @@ const GnomadV3Downloads = () => (
         <ListItem>
           <GetUrlButtons
             label="Phased haplotypes of HGDP+1KG dataset GCS Bucket"
-            path="/resources/hgdp_1kg/phased_haplotypes"
+            path="/resources/hgdp_1kg/phased_haplotypes_v2"
           />
         </ListItem>
 
