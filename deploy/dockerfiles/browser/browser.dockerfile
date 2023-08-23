@@ -3,8 +3,6 @@ FROM --platform=linux/amd64 node:14.17-alpine as build
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
-USER node
-
 ENV NODE_ENV=production
 
 # Install dependencies
@@ -35,6 +33,8 @@ FROM --platform=linux/amd64 nginx:stable-alpine
 COPY --from=build /home/node/app/browser/dist/public /usr/share/nginx/html
 
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/browser.nginx.conf.template
+
+USER node
 
 CMD REAL_IP_CONFIG=$([ -z "${PROXY_IPS:-}" ] || echo "$PROXY_IPS" | awk 'BEGIN { RS="," } { print "set_real_ip_from " $1 ";" }') \
   envsubst "\$API_URL \$REAL_IP_CONFIG" < /etc/nginx/browser.nginx.conf.template > /etc/nginx/conf.d/default.conf && \
