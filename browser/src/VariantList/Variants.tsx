@@ -45,7 +45,7 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
 }
 
 type OwnVariantsProps = {
-  children?: React.ReactNode
+  children?: any
   clinvarReleaseDate: string
   context: Gene
   datasetId: DatasetId
@@ -223,25 +223,27 @@ const Variants = ({
 
     if (searchedVariants.length > 0) {
       const firstVariant = searchedVariants[0]
-      const firstIndex = renderedVariants.findIndex((variant: Variant) => variant.pos === firstVariant.pos)
-      if (positionLastClicked !== null && firstVariant.pos < positionLastClicked) {
+      const firstIndex = renderedVariants.findIndex(
+        (variant: Variant) => variant.pos === firstVariant.pos
+      )
+      if (visibleVariantWindow[0] !== null && firstIndex < visibleVariantWindow[0]) {
         return firstIndex - 10
       }
+
       return firstIndex + 10
     }
     return 0
   }
 
-  const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
-
   useEffect(() => {
+    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
+
     if (termLastSearched === null) {
       return
     }
-      // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-      table.current.scrollToDataRow(searchIndex)
-    
-  }, [termLastSearched, searchIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+    table.current.scrollToDataRow(searchIndex)
+  }, [termLastSearched]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
@@ -286,7 +288,7 @@ const Variants = ({
           onChange={setFilter}
           value={filter}
           jumpToRow={onSearchResult}
-          position={searchIndex}
+          position={getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)}
         />
         <div>
           <ExportVariantsButton
