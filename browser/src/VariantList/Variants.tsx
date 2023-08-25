@@ -152,6 +152,7 @@ const Variants = ({
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
   const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(0)
 
   const onHoverVariantsInTrack = useMemo(
     () =>
@@ -237,12 +238,14 @@ const Variants = ({
 
   useEffect(() => {
     const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
-
+    setCurrentSearchIndex(searchIndex)
+    
     if (termLastSearched === null) {
       return
     }
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(searchIndex)
+
   }, [termLastSearched]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
@@ -288,7 +291,7 @@ const Variants = ({
           onChange={setFilter}
           value={filter}
           jumpToRow={onSearchResult}
-          position={getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)}
+          position={currentSearchIndex}
         />
         <div>
           <ExportVariantsButton
