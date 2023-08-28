@@ -73,7 +73,7 @@ const MitochondrialVariantAttributeList = ({ variant }: Props) => (
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item
       label="Excluded Allele Count"
-      tooltip="Number of individuals with a variant (heteroplasmy 0.10 - 1.00) filtered out due to likely sequencing error, potential NUMT misalignment, or potential sample contamination."
+      tooltip="Number of individuals with a variant filtered out due to failing one of the genotype-level filters (heteroplasmy below 10%, base quality, position, strand bias, weak evidence, and/or contamination)."
     >
       {variant.excluded_ac}
     </AttributeList.Item>
