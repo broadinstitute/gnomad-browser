@@ -60,6 +60,31 @@ const variantsDefaultProps = {
 
 type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
 
+export function getFirstIndexFromSearchText(
+  searchFilter: VariantFilterState,
+  variantSearched: Variant[],
+  variantsTableColumns: any,
+  variantWindow: number[],
+) {
+  const searchedVariants = getFilteredVariants(
+    searchFilter,
+    variantSearched,
+    variantsTableColumns
+  )
+
+  if (searchedVariants.length > 0) {
+    const firstVariant = searchedVariants[0]
+    const firstIndex = variantSearched.findIndex(
+      (variant: Variant) => variant.pos === firstVariant.pos
+    )
+    if (variantWindow[0] !== null && firstIndex < variantWindow[0]) {
+      return firstIndex - 10
+    }
+    return firstIndex + 10
+  }
+  return 0 
+}
+
 const Variants = ({
   children,
   clinvarReleaseDate,
@@ -211,41 +236,16 @@ const Variants = ({
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  function getFirstIndexFromSearchText(
-    searchFilter: VariantFilterState,
-    variantSearched: Variant[],
-    variantsTableColumns: any
-  ) {
-    const searchedVariants = getFilteredVariants(
-      searchFilter,
-      variantSearched,
-      variantsTableColumns
-    )
-
-    if (searchedVariants.length > 0) {
-      const firstVariant = searchedVariants[0]
-      const firstIndex = renderedVariants.findIndex(
-        (variant: Variant) => variant.pos === firstVariant.pos
-      )
-      if (visibleVariantWindow[0] !== null && firstIndex < visibleVariantWindow[0]) {
-        return firstIndex - 10
-      }
-
-      return firstIndex + 10
-    }
-    return 0
-  }
 
   useEffect(() => {
-    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns)
+    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns, visibleVariantWindow)
     setCurrentSearchIndex(searchIndex)
-    
+
     if (termLastSearched === null) {
       return
     }
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(searchIndex)
-
   }, [termLastSearched]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
