@@ -82,7 +82,7 @@ export function getFirstIndexFromSearchText(
     }
     return firstIndex + 10
   }
-  return 0 
+  return variantWindow[0]
 }
 
 const Variants = ({
