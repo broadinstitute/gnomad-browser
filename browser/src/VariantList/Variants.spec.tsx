@@ -7,8 +7,8 @@ import { describe, it, expect } from '@jest/globals'
 describe('getFirstIndexFromSearchText', () => {
     const mockVariantsSearched: Variant[] = []
 
-    for (let i = 0; i < 50; i++) {
-        mockVariantsSearched[i] = v2VariantFactory.build({variant_id: "example" + i, pos: i})
+    for (let i = 0; i < 50; i += 1) {
+        mockVariantsSearched[i] = v2VariantFactory.build({variant_id: `example${i}`, pos: i})
     }
   
     const mockVariantsTableColumns = [  {
@@ -20,7 +20,7 @@ describe('getFirstIndexFromSearchText', () => {
         grow: 1,
         compareFunction: () => (1),
         getSearchTerms: (variant: any) => [variant.variant_id].concat(variant.rsids || []),
-        render: (row: any, key: any, { highlightWords }: any) => (1),
+        render: () => (1),
       }]
   
     it('returns expected index when searchedVariants has length > 0 and firstIndex > visibleVariantWindow[0]', () => {
