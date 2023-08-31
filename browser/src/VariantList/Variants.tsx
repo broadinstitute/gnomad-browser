@@ -232,20 +232,27 @@ const Variants = ({
     if (index === -1) {
       index = renderedVariants.length - 1
     }
+
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   useEffect(() => {
-    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns, visibleVariantWindow)
-    setCurrentSearchIndex(searchIndex)
-
     if (termLastSearched === null) {
+      setCurrentSearchIndex(-1)
       return
     }
+
+    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns, visibleVariantWindow)
+
+    if (searchIndex !== -1) {
+      setCurrentSearchIndex(searchIndex)
+    }
+    
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-    table.current.scrollToDataRow(searchIndex)
+    table.current.scrollToDataRow(searchIndex);
+
   }, [termLastSearched]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
