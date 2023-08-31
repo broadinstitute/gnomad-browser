@@ -35,6 +35,16 @@ const rankedVepConsequences = [
     category: 'missense',
   },
   {
+    term: 'feature_elongation',
+    label: 'feature elongation',
+    category: 'other',
+  },
+  {
+    term: 'feature_truncation',
+    label: 'feature truncation',
+    category: 'other',
+  },
+  {
     term: 'inframe_insertion',
     label: 'inframe insertion',
     category: 'missense',
@@ -52,6 +62,11 @@ const rankedVepConsequences = [
   {
     term: 'protein_altering_variant',
     label: 'protein altering',
+    category: 'other',
+  },
+  {
+    term: 'splice_region_variant',
+    label: 'splice region',
     category: 'other',
   },
   {
@@ -100,6 +115,11 @@ const rankedVepConsequences = [
     category: 'other',
   },
   {
+    term: 'intron_variant',
+    label: 'intron',
+    category: 'other',
+  },
+  {
     term: 'NMD_transcript_variant',
     label: 'NMD transcript',
     category: 'other',
@@ -112,6 +132,11 @@ const rankedVepConsequences = [
   {
     term: 'nc_transcript_variant',
     label: 'nc transcript',
+    category: 'other',
+  },
+  {
+    term: 'upstream_gene_variant',
+    label: 'upstream gene',
     category: 'other',
   },
   {
@@ -145,38 +170,13 @@ const rankedVepConsequences = [
     category: 'other',
   },
   {
-    term: 'feature_elongation',
-    label: 'feature elongation',
-    category: 'other',
-  },
-  {
     term: 'regulatory_region_variant',
     label: 'regulatory region',
     category: 'other',
   },
   {
-    term: 'feature_truncation',
-    label: 'feature truncation',
-    category: 'other',
-  },
-  {
     term: 'intergenic_variant',
     label: 'intergenic variant',
-    category: 'other',
-  },
-  {
-    term: 'intron_variant',
-    label: 'intron',
-    category: 'other',
-  },
-  {
-    term: 'splice_region_variant',
-    label: 'splice region',
-    category: 'other',
-  },
-  {
-    term: 'upstream_gene_variant',
-    label: 'upstream gene',
     category: 'other',
   },
 ]
