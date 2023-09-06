@@ -4,7 +4,6 @@ import styled from 'styled-components'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 import { Button, Checkbox, Modal } from '@gnomad/ui'
-
 import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
 import { TrackPageSection } from '../TrackPage'
@@ -87,6 +86,14 @@ const SelectCategoryButton = styled(Button)`
   line-height: 18px;
 `
 
+const FilterRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 5px;
+`
+
+
 type Props = {
   referenceGenome: 'GRCh37' | 'GRCh38'
   transcripts: any[]
@@ -119,6 +126,7 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
 
   const [showOnlyGnomad, setShowOnlyGnomad] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
+  const [starFilter, setStarFilter] = useState(0)
 
   const filteredVariants = variants.filter(
     (v) =>
@@ -126,7 +134,8 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
       includedClinicalSignificanceCategories[clinvarVariantClinicalSignificanceCategory(v)] &&
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       includedConsequenceCategories[getCategoryFromConsequence(v.major_consequence)] &&
-      (!showOnlyGnomad || v.in_gnomad)
+      (!showOnlyGnomad || v.in_gnomad) &&
+      (starFilter === 0 || v.gold_stars >= starFilter)
   )
 
   return (
@@ -211,14 +220,28 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
               {isExpanded ? 'Collapse to bins' : 'Expand to all variants'}
             </Button>
           </ControlRow>
-          <ControlRow>
+          <FilterRow>
             <Checkbox
               id="clinvar-track-in-gnomad"
               label="Only show ClinVar variants that are in gnomAD"
               checked={showOnlyGnomad}
               onChange={setShowOnlyGnomad}
             />
-          </ControlRow>
+            <label htmlFor="star-filtering">
+              Filter by Stars: &nbsp;
+              <select
+                id="clinvar-star-filter"
+                value={starFilter}
+                onChange={(e) => setStarFilter(Number(e.target.value))}
+              >
+                <option value={0}> All Stars </option>
+                <option value={1}> 1+ Stars </option>
+                <option value={2}> 2+ Stars </option>
+                <option value={3}> 3+ Stars </option>
+                <option value={4}> 4 Stars </option>
+              </select>
+            </label>
+          </FilterRow>
         </TopPanel>
       </TrackPageSection>
       <Track
