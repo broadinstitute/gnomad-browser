@@ -236,7 +236,7 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
               onChange={setShowOnlyGnomad}
             />
             <label htmlFor="star-filtering">
-            Filter by <Link to={'https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'}>review status</Link>: &nbsp;
+            Filter by <Link to='https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'>review status</Link>: &nbsp;
               <select
                 id="clinvar-star-filter"
                 value={starFilter}
