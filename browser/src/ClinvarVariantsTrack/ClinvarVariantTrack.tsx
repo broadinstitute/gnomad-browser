@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Link from '../Link'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -91,8 +92,15 @@ const FilterRow = styled.div`
   align-items: center;
   gap: 10px;
   padding-top: 5px;
-`
 
+  & label[for="star-filtering"], & select#clinvar-star-filter {
+    margin-top: 1px;
+  }
+
+  & a {
+    margin-top: 1px;
+  }
+`
 
 type Props = {
   referenceGenome: 'GRCh37' | 'GRCh38'
@@ -228,7 +236,7 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
               onChange={setShowOnlyGnomad}
             />
             <label htmlFor="star-filtering">
-              Filter by Stars: &nbsp;
+            Filter by <Link to={'https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'}>review status</Link>: &nbsp;
               <select
                 id="clinvar-star-filter"
                 value={starFilter}
