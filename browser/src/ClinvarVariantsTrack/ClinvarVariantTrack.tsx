@@ -93,7 +93,8 @@ const FilterRow = styled.div`
   gap: 10px;
   padding-top: 5px;
 
-  & label[for="star-filtering"], & select#clinvar-star-filter {
+  & label[for='star-filtering'],
+  & select#clinvar-star-filter {
     margin-top: 1px;
   }
 
@@ -236,7 +237,11 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
               onChange={setShowOnlyGnomad}
             />
             <label htmlFor="star-filtering">
-            Filter by <Link to='https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'>review status</Link>: &nbsp;
+              Filter by{' '}
+              <Link to="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
+                review status
+              </Link>
+              : &nbsp;
               <select
                 id="clinvar-star-filter"
                 value={starFilter}
