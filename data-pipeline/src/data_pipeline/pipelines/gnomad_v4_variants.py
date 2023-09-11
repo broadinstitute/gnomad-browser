@@ -24,8 +24,9 @@ pipeline.add_task(
     {
         "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
         # We need to subset regions chr1:10030:10150
+        "exome_coverage_path": coverage_pipeline.get_output("exome_coverage"),
         "genome_coverage_path": coverage_pipeline.get_output("genome_coverage"),
-        "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
+        # "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
     },
 )
 
