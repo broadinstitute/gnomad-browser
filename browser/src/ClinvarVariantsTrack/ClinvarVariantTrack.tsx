@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Link from '../Link'
 import styled from 'styled-components'
+import { ExternalLink } from '@gnomad/ui'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
@@ -90,17 +90,7 @@ const SelectCategoryButton = styled(Button)`
 const FilterRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding-top: 5px;
-
-  & label[for='star-filtering'],
-  & select#clinvar-star-filter {
-    margin-top: 1px;
-  }
-
-  & a {
-    margin-top: 1px;
-  }
+  justify-content: space-between; 
 `
 
 type Props = {
@@ -238,9 +228,10 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
             />
             <label htmlFor="star-filtering">
               Filter by{' '}
-              <Link to="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
+              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+              <ExternalLink href='https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'>
                 review status
-              </Link>
+              </ExternalLink>
               : &nbsp;
               <select
                 id="clinvar-star-filter"
