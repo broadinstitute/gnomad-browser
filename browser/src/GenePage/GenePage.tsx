@@ -100,11 +100,16 @@ export type Gene = GeneMetadata & {
   }[]
   exac_regional_missense_constraint_regions?: any
   // TODO: add better typing
-  gnomad_v2_regional_missense_constraint_regions?: any
-  gnomad_v2_regional_missense_constraint_regions_0_01?: any
-  gnomad_v2_regional_missense_constraint_regions_0_0001?: any
-  gnomad_v2_regional_missense_constraint_regions_0_00001?: any
-  gnomad_v2_regional_missense_constraint_regions__20230622_demo?: any
+  // gnomad_v2_regional_missense_constraint_regions?: any
+  // gnomad_v2_regional_missense_constraint_regions_0_01?: any
+  // gnomad_v2_regional_missense_constraint_regions_0_0001?: any
+  // gnomad_v2_regional_missense_constraint_regions_0_00001?: any
+  // gnomad_v2_regional_missense_constraint_regions__20230622_demo?: any
+  // gnomad_v2_regional_missense_constraint_regions_array?: any
+  gnomad_v2_regional_missense_constraint_regions_array_20230724?: any
+  gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa?: any
+  gnomad_v2_regional_missense_constraint_regions_20230731_demo?: any
+  gnomad_v2_regional_missense_constraint_20230804_demo?: any
   ccr_region?: any
   // TODO: (rgrant) remove above for final
   variants: Variant[]
@@ -288,6 +293,57 @@ type Props = {
   datasetId: DatasetId
   gene: Gene
   geneId: string
+}
+
+const transformDemo2InputData = (inputData: any, canonicalExons: any) => {
+  const returnArray: any[] = []
+  inputData.forEach((row: any) => {
+    const returnJson = {
+      chrom: row.start_coordinate.contig,
+      start: Math.min(row.start_coordinate.position, row.stop_coordinate.position),
+      stop: Math.max(row.start_coordinate.position, row.stop_coordinate.position),
+      start_aa:
+        row.start_coordinate.position < row.stop_coordinate.position ? row.start_aa : row.stop_aa,
+      stop_aa:
+        row.start_coordinate.position < row.stop_coordinate.position ? row.stop_aa : row.start_aa,
+      obs_exp: row.oe,
+      obs_mis: row.obs,
+      exp_mis: row.exp,
+      chisq_diff_null: row.chisq,
+    }
+    returnArray.push(returnJson)
+  })
+
+  return returnArray
+
+  // proper logic should be:
+  // - take in ALL exons, and canonical exons
+  //   IF this region happens to start at the end of a canonical exon (+1)
+  //     AND the next exon(s) are not canonical
+  //       doctor this regions start to be the same as the start of the NEXT canonical exon
+
+  // // TEMP added on July 31 for a demo
+  // const returnArray2: any[] = []
+  // // here we are spoofing start locations to make it appear as expected
+  // returnArray.forEach((region: any) => {
+  //   const newRow = region
+  //   canonicalExons.forEach(
+  //     (exon: any, index: number) => {
+  //       if (index === canonicalExons.length - 1) {
+  //         // do nothing
+  //       } else {
+  //         // had to compare -1 for ??reasons??
+  //         if (region.start - 1 === exon.stop) {
+  //           // if you find a match, instead just use the start point of the next exon
+  //           newRow.start = canonicalExons[index + 1].start
+  //         }
+  //       }
+  //     }
+  //   )
+  //   returnArray2.push(newRow)
+  // })
+
+  // return returnArray2
 }
 
 const GenePage = ({ datasetId, gene, geneId }: Props) => {
@@ -566,11 +622,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-
-
-
         {/* TODO:FIXME: (rgrant: Jun 22, 2023 - Remove later, this is for mockups) */}
-        {datasetId === 'gnomad_r2_1' && (
+        {/* {datasetId === 'gnomad_r2_1' && (
           <RegionalConstraintTrack
             constrainedRegions={gene.gnomad_v2_regional_missense_constraint_regions__20230622_demo}
             geneInfo={{
@@ -590,8 +643,335 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             label={'Regional missense constraint'}
             includeLegend={true}
           />
+        )} */}
+
+        {/* TODO:FIXME: (rgrant: Jun 22, 2023 - Remove later, this is for mockups) */}
+
+        {/* {console.log('hello')} */}
+        {/* {console.log(gene.gnomad_v2_regional_missense_constraint_regions_array)}
+        {console.log(gene.gnomad_v2_regional_missense_constraint_regions_array[0].regions)}
+        {console.log(
+          transformDemo2InputData(
+            gene.gnomad_v2_regional_missense_constraint_regions_array[0].regions
+          )
         )}
 
+        {console.log('hello2')}
+        {console.log(gene.gnomad_v2_regional_missense_constraint_regions_array)}
+        {console.log(gene.gnomad_v2_regional_missense_constraint_regions_array[1].regions)}
+        {console.log(
+          transformDemo2InputData(
+            gene.gnomad_v2_regional_missense_constraint_regions_array[1].regions
+          )
+        )} */}
+
+        {console.log('i get here')}
+
+        {/* case for NO constraint (just show help text) */}
+        {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_20230804_demo &&
+          // this is a really silly way to check this, but its 11:20 at night
+          gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence ===
+            null && (
+            <RegionalConstraintTrack
+              // Here I'm being dumb and checking if its null up top, then passing in null below
+              hasNoRMCEvidence={
+                gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence
+              }
+              constrainedRegions={null}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              label={'Regional missense constraint'}
+              includeLegend={true}
+            />
+          )}
+
+        {console.log('i also get here')}
+
+        {/* DEMO TRACK */}
+        {/* ====================== */}
+        {/* case for both regions, or single region (componenent handles logic) */}
+        {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_20230804_demo &&
+          gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence !==
+            null && (
+            <RegionalConstraintTrack
+              hasNoRMCEvidence={
+                gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence
+              }
+              constrainedRegions={transformDemo2InputData(
+                gene.gnomad_v2_regional_missense_constraint_20230804_demo
+                  .gnomad_v2_regional_missense_constraint_regions_20230804_demo,
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              )}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              label={'Regional missense constraint'}
+              includeLegend={true}
+              includeOEBars={true}
+            />
+          )}
+
+        {/* FIRST TRACK */}
+        {/* ====================== */}
+        {/* {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_array_20230724 && (
+            <RegionalConstraintTrack
+              // constrainedRegions={transformDemo2InputData(
+              //   gene.gnomad_v2_regional_missense_constraint_regions_array_20230724[0].regions
+              // )}
+              constrainedRegions={[
+                {
+                  chrom: '1',
+                  start: 1550840,
+                  stop: 1558850,
+                  start_aa: 'Met1',
+                  stop_aa: 'Gln121',
+                  obs_exp: 1,
+                  obs_mis: 74,
+                  exp_mis: 42.73171206774509,
+                  chisq_diff_null: 22.880099647409008,
+                },
+                {
+                  chrom: '1',
+                  start: 1558851,
+                  stop: 1561033,
+                  start_aa: 'Ala122',
+                  stop_aa: 'Lys439',
+                  obs_exp: 0.6908978135616245,
+                  obs_mis: 157,
+                  exp_mis: 227.24055123384235,
+                  chisq_diff_null: 21.711507963017404,
+                },
+                // I've edited this one for a demo
+                {
+                  chrom: '1',
+                  // start: 1551013,
+                  // stop: 1562030,
+                  // start_aa: 'Met58',
+                  // stop_aa: 'His440',
+                  start: 1561034,
+                  stop: 1564880,
+                  start_aa: 'His440',
+                  stop_aa: 'Met581',
+                  obs_exp: 0.9831448586691773,
+                  obs_mis: 413,
+                  exp_mis: 420.08051647551986,
+                  chisq_diff_null: 0.11934310589010544,
+                },
+              ]}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              label={'Regional missense constraint'}
+              includeLegend={true}
+              includeOEBars={true}
+            />
+          )} */}
+
+        {/* SECOND TRACK */}
+        {/* ====================== */}
+        {/* {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa && (
+            <RegionalConstraintTrack
+              // constrainedRegions={transformDemo2InputData(
+              //   gene.gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa[0]
+              //     .regions
+              // )}
+              constrainedRegions={[
+                {
+                  chrom: '1',
+                  start: 1550840,
+                  stop: 1558850,
+                  start_aa: 'Met1',
+                  stop_aa: 'Gln121',
+                  obs_exp: 1,
+                  obs_mis: 74,
+                  exp_mis: 42.73171206774509,
+                  chisq_diff_null: 22.880099647409008,
+                },
+                {
+                  chrom: '1',
+                  start: 1558851,
+                  stop: 1561033,
+                  start_aa: 'Ala122',
+                  stop_aa: 'Lys439',
+                  obs_exp: 0.6908978135616245,
+                  obs_mis: 157,
+                  exp_mis: 227.24055123384235,
+                  chisq_diff_null: 21.711507963017404,
+                },
+                // I've edited this one for a demo
+                {
+                  chrom: '1',
+                  // start: 1551013,
+                  // stop: 1562030,
+                  // start_aa: 'Met58',
+                  // stop_aa: 'His440',
+                  start: 1562030,
+                  stop: 1564880,
+                  start_aa: 'His440',
+                  stop_aa: 'Met581',
+                  obs_exp: 0.9831448586691773,
+                  obs_mis: 413,
+                  exp_mis: 420.08051647551986,
+                  chisq_diff_null: 0.11934310589010544,
+                },
+              ]}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              // label={'((_v2 hailtable))'}
+              label={'Regional missense constraint'}
+              includeLegend={true}
+              includeOEBars={true}
+            />
+          )} */}
+
+        {/* THIRD TRACK */}
+        {/* ====================== */}
+        {/* {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa && (
+            <RegionalConstraintTrack
+              // constrainedRegions={transformDemo2InputData(
+              //   gene.gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa[0]
+              //     .regions
+              // )}
+              // constrainedRegions={[
+              //   {
+              //     chrom: '1',
+              //     start: 1550840,
+              //     stop: 1558850,
+              //     start_aa: 'Met1',
+              //     stop_aa: 'Gln121',
+              //     obs_exp: 1,
+              //     obs_mis: 74,
+              //     exp_mis: 42.73171206774509,
+              //     chisq_diff_null: 22.880099647409008,
+              //   },
+              //   {
+              //     chrom: '1',
+              //     start: 1558851,
+              //     stop: 1561033,
+              //     start_aa: 'Ala122',
+              //     stop_aa: 'Lys439',
+              //     obs_exp: 0.6908978135616245,
+              //     obs_mis: 157,
+              //     exp_mis: 227.24055123384235,
+              //     chisq_diff_null: 21.711507963017404,
+              //   },
+              //   // I've edited this one for a demo
+              //   {
+              //     chrom: '1',
+              //     // start: 1551013,
+              //     // stop: 1562030,
+              //     // start_aa: 'Met58',
+              //     // stop_aa: 'His440',
+              //     start: 1562030,
+              //     stop: 1564880,
+              //     start_aa: 'His440',
+              //     stop_aa: 'Met581',
+              //     obs_exp: 0.9831448586691773,
+              //     obs_mis: 413,
+              //     exp_mis: 420.08051647551986,
+              //     chisq_diff_null: 0.11934310589010544,
+              //   },
+              // ]}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              // label={'((no oe bars))'}
+              label={'Regional missense constraint'}
+              includeLegend={true}
+              includeOEBars={false}
+            />
+          )} */}
+
+        {/* TODO: this was b/c it was an array of 2 before */}
+        {/* {datasetId === 'gnomad_r2_1' &&
+          gene.gnomad_v2_regional_missense_constraint_regions_array &&
+          gene.gnomad_v2_regional_missense_constraint_regions_array.length > 1 && (
+            <RegionalConstraintTrack
+              constrainedRegions={transformDemo2InputData(
+                gene.gnomad_v2_regional_missense_constraint_regions_array[1].regions
+              )}
+              geneInfo={{
+                chrom: gene.chrom,
+                start: gene.stop,
+                stop: gene.start,
+                oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
+                obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
+                exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+              }}
+              // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
+              exons={
+                gene.transcripts.filter(
+                  (t: any) => t.transcript_id === gene.canonical_transcript_id
+                )[0].exons
+              }
+              label={'Regional missense constraint'}
+              includeLegend={true}
+            />
+          )} */}
         {/* eslint-disable-next-line no-nested-ternary */}
         {datasetId.startsWith('gnomad_sv') ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />

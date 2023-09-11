@@ -70,6 +70,11 @@ type Gene {
   gnomad_v2_regional_missense_constraint_regions_0_0001: [GnomadRegionalMissenseConstraintRegion!]
   gnomad_v2_regional_missense_constraint_regions_0_00001: [GnomadRegionalMissenseConstraintRegion!]
   gnomad_v2_regional_missense_constraint_regions__20230622_demo: [GnomadRegionalMissenseConstraintRegionDemo!]
+  gnomad_v2_regional_missense_constraint_regions_array: [GnomadRegionalMissenseConstraintTwo!]
+  gnomad_v2_regional_missense_constraint_regions_array_20230724: [GnomadRegionalMissenseConstraintTwo!]
+  gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa: [GnomadRegionalMissenseConstraintTwo!]
+  gnomad_v2_regional_missense_constraint_regions_20230731_demo: [GnomadRegionalMissenseConstraintTwo!]
+  gnomad_v2_regional_missense_constraint_20230804_demo: GnomadRegionalMissenseConstraintThree
   ccr_region: [CCRRegion!]
 
 

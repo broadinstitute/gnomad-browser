@@ -251,6 +251,63 @@ pipeline.add_task(
     {"annotation_name": "gnomad_v2_regional_missense_constraint_regions__20230622_demo"},
 )
 
+# TODO: added section to add regional missense constraint - remove after run on prod
+# FIXME: Added June 22nd, 2023. This is closest to the final needed annotation, all other ones above this were previous iterations.
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230627_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230627_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230627_rmc_demo/demo_release.ht"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230627_demo"},
+)
+
+
+# # TODO: now this is being added 
+# pipeline.add_task(
+#     "prepare_gnomad_v2_regional_missense_constraint_20230627_demo_test",
+#     prepare_gnomad_v2_regional_missense_constraint,
+#     "/constraint/gnomad_v2_regional_missense_constraint_20230627_demo_test.ht",
+#     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230627_rmc_demo/demo_release.ht"},
+#     {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230627_demo_test"},
+# )
+
+# TODO: added section to add regional missense constraint - remove after run on prod
+# FIXME: Added July 24th, 2023. This is closest to the final needed annotation, all other ones above this were previous iterations.
+#  all ones above will already exist and therefore won't have to run
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230724_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230724_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230724_rmc_demo"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230724_demo"},
+)
+
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230726_rmc_demo_alt_missing_aa"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa"},
+)
+
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230731_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230731_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230731_rmc_demo"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230731_demo"},
+)
+
+
+
+# oh yeahhhhh Aug 03, 2023 at like 10 pm,  new 18k hailtable
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230804_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230804_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230731_rmc_demo"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230804_demo"},
+)
 
 
 # TODO: ========================
@@ -339,10 +396,27 @@ pipeline.add_task(
         "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task(
             "prepare_gnomad_v2_regional_missense_constraint_0_00001"
         ),
-        # TODO:FIXME: this is the only one that matters now, really
+        # TODO:FIXME: old. as of like Jun 15 this is the only one that matters now, really - NOW IT DOESN'T
         "gnomad_v2_regional_missense_constraint_20230622_demo": pipeline.get_task(
             "prepare_gnomad_v2_regional_missense_constraint_20230622_demo"
-        )
+        ),
+        # TODO:FIXME: old. as of Jun 26 this is the only one that matters now, really
+        "gnomad_v2_regional_missense_constraint_20230627_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230627_demo"
+        ),
+        # # TODO:FIXME: As of July 24th, this is the most recent one for the demo 
+        "gnomad_v2_regional_missense_constraint_20230724_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230724_demo"
+        ),
+        "gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa"
+        ),
+         "gnomad_v2_regional_missense_constraint_20230731_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230731_demo"
+        ),
+         "gnomad_v2_regional_missense_constraint_20230804_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230804_demo"
+        ),
     },
     {"join_on": "preferred_transcript_id"},
 )

@@ -16,3 +16,28 @@ type GnomadRegionalMissenseConstraintRegionDemo {
 	obs_exp: Float,
 	chisq_diff_null: Float,
 }
+
+type Locus {
+	contig: String,
+	position: Int,
+}
+
+type GnomadRegionalMissenseConstraintRegionDemoTwo {
+	start_coordinate: Locus
+	stop_coordinate: Locus
+	start_aa: String,
+	stop_aa: String,
+	obs: Int,
+	exp: Float,
+	oe: Float,
+	chisq: Float,
+}
+
+type GnomadRegionalMissenseConstraintTwo {
+	regions: [GnomadRegionalMissenseConstraintRegionDemoTwo]
+}
+
+type GnomadRegionalMissenseConstraintThree {
+	has_no_rmc_evidence: Boolean
+	gnomad_v2_regional_missense_constraint_regions_20230804_demo: [GnomadRegionalMissenseConstraintRegionDemoTwo]
+}

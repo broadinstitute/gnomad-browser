@@ -220,14 +220,78 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
-    gnomad_v2_regional_missense_constraint_regions__20230622_demo {
-      start
-      stop
-      chrom
-      start_aa
-      stop_aa
-      obs_exp
-      chisq_diff_null
+    gnomad_v2_regional_missense_constraint_regions_array_20230724 {
+      regions {
+        start_coordinate {
+          contig
+          position
+        }
+        stop_coordinate {
+          contig
+          position
+        }
+        start_aa
+        stop_aa
+        obs
+        exp
+        oe
+        chisq
+      }
+    }
+    gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa {
+      regions {
+        start_coordinate {
+          contig
+          position
+        }
+        stop_coordinate {
+          contig
+          position
+        }
+        start_aa
+        stop_aa
+        obs
+        exp
+        oe
+        chisq
+      }
+    }
+    gnomad_v2_regional_missense_constraint_regions_20230731_demo {
+      regions {
+        start_coordinate {
+          contig
+          position
+        }
+        stop_coordinate {
+          contig
+          position
+        }
+        start_aa
+        stop_aa
+        obs
+        exp
+        oe
+        chisq
+      }
+    }
+    gnomad_v2_regional_missense_constraint_20230804_demo {
+      has_no_rmc_evidence
+      gnomad_v2_regional_missense_constraint_regions_20230804_demo {
+        start_coordinate {
+          contig
+          position
+        }
+        stop_coordinate {
+          contig
+          position
+        }
+        start_aa
+        stop_aa
+        obs
+        exp
+        oe
+        chisq
+      }
     }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
@@ -254,6 +318,38 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
 `
 
 /*
+
+
+ gnomad_v2_regional_missense_constraint_regions_array {
+      regions {
+        start_coordinate {
+          contig
+          position
+        }
+        stop_coordinate {
+          contig
+          position
+        }
+        start_aa
+        stop_aa
+        obs
+        exp
+        oe
+        chisq
+      }
+
+
+  gnomad_v2_regional_missense_constraint_regions__20230622_demo {
+      start
+      stop
+      chrom
+      start_aa
+      stop_aa
+      obs_exp
+      chisq_diff_null
+    }
+
+
 
 gnomad_v2_regional_missense_constraint_regions {
       start
@@ -324,8 +420,10 @@ type RolledUpVariantCooccurrenceCounts = {
 const rollUpVariantCooccurrenceCounts = (
   unrolledGene: UnrolledVariantCooccurrenceCounts
 ): RolledUpVariantCooccurrenceCounts => {
-  let heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
-  let homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf = {}
+  let heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
+  let homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
 
   unrolledGene.heterozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
     const severity = unrolledGeneCount['csq']
@@ -361,9 +459,15 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   return (
     // TODO:FIXME: (rgrant) for dev cluster -- modify 'Gene' query to manually query its own dev cluster deployment API
     //                                         to fetch new Gene data (RMC, CCR) loaded in the dev ES Gene index
-    <BaseQuery operationName={operationName} query={query} variables={variables} url={'/api/'}>
-    {/* // <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://localhost:8010/api/'}> */}
+    // <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://34.110.220.170/api/'}>
 
+    // <BaseQuery
+    //   operationName={operationName}
+    //   query={query}
+    //   variables={variables}
+    //   url={'http://localhost:8010/api/'}
+    // >
+    <BaseQuery operationName={operationName} query={query} variables={variables} url={'/api/'}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (
