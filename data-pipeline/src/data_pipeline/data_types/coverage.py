@@ -1,10 +1,15 @@
+from typing import List, Optional
 import hail as hl
 
 from data_pipeline.data_types.locus import x_position
 
 
-def prepare_coverage(coverage_path):
+def prepare_coverage(coverage_path: str, filter_intervals: Optional[List[str]] = None):
     coverage = hl.read_table(coverage_path)
+
+    if filter_intervals:
+        intervals = [hl.parse_locus_interval(interval, reference_genome="GRCh38") for interval in filter_intervals]
+        coverage = hl.filter_intervals(coverage, intervals)
 
     coverage = coverage.annotate(xpos=x_position(coverage.locus))
 
