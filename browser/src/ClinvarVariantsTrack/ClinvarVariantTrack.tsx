@@ -24,6 +24,7 @@ import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
+import { Transcript } from '../TranscriptPage/TranscriptPage'
 
 const TopPanel = styled.div`
   display: flex;
@@ -95,7 +96,7 @@ const FilterRow = styled.div`
 
 type Props = {
   referenceGenome: 'GRCh37' | 'GRCh38'
-  transcripts: any[]
+  transcripts: Transcript[]
   variants: ClinvarVariant[]
 }
 
@@ -137,6 +138,8 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
       (v.gold_stars >= starFilter)
   )
 
+  console.log('filtered variants', filteredVariants)
+  
   return (
     <>
       <TrackPageSection>
