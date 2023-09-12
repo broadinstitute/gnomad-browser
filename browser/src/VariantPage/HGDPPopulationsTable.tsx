@@ -46,8 +46,8 @@ const HGDP_POPULATION_GROUPS = {
 const HGDP_POPULATION_NAMES = {
   adygei: 'Adygei',
   balochi: 'Balochi',
-  bantukenya: 'Bantu (Kenya)',
-  bantusouthafrica: 'Bantu (South Africa)',
+  bantukenya: 'BantuKenya',
+  bantusouthafrica: 'BantuSouthAfrica',
   basque: 'Basque',
   bedouin: 'Bedouin',
   biaka: 'Biaka',
