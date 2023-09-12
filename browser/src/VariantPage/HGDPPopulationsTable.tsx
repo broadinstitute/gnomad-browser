@@ -40,8 +40,8 @@ const HGDP_POPULATION_GROUPS = {
     'sindhi',
     'uygur',
   ],
+  'Oceanian': ['bougainville', 'papuanhighlands', 'papuansepik'],
 }
-'Oceanian': ['bougainville', 'papuanhighlands', 'papuansepik']
 
 const HGDP_POPULATION_NAMES = {
   adygei: 'Adygei',
