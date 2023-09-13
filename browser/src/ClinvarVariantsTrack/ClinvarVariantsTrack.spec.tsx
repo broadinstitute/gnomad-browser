@@ -3,19 +3,22 @@ import 'jest-styled-components'
 import clinvarVariantFactory from '../__factories__/ClinvarVariant'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import React from 'react'
-import renderer from 'react-test-renderer'
+import userEvent from '@testing-library/user-event'
 import ClinvarVariantTrack from './ClinvarVariantTrack'
 import { RegionViewerContext } from '@gnomad/region-viewer'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import transcriptFactory from '../__factories__/Transcript'
+import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { render, screen } from '@testing-library/react'
+import renderer from 'react-test-renderer'
 
 describe('Clinvar Variants Track', () => {
   const mockClinvarVariants: ClinvarVariant[] = [
-    clinvarVariantFactory.build({ gold_stars: 0, major_consequence: "missense_variant" }),
-    clinvarVariantFactory.build({ gold_stars: 1, major_consequence: "missense_variant" }),
-    clinvarVariantFactory.build({ gold_stars: 2, major_consequence: "missense_variant"}),
-    clinvarVariantFactory.build({ gold_stars: 3, major_consequence: "missense_variant"}),
-    clinvarVariantFactory.build({ gold_stars: 4, major_consequence: "missense_variant"}),
+    clinvarVariantFactory.build({ gold_stars: 0, major_consequence: 'missense_variant' }),
+    clinvarVariantFactory.build({ gold_stars: 1, major_consequence: 'missense_variant' }),
+    clinvarVariantFactory.build({ gold_stars: 2, major_consequence: 'missense_variant' }),
+    clinvarVariantFactory.build({ gold_stars: 3, major_consequence: 'missense_variant' }),
+    clinvarVariantFactory.build({ gold_stars: 4, major_consequence: 'missense_variant' }),
   ]
 
   const mockTranscripts: Transcript[] = [
@@ -25,16 +28,16 @@ describe('Clinvar Variants Track', () => {
     transcriptFactory.build(),
   ]
 
-  test('renders correctly with default props', () => {
-    const childProps = {
-      centerPanelWidth: 3,
-      isPositionDefined: true,
-      leftPanelWidth: 4,
-      regions: [],
-      rightPanelWidth: 5,
-      scalePosition: (i: number) => (i),
-    }
+  const childProps = {
+    centerPanelWidth: 3,
+    isPositionDefined: true,
+    leftPanelWidth: 4,
+    regions: [],
+    rightPanelWidth: 5,
+    scalePosition: (i: number) => i,
+  }
 
+  test('renders correctly with default props', () => {
     const tree = renderer.create(
       <RegionViewerContext.Provider value={childProps}>
         <ClinvarVariantTrack
@@ -45,5 +48,87 @@ describe('Clinvar Variants Track', () => {
       </RegionViewerContext.Provider>
     )
     expect(tree).toMatchSnapshot()
+  })
+
+  test('Allow user to change to different review status filters', async () => {
+    const user = userEvent.setup()
+    render(
+      withDummyRouter(
+        <RegionViewerContext.Provider value={childProps}>
+          <ClinvarVariantTrack
+            referenceGenome="GRCh38"
+            transcripts={mockTranscripts}
+            variants={mockClinvarVariants}
+          />
+        </RegionViewerContext.Provider>
+      )
+    )
+
+    const filterSelect = screen.getByRole('combobox')
+    const allStarOpt = screen.getByRole('option', { name: 'All Stars' }) as HTMLOptionElement
+    const OnePlusStarOpt = screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
+    const TwoPlusStarOpt = screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
+    const ThreePlusStarOpt = screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
+    const FourStarOpt = screen.getByRole('option', { name: '4 Stars' }) as HTMLOptionElement
+
+    expect(allStarOpt.selected).toBe(true)
+
+    await user.selectOptions(filterSelect, OnePlusStarOpt)
+
+    expect(OnePlusStarOpt.selected).toBe(true)
+    expect(allStarOpt.selected).toBe(false)
+
+    await user.selectOptions(filterSelect, TwoPlusStarOpt)
+
+    expect(TwoPlusStarOpt.selected).toBe(true)
+    expect(OnePlusStarOpt.selected).toBe(false)
+
+    await user.selectOptions(filterSelect, ThreePlusStarOpt)
+
+    expect(ThreePlusStarOpt.selected).toBe(true)
+    expect(TwoPlusStarOpt.selected).toBe(false)
+
+    await user.selectOptions(filterSelect, FourStarOpt)
+
+    expect(FourStarOpt.selected).toBe(true)
+    expect(ThreePlusStarOpt.selected).toBe(false)
+  })
+
+  test('review status selector filters correctly ', async () => {
+    const user = userEvent.setup()
+    render(
+      withDummyRouter(
+        <RegionViewerContext.Provider value={childProps}>
+          <ClinvarVariantTrack
+            referenceGenome="GRCh38"
+            transcripts={mockTranscripts}
+            variants={mockClinvarVariants}
+          />
+        </RegionViewerContext.Provider>
+      )
+    )
+    const filterSelect = screen.getByRole('combobox')
+
+    expect(screen.getByText('ClinVar variants (5)')).toBeInTheDocument()
+    await user.selectOptions(
+      filterSelect,
+      screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
+    )
+    expect(screen.getByText('ClinVar variants (4)')).toBeInTheDocument()
+    await user.selectOptions(
+      filterSelect,
+      screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
+    )
+    expect(screen.getByText('ClinVar variants (3)')).toBeInTheDocument()
+    await user.selectOptions(
+      filterSelect,
+      screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
+    )
+    expect(screen.getByText('ClinVar variants (2)')).toBeInTheDocument()
+    await user.selectOptions(
+      filterSelect,
+      screen.getByRole('option', { name: '4 Stars' }) as HTMLOptionElement
+    )
+    expect(screen.getByText('ClinVar variants (1)')).toBeInTheDocument()
   })
 })
