@@ -1,4 +1,4 @@
-import { describe, expect, test, it } from '@jest/globals'
+import { describe, expect, test } from '@jest/globals'
 import 'jest-styled-components'
 import clinvarVariantFactory from '../__factories__/ClinvarVariant'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
