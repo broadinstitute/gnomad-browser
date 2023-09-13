@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ExternalLink, Select } from '@gnomad/ui'
+import { ExternalLink } from '@gnomad/ui'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
@@ -236,7 +236,6 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
               : &nbsp;
               <select
                 id="clinvar-star-filter"
-                data-testid='clinvar-star-filter'
                 value={starFilter}
                 onChange={(e) => setStarFilter(Number(e.target.value))}
               >
