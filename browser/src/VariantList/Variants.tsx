@@ -196,8 +196,6 @@ const Variants = ({
   )
 
   const [positionLastClicked, setPositionLastClicked] = useState(null)
-  const [termLastSearched, setTermLastSearched] = useState(null)
-
   const createCallback = useCallback(
     (sortByKey: string, stateSetter: any) => (position: number) => {
       setSortState({
@@ -210,7 +208,7 @@ const Variants = ({
   )
 
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
-  const onSearchResult = createCallback('variant_id', setTermLastSearched)
+  const onSearchResult = createCallback('variant_id', setFilter)
 
   useEffect(() => {
     if (positionLastClicked === null) {
@@ -239,7 +237,7 @@ const Variants = ({
 
 
   useEffect(() => {
-    if (termLastSearched === null) {
+    if (filter.searchText === '') {
       setCurrentSearchIndex(-1)
       return
     }
@@ -253,7 +251,7 @@ const Variants = ({
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(searchIndex);
 
-  }, [termLastSearched]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filter.searchText]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
