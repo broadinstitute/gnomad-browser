@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Transcript } from './TranscriptPage'
 import {
   referenceGenome,
   labelForDataset,
@@ -74,9 +74,7 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
 
 type Props = {
   datasetId: DatasetId
-  transcript: {
-    transcript_id: string
-  }
+  transcript: Transcript
   zoomRegion?: {
     start: number
     stop: number
