@@ -1150,3 +1150,69 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   </div>,
 ]
 `;
+
+exports[`Clinvar Variants Track review status selector filters correctly  1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  padding-right: 20px;
+}
+
+<div
+  class="c0"
+>
+  ClinVar variants (
+  5
+  )
+</div>
+`;
+
+exports[`Clinvar Variants Track review status selector filters correctly  2`] = `
+<div
+  class="ClinvarVariantTrack__TitlePanel-sc-1n1uwoy-2 dQRbgd"
+>
+  ClinVar variants (
+  4
+  )
+</div>
+`;
+
+exports[`Clinvar Variants Track review status selector filters correctly  3`] = `
+<div
+  class="ClinvarVariantTrack__TitlePanel-sc-1n1uwoy-2 dQRbgd"
+>
+  ClinVar variants (
+  3
+  )
+</div>
+`;
+
+exports[`Clinvar Variants Track review status selector filters correctly  4`] = `
+<div
+  class="ClinvarVariantTrack__TitlePanel-sc-1n1uwoy-2 dQRbgd"
+>
+  ClinVar variants (
+  2
+  )
+</div>
+`;
+
+exports[`Clinvar Variants Track review status selector filters correctly  5`] = `
+<div
+  class="ClinvarVariantTrack__TitlePanel-sc-1n1uwoy-2 dQRbgd"
+>
+  ClinVar variants (
+  1
+  )
+</div>
+`;
