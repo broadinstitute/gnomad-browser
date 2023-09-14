@@ -5,12 +5,13 @@ import { ClinvarVariant } from '../VariantPage/VariantPage'
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import ClinvarVariantTrack from './ClinvarVariantTrack'
-import { RegionViewerContext } from '@gnomad/region-viewer'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import transcriptFactory from '../__factories__/Transcript'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 import { render, screen } from '@testing-library/react'
 import renderer from 'react-test-renderer'
+// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
+import { RegionViewerContext } from '@gnomad/region-viewer'
 
 describe('Clinvar Variants Track', () => {
   const mockClinvarVariants: ClinvarVariant[] = [
@@ -109,26 +110,26 @@ describe('Clinvar Variants Track', () => {
     )
     const filterSelect = screen.getByRole('combobox')
 
-    expect(screen.getByText('ClinVar variants (5)')).toBeInTheDocument()
+    expect(screen.getByText('ClinVar variants (5)')).toMatchSnapshot()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (4)')).toBeInTheDocument()
+    expect(screen.getByText('ClinVar variants (4)')).toMatchSnapshot()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (3)')).toBeInTheDocument()
+    expect(screen.getByText('ClinVar variants (3)')).toMatchSnapshot()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (2)')).toBeInTheDocument()
+    expect(screen.getByText('ClinVar variants (2)')).toMatchSnapshot()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '4 Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (1)')).toBeInTheDocument()
+    expect(screen.getByText('ClinVar variants (1)')).toMatchSnapshot()
   })
 })
