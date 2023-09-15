@@ -32,7 +32,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **freq_meta_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
-- **vrs_version**: The Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) version that was used to compute IDs on the callset.
+- **vrs_version**: The Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) [version](https://github.com/ga4gh/vrs-python/tags) that was used to compute IDs on the callset.
 
 **Row fields**:
 
@@ -165,22 +165,22 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **bin_freq**: Bin frequencies for the age histogram. This is the number of records found in each bin.
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
-- **in_silico_predictors**
-  - **revel**:
-    - **revel_max**: dbNSFP's REVEL scores from 0 to 1 predicting the pathogenicity of missense variants. Variants with higher scores are predicted to be more likely to be deleterious. We take a max score for MANE Select transcripts if exists, otherwise we take a max score predicted for canonical transcripts.
-  - **primateai_3d**:
-    - **primateai-3d_max**: Illumina’s PrimateAI-3D deleteriousness score from 0 (less deleterious) to 1 (more deleterious) of missense variants.
-  - **cadd**:
-    - **phred: CADD Phred-like scores ('scaled C-scores') ranging from 1 to 99, based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values are more deleterious.
-    - **raw_score**: Raw CADD scores are interpretable as the extent to which the annotation profile for a given variant suggests that the variant is likely to be 'observed' (negative values) vs 'simulated' (positive values). Larger values are more deleterious.
-  - **sift**:
-    - **sift_max**: A normalized probability of observing the new amino acid at that position to affect protein function, and ranges from 0 to 1. Similar to what we did for REVEL and PrimateAI-3D, we will only show max scores from MANE Select and Canonical transcripts. 
-  - **polyphen**:
-    - **polyphen_max: Prediction of the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious). We also only show predictions of a max score from MANE Select and canonical transcripts. 
-  - **phylop**:
-    - **phylop**: Base-wise conservation of Zoonomia 241 placental mammals, ranging from -20 to 9.28, phyloP can measure acceleration (faster evolution than expected under neutral drift, assigned negative scores) as well as conservation (slower than expected evolution, assigned positive scores). 
-  - **splice_ai**:
-    - **max_ds**: The maximum delta score across 4 splicing consequences across genes if a variant was predicted on multiple genes, interpreted as the probability of the variant being splice-altering. Ranging from 0 to 1, delta score > 0.2 has been used as a permissive threshold for retaining high sensitivity. 
-  - **pangolin**:
-    - **largest_ds**: The largest delta score of a variant involved in 2 splicing consequences across genes if a variant was predicted on multiple genes. It ranges from -1 to 1, positive are for splice loss variants and > 0 are for splice-gain variants. Pangolin also proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage. 
+- **in_silico_predictors**: Variant prediction annotations. We put together the prediction scores from multiple in silico predictors for variants that are predicted to be missense, impacting protein function, evolutionarily conserved or splice-altering. We focus on MANE Select and canonical transcripts if the prediction scores are available for multiple transcripts.
+  - **revel**: Rare Exome Variant Ensemble Learner (REVEL) [score](https://sites.google.com/site/revelgenomics/about). An ensemble score for predicting the pathogenicity of missense variants (based on 13 other variant predictors).
+    - **revel_max**: Score predicting the pathogenicity of missense variants with a range of 0 to 1. Variants with higher scores are predicted to be more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
+  - **primateai_3d**: A deep neural network-trained [score](https://www.science.org/doi/10.1126/science.abn8197) for classifying pathogenicity of missense variants.
+    - **primateai-3d_max**: Score ranging from 0 to 1 predicting the deleteriousness of missense variants. Higher scores indicate a variant is more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript. 
+  - **cadd**: Combined Annotation Dependent Deletion [score](https://cadd.gs.washington.edu/) used to predict deleteriousness of SNVs and indels.
+    - **phred**: CADD Phred-like scaled C-scores ranging from 1 to 99 based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values indicate increased predicted deleteriousness.
+    - **raw_score**: Unscaled CADD scores indicating whether a variant is likely to be "observed" (negative values) vs "simulated" (positive values). Larger values indicate increased predicted deleteriousness.
+  - **sift**: Sorting Tolerant From Intolerant (SIFT) [score](https://www.nature.com/articles/nprot.2009.86) used to predict the impact of SNVs on protein function.
+    - **sift_max**: Scaled probability of the amino acid substitution being tolerated, ranging from 0 to 1. Scores below 0.05 are predicted to impact protein function.  A normalized probability of observing the new amino acid at that position to affect protein function, and ranges from 0 to 1. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript. 
+  - **polyphen**: Polymorphism Phenotyping v2 (Polyphen-v2 [score](https://www.nature.com/articles/nmeth0410-248)) that predicts the impact of an SNV on protein structure and function.
+    - **polyphen_max**: Prediction of the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious).  We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
+  - **phylop**:Per-base evolutionary constraint (score)[https://pubmed.ncbi.nlm.nih.gov/37104612/].
+    - **phylop**: Base-wise conservation across the 241 placental mammals in the [Zoonomia](https://zoonomiaproject.org/) project. Score ranges from -20 to 9.28, and reflects acceleration (faster evolution than expected under neutral drift, assigned negative scores) as well as conservation (slower than expected evolution, assigned positive scores). 
+  - **splice_ai**: [Score](https://linkinghub.elsevier.com/retrieve/pii/S0092-8674(18)31629-5) that predicts a variant's impact on splicing.
+    - **max_ds**: The maximum delta score across 4 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant was predicted to fall within multiple genes, score is across all relevant genes. Score ranges from 0 to 1. In the SpliceAI paper, a detailed characterization of the delta scores is provided for 0.2 (high recall), 0.5 (recommended), and 0.8 (high precision) cutoffs. 
+  - **pangolin**: [Score](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02664-4) predicting a variant's impact on splicing.
+    - **largest_ds**: The largest delta score of a variant involved in 2 splicing consequences. If a variant is predicted to fall within multiple genes, score is across all relevant genes. Different from SpliceAI, in Pangolin splice gain is noted as the increase in splice usage (scores range from 0 to 1) and splice loss as the decrease in splice usage (scores range from 0 to -1). The Pangolin authors proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage. 
 
