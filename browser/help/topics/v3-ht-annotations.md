@@ -31,7 +31,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **bin_freq**: Bin frequencies for the age histogram. This is the number of records found in each bin.
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
-- **freq_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
+- **freq_meta_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
 - **vrs_version**: The Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) version that was used to compute IDs on the callset.
 
 **Row fields**:
@@ -165,17 +165,22 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **bin_freq**: Bin frequencies for the age histogram. This is the number of records found in each bin.
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
-- **cadd**:
-  - **phred**: Cadd Phred-like scores ('scaled C-scores') ranging from 1 to 99, based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values are more deleterious.
-  - **raw_score**: Raw CADD scores are interpretable as the extent to which the annotation profile for a given variant suggests that the variant is likely to be 'observed' (negative values) vs 'simulated' (positive values). Larger values are more deleterious.
-  - **has_duplicate**:Whether the variant has more than one CADD score associated with it.
-- **revel**:
-  - **revel_score**: dbNSFP's Revel score from 0 to 1. Variants with higher scores are predicted to be more likely to be deleterious.
-  - **has_duplicate**: Whether the variant has more than one revel_score associated with it.
-- **splice_ai**:
-  - **splice_ai**: The maximum delta score, interpreted as the probability of the variant being splice-altering.
-  - **splice_consequence**: The consequence term associated with the max delta score in 'splice_ai_max_ds'.
-  - **has_duplicate**: Whether the variant has more than one splice_ai score associated with it.
-- **primate_ai**:
-  - **primate_ai_score**: PrimateAI's deleteriousness score from 0 (less deleterious) to 1 (more deleterious).
-  - **has_duplicate**: Whether the variant has more than one primate_ai_score associated with it.
+- **in_silico_predictors**
+  - **revel**:
+    - **revel_max**: dbNSFP's REVEL scores from 0 to 1 predicting the pathogenicity of missense variants. Variants with higher scores are predicted to be more likely to be deleterious. We take a max score for MANE Select transcripts if exists, otherwise we take a max score predicted for canonical transcripts.
+  - **primateai_3d**:
+    - **primateai-3d_max**: Illumina’s PrimateAI-3D deleteriousness score from 0 (less deleterious) to 1 (more deleterious) of missense variants.
+  - **cadd**:
+    - **phred: CADD Phred-like scores ('scaled C-scores') ranging from 1 to 99, based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values are more deleterious.
+    - **raw_score**: Raw CADD scores are interpretable as the extent to which the annotation profile for a given variant suggests that the variant is likely to be 'observed' (negative values) vs 'simulated' (positive values). Larger values are more deleterious.
+  - **sift**:
+    - **sift_max**: A normalized probability of observing the new amino acid at that position to affect protein function, and ranges from 0 to 1. Similar to what we did for REVEL and PrimateAI-3D, we will only show max scores from MANE Select and Canonical transcripts. 
+  - **polyphen**:
+    - **polyphen_max: Prediction of the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious). We also only show predictions of a max score from MANE Select and canonical transcripts. 
+  - **phylop**:
+    - **phylop**: Base-wise conservation of Zoonomia 241 placental mammals, ranging from -20 to 9.28, phyloP can measure acceleration (faster evolution than expected under neutral drift, assigned negative scores) as well as conservation (slower than expected evolution, assigned positive scores). 
+  - **splice_ai**:
+    - **max_ds**: The maximum delta score across 4 splicing consequences across genes if a variant was predicted on multiple genes, interpreted as the probability of the variant being splice-altering. Ranging from 0 to 1, delta score > 0.2 has been used as a permissive threshold for retaining high sensitivity. 
+  - **pangolin**:
+    - **largest_ds**: The largest delta score of a variant involved in 2 splicing consequences across genes if a variant was predicted on multiple genes. It ranges from -1 to 1, positive are for splice loss variants and > 0 are for splice-gain variants. Pangolin also proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage. 
+
