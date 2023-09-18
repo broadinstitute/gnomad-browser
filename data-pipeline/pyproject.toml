@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "data-pipeline"
+version = "0.1.0"
+description = ""
+authors = ["gnomAD team <gnomad@broadinstitute.org>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+elasticsearch = ">=7.17,<8.0"
+tqdm = "^4.66.1"
+loguru = "^0.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+attrs = "^23.1.0"
+cattrs = "^23.1.2"
+hail = "^0.2.122"
+pytest = "^7.4.2"
+ipython = "^8.15.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
