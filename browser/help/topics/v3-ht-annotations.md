@@ -33,7 +33,18 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **freq_meta_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
 - **vrs_version**: The Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) [version](https://github.com/ga4gh/vrs-python/tags) that was used to compute IDs on the callset.
-
+  - **vrs-python_version**: The [version] of the vrs-python library that was used to compute IDs on the callset.
+  - **seqrepo_version**: The version of seqrepo database that was used in VRS computations.
+- **in_silico_predictor_versions**: Versions of in silico predictors used in the callset.
+  - **revel_version**: Rare Exome Variant Ensemble Learner (REVEL) version.
+  - **primateai_3d_version**: PrimateAI-3D version.
+  - **cadd_version**: Combined Annotation Dependent Depletion (CADD) version.
+  - **sift_version**: Sorting Intolerant From Tolerant (SIFT) version.
+  - **polyphen_version**: Polymorphism Phenotyping v2 (Polyphen-v2) version.
+  - **phylop_version**: PhyloP version.
+  - **splice_ai_version**: SpliceAI version.
+  - **pangolin_version**: Pangolin version.
+  
 **Row fields**:
 
 - **locus**: Variant locus. Contains contig and position information.
