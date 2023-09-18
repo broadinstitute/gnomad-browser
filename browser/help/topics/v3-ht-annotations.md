@@ -1,6 +1,6 @@
 ---
 id: v3-ht-annotations
-title: 'gnomAD v3 Hail Table annotation descriptions'
+title: 'gnomAD v4 genomes Hail Table annotation descriptions'
 ---
 
 The gnomAD v3 Hail Table annotations are defined below:
@@ -166,8 +166,8 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_smaller**: Count of age values falling below lowest histogram bin edge.
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **in_silico_predictors**: Variant prediction annotations. Struct contains prediction scores from multiple in silico predictors for variants that are predicted to be missense, impacting protein function, evolutionarily conserved, or splice-altering. We chose scores for either MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.
-  - **revel**: Rare Exome Variant Ensemble Learner (REVEL) [score](https://sites.google.com/site/revelgenomics/about). An ensemble score for predicting the pathogenicity of missense variants (based on 13 other variant predictors).
-    - **revel**: Rare Exome Variant Ensemble Learner (REVEL) [score](https://sites.google.com/site/revelgenomics/about). An ensemble score for predicting the pathogenicity of missense variants (based on 13 other variant predictors).
+  - **revel**: Rare Exome Variant Ensemble Learner (REVEL) [score](https://www.cell.com/ajhg/fulltext/S0002-9297(16)30370-6). An ensemble score for predicting the pathogenicity of missense variants (based on 13 other variant predictors).
+    - **revel_max**: Score predicting the pathogenicity of missense variants with a range of 0 to 1. Variants with higher scores are predicted to be more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
   - **primateai_3d**: A deep neural network-trained [score](https://www.science.org/doi/10.1126/science.abn8197) for classifying pathogenicity of missense variants.
     - **primateai-3d_max**: Score ranging from 0 to 1 predicting the deleteriousness of missense variants. Higher scores indicate a variant is more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript. 
   - **cadd**: Combined Annotation Dependent Deletion [score](https://academic.oup.com/nar/article/47/D1/D886/5146191) used to predict deleteriousness of SNVs and indels.
@@ -183,4 +183,3 @@ The gnomAD v3 Hail Table annotations are defined below:
     - **max_ds**: The maximum delta score across 4 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant was predicted to fall within multiple genes, score is across all relevant genes. Score ranges from 0 to 1. In the SpliceAI paper, a detailed characterization of the delta scores is provided for 0.2 (high recall), 0.5 (recommended), and 0.8 (high precision) cutoffs. 
   - **pangolin**: [Score](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02664-4) that predicts a variant's impact on splicing.
     - **largest_ds**: The largest delta score of a variant involved in 2 splicing consequences. If a variant is predicted to fall within multiple genes, score is across all relevant genes. Note that there is different behavior from spliceAI: splice gain is noted as the increase in splice usage (scores range from 0 to 1) and splice loss as the decrease in splice usage (scores range from 0 to -1). The Pangolin authors proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage. 
-
