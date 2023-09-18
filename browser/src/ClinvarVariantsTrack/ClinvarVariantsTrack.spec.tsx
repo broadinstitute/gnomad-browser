@@ -110,26 +110,26 @@ describe('Clinvar Variants Track', () => {
     )
     const filterSelect = screen.getByRole('combobox')
 
-    expect(screen.getByText('ClinVar variants (5)')).toMatchSnapshot()
+    expect(screen.getByText('ClinVar variants (5)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (4)')).toMatchSnapshot()
+    expect(screen.getByText('ClinVar variants (4)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (3)')).toMatchSnapshot()
+    expect(screen.getByText('ClinVar variants (3)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (2)')).toMatchSnapshot()
+    expect(screen.getByText('ClinVar variants (2)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
       screen.getByRole('option', { name: '4 Stars' }) as HTMLOptionElement
     )
-    expect(screen.getByText('ClinVar variants (1)')).toMatchSnapshot()
+    expect(screen.getByText('ClinVar variants (1)')).not.toBeNull()
   })
 })
