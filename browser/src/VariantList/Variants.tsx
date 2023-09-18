@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
-import { labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
@@ -13,13 +13,15 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
-import filterVariants from './filterVariants'
+import filterVariants, { VariantFilterState, getFilteredVariants } from './filterVariants'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
+import { Variant } from '../VariantPage/VariantPage'
+import { Gene } from '../GenePage/GenePage'
 
 const DEFAULT_COLUMNS = [
   'source',
@@ -43,18 +45,46 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
 }
 
 type OwnVariantsProps = {
-  children?: React.ReactNode
+  children?: any
   clinvarReleaseDate: string
-  context: any
-  datasetId: string
+  context: Gene
+  datasetId: DatasetId
   exportFileName?: string
-  variants: any[]
+  variants: Variant[]
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'VariantsProps' circularly references i... Remove this comment to see the full error message
-type VariantsProps = OwnVariantsProps & typeof Variants.defaultProps
+const variantsDefaultProps = {
+  children: null,
+  exportFileName: 'variants',
+}
 
-// @ts-expect-error TS(7022) FIXME: 'Variants' implicitly has type 'any' because it do... Remove this comment to see the full error message
+type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
+
+export function getFirstIndexFromSearchText(
+  searchFilter: VariantFilterState,
+  variantSearched: Variant[],
+  variantsTableColumns: any,
+  variantWindow: number[],
+) {
+  const searchedVariants = getFilteredVariants(
+    searchFilter,
+    variantSearched,
+    variantsTableColumns
+  )
+
+  if (searchedVariants.length > 0) {
+    const firstVariant = searchedVariants[0]
+    const firstIndex = variantSearched.findIndex(
+      (variant: Variant) => variant.pos === firstVariant.pos
+    )
+    if (variantWindow[0] !== null && firstIndex < variantWindow[0]) {
+      return firstIndex - 10
+    }
+    return firstIndex + 10
+  }
+  return variantWindow[0]
+}
+
 const Variants = ({
   children,
   clinvarReleaseDate,
@@ -108,6 +138,7 @@ const Variants = ({
     includeIndels: true,
     includeExomes: true,
     includeGenomes: true,
+    includeContext: true,
     searchText: '',
   })
 
@@ -146,6 +177,7 @@ const Variants = ({
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
   const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(0)
 
   const onHoverVariantsInTrack = useMemo(
     () =>
@@ -164,14 +196,19 @@ const Variants = ({
   )
 
   const [positionLastClicked, setPositionLastClicked] = useState(null)
-  // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
-  const onNavigatorClick = useCallback((position) => {
-    setSortState({
-      sortKey: 'variant_id',
-      sortOrder: 'ascending',
-    })
-    setPositionLastClicked(position)
-  }, [])
+  const createCallback = useCallback(
+    (sortByKey: string, stateSetter: any) => (position: number) => {
+      setSortState({
+        sortKey: sortByKey,
+        sortOrder: 'ascending',
+      })
+      stateSetter(position)
+    },
+    []
+  )
+
+  const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
+  const onSearchResult = createCallback('variant_id', setFilter)
 
   useEffect(() => {
     if (positionLastClicked === null) {
@@ -184,7 +221,7 @@ const Variants = ({
     }
 
     index = renderedVariants.findIndex(
-      (variant: any, i: any) =>
+      (variant: Variant, i: number) =>
         renderedVariants[i + 1] &&
         positionLastClicked >= variant.pos &&
         positionLastClicked <= renderedVariants[i + 1].pos
@@ -197,6 +234,24 @@ const Variants = ({
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
+
+
+  useEffect(() => {
+    if (filter.searchText === '') {
+      setCurrentSearchIndex(-1)
+      return
+    }
+
+    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns, visibleVariantWindow)
+
+    if (searchIndex !== -1) {
+      setCurrentSearchIndex(searchIndex)
+    }
+    
+    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+    table.current.scrollToDataRow(searchIndex);
+
+  }, [filter.searchText]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
@@ -237,7 +292,12 @@ const Variants = ({
       <PositionAxisTrack />
 
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
-        <VariantFilterControls onChange={setFilter} value={filter} />
+        <VariantFilterControls
+          onChange={setFilter}
+          value={filter}
+          jumpToRow={onSearchResult}
+          position={currentSearchIndex}
+        />
         <div>
           <ExportVariantsButton
             datasetId={datasetId}
@@ -311,9 +371,6 @@ const Variants = ({
   )
 }
 
-Variants.defaultProps = {
-  children: undefined,
-  exportFileName: 'variants',
-}
+Variants.defaultProps = variantsDefaultProps
 
 export default Variants

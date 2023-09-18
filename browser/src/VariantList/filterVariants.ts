@@ -1,6 +1,56 @@
+import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
+import { VariantTableColumn } from './variantTableColumns'
 
-const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
+type Categories = {
+  lof: boolean
+  missense: boolean
+  synonymous: boolean
+  other: boolean
+}
+
+export type VariantFilterState = {
+  includeCategories: Categories
+  includeFilteredVariants: boolean
+  includeSNVs: boolean
+  includeIndels: boolean
+  includeExomes: boolean
+  includeGenomes: boolean
+  includeContext: boolean
+  searchText: string
+}
+
+export function getFilteredVariants(
+  filter: VariantFilterState,
+  variants: Variant[],
+  variantTableColumns: VariantTableColumn[]
+) {
+  const searchColumns = variantTableColumns.filter((column) => !!column.getSearchTerms)
+  const getVariantSearchTerms = (variant: Variant) =>
+    searchColumns
+      .flatMap((column) => {
+        if (column.getSearchTerms) {
+          return column.getSearchTerms(variant)
+        }
+        return []
+      })
+      .filter(Boolean)
+      .map((s: any) => s.toLowerCase())
+
+  const searchTerms = filter.searchText
+    .toLowerCase()
+    .split(',')
+    .map((s: string) => s.trim())
+    .filter((s: string) => s.length > 0)
+
+  return variants.filter((variant: Variant) =>
+    getVariantSearchTerms(variant).some((variantTerm: string) =>
+      searchTerms.some((searchTerm: string) => variantTerm.includes(searchTerm))
+    )
+  )
+}
+
+const filterVariants = (variants: Variant[], filter: VariantFilterState, selectedColumns: any) => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =
@@ -9,15 +59,19 @@ const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
     filter.includeCategories.synonymous &&
     filter.includeCategories.other
 
+
   if (!isEveryConsequenceCategorySelected) {
     filteredVariants = variants.filter((variant: any) => {
-      const category = getCategoryFromConsequence(variant.consequence) || 'other'
-      return filter.includeCategories[category]
+      const category = getCategoryFromConsequence(variant.consequence) as keyof Categories || 'other'
+      return (filter.includeCategories)[category] 
+      
     })
   }
+  
+
 
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
       genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
@@ -25,44 +79,27 @@ const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
   }
 
   if (!filter.includeExomes) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       exome: null,
     }))
   }
 
   if (!filter.includeGenomes) {
-    filteredVariants = filteredVariants.map((v: any) => ({
+    filteredVariants = filteredVariants.map((v: Variant) => ({
       ...v,
       genome: null,
     }))
   }
 
-  filteredVariants = filteredVariants.filter((v: any) => v.exome || v.genome)
+  filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
 
-  if (filter.searchText) {
-    const searchColumns = selectedColumns.filter((column: any) => !!column.getSearchTerms)
-    const getVariantSearchTerms = (variant: any) =>
-      searchColumns
-        .flatMap((column: any) => column.getSearchTerms(variant))
-        .filter(Boolean)
-        .map((s: any) => s.toLowerCase())
-
-    const searchTerms = filter.searchText
-      .toLowerCase()
-      .split(',')
-      .map((s: any) => s.trim())
-      .filter((s: any) => s.length > 0)
-
-    filteredVariants = filteredVariants.filter((variant: any) =>
-      getVariantSearchTerms(variant).some((variantTerm: any) =>
-        searchTerms.some((searchTerm: any) => variantTerm.includes(searchTerm))
-      )
-    )
+  if (filter.searchText && !filter.includeContext) {
+    filteredVariants = getFilteredVariants(filter, variants, selectedColumns)
   }
 
   // Indel and Snp filters.
-  filteredVariants = filteredVariants.filter((v: any) => {
+  filteredVariants = filteredVariants.filter((v: Variant) => {
     const splits = v.variant_id.split('-')
     // ref and alt are extracted from variant id.
     const refLength = splits[2].length
