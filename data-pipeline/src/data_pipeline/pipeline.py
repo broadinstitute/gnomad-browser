@@ -128,6 +128,7 @@ class Task:
             if isinstance(v, (Task, DownloadTask)):
                 paths.update({k: v.get_output_path()})
             else:
+                logger.info(v)
                 new_path = os.path.join(config.data_paths.root, v)
                 paths.update({k: os.path.join(config.data_paths.root, v)})
 

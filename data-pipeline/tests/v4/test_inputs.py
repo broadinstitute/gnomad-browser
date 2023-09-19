@@ -11,6 +11,7 @@ from data_pipeline.pipelines.gnomad_v4_variants import (
 from data_pipeline.datasets.gnomad_v4.types.initial_globals import Globals
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import InitialVariant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as Step1Variant
+from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step2 import Variant as Step2Variant
 
 step1_task = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants")
 
@@ -53,3 +54,11 @@ def test_validate_step1_output():
     # ht = ht.sample(0.1, seed=1234)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, Step1Variant) for variant in result]
+
+
+def test_validate_step2_output():
+    output_path = gnomad_v4_variant_pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
+    ht = hl.read_table(output_path)
+    # ht = ht.sample(0.1, seed=1234)
+    result = ht_to_json(ht)
+    [structure_attrs_fromdict(variant, Step2Variant) for variant in result]
