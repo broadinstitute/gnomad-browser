@@ -6,10 +6,13 @@ import shutil
 import subprocess
 import tempfile
 import time
+from typing import List, Optional, Union
+import attr
 from collections import OrderedDict
 
 import hail as hl
 
+from data_pipeline.config import config
 
 logger = logging.getLogger("gnomad_data_pipeline")
 logger.setLevel(logging.INFO)
@@ -56,12 +59,18 @@ def modified_time(path):
 
 _pipeline_config = {}
 
+_pipeline_config["output_root"] = config.data_paths.root
 
+
+@attr.define
 class DownloadTask:
-    def __init__(self, name, url, output_path):
-        self._name = name
-        self._url = url
-        self._output_path = output_path
+    _name: str
+    _url: str
+    _output_path: str
+
+    @classmethod
+    def create(cls, name, url, output_path):
+        return cls(name, url, output_path)
 
     def get_output_path(self):
         return _pipeline_config["output_root"] + self._output_path
@@ -95,19 +104,34 @@ class DownloadTask:
             logger.info("Skipping %s", self._name)
 
 
+@attr.define
 class Task:
-    def __init__(self, name, work, output_path, inputs=None, params=None):
-        self._name = name
-        self._work = work
-        self._output_path = output_path
-        self._inputs = inputs or {}
-        self._params = params or {}
+    _name: str
+    _task_function: str
+    _output_path: str
+    _inputs: dict
+    _params: dict
+
+    @classmethod
+    def create(
+        cls, name: str, task_function: str, output_path: str, inputs: Optional[dict] = {}, params: Optional[dict] = {}
+    ):
+        return cls(name, task_function, output_path, inputs, params)
 
     def get_output_path(self):
         return _pipeline_config["output_root"] + self._output_path
 
     def get_inputs(self):
-        return {k: v.get_output_path() if isinstance(v, (Task, DownloadTask)) else v for k, v in self._inputs.items()}
+        paths = {}
+
+        for k, v in self._inputs.items():
+            if isinstance(v, (Task, DownloadTask)):
+                paths.update({k: v.get_output_path()})
+            else:
+                new_path = os.path.join(config.data_paths.root, v)
+                paths.update({k: os.path.join(config.data_paths.root, v)})
+
+        return paths
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -129,7 +153,7 @@ class Task:
         if should_run:
             logger.info("Running %s (%s)", self._name, reason)
             start = time.perf_counter()
-            result = self._work(**self.get_inputs(), **self._params)
+            result = self._task_function(**self.get_inputs(), **self._params)
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
@@ -138,28 +162,31 @@ class Task:
             logger.info("Skipping %s", self._name)
 
 
+@attr.define
 class Pipeline:
-    def __init__(self):
-        self._tasks = OrderedDict()
-        self._outputs = {}
+    name: str
+    _tasks: OrderedDict = OrderedDict()
+    _outputs: dict = {}
 
-    def add_task(self, name, *args, **kwargs):
-        task = Task(name, *args, **kwargs)
+    def add_task(
+        self, name: str, task_function: str, output_path: str, inputs: Optional[dict] = {}, params: Optional[dict] = {}
+    ):
+        task = Task.create(name, task_function, output_path, inputs, params)
         self._tasks[name] = task
         return task
 
-    def add_download_task(self, name, *args, **kwargs):
-        task = DownloadTask(name, *args, **kwargs)
+    def add_download_task(self, name, *args, **kwargs) -> DownloadTask:
+        task = DownloadTask.create(name, *args, **kwargs)
         self._tasks[name] = task
         return task
 
-    def get_task(self, name):
+    def get_task(self, name: str) -> Union[Task, DownloadTask]:
         try:
             return self._tasks[name]
         except KeyError as error:
             raise ValueError(f"Pipeline contains no task named '{name}'") from error
 
-    def get_all_tasks(self):
+    def get_all_task_names(self) -> List[str]:
         return list(self._tasks.keys())
 
     def run(self, force_tasks=None):
@@ -178,20 +205,21 @@ class Pipeline:
 
 
 def run_pipeline(pipeline):
-    tasks = pipeline.get_all_tasks()
+    task_names = pipeline.get_all_task_names()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-root", required=True)
+    parser.add_argument("--output-root")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--force", choices=tasks, nargs="+")
+    group.add_argument("--force", choices=task_names, nargs="+")
     group.add_argument("--force-all", action="store_true")
     args = parser.parse_args()
 
-    _pipeline_config["output_root"] = args.output_root.rstrip("/")
+    if args.output_root:
+        _pipeline_config["output_root"] = args.output_root.rstrip("/")
 
     pipeline_args = {}
     if args.force_all:
-        pipeline_args["force_tasks"] = tasks
+        pipeline_args["force_tasks"] = task_names
     elif args.force:
         pipeline_args["force_tasks"] = args.force
 
