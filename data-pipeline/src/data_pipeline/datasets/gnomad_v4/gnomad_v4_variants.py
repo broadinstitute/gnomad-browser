@@ -15,8 +15,8 @@ def freq_index_key(subset=None, pop=None, sex=None, raw=False):
     return "-".join(parts)
 
 
-def prepare_gnomad_v4_variants(path):
-    ds = hl.read_table(path)
+def prepare_gnomad_v4_variants(input_path):
+    ds = hl.read_table(input_path)
     g = hl.eval(ds.globals)
 
     subsets = set(m.get("subset", None) for m in g.freq_meta)
@@ -84,7 +84,7 @@ def prepare_gnomad_v4_variants(path):
     ds = ds.annotate(in_autosome_or_par=ds.locus.in_autosome_or_par())
 
     ds = ds.annotate(
-        exome=hl.struct(
+        gnomad=hl.struct(
             freq=hl.struct(
                 **{
                     subset
@@ -124,15 +124,15 @@ def prepare_gnomad_v4_variants(path):
 
     # If a variant is not present in a subset, do not store population frequencies for that subset
     ds = ds.annotate(
-        exome=ds.exome.annotate(
-            freq=ds.exome.freq.annotate(
+        gnomad=ds.gnomad.annotate(
+            freq=ds.gnomad.freq.annotate(
                 **{
                     subset
-                    or "all": ds.exome.freq[subset or "all"].annotate(
+                    or "all": ds.gnomad.freq[subset or "all"].annotate(
                         populations=hl.if_else(
-                            ds.exome.freq[subset or "all"].ac_raw == 0,
-                            hl.empty_array(ds.exome.freq[subset or "all"].populations.dtype.element_type),
-                            ds.exome.freq[subset or "all"].populations,
+                            ds.gnomad.freq[subset or "all"].ac_raw == 0,
+                            hl.empty_array(ds.gnomad.freq[subset or "all"].populations.dtype.element_type),
+                            ds.gnomad.freq[subset or "all"].populations,
                         )
                     )
                     for subset in subsets
@@ -149,7 +149,7 @@ def prepare_gnomad_v4_variants(path):
 
     ds = ds.annotate(
         subsets=hl.set(
-            hl.array([(subset, ds.exome.freq[subset].ac_raw > 0) for subset in subsets if subset is not None])
+            hl.array([(subset, ds.gnomad.freq[subset].ac_raw > 0) for subset in subsets if subset is not None])
             .filter(lambda t: t[1])
             .map(lambda t: t[0])
         )
@@ -163,7 +163,7 @@ def prepare_gnomad_v4_variants(path):
 
     # Get popmax FAFs
     ds = ds.annotate(
-        exome=ds.exome.annotate(
+        gnomad=ds.gnomad.annotate(
             faf95=hl.rbind(
                 hl.sorted(
                     hl.array(
@@ -196,7 +196,7 @@ def prepare_gnomad_v4_variants(path):
                     hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr)),
                 ),
             ),
-        )
+        ),
     )
 
     ds = ds.drop("faf")
@@ -206,7 +206,7 @@ def prepare_gnomad_v4_variants(path):
     ####################
 
     ds = ds.annotate(
-        exome=ds.exome.annotate(
+        gnomad=ds.gnomad.annotate(
             age_distribution=hl.struct(
                 het=ds.histograms.age_hists.age_hist_ht, hom=ds.histograms.age_hists.age_hist_hom
             )
@@ -218,7 +218,7 @@ def prepare_gnomad_v4_variants(path):
     ###################
 
     ds = ds.annotate(
-        exome=ds.exome.annotate(
+        gnomad=ds.gnomad.annotate(
             filters=ds.filters,
             quality_metrics=hl.struct(
                 allele_balance=hl.struct(

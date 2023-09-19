@@ -130,69 +130,69 @@ class Domain:
 
 @attr.define
 class TranscriptConsequence:
-    allele_num: int
-    amino_acids: str
-    appris: str
-    biotype: str
+    allele_num: Union[int, None]
+    amino_acids: Union[str, None]
+    appris: Union[str, None]
+    biotype: Union[str, None]
     canonical: Union[int, None]
-    ccds: str
+    ccds: Union[str, None]
     cdna_start: Union[int, None]
     cdna_end: Union[int, None]
     cds_end: Union[int, None]
     cds_start: Union[int, None]
-    codons: str
+    codons: Union[str, None]
     consequence_terms: List[str]
-    distance: int
+    distance: Union[int, None]
     domains: Union[List[Domain], None]
-    exon: str
-    flags: str
-    gene_id: str
+    exon: Union[str, None]
+    flags: Union[str, None]
+    gene_id: Union[str, None]
     gene_pheno: Union[int, None]
-    gene_symbol: str
-    gene_symbol_source: str
-    hgnc_id: str
-    hgvsc: str
-    hgvsp: str
+    gene_symbol: Union[str, None]
+    gene_symbol_source: Union[str, None]
+    hgnc_id: Union[str, None]
+    hgvsc: Union[str, None]
+    hgvsp: Union[str, None]
     hgvs_offset: Union[int, None]
-    impact: str
-    intron: str
-    lof: str
-    lof_flags: str
-    lof_filter: str
-    lof_info: str
-    mane_select: str
-    mane_plus_clinical: str
+    impact: Union[str, None]
+    intron: Union[str, None]
+    lof: Union[str, None]
+    lof_flags: Union[str, None]
+    lof_filter: Union[str, None]
+    lof_info: Union[str, None]
+    mane_select: Union[str, None]
+    mane_plus_clinical: Union[str, None]
     mirna: Union[List[str], None]
-    polyphen_prediction: str
+    polyphen_prediction: Union[str, None]
     polyphen_score: Union[float, None]
     protein_end: Union[int, None]
     protein_start: Union[int, None]
-    protein_id: str
+    protein_id: Union[str, None]
     sift_prediction: Union[str, None]
     sift_score: Union[float, None]
-    source: str
-    strand: int
-    transcript_id: str
+    source: Union[str, None]
+    strand: Union[int, None]
+    transcript_id: Union[str, None]
     tsl: Union[int, None]
     uniprot_isoform: Union[List[str], None]
-    variant_allele: str
+    variant_allele: Union[str, None]
 
 
 @attr.define
 class Vep:
-    allele_string: str
-    end: int
-    id: str
-    input: str
+    allele_string: Union[str, None]
+    end: Union[int, None]
+    id: Union[str, None]
+    input: Union[str, None]
     intergenic_consequences: Union[List[Consequence], None]
-    most_severe_consequence: str
+    most_severe_consequence: Union[str, None]
     motif_feature_consequences: Union[List[Consequence], None]
     regulatory_feature_consequences: Union[List[Consequence], None]
-    seq_region_name: str
-    start: int
-    strand: int
+    seq_region_name: Union[str, None]
+    start: Union[int, None]
+    strand: Union[int, None]
     transcript_consequences: List[TranscriptConsequence]
-    variant_class: str
+    variant_class: Union[str, None]
 
 
 @attr.define
