@@ -11,11 +11,11 @@ The gnomAD v3 Hail Table annotations are defined below:
 - **freq_index_dict**: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
 - **faf_index_dict**: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
 - **faf_meta**: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
-- **vep_globals**: Information about VEP annotations. 
+- **vep_globals**: Information about VEP annotations.
   - **vep_version**: VEP version that was run on the callset.
   - **vep_csq_header**: VEP header for VCF export.
   - **vep_help**: Output from vep --help.
-  - **vep_config**: VEP configuration to run VEP with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep).
+  - **vep_config**: VEP configuration to run VEP with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep) by implementing changes in different VEP versions. File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
 - **filtering_model**: The variant filtering model used and its specific cutoffs.
   - **model_name**: Variant filtering model name used in the 'filters' row annotation, indicating the variant was filtered by this model during variant QC.
   - **score_name**: Annotation name of the score used for variant filtering.
