@@ -40,12 +40,12 @@ The gnomAD v3 Hail Table annotations are defined below:
 - **tool_versions**: Versions of in silico predictors used in the callset.
   - **dbsnp_version**: dbSNP version used in the callset.
   - **revel_version**: Rare Exome Variant Ensemble Learner (REVEL) version.
-  - **primateai_3d_version**: PrimateAI-3D version.
+  - **primateai3d_version**: PrimateAI-3D version.
   - **cadd_version**: Combined Annotation Dependent Depletion (CADD) version.
   - **sift_version**: Sorting Intolerant From Tolerant (SIFT) version.
   - **polyphen_version**: Polymorphism Phenotyping v2 (Polyphen-v2) version.
   - **phylop_version**: PhyloP version.
-  - **splice_ai_version**: SpliceAI version.
+  - **spliceai_version**: SpliceAI version.
   - **pangolin_version**: Pangolin version.
 - **README**: Dictionary explaining the `freq_index_dict` and `freq_meta` global annotations.
   
@@ -182,7 +182,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **in_silico_predictors**: Variant prediction annotations. Struct contains prediction scores from multiple in silico predictors for variants that are predicted to be missense, impacting protein function, evolutionarily conserved, or splice-altering. We chose scores for either MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.
   - **revel_max**: Rare Exome Variant Ensemble Learner (REVEL) [score](https://www.cell.com/ajhg/fulltext/S0002-9297(16)30370-6). An ensemble score for predicting the pathogenicity of missense variants (based on 13 other variant predictors). Score predicting the pathogenicity of missense variants with a range of 0 to 1. Variants with higher scores are predicted to be more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
-  - **primateai_3d_max**: A deep neural network-trained [score](https://www.science.org/doi/10.1126/science.abn8197) for classifying pathogenicity of missense variants. Score ranging from 0 to 1 predicting the deleteriousness of missense variants. Higher scores indicate a variant is more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript. 
+  - **primateai3d_max**: A deep neural network-trained [score](https://www.science.org/doi/10.1126/science.abn8197) for classifying pathogenicity of missense variants. Score ranging from 0 to 1 predicting the deleteriousness of missense variants. Higher scores indicate a variant is more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript. 
   - **cadd**: Combined Annotation Dependent Deletion [score](https://academic.oup.com/nar/article/47/D1/D886/5146191) used to predict deleteriousness of SNVs and indels.
     - **phred**: CADD Phred-like scaled C-scores ranging from 1 to 99 based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values indicate increased predicted deleteriousness.
     - **raw_score**: Unscaled CADD scores indicating whether a variant is likely to be "observed" (negative values) vs "simulated" (positive values). Larger values indicate increased predicted deleteriousness.
