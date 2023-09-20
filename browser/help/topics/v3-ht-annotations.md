@@ -15,7 +15,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **vep_version**: VEP version that was run on the callset.
   - **vep_csq_header**: VEP header for VCF export.
   - **vep_help**: Output from vep --help.
-  - **vep_config**: VEP configuration to run VEP with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep) by implementing changes in different VEP versions. File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+  - **vep_config**: VEP configuration to run VEP with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
 - **filtering_model**: The variant filtering model used and its specific cutoffs.
   - **model_name**: Variant filtering model name used in the 'filters' row annotation, indicating the variant was filtered by this model during variant QC.
   - **score_name**: Annotation name of the score used for variant filtering.
