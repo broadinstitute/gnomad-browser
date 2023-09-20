@@ -15,7 +15,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **vep_version**: VEP version that was run on the callset.
   - **vep_csq_header**: VEP header for VCF export.
   - **vep_help**: Output from vep --help.
-  - **vep_config**: VEP configuration to run VEP with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+  - **vep_config**: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
 - **filtering_model**: The variant filtering model used and its specific cutoffs.
   - **model_name**: Variant filtering model name used in the 'filters' row annotation, indicating the variant was filtered by this model during variant QC.
   - **score_name**: Annotation name of the score used for variant filtering.
@@ -35,7 +35,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **freq_meta_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
 - **vrs_version**: The Variant Representation Specification that was used to compute IDs on the callset.
-  - **vrs-python_version**: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
+  - **vrs_python_version**: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
   - **seqrepo_version**: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
 - **tool_versions**: Versions of in silico predictors used in the callset.
   - **dbsnp_version**: dbSNP version used in the callset.
@@ -47,7 +47,7 @@ The gnomAD v3 Hail Table annotations are defined below:
   - **phylop_version**: PhyloP version.
   - **splice_ai_version**: SpliceAI version.
   - **pangolin_version**: Pangolin version.
-  - **README**: Dictionary explaining the `freq_index_dict` and `freq_meta` global annotations.
+- **README**: Dictionary explaining the `freq_index_dict` and `freq_meta` global annotations.
   
 **Row fields**:
 
