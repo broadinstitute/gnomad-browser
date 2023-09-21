@@ -12,6 +12,7 @@ from data_pipeline.datasets.gnomad_v4.types.initial_globals import Globals
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import InitialVariant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as Step1Variant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step2 import Variant as Step2Variant
+from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step3 import Variant as Step3Variant
 
 step1_task = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants")
 
@@ -43,7 +44,6 @@ def test_globals_input_validation():
 def test_validate_variant_input():
     input_path = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
-    # ht = ht.sample(0.1, seed=1234)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, InitialVariant) for variant in result]
 
@@ -59,6 +59,14 @@ def test_validate_step1_output():
 def test_validate_step2_output():
     output_path = gnomad_v4_variant_pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
-    # ht = ht.sample(0.1, seed=1234)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, Step2Variant) for variant in result]
+
+
+def test_validate_step3_output():
+    output_path = gnomad_v4_variant_pipeline.get_task(
+        "annotate_gnomad_v4_exome_transcript_consequences"
+    ).get_output_path()
+    ht = hl.read_table(output_path)
+    result = ht_to_json(ht)
+    [structure_attrs_fromdict(variant, Step3Variant) for variant in result]

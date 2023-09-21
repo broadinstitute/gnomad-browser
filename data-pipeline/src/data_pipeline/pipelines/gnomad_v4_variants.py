@@ -32,10 +32,10 @@ pipeline.add_task(
 # )
 
 pipeline.add_task(
-    "annotate_gnomad_v4_exome_variants",
-    annotate_variants,
-    "/gnomad_v4/gnomad_v4_exome_variants_annotated_1.ht",
-    {
+    name="annotate_gnomad_v4_exome_variants",
+    task_function=annotate_variants,
+    output_path="/gnomad_v4/gnomad_v4_exome_variants_annotated_1.ht",
+    inputs={
         "variants_path": pipeline.get_task("prepare_gnomad_v4_exome_variants"),
         "exome_coverage_path": "tiny_datasets/gnomad_v4_exome_coverage.ht",
         "genome_coverage_path": "tiny_datasets/gnomad_v4_genome_coverage.ht",
@@ -45,22 +45,24 @@ pipeline.add_task(
     },
 )
 
-# pipeline.add_task(
-#     "annotate_gnomad_v4_transcript_consequences",
-#     annotate_transcript_consequences,
-#     "/gnomad_v4/gnomad_v4_variants_annotated_2.ht",
-#     {
-#         "variants_path": pipeline.get_task("annotate_gnomad_v4_variants"),
-#         "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
-#         "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
-#     },
-# )
+pipeline.add_task(
+    name="annotate_gnomad_v4_exome_transcript_consequences",
+    task_function=annotate_transcript_consequences,
+    output_path="/gnomad_v4/gnomad_v4_variants_annotated_2.ht",
+    inputs={
+        "variants_path": pipeline.get_task("annotate_gnomad_v4_exome_variants"),
+        "transcripts_path": "genes/transcripts_grch38_base.ht",
+        "mane_transcripts_path": "genes/mane_select_transcripts.ht"
+        # "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
+        # "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
+    },
+)
 
 ###############################################
 # Outputs
 ###############################################
 
-# pipeline.set_outputs({"variants": "annotate_gnomad_v4_transcript_consequences"})
+pipeline.set_outputs({"variants": "annotate_gnomad_v4_exome_transcript_consequences"})
 
 ###############################################
 # Run
