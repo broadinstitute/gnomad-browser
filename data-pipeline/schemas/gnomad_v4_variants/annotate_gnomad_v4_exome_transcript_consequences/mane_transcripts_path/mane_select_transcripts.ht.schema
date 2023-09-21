@@ -1,0 +1,14 @@
+----------------------------------------
+Global fields:
+    'version': str 
+----------------------------------------
+Row fields:
+    'gene_id': str 
+    'matched_gene_version': str 
+    'ensembl_id': str 
+    'ensembl_version': str 
+    'refseq_id': str 
+    'refseq_version': str 
+----------------------------------------
+Key: ['gene_id']
+----------------------------------------
