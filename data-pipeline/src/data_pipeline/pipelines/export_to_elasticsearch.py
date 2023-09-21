@@ -37,6 +37,7 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
 )
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 
+from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 
 logger = logging.getLogger("gnomad_data_pipeline")
 
@@ -105,6 +106,20 @@ DATASETS_CONFIG = {
             "block_size": 1_000,
         },
     },
+    ##############################################################################################################
+    # gnomAD v4 CNVs
+    ##############################################################################################################
+    "gnomad_v4_cnvs": {
+        "get_table": lambda: hl.read_table(gnomad_v4_cnvs_pipeline.get_output("cnvs").get_output_path()),
+        "args": {
+            "index": "gnomad_v4_cnvs",
+            "index_fields": ["variant_id", "xpos", "xend","genes"],
+            "id_field": "variant_id",
+            "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+
     ##############################################################################################################
     # gnomAD v3
     ##############################################################################################################
