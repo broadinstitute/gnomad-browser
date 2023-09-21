@@ -1,7 +1,6 @@
 import os
 import attr
 from pathlib import Path
-from hail import Optional
 
 DATA_ENV = os.getenv("DATA_ENV", "local")
 
@@ -28,8 +27,8 @@ class DataPaths:
         return cls(**dataset_paths)
 
     def make_local_folder(self):
-        if "gs://" not in self.data_path:
-            Path(self.data_path).mkdir(parents=True, exist_ok=True)
+        if "gs://" not in self.root:
+            Path(self.root).mkdir(parents=True, exist_ok=True)
 
 
 # @attr.define

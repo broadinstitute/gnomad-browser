@@ -1,0 +1,97 @@
+----------------------------------------
+Global fields:
+    'annotations': struct {
+        canonical_transcript: struct {}, 
+        mane_select_transcript: struct {
+            version: str
+        }
+    } 
+----------------------------------------
+Row fields:
+    'gene': struct {
+        interval: interval<locus<GRCh38>>, 
+        gene_id: str, 
+        gene_version: str, 
+        gencode_symbol: str, 
+        chrom: str, 
+        strand: str, 
+        start: int32, 
+        stop: int32, 
+        xstart: int64, 
+        xstop: int64, 
+        exons: array<struct {
+            feature_type: str, 
+            start: int32, 
+            stop: int32, 
+            xstart: int64, 
+            xstop: int64
+        }>, 
+        transcripts: array<struct {
+            interval: interval<locus<GRCh38>>, 
+            transcript_id: str, 
+            transcript_version: str, 
+            gene_id: str, 
+            gene_version: str, 
+            chrom: str, 
+            strand: str, 
+            start: int32, 
+            stop: int32, 
+            xstart: int64, 
+            xstop: int64, 
+            exons: array<struct {
+                feature_type: str, 
+                start: int32, 
+                stop: int32, 
+                xstart: int64, 
+                xstop: int64
+            }>, 
+            reference_genome: str, 
+            refseq_id: str, 
+            refseq_version: str
+        }>, 
+        hgnc_id: str, 
+        symbol: str, 
+        name: str, 
+        previous_symbols: set<str>, 
+        alias_symbols: set<str>, 
+        omim_id: str, 
+        ncbi_id: str, 
+        symbol_upper_case: str, 
+        search_terms: set<str>, 
+        reference_genome: str, 
+        flags: set<str>, 
+        canonical_transcript_id: str, 
+        mane_select_transcript: struct {
+            matched_gene_version: str, 
+            ensembl_id: str, 
+            ensembl_version: str, 
+            refseq_id: str, 
+            refseq_version: str
+        }, 
+        preferred_transcript_id: str, 
+        preferred_transcript_source: str
+    } 
+    'interval': interval<locus<GRCh38>> 
+    'transcript_id': str 
+    'transcript_version': str 
+    'gene_id': str 
+    'gene_version': str 
+    'chrom': str 
+    'strand': str 
+    'start': int32 
+    'stop': int32 
+    'xstart': int64 
+    'xstop': int64 
+    'exons': array<struct {
+        feature_type: str, 
+        start: int32, 
+        stop: int32, 
+        xstart: int64, 
+        xstop: int64
+    }> 
+    'reference_genome': str 
+    'refseq_id': str 
+    'refseq_version': str 
+----------------------------------------
+Key: ['transcript_id']
+----------------------------------------
