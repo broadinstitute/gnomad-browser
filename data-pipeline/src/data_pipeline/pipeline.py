@@ -114,8 +114,17 @@ class Task:
 
     @classmethod
     def create(
-        cls, name: str, task_function: str, output_path: str, inputs: Optional[dict] = {}, params: Optional[dict] = {}
+        cls,
+        name: str,
+        task_function: str,
+        output_path: str,
+        inputs: Optional[dict] = None,
+        params: Optional[dict] = None,
     ):
+        if inputs is None:
+            inputs = {}
+        if params is None:
+            params = {}
         return cls(name, task_function, output_path, inputs, params)
 
     def get_output_path(self):
@@ -129,7 +138,6 @@ class Task:
                 paths.update({k: v.get_output_path()})
             else:
                 logger.info(v)
-                new_path = os.path.join(config.data_paths.root, v)
                 paths.update({k: os.path.join(config.data_paths.root, v)})
 
         return paths
@@ -170,8 +178,17 @@ class Pipeline:
     _outputs: dict = {}
 
     def add_task(
-        self, name: str, task_function: str, output_path: str, inputs: Optional[dict] = {}, params: Optional[dict] = {}
+        self,
+        name: str,
+        task_function: str,
+        output_path: str,
+        inputs: Optional[dict] = None,
+        params: Optional[dict] = None,
     ):
+        if inputs is None:
+            inputs = {}
+        if params is None:
+            params = {}
         task = Task.create(name, task_function, output_path, inputs, params)
         self._tasks[name] = task
         return task
