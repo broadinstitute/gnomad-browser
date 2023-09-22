@@ -1,13 +1,11 @@
 import attr
-from typing import List, Set, Dict, Union
+from typing import List, Set, Union
 
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
     InSilicoPredictors,
     Vep,
-    TranscriptConsequence,
     Rf,
-    InSilicoPredictors,
     Grpmax,
     Locus,
 )
