@@ -57,7 +57,7 @@ HGNC_COLUMNS = [
 
 pipeline.add_download_task(
     "download_hgnc",
-    f"https://www.genenames.org/cgi-bin/download/custom?{'&'.join('col=' + column for column in HGNC_COLUMNS)}&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",
+    f"https://www.genenames.org/cgi-bin/download/custom?{'&'.join('col=' + column for column in HGNC_COLUMNS)}&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",  # noqa
     "/external_sources/hgnc.tsv",
 )
 
@@ -82,8 +82,10 @@ pipeline.add_task(
 ###############################################
 
 # Note: MANE Select transcripts are used to sort variant transcript consequences.
-# If this URL is updated, all GRCh38 variants must be reloaded in Elasticsearch (gnomAD v3, mitochondrial variants, ClinVar GRCh38).
-# Updating this file without reloading variants may result in an unexpected order of transcript consequences for some variants.
+# If this URL is updated, all GRCh38 variants must be reloaded in
+# Elasticsearch (gnomAD v3, mitochondrial variants, ClinVar GRCh38).
+# Updating this file without reloading variants may result in
+# an unexpected order of transcript consequences for some variants.
 MANE_TRANSCRIPTS_URL = (
     "https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/release_0.95/MANE.GRCh38.v0.95.summary.txt.gz"
 )

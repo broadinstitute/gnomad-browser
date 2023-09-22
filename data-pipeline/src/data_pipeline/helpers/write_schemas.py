@@ -7,10 +7,6 @@ from data_pipeline.pipelines.gnomad_v4_variants import (
     pipeline as gnomad_v4_variant_pipeline,
 )
 
-from data_pipeline.pipeline import Task
-
-from data_pipeline.config import config
-
 
 def make_dir(path):
     Path(path).mkdir(parents=True, exist_ok=True)

@@ -1,15 +1,13 @@
 import attr
-from typing import List, Dict, Optional, Set, Tuple, Union
+from typing import List, Set, Union
 
 
-# Locus Type
 @attr.define
 class Locus:
     contig: str
     position: int
 
 
-# Various Structures
 @attr.define
 class Frequency:
     AC: int
@@ -28,51 +26,10 @@ class Grpmax:
     faf95: Union[float, None]
 
 
-# Many rows in sample data are (NA, NA,... etc)
-# +---------------------------------------------------------------------------------------------+
-# | grpmax                                                                                      |
-# +---------------------------------------------------------------------------------------------+
-# | array<struct{AC: int32, AF: float64, AN: int32, homozygote_count: int32, grp: str, faf95... |
-# +---------------------------------------------------------------------------------------------+
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(1,4.07e-04,2456,0,"eas",0.00e+00),(1,4.07e-04,2456,0,"eas",0.00e+00)]                     |
-# | [(1,4.39e-05,22760,0,"afr",0.00e+00),(1,4.39e-05,22760,0,"afr",0.00e+00)]                   |
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(2,3.78e-05,52912,0,"nfe",6.27e-06),(2,3.78e-05,52912,0,"nfe",6.27e-06)]                   |
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(NA,NA,NA,NA,NA,NA),(NA,NA,NA,NA,NA,NA)]                                                   |
-# | [(1,2.16e-04,4632,0,"nfe",0.00e+00),(1,2.16e-04,4632,0,"nfe",0.00e+00)]                     |
-# +---------------------------------------------------------------------------------------------+
-
-
 @attr.define
 class Faf:
     faf95: float
     faf99: float
-
-
-# In [71]: ht.faf.take(1)
-# Out[71]:
-# [[Struct(faf95=0.0, faf99=0.0),
-#   Struct(faf95=0.0, faf99=0.0),
-#   Struct(faf95=0.0, faf99=0.0),
-#   Struct(faf95=0.0, faf99=0.0),
-#   Struct(faf95=0.0, faf99=0.0),
-#   Struct(faf95=0.0, faf99=0.0),
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None,
-#   None]]
 
 
 @attr.define

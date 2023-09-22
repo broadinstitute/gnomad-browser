@@ -1,16 +1,12 @@
 from typing import List, Union, Set
 import attr
-from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step2 import Coverage
 
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import ColocatedVariants, Gnomad
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
     InSilicoPredictors,
-    Vep,
     Domain,
-    TranscriptConsequence,
     Rf,
-    InSilicoPredictors,
     Grpmax,
     Locus,
 )

@@ -13,7 +13,8 @@ pipeline.add_task(
     "/gnomad_v2/gnomad_v2_lof_curation_results.ht",
     {"genes_path": genes_pipeline.get_output("genes_grch37")},
     {
-        # If a result for a variant/gene pair is present in more than one file, the result in the first file in this list takes precedence.
+        # If a result for a variant/gene pair is present in more than one file,
+        # the result in the first file in this list takes precedence.
         "curation_result_paths": [
             "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/NSD1_curation_results.csv",
             "gs://gcp-public-data--gnomad/truth-sets/source/lof-curation/gnomAD_addendum_curation_results.csv",
