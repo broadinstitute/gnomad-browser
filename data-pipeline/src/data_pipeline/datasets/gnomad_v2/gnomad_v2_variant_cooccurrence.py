@@ -4,8 +4,10 @@ from data_pipeline.data_types.variant import variant_id
 
 
 def fix_haplotype_counts(genotype_counts, haplotype_counts):
-    # hl.experimental.haplotype_freq_em returns all NaNs in some cases, such as when one of the two variants does not occur.
-    # However, we only need to use it when there are samples that are heterozygous for both variants (genotype_counts[4] > 0).
+    # hl.experimental.haplotype_freq_em returns all NaNs in some cases
+    # such as when one of the two variants does not occur.
+    # However, we only need to use it when there are samples that are
+    # heterozygous for both variants (genotype_counts[4] > 0).
     # In other cases, we can directly calculate haplotype counts.
     return hl.if_else(
         genotype_counts[4] > 0,

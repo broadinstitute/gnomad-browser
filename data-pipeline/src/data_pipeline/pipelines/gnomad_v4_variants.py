@@ -1,6 +1,5 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
-from data_pipeline.config import config
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import prepare_gnomad_v4_variants
 
 from data_pipeline.data_types.variant import annotate_variants, annotate_transcript_consequences

@@ -1,5 +1,4 @@
-from typing import List
-from cattrs import structure, transform_error, structure_attrs_fromdict
+from cattrs import structure, structure_attrs_fromdict
 import hail as hl
 import json
 from loguru import logger

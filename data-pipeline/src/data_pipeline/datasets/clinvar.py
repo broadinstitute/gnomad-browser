@@ -61,7 +61,7 @@ def _parse_submission(submission_element, trait_mapping_list_element):
         if trait_mapping_list_element is not None:
             xref_elements = trait_element.findall("XRef")
             for xref_element in xref_elements:
-                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{xref_element.attrib['ID']}']"
+                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{xref_element.attrib['ID']}']"  # noqa
                 mapping_element = trait_mapping_list_element.find(selector)
                 if mapping_element is not None:
                     break
@@ -69,7 +69,7 @@ def _parse_submission(submission_element, trait_mapping_list_element):
         if mapping_element is None:
             preferred_name_element = trait_element.find("./Name/ElementValue[@Type='Preferred']")
             if preferred_name_element is not None and trait_mapping_list_element is not None:
-                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{preferred_name_element.text}\"]"
+                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{preferred_name_element.text}\"]"  # noqa
                 mapping_element = trait_mapping_list_element.find(selector)
 
         if mapping_element is None:
@@ -79,7 +79,7 @@ def _parse_submission(submission_element, trait_mapping_list_element):
                     preferred_name_element = name_element
 
                 if trait_mapping_list_element is not None:
-                    selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{name_element.text}\"]"
+                    selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{name_element.text}\"]"  # noqa
                     mapping_element = trait_mapping_list_element.find(selector)
                     if mapping_element:
                         break
@@ -112,7 +112,7 @@ def _parse_variant(variant_element):
                 variant["locations"] = {}
                 allele_element = variant_element.findall("./InterpretedRecord/SimpleAllele")
                 print(
-                    f' Skipping variant with Allele ID: {allele_element[0].attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'
+                    f' Skipping variant with Allele ID: {allele_element[0].attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'  # noqa
                 )
                 break
             variant["locations"][element.attrib["Assembly"]] = {
