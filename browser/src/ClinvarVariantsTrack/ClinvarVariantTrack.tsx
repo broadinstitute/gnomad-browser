@@ -238,10 +238,10 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
                 value={starFilter}
                 onChange={(e) => setStarFilter(Number(e.target.value))}
               >
-                <option value={0}> All Stars </option>
-                <option value={1}> 1+ Stars </option>
-                <option value={2}> 2+ Stars </option>
-                <option value={3}> 3+ Stars </option>
+                <option value={0}> 0-4 Stars </option>
+                <option value={1}> {'>'}=1 Stars </option>
+                <option value={2}> {'>'}=2 Stars </option>
+                <option value={3}> {'>'}=3 Stars </option>
                 <option value={4}> 4 Stars </option>
               </select>
             </label>

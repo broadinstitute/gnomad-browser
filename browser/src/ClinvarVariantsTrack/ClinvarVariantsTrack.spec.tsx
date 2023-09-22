@@ -66,10 +66,10 @@ describe('Clinvar Variants Track', () => {
     )
 
     const filterSelect = screen.getByRole('combobox')
-    const allStarOpt = screen.getByRole('option', { name: 'All Stars' }) as HTMLOptionElement
-    const OnePlusStarOpt = screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
-    const TwoPlusStarOpt = screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
-    const ThreePlusStarOpt = screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
+    const allStarOpt = screen.getByRole('option', { name: '0-4 Stars' }) as HTMLOptionElement
+    const OnePlusStarOpt = screen.getByRole('option', { name: '>=1 Stars' }) as HTMLOptionElement
+    const TwoPlusStarOpt = screen.getByRole('option', { name: '>=2 Stars' }) as HTMLOptionElement
+    const ThreePlusStarOpt = screen.getByRole('option', { name: '>=3 Stars' }) as HTMLOptionElement
     const FourStarOpt = screen.getByRole('option', { name: '4 Stars' }) as HTMLOptionElement
 
     expect(allStarOpt.selected).toBe(true)
@@ -113,17 +113,17 @@ describe('Clinvar Variants Track', () => {
     expect(screen.getByText('ClinVar variants (5)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
-      screen.getByRole('option', { name: '1+ Stars' }) as HTMLOptionElement
+      screen.getByRole('option', { name: '>=1 Stars' }) as HTMLOptionElement
     )
     expect(screen.getByText('ClinVar variants (4)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
-      screen.getByRole('option', { name: '2+ Stars' }) as HTMLOptionElement
+      screen.getByRole('option', { name: '>=2 Stars' }) as HTMLOptionElement
     )
     expect(screen.getByText('ClinVar variants (3)')).not.toBeNull()
     await user.selectOptions(
       filterSelect,
-      screen.getByRole('option', { name: '3+ Stars' }) as HTMLOptionElement
+      screen.getByRole('option', { name: '>=3 Stars' }) as HTMLOptionElement
     )
     expect(screen.getByText('ClinVar variants (2)')).not.toBeNull()
     await user.selectOptions(
