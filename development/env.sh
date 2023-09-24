@@ -52,4 +52,4 @@ if [ $with_browser ]; then
   fi
 fi
 
-docker-compose --project-directory="$(pwd)" $compose_config "$@"
+docker compose --project-directory="$(pwd)" $compose_config "$@"
