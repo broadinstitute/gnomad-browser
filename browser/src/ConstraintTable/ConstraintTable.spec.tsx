@@ -6,7 +6,7 @@ import geneFactory from '../__factories__/Gene'
 import transcriptFactory from '../__factories__/Transcript'
 
 import { forAllDatasets, forAllDatasetsExcept } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 import ConstraintTable from './ConstraintTable'
 import { ExacConstraint } from './ExacConstraintTable'
@@ -46,9 +46,9 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a minimal gene', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable datasetId={datasetId} geneOrTranscript={geneFactory.build()} />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -57,9 +57,9 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a minimal transcript', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable datasetId={datasetId} geneOrTranscript={transcriptFactory.build()} />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -68,12 +68,12 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a mitochondrial gene', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable
             datasetId={datasetId}
             geneOrTranscript={geneFactory.build({ chrom: 'M' })}
           />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -82,12 +82,12 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a mitochondrial transcript', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable
             datasetId={datasetId}
             geneOrTranscript={transcriptFactory.build({ chrom: 'M' })}
           />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -96,26 +96,26 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
 
 test('ConstraintTable with exac dataset and gene with available constraints has no unexpected changes', () => {
   const tree = renderer.create(
-    withDummyRouter(
+    <BrowserRouter>
       <ConstraintTable
         datasetId="exac"
         geneOrTranscript={geneFactory.build({ exac_constraint: exacConstraintFactory.build() })}
       />
-    )
+    </BrowserRouter>
   )
   expect(tree).toMatchSnapshot()
 })
 
 test('ConstraintTable with exac dataset and transcript with available constraints has no unexpected changes', () => {
   const tree = renderer.create(
-    withDummyRouter(
+    <BrowserRouter>
       <ConstraintTable
         datasetId="exac"
         geneOrTranscript={transcriptFactory.build({
           exac_constraint: exacConstraintFactory.build(),
         })}
       />
-    )
+    </BrowserRouter>
   )
   expect(tree).toMatchSnapshot()
 })
@@ -124,14 +124,14 @@ forAllDatasetsExcept(['exac'], 'ConstraintTable with "%s" dataset selected', (da
   describe('and gene with available constraint', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable
             datasetId={datasetId}
             geneOrTranscript={geneFactory.build({
               gnomad_constraint: gnomadConstraintFactory.build(),
             })}
           />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -140,14 +140,14 @@ forAllDatasetsExcept(['exac'], 'ConstraintTable with "%s" dataset selected', (da
   describe('and transcript with available constraint', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <ConstraintTable
             datasetId={datasetId}
             geneOrTranscript={transcriptFactory.build({
               gnomad_constraint: gnomadConstraintFactory.build(),
             })}
           />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })

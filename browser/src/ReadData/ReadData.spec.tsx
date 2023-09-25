@@ -10,7 +10,7 @@ import 'jest-styled-components'
 import { readsApiOutputFactory, exomeReadApiOutputFactory } from '../__factories__/ReadData'
 import ReadDataContainer from './ReadData'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 const variantId = '123-45-A-G'
 
@@ -69,7 +69,9 @@ forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
     })
 
     const tree = renderer.create(
-      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
+      <BrowserRouter>
+        <ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })
@@ -85,8 +87,11 @@ forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
     })
 
     const tree = renderer.create(
-      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
+      <BrowserRouter>
+        <ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />
+      </BrowserRouter>
     )
+
     expect(tree).toMatchSnapshot()
   })
 
@@ -101,7 +106,9 @@ forAllDatasets('ReadData with "%s" dataset selected', (datasetId) => {
     })
 
     renderer.create(
-      withDummyRouter(<ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />)
+      <BrowserRouter>
+        <ReadDataContainer datasetId={datasetId} variantIds={[variantId]} />
+      </BrowserRouter>
     )
 
     const { query } = mockApiCalls()[0]

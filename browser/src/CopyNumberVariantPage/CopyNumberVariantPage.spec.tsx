@@ -6,7 +6,7 @@ import Query, { BaseQuery } from '../Query'
 import { forDatasetsMatching } from '../../../tests/__helpers__/datasets'
 import CopyNumberVariantPage from './CopyNumberVariantPage'
 import cnvFactory from '../__factories__/CopyNumberVariant'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -50,9 +50,9 @@ forDatasetsMatching(/gnomad_cnv_r4/, 'CopyNumberVariantPage with dataset %s', (d
         }),
       })
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <CopyNumberVariantPage datasetId={datasetId} variantId={variant.variant_id} />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })

@@ -6,9 +6,13 @@ import renderer from 'react-test-renderer'
 
 import DownloadsPage from './DownloadsPage'
 
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('Downloads Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<DownloadsPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <DownloadsPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })
