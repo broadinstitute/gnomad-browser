@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer'
 
 import { jest, describe, expect, test } from '@jest/globals'
 import { mockQueries } from '../../../tests/__helpers__/queries'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 import Query, { BaseQuery } from '../Query'
 
@@ -70,7 +70,9 @@ describe.each(datasetsWithoutCoverage)(
   (datasetId) => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(<MitochondrialVariantsInRegion datasetId={datasetId} region={region} />)
+        <BrowserRouter>
+          <MitochondrialVariantsInRegion datasetId={datasetId} region={region} />
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })

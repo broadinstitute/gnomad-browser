@@ -6,9 +6,13 @@ import renderer from 'react-test-renderer'
 
 import NavBar from './NavBar'
 
-import { withDummyRouter } from '../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('NavBar has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<NavBar />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <NavBar />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })
