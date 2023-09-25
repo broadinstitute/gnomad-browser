@@ -4,7 +4,7 @@ import { jest, expect, test } from '@jest/globals'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 import transcriptFactory from '../__factories__/Transcript'
 import TranscriptPageContainer from './TranscriptPageContainer'
@@ -64,10 +64,11 @@ forAllDatasets('TranscriptPageContainer with dataset %s', (datasetId) => {
     })
 
     const tree = renderer.create(
-      withDummyRouter(
+      <BrowserRouter>
         <TranscriptPageContainer datasetId={datasetId} transcriptId={transcript.transcript_id} />
-      )
+      </BrowserRouter>
     )
+
     expect(tree).toMatchSnapshot()
   })
 })

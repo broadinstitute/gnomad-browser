@@ -6,7 +6,7 @@ import renderer from 'react-test-renderer'
 
 import TeamPage from './TeamPage'
 
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('./headshotLoader', () => ({
   headshotImages: () => {
@@ -15,6 +15,10 @@ jest.mock('./headshotLoader', () => ({
 }))
 
 test('Team Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<TeamPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <TeamPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })

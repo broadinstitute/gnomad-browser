@@ -6,7 +6,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import TranscriptPage from './TranscriptPage'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 import transcriptFactory from '../__factories__/Transcript'
 
@@ -22,7 +22,9 @@ forAllDatasets('TranscriptPage with dataset "%s"', (datasetId) => {
   test('has no unexpected changes', () => {
     const transcript = transcriptFactory.build()
     const tree = renderer.create(
-      withDummyRouter(<TranscriptPage datasetId={datasetId} transcript={transcript} />)
+      <BrowserRouter>
+        <TranscriptPage datasetId={datasetId} transcript={transcript} />
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })
@@ -56,7 +58,9 @@ describe.each([
   test('queries the API with the correct parameters', async () => {
     const transcript = transcriptFactory.build()
     renderer.create(
-      withDummyRouter(<TranscriptPage datasetId={datasetId} transcript={transcript} />)
+      <BrowserRouter>
+        <TranscriptPage datasetId={datasetId} transcript={transcript} />
+      </BrowserRouter>
     )
     const coverageQueries = apiCallsMatching(fetch, 'query TranscriptCoverage')
     expect(coverageQueries).toHaveLength(1)
