@@ -5,10 +5,13 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 import StatsPage from './StatsPage'
-
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('Stats Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<StatsPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <StatsPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })

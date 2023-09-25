@@ -576,7 +576,6 @@ const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
   } else if (typeof variantIds === 'string') {
     variantIds = [variantIds]
   }
-
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>

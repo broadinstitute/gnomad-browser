@@ -18,7 +18,7 @@
     "typecheck:watch": "yarn run tsc -w --noEmit"
   },
   "engines": {
-    "node": "^14.17.0 <15.0.0"
+    "node": "^18.17.1"
   },
   "workspaces": [
     "browser",
@@ -80,7 +80,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "volta": {
-    "node": "14.20.0"
+    "node": "18.17.1"
   },
   "dependencies": {
     "@types/http-errors": "^2.0.1",

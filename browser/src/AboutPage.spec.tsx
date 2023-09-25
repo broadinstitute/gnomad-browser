@@ -6,9 +6,13 @@ import renderer from 'react-test-renderer'
 
 import AboutPage from './AboutPage'
 
-import { withDummyRouter } from '../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('About Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<AboutPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <AboutPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })
