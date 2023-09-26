@@ -127,7 +127,6 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   })
   const { sortKey, sortOrder } = sortState
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'newSortKey' implicitly has an 'any' typ... Remove this comment to see the full error message
   const setSortKey = useCallback((newSortKey) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
@@ -158,13 +157,12 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
   const shouldHighlightTableRow = useCallback(
-    (variant: StructuralVariantPropType) => {
+    (variant) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
   )
 
-  // @ts-expect-error TS(7031) FIXME: Binding element 'scrollOffset' implicitly has an '... Remove this comment to see the full error message
   const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
     if (tracks.current && !scrollUpdateWasRequested) {
       ;(tracks.current as any).scrollTo(
@@ -173,7 +171,6 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
     }
   }, [])
 
-  // @ts-expect-error TS(7031) FIXME: Binding element 'scrollOffset' implicitly has an '... Remove this comment to see the full error message
   const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
     if (table.current && !scrollUpdateWasRequested) {
       ;(table.current as any).scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
@@ -182,7 +179,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
 
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
-    (variant: StructuralVariantPropType) => {
+    (variant) => {
       if (colorKey === 'type') {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         return svTypeColors[variant.type] || svTypeColors.OTH

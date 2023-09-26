@@ -17,7 +17,6 @@ import VariantTrack from '../VariantList/VariantTrack'
 import ExportMitochondrialVariantsButton from './ExportMitochondrialVariantsButton'
 import filterMitochondrialVariants from './filterMitochondrialVariants'
 import MitochondrialVariantFilterControls from './MitochondrialVariantFilterControls'
-import StructrualVariantPropType from './MitochondrialVariantPropType'
 import mitochondrialVariantTableColumns, {
   getColumnsForContext,
 } from './mitochondrialVariantTableColumns'
@@ -114,7 +113,6 @@ const MitochondrialVariants = ({
   })
   const { sortKey, sortOrder } = sortState
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'newSortKey' implicitly has an 'any' typ... Remove this comment to see the full error message
   const setSortKey = useCallback((newSortKey) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
@@ -146,7 +144,6 @@ const MitochondrialVariants = ({
   const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
 
   const shouldHighlightTableRow = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
     (variant) => {
       return variant.variant_id === variantHoveredInTrack
     },
@@ -170,7 +167,6 @@ const MitochondrialVariants = ({
   )
 
   const [positionLastClicked, setPositionLastClicked] = useState(null)
-  // @ts-expect-error TS(7006) FIXME: Parameter 'position' implicitly has an 'any' type.
   const onNavigatorClick = useCallback((position) => {
     setSortState({
       sortKey: 'variant_id',
