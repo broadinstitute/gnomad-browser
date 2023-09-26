@@ -64,13 +64,9 @@ export function getFirstIndexFromSearchText(
   searchFilter: VariantFilterState,
   variantSearched: Variant[],
   variantsTableColumns: any,
-  variantWindow: number[],
+  variantWindow: number[]
 ) {
-  const searchedVariants = getFilteredVariants(
-    searchFilter,
-    variantSearched,
-    variantsTableColumns
-  )
+  const searchedVariants = getFilteredVariants(searchFilter, variantSearched, variantsTableColumns)
 
   if (searchedVariants.length > 0) {
     const firstVariant = searchedVariants[0]
@@ -210,6 +206,7 @@ const Variants = ({
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
   const onSearchResult = createCallback('variant_id', setFilter)
 
+  // When a user clicks on the bubble track, update the position in the variant table
   useEffect(() => {
     if (positionLastClicked === null) {
       return
@@ -235,22 +232,31 @@ const Variants = ({
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
-
+  // When searching the table with context, scroll to the first hit whenever the
+  //   search text changes
   useEffect(() => {
+    if (!filter.includeContext) {
+      return
+    }
+
     if (filter.searchText === '') {
       setCurrentSearchIndex(-1)
       return
     }
 
-    const searchIndex = getFirstIndexFromSearchText(filter, renderedVariants, renderedTableColumns, visibleVariantWindow)
+    const searchIndex = getFirstIndexFromSearchText(
+      filter,
+      renderedVariants,
+      renderedTableColumns,
+      visibleVariantWindow
+    )
 
     if (searchIndex !== -1) {
       setCurrentSearchIndex(searchIndex)
     }
-    
-    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-    table.current.scrollToDataRow(searchIndex);
 
+    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+    table.current.scrollToDataRow(searchIndex)
   }, [filter.searchText]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
