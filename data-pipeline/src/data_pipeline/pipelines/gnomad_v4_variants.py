@@ -1,15 +1,23 @@
+from data_pipeline.config import PipelineConfig
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
-from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import prepare_gnomad_v4_variants
+from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
+    prepare_gnomad_v4_variants,
+)
 
-from data_pipeline.data_types.variant import annotate_variants, annotate_transcript_consequences
+from data_pipeline.data_types.variant import (
+    annotate_variants,
+    annotate_transcript_consequences,
+)
 
 # from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as coverage_pipeline
 
 # from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
 
-pipeline = Pipeline(name="gnomad_v4_variants")
+pipeline = Pipeline(
+    config=PipelineConfig.create(name="gnomad_v4_variants", input_root="data_in", output_root="data_out")
+)
 
 pipeline.add_task(
     name="prepare_gnomad_v4_exome_variants",
@@ -18,7 +26,6 @@ pipeline.add_task(
     inputs={
         "input_path": "external_datasets/mock_v4_release.ht",
     },
-    # params={"sequencing_type": "exome"},
 )
 
 # pipeline.add_task(
