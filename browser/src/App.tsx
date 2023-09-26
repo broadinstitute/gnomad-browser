@@ -112,7 +112,6 @@ const App = () => {
        */}
       <Route
         path="/"
-        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
         render={({ location }: any) => {
           scrollToAnchorOrStartOfPage(location)
         }}

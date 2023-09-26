@@ -124,7 +124,6 @@ const TableColumnSelectionModal = ({
   )
 
   const onDragEnd = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'result' implicitly has an 'any' type.
     (result) => {
       if (!result.destination) {
         return

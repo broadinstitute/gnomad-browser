@@ -151,7 +151,6 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
     )
 
     const onChangeZoomRegion = useCallback(
-      // @ts-expect-error TS(7006) FIXME: Parameter 'newZoomRegion' implicitly has an 'any' ... Remove this comment to see the full error message
       (newZoomRegion) => {
         setZoomRegion(newZoomRegion)
         debouncedOnChangeZoomRegionCallback(newZoomRegion)
