@@ -55,31 +55,50 @@ To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
 After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
 
+## Before creating a deployment
+
+Before deploying a new version of the browser, either a demo, or to production:
+
+1. Check out the branch you wish to deploy
+
+2. Ensure that the `Docker CLI` is running
+
+3. Ensure you are connected to the Broad's network, either by being in the office, or by use of the non-split VPN
+
+4. Ensure your `deploy_config.json` file points to the correct GCP project
+
+5. Ensure that your `gcloud config` points to the correct GCP project
+
+   - `gcloud config get project` to see your current configs project
+   - `gcloud config set project <DESIRED-PROJECT>` to set your configs project
+
+6. Ensure that your `kubectl` config points to the correct cluster
+   - `kubectl config get-contexts` to see your configs cluster
+   - `kubectl config use-context <DESIRED-CLUSTER>` to set your configs cluster
+
 ## Create Demo Browser Deployment
 
-This is very similar to creating a new deployment (NewDeployment.md), particularly in the browser/api section.
+Demo deployments are staging environments independently that let stakeholders preview and approve features before the features go to production.
 
-However, there is additional cleanup that should be performed as demo instances are typically temporary, and should be removed after their purpose is served.
+After a particular demo instance has served its purpose, there are several cleanup steps that should be performed.
 
 There exist several Python scripts in the `deployctl` package that make this process straightforward. These files are located in `gnomad-browser/deploy/deployctl/subcommands`.
 
-### Create Browser/API Demo Deployment
+### Deploying a demo
 
-Have the branch you wish to deploy as a demo as the active branch
+0. Double check the [pre-deployment steps](#before-creating-a-deployment)
 
-Ensure that `Docker CLI` is running, and that you are connected to the Broad's network, either by being in the office, or by use of the VPN.
+1. Create and push Docker Images to the [Google Container Registry](https://console.cloud.google.com/gcr/images/exac-gnomad?project=exac-gnomad) with:
 
-- Create and push Docker Images to the [Google Container Registry](https://console.cloud.google.com/gcr/images/exac-gnomad?project=exac-gnomad) with:
+   ```
+   . /deployctl images build --push --image-tag <OPTIONAL-NAMED-TAG>
+   ```
 
-  ```
-  ./deployctl images build --push
-  ```
+2. Create a local manifest file that describes the deployment with:
 
-- Create a local manifest file that describes the deployment with:
-
-  ```
-  ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
-  ```
+   ```
+   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
+   ```
 
 - 'Apply' the deployment, assigning pods to run it in the [Google Kubernetes Engine](https://console.cloud.google.com/kubernetes/workload/overview?project=exac-gnomad):
 
@@ -99,19 +118,19 @@ Ensure that `Docker CLI` is running, and that you are connected to the Broad's n
   kubectl describe ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
   ```
 
- It typically takes ~5 minutes for the IP to resolve to the new deployment
+It typically takes ~5 minutes for the IP to resolve to the new deployment
 
 **Where:**
 
 - `<BROWSER_IMAGE_TAG>` and `<API_IMAGE_TAG>`
-Are the tags assigned to the docker images, these can be found in the Container Registry, and in your command line when they are created. The script '`deployments create`' names them with the git commit hash, and the git branch name by default. i.e. '`c4baa347-add-team-page`'
-Both of these tags are optional, if one or either are not provided, the most recent images will be used by default.
+  Are the tags assigned to the docker images, these can be found in the Container Registry, and in your command line when they are created. The script '`deployments create`' names them with the git commit hash, and the git branch name by default. i.e. '`c4baa347-add-team-page`'
+  Both of these tags are optional, if one or either are not provided, the most recent images will be used by default.
 
 - `<DEPLOYMENT_NAME>` is what you wish to call the deployment, i.e. '`team-demo`'
 
 ### Clean Up Old Demo Deployments
 
-In general, it's good to clean up old deployments that are still around after serving their purpose, due to a limited amount of resources in GKE.
+After demo deployments have served their purpose, their resources should be cleaned up.
 
 - Check which deployments are being used in production with:
 
@@ -149,112 +168,110 @@ In general, it's good to clean up old deployments that are still around after se
   kubectl delete ingress <INGRESS_NAME>
   ```
 
-## Create and Update Browser Deployment
+## Create and Update Browser Production Deployment
 
-Ensure that `Docker CLI` is running, that you are connected to the Broad's network, either by being in the office, or by use of the VPN, and that kubernetes is configured to the `exac-gnomad` project.
+The production gnomad browser uses a [blue/green deployment](https://martinfowler.com/bliki/BlueGreenDeployment.html) pattern. Deploying to production entails creating a new deployment based off the current state of the `main` branch, called "blue" or "green" based of what is currently serving traffic in production, and swapping the production ingress to point to the new blue/green deployment.
 
-- View your kubernetes configurations
+### Deploying and updating production
 
-  ```
-  kubectl config get-contexts
-  ```
+0. Double check the [pre-deployment steps](#before-creating-a-deployment)
 
-- If the current cluster is not pointed to the `exac-gnomad` project
+   - Production deployments should be based off the state of the `main` branch, and not feature branches, for reproducibility
 
-  ```
-  kubectl config use-context gke_exac-gnomad_us-east1-c_gnomad-prod
-  ```
+1. Create and push Docker Images to the [Google Container Registry](https://console.cloud.google.com/gcr/images/exac-gnomad?project=exac-gnomad) with:
 
-Have the most updated version of the `main` branch as the active branch
+   ```
+   . /deployctl images build --push
+   ```
 
-- Create and push Docker Images to the [Google Container Registry](https://console.cloud.google.com/gcr/images/exac-gnomad?project=exac-gnomad) with:
+2. Check all current deployments (both `cluster` pods running and `local` manifests) with:
 
-  ```
-  ./deployctl images build --push
-  ```
+   ```
+   ./deployctl production describe
+   ```
 
-    The response of this command should return something like this:
+3. Check the name (blue/green) of the production deployment currently serving traffic `<DEPLOYMENT_NAME>`
 
-    ```
-  Pushed gcr.io/exac-gnomad/gnomad-browser:<BROWSER_IMAGE_TAG>
-    Pushed gcr.io/exac-gnomad/gnomad-api:<API_IMAGE_TAG>
-  ```
+   ```
+   ./deployctl production describe
+   ```
 
-- Determine `<DEPLOYMENT_NAME>`
+4. Create a deployment that is the opposite (blue/green) of what is serving traffic in production
 
-  ```
-  ./deployctl production describe
-  ```
+   - If the active browser deployment is `blue`, create a new `green` deployment
+   - If the active browser deployment is `green`, create a new `blue` deployment
 
-  If the active browser deployment is blue then `<DEPLOYMENT_NAME> = green`.
-  If the active browser deployment is green then `<DEPLOYMENT_NAME> = blue`.
+5. Remove the old blue/green deployment not currently serving traffic in production if needed
 
-- Clean local deployments of  `<DEPLOYMENT_NAME>` by viewing the current local deployments:
+   - Remove the pods serving the old deployment from the cluster
 
-  ```
-  ./deployctl deployments list
-  ```
+     ```
+     ./deployctl deployments delete <DEPLOYMENT_NAME>
+     ```
 
-  - If there are `local configurations` of `<DEPLOYMENT_NAME>`:
+   - Remove the old local manifest file
+     ```
+     ./deployctl deployments delete <DEPLOYMENT_NAME>
+     ```
 
-    ```
-    ./deployctl deployments clean <DEPLOYMENT_NAME>
-    ```
+6. Create a local blue/green manifest file to describe the deployment:
 
-- Create a local manifest file that describes the deployment with:
+   ```
+   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
+   ```
 
-  ```
-  ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
-  ```
+7. 'Apply' the new deployment, assigning pods to run it in the [Google Kubernetes Engine](https://console.cloud.google.com/kubernetes/workload/overview?project=exac-gnomad):
 
-- 'Apply' the deployment, assigning pods to run it in the [Google Kubernetes Engine](https://console.cloud.google.com/kubernetes/workload/overview?project=exac-gnomad):
+   ```
+   ./deployctl deployments apply <DEPLOYMENT_NAME>
+   ```
 
-  ```
-  ./deployctl deployments apply <DEPLOYMENT_NAME>
-  ```
+8. Apply an ingress, allowing access to the pods via an IP address that gets assigned:
 
-- Apply an ingress, allowing access to the demo via an IP address that gets assigned:
+   ```
+   ./deployctl demo apply-ingress <DEPLOYMENT_NAME>
+   ```
 
-  ```
-  ./deployctl demo apply-ingress <DEPLOYMENT_NAME>
-  ```
+   - Check the status of the ingress with:
 
-- Check the status of the ingress with:
+     ```
+     kubectl describe ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
+     ```
 
-  ```
-  kubectl describe ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
-  ```
+     It typically takes ~5 minutes for the IP to resolve to the new deployment
 
-  It typically takes ~5 minutes for the IP to resolve to the new deployment
+   - Optionally, double check the blue/green deployment via this ingress before swapping production over
 
-- Update the production deployment
+9. Update the production deployment
 
-    ```
-    ./deployctl production update --browser-deployment <DEPLOYMENT_NAME>
-    ```
+   ```
+   ./deployctl production update --browser-deployment <DEPLOYMENT_NAME>
+   ```
 
-- Finally, check that the active browser deployment is the current `<DEPLOYMENT_NAME>`
+10. Double check the production deployment updated
 
     ```
     ./deployctl production describe
     ```
 
-- Delete the old deployment.
+11. When it is clear the new deployment is stable, delete the old blue/green deployment to save resources
 
-  ```
-  ./deployctl deployments delete <old-deployment-name>
-  ```
+    - It is typically useful to leave the old deployment up for a few days, as it makes a rollback very quick to perform. Once it is clear the new deployment is stable, the old deployment can safely be taken down.
+
+      ```
+      . /deployctl deployments delete <old-deployment-name>
+      ```
 
 **Where:**
 
 - `<BROWSER_IMAGE_TAG>` and `<API_IMAGE_TAG>`
-Are the tags assigned to the docker images, these can be found in the Container Registry, and in your command line when they are created.
+  Are the tags assigned to the docker images, these can be found in the Container Registry, and in your command line when immediately after the images are pushed to the GCR
 
 - `<DEPLOYMENT_NAME>` is either `blue` or `green` depending on the current active browser deployment
 
 ## Create and Update Reads Deployment
 
-  Create Reads Deployment
+Create Reads Deployment
 
 - Build Docker images and push to GCR.
 
@@ -273,7 +290,7 @@ Are the tags assigned to the docker images, these can be found in the Container 
   ```
   ./deployctl reads-deployments apply <deployment-name>
   ```
-  
+
 Update Reads Deployment
 
 - Switch over to the new deployment. This updates the `gnomad-reads` service's selector to point to the new deployment.
