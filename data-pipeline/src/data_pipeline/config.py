@@ -1,5 +1,6 @@
 import os
 import attr
+from enum import Enum
 from pathlib import Path
 
 DATA_ENV = os.getenv("DATA_ENV", "local")
@@ -31,25 +32,57 @@ class DataPaths:
             Path(self.root).mkdir(parents=True, exist_ok=True)
 
 
-# @attr.define
-# class GnomadV4
-#     gnomad_v4_exome_variants_sites_ht_path: str = "external_datasets/mock_v4_release.ht"
+class ComputeEnvironment(Enum):
+    local = "local"
+    cicd = "cicd"
+    dataproc = "dataproc"
+
+
+class DataEnvironment(Enum):
+    tiny = "tiny"
+    full = "full"
+
+
+def is_valid_fn(cls):
+    def is_valid(instance, attribute, value):
+        if not isinstance(value, cls):
+            raise ValueError(f"Expected {cls} enum, got {type(value)}")
+
+    return is_valid
 
 
 @attr.define
 class PipelineConfig:
-    data_paths: DataPaths
-    compute_env: str = "local"
-    data_env: str = "tiny"
+    name: str
+    input_paths: DataPaths
+    output_paths: DataPaths
+    data_env: DataEnvironment = attr.field(validator=is_valid_fn(DataEnvironment))
+    compute_env: ComputeEnvironment = attr.field(validator=is_valid_fn(ComputeEnvironment))
+
+    @classmethod
+    def create(
+        cls,
+        name: str,
+        input_root: str,
+        output_root: str,
+        data_env=DataEnvironment.tiny,
+        compute_env=ComputeEnvironment.local,
+    ):
+        input_paths = DataPaths.create(input_root)
+        output_paths = DataPaths.create(output_root)
+        return cls(name, input_paths, output_paths, data_env, compute_env)
 
 
-config = PipelineConfig(
-    data_env="local",
-    data_paths=DataPaths.create(os.path.join("data")),
-)
+# config = PipelineConfig.create(
+#     name=
+#     input_root="data_in",
+#     output_root="data_out",
+#     compute_env=ComputeEnvironment.local,
+#     data_env=DataEnvironment.tiny,
+# )
 
 
-if DATA_ENV == "dataproc":
-    config = PipelineConfig(
-        data_paths=DataPaths.create(os.path.join("gs://gnomad-matt-data-pipeline")),
-    )
+# if DATA_ENV == "dataproc":
+#     config = PipelineConfig(
+#         output_path=DataPaths.create(os.path.join("gs://gnomad-matt-data-pipeline")),
+#     )
