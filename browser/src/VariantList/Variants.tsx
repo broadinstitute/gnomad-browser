@@ -144,7 +144,6 @@ const Variants = ({
   })
   const { sortKey, sortOrder } = sortState
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'newSortKey' implicitly has an 'any' typ... Remove this comment to see the full error message
   const setSortKey = useCallback((newSortKey) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {

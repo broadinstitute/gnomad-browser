@@ -52,7 +52,6 @@ const ZoomRegionForm = forwardRef<any, Props>(
         stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
       }
     )
-    // @ts-expect-error TS(7006) FIXME: Parameter 'newZoomRegion' implicitly has an 'any' ... Remove this comment to see the full error message
     const setZoomRegion = useCallback((newZoomRegion) => {
       _setZoomRegion(newZoomRegion)
       if (overviewRef.current) {

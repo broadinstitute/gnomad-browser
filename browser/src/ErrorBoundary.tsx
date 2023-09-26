@@ -26,7 +26,6 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   render() {
-    // @ts-expect-error TS(2339) FIXME: Property 'children' does not exist on type 'Readon... Remove this comment to see the full error message
     const { children, location } = this.props
     const { error } = this.state
 
