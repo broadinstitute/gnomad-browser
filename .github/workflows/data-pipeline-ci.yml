@@ -34,3 +34,5 @@ jobs:
         run: black --check data-pipeline/src/data_pipeline
       - name: Run Ruff
         run: ruff data-pipeline/src/data_pipeline
+      - name: Run Pyright
+        run: pyright 
