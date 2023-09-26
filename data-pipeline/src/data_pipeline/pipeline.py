@@ -10,15 +10,11 @@ from typing import Callable, List, Optional, Union
 import attr
 from collections import OrderedDict
 
+from loguru import logger
+
 import hail as hl
 
 from data_pipeline.config import PipelineConfig
-
-logger = logging.getLogger("gnomad_data_pipeline")
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 
 class GoogleCloudStorageFileSystem:
@@ -90,7 +86,7 @@ class DownloadTask:
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
-            logger.info("Running %s (%s)", self._name, reason)
+            logger.info(f"Running {self._name} ({reason}")
 
             start = time.perf_counter()
             with tempfile.NamedTemporaryFile() as tmp:
@@ -143,7 +139,6 @@ class Task:
             if isinstance(v, (Task, DownloadTask)):
                 paths.update({k: v.get_output_path()})
             else:
-                logger.info(v)
                 paths.update({k: os.path.join(self._config.output_paths.root, v)})
 
         return paths
@@ -166,15 +161,15 @@ class Task:
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
-            logger.info("Running %s (%s)", self._name, reason)
+            logger.info(f"Running {self._name} ({reason})")
             start = time.perf_counter()
             result = self._task_function(**self.get_inputs(), **self._params)
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
-            logger.info("Finished %s in %dm%02ds", self._name, elapsed // 60, elapsed % 60)
+            logger.info(f"Finished {self._name} in {elapsed // 60}m{elapsed % 60:02}s")
         else:
-            logger.info("Skipping %s", self._name)
+            logger.info(f"Skipping %s", self._name)
 
 
 @attr.define
@@ -228,7 +223,7 @@ class Pipeline:
         return self._tasks[task_name]
 
 
-def run_pipeline(pipeline):
+def run_pipeline(pipeline: Pipeline):
     task_names = pipeline.get_all_task_names()
 
     parser = argparse.ArgumentParser()
