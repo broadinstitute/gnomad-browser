@@ -220,63 +220,11 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
-    gnomad_v2_regional_missense_constraint_regions_array_20230724 {
-      regions {
-        start_coordinate {
-          contig
-          position
-        }
-        stop_coordinate {
-          contig
-          position
-        }
-        start_aa
-        stop_aa
-        obs
-        exp
-        oe
-        chisq
-      }
-    }
-    gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa {
-      regions {
-        start_coordinate {
-          contig
-          position
-        }
-        stop_coordinate {
-          contig
-          position
-        }
-        start_aa
-        stop_aa
-        obs
-        exp
-        oe
-        chisq
-      }
-    }
-    gnomad_v2_regional_missense_constraint_regions_20230731_demo {
-      regions {
-        start_coordinate {
-          contig
-          position
-        }
-        stop_coordinate {
-          contig
-          position
-        }
-        start_aa
-        stop_aa
-        obs
-        exp
-        oe
-        chisq
-      }
-    }
-    gnomad_v2_regional_missense_constraint_20230804_demo {
+
+    gnomad_v2_regional_missense_constraint_20230926_demo {
       has_no_rmc_evidence
-      gnomad_v2_regional_missense_constraint_regions_20230804_demo {
+      passed_qc
+      gnomad_v2_regional_missense_constraint_regions_20230926_demo {
         start_coordinate {
           contig
           position
@@ -291,6 +239,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         exp
         oe
         chisq
+        p
       }
     }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
@@ -316,6 +265,30 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
   }
 }
 `
+
+
+// gnomad_v2_regional_missense_constraint_20230911_demo {
+//   has_no_rmc_evidence
+//   passed_qc
+//   gnomad_v2_regional_missense_constraint_regions_20230911_demo {
+//     start_coordinate {
+//       contig
+//       position
+//     }
+//     stop_coordinate {
+//       contig
+//       position
+//     }
+//     start_aa
+//     stop_aa
+//     obs
+//     exp
+//     oe
+//     chisq
+//     p
+//   }
+// }
+
 
 /*
 
@@ -459,8 +432,10 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   return (
     // TODO:FIXME: (rgrant) for dev cluster -- modify 'Gene' query to manually query its own dev cluster deployment API
     //                                         to fetch new Gene data (RMC, CCR) loaded in the dev ES Gene index
-    // <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://34.110.220.170/api/'}>
 
+  
+    // <BaseQuery operationName={operationName} query={query} variables={variables} url={'http://34.110.220.170/api/'}>
+    
     // <BaseQuery
     //   operationName={operationName}
     //   query={query}

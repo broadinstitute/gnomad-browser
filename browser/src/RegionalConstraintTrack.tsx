@@ -5,44 +5,28 @@ import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
-import { ExternalLink, TooltipAnchor } from '@gnomad/ui'
+import { Badge, ExternalLink, TooltipAnchor } from '@gnomad/ui'
 
 import InfoButton from './help/InfoButton'
 
 // TODO: ok so this takes in two things, the array of constrained regions, and the array of exons
 //   for some reason, it's basically just outputting
 export const regionIntersections = (regionArrays: any[]) => {
-
-  // console.log("=== Ok lemme debug this ish")
-
-  // console.log("regionArrays (raw input)")
-  // console.log(regionArrays)
-
   const sortedRegionsArrays = regionArrays.map((regions: any) =>
     [...regions].sort((a, b) => a.start - b.start)
   )
-
-  // console.log("sortedRegionsArrays (raw input)")
-  // console.log(sortedRegionsArrays)
 
   const intersections = []
 
   const indices = sortedRegionsArrays.map(() => 0)
 
-
-  console.log("starting while loop:")
   while (sortedRegionsArrays.every((regions: any, i: any) => indices[i] < regions.length)) {
-    console.log("in while loop:")
     const maxStart = Math.max(
       ...sortedRegionsArrays.map((regions: any, i: any) => regions[indices[i]].start)
     )
-    // console.log("maxStart")
-    // console.log(maxStart)
     const minStop = Math.min(
       ...sortedRegionsArrays.map((regions: any, i: any) => regions[indices[i]].stop)
     )
-    // console.log("minStop")
-    // console.log(minStop)
 
     if (maxStart < minStop) {
       const next = Object.assign(
@@ -67,20 +51,17 @@ export const regionIntersections = (regionArrays: any[]) => {
       }
     })
   }
-  console.log("finished while loop:")
-
-  // console.log("intersections (to be returned)")
-  // console.log(intersections)
-
-
-  // console.log("=== finishing up")
-
 
   return intersections
 }
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+`
+
+const InnerWrapper = styled.div`
   margin-bottom: 1em;
 `
 
@@ -111,23 +92,33 @@ const RegionAttributeList = styled.dl`
 
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
 const colorScale = {
-
   // not_significant: '#e2e2e2',
 
   // demo 1 - white box same as background color
   // not_significant: '#fafafa',
 
   // demo 2 - yellow box same as greatest
-  not_significant: '#ffffb2',
-  
-  least: '#bd0026',
-  less: '#f03b20',
+  // not_significant: '#ffffb2',
+  // 09/11 demo - not significant grey again
+  not_significant: '#e2e2e2',
+
+  // least: '#bd0026',
+  // less: '#f03b20',
+  least: '#9b001f',
+  less: '#de351b',
   middle: '#fd8d3c',
   greater: '#fecc5c',
   greatest: '#ffffb2',
 }
 
 function regionColor(region: ConstraintRegion) {
+
+  // todo: added in a janky way, uses the logic from the GnomadConstraintTable component
+  if (region.z) {
+    return region.z > 3.09 ? colorScale.middle : colorScale.not_significant
+  }
+
+
   let color
   if (region.obs_exp > 0.8) {
     color = colorScale.greatest
@@ -141,7 +132,8 @@ function regionColor(region: ConstraintRegion) {
     color = colorScale.least
   }
 
-  return region.chisq_diff_null < 10.8 ? colorScale.not_significant : color
+  // return region.chisq_diff_null < 10.8 ? colorScale.not_significant : color
+  return region.p > 0.001 ? colorScale.not_significant : color
 }
 
 const LegendWrapper = styled.div`
@@ -156,7 +148,7 @@ const LegendWrapper = styled.div`
 const Legend = () => {
   return (
     <LegendWrapper>
-      <span>Observed / Expected</span>
+      <span>Missense observed/expected</span>
       <svg width={170} height={25}>
         <rect x={10} y={0} width={30} height={10} stroke="#000" fill={colorScale.least} />
         <rect x={40} y={0} width={30} height={10} stroke="#000" fill={colorScale.less} />
@@ -179,21 +171,31 @@ const Legend = () => {
           0.8
         </text>
         <text x={160} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
-          1.0
+          1.0+
         </text>
       </svg>
-      {/* <svg width={170} height={25}>
+      <svg width={170} height={25}>
         <rect x={10} y={0} width={20} height={10} stroke="#000" fill={colorScale.not_significant} />
         <text x={35} y={0} fontSize="10" dy="1em" textAnchor="start">
-          Not significant ({'\u03a7\u00b2'} &lt; 10.8)
+          {/* TODO: remove chi-sq line when this decision is final */}
+          {/* Not significant ({'\u03a7\u00b2'} &lt; 10.8) */}
+          Not significant (p &gt; 1e-3)
         </text>
-      </svg> */}
+      </svg>
     </LegendWrapper>
   )
 }
 
-const renderNumber = (number: any) =>
-  number === undefined || number === null ? '-' : number.toPrecision(4)
+const renderNumber = (number: any) => {
+  return number === undefined || number === null ? '-' : number.toPrecision(4)
+}
+
+
+const renderNumberExponential = (number: any) => {
+  return number === undefined || number === null ? '-' : number.toExponential(3)
+}
+
+
 
 type ConstraintRegion = {
   chrom: string
@@ -205,6 +207,8 @@ type ConstraintRegion = {
   obs_mis: number
   exp_mis: number
   chisq_diff_null: number
+  p: number
+  z?: number
 }
 
 type RegionTooltipProps = {
@@ -223,7 +227,7 @@ type RegionTooltipProps = {
 
 //   let first = aa1
 //   let last = aa2
-  
+
 //   if (num1 > num2) {
 //     first = aa2
 //     last = aa1
@@ -234,7 +238,7 @@ type RegionTooltipProps = {
 
 const printAAorNA = (aa: string | null) => {
   if (aa === null) {
-    return "n/a"
+    return 'n/a'
   }
   return aa
 }
@@ -266,9 +270,19 @@ const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
         </div>
         <div>
           <dt>Missense observed/expected:</dt>
-          <dd>{`${renderNumber(region.obs_exp)} (${region.obs_mis}/${renderNumber(region.exp_mis)})`}</dd>
+          <dd>{`${renderNumber(region.obs_exp)} (${region.obs_mis}/${renderNumber(
+            region.exp_mis
+          )})`}</dd>
         </div>
         <div>
+          <dt>p-value:</dt>
+          <dd>
+            {/* {region.p} */}
+            {renderNumberExponential(region.p)}
+            {region.p !== null && region.p > 0.001 && ' (not significant)'}
+          </dd>
+        </div>
+        {/* <div>
           <dt>
             &chi;
             <sup>2</sup>:
@@ -279,9 +293,7 @@ const RegionTooltip = ({ region, gene, isTranscript }: RegionTooltipProps) => {
               region.chisq_diff_null < 10.8 &&
               ' (not significant)'}
           </dd>
-        </div>
-        
-        
+        </div> */}
       </RegionAttributeList>
     )
   }
@@ -336,8 +348,13 @@ type RegionalConstraintTrack = {
 // type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
 //   typeof RegionalConstraintTrack.defaultProps
 
+const FLAG_DESCRIPTIONS = {
+  failed_qc: 'This transcript failed quality control',
+}
+
 const RegionalConstraintTrack = ({
   constrainedRegions,
+  failedQC,
   geneInfo,
   exons,
   label,
@@ -350,7 +367,6 @@ const RegionalConstraintTrack = ({
   //      then you can conditioanlly set the SVG based on the 3 cases
   //      and just render {content} in the return statement
 
-  // TODO: This is legit hardcoded to PCSK4 - change this to if not found (if constrainedRegions is null)
   // if (!constrainedRegions) {
   if (hasNoRMCEvidence === null) {
     return (
@@ -394,36 +410,29 @@ const RegionalConstraintTrack = ({
       {
         start: Math.min(geneInfo.start, geneInfo.stop),
         stop: Math.max(geneInfo.start, geneInfo.stop),
+        failedQC: false,
         // TODO: this is bad - gnomad_constraint can be null!
         obs_exp: geneInfo.oe_mis,
         obs_mis: geneInfo.obs_mis,
         exp_mis: geneInfo.exp_mis,
         chisq_diff_null: null,
-        // chisq_diff_null: 13, // TODO: this is bad also, think about this logic
+        p: null,
+        z: geneInfo.mis_z,
       },
     ]
   }
-
-  console.log("regions!")
-  console.log(constrainedRegions)
-
-  console.log("raw exons!")
-  console.log(exons.filter((exon: any) => exon.feature_type === 'CDS'))
 
   const constrainedExons = regionIntersections([
     constrainedRegions,
     exons.filter((exon: any) => exon.feature_type === 'CDS'),
   ])
 
-  console.log("constrained exons!")
-  console.log(constrainedExons)
-
   return (
     <Wrapper>
       <Track
         renderLeftPanel={() => (
           <SidePanel>
-          {/* <span>Regional missense constraint</span> */}
+            {/* <span>Regional missense constraint</span> */}
             {label && <span>{label}</span>}
             {!label && <span>Regional missense constraint</span>}
             <InfoButton topic="regional-constraint" />
@@ -435,7 +444,7 @@ const RegionalConstraintTrack = ({
             <TopPanel>{includeLegend && <Legend />}</TopPanel>
             <PlotWrapper>
               <svg height={55} width={width}>
-              {/* <svg height={85} width={width}> */}
+                {/* <svg height={85} width={width}> */}
                 {constrainedExons.map((region: ConstraintRegion) => {
                   const startX = scalePosition(region.start)
                   console.log(region.start, startX)
@@ -474,18 +483,42 @@ const RegionalConstraintTrack = ({
                     const offset = index * 0
 
                     if (!includeOEBars) {
-                      return (<></>)
+                      return <></>
                     }
 
                     return (
                       <g key={`${region.start}-${region.stop}`}>
-                        <line x1={startX} y1={2+offset} x2={startX} y2={11+offset} stroke="#424242" />
-                        <line x1={startX} y1={7+offset} x2={stopX} y2={7+offset} stroke="#424242" />
-                        <line x1={stopX} y1={2+offset} x2={stopX} y2={11+offset} stroke="#424242" />
+                        <line
+                          x1={startX}
+                          y1={2 + offset}
+                          x2={startX}
+                          y2={11 + offset}
+                          stroke="#424242"
+                        />
+                        <line
+                          x1={startX}
+                          y1={7 + offset}
+                          x2={stopX}
+                          y2={7 + offset}
+                          stroke="#424242"
+                        />
+                        <line
+                          x1={stopX}
+                          y1={2 + offset}
+                          x2={stopX}
+                          y2={11 + offset}
+                          stroke="#424242"
+                        />
                         {regionWidth > 40 && (
                           <>
-                            <rect x={midX - 15} y={3+offset} width={30} height={5} fill="#fafafa" />
-                            <text x={midX} y={8+offset} dy="0.33em" textAnchor="middle">
+                            <rect
+                              x={midX - 15}
+                              y={3 + offset}
+                              width={30}
+                              height={5}
+                              fill="#fafafa"
+                            />
+                            <text x={midX} y={8 + offset} dy="0.33em" textAnchor="middle">
                               {region.obs_exp.toFixed(2)}
                             </text>
                           </>
@@ -499,6 +532,11 @@ const RegionalConstraintTrack = ({
           </>
         )}
       </Track>
+      {!!failedQC && !hasNoRMCEvidence && (
+        <InnerWrapper key={'TEST'}>
+          <Badge level="warning">Warning</Badge> {FLAG_DESCRIPTIONS['failed_qc']}
+        </InnerWrapper>
+      )}
     </Wrapper>
   )
 }

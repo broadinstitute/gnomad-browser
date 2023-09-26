@@ -37,7 +37,38 @@ type GnomadRegionalMissenseConstraintTwo {
 	regions: [GnomadRegionalMissenseConstraintRegionDemoTwo]
 }
 
+
+
+
+
 type GnomadRegionalMissenseConstraintThree {
 	has_no_rmc_evidence: Boolean
 	gnomad_v2_regional_missense_constraint_regions_20230804_demo: [GnomadRegionalMissenseConstraintRegionDemoTwo]
+}
+
+
+# Types as of September 11, 2023
+type GnomadRegionalMissenseConstraintRegionSeptember {
+	start_coordinate: Locus
+	stop_coordinate: Locus
+	start_aa: String,
+	stop_aa: String,
+	obs: Int,
+	exp: Float,
+	oe: Float,
+	chisq: Float,
+	p: Float,
+}
+
+type GnomadRegionalMissenseConstraintSeptember {
+	has_no_rmc_evidence: Boolean
+	passed_qc: Boolean
+	gnomad_v2_regional_missense_constraint_regions_20230911_demo: [GnomadRegionalMissenseConstraintRegionSeptember]
+}
+
+
+type GnomadRegionalMissenseConstraintSeptember2 {
+	has_no_rmc_evidence: Boolean
+	passed_qc: Boolean
+	gnomad_v2_regional_missense_constraint_regions_20230926_demo: [GnomadRegionalMissenseConstraintRegionSeptember]
 }

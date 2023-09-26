@@ -106,10 +106,12 @@ export type Gene = GeneMetadata & {
   // gnomad_v2_regional_missense_constraint_regions_0_00001?: any
   // gnomad_v2_regional_missense_constraint_regions__20230622_demo?: any
   // gnomad_v2_regional_missense_constraint_regions_array?: any
-  gnomad_v2_regional_missense_constraint_regions_array_20230724?: any
-  gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa?: any
-  gnomad_v2_regional_missense_constraint_regions_20230731_demo?: any
-  gnomad_v2_regional_missense_constraint_20230804_demo?: any
+  // gnomad_v2_regional_missense_constraint_regions_array_20230724?: any
+  // gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa?: any
+  // gnomad_v2_regional_missense_constraint_regions_20230731_demo?: any
+  // gnomad_v2_regional_missense_constraint_20230804_demo?: any
+  // gnomad_v2_regional_missense_constraint_20230911_demo?: any
+  gnomad_v2_regional_missense_constraint_20230926_demo?: any
   ccr_region?: any
   // TODO: (rgrant) remove above for final
   variants: Variant[]
@@ -310,6 +312,7 @@ const transformDemo2InputData = (inputData: any, canonicalExons: any) => {
       obs_mis: row.obs,
       exp_mis: row.exp,
       chisq_diff_null: row.chisq,
+      p: row.p,
     }
     returnArray.push(returnJson)
   })
@@ -669,15 +672,23 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {/* case for NO constraint (just show help text) */}
         {datasetId === 'gnomad_r2_1' &&
-          gene.gnomad_v2_regional_missense_constraint_20230804_demo &&
+          gene.gnomad_v2_regional_missense_constraint_20230926_demo &&
           // this is a really silly way to check this, but its 11:20 at night
-          gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence ===
-            null && (
+          (gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence === null ||
+            (gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence ===
+              false &&
+              gene.gnomad_v2_regional_missense_constraint_20230926_demo.passed_qc === false)) && (
             <RegionalConstraintTrack
               // Here I'm being dumb and checking if its null up top, then passing in null below
               hasNoRMCEvidence={
-                gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence
+                null
+                // gene.gnomad_v2_regional_missense_constraint_20230926_demo.passed_qc === false &&
+                // gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence ===
+                //   false
+                //   ? null
+                //   : gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence
               }
+              failedQC={false}
               constrainedRegions={null}
               geneInfo={{
                 chrom: gene.chrom,
@@ -686,6 +697,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
                 obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
                 exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+                mis_z: gene.gnomad_constraint ? gene.gnomad_constraint.mis_z : null,
               }}
               // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
               exons={
@@ -704,20 +716,24 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {/* ====================== */}
         {/* case for both regions, or single region (componenent handles logic) */}
         {datasetId === 'gnomad_r2_1' &&
-          gene.gnomad_v2_regional_missense_constraint_20230804_demo &&
-          gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence !==
-            null && (
+          gene.gnomad_v2_regional_missense_constraint_20230926_demo &&
+          gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence !== null &&
+          !(
+            gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence ===
+              false && gene.gnomad_v2_regional_missense_constraint_20230926_demo.passed_qc === false
+          ) && (
             <RegionalConstraintTrack
               hasNoRMCEvidence={
-                gene.gnomad_v2_regional_missense_constraint_20230804_demo.has_no_rmc_evidence
+                gene.gnomad_v2_regional_missense_constraint_20230926_demo.has_no_rmc_evidence
               }
               constrainedRegions={transformDemo2InputData(
-                gene.gnomad_v2_regional_missense_constraint_20230804_demo
-                  .gnomad_v2_regional_missense_constraint_regions_20230804_demo,
+                gene.gnomad_v2_regional_missense_constraint_20230926_demo
+                  .gnomad_v2_regional_missense_constraint_regions_20230926_demo,
                 gene.transcripts.filter(
                   (t: any) => t.transcript_id === gene.canonical_transcript_id
                 )[0].exons
               )}
+              failedQC={!gene.gnomad_v2_regional_missense_constraint_20230926_demo.passed_qc}
               geneInfo={{
                 chrom: gene.chrom,
                 start: gene.stop,
@@ -725,6 +741,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 oe_mis: gene.gnomad_constraint ? gene.gnomad_constraint.oe_mis : null,
                 obs_mis: gene.gnomad_constraint ? gene.gnomad_constraint.obs_mis : null,
                 exp_mis: gene.gnomad_constraint ? gene.gnomad_constraint.exp_mis : null,
+                mis_z: gene.gnomad_constraint ? gene.gnomad_constraint.mis_z : null,
               }}
               // TODO: This might be a bit hacky to do more computation here, watch the performance of the page
               exons={

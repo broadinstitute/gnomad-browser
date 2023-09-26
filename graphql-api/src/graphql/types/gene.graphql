@@ -75,6 +75,9 @@ type Gene {
   gnomad_v2_regional_missense_constraint_regions_20230726_demo_alt_missing_aa: [GnomadRegionalMissenseConstraintTwo!]
   gnomad_v2_regional_missense_constraint_regions_20230731_demo: [GnomadRegionalMissenseConstraintTwo!]
   gnomad_v2_regional_missense_constraint_20230804_demo: GnomadRegionalMissenseConstraintThree
+  gnomad_v2_regional_missense_constraint_20230911_demo: GnomadRegionalMissenseConstraintSeptember
+  gnomad_v2_regional_missense_constraint_20230926_demo: GnomadRegionalMissenseConstraintSeptember2
+
   ccr_region: [CCRRegion!]
 
 

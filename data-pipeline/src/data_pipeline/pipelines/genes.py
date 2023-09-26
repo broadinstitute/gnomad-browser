@@ -262,7 +262,7 @@ pipeline.add_task(
 )
 
 
-# # TODO: now this is being added 
+# # TODO: now this is being added
 # pipeline.add_task(
 #     "prepare_gnomad_v2_regional_missense_constraint_20230627_demo_test",
 #     prepare_gnomad_v2_regional_missense_constraint,
@@ -299,7 +299,6 @@ pipeline.add_task(
 )
 
 
-
 # oh yeahhhhh Aug 03, 2023 at like 10 pm,  new 18k hailtable
 pipeline.add_task(
     "prepare_gnomad_v2_regional_missense_constraint_20230804_demo",
@@ -307,6 +306,26 @@ pipeline.add_task(
     "/constraint/gnomad_v2_regional_missense_constraint_20230804_demo.ht",
     {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230731_rmc_demo"},
     {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230804_demo"},
+)
+
+# Sep 11, 2023 @ 8:30 am. Newest, and possibly final, hailtable
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230911_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230911_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230911_rmc_demo"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230911_demo"},
+)
+
+
+# Sep 26, 2023 @ 07:15 am. Newest and possibly final hailtable, same as above schema
+#   but P-values were calculated differently
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_20230926_demo",
+    prepare_gnomad_v2_regional_missense_constraint,
+    "/constraint/gnomad_v2_regional_missense_constraint_20230926_demo.ht",
+    {"path": "gs://gnomad-rgrant-data-pipeline/output/constraint/20230926_rmc_demo"},
+    {"annotation_name": "gnomad_v2_regional_missense_constraint_regions_20230926_demo"},
 )
 
 
@@ -385,37 +404,43 @@ pipeline.add_task(
         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
         "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
         # 0.01
-        "gnomad_v2_regional_missense_constraint_0_01": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_0_01"
+        # "gnomad_v2_regional_missense_constraint_0_01": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_0_01"
+        # ),
+        # # 0.0001
+        # "gnomad_v2_regional_missense_constraint_0_0001": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_0_0001"
+        # ),
+        # # 0.00001
+        # "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_0_00001"
+        # ),
+        # # TODO:FIXME: old. as of like Jun 15 this is the only one that matters now, really - NOW IT DOESN'T
+        # "gnomad_v2_regional_missense_constraint_20230622_demo": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230622_demo"
+        # ),
+        # # TODO:FIXME: old. as of Jun 26 this is the only one that matters now, really
+        # "gnomad_v2_regional_missense_constraint_20230627_demo": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230627_demo"
+        # ),
+        # # # TODO:FIXME: As of July 24th, this is the most recent one for the demo
+        # "gnomad_v2_regional_missense_constraint_20230724_demo": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230724_demo"
+        # ),
+        # "gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa"
+        # ),
+        #  "gnomad_v2_regional_missense_constraint_20230731_demo": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230731_demo"
+        # ),
+        #  "gnomad_v2_regional_missense_constraint_20230804_demo": pipeline.get_task(
+        #     "prepare_gnomad_v2_regional_missense_constraint_20230804_demo"
+        # ),
+        "gnomad_v2_regional_missense_constraint_20230911_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230911_demo"
         ),
-        # 0.0001
-        "gnomad_v2_regional_missense_constraint_0_0001": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_0_0001"
-        ),
-        # 0.00001
-        "gnomad_v2_regional_missense_constraint_0_00001": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_0_00001"
-        ),
-        # TODO:FIXME: old. as of like Jun 15 this is the only one that matters now, really - NOW IT DOESN'T
-        "gnomad_v2_regional_missense_constraint_20230622_demo": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230622_demo"
-        ),
-        # TODO:FIXME: old. as of Jun 26 this is the only one that matters now, really
-        "gnomad_v2_regional_missense_constraint_20230627_demo": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230627_demo"
-        ),
-        # # TODO:FIXME: As of July 24th, this is the most recent one for the demo 
-        "gnomad_v2_regional_missense_constraint_20230724_demo": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230724_demo"
-        ),
-        "gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230726_demo_alt_missing_aa"
-        ),
-         "gnomad_v2_regional_missense_constraint_20230731_demo": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230731_demo"
-        ),
-         "gnomad_v2_regional_missense_constraint_20230804_demo": pipeline.get_task(
-            "prepare_gnomad_v2_regional_missense_constraint_20230804_demo"
+        "gnomad_v2_regional_missense_constraint_20230926_demo": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_20230926_demo"
         ),
     },
     {"join_on": "preferred_transcript_id"},
