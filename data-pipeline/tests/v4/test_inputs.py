@@ -32,6 +32,7 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
     return objs
 
 
+# @pytest.mark.only
 def test_globals_input_validation():
     input_path = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
