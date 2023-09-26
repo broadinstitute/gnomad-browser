@@ -35,4 +35,4 @@ jobs:
       - name: Run Ruff
         run: ruff data-pipeline/src/data_pipeline
       - name: Run Pyright
-        run: pyright 
+        run: pyright --project data-pipeline
