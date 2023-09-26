@@ -208,7 +208,7 @@ const Variants = ({
 
   // When a user clicks on the bubble track, update the position in the variant table
   useEffect(() => {
-    if (positionLastClicked === null) {
+    if (positionLastClicked === null || table.current === null) {
       return
     }
 
@@ -228,7 +228,7 @@ const Variants = ({
       index = renderedVariants.length - 1
     }
 
-    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+    // @ts-expect-error TS(2339) FIXME: 'scrollToDataRow' does not exist on type 'never'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
