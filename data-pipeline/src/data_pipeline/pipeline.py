@@ -6,13 +6,13 @@ import shutil
 import subprocess
 import tempfile
 import time
-from typing import List, Optional, Union
+from typing import Callable, List, Optional, Union
 import attr
 from collections import OrderedDict
 
 import hail as hl
 
-from data_pipeline.config import config
+from data_pipeline.config import PipelineConfig
 
 logger = logging.getLogger("gnomad_data_pipeline")
 logger.setLevel(logging.INFO)
@@ -57,23 +57,24 @@ def modified_time(path):
     return file_system.modified_time(check_path)
 
 
-_pipeline_config = {}
+# _pipeline_config = {}
 
-_pipeline_config["output_root"] = config.data_paths.root
+# _pipeline_config["output_root"] = config.output_paths.root
 
 
 @attr.define
 class DownloadTask:
+    _config: PipelineConfig
     _name: str
     _url: str
     _output_path: str
 
     @classmethod
-    def create(cls, name, url, output_path):
-        return cls(name, url, output_path)
+    def create(cls, config: PipelineConfig, name: str, url: str, output_path: str):
+        return cls(config, name, url, output_path)
 
     def get_output_path(self):
-        return _pipeline_config["output_root"] + self._output_path
+        return self._config.output_paths.root + self._output_path
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -81,6 +82,9 @@ class DownloadTask:
             return (True, "Output does not exist")
 
         return (False, None)
+
+    def get_inputs(self):
+        raise NotImplementedError("Method not valid for DownloadTask")
 
     def run(self, force=False):
         output_path = self.get_output_path()
@@ -106,8 +110,9 @@ class DownloadTask:
 
 @attr.define
 class Task:
+    _config: PipelineConfig
     _name: str
-    _task_function: str
+    _task_function: Callable
     _output_path: str
     _inputs: dict
     _params: dict
@@ -115,8 +120,9 @@ class Task:
     @classmethod
     def create(
         cls,
+        config: PipelineConfig,
         name: str,
-        task_function: str,
+        task_function: Callable,
         output_path: str,
         inputs: Optional[dict] = None,
         params: Optional[dict] = None,
@@ -125,10 +131,10 @@ class Task:
             inputs = {}
         if params is None:
             params = {}
-        return cls(name, task_function, output_path, inputs, params)
+        return cls(config, name, task_function, output_path, inputs, params)
 
     def get_output_path(self):
-        return _pipeline_config["output_root"] + self._output_path
+        return self._config.output_paths.root + self._output_path
 
     def get_inputs(self):
         paths = {}
@@ -138,7 +144,7 @@ class Task:
                 paths.update({k: v.get_output_path()})
             else:
                 logger.info(v)
-                paths.update({k: os.path.join(config.data_paths.root, v)})
+                paths.update({k: os.path.join(self._config.output_paths.root, v)})
 
         return paths
 
@@ -173,14 +179,14 @@ class Task:
 
 @attr.define
 class Pipeline:
-    name: str
+    config: PipelineConfig
     _tasks: OrderedDict = OrderedDict()
     _outputs: dict = {}
 
     def add_task(
         self,
         name: str,
-        task_function: str,
+        task_function: Callable,
         output_path: str,
         inputs: Optional[dict] = None,
         params: Optional[dict] = None,
@@ -189,12 +195,12 @@ class Pipeline:
             inputs = {}
         if params is None:
             params = {}
-        task = Task.create(name, task_function, output_path, inputs, params)
+        task = Task.create(self.config, name, task_function, output_path, inputs, params)
         self._tasks[name] = task
         return task
 
     def add_download_task(self, name, *args, **kwargs) -> DownloadTask:
-        task = DownloadTask.create(name, *args, **kwargs)
+        task = DownloadTask.create(self.config, name, *args, **kwargs)
         self._tasks[name] = task
         return task
 
@@ -232,8 +238,8 @@ def run_pipeline(pipeline):
     group.add_argument("--force-all", action="store_true")
     args = parser.parse_args()
 
-    if args.output_root:
-        _pipeline_config["output_root"] = args.output_root.rstrip("/")
+    # if args.output_root:
+    #     _pipeline_config["output_root"] = args.output_root.rstrip("/")
 
     pipeline_args = {}
     if args.force_all:

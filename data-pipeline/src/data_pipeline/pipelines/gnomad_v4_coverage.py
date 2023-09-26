@@ -1,9 +1,12 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
+from data_pipeline.config import PipelineConfig
 
 from data_pipeline.data_types.coverage import prepare_coverage
 
 
-pipeline = Pipeline(name="gnomad_v4_coverage")
+pipeline = Pipeline(
+    config=PipelineConfig.create(name="gnomad_v4_variants", input_root="data_in", output_root="data_out")
+)
 
 pipeline.add_task(
     name="prepare_gnomad_v4_exome_coverage",
