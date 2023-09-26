@@ -39,14 +39,12 @@ def output_dir():
         yield temp_dir
 
 
-@pytest.mark.only
 def test_config(input_dir, output_dir):
     logger.info(input_dir)
     logger.info(output_dir)
     pass
 
 
-# @pytest.mark.only
 # def test_pipeline_tasks(ht_1_fixture: TestHt, ht_2_fixture: TestHt):
 #     def task_1_fn():
 #         pass
