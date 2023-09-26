@@ -27,7 +27,7 @@ def schema_writer(schema_path):
 
 
 for pipeline in pipelines:
-    pipeline_name = pipeline.name
+    pipeline_name = pipeline.config.name
     task_names = pipeline.get_all_task_names()
     out_dir = os.path.join(SCHEMA_PATH, pipeline_name)
 
