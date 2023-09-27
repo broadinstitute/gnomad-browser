@@ -1,5 +1,5 @@
 import queryString from 'query-string'
-import React, { lazy, useCallback } from 'react'
+import React, { useCallback, lazy } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
