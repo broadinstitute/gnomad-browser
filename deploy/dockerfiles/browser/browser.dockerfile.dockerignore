@@ -16,3 +16,5 @@
 !dataset-metadata
 !deploy/dockerfiles/browser/browser.nginx.conf
 !deploy/dockerfiles/browser/browser.proxy_cache.conf
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
