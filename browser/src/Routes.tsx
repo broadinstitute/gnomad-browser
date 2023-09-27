@@ -64,7 +64,6 @@ const Routes = () => {
         render={({ location, match }: any) => {
           const params = queryString.parse(location.search)
           const datasetId = params.dataset || defaultDataset
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <GenePageContainer datasetId={datasetId} geneIdOrSymbol={match.params.gene} />
         }}
       />
@@ -87,7 +86,6 @@ const Routes = () => {
           }
 
           const regionId = normalizeRegionId(match.params.regionId)
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <RegionPageContainer datasetId={datasetId} regionId={regionId} />
         }}
       />
@@ -100,7 +98,6 @@ const Routes = () => {
           const datasetId = params.dataset || defaultDataset
           return (
             <TranscriptPageContainer
-              // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
               datasetId={datasetId}
               transcriptId={match.params.transcriptId}
             />
@@ -132,7 +129,6 @@ const Routes = () => {
         render={({ location, match }: any) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <VariantPageRouter datasetId={datasetId} variantId={match.params.variantId} />
         }}
       />
@@ -143,7 +139,6 @@ const Routes = () => {
         render={({ location }: any) => {
           const params = queryString.parse(location.search)
           const datasetId = params.dataset || defaultDataset
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <VariantCooccurrencePage datasetId={datasetId} />
         }}
       />
@@ -154,7 +149,6 @@ const Routes = () => {
         render={({ location }: any) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <ShortTandemRepeatsPage datasetId={datasetId} />
         }}
       />
@@ -165,7 +159,6 @@ const Routes = () => {
         render={({ location, match }: any) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
           return <ShortTandemRepeatPage datasetId={datasetId} strId={match.params.strId} />
         }}
       />
@@ -222,7 +215,6 @@ const Routes = () => {
         path="/awesome"
         render={({ location }: any) => {
           const params = queryString.parse(location.search)
-          // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[] | null' is not as... Remove this comment to see the full error message
           return <SearchRedirectPage query={params.query} />
         }}
       />
