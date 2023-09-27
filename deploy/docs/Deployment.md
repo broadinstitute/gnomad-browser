@@ -181,7 +181,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 1. Create and push Docker Images to the [Google Container Registry](https://console.cloud.google.com/gcr/images/exac-gnomad?project=exac-gnomad) with:
 
    ```
-   . /deployctl images build --push
+   ./deployctl images build --push
    ```
 
 2. Check all current deployments (both `cluster` pods running and `local` manifests) with:
@@ -259,7 +259,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
     - It is typically useful to leave the old deployment up for a few days, as it makes a rollback very quick to perform. Once it is clear the new deployment is stable, the old deployment can safely be taken down.
 
       ```
-      . /deployctl deployments delete <old-deployment-name>
+      ./deployctl deployments delete <old-deployment-name>
       ```
 
 **Where:**
