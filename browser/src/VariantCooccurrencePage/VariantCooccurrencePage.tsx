@@ -632,9 +632,7 @@ const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
             />
           </Section>
 
-          {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
           {variantIds.length === 2 && (
-            // @ts-expect-error TS(2322) FIXME: Type '(string | null)[] | null' is not assignable ... Remove this comment to see the full error message
             <VariantCoocurrenceContainer datasetId={datasetId} variantIds={variantIds} />
           )}
         </>

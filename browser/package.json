@@ -37,7 +37,7 @@
     "memoize-one": "^5.0.2",
     "polished": "^3.2.0",
     "prop-types": "^15.7.2",
-    "query-string": "5",
+    "query-string": "~5",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
