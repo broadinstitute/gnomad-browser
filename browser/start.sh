@@ -9,6 +9,6 @@ export NODE_ENV="development"
 export GNOMAD_API_URL=${GNOMAD_API_URL:-"https://gnomad.broadinstitute.org/api"}
 export READS_API_URL=${READS_API_URL:-"https://gnomad.broadinstitute.org/reads"}
 
-yarn run ts-node ./build/buildHelp.ts
+pnpm ts-node ./build/buildHelp.ts
 
-yarn run webpack serve
+pnpm webpack serve
