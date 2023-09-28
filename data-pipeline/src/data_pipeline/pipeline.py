@@ -70,7 +70,7 @@ class DownloadTask:
         return cls(config, name, url, output_path)
 
     def get_output_path(self):
-        return self._config.output_paths.root + self._output_path
+        return self._config.output_root + self._output_path
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -130,7 +130,7 @@ class Task:
         return cls(config, name, task_function, output_path, inputs, params)
 
     def get_output_path(self):
-        return os.path.join(self._config.output_paths.root, self._output_path)
+        return os.path.join(self._config.output_root, self._output_path)
 
     def get_inputs(self):
         paths = {}
@@ -140,7 +140,7 @@ class Task:
                 paths.update({k: v.get_output_path()})
             else:
                 logger.info(k)
-                paths.update({k: os.path.join(self._config.input_paths.root, v)})
+                paths.update({k: os.path.join(self._config.input_root, v)})
 
         return paths
 
@@ -166,8 +166,8 @@ class Task:
             start = time.perf_counter()
             result = self._task_function(**self.get_inputs(), **self._params)
 
-            if "gs://" not in self._config.output_paths.root:
-                Path(self._config.output_paths.root).mkdir(parents=True, exist_ok=True)
+            if "gs://" not in self._config.output_root:
+                Path(self._config.output_root).mkdir(parents=True, exist_ok=True)
 
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()

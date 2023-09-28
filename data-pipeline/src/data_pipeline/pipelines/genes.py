@@ -30,7 +30,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
 )
 from data_pipeline.data_types.gene import reject_par_y_genes
 
-pipeline = Pipeline(PipelineConfig.create(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
+pipeline = Pipeline(PipelineConfig(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
 
 ###############################################
 # Import GENCODE and HGNC files
