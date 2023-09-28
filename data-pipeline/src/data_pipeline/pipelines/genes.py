@@ -26,7 +26,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
     prepare_homozygous_variant_cooccurrence_counts,
 )
 
-pipeline = Pipeline(PipelineConfig.create(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
+pipeline = Pipeline(PipelineConfig(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
 
 ###############################################
 # Import GENCODE and HGNC files
