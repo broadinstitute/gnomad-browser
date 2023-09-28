@@ -1,4 +1,5 @@
 import hail as hl
+from data_pipeline.config import PipelineConfig
 
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
@@ -29,7 +30,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
 )
 from data_pipeline.data_types.gene import reject_par_y_genes
 
-pipeline = Pipeline()
+pipeline = Pipeline(PipelineConfig.create(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
 
 ###############################################
 # Import GENCODE and HGNC files
