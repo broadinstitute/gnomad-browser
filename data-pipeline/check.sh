@@ -8,7 +8,7 @@ black src/data_pipeline
 black tests
 
 echo "┏━━━ Running ruff ━━━━━━━━━━━━━━━━━━━"
-ruff src/data_pipeline
+ruff src/data_pipeline --fix
 ruff tests --fix
 
 echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"

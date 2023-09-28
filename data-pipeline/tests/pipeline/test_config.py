@@ -76,9 +76,9 @@ def test_pipeline_tasks(input_tmp, output_tmp):
     pipeline.add_task(
         name="process_data",
         task_function=task_1_fn,
-        output_path="/my_output.txt",
+        output_path="my_output.txt",
         inputs={
-            "input_file_path": os.path.join(input_tmp, "sample_tiny.txt"),
+            "input_file_path": "sample_tiny.txt",
         },
     )
 
