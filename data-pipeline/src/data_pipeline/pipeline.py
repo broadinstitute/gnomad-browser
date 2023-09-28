@@ -1,12 +1,12 @@
 import argparse
 import datetime
-import logging
 import os
 import shutil
 import subprocess
 import tempfile
 import time
-from typing import Callable, List, Optional, Union
+from pathlib import Path
+from typing import Callable, Dict, List, Optional, Union
 import attr
 from collections import OrderedDict
 
@@ -130,7 +130,7 @@ class Task:
         return cls(config, name, task_function, output_path, inputs, params)
 
     def get_output_path(self):
-        return self._config.output_paths.root + self._output_path
+        return os.path.join(self._config.output_paths.root, self._output_path)
 
     def get_inputs(self):
         paths = {}
@@ -139,7 +139,8 @@ class Task:
             if isinstance(v, (Task, DownloadTask)):
                 paths.update({k: v.get_output_path()})
             else:
-                paths.update({k: os.path.join(self._config.output_paths.root, v)})
+                logger.info(k)
+                paths.update({k: os.path.join(self._config.input_paths.root, v)})
 
         return paths
 
@@ -164,12 +165,16 @@ class Task:
             logger.info(f"Running {self._name} ({reason})")
             start = time.perf_counter()
             result = self._task_function(**self.get_inputs(), **self._params)
+
+            if "gs://" not in self._config.output_paths.root:
+                Path(self._config.output_paths.root).mkdir(parents=True, exist_ok=True)
+
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
             logger.info(f"Finished {self._name} in {elapsed // 60}m{elapsed % 60:02}s")
         else:
-            logger.info(f"Skipping %s", self._name)
+            logger.info("Skipping %s", self._name)
 
 
 @attr.define
@@ -221,6 +226,20 @@ class Pipeline:
     def get_output(self, output_name):
         task_name = self._outputs[output_name]
         return self._tasks[task_name]
+
+
+@attr.define
+class PipelineMock:
+    output_mappings: Dict[str, str]
+
+    @classmethod
+    def create(cls, output_mappings: Dict[str, str]):
+        return cls(output_mappings)
+
+    def get_output(self, output_name):
+        if output_name in self.output_mappings:
+            return self.output_mappings.get(output_name)
+        raise ValueError("Output name is not valid")
 
 
 def run_pipeline(pipeline: Pipeline):
