@@ -4,7 +4,7 @@ import pytest
 import tempfile
 import attr
 
-from data_pipeline.config import ComputeEnvironment, DataEnvironment, DataPaths, PipelineConfig
+from data_pipeline.config import DataEnvironment, PipelineConfig, get_data_environment
 from data_pipeline.pipeline import Pipeline
 
 # from data_pipeline.pipeline import Pipeline
@@ -27,23 +27,33 @@ def output_tmp():
 
 
 @pytest.mark.only
+def test_get_data_environment_defaults_mock():
+    data_environment = get_data_environment("mock")
+    assert data_environment == DataEnvironment.mock
+
+
+@pytest.mark.only
+def test_get_data_environment_raises_if_invalid_environment():
+    with pytest.raises(ValueError, match="Invalid value 'nonexisting_environment'. Allowed values are"):
+        get_data_environment("nonexisting_environment")
+
+
+@pytest.mark.only
 def test_config_created(input_tmp, output_tmp):
-    config = PipelineConfig.create(name="test", input_root=input_tmp, output_root=output_tmp)
+    config = PipelineConfig(name="test", input_root=input_tmp, output_root=output_tmp)
     assert isinstance(config, PipelineConfig)
-    assert isinstance(config.input_paths, DataPaths)
-    assert isinstance(config.output_paths, DataPaths)
-    assert isinstance(config.compute_env, ComputeEnvironment)
-    assert isinstance(config.data_env, DataEnvironment)
+    assert isinstance(config.input_root, str)
+    assert isinstance(config.output_root, str)
 
 
 @pytest.mark.only
 def test_config_read_input_file(input_tmp, output_tmp):
-    config = PipelineConfig.create(
+    config = PipelineConfig(
         name="test",
         input_root=input_tmp,
         output_root=output_tmp,
     )
-    sample = os.path.join(config.input_paths.root, "sample_tiny.txt")
+    sample = os.path.join(config.input_root, "sample_tiny.txt")
     with open(sample, "r") as f:
         assert f.read() == "tiny dataset"
 
@@ -69,7 +79,7 @@ def test_pipeline_tasks(input_tmp, output_tmp):
             output_data.update_text(f"{input_data} processed")
             return output_data
 
-    config = PipelineConfig.create(name="pipeline1", input_root=input_tmp, output_root=output_tmp)
+    config = PipelineConfig(name="pipeline1", input_root=input_tmp, output_root=output_tmp)
 
     pipeline = Pipeline(config=config)
 
