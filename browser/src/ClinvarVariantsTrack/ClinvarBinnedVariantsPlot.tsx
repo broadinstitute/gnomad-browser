@@ -31,10 +31,36 @@ const TooltipContent = styled.div`
   }
 `
 
+type IncludedCategories = {
+  [key: string]: boolean
+}
+
 type Props = {
-  includedCategories: {
-    [key: string]: boolean
-  }
+  includedCategories: IncludedCategories
+}
+
+const formatTooltip = (bin: any, includedCategories: IncludedCategories) => {
+  return (
+    <TooltipContent>
+      This bin contains:
+      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+      <List>
+        {CLINICAL_SIGNIFICANCE_CATEGORIES.filter((category) => includedCategories[category]).map(
+          (category) => {
+            return (
+              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+              <ListItem key={category}>
+                {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
+                {bin[category]} {CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category].toLowerCase()}{' '}
+                variant{bin[category] !== 1 ? 's' : ''}
+              </ListItem>
+            )
+          }
+        )}
+      </List>
+      Click &quot;Expand to all variants&quot; to see individual variants.
+    </TooltipContent>
+  )
 }
 
 const ClinvarBinnedVariantsPlot = ({ includedCategories, ...props }: Props) => {
@@ -43,29 +69,7 @@ const ClinvarBinnedVariantsPlot = ({ includedCategories, ...props }: Props) => {
       {...props}
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       categoryColor={(category: any) => CLINICAL_SIGNIFICANCE_CATEGORY_COLORS[category]}
-      formatTooltip={(bin: any) => {
-        return (
-          <TooltipContent>
-            This bin contains:
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <List>
-              {CLINICAL_SIGNIFICANCE_CATEGORIES.filter(
-                (category) => includedCategories[category]
-              ).map((category) => {
-                return (
-                  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-                  <ListItem key={category}>
-                    {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                    {bin[category]} {CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category].toLowerCase()}{' '}
-                    variant{bin[category] !== 1 ? 's' : ''}
-                  </ListItem>
-                )
-              })}
-            </List>
-            Click &quot;Expand to all variants&quot; to see individual variants.
-          </TooltipContent>
-        )
-      }}
+      formatTooltip={(bin: any) => formatTooltip(bin, includedCategories)}
       variantCategory={clinvarVariantClinicalSignificanceCategory}
       variantCategories={CLINICAL_SIGNIFICANCE_CATEGORIES}
     />
