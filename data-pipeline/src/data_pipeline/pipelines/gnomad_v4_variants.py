@@ -1,7 +1,6 @@
 import os
-from loguru import logger
 
-from data_pipeline.config import PipelineConfig
+from data_pipeline.config import PipelineConfig, get_data_environment, DataEnvironment
 from data_pipeline.pipeline import Pipeline, PipelineMock, run_pipeline
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
@@ -13,13 +12,11 @@ from data_pipeline.data_types.variant import (
     annotate_transcript_consequences,
 )
 
+DATA_ENV = os.getenv("DATA_ENV", "mock")
 
-DATA_ENV = os.getenv("DATA_ENV", "local")
+data_environment = get_data_environment(DATA_ENV)
 
-logger.info(DATA_ENV)
-
-
-if DATA_ENV == "local":
+if data_environment == DataEnvironment.mock:
     coverage_pipeline = PipelineMock.create(
         {
             "exome_coverage": "coverage/gnomad_v4_exome_coverage.ht",
@@ -32,19 +29,23 @@ if DATA_ENV == "local":
             "mane_select_transcripts": "genes/mane_select_transcripts.ht",
         }
     )
-    config = PipelineConfig.create(
+    config = PipelineConfig(
         name="gnomad_v4_variants",
         input_root="data/v4_mock/inputs",
         output_root="data/v4_mock/outputs",
     )
-else:
+elif data_environment == DataEnvironment.full:
     from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as coverage_pipeline
     from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
-    config = PipelineConfig.create(
+    config = PipelineConfig(
         name="gnomad_v4_variants",
         input_root="gs://gnomad-matt-data-pipeline/2023-09-26/inputs",
         output_root="gs://gnomad-matt-data-pipeline/2023-09-26/outputs",
+    )
+else:
+    raise EnvironmentError(
+        f"Data environment invalid. Set DATA_ENV to one of {', '.join([e.name for e in DataEnvironment])}"
     )
 
 
