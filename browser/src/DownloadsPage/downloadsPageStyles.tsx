@@ -103,7 +103,7 @@ const ShowURLButton = ({ label, url, ...otherProps }: ShowURLButtonProps) => {
 const renderDownloadOptions = (elements: any) => {
   return elements
     .filter((el: any) => el)
-    .flatMap((el: any, i: any) => [<React.Fragment key={`${i}`}> / </React.Fragment>, el])
+    .flatMap((el: any) => [' / ', el])
     .slice(1)
 }
 

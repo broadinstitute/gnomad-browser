@@ -107,6 +107,7 @@ const DownloadsPageTableOfContents = () => {
                 active={activeId === item.link}
                 padding={item.indent}
                 header={item.indent === '0.5rem'}
+                key={item.link}
               >
                 <a href={`#${item.link}`}>{item.text}</a>
               </TableOfContentsStyledItem>
