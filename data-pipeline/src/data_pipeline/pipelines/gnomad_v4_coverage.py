@@ -5,7 +5,7 @@ from data_pipeline.data_types.coverage import prepare_coverage
 
 
 pipeline = Pipeline(
-    config=PipelineConfig.create(name="gnomad_v4_variants", input_root="data_in", output_root="data_out")
+    config=PipelineConfig.create(name="gnomad_v4_variants", input_root="data_in", output_root="data_out")  # TODO: FIXME
 )
 
 pipeline.add_task(
