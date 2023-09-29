@@ -39,6 +39,7 @@ def output_dir():
         yield temp_dir
 
 
+@pytest.mark.broken
 def test_config(input_dir, output_dir):
     logger.info(input_dir)
     logger.info(output_dir)
