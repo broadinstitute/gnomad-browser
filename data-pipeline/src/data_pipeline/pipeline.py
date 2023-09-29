@@ -139,7 +139,6 @@ class Task:
             if isinstance(v, (Task, DownloadTask)):
                 paths.update({k: v.get_output_path()})
             else:
-                logger.info(k)
                 paths.update({k: os.path.join(self._config.input_root, v)})
 
         return paths
@@ -174,7 +173,7 @@ class Task:
             elapsed = stop - start
             logger.info(f"Finished {self._name} in {elapsed // 60}m{elapsed % 60:02}s")
         else:
-            logger.info("Skipping %s", self._name)
+            logger.info(f"Skipping {self._name}")
 
 
 @attr.define
@@ -213,17 +212,17 @@ class Pipeline:
     def get_all_task_names(self) -> List[str]:
         return list(self._tasks.keys())
 
-    def run(self, force_tasks=None):
+    def run(self, force_tasks=None) -> None:
         for task_name, task in self._tasks.items():
             task.run(force=force_tasks and task_name in force_tasks)
 
-    def set_outputs(self, outputs):
+    def set_outputs(self, outputs) -> None:
         for output_name, task_name in outputs.items():
             assert task_name in self._tasks, f"Unable to set output '{output_name}', no task named '{task_name}'"
 
         self._outputs = outputs
 
-    def get_output(self, output_name):
+    def get_output(self, output_name) -> str:
         task_name = self._outputs[output_name]
         return self._tasks[task_name]
 
