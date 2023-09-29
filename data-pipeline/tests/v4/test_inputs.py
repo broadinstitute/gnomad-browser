@@ -2,7 +2,6 @@ import pytest
 from cattrs import structure, structure_attrs_fromdict
 import hail as hl
 import json
-from loguru import logger
 
 from data_pipeline.pipelines.gnomad_v4_variants import (
     pipeline as gnomad_v4_variant_pipeline,
@@ -33,15 +32,16 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
     return objs
 
 
-@pytest.mark.only
+@pytest.mark.mock_data
 def test_globals_input_validation():
     input_path = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
     result = ht_to_json(ht, "globals")[0]
-    logger.info(result)
+    # logger.info(result)
     structure(result, Globals)
 
 
+@pytest.mark.mock_data
 def test_validate_variant_input():
     input_path = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
@@ -49,6 +49,7 @@ def test_validate_variant_input():
     [structure_attrs_fromdict(variant, InitialVariant) for variant in result]
 
 
+@pytest.mark.mock_data
 def test_validate_step1_output():
     output_path = gnomad_v4_variant_pipeline.get_task("prepare_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
@@ -57,6 +58,7 @@ def test_validate_step1_output():
     [structure_attrs_fromdict(variant, Step1Variant) for variant in result]
 
 
+@pytest.mark.mock_data
 def test_validate_step2_output():
     output_path = gnomad_v4_variant_pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
@@ -64,6 +66,7 @@ def test_validate_step2_output():
     [structure_attrs_fromdict(variant, Step2Variant) for variant in result]
 
 
+@pytest.mark.mock_data
 def test_validate_step3_output():
     output_path = gnomad_v4_variant_pipeline.get_task(
         "annotate_gnomad_v4_exome_transcript_consequences"

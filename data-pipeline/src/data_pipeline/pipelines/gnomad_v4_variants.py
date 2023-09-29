@@ -1,5 +1,6 @@
 import os
 
+
 from data_pipeline.config import PipelineConfig, get_data_environment, DataEnvironment
 from data_pipeline.pipeline import Pipeline, PipelineMock, run_pipeline
 
@@ -13,6 +14,8 @@ from data_pipeline.data_types.variant import (
 )
 
 DATA_ENV = os.getenv("DATA_ENV", "mock")
+
+pipeline_name = "gnomad_v4_variants"
 
 data_environment = get_data_environment(DATA_ENV)
 
@@ -30,7 +33,7 @@ if data_environment == DataEnvironment.mock:
         }
     )
     config = PipelineConfig(
-        name="gnomad_v4_variants",
+        name=pipeline_name,
         input_root="data/v4_mock/inputs",
         output_root="data/v4_mock/outputs",
     )
@@ -39,7 +42,7 @@ elif data_environment == DataEnvironment.full:
     from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
     config = PipelineConfig(
-        name="gnomad_v4_variants",
+        name=pipeline_name,
         input_root="gs://gnomad-matt-data-pipeline/2023-09-26/inputs",
         output_root="gs://gnomad-matt-data-pipeline/2023-09-26/outputs",
     )
@@ -47,7 +50,6 @@ else:
     raise EnvironmentError(
         f"Data environment invalid. Set DATA_ENV to one of {', '.join([e.name for e in DataEnvironment])}"
     )
-
 
 pipeline = Pipeline(config=config)
 
