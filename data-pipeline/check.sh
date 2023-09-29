@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+echo "┏━━━ Clean ━━━━━━━━━━━━━━━━━━━"
+find . -type d -name "__pycache__" -exec rm -r {} +
+find . -name "*.pyc" -exec rm -f {} +
 
 echo "┏━━━ Running pyright ━━━━━━━━━━━━━━━━━━━"
 pyright
@@ -12,4 +16,8 @@ ruff src/data_pipeline --fix
 ruff tests --fix
 
 echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"
-pytest -m only
+if [[ "$1" == "--mock-data" ]]; then
+	pytest -k "mock_data"
+else
+	pytest
+fi
