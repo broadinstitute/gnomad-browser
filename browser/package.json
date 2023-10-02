@@ -68,7 +68,6 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.10.7",
     "copy-webpack-plugin": "^7.0.0",
-    "cypress": "^10.4.0",
     "esbuild-loader": "^2.21.0",
     "favicons": "^7.1.0",
     "favicons-webpack-plugin": "^6.0.0",
