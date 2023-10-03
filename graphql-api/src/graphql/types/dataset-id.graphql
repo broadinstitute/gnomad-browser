@@ -19,3 +19,7 @@ enum StructuralVariantDatasetId {
   gnomad_sv_r2_1_non_neuro
   gnomad_sv_r4
 }
+
+enum CopyNumberVariantDatasetId {
+  gnomad_cnv_r4
+}
