@@ -113,13 +113,12 @@ DATASETS_CONFIG = {
         "get_table": lambda: hl.read_table(gnomad_v4_cnvs_pipeline.get_output("cnvs").get_output_path()),
         "args": {
             "index": "gnomad_v4_cnvs",
-            "index_fields": ["variant_id", "xpos", "xend","genes"],
+            "index_fields": ["variant_id", "xpos", "xend", "genes"],
             "id_field": "variant_id",
             "num_shards": 1,
             "block_size": 1_000,
         },
     },
-
     ##############################################################################################################
     # gnomAD v3
     ##############################################################################################################

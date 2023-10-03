@@ -10,13 +10,14 @@ def x_position(chrom, position):
     return hl.int64(contig_number) * 1_000_000_000 + position
 
 
-FREQ_FIELDS = ['SC','SN','SF']
-POPULATIONS = ['afr','amr','asj','eas','fin','mid','nfe','sas']
+FREQ_FIELDS = ["SC", "SN", "SF"]
+POPULATIONS = ["afr", "amr", "asj", "eas", "fin", "mid", "nfe", "sas"]
 DIVISIONS = list(
     itertools.chain.from_iterable(
         [(pop, pop), (f"{pop}_XX", f"{pop}_FEMALE"), (f"{pop}_XY", f"{pop}_MALE")] for pop in POPULATIONS
     )
-    ) + [("XX", "FEMALE"), ("XY", "MALE")]
+) + [("XX", "FEMALE"), ("XY", "MALE")]
+
 
 # vcf_paths = "GNOMAD_V4.4.3_browser_prototype_1.1.vcf.gz"
 def prepare_gnomad_v4_cnvs(vcf_path):
@@ -40,30 +41,32 @@ def prepare_gnomad_v4_cnvs(vcf_path):
         xpos=x_position(ds.chrom, ds.pos),
         xend=x_position(ds.chrom, ds.end),
     )
-    
-    ds = ds.annotate(genes=hl.set(hl.array(hl.str(ds.info.Genes).split(','))))
-    
+
+    ds = ds.annotate(genes=hl.set(hl.array(hl.str(ds.info.Genes).split(","))))
+
     ds = ds.annotate(
         freq=hl.struct(
-        **{field.lower(): ds.info[field] for field in FREQ_FIELDS},
-        populations=[
-            hl.struct(id=pop_id, **{field.lower(): ds.info[f"{pop_key}_{field}"] for field in FREQ_FIELDS})
-            for (pop_id, pop_key) in DIVISIONS
-        ],
-    ))
+            **{field.lower(): ds.info[field] for field in FREQ_FIELDS},
+            populations=[
+                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{pop_key}_{field}"] for field in FREQ_FIELDS})
+                for (pop_id, pop_key) in DIVISIONS
+            ],
+        )
+    )
 
     ds = ds.key_by("variant_id")
 
     ds = ds.annotate(
-        posmin = ds.info.POSMIN,
-        posmax = ds.info.POSMAX,
-        endmin = ds.info.ENDMIN,
-        endmax = ds.info.ENDMAX,
+        posmin=ds.info.POSMIN,
+        posmax=ds.info.POSMAX,
+        endmin=ds.info.ENDMIN,
+        endmax=ds.info.ENDMAX,
     )
 
     ds = ds.drop("locus", "alleles", "info", "rsid")
     ds = ds.annotate(variant_id_upper_case=ds.variant_id.upper())
     return ds
+
 
 # Add uppercase ID to support case-insensitive searching
 def add_variant_id_upper_case(cnvs_path):
