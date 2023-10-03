@@ -5,7 +5,7 @@ import {
   fetchCopyNumberVariantsByRegion,
 } from '../../queries/copy-number-variant-queries'
 
-//TODO: args.dataset for all three resolvers
+// TODO: args.dataset for all three resolvers
 const resolveCopyNumberVariant = async (_: any, args: any, ctx: any) => {
   const variant = await fetchCopyNumberVariantById(ctx.esClient, args.variantId)
   if (!variant) {
