@@ -7,6 +7,7 @@ import aliasResolvers from './resolvers/aliases'
 import browserMetadataResolvers from './resolvers/browser-metadata'
 import clinVarVariantResolvers from './resolvers/clinvar-variants'
 import clinVarVariantFieldResolvers from './resolvers/clinvar-variant-fields'
+import copyNumberVariantResolvers from  './resolvers/copy-number-variants'
 import coverageResolvers from './resolvers/coverage'
 import geneResolvers from './resolvers/gene'
 import geneFieldResolvers from './resolvers/gene-fields'
@@ -34,6 +35,7 @@ const resolvers = mergeResolvers([
   browserMetadataResolvers,
   clinVarVariantResolvers,
   clinVarVariantFieldResolvers,
+  copyNumberVariantResolvers,
   coverageResolvers,
   geneResolvers,
   geneFieldResolvers,
