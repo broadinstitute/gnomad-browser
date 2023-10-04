@@ -17,8 +17,8 @@ spec:
     spec:
       volumes:
         - name: nginx-cache
-          persistentVolumeClaim:
-            claimName: browsercache
+          emptyDir:
+            sizeLimit: 20Gi
       containers:
         - name: web
           image: gnomad-browser
