@@ -2,22 +2,27 @@ import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX = 'gnomad_v4_cnvs'
 
-// type CnvDatasetId = 'gnomad_cnv_r4'
-// type DatasetDependentQueryParams = {
-//   index: string
-//   variantIdParams: (variantId: string) => any
-// }
+type CnvDatasetId = 'gnomad_cnv_r4'
+type DatasetDependentQueryParams = {
+  index: string,
+}
 
-// const v4VariantIdParams = (variantId: string) => ({
-//   variant_id_upper_case: variantId.toUpperCase(),
-// })
 
-// const datasetDependentQueryParams: Record<CnvDatasetId, DatasetDependentQueryParams> = {
-//   gnomad_cnv_r4: {
-//     index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
-//     variantIdParams: v4VariantIdParams,
-//   },
-// } as const
+
+const datasetDependentQueryParams: Record<CnvDatasetId, DatasetDependentQueryParams> = {
+  gnomad_cnv_r4: {
+    index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
+  }
+} as const
+
+export type GeneQueryParams = { symbol: string }
+export type RegionQueryParams = {
+  chrom: number
+  start: number
+  stop: number
+  xstart: number
+  xstop: number
+}
 
 // ================================================================================================
 // Variant query
@@ -25,13 +30,12 @@ const GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX = 'gnomad_v4_cnvs'
 
 export const fetchCopyNumberVariantById = async (
   esClient: any,
-  variantId: string,
-  // datasetId?: CnvDatasetId
+  datasetId: CnvDatasetId,
+  variantId: string
 ) => {
-  // const { index, variantIdParams } = datasetDependentQueryParams[datasetId]
-  // console.log('esclient variant id', esClient)
+  const { index }= datasetDependentQueryParams[datasetId]
   const response = await esClient.search({
-    index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
+    index,
     type: '_doc',
     body: {
       query: {
@@ -48,18 +52,16 @@ export const fetchCopyNumberVariantById = async (
   }
 
   const variant = response.body.hits.hits[0]._source.value
-
   return {
     ...variant,
     ...variant.freq,
   }
 }
 
+
 // ================================================================================================
 // Gene query
 // ================================================================================================
-
-export type GeneQueryParams = { symbol: string }
 
 const esFieldsToFetch = () => [
   'value.chrom',
@@ -79,13 +81,12 @@ const esFieldsToFetch = () => [
 
 export const fetchCopyNumberVariantsByGene = async (
   esClient: any,
-  gene: GeneQueryParams,
-  // datasetId?: CnvDatasetId
+  datasetId: CnvDatasetId,
+  gene: GeneQueryParams
 ) => {
-  // const index = datasetDependentQueryParams[datasetId]
-  // console.log('esclient gene', esClient)
+  const { index } = datasetDependentQueryParams[datasetId]
   const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
+    index,
     type: '_doc',
     size: 10000,
     _source: esFieldsToFetch(),
@@ -115,22 +116,15 @@ export const fetchCopyNumberVariantsByGene = async (
 // ================================================================================================
 // Region query
 // ================================================================================================
-export type RegionQueryParams = {
-  chrom: number
-  start: number
-  stop: number
-  xstart: number
-  xstop: number
-}
 
 export const fetchCopyNumberVariantsByRegion = async (
   esClient: any,
-  region: RegionQueryParams,
-  // datasetId?: CnvDatasetId
+  datasetId: CnvDatasetId,
+  region: RegionQueryParams
 ) => {
-  // const index = datasetDependentQueryParams[datasetId]
+  const { index } = datasetDependentQueryParams[datasetId]
   const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
+    index,
     type: '_doc',
     size: 10000,
     _source: esFieldsToFetch(),

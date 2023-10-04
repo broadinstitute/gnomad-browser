@@ -5,9 +5,8 @@ import {
   fetchCopyNumberVariantsByRegion,
 } from '../../queries/copy-number-variant-queries'
 
-// TODO: args.dataset for all three resolvers
 const resolveCopyNumberVariant = async (_: any, args: any, ctx: any) => {
-  const variant = await fetchCopyNumberVariantById(ctx.esClient, args.variantId)
+  const variant = await fetchCopyNumberVariantById(ctx.esClient, args.dataset, args.variantId)
   if (!variant) {
     throw new UserVisibleError('Variant not found')
   }
@@ -15,12 +14,12 @@ const resolveCopyNumberVariant = async (_: any, args: any, ctx: any) => {
   return variant
 }
 
-const resolveCopyNumberVariantsInGene = (obj: any, ctx: any) => {
-  return fetchCopyNumberVariantsByGene(ctx.esClient, obj)
+const resolveCopyNumberVariantsInGene = (obj: any, args: any, ctx: any) => {
+  return fetchCopyNumberVariantsByGene(ctx.esClient, args.dataset, obj)
 }
 
-const resolveCopyNumberVariantsInRegion = (obj: any,  ctx: any) => {
-  return fetchCopyNumberVariantsByRegion(ctx.esClient, obj)
+const resolveCopyNumberVariantsInRegion = (obj: any, args: any, ctx: any) => {
+  return fetchCopyNumberVariantsByRegion(ctx.esClient, args.dataset, obj)
 }
 
 const resolvers = {
