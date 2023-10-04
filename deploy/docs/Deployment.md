@@ -39,7 +39,7 @@ See [data-pipeline/README.md](../../data-pipeline/README.md) for information on 
 
 ## Create Elasticsearch cluster
 
-The setup step installs the [Elastic Cloud on Kubernetes (ECK)](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-overview.html) operator.
+First install the operator with the steps as documented: [Elastic Cloud on Kubernetes (ECK)](https://www.elastic.co/guide/en/cloud-on-k8s/2.9/k8s-overview.html).
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
 
