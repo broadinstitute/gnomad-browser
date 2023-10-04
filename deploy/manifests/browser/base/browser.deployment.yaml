@@ -15,6 +15,10 @@ spec:
       labels:
         name: gnomad-browser
     spec:
+      volumes:
+        - name: nginx-cache
+          emptyDir:
+            sizeLimit: 20Gi
       containers:
         - name: web
           image: gnomad-browser
@@ -26,16 +30,19 @@ spec:
                 configMapKeyRef:
                   name: proxy-ips
                   key: ips
+          volumeMounts:
+            - mountPath: '/var/cache/nginx'
+              name: nginx-cache
           ports:
             - name: http
               containerPort: 80
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: '100m'
+              memory: '256Mi'
             limits:
-              cpu: "250m"
-              memory: "512Mi"
+              cpu: '250m'
+              memory: '512Mi'
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -43,4 +50,4 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
       nodeSelector:
-        cloud.google.com/gke-nodepool: "main-pool"
+        cloud.google.com/gke-nodepool: 'main-pool'
