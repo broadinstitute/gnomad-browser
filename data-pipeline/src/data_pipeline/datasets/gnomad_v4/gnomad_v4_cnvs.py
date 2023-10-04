@@ -19,7 +19,6 @@ DIVISIONS = list(
 ) + [("XX", "FEMALE"), ("XY", "MALE")]
 
 
-# vcf_paths = "GNOMAD_V4.4.3_browser_prototype_1.1.vcf.gz"
 def prepare_gnomad_v4_cnvs(vcf_path):
     ds = hl.import_vcf(vcf_path, force_bgz=True, min_partitions=32, reference_genome="GRCh38").rows()
 
@@ -64,12 +63,5 @@ def prepare_gnomad_v4_cnvs(vcf_path):
     )
 
     ds = ds.drop("locus", "alleles", "info", "rsid")
-    ds = ds.annotate(variant_id_upper_case=ds.variant_id.upper())
-    return ds
-
-
-# Add uppercase ID to support case-insensitive searching
-def add_variant_id_upper_case(cnvs_path):
-    ds = hl.read_table(cnvs_path)
     ds = ds.annotate(variant_id_upper_case=ds.variant_id.upper())
     return ds
