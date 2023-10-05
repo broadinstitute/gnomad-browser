@@ -79,7 +79,7 @@ importers:
         version: 29.7.0(@babel/core@7.23.0)
       cypress:
         specifier: ^13.3.0
-        version: 13.3.0
+        version: 13.6.1
       eslint:
         specifier: ^8.0.0
         version: 8.50.0
@@ -263,6 +263,9 @@ importers:
       styled-components:
         specifier: ^4.2.0
         version: 4.4.1(react-dom@16.14.0)(react@16.14.0)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.2.2
       whatwg-fetch:
         specifier: ^3.5.0
         version: 3.6.19
@@ -341,13 +344,10 @@ importers:
         version: 16.14.0(react@16.14.0)
       ts-loader:
         specifier: ^9.3.1
-        version: 9.4.4(typescript@4.9.5)(webpack@5.88.2)
+        version: 9.4.4(typescript@5.2.2)(webpack@5.88.2)
       ts-migrate:
         specifier: ^0.1.30
-        version: 0.1.35(@babel/preset-env@7.22.20)(typescript@4.9.5)
-      typescript:
-        specifier: ^4.7.4
-        version: 4.9.5
+        version: 0.1.35(@babel/preset-env@7.22.20)(typescript@5.2.2)
       webpack:
         specifier: ^5.0.0
         version: 5.88.2(webpack-cli@4.10.0)
@@ -3145,8 +3145,10 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
-  /@types/node@18.18.3:
-    resolution: {integrity: sha512-0OVfGupTl3NBFr8+iXpfZ8NR7jfFO+P1Q+IO/q0wbo02wYkP5gy36phojeYWpLQ6WAMjl+VfmqUk2YbUfp0irA==}
+  /@types/node@18.19.2:
+    resolution: {integrity: sha512-6wzfBdbWpe8QykUkXBjtmO3zITA0A3FIjoy+in0Y2K4KrCiRhNYJIdwAPDffZ3G6GnaKaSLSEa9ZuORLfEoiwg==}
+    dependencies:
+      undici-types: 5.26.5
     dev: true
 
   /@types/node@20.7.0:
@@ -5221,15 +5223,15 @@ packages:
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
 
-  /cypress@13.3.0:
-    resolution: {integrity: sha512-mpI8qcTwLGiA4zEQvTC/U1xGUezVV4V8HQCOYjlEOrVmU1etVvxOjkCXHGwrlYdZU/EPmUiWfsO3yt1o+Q2bgw==}
+  /cypress@13.6.1:
+    resolution: {integrity: sha512-k1Wl5PQcA/4UoTffYKKaxA0FJKwg8yenYNYRzLt11CUR0Kln+h7Udne6mdU1cUIdXBDTVZWtmiUjzqGs7/pEpw==}
     engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@cypress/request': 3.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
-      '@types/node': 18.18.3
+      '@types/node': 18.19.2
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.4
       arch: 2.2.0
@@ -12698,7 +12700,7 @@ packages:
       yargs-parser: 21.1.1
     dev: true
 
-  /ts-loader@9.4.4(typescript@4.9.5)(webpack@5.88.2):
+  /ts-loader@9.4.4(typescript@5.2.2)(webpack@5.88.2):
     resolution: {integrity: sha512-MLukxDHBl8OJ5Dk3y69IsKVFRA/6MwzEqBgh+OXMPB/OD01KQuWPFd1WAQP8a5PeSCAxfnkhiuWqfmFJzJQt9w==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -12709,23 +12711,8 @@ packages:
       enhanced-resolve: 5.15.0
       micromatch: 4.0.5
       semver: 7.5.4
-      typescript: 4.9.5
+      typescript: 5.2.2
       webpack: 5.88.2(webpack-cli@4.10.0)
-    dev: true
-
-  /ts-migrate-plugins@0.1.35(@babel/preset-env@7.22.20)(typescript@4.9.5):
-    resolution: {integrity: sha512-DUkx7ClKhxKYPWDha9DJTZ6LhwEUszL90uH5I/O11K/6TbA96ytln1O3HL6Pt83i4mAKOlg0mQ6AMsPtL5FFkQ==}
-    peerDependencies:
-      typescript: '>4.0'
-    dependencies:
-      eslint: 7.32.0
-      jscodeshift: 0.13.1(@babel/preset-env@7.22.20)
-      json-schema: 0.4.0
-      ts-migrate-server: 0.1.33(typescript@4.9.5)
-      typescript: 4.9.5
-    transitivePeerDependencies:
-      - '@babel/preset-env'
-      - supports-color
     dev: true
 
   /ts-migrate-plugins@0.1.35(@babel/preset-env@7.22.20)(typescript@5.2.2):
@@ -12741,18 +12728,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/preset-env'
       - supports-color
-    dev: false
-
-  /ts-migrate-server@0.1.33(typescript@4.9.5):
-    resolution: {integrity: sha512-MYHy10yzL2fkb2FHFQ9f54gqc5KkaVthTjtpwS4bTroYCONDelp1hbz5nxKWaP3q2oc3kBVeGuAR91RNI+yK+g==}
-    peerDependencies:
-      typescript: '>4.0'
-    dependencies:
-      '@ts-morph/bootstrap': 0.16.0
-      pretty-ms: 7.0.1
-      typescript: 4.9.5
-      updatable-log: 0.2.0
-    dev: true
 
   /ts-migrate-server@0.1.33(typescript@5.2.2):
     resolution: {integrity: sha512-MYHy10yzL2fkb2FHFQ9f54gqc5KkaVthTjtpwS4bTroYCONDelp1hbz5nxKWaP3q2oc3kBVeGuAR91RNI+yK+g==}
@@ -12763,26 +12738,6 @@ packages:
       pretty-ms: 7.0.1
       typescript: 5.2.2
       updatable-log: 0.2.0
-    dev: false
-
-  /ts-migrate@0.1.35(@babel/preset-env@7.22.20)(typescript@4.9.5):
-    resolution: {integrity: sha512-EmXahqwIP0a6fE1BLKKVMgJEeYn9V+CxJ19qFJ/DzkPL4PjDI/FcgPo8D519amBPy2nnlc/x1V6R6aIeHdD87w==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>4.0'
-    dependencies:
-      create-jest-runner: 0.5.3
-      json5: 2.2.3
-      json5-writer: 0.1.8
-      ts-migrate-plugins: 0.1.35(@babel/preset-env@7.22.20)(typescript@4.9.5)
-      ts-migrate-server: 0.1.33(typescript@4.9.5)
-      typescript: 4.9.5
-      updatable-log: 0.2.0
-      yargs: 15.4.1
-    transitivePeerDependencies:
-      - '@babel/preset-env'
-      - supports-color
-    dev: true
 
   /ts-migrate@0.1.35(@babel/preset-env@7.22.20)(typescript@5.2.2):
     resolution: {integrity: sha512-EmXahqwIP0a6fE1BLKKVMgJEeYn9V+CxJ19qFJ/DzkPL4PjDI/FcgPo8D519amBPy2nnlc/x1V6R6aIeHdD87w==}
@@ -12801,7 +12756,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/preset-env'
       - supports-color
-    dev: false
 
   /ts-node@10.9.1(@types/node@20.7.0)(typescript@5.2.2):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
@@ -12966,12 +12920,6 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
-  /typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
-
   /typescript@5.2.2:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
@@ -12988,6 +12936,10 @@ packages:
 
   /undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
+    dev: true
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
   /unherit@1.1.3:
