@@ -17,6 +17,8 @@ export const datasetLabels = {
   gnomad_sv_r2_1_controls: 'gnomAD SVs v2.1 (controls)',
   gnomad_sv_r2_1_non_neuro: 'gnomAD SVs v2.1 (non-neuro)',
   gnomad_sv_r4: 'gnomAD SVs v4',
+  gnomad_r4: '', //* TODO
+  gnomad_cnv_r4: "gnomAD CNVs v4.1",
 } as const
 export type DatasetId = keyof typeof datasetLabels
 
@@ -29,6 +31,9 @@ const fullDatasetIds = allDatasetIds.filter(
 )
 
 const extractReadsDatasetId = (datasetId: DatasetId) => {
+  if (datasetId.startsWith('gnomad_r4')) {
+    return 'gnomad_r4'
+  }
   if (datasetId.startsWith('gnomad_r3')) {
     return 'gnomad_r3'
   }
@@ -59,6 +64,9 @@ const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
   // v4 SVs should show gnomAD 3.1.2 coverage
   if (datasetId.startsWith('gnomad_sv_r4')) {
     return 'gnomad_r3'
+  }
+  if (datasetId.startsWith('gnomad_cnv_r4')) {
+    return 'gnomad_r4'
   }
 
   return datasetId
@@ -97,6 +105,13 @@ const extractStructuralVariantDatasetId = (datasetId: DatasetId): DatasetId => {
 
   return 'gnomad_sv_r4'
 }
+const extractCopyNumberVariantDatasetId = (datasetId: DatasetId): DatasetId => {
+  if (datasetId.startsWith('gnomad_cnv')) {
+    return datasetId
+  }
+
+  return 'gnomad_cnv_r4'
+}
 
 type DatasetMetadata = {
   referenceGenome: ReferenceGenome
@@ -104,6 +119,7 @@ type DatasetMetadata = {
   isSubset: boolean
   hasShortVariants: boolean
   hasStructuralVariants: boolean
+  hasCopyNumberVariants: boolean
   hasConstraints: boolean
   hasVariantCoocurrence: boolean
   hasNonCodingConstraints: boolean
@@ -122,6 +138,8 @@ type DatasetMetadata = {
   isExac: boolean
   isSVs: boolean
   isV4SVs: boolean
+  isCNVs: boolean
+  isV4CNVs: boolean
   hasV2Genome: boolean
   metricsIncludeLowQualityGenotypes: boolean
   has1000GenomesPopulationFrequencies: boolean
@@ -139,10 +157,15 @@ type DatasetMetadata = {
   variantFeedbackDescription: string | null
   shortVariantDatasetId: DatasetId
   structuralVariantDatasetId: DatasetId
+  copyNumberVariantDatasetId: DatasetId
 }
 
 const structuralVariantDatasetIds = allDatasetIds.filter((datasetId) =>
   datasetId.startsWith('gnomad_sv')
+)
+
+const copyNumberVariantDatasetIds = allDatasetIds.filter((datasetId) =>
+  datasetId.startsWith('gnomad_cnv')
 )
 
 const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
@@ -155,11 +178,13 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
   hasConstraints: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
-  referenceGenome:
-    datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4' ? 'GRCh38' : 'GRCh37',
   hasExome: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
+  isV4CNVs: datasetId === 'gnomad_cnv_r4',
+  hasCopyNumberVariants: copyNumberVariantDatasetIds.includes(datasetId),
+  referenceGenome:
+    datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_cnv_r4' ||datasetId === 'gnomad_sv_r4'  ? 'GRCh38' : 'GRCh37',
   regionsHaveExomeCoverage:
     !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
@@ -170,6 +195,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   isV2: datasetId.startsWith('gnomad_r2'),
   isV3: datasetId.startsWith('gnomad_r3'),
   isSVs: datasetId.startsWith('gnomad_sv'),
+  isCNVs: datasetId.startsWith('gnomad_cnv'),
   isExac: datasetId === 'exac',
   hasV2Genome: datasetId.startsWith('gnomad_r2'),
   metricsIncludeLowQualityGenotypes: datasetId.startsWith('gnomad_r2') || datasetId === 'exac',
@@ -189,6 +215,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   variantFeedbackDescription: extractVariantFeedbackDescription(datasetId),
   shortVariantDatasetId: extractShortVariantDatasetId(datasetId),
   structuralVariantDatasetId: extractStructuralVariantDatasetId(datasetId),
+  copyNumberVariantDatasetId: extractCopyNumberVariantDatasetId(datasetId),
 })
 
 const metadata = allDatasetIds.reduce(
@@ -231,6 +258,9 @@ export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId,
 
 export const hasStructuralVariants = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasStructuralVariants')
+
+export const hasCopyNumberVariants = (datasetId: DatasetId) =>
+getMetadata(datasetId, 'hasCopyNumberVariants')
 
 export const hasLocalAncestryPopulations = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasLocalAncestryPopulations')
@@ -303,3 +333,7 @@ export const shortVariantDatasetId = (datasetId: DatasetId) =>
 
 export const structuralVariantDatasetId = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'structuralVariantDatasetId')
+export const isV4CNVs = (datasetId: DatasetId) => getMetadata(datasetId, 'isV4CNVs')
+
+export const copyNumberVariantDatasetId = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'copyNumberVariantDatasetId')
