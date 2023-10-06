@@ -14,6 +14,7 @@ import {
   hasShortVariants,
   hasStructuralVariants,
   referenceGenome,
+  hasCopyNumberVariants,
   shortVariantDatasetId,
   structuralVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
@@ -440,6 +441,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad2Subsets = true,
     includeGnomad3 = true,
     includeGnomad3Subsets = true,
+    includeCopyNumberVariants = true,
   } = datasetOptions
 
   const datasetLink = (datasetId: any) => ({
@@ -621,6 +623,36 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
+        ],
+      }
+    )
+  }
+
+  if (includeCopyNumberVariants) {
+    const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_cnv_r4'
+
+    datasets.push(
+      {
+        id: 'current_cnv_dataset',
+        isActive: hasCopyNumberVariants(selectedDataset),
+        label: labelForDataset(topLevelCopyNumberVariantDataset),
+        url: datasetLink(topLevelCopyNumberVariantDataset),
+      },
+      {
+        id: 'other_cnv_variant',
+        isActive: hasCopyNumberVariants(selectedDataset),
+        label: 'More datasets',
+        children: [
+          {
+            id: 'gnomad_cnv_r4',
+            label: labelForDataset('gnomad_cnv_r4'),
+            url: datasetLink('gnomad_cnv_r4'),
+            description: `samples`,
+            // description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
+            childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
+          }
         ],
       }
     )
