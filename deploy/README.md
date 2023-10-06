@@ -30,12 +30,12 @@ To see other available configuration options, run `./deployctl config list`.
 
 ## Table of contents
 
-- [Creating a new deployment](./docs/NewDeployment.md)
-- [Updating an existing deployment](./docs/UpdateDeployment.md)
+- [Deploying the browser](./docs/Deployment.md)
 - Elasticsearch
   - [Connecting to Elasticsearch](./docs/ElasticsearchConnection.md)
   - [Index aliases](./docs/ElasticsearchIndexAliases.md)
   - [Backups](./docs/ElasticsearchSnapshots.md)
   - [Loading large datasets](./docs/LoadingLargeDatasets.md)
+- [Update ClinVar variants](./docs/UpdateClinvarVariants.md)
 - [Redis cache](./docs/RedisCache.md)
 - [Logging](./docs/Logging.md)
