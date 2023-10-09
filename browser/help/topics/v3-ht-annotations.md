@@ -35,6 +35,8 @@ The gnomAD v4 genomes Hail Table annotations are defined below:
   - **n_larger**: Count of age values falling above highest histogram bin edge.
 - **freq_meta_sample_count**: A sample count per sample grouping defined in the 'freq_meta' global annotation.
 - **vrs_version**: The Variant Representation Specification version that was used to compute IDs on the callset.
+  - **vrs_schema_version**: The [version](https://github.com/ga4gh/vrs/tags) of the 
+   VRS schema that is used to represent variants and compute identifiers.
   - **vrs_python_version**: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
   - **seqrepo_version**: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
 - **tool_versions**: Versions of in silico predictors used in the callset.
