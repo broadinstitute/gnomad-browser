@@ -24,6 +24,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
     prepare_heterozygous_variant_cooccurrence_counts,
     prepare_homozygous_variant_cooccurrence_counts,
 )
+from data_pipeline.data_types.gene import reject_par_y_genes
 
 pipeline = Pipeline()
 
@@ -317,6 +318,15 @@ pipeline.add_task(
     },
 )
 
+pipeline.add_task(
+    "annotate_grch38_genes_step_5",
+    reject_par_y_genes,
+    "/genes/genes_grch38_annotated_5.ht",
+    {
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
+    },
+)
+
 ###############################################
 # Extract transcripts
 ###############################################
@@ -357,7 +367,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_4",
+        "genes_grch38": "annotate_grch38_genes_step_5",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
