@@ -111,6 +111,12 @@ def collect_gene_exons(gene_exons):
     return exons
 
 
+def reject_par_y_genes(genes_path=None):
+    genes = hl.read_table(genes_path)
+    genes = genes.filter(genes.gene_version.endswith("_PAR_Y") == hl.literal(False))
+    return genes
+
+
 ###############################################
 # Transcripts                                 #
 ###############################################
