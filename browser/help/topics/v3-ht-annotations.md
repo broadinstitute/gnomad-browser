@@ -13,6 +13,8 @@ The gnomAD v4 genomes Hail Table annotations are defined below:
 - **faf_meta**: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
 - **vep_globals**: Information about VEP annotations.
   - **vep_version**: VEP version that was run on the callset.
+  - **gencode_version**: GENCODE version used in VEP.
+  - **mane_select_version**: MANE Select version used in VEP.
   - **vep_csq_header**: VEP header for VCF export.
   - **vep_help**: Output from vep --help.
   - **vep_config**: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
