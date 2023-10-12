@@ -18,6 +18,7 @@ from data_pipeline.pipelines.exac_variants import pipeline as exac_variants_pipe
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
 from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as gnomad_v2_coverage_pipeline
+from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v2_lof_curation_results import pipeline as gnomad_v2_lof_curation_results_pipeline
 from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_variants_pipeline
 from data_pipeline.pipelines.gnomad_v2_variant_cooccurrence import pipeline as gnomad_v2_variant_cooccurrence_pipeline
@@ -35,6 +36,7 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
     pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
 )
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
+from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -103,6 +105,15 @@ DATASETS_CONFIG = {
             "id_field": "transcript_id",
             "block_size": 1_000,
         },
+    },
+    ##############################################################################################################
+    # gnomAD v4
+    ##############################################################################################################
+    "gnomad_v4_exome_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_coverage_pipeline.get_output("exome_coverage").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_exome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
     },
     ##############################################################################################################
     # gnomAD v3
@@ -412,6 +423,8 @@ def main(argv):
         ["gcloud", "secrets", "versions", "access", "latest", f"--secret={args.secret}"]
     ).decode("utf8")
 
+    print(elasticsearch_password)
+
     datasets = args.datasets.split(",")
     unknown_datasets = [d for d in datasets if d not in DATASETS_CONFIG.keys()]
     if unknown_datasets:
@@ -424,3 +437,6 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+
+# ./deployctl data-pipeline run --cluster ms export_to_elasticsearch -- --datasets gnomad_v4_exome_coverage --host 10.168.12.13 --secret gnomad-elasticsearch-password-ms

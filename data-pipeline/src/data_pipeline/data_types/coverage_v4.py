@@ -6,11 +6,11 @@ from data_pipeline.data_types.locus import x_position
 def prepare_coverage(coverage_path):
     coverage = hl.read_table(coverage_path)
 
-    coverage.describe()
-
     coverage = coverage.annotate(xpos=x_position(coverage.locus))
 
-    # Median field name is different in v3.0.1 vs v2
+    coverage = coverage.annotate(**coverage.coverage_stats[0])
+
+    # Median field name is different in v4/v3.0.1 vs v2
     if "median" not in coverage.row.dtype.fields:
         coverage = coverage.annotate(median=coverage.median_approx)
 
