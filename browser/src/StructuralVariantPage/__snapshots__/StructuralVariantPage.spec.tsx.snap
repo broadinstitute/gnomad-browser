@@ -73,6 +73,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -640,6 +662,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -1211,6 +1255,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -1779,6 +1845,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -2326,6 +2414,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -2879,6 +2989,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -3424,6 +3556,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -3974,6 +4128,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -5059,6 +5235,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -5626,6 +5824,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -6197,6 +6417,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -6765,6 +7007,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -7312,6 +7576,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -7865,6 +8151,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -8410,6 +8718,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -8960,6 +9290,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -10045,6 +10397,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -10612,6 +10986,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -11183,6 +11579,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -11751,6 +12169,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -12298,6 +12738,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -12851,6 +13313,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
                 GRCh37
               </div>
@@ -13396,6 +13880,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -13946,6 +14452,28 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              />
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r3"
+                  href="/?dataset=gnomad_sv_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v3
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    12,345 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"

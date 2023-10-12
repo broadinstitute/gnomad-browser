@@ -26,6 +26,8 @@ const sampleCounts = [
   ...Object.keys(gnomadSvV2SubsetSampleCounts).map((subset) => ({
     [`gnomad_sv_r2_1_${subset}`]: gnomadSvV2SubsetSampleCounts[subset],
   })),
+  // TK this is a dummy value
+  { gnomad_sv_r3: { total: 12345 } },
 ].reduce(Object.assign, {})
 
 export default sampleCounts

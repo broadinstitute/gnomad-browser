@@ -48514,12 +48514,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3"
+            href="/?dataset=gnomad_r2_1"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD v3.1.2
+            gnomAD v2.1.1
           </a>
         </li>
         <li
@@ -56575,12 +56575,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3"
+            href="/?dataset=gnomad_r2_1"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD v3.1.2
+            gnomAD v2.1.1
           </a>
         </li>
         <li
@@ -64636,12 +64636,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3"
+            href="/?dataset=gnomad_r2_1"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD v3.1.2
+            gnomAD v2.1.1
           </a>
         </li>
         <li

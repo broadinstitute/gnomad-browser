@@ -341,6 +341,28 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
                 >
                   GRCh37
                 </div>
@@ -1739,6 +1761,28 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -3143,6 +3187,28 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
                 >
                   GRCh37
                 </div>
@@ -4243,12 +4309,12 @@ exports[`GenePage with SV dataset "gnomad_sv_r3" has no unexpected changes 1`] =
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_short_variant"
-              href="/?dataset=gnomad_r2_1"
+              href="/?dataset=gnomad_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD v2.1.1
+              gnomAD v3.1.2
             </a>
           </li>
           <li
@@ -4541,6 +4607,28 @@ exports[`GenePage with SV dataset "gnomad_sv_r3" has no unexpected changes 1`] =
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -5941,6 +6029,28 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -7379,6 +7489,28 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
                 >
                   GRCh37
                 </div>
@@ -8811,6 +8943,28 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -10249,6 +10403,28 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
                 >
                   GRCh37
                 </div>
@@ -11681,6 +11857,28 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -13119,6 +13317,28 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
                 >
                   GRCh37
                 </div>
@@ -14515,12 +14735,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -14551,6 +14771,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -15949,12 +16191,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -15985,6 +16227,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -17383,12 +17647,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -17419,6 +17683,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -18817,12 +19103,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -18853,6 +19139,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -20251,12 +20559,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -20287,6 +20595,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -21685,12 +22015,12 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              href="/?dataset=gnomad_sv_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD SVs v3
             </a>
           </li>
           <li
@@ -21721,6 +22051,28 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             <ul
               className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
             >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                />
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r3"
+                    href="/?dataset=gnomad_sv_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v3
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      12,345 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
               <li>
                 <div
                   className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
