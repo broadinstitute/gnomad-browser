@@ -51,6 +51,8 @@ Annotate that service account to associate it with the GCP Service Account that 
   kubectl annotate sa es-snaps iam.gke.io/gcp-service-account=your-service-acct@your-project.iam.gserviceaccount.com
 ```
 
+If you are using a custom cluster (e.g. `gnomad-myname`) ensure `environment_tag` in `deployctl_config.json` is set to `myname`.
+
 To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
 After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
