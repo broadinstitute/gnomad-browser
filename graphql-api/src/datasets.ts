@@ -1,4 +1,5 @@
 export const DATASET_LABELS = {
+  gnomad_r4: 'gnomAD v4',
   gnomad_r3: 'gnomAD v3',
   gnomad_r3_controls_and_biobanks: 'gnomAD v3 (controls and biobanks)',
   gnomad_r3_non_cancer: 'gnomAD v3 (non-cancer)',
@@ -14,6 +15,7 @@ export const DATASET_LABELS = {
 }
 
 export const DATASET_REFERENCE_GENOMES: Record<string, string> = {
+  gnomad_r4: 'GRCh38',
   gnomad_r3: 'GRCh38',
   gnomad_r3_controls_and_biobanks: 'GRCh38',
   gnomad_r3_non_cancer: 'GRCh38',
