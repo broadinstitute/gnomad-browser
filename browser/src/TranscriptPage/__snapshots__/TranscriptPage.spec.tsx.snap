@@ -9753,12 +9753,12 @@ exports[`TranscriptPage with dataset "gnomad_sv_r3" has no unexpected changes 1`
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_short_variant"
-              href="/?dataset=gnomad_r2_1"
+              href="/?dataset=gnomad_r3"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD v2.1.1
+              gnomAD v3.1.2
             </a>
           </li>
           <li

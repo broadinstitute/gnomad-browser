@@ -14,6 +14,8 @@ import {
   hasShortVariants,
   hasStructuralVariants,
   referenceGenome,
+  shortVariantDatasetId,
+  structuralVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -124,7 +126,6 @@ const SubNavigationLink = styled.a`
   }
 `.withComponent(Link)
 
-
 const ItemDescription = styled.div`
   margin-top: 0.125em;
   margin-left: 5px;
@@ -148,13 +149,13 @@ type ChildDataset = {
 }
 
 type Props = {
-  items: ({
+  items: {
     id: string
     isActive?: boolean
     label: string
     url: string | any
     children: ChildDataset[]
-  })[]
+  }[]
 }
 
 type State = any
@@ -394,27 +395,29 @@ class NavigationMenu extends Component<Props, State> {
                     ).map((childReferenceGenome) => (
                       <li key={childReferenceGenome}>
                         <GroupedNav>{childReferenceGenome}</GroupedNav>
-                          {item.children
-                            .filter((childItem) => childItem.childReferenceGenome === childReferenceGenome)
-                            .map((childItem) => (
-                              <li key={childItem.id}>
-                                <SubNavigationLink
-                                  data-item={childItem.id}
-                                  to={childItem.url}
-                                  onBlur={this.onBlur}
-                                  onClick={() => {
-                                    this.setState({ expandedItem: null })
-                                    this.focusItem(item.id)
-                                  }}
-                                  onKeyDown={this.onKeyDownSubMenuItem}
-                                >
-                                  {childItem.label}
-                                  {childItem.description && (
-                                    <ItemDescription>{childItem.description}</ItemDescription>
-                                  )}
-                                </SubNavigationLink>
-                              </li>
-                            ))}
+                        {item.children
+                          .filter(
+                            (childItem) => childItem.childReferenceGenome === childReferenceGenome
+                          )
+                          .map((childItem) => (
+                            <li key={childItem.id}>
+                              <SubNavigationLink
+                                data-item={childItem.id}
+                                to={childItem.url}
+                                onBlur={this.onBlur}
+                                onClick={() => {
+                                  this.setState({ expandedItem: null })
+                                  this.focusItem(item.id)
+                                }}
+                                onKeyDown={this.onKeyDownSubMenuItem}
+                              >
+                                {childItem.label}
+                                {childItem.description && (
+                                  <ItemDescription>{childItem.description}</ItemDescription>
+                                )}
+                              </SubNavigationLink>
+                            </li>
+                          ))}
                       </li>
                     ))}
                   </SubNavigationMenu>
@@ -444,10 +447,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     search: queryString.stringify({ dataset: datasetId }),
   })
 
-  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
-  const topLevelShortVariantDataset = hasShortVariants(selectedDataset)
-    ? selectedDataset
-    : defaultTopLevelShortVariantDataset
+  const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
+  const topLevelStructuralVariantDataset = structuralVariantDatasetId(selectedDataset)
 
   let datasets: any = []
 
@@ -580,10 +581,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   if (includeStructuralVariants) {
-    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
-      ? selectedDataset
-      : 'gnomad_sv_r2_1'
-
     datasets.push(
       {
         id: 'current_sv_dataset',
@@ -596,6 +593,12 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         isActive: hasStructuralVariants(selectedDataset),
         label: 'More datasets',
         children: [
+          {
+            id: 'gnomad_sv_r3',
+            label: labelForDataset('gnomad_sv_r3'),
+            url: datasetLink('gnomad_sv_r3'),
+            description: `${sampleCounts.gnomad_sv_r3.total.toLocaleString()} samples`,
+          },
           {
             id: 'gnomad_sv_r2_1',
             label: labelForDataset('gnomad_sv_r2_1'),
