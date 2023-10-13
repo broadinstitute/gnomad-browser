@@ -10,13 +10,10 @@ import GnomadPageHeading from '../GnomadPageHeading'
 // import InfoButton from '../help/InfoButton'
 import Query from '../Query'
 import { variantFeedbackUrl } from '../variantFeedback'
-// import MultiallelicCopyNumberVariantPlot from './MultiallelicCopyNumberVariantPlot'
 // import CopyNumberVariantAgeDistribution from './CopyNumberVariantAgeDistribution'
 import CopyNumberVariantAttributeList from './CopyNumberVariantAttributeList'
-// import CopyNumberVariantConsequenceList from './CopyNumberVariantConsequenceList'
-// import CopyNumberVariantGenotypeQualityMetrics from './CopyNumberVariantGenotypeQualityMetrics'
 import CopyNumberVariantPopulationsTable from './CopyNumberVariantPopulationsTable'
-// import SVReferenceList from './SVReferenceList'
+import CNVReferenceList from './CNVReferenceList'
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,7 +64,10 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
   // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
   <Page>
     <DocumentTitle title={`${variant.variant_id} | ${labelForDataset(datasetId)}`} />
-    <GnomadPageHeading datasetOptions={{ includeShortVariants: false, includeStructuralVariants: false }} selectedDataset={datasetId}>
+    <GnomadPageHeading
+      datasetOptions={{ includeShortVariants: false, includeStructuralVariants: false }}
+      selectedDataset={datasetId}
+    >
       Copy number variant: {variant.variant_id}
     </GnomadPageHeading>
     <Wrapper>
@@ -76,7 +76,7 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>External Resources</h2>
-        {/* <CNVReferenceList variant={variant} /> */}
+        <CNVReferenceList variant={variant} />
         <h2>Feedback</h2>
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
@@ -88,9 +88,7 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
     <section>
       <h2>Population Frequencies</h2>
       <CopyNumberVariantPopulationsTable variant={variant} />
-    </section> 
-
-
+    </section>
 
     {/* <Wrapper>
 
@@ -174,9 +172,7 @@ const ConnectedCopyNumberVariantPage = ({
         return <CopyNumberVariantPage datasetId={datasetId} variant={variant} />
       }}
     </Query>
-    
   )
-  
 }
 
 export default ConnectedCopyNumberVariantPage
