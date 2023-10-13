@@ -83,7 +83,7 @@ type Gene {
   heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
     @cost(value: 5)
   homozygous_variant_cooccurrence_counts: [HomozygousVariantCooccurrenceCounts!]! @cost(value: 5)
-  copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]! @cost(value: 10) #TODO: MAKE REQUIRED DATASETID
+  copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]! @cost(value: 10) 
 }
 
 type GeneSearchResult {
