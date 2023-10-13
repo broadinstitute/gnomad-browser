@@ -69,9 +69,9 @@ const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulat
   const populations = nestPopulations(addPopulationNames((variant as any).populations))
 
   const columnLabels = {
-    sc: 'SCount',
-    sn: 'SNumber',
-    sf: 'SFrequency',
+    sc: 'Site Count',
+    sn: 'Number of Sites',
+    sf: 'Site Frequency',
   }
 
   return (
