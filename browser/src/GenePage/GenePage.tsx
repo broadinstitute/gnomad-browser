@@ -19,6 +19,7 @@ import {
   ReferenceGenome,
   hasExons,
   isExac,
+  hasCopyNumberVariants,
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
@@ -51,7 +52,13 @@ import VariantsInGene from './VariantsInGene'
 
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
 import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
-import { Variant, ClinvarVariant, StructuralVariant } from '../VariantPage/VariantPage'
+import {
+  Variant,
+  ClinvarVariant,
+  StructuralVariant,
+  CopyNumberVariant,
+} from '../VariantPage/VariantPage'
+import CopyNumberVariantsInGene from './CopyNumberVariantsInGene'
 
 export type Strand = '+' | '-'
 
@@ -111,6 +118,7 @@ export type Gene = GeneMetadata & {
   gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
   variants: Variant[]
   structural_variants: StructuralVariant[]
+  copy_number_variants: CopyNumberVariant[]
   clinvar_variants: ClinvarVariant[]
   homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
   heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
@@ -347,6 +355,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           datasetOptions={{
             includeShortVariants: true,
             includeStructuralVariants: gene.chrom !== 'M',
+            includeCopyNumberVariants: true,
             includeExac: gene.chrom !== 'M',
             includeGnomad2: gene.chrom !== 'M',
             includeGnomad3: true,
@@ -434,6 +443,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         ) : gene.chrom === 'M' ? (
           <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
+        ) : hasCopyNumberVariants(datasetId) ? (
+          <InfoButton topic="variant-cooccurrence" /> // TODO: CREATE COVERAGETRACKS
         ) : (
           <GeneCoverageTrack
             datasetId={datasetId}
@@ -581,6 +592,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {/* eslint-disable-next-line no-nested-ternary */}
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+        ) : hasCopyNumberVariants(datasetId) ? (
+          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (
           <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : (
