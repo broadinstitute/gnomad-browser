@@ -4,7 +4,7 @@ import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const GENE_INDICES = {
   GRCh37: 'genes_grch37',
-  GRCh38: 'genes_grch38',
+  GRCh38: 'genes_grch38-2023-10-13--13-17',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {

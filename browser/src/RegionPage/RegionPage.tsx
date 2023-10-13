@@ -145,6 +145,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           </RegionControlsWrapper>
         </RegionInfoColumnWrapper>
       </TrackPageSection>
+
       <RegionViewer
         leftPanelWidth={115}
         regions={[region]}
@@ -164,21 +165,6 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
-
-        {hasNonCodingConstraints(datasetId) && (
-          <>
-            <RegionalGenomicConstraintTrack
-              start={region.start}
-              stop={region.stop}
-              regions={
-                region.non_coding_constraints !== null
-                  ? region.non_coding_constraints.map(nccToRegion)
-                  : null
-              }
-            />
-          </>
-        )}
-        {variantsInRegion(datasetId, region)}
       </RegionViewer>
     </TrackPage>
   )
