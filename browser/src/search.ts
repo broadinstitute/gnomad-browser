@@ -142,7 +142,7 @@ export const fetchSearchResults = (dataset: DatasetId, query: string) => {
             }
           }
         `,
-        variables: { query, referenceGenome: referenceGenome(dataset) },
+        variables: { query, referenceGenome: "GRCh38" },
       }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

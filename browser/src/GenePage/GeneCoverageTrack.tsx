@@ -67,7 +67,7 @@ const GeneCoverageTrack = ({
       variables={{
         geneId,
         datasetId: coverageDatasetId(datasetId),
-        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
+        referenceGenome: "GRCh38",
         includeExomeCoverage,
         includeGenomeCoverage,
       }}

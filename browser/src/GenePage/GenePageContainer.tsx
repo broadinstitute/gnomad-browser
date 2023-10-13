@@ -26,7 +26,7 @@ import {
 const operationName = 'Gene'
 
 const query = `
-query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
@@ -216,34 +216,6 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       }
       flags
     }
-    exac_regional_missense_constraint_regions {
-      start
-      stop
-      obs_mis
-      exp_mis
-      obs_exp
-      chisq_diff_null
-    }
-    short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
-      id
-    }
-    heterozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-        two_het_total
-	in_cis
-	in_trans
-	unphased
-      }
-    }
-    homozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-	hom_total
-      }
-    }
   }
 }
 `
@@ -305,7 +277,7 @@ const rollUpVariantCooccurrenceCounts = (
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   const variables = {
     [geneIdOrSymbol.startsWith('ENSG') ? 'geneId' : 'geneSymbol']: geneIdOrSymbol,
-    referenceGenome: referenceGenome(datasetId),
+    referenceGenome: "GRCh38",
     shortTandemRepeatDatasetId: 'gnomad_r3',
     includeShortTandemRepeats: hasShortTandemRepeats(datasetId),
   }
@@ -344,8 +316,8 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
           )
         }
 
-        const rolledUpCounts = rollUpVariantCooccurrenceCounts(data.gene)
-        const gene: Gene = { ...data.gene, ...rolledUpCounts }
+        // const rolledUpCounts = rollUpVariantCooccurrenceCounts(data.gene)
+        const gene: Gene = { ...data.gene }
         return <GenePage datasetId={datasetId} gene={gene} geneId={data.gene.gene_id} />
       }}
     </BaseQuery>

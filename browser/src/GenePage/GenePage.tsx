@@ -314,22 +314,22 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const regionViewerRegions = !hasExons(datasetId)
     ? [
-        {
-          start: Math.max(1, gene.start - 75),
-          stop: gene.stop + 75,
-        },
-      ]
+      {
+        start: Math.max(1, gene.start - 75),
+        stop: gene.stop + 75,
+      },
+    ]
     : gene.exons
-        .filter(
-          (exon) =>
-            exon.feature_type === 'CDS' ||
-            (exon.feature_type === 'UTR' && includeUTRs) ||
-            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-        )
-        .map((exon) => ({
-          start: Math.max(1, exon.start - 75),
-          stop: exon.stop + 75,
-        }))
+      .filter(
+        (exon) =>
+          exon.feature_type === 'CDS' ||
+          (exon.feature_type === 'UTR' && includeUTRs) ||
+          (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+      )
+      .map((exon) => ({
+        start: Math.max(1, exon.start - 75),
+        stop: exon.stop + 75,
+      }))
 
   const [zoomRegion, setZoomRegion] = useState(null)
 
@@ -449,7 +449,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                   checked={hasCodingExons}
                   disabled
                   id="include-cds-regions"
-                  onChange={() => {}}
+                  onChange={() => { }}
                 />
                 Coding regions (CDS)
                 <LegendSwatch
@@ -568,21 +568,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {hasStructuralVariants(datasetId) ? (
-          <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : (
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; gene: { gene_id: string... Remove this comment to see the full error message
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            zoomRegion={zoomRegion}
-          />
-        )}
       </RegionViewer>
     </TrackPage>
   )
