@@ -78,7 +78,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
             datasetId={datasetId}
             region={{
               ...data.region,
-              reference_genome: referenceGenome(datasetId),
+              reference_genome: "GRCh38",
               chrom: chrom === 'MT' ? 'M' : chrom,
               start,
               stop,

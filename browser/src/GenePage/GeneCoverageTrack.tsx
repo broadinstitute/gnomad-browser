@@ -7,24 +7,10 @@ import Query from '../Query'
 
 const operationName = 'GeneCoverage'
 const coverageQuery = `
-query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!) {
   gene(gene_id: $geneId, reference_genome: $referenceGenome) {
     coverage(dataset: $datasetId) {
       exome @include(if: $includeExomeCoverage) {
-        pos
-        mean
-        median
-        over_1
-        over_5
-        over_10
-        over_15
-        over_20
-        over_25
-        over_30
-        over_50
-        over_100
-      }
-      genome @include(if: $includeGenomeCoverage) {
         pos
         mean
         median
@@ -69,7 +55,6 @@ const GeneCoverageTrack = ({
         datasetId: coverageDatasetId(datasetId),
         referenceGenome: "GRCh38",
         includeExomeCoverage,
-        includeGenomeCoverage,
       }}
       loadingMessage="Loading coverage"
       loadingPlaceholderHeight={220}
