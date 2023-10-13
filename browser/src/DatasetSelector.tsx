@@ -449,8 +449,12 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     search: queryString.stringify({ dataset: datasetId }),
   })
 
-  const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
   const topLevelStructuralVariantDataset = structuralVariantDatasetId(selectedDataset)
+
+  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
+  const topLevelShortVariantDataset = hasShortVariants(selectedDataset)
+    ? selectedDataset
+    : defaultTopLevelShortVariantDataset
 
   let datasets: any = []
 
@@ -458,14 +462,14 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
         childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
         children: [] as ChildDataset[],
       },
@@ -652,7 +656,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             description: `samples`,
             // description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
             childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
-          }
+          },
         ],
       }
     )
@@ -665,6 +669,7 @@ DatasetSelector.propTypes = {
   datasetOptions: PropTypes.shape({
     includeShortVariants: PropTypes.bool,
     includeStructuralVariants: PropTypes.bool,
+    includeCopyNumberVariants: PropTypes.bool,
     includeExac: PropTypes.bool,
     includeGnomad2Subsets: PropTypes.bool,
     includeGnomad3: PropTypes.bool,
@@ -677,6 +682,7 @@ DatasetSelector.defaultProps = {
   datasetOptions: {
     includeShortVariants: true,
     includeStructuralVariants: true,
+    includeCopyNumberVariants: true,
     includeExac: true,
     includeGnomad2: true,
     includeGnomad2Subsets: true,
