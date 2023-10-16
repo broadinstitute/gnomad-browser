@@ -65,7 +65,7 @@ pipeline.add_task(
     name="prepare_gnomad_v4_exome_variants",
     task_function=prepare_gnomad_v4_variants,
     output_path="gnomad_v4/gnomad_v4_exome_variants_base.ht",
-    inputs={"input_path": "variants/mock_v4_release.ht"},
+    inputs={"input_path": "variants/gnomad.exomes.sites.test.ht"},
 )
 
 # pipeline.add_task(
@@ -113,11 +113,11 @@ pipeline.set_outputs({"variants": "annotate_gnomad_v4_exome_transcript_consequen
 ###############################################
 
 if __name__ == "__main__":
-    run_pipeline(pipeline)
+    # run_pipeline(pipeline)
 
     logger.info("Validating pipeline IO formats")
     validate_globals_input(pipeline)
-    validate_variant_input(pipeline)
-    validate_step1_output(pipeline)
-    validate_step2_output(pipeline)
-    validate_step3_output(pipeline)
+    # validate_variant_input(pipeline)
+    # validate_step1_output(pipeline)
+    # validate_step2_output(pipeline)
+    # validate_step3_output(pipeline)

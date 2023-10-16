@@ -1,5 +1,5 @@
 import attr
-from typing import List
+from typing import List, Dict, Union
 
 
 @attr.define
@@ -29,6 +29,7 @@ class TestResult:
 class Cutoff:
     bin: float
     min_score: float
+    bin_id: str
 
 
 @attr.define
@@ -51,17 +52,12 @@ class MetaFloat:
 
 @attr.define
 class FilteringModel:
-    model_name: str
+    filter_name: str
     score_name: str
-    feature_medians: List[FeatureMedians]
-    variants_by_strata: List[MetaFloat]
-    features_importance: List[MetaFloat]
-    features: List[str]
-    test_results: List[TestResult]
-    rf_snv_cutoff: Cutoff
-    rf_indel_cutoff: Cutoff
-    inbreeding_cutoff: float
-    model_id: str
+    snv_cutoff: Cutoff
+    indel_cutoff: Cutoff
+    snv_training_variables: List[str]
+    indel_training_variables: List[str]
 
 
 @attr.define
@@ -69,18 +65,20 @@ class ToolVersions:
     dbsnp_version: str
     cadd_version: str
     revel_version: str
-    splicaai_version: str
-    primateai_version: str
-    pangolin_version: str
-    vrs_version: str
+    spliceai_version: str
+    pangolin_version: List[str]
+    phylop_version: str
+    sift_version: str
+    polyphen_version: str
 
 
 @attr.define
 class VepGlobals:
     vep_version: str
-    vep_csq_header: str
     vep_help: str
     vep_config: str
+    gencode_version: str
+    mane_select_version: str
 
 
 @attr.define
@@ -92,20 +90,34 @@ class AgeDistribution:
 
 
 @attr.define
+class Downsampling:
+    key: str
+    value: List[int]
+
+
+@attr.define
+class VrsVersions:
+    vrs_schema_version: str
+    vrs_python_version: str
+    seqrepo_version: str
+
+
+@attr.define
 class Globals:
     freq_meta: List[List[MetaString]]
     freq_index_dict: List[MetaInt]
+    freq_meta_sample_count: List[int]
     faf_meta: List[List[MetaString]]
     faf_index_dict: List[MetaInt]
-    freq_sample_count: List[int]
     filtering_model: FilteringModel
     tool_versions: ToolVersions
     vep_globals: VepGlobals
     age_distribution: AgeDistribution
-    age_index_dict: List[MetaInt]
-    age_meta: List[List[MetaString]]
-    grpmax_index_dict: List[MetaInt]
-    grpmax_meta: List[List[MetaString]]
-    README: List[MetaString]
-    gnomad_qc_repo: str
-    gnomad_methods_repo: str
+    joint_freq_index_dict: List[MetaInt]
+    joint_freq_meta_sample_count: List[int]
+    joint_faf_meta: List[List[MetaString]]
+    downsamplings: List[Downsampling]
+    inbreeding_coeff_cutoff: float
+    vrs_versions: VrsVersions
+    date: str
+    version: str
