@@ -357,7 +357,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -1782,7 +1782,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -3207,7 +3207,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -4632,7 +4632,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r3" has no unexpected changes 1`] =
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -6056,7 +6056,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -7515,7 +7515,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -8974,7 +8974,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -10433,7 +10433,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -11892,7 +11892,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -13351,7 +13351,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -14810,7 +14810,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -16268,7 +16268,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -17726,7 +17726,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -19184,7 +19184,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -20642,7 +20642,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
@@ -22100,7 +22100,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
-                      12,345 samples
+                      63,046 samples
                     </div>
                   </a>
                 </li>
