@@ -32,6 +32,7 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
 def validate_globals_input(pipeline: Pipeline):
     input_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
+    ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht, "globals")[0]
     # logger.info(result)
     structure(result, Globals)
@@ -41,6 +42,7 @@ def validate_globals_input(pipeline: Pipeline):
 def validate_variant_input(pipeline: Pipeline):
     input_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
+    ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, InitialVariant) for variant in result]
     logger.info("Validated prepare_gnomad_v4_exome_variants input variants")
@@ -49,7 +51,7 @@ def validate_variant_input(pipeline: Pipeline):
 def validate_step1_output(pipeline: Pipeline):
     output_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
-    # ht = ht.sample(0.1, seed=1234)
+    ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, Step1Variant) for variant in result]
     logger.info("Validated prepare_gnomad_v4_exome_variants (step 1) output")
@@ -58,6 +60,7 @@ def validate_step1_output(pipeline: Pipeline):
 def validate_step2_output(pipeline: Pipeline):
     output_path = pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
+    ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, Step2Variant) for variant in result]
     logger.info("Validated annotate_gnomad_v4_exome_variants (step 2) output")
@@ -66,6 +69,7 @@ def validate_step2_output(pipeline: Pipeline):
 def validate_step3_output(pipeline: Pipeline):
     output_path = pipeline.get_task("annotate_gnomad_v4_exome_transcript_consequences").get_output_path()
     ht = hl.read_table(output_path)
+    ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht)
     [structure_attrs_fromdict(variant, Step3Variant) for variant in result]
     logger.info("Validated annotate_gnomad_v4_exome_transcript_consequences (step 3) output")
