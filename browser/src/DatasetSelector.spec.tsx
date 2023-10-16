@@ -5,7 +5,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import DatasetSelector from './DatasetSelector'
 
-import { forAllDatasets, forDatasetsMatching } from '../../tests/__helpers__/datasets'
+import { forAllDatasets } from '../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../tests/__helpers__/router'
 
 forAllDatasets('DataSelector with "%s" dataset selected', (datasetId) => {

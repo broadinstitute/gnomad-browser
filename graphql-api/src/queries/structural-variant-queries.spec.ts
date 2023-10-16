@@ -118,8 +118,8 @@ describe('fetchStructuralVariantById', () => {
       const response = responseWithHits([hit])
       const mockClient = makeMockClient(response)
       const processedResponse = await fetchStructuralVariantById(mockClient, datasetId, variantId)
-      expect(processedResponse.age_distribution['het']).toEqual('dummy het value')
-      expect(processedResponse.age_distribution['hom']).toBeNull()
+      expect(processedResponse.age_distribution.het).toEqual('dummy het value')
+      expect(processedResponse.age_distribution.hom).toBeNull()
     })
 
     test('age_distribution translates empty het to null if hom set', async () => {
@@ -137,8 +137,8 @@ describe('fetchStructuralVariantById', () => {
       const response = responseWithHits([hit])
       const mockClient = makeMockClient(response)
       const processedResponse = await fetchStructuralVariantById(mockClient, datasetId, variantId)
-      expect(processedResponse.age_distribution['het']).toBeNull()
-      expect(processedResponse.age_distribution['hom']).toEqual('dummy hom value')
+      expect(processedResponse.age_distribution.het).toBeNull()
+      expect(processedResponse.age_distribution.hom).toEqual('dummy hom value')
     })
 
     test('age_distribution is null if neither het nor hom set', async () => {
@@ -282,7 +282,7 @@ describe('fetchStructuralVariantsByGene', () => {
           },
         }),
         consequences: [
-          { consequence: 'csq-a', genes: [gene.symbol + 'NOTME'] },
+          { consequence: 'csq-a', genes: [`${gene.symbol}NOTME`] },
           { consequence: 'csq-b', genes: [gene.symbol] },
           { consequence: 'csq-c', genes: [gene.symbol] },
         ],
