@@ -14,6 +14,12 @@ const FILTER_LABELS = {
   PCRPLUS_ENRICHED: 'PCR+ Enriched',
   UNRESOLVED: 'Unresolved',
   UNSTABLE_AF_PCRMINUS: 'Unstable AF PCR-',
+  OUTLIER_SAMPLE_ENRICHED: 'Outlier Sample Enriched',
+  LOWQUAL_WHAM_SR_DEL: 'Wham And Spilt-Read Evidence Only',
+
+  IGH_MCH_OVERLAP: 'Overlaps Somatic Recombination Site',
+  FAIL_MANUAL_REVIEW: 'Failed Manual Review',
+  HIGH_NCR: 'High No-Call Rate',
 }
 
 const FILTER_DESCRIPTIONS = {
@@ -24,6 +30,14 @@ const FILTER_DESCRIPTIONS = {
   UNRESOLVED: 'Variant is unresolved',
   UNSTABLE_AF_PCRMINUS:
     'Allele frequency for this variant in PCR- samples is sensitive to choice of GQ filtering thresholds. All PCR- samples have been assigned null GTs for these sites.',
+  OUTLIER_SAMPLE_ENRICHED:
+    'SV was enriched for non-reference genotypes in outlier samples prior to filtering; may indicate a noisier or less reliable locus.',
+  LOWQUAL_WHAM_SR_DEL:
+    'SV was detected exclusively by Wham and only has split-read evidence, which usually correlates with lower-quality variants with elevated false discovery rates.',
+  IGH_MCH_OVERLAP:
+    'SV overlaps sites of known somatic recombination, such as immunoglobulin gene and/or major hisocompatability complex loci, making germline SV detecting and genotyping especially difficult.',
+  FAIL_MANUAL_REVIEW: 'Variant failed manual review of evidence by a gnomAD analyst.',
+  HIGH_NCR: 'Variant has excessively high rate of no-call (i.e., missing) genotypes.',
 }
 
 const EVIDENCE_LABELS = {
@@ -38,6 +52,7 @@ const ALGORITHM_LABELS = {
   depth: 'Depth',
   manta: 'Manta',
   melt: 'MELT',
+  wham: 'Wham',
 }
 
 const COMPLEX_TYPE_LABELS = {
@@ -55,6 +70,9 @@ const COMPLEX_TYPE_LABELS = {
   INS_iDEL: 'Insertion with insert site deletion',
   piDUP_FR: 'Palindromic inverted duplication',
   piDUP_RF: 'Palindromic inverted duplication',
+  'CTX_PQ/QP': 'Reciprocal translocation of P:Q and Q:P arms',
+  CTX_INV: 'Reciprocal translocation with derivative junction inversion',
+  'CTX_PP/QQ': 'Reciprocal translocation of P:P and Q:Q arms',
 }
 
 const algorithmLabel = (algorithm: string) =>
