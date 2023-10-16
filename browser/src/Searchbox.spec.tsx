@@ -47,7 +47,7 @@ describe('Searchbox', () => {
       history.push(`/?dataset=${datasetId}`)
       const tree = renderer.create(withDummyRouter(<Searchbox history={history} />))
       const datasetSelect = tree.root.findByType('select')
-      const defaultDataset = datasetSelect.props['value']
+      const defaultDataset = datasetSelect.props.value
       expect(defaultDataset).toEqual(expectedDefaultDataset)
     })
   })
