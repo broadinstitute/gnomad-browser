@@ -73,7 +73,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -665,7 +667,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -1255,7 +1259,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -1845,7 +1851,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -2417,7 +2425,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -2989,7 +2999,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -3559,7 +3571,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -4131,7 +4145,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -5235,7 +5251,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -5827,7 +5845,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -6417,7 +6437,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -7007,7 +7029,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -7579,7 +7603,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -8151,7 +8177,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -8721,7 +8749,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -9293,7 +9323,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -10397,7 +10429,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -10989,7 +11023,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -11579,7 +11615,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -12169,7 +12207,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -12741,7 +12781,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -13313,7 +13355,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -13883,7 +13927,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
@@ -14455,7 +14501,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              />
+              >
+                GRCh38
+              </div>
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"

@@ -598,6 +598,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             label: labelForDataset('gnomad_sv_r3'),
             url: datasetLink('gnomad_sv_r3'),
             description: `${sampleCounts.gnomad_sv_r3.total.toLocaleString()} samples`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r3'),
           },
           {
             id: 'gnomad_sv_r2_1',
