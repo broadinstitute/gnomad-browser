@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
     logger.info("Validating pipeline IO formats")
     validate_globals_input(pipeline)
-    # validate_variant_input(pipeline)
+    validate_variant_input(pipeline)
     # validate_step1_output(pipeline)
     # validate_step2_output(pipeline)
     # validate_step3_output(pipeline)
