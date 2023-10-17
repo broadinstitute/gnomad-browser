@@ -44,7 +44,11 @@ def validate_variant_input(pipeline: Pipeline):
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht)
-    [structure_attrs_fromdict(variant, InitialVariant) for variant in result]
+
+    for variant in result:
+        if variant:
+            structure_attrs_fromdict(variant, InitialVariant)
+
     logger.info("Validated prepare_gnomad_v4_exome_variants input variants")
 
 

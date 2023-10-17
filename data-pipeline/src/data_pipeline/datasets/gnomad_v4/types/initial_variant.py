@@ -20,16 +20,46 @@ class Frequency:
 class Grpmax:
     AC: Union[int, None]
     AN: Union[int, None]
-    homozygote_count: Union[int, None]
     AF: Union[float, None]
-    grp: Union[str, None]
+    homozygote_count: Union[int, None]
     faf95: Union[float, None]
+    grp: Union[str, None] = None
+
+
+@attr.define
+class JointGrpmax:
+    AC: Union[int, None]
+    AN: Union[int, None]
+    AF: Union[float, None]
+    homozygote_count: Union[int, None]
+    faf95: Union[float, None]
+    gen_anc: Union[str, None]
+
+
+@attr.define
+class GrpmaxBySubset:
+    gnomad: Union[Grpmax, None]
+    non_ukb: Union[Grpmax, None]
 
 
 @attr.define
 class Faf:
     faf95: float
     faf99: float
+
+
+@attr.define
+class GenAncFafMax:
+    faf95_max: Union[float, None]
+    faf95_max_gen_anc: str
+    faf99_max: Union[float, None]
+    faf99_max_gen_anc: str
+
+
+@attr.define
+class GenAncFafMaxBySubset:
+    gnomad: Union[GenAncFafMax, None]
+    non_ukb: Union[GenAncFafMax, None]
 
 
 @attr.define
@@ -45,17 +75,17 @@ class Info:
     QUALapprox: int
     SB: List[int]
     MQ: float
-    MQRankSum: float
+    MQRankSum: Union[float, None]
     VarDP: int
     AS_ReadPosRankSum: Union[float, None]
-    AS_pab_max: float
+    AS_pab_max: Union[float, None]
     AS_QD: float
     AS_MQ: float
     QD: float
-    AS_MQRankSum: float
-    FS: float
-    AS_FS: float
-    ReadPosRankSum: float
+    AS_MQRankSum: Union[float, None]
+    FS: Union[float, None]
+    AS_FS: Union[float, None]
+    ReadPosRankSum: Union[float, None]
     AS_QUALapprox: int
     AS_SB_TABLE: List[int]
     AS_VarDP: int
@@ -67,8 +97,8 @@ class Info:
     mills: bool
     monoallelic: bool
     AS_VQSLOD: float
-    InbreedingCoeff: float
-    vrs: Vrs  # defined later
+    inbreeding_coeff: float
+    vrs: Vrs
 
 
 @attr.define
@@ -120,13 +150,9 @@ class TranscriptConsequence:
     mane_select: Union[str, None]
     mane_plus_clinical: Union[str, None]
     mirna: Union[List[str], None]
-    polyphen_prediction: Union[str, None]
-    polyphen_score: Union[float, None]
     protein_end: Union[int, None]
     protein_start: Union[int, None]
     protein_id: Union[str, None]
-    sift_prediction: Union[str, None]
-    sift_score: Union[float, None]
     source: Union[str, None]
     strand: Union[int, None]
     transcript_id: Union[str, None]
@@ -162,7 +188,7 @@ class Rf:
 
 
 @attr.define
-class RegionFlag:
+class RegionFlags:
     lcr: bool
     segdup: bool
     non_par: bool
@@ -196,47 +222,31 @@ class QualHistograms:
 @attr.define
 class AgeHistograms:
     age_hist_hom: Histogram
-    age_hist_ht: Histogram
+    age_hist_het: Histogram
 
 
 @attr.define
 class Histograms:
     qual_hists: QualHistograms
     raw_qual_hists: QualHistograms
-    age_hists: List[AgeHistograms]  # Should this be a list?
+    age_hists: AgeHistograms
 
 
 @attr.define
 class CaddPredictor:
     phred: float
     raw_score: float
-    has_duplicate: bool
-
-
-@attr.define
-class RevelPredictor:
-    revel_score: float
-    has_duplicate: bool
-
-
-@attr.define
-class SpliceAiPredictor:
-    splice_ai_score: Union[float, None]
-    splice_consequence: Union[str, None]
-    has_duplicate: Union[bool, None]
-
-
-@attr.define
-class PangolinPredictor:
-    pangolin_score: float
 
 
 @attr.define
 class InSilicoPredictors:
     cadd: CaddPredictor
-    revel: Union[RevelPredictor, None]
-    splice_ai: Union[SpliceAiPredictor, None]
-    pangolin: PangolinPredictor
+    revel_max: Union[float, None]
+    spliceai_ds_max: Union[float, None]
+    pangolin_largest_ds: float
+    phylop: float
+    sift_max: Union[float, None]
+    polyphen_max: Union[float, None]
 
 
 @attr.define
@@ -244,16 +254,19 @@ class InitialVariant:
     locus: Locus
     alleles: List[str]
     freq: List[Frequency]
-    grpmax: List[Grpmax]
+    grpmax: GrpmaxBySubset
     faf: List[Union[Faf, None]]
+    gen_anc_faf_max: GenAncFafMaxBySubset
+    joint_freq: List[Frequency]
+    joint_grpmax: Union[Frequency, None]
+    joint_faf: List[Union[Faf, None]]
     a_index: int
     was_split: bool
     rsid: Union[Set[str], None]
     filters: Set[str]
     info: Info
     vep: Union[Vep, None]
-    rf: Rf
-    region_flag: RegionFlag
+    region_flags: RegionFlags
     allele_info: AlleleInfo
     histograms: Histograms
     in_silico_predictors: InSilicoPredictors
