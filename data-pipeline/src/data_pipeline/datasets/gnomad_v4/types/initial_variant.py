@@ -181,6 +181,9 @@ class RegionFlags:
     lcr: bool
     segdup: bool
     non_par: bool
+    fail_interval_qc: bool
+    outside_ukb_capture_region: bool
+    outside_broad_capture_region: bool
 
 
 @attr.define
