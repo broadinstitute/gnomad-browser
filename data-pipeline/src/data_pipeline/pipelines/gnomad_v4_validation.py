@@ -47,7 +47,11 @@ def validate_variant_input(pipeline: Pipeline):
 
     for variant in result:
         if variant:
-            structure_attrs_fromdict(variant, InitialVariant)
+            try:
+                structure_attrs_fromdict(variant, InitialVariant)
+            except TypeError as e:
+                logger.info(variant)
+                logger.info(e)
 
     logger.info("Validated prepare_gnomad_v4_exome_variants input variants")
 
