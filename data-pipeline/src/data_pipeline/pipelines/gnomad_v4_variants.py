@@ -65,7 +65,7 @@ pipeline.add_task(
     name="prepare_gnomad_v4_exome_variants",
     task_function=prepare_gnomad_v4_variants,
     output_path="gnomad_v4/gnomad_v4_exome_variants_base.ht",
-    inputs={"input_path": "variants/gnomad.exomes.sites.test.ht"},
+    inputs={"input_path": "variants/gnomad.exomes.sites.test.updated_101623.ht"},
 )
 
 # pipeline.add_task(

@@ -22,18 +22,7 @@ class Grpmax:
     AN: Union[int, None]
     AF: Union[float, None]
     homozygote_count: Union[int, None]
-    faf95: Union[float, None]
-    grp: Union[str, None] = None
-
-
-@attr.define
-class JointGrpmax:
-    AC: Union[int, None]
-    AN: Union[int, None]
-    AF: Union[float, None]
-    homozygote_count: Union[int, None]
-    faf95: Union[float, None]
-    gen_anc: Union[str, None]
+    gen_anc: Union[str, None] = None
 
 
 @attr.define
@@ -49,7 +38,7 @@ class Faf:
 
 
 @attr.define
-class GenAncFafMax:
+class FafMax:
     faf95_max: Union[float, None]
     faf95_max_gen_anc: str
     faf99_max: Union[float, None]
@@ -57,9 +46,9 @@ class GenAncFafMax:
 
 
 @attr.define
-class GenAncFafMaxBySubset:
-    gnomad: Union[GenAncFafMax, None]
-    non_ukb: Union[GenAncFafMax, None]
+class FafMaxBySubset:
+    gnomad: Union[FafMax, None]
+    non_ukb: Union[FafMax, None]
 
 
 @attr.define
@@ -256,10 +245,11 @@ class InitialVariant:
     freq: List[Frequency]
     grpmax: GrpmaxBySubset
     faf: List[Union[Faf, None]]
-    gen_anc_faf_max: GenAncFafMaxBySubset
-    joint_freq: List[Frequency]
-    joint_grpmax: Union[Frequency, None]
-    joint_faf: List[Union[Faf, None]]
+    fafmax: FafMaxBySubset
+    joint_freq: Union[List[Frequency], None]
+    joint_grpmax: Union[Grpmax, None]
+    joint_faf: Union[List[Union[Faf, None]], None]
+    joint_fafmax: Union[FafMax, None]
     a_index: int
     was_split: bool
     rsid: Union[Set[str], None]
