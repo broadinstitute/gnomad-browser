@@ -9,16 +9,17 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
     prepare_gnomad_v4_variants,
 )
 
-from data_pipeline.data_types.variant import (
-    annotate_variants,
-    annotate_transcript_consequences,
-)
-from data_pipeline.pipelines.gnomad_v4_validation import (
+from data_pipeline.datasets.gnomad_v4.gnomad_v4_validation import (
     validate_globals_input,
+    validate_variant_input,
     validate_step1_output,
     validate_step2_output,
     validate_step3_output,
-    validate_variant_input,
+)
+
+from data_pipeline.data_types.variant import (
+    annotate_variants,
+    annotate_transcript_consequences,
 )
 
 DATA_ENV = os.getenv("DATA_ENV", "mock")
@@ -113,11 +114,11 @@ pipeline.set_outputs({"variants": "annotate_gnomad_v4_exome_transcript_consequen
 ###############################################
 
 if __name__ == "__main__":
-    # run_pipeline(pipeline)
+    run_pipeline(pipeline)
 
     logger.info("Validating pipeline IO formats")
     validate_globals_input(pipeline)
     validate_variant_input(pipeline)
-    # validate_step1_output(pipeline)
-    # validate_step2_output(pipeline)
-    # validate_step3_output(pipeline)
+    validate_step1_output(pipeline)
+    validate_step2_output(pipeline)
+    validate_step3_output(pipeline)

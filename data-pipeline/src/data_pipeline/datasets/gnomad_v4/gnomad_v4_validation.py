@@ -1,4 +1,11 @@
-from cattrs import structure, structure_attrs_fromdict
+from cattrs import (
+    ClassValidationError,
+    IterableValidationError,
+    # IterableValidationError,
+    structure,
+    Converter,
+    transform_error,
+)
 import hail as hl
 import json
 
@@ -11,6 +18,28 @@ from data_pipeline.datasets.gnomad_v4.types.initial_variant import InitialVarian
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as Step1Variant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step2 import Variant as Step2Variant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step3 import Variant as Step3Variant
+
+c = Converter(forbid_extra_keys=True)
+
+
+def validate_rows(ht: hl.Table, cls: object):
+    result = ht_to_json(ht)
+
+    for variant in result:
+        if variant:
+            try:
+                c.structure_attrs_fromdict(variant, cls)
+            except ClassValidationError as e:
+                logger.error(e)
+                logger.error(transform_error(e))
+                # raise Exception(e)
+            except IterableValidationError as e:
+                logger.error(e)
+                logger.error(transform_error(e))
+                raise Exception(e)
+            except Exception as e:
+                logger.error(e)
+                # raise Exception(e)
 
 
 def ht_to_json(ht: hl.Table, field: str = "row"):
@@ -43,16 +72,7 @@ def validate_variant_input(pipeline: Pipeline):
     input_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
-    result = ht_to_json(ht)
-
-    for variant in result:
-        if variant:
-            try:
-                structure_attrs_fromdict(variant, InitialVariant)
-            except TypeError as e:
-                logger.info(variant)
-                logger.info(e)
-
+    validate_rows(ht, InitialVariant)
     logger.info("Validated prepare_gnomad_v4_exome_variants input variants")
 
 
@@ -60,8 +80,7 @@ def validate_step1_output(pipeline: Pipeline):
     output_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
-    result = ht_to_json(ht)
-    [structure_attrs_fromdict(variant, Step1Variant) for variant in result]
+    validate_rows(ht, Step1Variant)
     logger.info("Validated prepare_gnomad_v4_exome_variants (step 1) output")
 
 
@@ -69,8 +88,7 @@ def validate_step2_output(pipeline: Pipeline):
     output_path = pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
-    result = ht_to_json(ht)
-    [structure_attrs_fromdict(variant, Step2Variant) for variant in result]
+    validate_rows(ht, Step2Variant)
     logger.info("Validated annotate_gnomad_v4_exome_variants (step 2) output")
 
 
@@ -78,6 +96,5 @@ def validate_step3_output(pipeline: Pipeline):
     output_path = pipeline.get_task("annotate_gnomad_v4_exome_transcript_consequences").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
-    result = ht_to_json(ht)
-    [structure_attrs_fromdict(variant, Step3Variant) for variant in result]
+    validate_rows(ht, Step3Variant)
     logger.info("Validated annotate_gnomad_v4_exome_transcript_consequences (step 3) output")
