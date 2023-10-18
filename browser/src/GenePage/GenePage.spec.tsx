@@ -56,6 +56,7 @@ afterEach(() => {
 })
 
 const svRegexp = /_sv/
+const cnvRegexp = /_cnv/
 
 forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId) => {
   const gene = geneFactory.build()
@@ -124,6 +125,25 @@ forDatasetsMatching(svRegexp, 'GenePage with SV dataset "%s"', (datasetId) => {
     expect(tree).toMatchSnapshot()
   })
 
+  forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => {
+    test('has no unexpected changes', () => {
+      const gene = geneFactory.build()
+      setMockApiResponses({
+        CopyNumberVariantsInGene: () => ({
+          gene: { copy_number_variants: [] },
+        }),
+        RegionCoverage: () => ({
+          region: {
+            coverage: {},
+          },
+        }),
+      })
+      const tree = renderer.create(
+        withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      )
+      expect(tree).toMatchSnapshot()
+    })
+
   test('queries the API for region coverage with the correct parameters', async () => {
     const gene = geneFactory.build()
     setMockApiResponses({
@@ -162,6 +182,7 @@ describe.each([
   ['gnomad_r3_non_neuro', false],
   ['gnomad_r3_non_topmed', false],
   ['gnomad_r3_non_v2', false],
+  ['gnomad_cnv_r4', false],
 ] as [DatasetId, boolean][])('GenePage with non-SV dataset "%s"', (datasetId, expectedResult) => {
   test('queries the API for gene coverage with the correct parameters', async () => {
     const gene = geneFactory.build()
@@ -206,6 +227,7 @@ describe.each([
   ['gnomad_r3_non_neuro', 'GRCh38', true],
   ['gnomad_r3_non_topmed', 'GRCh38', true],
   ['gnomad_r3_non_v2', 'GRCh38', true],
+  ['gnomad_cnv_r4','GRCh38', false],
 ] as [DatasetId, ReferenceGenome, boolean][])(
   'gene query with dataset %s',
   (datasetId, expectedReferenceGenome, expectedIncludeShortTandemRepeats) => {
