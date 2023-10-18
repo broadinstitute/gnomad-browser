@@ -2,83 +2,129 @@
 Global fields:
     'freq_meta': array<dict<str, str>> 
     'freq_index_dict': dict<str, int32> 
+    'freq_meta_sample_count': array<int32> 
     'faf_meta': array<dict<str, str>> 
     'faf_index_dict': dict<str, int32> 
-    'freq_sample_count': array<int32> 
-    'filtering_model': struct {
-        model_name: str, 
-        score_name: str, 
-        feature_medians: dict<tuple (
-            str
-        ), struct {
-            a_index: int32, 
-            n_alt_alleles: int32, 
-            AS_pab_max: float64, 
-            AS_MQRankSum: float64, 
-            AS_SOR: float64, 
-            AS_ReadPosRankSum: float64
-        }>, 
-        variants_by_strata: dict<tuple (
-            str
-        ), int64>, 
-        features_importance: dict<str, float64>, 
-        features: array<str>, 
-        test_results: array<struct {
-            rf_prediction: str, 
-            rf_label: str, 
-            n: int32
-        }>, 
-        rf_snv_cutoff: struct {
-            bin: float64, 
-            min_score: float64
-        }, 
-        rf_indel_cutoff: struct {
-            bin: float64, 
-            min_score: float64
-        }, 
-        inbreeding_cutoff: float64, 
-        model_id: str
-    } 
-    'tool_versions': struct {
-        dbsnp_version: str, 
-        cadd_version: str, 
-        revel_version: str, 
-        splicaai_version: str, 
-        primateai_version: str, 
-        pangolin_version: str, 
-        vrs_version: str
-    } 
-    'vep_globals': struct {
-        vep_version: str, 
-        vep_csq_header: str, 
-        vep_help: str, 
-        vep_config: str
-    } 
+    'joint_freq_meta': array<dict<str, str>> 
+    'joint_freq_index_dict': dict<str, int32> 
+    'joint_freq_meta_sample_count': array<int32> 
+    'joint_faf_meta': array<dict<str, str>> 
+    'joint_faf_index_dict': dict<str, int32> 
     'age_distribution': struct {
         bin_edges: array<float64>, 
         bin_freq: array<int32>, 
         n_smaller: int32, 
         n_larger: int32
     } 
-    'age_index_dict': dict<str, int32> 
-    'age_meta': array<dict<str, str>> 
-    'grpmax_index_dict': dict<str, int32> 
-    'grpmax_meta': array<dict<str, str>> 
-    'README': dict<str, str> 
-    'gnomad_qc_repo': str 
-    'gnomad_methods_repo': str 
+    'downsamplings': dict<str, array<int32>> 
+    'filtering_model': struct {
+        filter_name: str, 
+        score_name: str, 
+        snv_cutoff: struct {
+            bin: int32, 
+            min_score: float64, 
+            bin_id: str
+        }, 
+        indel_cutoff: struct {
+            bin: int32, 
+            min_score: float64, 
+            bin_id: str
+        }, 
+        snv_training_variables: array<str>, 
+        indel_training_variables: array<str>
+    } 
+    'inbreeding_coeff_cutoff': float64 
+    'interval_qc_parameters': struct {
+        per_platform: bool, 
+        all_platforms: bool, 
+        high_qual_cutoffs: dict<str, array<tuple (
+            str, 
+            str, 
+            float64
+        )>>, 
+        min_platform_size: int32
+    } 
+    'tool_versions': struct {
+        cadd_version: str, 
+        revel_version: str, 
+        spliceai_version: str, 
+        pangolin_version: array<str>, 
+        phylop_version: str, 
+        dbsnp_version: str, 
+        sift_version: str, 
+        polyphen_version: str
+    } 
+    'vrs_versions': struct {
+        vrs_schema_version: str, 
+        vrs_python_version: str, 
+        seqrepo_version: str
+    } 
+    'vep_globals': struct {
+        vep_version: str, 
+        vep_help: str, 
+        vep_config: str, 
+        gencode_version: str, 
+        mane_select_version: str
+    } 
+    'date': str 
+    'version': str 
 ----------------------------------------
 Row fields:
     'locus': locus<GRCh38> 
     'alleles': array<str> 
-    'grpmax': array<struct {
+    'grpmax': struct {
+        gnomad: struct {
+            AC: int32, 
+            AF: float64, 
+            AN: int32, 
+            homozygote_count: int64, 
+            gen_anc: str
+        }, 
+        non_ukb: struct {
+            AC: int32, 
+            AF: float64, 
+            AN: int32, 
+            homozygote_count: int64, 
+            gen_anc: str
+        }
+    } 
+    'fafmax': struct {
+        gnomad: struct {
+            faf95_max: float64, 
+            faf95_max_gen_anc: str, 
+            faf99_max: float64, 
+            faf99_max_gen_anc: str
+        }, 
+        non_ukb: struct {
+            faf95_max: float64, 
+            faf95_max_gen_anc: str, 
+            faf99_max: float64, 
+            faf99_max_gen_anc: str
+        }
+    } 
+    'joint_freq': array<struct {
+        AC: int32, 
+        AF: float64, 
+        AN: int32, 
+        homozygote_count: int32
+    }> 
+    'joint_grpmax': struct {
         AC: int32, 
         AF: float64, 
         AN: int32, 
         homozygote_count: int32, 
-        grp: str, 
-        faf95: float64
+        gen_anc: str
+    } 
+    'joint_faf': array<struct {
+        faf95: float64, 
+        faf99: float64
     }> 
+    'joint_fafmax': struct {
+        faf95_max: float64, 
+        faf95_max_gen_anc: str, 
+        faf99_max: float64, 
+        faf99_max_gen_anc: str
+    } 
     'rsids': set<str> 
     'vep': struct {
         allele_string: str, 
@@ -153,13 +199,9 @@ Row fields:
             mane_select: str, 
             mane_plus_clinical: str, 
             mirna: array<str>, 
-            polyphen_prediction: str, 
-            polyphen_score: float64, 
             protein_end: int32, 
             protein_start: int32, 
             protein_id: str, 
-            sift_prediction: str, 
-            sift_score: float64, 
             source: str, 
             strand: int32, 
             transcript_id: str, 
@@ -169,89 +211,81 @@ Row fields:
         }>, 
         variant_class: str
     } 
-    'rf': struct {
-        rf_positive_label: bool, 
-        rf_negative_label: bool, 
-        rf_label: str, 
-        rf_train: bool, 
-        rf_tp_probability: float64
+    'vqsr_results': struct {
+        AS_VQSLOD: float64, 
+        AS_culprit: str, 
+        positive_train_site: bool, 
+        negative_train_site: bool
     } 
     'in_silico_predictors': struct {
         cadd: struct {
             phred: float32, 
-            raw_score: float32, 
-            has_duplicate: bool
+            raw_score: float32
         }, 
-        revel: struct {
-            revel_score: float64, 
-            has_duplicate: bool
-        }, 
-        splice_ai: struct {
-            splice_ai_score: float32, 
-            splice_consequence: str, 
-            has_duplicate: bool
-        }, 
-        pangolin: struct {
-            pangolin_score: float64
-        }
+        revel_max: float64, 
+        spliceai_ds_max: float32, 
+        pangolin_largest_ds: float64, 
+        phylop: float64, 
+        sift_max: float64, 
+        polyphen_max: float64
     } 
     'variant_id': str 
     'colocated_variants': struct {
-        all: array<str>, 
-        non_ukb: array<str>
+        non_ukb: array<str>, 
+        all: array<str>
     } 
     'gnomad': struct {
         freq: struct {
-            all: struct {
-                ac: int32, 
-                ac_raw: int32, 
-                an: int32, 
-                hemizygote_count: int32, 
-                homozygote_count: int32, 
-                populations: array<struct {
-                    id: str, 
-                    ac: int32, 
-                    an: int32, 
-                    hemizygote_count: int32, 
-                    homozygote_count: int32
-                }>
-            }, 
             non_ukb: struct {
                 ac: int32, 
                 ac_raw: int32, 
                 an: int32, 
                 hemizygote_count: int32, 
-                homozygote_count: int32, 
-                populations: array<struct {
+                homozygote_count: int64, 
+                ancestry_groups: array<struct {
                     id: str, 
                     ac: int32, 
                     an: int32, 
                     hemizygote_count: int32, 
-                    homozygote_count: int32
+                    homozygote_count: int64
+                }>
+            }, 
+            all: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int64, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int64
                 }>
             }
         }, 
         faf95: struct {
-            popmax: float64, 
-            popmax_population: str
+            grpmax: float64, 
+            grpmax_gen_anc: str
         }, 
         faf99: struct {
-            popmax: float64, 
-            popmax_population: str
+            grpmax: float64, 
+            grpmax_gen_anc: str
         }, 
         age_distribution: struct {
-            het: array<struct {
+            het: struct {
                 bin_edges: array<float64>, 
                 bin_freq: array<int64>, 
                 n_smaller: int64, 
                 n_larger: int64
-            }>, 
-            hom: array<struct {
+            }, 
+            hom: struct {
                 bin_edges: array<float64>, 
                 bin_freq: array<int64>, 
                 n_smaller: int64, 
                 n_larger: int64
-            }>
+            }
         }, 
         filters: set<str>, 
         quality_metrics: struct {
@@ -333,15 +367,15 @@ Row fields:
         exome: struct {
             mean: float64, 
             median: int32, 
-            over_1: float32, 
-            over_5: float32, 
-            over_10: float32, 
-            over_15: float32, 
-            over_20: float32, 
-            over_25: float32, 
-            over_30: float32, 
-            over_50: float32, 
-            over_100: float32
+            over_1: float64, 
+            over_5: float64, 
+            over_10: float64, 
+            over_15: float64, 
+            over_20: float64, 
+            over_25: float64, 
+            over_30: float64, 
+            over_50: float64, 
+            over_100: float64
         }, 
         genome: struct {
             mean: float64, 

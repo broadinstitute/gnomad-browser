@@ -5,9 +5,8 @@ from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Coloca
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
     InSilicoPredictors,
-    Domain,
-    Rf,
-    Grpmax,
+    # Domain,
+    # Grpmax,
     Locus,
 )
 
@@ -16,7 +15,8 @@ from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
 class TranscriptConsequence:
     biotype: Union[str, None]
     consequence_terms: list[str]
-    domains: Union[List[Domain], None]
+    # domains: Union[List[Domain], None]
+    domains: Union[List[str], None]
     gene_id: Union[str, None]
     gene_symbol: Union[str, None]
     hgvsc: Union[str, None]
@@ -25,13 +25,14 @@ class TranscriptConsequence:
     lof: Union[str, None]
     lof_flags: Union[str, None]
     lof_filter: Union[str, None]
-    lof_info: Union[str, None]
+    # lof_info: Union[str, None]
     major_consequence: str
-    polyphen_prediction: Union[str, None]
-    sift_prediction: Union[str, None]
+    # polyphen_prediction: Union[str, None]
+    # sift_prediction: Union[str, None]
     transcript_id: Union[str, None]
     transcript_version: Union[str, None]
     transcript_id: Union[str, None]
+    gene_version: str
     is_mane_select: bool
     is_mane_select_version: bool
     refseq_id: str
@@ -42,9 +43,8 @@ class TranscriptConsequence:
 class Variant:
     locus: Locus
     alleles: list[str]
-    grpmax: List[Grpmax]
+    # grpmax: List[Grpmax]
     rsids: Union[Set[str], None]
-    rf: Rf
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
