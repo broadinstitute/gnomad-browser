@@ -12,10 +12,10 @@ def nullify_nan(value):
 def freq_index_key(subset=None, pop=None, sex=None, raw=False):
     parts = [s for s in [subset, pop, sex] if s is not None]
     parts.append("raw" if raw else "adj")
-    return "-".join(parts)
+    return "_".join(parts)
 
 
-def prepare_gnomad_v4_variants(input_path):
+def prepare_gnomad_v4_variants(input_path: str):
     ds = hl.read_table(input_path)
     g = hl.eval(ds.globals)
 
@@ -72,14 +72,16 @@ def prepare_gnomad_v4_variants(input_path):
     # Frequencies #
     ###############
 
-    subset_populations = {}
+    subset_ancestry_groups = {}
     for subset in subsets:
-        subset_populations[subset] = set(m.get("pop", None) for m in g.freq_meta if m.get("subset", None) == subset)
+        subset_ancestry_groups[subset] = set(
+            m.get("gen_anc", None) for m in g.freq_meta if m.get("subset", None) == subset
+        )
 
-        subset_populations[subset].discard(None)
+        subset_ancestry_groups[subset].discard(None)
 
         # "global" population is used for downsamplings
-        subset_populations[subset].discard("global")
+        subset_ancestry_groups[subset].discard("global")
 
     ds = ds.annotate(in_autosome_or_par=ds.locus.in_autosome_or_par())
 
@@ -96,7 +98,7 @@ def prepare_gnomad_v4_variants(input_path):
                             ds.in_autosome_or_par, 0, hl.or_else(freq(ds, subset=subset, sex="XY").AC, 0)
                         ),
                         homozygote_count=freq(ds, subset=subset).homozygote_count,
-                        populations=[
+                        ancestry_groups=[
                             hl.struct(
                                 id="_".join(filter(bool, [pop, sex])),
                                 ac=hl.or_else(freq(ds, subset=subset, pop=pop, sex=sex).AC, 0),
@@ -112,7 +114,7 @@ def prepare_gnomad_v4_variants(input_path):
                                     freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count, 0
                                 ),
                             )
-                            for pop, sex in list(itertools.product(subset_populations[subset], [None, "XX", "XY"]))
+                            for pop, sex in list(itertools.product(subset_ancestry_groups[subset], [None, "XX", "XY"]))
                             + [(None, "XX"), (None, "XY")]
                         ],
                     )
@@ -129,10 +131,10 @@ def prepare_gnomad_v4_variants(input_path):
                 **{
                     subset
                     or "all": ds.gnomad.freq[subset or "all"].annotate(
-                        populations=hl.if_else(
+                        ancestry_groups=hl.if_else(
                             ds.gnomad.freq[subset or "all"].ac_raw == 0,
-                            hl.empty_array(ds.gnomad.freq[subset or "all"].populations.dtype.element_type),
-                            ds.gnomad.freq[subset or "all"].populations,
+                            hl.empty_array(ds.gnomad.freq[subset or "all"].ancestry_groups.dtype.element_type),
+                            ds.gnomad.freq[subset or "all"].ancestry_groups,
                         )
                     )
                     for subset in subsets
@@ -159,16 +161,16 @@ def prepare_gnomad_v4_variants(input_path):
     # Filtering allele frequency #
     ##############################
 
-    faf_populations = [pop for pop in subset_populations[None] if f"{pop}-adj" in g.faf_index_dict]
+    faf_populations = [pop for pop in subset_ancestry_groups[None] if f"{pop}_adj" in g.faf_index_dict]
 
-    # Get popmax FAFs
+    # Get grpmax FAFs
     ds = ds.annotate(
         gnomad=ds.gnomad.annotate(
             faf95=hl.rbind(
                 hl.sorted(
                     hl.array(
                         [
-                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}-adj"]].faf95, population=pop)
+                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}_adj"]].faf95, population=pop)
                             for pop in faf_populations
                         ]
                     ),
@@ -176,15 +178,15 @@ def prepare_gnomad_v4_variants(input_path):
                 ),
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
-                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population),
-                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr)),
+                    hl.struct(grpmax=fafs[0].faf, grpmax_gen_anc=fafs[0].population),
+                    hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
                 ),
             ),
             faf99=hl.rbind(
                 hl.sorted(
                     hl.array(
                         [
-                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}-adj"]].faf99, population=pop)
+                            hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}_adj"]].faf99, population=pop)
                             for pop in faf_populations
                         ]
                     ),
@@ -192,8 +194,8 @@ def prepare_gnomad_v4_variants(input_path):
                 ),
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
-                    hl.struct(popmax=fafs[0].faf, popmax_population=fafs[0].population),
-                    hl.struct(popmax=hl.null(hl.tfloat), popmax_population=hl.null(hl.tstr)),
+                    hl.struct(grpmax=fafs[0].faf, grpmax_gen_anc=fafs[0].population),
+                    hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
                 ),
             ),
         ),
@@ -208,7 +210,7 @@ def prepare_gnomad_v4_variants(input_path):
     ds = ds.annotate(
         gnomad=ds.gnomad.annotate(
             age_distribution=hl.struct(
-                het=ds.histograms.age_hists.age_hist_ht, hom=ds.histograms.age_hists.age_hist_hom
+                het=ds.histograms.age_hists.age_hist_het, hom=ds.histograms.age_hists.age_hist_hom
             )
         )
     )
@@ -249,7 +251,7 @@ def prepare_gnomad_v4_variants(input_path):
                 + [
                     hl.struct(metric=metric, value=hl.float(nullify_nan(ds.info[metric])))
                     for metric in [
-                        "InbreedingCoeff",
+                        "inbreeding_coeff",
                         "AS_FS",
                         "AS_MQ",
                         "AS_MQRankSum",
@@ -275,8 +277,11 @@ def prepare_gnomad_v4_variants(input_path):
     ds = ds.annotate(
         flags=hl.set(
             [
-                hl.or_missing(ds.region_flag.lcr, "lcr"),
-                hl.or_missing(ds.region_flag.segdup, "segdup"),
+                hl.or_missing(ds.region_flags.lcr, "lcr"),
+                hl.or_missing(ds.region_flags.segdup, "segdup"),
+                hl.or_missing(ds.region_flags.fail_interval_qc, "fail_interval_qc"),
+                hl.or_missing(ds.region_flags.outside_ukb_capture_region, "outside_ukb_capture_region"),
+                hl.or_missing(ds.region_flags.outside_broad_capture_region, "outside_broad_capture_region"),
                 hl.or_missing(
                     ((ds.locus.contig == "chrX") & ds.locus.in_x_par())
                     | ((ds.locus.contig == "chrY") & ds.locus.in_y_par()),
@@ -287,7 +292,7 @@ def prepare_gnomad_v4_variants(input_path):
         ).filter(hl.is_defined)
     )
 
-    ds = ds.drop("region_flag")
+    ds = ds.drop("region_flags")
 
     ################
     # Other fields #
