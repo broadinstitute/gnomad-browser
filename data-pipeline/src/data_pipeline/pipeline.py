@@ -53,24 +53,25 @@ def modified_time(path):
     return file_system.modified_time(check_path)
 
 
-# _pipeline_config = {}
-
-# _pipeline_config["output_root"] = config.output_paths.root
+_pipeline_config = {}
 
 
 @attr.define
 class DownloadTask:
-    _config: PipelineConfig
+    _config: Optional[PipelineConfig]
     _name: str
     _url: str
     _output_path: str
 
     @classmethod
-    def create(cls, config: PipelineConfig, name: str, url: str, output_path: str):
+    def create(cls, config: Optional[PipelineConfig], name: str, url: str, output_path: str):
         return cls(config, name, url, output_path)
 
     def get_output_path(self):
-        return self._config.output_root + self._output_path
+        if self._config:
+            return self._config.output_root + self._output_path
+        else:
+            return _pipeline_config["output_root"] + self._output_path
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -106,17 +107,17 @@ class DownloadTask:
 
 @attr.define
 class Task:
-    _config: PipelineConfig
     _name: str
     _task_function: Callable
     _output_path: str
     _inputs: dict
     _params: dict
+    _config: Optional[PipelineConfig] = None
 
     @classmethod
     def create(
         cls,
-        config: PipelineConfig,
+        config: Optional[PipelineConfig],
         name: str,
         task_function: Callable,
         output_path: str,
@@ -127,10 +128,13 @@ class Task:
             inputs = {}
         if params is None:
             params = {}
-        return cls(config, name, task_function, output_path, inputs, params)
+        return cls(name, task_function, output_path, inputs, params, config)
 
     def get_output_path(self):
-        return os.path.join(self._config.output_root, self._output_path)
+        if self._config:
+            return os.path.join(self._config.output_root, self._output_path)
+        else:
+            return _pipeline_config["output_root"] + self._output_path
 
     def get_inputs(self):
         paths = {}
@@ -139,7 +143,13 @@ class Task:
             if isinstance(v, (Task, DownloadTask)):
                 paths.update({k: v.get_output_path()})
             else:
-                paths.update({k: os.path.join(self._config.input_root, v)})
+                if self._config:
+                    if self._config.input_root:
+                        paths.update({k: os.path.join(self._config.input_root, v)})
+                    else:
+                        paths.update({k: v})
+                else:
+                    paths.update({k: v})
 
         return paths
 
@@ -165,8 +175,9 @@ class Task:
             start = time.perf_counter()
             result = self._task_function(**self.get_inputs(), **self._params)
 
-            if "gs://" not in self._config.output_root:
-                Path(self._config.output_root).mkdir(parents=True, exist_ok=True)
+            if self._config:
+                if "gs://" not in self._config.output_root:
+                    Path(self._config.output_root).mkdir(parents=True, exist_ok=True)
 
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
@@ -178,7 +189,7 @@ class Task:
 
 @attr.define
 class Pipeline:
-    config: PipelineConfig
+    config: Optional[PipelineConfig] = None
     _tasks: OrderedDict = OrderedDict()
     _outputs: dict = {}
 
@@ -251,8 +262,8 @@ def run_pipeline(pipeline: Pipeline):
     group.add_argument("--force-all", action="store_true")
     args = parser.parse_args()
 
-    # if args.output_root:
-    #     _pipeline_config["output_root"] = args.output_root.rstrip("/")
+    if args.output_root:
+        _pipeline_config["output_root"] = args.output_root.rstrip("/")
 
     pipeline_args = {}
     if args.force_all:
