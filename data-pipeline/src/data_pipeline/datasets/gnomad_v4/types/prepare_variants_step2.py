@@ -1,3 +1,4 @@
+from typing import Union
 import attr
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as InputVariant
 
@@ -19,8 +20,8 @@ class CoverageDetail:
 
 @attr.define
 class Coverage:
-    exome: CoverageDetail
-    genome: CoverageDetail
+    exome: Union[CoverageDetail, None]
+    genome: Union[CoverageDetail, None]
 
 
 @attr.define

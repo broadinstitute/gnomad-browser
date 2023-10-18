@@ -1,21 +1,22 @@
 ----------------------------------------
 Global fields:
-    None
+    'coverage_stats_meta': array<dict<str, str>> 
+    'coverage_stats_meta_sample_count': array<int32> 
 ----------------------------------------
 Row fields:
     'locus': locus<GRCh38> 
     'xpos': int64 
     'mean': float64 
     'median': int32 
-    'over_1': float32 
-    'over_5': float32 
-    'over_10': float32 
-    'over_15': float32 
-    'over_20': float32 
-    'over_25': float32 
-    'over_30': float32 
-    'over_50': float32 
-    'over_100': float32 
+    'over_1': float64 
+    'over_5': float64 
+    'over_10': float64 
+    'over_15': float64 
+    'over_20': float64 
+    'over_25': float64 
+    'over_30': float64 
+    'over_50': float64 
+    'over_100': float64 
 ----------------------------------------
 Key: ['locus']
 ----------------------------------------

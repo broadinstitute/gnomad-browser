@@ -88,10 +88,13 @@ class Info:
     AS_VQSLOD: float
     inbreeding_coeff: float
     vrs: Vrs
+    only_het: bool
 
 
 @attr.define
 class Consequence:
+    regulatory_feature_id: str
+    biotype: str
     allele_num: int
     consequence_terms: List[str]
     impact: str
@@ -168,15 +171,6 @@ class Vep:
 
 
 @attr.define
-class Rf:
-    rf_positive_label: bool
-    rf_negative_label: bool
-    rf_label: str
-    rf_train: bool
-    rf_tp_probability: float
-
-
-@attr.define
 class RegionFlags:
     lcr: bool
     segdup: bool
@@ -192,6 +186,7 @@ class AlleleInfo:
     allele_type: str
     n_alt_alleles: int
     was_mixed: bool
+    has_star: bool
 
 
 @attr.define

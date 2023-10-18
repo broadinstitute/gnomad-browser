@@ -35,25 +35,32 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
         )
     )
 
-    transcript_consequences = transcript_consequences.map(
-        lambda c: c.select(
-            "biotype",
-            "consequence_terms",
-            "domains",
-            "gene_id",
-            "gene_symbol",
-            "hgvsc",
-            "hgvsp",
-            "is_canonical",
-            "lof_filter",
-            "lof_flags",
-            "lof",
-            "major_consequence",
-            "polyphen_prediction",
-            "sift_prediction",
-            "transcript_id",
-        )
-    )
+    consequences = [
+        "biotype",
+        "consequence_terms",
+        "domains",
+        "gene_id",
+        "gene_symbol",
+        "hgvsc",
+        "hgvsp",
+        "is_canonical",
+        "lof_filter",
+        "lof_flags",
+        "lof",
+        "major_consequence",
+        # "polyphen_prediction",
+        # "sift_prediction",
+        "transcript_id",
+    ]
+
+    available_consequences = list(transcript_consequences[0])
+
+    if "polyphen_prediction" in available_consequences:
+        consequences.append("polyphen_prediction")
+    if "sift_prediction" in available_consequences:
+        consequences.append("sift_prediction")
+
+    transcript_consequences = transcript_consequences.map(lambda c: c.select(*consequences))
 
     transcripts = hl.read_table(transcripts_path)
 
