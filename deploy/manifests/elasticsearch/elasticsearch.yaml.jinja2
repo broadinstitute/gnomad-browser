@@ -47,7 +47,7 @@ spec:
           spec:
             accessModes:
               - ReadWriteOnce
-            storageClassName: standard
+            storageClassName: premium-rwo
             resources:
               requests:
                 storage: 100Gi
@@ -68,7 +68,7 @@ spec:
           resources:
             requests:
               storage: 10Gi
-          storageClassName: standard
+          storageClassName: premium-rwo
       podTemplate:
         metadata:
           labels:
@@ -93,7 +93,7 @@ spec:
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
     - name: data-green
-      count: 2
+      count: 4
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.roles: ["data"]
         cluster.routing.allocation.disk.watermark.low: '100gb'
@@ -141,7 +141,7 @@ spec:
           spec:
             accessModes:
               - ReadWriteOnce
-            storageClassName: standard
+            storageClassName: premium-rwo
             resources:
               requests:
                 storage: 1750Gi
@@ -195,7 +195,7 @@ spec:
           spec:
             accessModes:
               - ReadWriteOnce
-            storageClassName: standard
+            storageClassName: premium-rwo
             resources:
               requests:
                 storage: 2000Gi
