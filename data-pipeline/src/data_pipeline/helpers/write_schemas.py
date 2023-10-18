@@ -27,31 +27,32 @@ def schema_writer(schema_path):
 
 
 for pipeline in pipelines:
-    pipeline_name = pipeline.config.name
-    task_names = pipeline.get_all_task_names()
-    out_dir = os.path.join(SCHEMA_PATH, pipeline_name)
+    if pipeline.config:
+        pipeline_name = pipeline.config.name
+        task_names = pipeline.get_all_task_names()
+        out_dir = os.path.join(SCHEMA_PATH, pipeline_name)
 
-    for task_name in task_names:
-        task = gnomad_v4_variant_pipeline.get_task(task_name)
-        inputs = task.get_inputs()
-        output_path = task.get_output_path()
+        for task_name in task_names:
+            task = gnomad_v4_variant_pipeline.get_task(task_name)
+            inputs = task.get_inputs()
+            output_path = task.get_output_path()
 
-        # logger.info(f"out dir {out_dir}")
-        logger.info(f"task_name: {task}")
-        logger.info(f"inputs {str(inputs)}")
-        logger.info(f"output_path {str(output_path)}")
+            # logger.info(f"out dir {out_dir}")
+            logger.info(f"task_name: {task}")
+            logger.info(f"inputs {str(inputs)}")
+            logger.info(f"output_path {str(output_path)}")
 
-        tables = {
-            **inputs,
-            "output": output_path,
-        }
+            tables = {
+                **inputs,
+                "output": output_path,
+            }
 
-        logger.info(tables)
+            logger.info(tables)
 
-        for table_name, table_path in tables.items():
-            ht = hl.read_table(table_path)
-            schema_path = os.path.join(
-                SCHEMA_PATH, pipeline_name, task_name, table_name, f"{os.path.basename(table_path)}.schema"
-            )
-            describe_handler = schema_writer(schema_path)
-            ht.describe(handler=describe_handler)
+            for table_name, table_path in tables.items():
+                ht = hl.read_table(table_path)
+                schema_path = os.path.join(
+                    SCHEMA_PATH, pipeline_name, task_name, table_name, f"{os.path.basename(table_path)}.schema"
+                )
+                describe_handler = schema_writer(schema_path)
+                ht.describe(handler=describe_handler)
