@@ -3,16 +3,15 @@ from typing import List, Set, Union
 
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
+    GrpmaxBySubset,
     InSilicoPredictors,
     Vep,
-    Rf,
-    Grpmax,
     Locus,
 )
 
 
 @attr.define
-class Population:
+class AncestryGroup:
     id: str
     ac: int
     an: int
@@ -27,7 +26,7 @@ class Freq:
     an: int
     hemizygote_count: int
     homozygote_count: int
-    populations: list[Population]
+    ancestry_groups: list[AncestryGroup]
 
 
 @attr.define
@@ -38,8 +37,8 @@ class FreqBySubset:
 
 @attr.define
 class FAF:
-    popmax: float
-    popmax_population: str
+    grpmax: float
+    grpmax_gen_anc: str
 
 
 @attr.define
@@ -96,8 +95,8 @@ class QualityMetrics:
 
 @attr.define
 class AgeDistributions:
-    het: List[BinDetails]
-    hom: List[BinDetails]
+    het: BinDetails
+    hom: BinDetails
 
 
 @attr.define
@@ -120,10 +119,9 @@ class ColocatedVariants:
 class Variant:
     locus: Locus
     alleles: list[str]
-    grpmax: List[Grpmax]
+    grpmax: GrpmaxBySubset
     rsids: Union[Set[str], None]
     vep: Union[Vep, None]
-    rf: Rf
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
