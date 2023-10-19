@@ -129,6 +129,7 @@ type DatasetMetadata = {
   genesHaveGenomeCoverage: boolean
   transcriptsHaveExomeCoverage: boolean
   regionsHaveExomeCoverage: boolean
+  regionsHaveGenomeCoverage: boolean
   hasLocalAncestryPopulations: boolean
   isLiftoverSource: boolean
   isLiftoverTarget: boolean
@@ -192,6 +193,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   regionsHaveExomeCoverage:
     !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
+  regionsHaveGenomeCoverage: !datasetId.startsWith('gnomad_cnv'),
   isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
   isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
   usesGrch37: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
@@ -260,6 +262,9 @@ export const transcriptsHaveExomeCoverage = (datsetId: DatasetId) =>
 
 export const regionsHaveExomeCoverage = (datsetId: DatasetId) =>
   getMetadata(datsetId, 'regionsHaveExomeCoverage')
+
+export const regionsHaveGenomeCoverage = (datsetId: DatasetId) =>
+  getMetadata(datsetId, 'regionsHaveGenomeCoverage')
 
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
 
