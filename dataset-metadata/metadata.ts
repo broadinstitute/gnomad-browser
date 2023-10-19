@@ -18,7 +18,7 @@ export const datasetLabels = {
   gnomad_sv_r2_1_non_neuro: 'gnomAD SVs v2.1 (non-neuro)',
   gnomad_sv_r4: 'gnomAD SVs v4',
   gnomad_r4: '', //* TODO
-  gnomad_cnv_r4: "gnomAD CNVs v4.1",
+  gnomad_cnv_r4: "gnomAD CNVs v4.0.0",
 } as const
 export type DatasetId = keyof typeof datasetLabels
 
@@ -120,11 +120,13 @@ type DatasetMetadata = {
   hasShortVariants: boolean
   hasStructuralVariants: boolean
   hasCopyNumberVariants: boolean
+  hasCopyNumberVariantCoverage: boolean
   hasConstraints: boolean
   hasVariantCoocurrence: boolean
   hasNonCodingConstraints: boolean
   hasExome: boolean
   genesHaveExomeCoverage: boolean
+  genesHaveGenomeCoverage: boolean
   transcriptsHaveExomeCoverage: boolean
   regionsHaveExomeCoverage: boolean
   hasLocalAncestryPopulations: boolean
@@ -175,6 +177,8 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   isV4SVs: datasetId === 'gnomad_sv_r4',
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
+  hasCopyNumberVariants: copyNumberVariantDatasetIds.includes(datasetId),
+  hasCopyNumberVariantCoverage: datasetId.startsWith('gnomad_cnv'),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
   hasConstraints: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
@@ -182,9 +186,9 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   isV4CNVs: datasetId === 'gnomad_cnv_r4',
-  hasCopyNumberVariants: copyNumberVariantDatasetIds.includes(datasetId),
   referenceGenome:
-    datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_cnv_r4' ||datasetId === 'gnomad_sv_r4'  ? 'GRCh38' : 'GRCh37',
+    datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_cnv_r4' ||datasetId === 'gnomad_sv_r4' || datasetId.startsWith('gnomad_r4') ? 'GRCh38' : 'GRCh37',
+  genesHaveGenomeCoverage: !datasetId.startsWith('gnomad_cnv'),
   regionsHaveExomeCoverage:
     !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
@@ -247,6 +251,9 @@ export const hasExome = (datsetId: DatasetId) => getMetadata(datsetId, 'hasExome
 
 export const genesHaveExomeCoverage = (datsetId: DatasetId) =>
   getMetadata(datsetId, 'genesHaveExomeCoverage')
+
+  export const genesHaveGenomeCoverage = (datsetId: DatasetId) =>
+  getMetadata(datsetId, 'genesHaveGenomeCoverage')
 
 export const transcriptsHaveExomeCoverage = (datsetId: DatasetId) =>
   getMetadata(datsetId, 'transcriptsHaveExomeCoverage')
@@ -337,3 +344,6 @@ export const isV4CNVs = (datasetId: DatasetId) => getMetadata(datasetId, 'isV4CN
 
 export const copyNumberVariantDatasetId = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'copyNumberVariantDatasetId')
+
+export const hasCopyNumberVariantCoverage = (datasetId: DatasetId) =>
+  getMetadata(datasetId, 'hasCopyNumberVariantCoverage')
