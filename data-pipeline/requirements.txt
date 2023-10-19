@@ -4,3 +4,7 @@ tqdm
 loguru
 attrs
 cattrs
+pytest
+ruff
+black
+pyright
