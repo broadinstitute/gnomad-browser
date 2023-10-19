@@ -14,6 +14,7 @@ import { Badge, Button } from '@gnomad/ui'
 import {
   DatasetId,
   genesHaveExomeCoverage,
+  genesHaveGenomeCoverage,
   labelForDataset,
   hasStructuralVariants,
   ReferenceGenome,
@@ -443,13 +444,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         ) : gene.chrom === 'M' ? (
           <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
-        ) : hasCopyNumberVariants(datasetId) ? (
-          <InfoButton topic="variant-cooccurrence" /> // TODO: CREATE COVERAGETRACKS
         ) : (
           <GeneCoverageTrack
             datasetId={datasetId}
             geneId={geneId}
             includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
+            includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
           />
         )}
 
