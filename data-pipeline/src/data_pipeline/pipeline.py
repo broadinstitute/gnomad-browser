@@ -146,6 +146,8 @@ class Task:
                 if self._config:
                     if self._config.input_root:
                         paths.update({k: os.path.join(self._config.input_root, v)})
+                        if "gs://" in v:
+                            paths.update({k: v})
                     else:
                         paths.update({k: v})
                 else:
@@ -233,7 +235,7 @@ class Pipeline:
 
         self._outputs = outputs
 
-    def get_output(self, output_name) -> str:
+    def get_output(self, output_name) -> Union[Task, DownloadTask]:
         task_name = self._outputs[output_name]
         return self._tasks[task_name]
 

@@ -22,7 +22,7 @@ from data_pipeline.data_types.variant import (
     annotate_transcript_consequences,
 )
 
-DATA_ENV = os.getenv("DATA_ENV", "mock")
+DATA_ENV = os.getenv("DATA_ENV", "full")
 
 pipeline_name = "gnomad_v4_variants"
 
@@ -52,9 +52,10 @@ elif data_environment == DataEnvironment.full:
 
     config = PipelineConfig(
         name=pipeline_name,
-        input_root="gs://gnomad-matt-data-pipeline/2023-09-26/inputs",
-        output_root="gs://gnomad-matt-data-pipeline/2023-09-26/outputs",
+        input_root="gs://gnomad-matt-data-pipeline/2023-10-19/inputs",
+        output_root="gs://gnomad-matt-data-pipeline/2023-10-19/outputs",
     )
+
 else:
     raise EnvironmentError(
         f"Data environment invalid. Set DATA_ENV to one of {', '.join([e.name for e in DataEnvironment])}"
@@ -107,7 +108,7 @@ pipeline.add_task(
 # Outputs
 ###############################################
 
-pipeline.set_outputs({"variants": "annotate_gnomad_v4_exome_transcript_consequences"})
+pipeline.set_outputs({"exome_variants": "annotate_gnomad_v4_exome_transcript_consequences"})
 
 ###############################################
 # Run
@@ -117,6 +118,8 @@ if __name__ == "__main__":
     run_pipeline(pipeline)
 
     logger.info("Validating pipeline IO formats")
+
+    # if data_environment == DataEnvironment.mock:
     validate_globals_input(pipeline)
     validate_variant_input(pipeline)
     validate_step1_output(pipeline)
