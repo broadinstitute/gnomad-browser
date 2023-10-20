@@ -26,7 +26,13 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
     prepare_homozygous_variant_cooccurrence_counts,
 )
 
-pipeline = Pipeline(PipelineConfig(name="genes", input_root="data_in", output_root="data_out"))  # TODO: FIXME
+pipeline = Pipeline(
+    # PipelineConfig(
+    #     name="genes",
+    #     input_root="gs://gnomad-matt-data-pipeline/2023-10-19/inputs",
+    #     output_root="gs://gnomad-matt-data-pipeline/2023-10-19/outputs",
+    # )
+)  # TODO: FIXME
 
 ###############################################
 # Import GENCODE and HGNC files
