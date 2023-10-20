@@ -196,7 +196,7 @@ const DownloadsPage = () => {
           <h3>Downloads</h3>
           <StyledParagraph>
             See {/* @ts-expect-error */}
-            <Link to="/help/whats-the-difference-between-gnomad-v2-and-v3">
+            <Link to="/help/whats-the-difference-between-different-versions-of-gnomad">
               &ldquo;What&apos;s the difference between gnomAD v2 and v3?&rdquo;
             </Link>{' '}
             to decide which version is right for you.

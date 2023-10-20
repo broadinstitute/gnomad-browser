@@ -584,7 +584,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
         See 
         <a
           className="c13"
-          to="/help/whats-the-difference-between-gnomad-v2-and-v3"
+          to="/help/whats-the-difference-between-different-versions-of-gnomad"
         >
           “What's the difference between gnomAD v2 and v3?”
         </a>
@@ -5610,7 +5610,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <option
               value="amr"
             >
-              Latino/Admixed American
+              Admixed American
             </option>
             <option
               value="asj"

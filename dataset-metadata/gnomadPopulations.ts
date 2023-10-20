@@ -3,13 +3,13 @@ import { textOrMissingTextWarning } from '../browser/src/missingContent'
 export const GNOMAD_POPULATION_NAMES = {
   afr: 'African/African American',
   ami: 'Amish',
-  amr: 'Latino/Admixed American',
+  amr: 'Admixed American',
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
   fin: 'European (Finnish)',
   mid: 'Middle Eastern',
   nfe: 'European (non-Finnish)',
-  oth: 'Other',
+  oth: 'Remaining individuals',
   sas: 'South Asian',
 
   // EAS subpopulations
