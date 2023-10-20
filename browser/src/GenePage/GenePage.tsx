@@ -381,7 +381,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 setSelectedTableName={setSelectedTableName}
                 ownTableName="cooccurrence"
               >
-                Variant co-occurrence <InfoButton topic="variant-cooccurrence" />
+                Variant co-occurrence <InfoButton topic="variant-cooccurrence-table" />
               </TableSelector>
             </TableSelectorWrapper>
             {selectedTableName === 'constraint' ? (

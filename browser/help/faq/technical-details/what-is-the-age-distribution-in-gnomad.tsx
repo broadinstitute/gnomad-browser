@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import gnomadV4AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v4/ageDistribution.json'
 import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3/ageDistribution.json'
 import gnomadV2AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v2/ageDistribution.json'
 
@@ -27,32 +28,16 @@ export const question = 'What is the age distribution in gnomAD?'
 
 export const renderAnswer = () => (
   <>
-    <p>For gnomAD v3, the age distribution is:</p>
-    <ColumnsWrapper>
-      <Column>
-        <Histogram
-          // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
-          binEdges={gnomadV3AgeDistribution.genome.bin_edges}
-          binValues={gnomadV3AgeDistribution.genome.bin_freq}
-          nSmaller={gnomadV3AgeDistribution.genome.n_smaller}
-          nLarger={gnomadV3AgeDistribution.genome.n_larger}
-          barColor="#73ab3d"
-          xLabel="Age"
-          yLabel="Individuals"
-          formatTooltip={(bin: any) => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
-        />
-      </Column>
-    </ColumnsWrapper>
-    <p>For gnomAD v2, the age distribution is:</p>
+    <p>For gnomAD v4, the age distribution is:</p>
     <ColumnsWrapper>
       <Column>
         <p>Exomes</p>
         <Histogram
           // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
-          binEdges={gnomadV2AgeDistribution.exome.bin_edges}
-          binValues={gnomadV2AgeDistribution.exome.bin_freq}
-          nSmaller={gnomadV2AgeDistribution.exome.n_smaller}
-          nLarger={gnomadV2AgeDistribution.exome.n_larger}
+          binEdges={gnomadV4AgeDistribution.exome.bin_edges}
+          binValues={gnomadV4AgeDistribution.exome.bin_freq}
+          nSmaller={gnomadV4AgeDistribution.exome.n_smaller}
+          nLarger={gnomadV4AgeDistribution.exome.n_larger}
           barColor="#428bca"
           xLabel="Age"
           yLabel="Individuals"
@@ -63,10 +48,10 @@ export const renderAnswer = () => (
         <p>Genomes</p>
         <Histogram
           // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
-          binEdges={gnomadV2AgeDistribution.genome.bin_edges}
-          binValues={gnomadV2AgeDistribution.genome.bin_freq}
-          nSmaller={gnomadV2AgeDistribution.genome.n_smaller}
-          nLarger={gnomadV2AgeDistribution.genome.n_larger}
+          binEdges={gnomadV4AgeDistribution.genome.bin_edges}
+          binValues={gnomadV4AgeDistribution.genome.bin_freq}
+          nSmaller={gnomadV4AgeDistribution.genome.n_smaller}
+          nLarger={gnomadV4AgeDistribution.genome.n_larger}
           barColor="#73ab3d"
           xLabel="Age"
           yLabel="Individuals"
@@ -78,7 +63,66 @@ export const renderAnswer = () => (
       Please note that cohorts vary in how they report age (some report the age at diagnosis, others
       report the age of last visit, etc), so the ages associated with the gnomAD data can be thought
       of as the last known age of the individual. Information on age was not available for all
-      samples. We have age data for 85,462 exome samples and 11,242 genome samples.
+      samples. We have age data for 477,065 exome samples and 31,168 genome samples.
     </p>
+
+    <details>
+      <summary>Expand to see details for past versions</summary>
+
+      <p>For gnomAD v3, the age distribution is:</p>
+
+      <ColumnsWrapper>
+        <Column>
+          <Histogram
+            // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
+            binEdges={gnomadV3AgeDistribution.genome.bin_edges}
+            binValues={gnomadV3AgeDistribution.genome.bin_freq}
+            nSmaller={gnomadV3AgeDistribution.genome.n_smaller}
+            nLarger={gnomadV3AgeDistribution.genome.n_larger}
+            barColor="#73ab3d"
+            xLabel="Age"
+            yLabel="Individuals"
+            formatTooltip={(bin: any) => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+          />
+        </Column>
+      </ColumnsWrapper>
+      <p>For gnomAD v2, the age distribution is:</p>
+      <ColumnsWrapper>
+        <Column>
+          <p>Exomes</p>
+          <Histogram
+            // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
+            binEdges={gnomadV2AgeDistribution.exome.bin_edges}
+            binValues={gnomadV2AgeDistribution.exome.bin_freq}
+            nSmaller={gnomadV2AgeDistribution.exome.n_smaller}
+            nLarger={gnomadV2AgeDistribution.exome.n_larger}
+            barColor="#428bca"
+            xLabel="Age"
+            yLabel="Individuals"
+            formatTooltip={(bin: any) => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+          />
+        </Column>
+        <Column>
+          <p>Genomes</p>
+          <Histogram
+            // @ts-expect-error TS(2322) FIXME: Type '{ binEdges: any; binValues: any; nSmaller: a... Remove this comment to see the full error message
+            binEdges={gnomadV2AgeDistribution.genome.bin_edges}
+            binValues={gnomadV2AgeDistribution.genome.bin_freq}
+            nSmaller={gnomadV2AgeDistribution.genome.n_smaller}
+            nLarger={gnomadV2AgeDistribution.genome.n_larger}
+            barColor="#73ab3d"
+            xLabel="Age"
+            yLabel="Individuals"
+            formatTooltip={(bin: any) => `${bin.label}: ${bin.value.toLocaleString()} individuals`}
+          />
+        </Column>
+      </ColumnsWrapper>
+      <p>
+        Please note that cohorts vary in how they report age (some report the age at diagnosis,
+        others report the age of last visit, etc), so the ages associated with the gnomAD data can
+        be thought of as the last known age of the individual. Information on age was not available
+        for all samples. We have age data for 85,462 exome samples and 11,242 genome samples.
+      </p>
+    </details>
   </>
 )
