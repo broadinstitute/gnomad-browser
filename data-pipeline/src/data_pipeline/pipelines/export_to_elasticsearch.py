@@ -36,6 +36,8 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
     pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
 )
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
+from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_variants_pipeline
+from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -104,6 +106,37 @@ DATASETS_CONFIG = {
             "id_field": "transcript_id",
             "block_size": 1_000,
         },
+    },
+    ##############################################################################################################
+    # gnomAD v4
+    ##############################################################################################################
+    "gnomad_v4_exome_variants": {
+        "get_table": lambda: subset_table(
+            add_variant_document_id(
+                hl.read_table(gnomad_v4_variants_pipeline.get_output("exome_variants").get_output_path())
+            )
+        ),
+        "args": {
+            "index": "gnomad_v4_variants",
+            "index_fields": [
+                "document_id",
+                "variant_id",
+                "rsids",
+                # "caid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "transcript_consequences.transcript_id",
+            ],
+            "id_field": "document_id",
+            "num_shards": 2,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_exome_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_coverage_pipeline.get_output("exome_coverage").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_exome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
     },
     ##############################################################################################################
     # gnomAD v3
