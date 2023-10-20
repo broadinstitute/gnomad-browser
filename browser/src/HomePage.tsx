@@ -249,7 +249,7 @@ export default () => (
       disease-specific and population genetic studies. The v3.1.2 data set (GRCh38) spans 76,156
       genomes{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="https://gnomad.broadinstitute.org/help/what-populations-are-represented-in-the-gnomad-data">
+      <ExternalLink href="https://gnomad.broadinstitute.org/help/what-genetic-ancestry-groups-are-represented-in-the-gnomad-data">
         of diverse ancestries
       </ExternalLink>
       , selected as in v2. The gnomAD Principal Investigators and groups that have contributed data

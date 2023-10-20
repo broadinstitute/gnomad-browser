@@ -551,7 +551,7 @@ exports[`Home Page has no unexpected changes 1`] = `
      
     <a
       className="c9"
-      href="https://gnomad.broadinstitute.org/help/what-populations-are-represented-in-the-gnomad-data"
+      href="https://gnomad.broadinstitute.org/help/what-genetic-ancestry-groups-are-represented-in-the-gnomad-data"
       rel="noopener noreferrer"
       target="_blank"
     >
