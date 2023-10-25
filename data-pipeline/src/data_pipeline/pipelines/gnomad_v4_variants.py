@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from loguru import logger
 
 
@@ -25,6 +26,17 @@ from data_pipeline.data_types.variant import (
 DATA_ENV = os.getenv("DATA_ENV", "full")
 
 pipeline_name = "gnomad_v4_variants"
+
+
+def generate_iso_timestamp_for_filename():
+    now = datetime.utcnow()
+    timestamp = now.strftime("%Y%m%dT%H%M%S%Z")
+    return timestamp
+
+
+output_sub_dir = f"gnomad_v4_{generate_iso_timestamp_for_filename()}"
+output_sub_dir = "gnomad_v4_20231023T173158"
+
 
 data_environment = get_data_environment(DATA_ENV)
 
@@ -64,28 +76,22 @@ else:
 pipeline = Pipeline(config=config)
 
 pipeline.add_task(
-    name="prepare_gnomad_v4_exome_variants",
+    name="prepare_gnomad_v4_variants",
     task_function=prepare_gnomad_v4_variants,
-    output_path="gnomad_v4/gnomad_v4_exome_variants_base.ht",
-    inputs={"input_path": "variants/gnomad.exomes.sites.test.updated_101623.ht"},
+    output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
+    inputs={
+        "exome_variants_path": "variants/gnomad.exomes.sites.test.updated_101623.ht",
+        "genome_variants_path": "variants/gnomad.genomes.sites.test.updated_101923.ht",
+    },
 )
 
-# pipeline.add_task(
-#     name="prepare_gnomad_v4_genome_variants",
-#     task_function=prepare_gnomad_v4_variants,
-#     output_path="/gnomad_v4/gnomad_v4_genome_variants_base.ht",
-#     inputs={
-#         "input_path": "external_datasets/mock_v4_release.ht",
-#     },
-# )
-
 pipeline.add_task(
-    name="annotate_gnomad_v4_exome_variants",
+    name="annotate_gnomad_v4_variants",
     task_function=annotate_variants,
-    output_path="gnomad_v4/gnomad_v4_exome_variants_annotated_1.ht",
+    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_1.ht",
     inputs=(
         {
-            "variants_path": pipeline.get_task("prepare_gnomad_v4_exome_variants"),
+            "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
             "exome_coverage_path": coverage_pipeline.get_output("exome_coverage"),
             "genome_coverage_path": coverage_pipeline.get_output("genome_coverage"),
             # "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
@@ -94,11 +100,11 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    name="annotate_gnomad_v4_exome_transcript_consequences",
+    name="annotate_gnomad_v4_transcript_consequences",
     task_function=annotate_transcript_consequences,
-    output_path="gnomad_v4/gnomad_v4_variants_annotated_2.ht",
+    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_2.ht",
     inputs={
-        "variants_path": pipeline.get_task("annotate_gnomad_v4_exome_variants"),
+        "variants_path": pipeline.get_task("annotate_gnomad_v4_variants"),
         "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
         "mane_transcripts_path": genes_pipeline.get_output("mane_select_transcripts"),
     },
@@ -108,7 +114,7 @@ pipeline.add_task(
 # Outputs
 ###############################################
 
-pipeline.set_outputs({"exome_variants": "annotate_gnomad_v4_exome_transcript_consequences"})
+pipeline.set_outputs({"variants": "annotate_gnomad_v4_transcript_consequences"})
 
 ###############################################
 # Run
