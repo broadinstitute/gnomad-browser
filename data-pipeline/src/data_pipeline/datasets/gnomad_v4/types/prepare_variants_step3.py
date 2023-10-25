@@ -48,7 +48,8 @@ class Variant:
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
-    gnomad: Gnomad
+    exome: Gnomad
+    genome: Gnomad
     subsets: set[str]
     flags: set[str]
     transcript_consequences: Union[List[TranscriptConsequence], None]
