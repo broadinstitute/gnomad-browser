@@ -6,11 +6,11 @@ import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpe
 import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpers'
 
 const COVERAGE_INDICES = {
-  gnomad_cnv_r4: {
-    exome: 'gnomad_v4_exome_coverage',
-    genome: null,
-  },
   gnomad_r4: {
+    exome: 'gnomad_v4_exome_coverage',
+    genome: 'gnomad_v4_genome_coverage',
+  },
+  gnomad_cnv_r4: {
     exome: 'gnomad_v4_exome_coverage',
     genome: null,
   },
@@ -33,70 +33,72 @@ const COVERAGE_INDICES = {
 // ================================================================================================
 
 const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize }: any) => {
-  const response = await esClient.search({
-    index,
-    type: '_doc',
-    size: 0,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { 'locus.contig': contig } },
-            {
-              bool: {
-                should: regions.map(({ start, stop }: any) => ({
-                  range: { 'locus.position': { gte: start, lte: stop } },
-                })),
+  try {
+    const response = await esClient.search({
+      index,
+      type: '_doc',
+      size: 0,
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { 'locus.contig': contig } },
+              {
+                bool: {
+                  should: regions.map(({ start, stop }: any) => ({
+                    range: { 'locus.position': { gte: start, lte: stop } },
+                  })),
+                },
               },
+            ],
+          },
+        },
+        aggregations: {
+          coverage: {
+            histogram: {
+              field: 'locus.position',
+              interval: bucketSize,
             },
-          ],
-        },
-      },
-      aggregations: {
-        coverage: {
-          histogram: {
-            field: 'locus.position',
-            interval: bucketSize,
-          },
-          aggregations: {
-            mean: { avg: { field: 'mean' } },
-            median: { avg: { field: 'median' } },
-            over_1: { avg: { field: 'over_1' } },
-            over_5: { avg: { field: 'over_5' } },
-            over_10: { avg: { field: 'over_10' } },
-            over_15: { avg: { field: 'over_15' } },
-            over_20: { avg: { field: 'over_20' } },
-            over_25: { avg: { field: 'over_25' } },
-            over_30: { avg: { field: 'over_30' } },
-            over_50: { avg: { field: 'over_50' } },
-            over_100: { avg: { field: 'over_100' } },
+            aggregations: {
+              mean: { avg: { field: 'mean' } },
+              median: { avg: { field: 'median' } },
+              over_1: { avg: { field: 'over_1' } },
+              over_5: { avg: { field: 'over_5' } },
+              over_10: { avg: { field: 'over_10' } },
+              over_15: { avg: { field: 'over_15' } },
+              over_20: { avg: { field: 'over_20' } },
+              over_25: { avg: { field: 'over_25' } },
+              over_30: { avg: { field: 'over_30' } },
+              over_50: { avg: { field: 'over_50' } },
+              over_100: { avg: { field: 'over_100' } },
+            },
           },
         },
       },
-    },
-  })
+    })
 
+    return response.body.aggregations.coverage.buckets.map((bucket: any) => ({
+      pos: bucket.key,
+      mean: bucket.mean.value || 0,
+      median: bucket.median.value || 0,
 
-  return response.body.aggregations.coverage.buckets.map((bucket: any) => ({
-    pos: bucket.key,
-    mean: bucket.mean.value || 0,
-    median: bucket.median.value || 0,
-
-    over_x: [
-      // Round values
-      Math.ceil((bucket.over_1.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_5.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_10.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_15.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_20.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_25.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_30.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_50.value || 0) * 100) / 100,
-      Math.ceil((bucket.over_100.value || 0) * 100) / 100,
-    ],
-  }))
+      over_x: [
+        Math.ceil((bucket.over_1.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_5.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_10.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_15.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_20.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_25.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_30.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_50.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_100.value || 0) * 100) / 100,
+      ],
+    }))
+  } catch (error) {
+    console.error("Error fetching coverage:", error);
+    throw error;  // Re-throwing the error to be handled by the caller or higher up in the call stack
+  }
 }
-
 // ================================================================================================
 // Region queries
 // ================================================================================================
@@ -116,11 +118,11 @@ export const fetchExomeCoverageForRegion = (esClient: any, datasetId: any, regio
 
   return exomeCoverageIndex
     ? fetchCoverage(esClient, {
-        index: exomeCoverageIndex,
-        contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
-        regions: [{ start: region.start - 75, stop: region.stop + 75 }],
-        bucketSize,
-      })
+      index: exomeCoverageIndex,
+      contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
+      regions: [{ start: region.start - 75, stop: region.stop + 75 }],
+      bucketSize,
+    })
     : []
 }
 
@@ -139,11 +141,11 @@ export const fetchGenomeCoverageForRegion = (esClient: any, datasetId: any, regi
 
   return genomeCoverageIndex
     ? fetchCoverage(esClient, {
-        index: genomeCoverageIndex,
-        contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
-        regions: [{ start: region.start - 75, stop: region.stop + 75 }],
-        bucketSize,
-      })
+      index: genomeCoverageIndex,
+      contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
+      regions: [{ start: region.start - 75, stop: region.stop + 75 }],
+      bucketSize,
+    })
     : []
 }
 
@@ -172,20 +174,20 @@ export const _fetchCoverageForGene = async (esClient: any, datasetId: any, gene:
 
   const exomeCoverage = exomeCoverageIndex
     ? await fetchCoverage(esClient, {
-        index: exomeCoverageIndex,
-        contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
-        regions: mergedExons,
-        bucketSize,
-      })
+      index: exomeCoverageIndex,
+      contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
+      regions: mergedExons,
+      bucketSize,
+    })
     : []
 
   const genomeCoverage = genomeCoverageIndex
     ? await fetchCoverage(esClient, {
-        index: genomeCoverageIndex,
-        contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
-        regions: mergedExons,
-        bucketSize,
-      })
+      index: genomeCoverageIndex,
+      contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
+      regions: mergedExons,
+      bucketSize,
+    })
     : []
 
   return {
@@ -224,22 +226,22 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
 
   const exomeCoverage = exomeCoverageIndex
     ? await fetchCoverage(esClient, {
-        index: exomeCoverageIndex,
-        contig:
-          transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
-        regions: mergedExons,
-        bucketSize,
-      })
+      index: exomeCoverageIndex,
+      contig:
+        transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
+      regions: mergedExons,
+      bucketSize,
+    })
     : []
 
   const genomeCoverage = genomeCoverageIndex
     ? await fetchCoverage(esClient, {
-        index: genomeCoverageIndex,
-        contig:
-          transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
-        regions: mergedExons,
-        bucketSize,
-      })
+      index: genomeCoverageIndex,
+      contig:
+        transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
+      regions: mergedExons,
+      bucketSize,
+    })
     : []
 
   return {

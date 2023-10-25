@@ -1,6 +1,7 @@
 import { withCache } from '../cache'
 
 import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpers'
+import gnomadV4VariantQueries from './variant-datasets/gnomad-v4-variant-queries'
 import gnomadV3VariantQueries from './variant-datasets/gnomad-v3-variant-queries'
 import gnomadV2VariantQueries from './variant-datasets/gnomad-v2-variant-queries'
 import exacVariantQueries from './variant-datasets/exac-variant-queries'
@@ -8,6 +9,20 @@ import exacVariantQueries from './variant-datasets/exac-variant-queries'
 type QueryArgs = [any, any]
 
 const datasetQueries: Record<string, any> = {
+  gnomad_r4: {
+    countVariantsInRegion: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.countVariantsInRegion(...args, 'all'),
+    fetchVariantById: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchVariantById(...args, 'all'),
+    fetchVariantsByGene: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchVariantsByGene(...args, 'all'),
+    fetchVariantsByRegion: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchVariantsByRegion(...args, 'all'),
+    fetchVariantsByTranscript: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchVariantsByTranscript(...args, 'all'),
+    fetchMatchingVariants: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchMatchingVariants(...args, 'all'),
+  },
   gnomad_r3: {
     countVariantsInRegion: (...args: QueryArgs) =>
       gnomadV3VariantQueries.countVariantsInRegion(...args, 'all'),
