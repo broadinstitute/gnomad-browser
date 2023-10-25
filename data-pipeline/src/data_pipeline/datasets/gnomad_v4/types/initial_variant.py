@@ -1,5 +1,5 @@
 import attr
-from typing import List, Set, Union
+from typing import List, Set, Union, Optional
 
 
 @attr.define
@@ -40,9 +40,14 @@ class Faf:
 @attr.define
 class FafMax:
     faf95_max: Union[float, None]
-    faf95_max_gen_anc: str
+    faf95_max_gen_anc: Union[str, None]
     faf99_max: Union[float, None]
-    faf99_max_gen_anc: str
+    faf99_max_gen_anc: Union[str, None]
+
+
+@attr.define
+class JointFafMax(FafMax):
+    joint_fafmax_data_type: Optional[str]
 
 
 @attr.define
@@ -247,7 +252,7 @@ class InitialVariant:
     joint_freq: Union[List[Frequency], None]
     joint_grpmax: Union[Grpmax, None]
     joint_faf: Union[List[Union[Faf, None]], None]
-    joint_fafmax: Union[FafMax, None]
+    joint_fafmax: Union[JointFafMax, None]
     a_index: int
     was_split: bool
     rsid: Union[Set[str], None]
