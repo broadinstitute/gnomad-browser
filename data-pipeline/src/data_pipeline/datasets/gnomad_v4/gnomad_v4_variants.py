@@ -15,9 +15,11 @@ def freq_index_key(subset=None, pop=None, sex=None, raw=False):
     return "_".join(parts)
 
 
-def prepare_gnomad_v4_variants(input_path: str):
+def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
     ds = hl.read_table(input_path)
     g = hl.eval(ds.globals)
+
+    ds = ds.select_globals()
 
     subsets = set(m.get("subset", None) for m in g.freq_meta)
 
@@ -201,7 +203,24 @@ def prepare_gnomad_v4_variants(input_path: str):
         ),
     )
 
-    ds = ds.drop("faf")
+    ds = ds.annotate(gnomad=ds.gnomad.annotate(fafmax=ds.fafmax))
+
+    ds = ds.drop("faf", "fafmax")
+
+    ##############################
+    # Join FAF #
+    ##############################
+
+    ds = ds.annotate(
+        gnomad=ds.gnomad.annotate(
+            joint_freq=ds.joint_freq,
+            joint_grpmax=ds.joint_grpmax,
+            joint_faf=ds.joint_faf,
+            joint_fafmax=ds.joint_fafmax,
+        ),
+    )
+
+    ds = ds.drop("joint_freq", "joint_grpmax", "joint_faf", "joint_fafmax")
 
     ####################
     # Age distribution #
@@ -252,8 +271,8 @@ def prepare_gnomad_v4_variants(input_path: str):
                     hl.struct(metric=metric, value=hl.float(nullify_nan(ds.info[metric])))
                     for metric in [
                         "inbreeding_coeff",
-                        "AS_FS",
                         "AS_MQ",
+                        "AS_FS",
                         "AS_MQRankSum",
                         "AS_pab_max",
                         "AS_QUALapprox",
@@ -274,23 +293,24 @@ def prepare_gnomad_v4_variants(input_path: str):
     # Flags #
     #########
 
-    ds = ds.annotate(
-        flags=hl.set(
-            [
-                hl.or_missing(ds.region_flags.lcr, "lcr"),
-                hl.or_missing(ds.region_flags.segdup, "segdup"),
-                hl.or_missing(ds.region_flags.fail_interval_qc, "fail_interval_qc"),
-                hl.or_missing(ds.region_flags.outside_ukb_capture_region, "outside_ukb_capture_region"),
-                hl.or_missing(ds.region_flags.outside_broad_capture_region, "outside_broad_capture_region"),
-                hl.or_missing(
-                    ((ds.locus.contig == "chrX") & ds.locus.in_x_par())
-                    | ((ds.locus.contig == "chrY") & ds.locus.in_y_par()),
-                    "par",
-                ),
-                hl.or_missing(ds.info.monoallelic, "monoallelic"),
-            ]
-        ).filter(hl.is_defined)
-    )
+    flags = [
+        hl.or_missing(ds.region_flags.lcr, "lcr"),
+        hl.or_missing(ds.region_flags.segdup, "segdup"),
+        hl.or_missing(
+            ((ds.locus.contig == "chrX") & ds.locus.in_x_par()) | ((ds.locus.contig == "chrY") & ds.locus.in_y_par()),
+            "par",
+        ),
+        hl.or_missing(ds.info.monoallelic, "monoallelic"),
+    ]
+
+    if exomes_or_genomes == "exomes":
+        flags = flags + [
+            hl.or_missing(ds.region_flags.fail_interval_qc, "fail_interval_qc"),
+            hl.or_missing(ds.region_flags.outside_ukb_capture_region, "outside_ukb_capture_region"),
+            hl.or_missing(ds.region_flags.outside_broad_capture_region, "outside_broad_capture_region"),
+        ]
+
+    ds = ds.annotate(flags=hl.set(flags).filter(hl.is_defined))
 
     ds = ds.drop("region_flags")
 
@@ -299,6 +319,76 @@ def prepare_gnomad_v4_variants(input_path: str):
     ################
 
     # Drop unused fields
-    ds = ds.drop("allele_info", "a_index", "info", "was_split")
+    ds = ds.drop("allele_info", "a_index", "info", "was_split", "grpmax", "vqsr_results")
+
+    ds = ds.transmute(**ds.gnomad)
+    ds = ds.select(**{exomes_or_genomes: ds.row_value})
+    # ds = ds.rename({"gnomad": exomes_or_genomes})
 
     return ds
+
+
+def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: str):
+    exome_variants = prepare_gnomad_v4_variants_helper(exome_variants_path, "exome")
+    genome_variants = prepare_gnomad_v4_variants_helper(genome_variants_path, "genome")
+
+    variants = exome_variants.join(genome_variants, "outer")
+
+    shared_fields = [
+        # "lcr",
+        # "nonpar",
+        "rsids",
+        # "segdup",
+        "vep",
+        "in_silico_predictors",
+        "variant_id",
+    ]
+    variants = variants.annotate(
+        **{field: hl.or_else(variants.exome[field], variants.genome[field]) for field in shared_fields}
+    )
+
+    variants = variants.annotate(exome=variants.exome.drop(*shared_fields), genome=variants.genome.drop(*shared_fields))
+
+    # Colocated variants
+    variants = variants.cache()
+    variants_by_locus = variants.select(
+        variants.variant_id,
+        exome_ac_raw=hl.struct(**{f: variants.exome.freq[f].ac_raw for f in variants.exome.freq.dtype.fields}),
+        genome_ac_raw=hl.struct(
+            **{f: variants.genome.freq[f].ac_raw for f in variants.genome.freq.dtype.fields},
+        ),
+    )
+    variants_by_locus = variants_by_locus.group_by("locus").aggregate(
+        variants=hl.agg.collect(variants_by_locus.row_value)
+    )
+
+    def subset_filter(subset):
+        def fn(variant):
+            return hl.if_else(
+                subset in list(variant.exome_ac_raw) and (variant.exome_ac_raw[subset] > 0),
+                True,
+                subset in list(variant.genome_ac_raw) and (variant.genome_ac_raw[subset] > 0),
+            )
+
+        return fn
+
+    variants_by_locus = variants_by_locus.annotate(
+        variant_ids=hl.struct(
+            **{
+                subset: variants_by_locus.variants.filter(subset_filter(subset)).map(lambda variant: variant.variant_id)
+                for subset in ["all", "non_ukb", "hgdp", "tgp"]
+            }
+        )
+    )
+
+    variants = variants.annotate(colocated_variants=variants_by_locus[variants.locus].variant_ids)
+    variants = variants.annotate(
+        colocated_variants=hl.struct(
+            **{
+                subset: variants.colocated_variants[subset].filter(lambda variant_id: variant_id != variants.variant_id)
+                for subset in ["all", "non_ukb", "hgdp", "tgp"]
+            }
+        )
+    )
+
+    return variants

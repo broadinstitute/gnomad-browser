@@ -38,8 +38,11 @@ def validate_rows(ht: hl.Table, cls: object):
                 logger.error(transform_error(e))
                 raise Exception(e)
             except Exception as e:
+                logger.info(variant["exome"])
+                logger.info(variant["genome"])
                 logger.error(e)
-                # raise Exception(e)
+                logger.error(transform_error(e))
+                raise Exception(e)
 
 
 def ht_to_json(ht: hl.Table, field: str = "row"):
@@ -59,42 +62,42 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
 
 
 def validate_globals_input(pipeline: Pipeline):
-    input_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
+    input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["exome_variants_path"]
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
     result = ht_to_json(ht, "globals")[0]
     # logger.info(result)
     structure(result, Globals)
-    logger.info("Validated prepare_gnomad_v4_exome_variants input globals")
+    logger.info("Validated prepare_gnomad_v4_variants input globals")
 
 
 def validate_variant_input(pipeline: Pipeline):
-    input_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_inputs()["input_path"]
+    input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["exome_variants_path"]
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, InitialVariant)
-    logger.info("Validated prepare_gnomad_v4_exome_variants input variants")
+    logger.info("Validated prepare_gnomad_v4_variants input variants")
 
 
 def validate_step1_output(pipeline: Pipeline):
-    output_path = pipeline.get_task("prepare_gnomad_v4_exome_variants").get_output_path()
+    output_path = pipeline.get_task("prepare_gnomad_v4_variants").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, Step1Variant)
-    logger.info("Validated prepare_gnomad_v4_exome_variants (step 1) output")
+    logger.info("Validated prepare_gnomad_v4_variants (step 1) output")
 
 
 def validate_step2_output(pipeline: Pipeline):
-    output_path = pipeline.get_task("annotate_gnomad_v4_exome_variants").get_output_path()
+    output_path = pipeline.get_task("annotate_gnomad_v4_variants").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, Step2Variant)
-    logger.info("Validated annotate_gnomad_v4_exome_variants (step 2) output")
+    logger.info("Validated annotate_gnomad_v4_variants (step 2) output")
 
 
 def validate_step3_output(pipeline: Pipeline):
-    output_path = pipeline.get_task("annotate_gnomad_v4_exome_transcript_consequences").get_output_path()
+    output_path = pipeline.get_task("annotate_gnomad_v4_transcript_consequences").get_output_path()
     ht = hl.read_table(output_path)
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, Step3Variant)
-    logger.info("Validated annotate_gnomad_v4_exome_transcript_consequences (step 3) output")
+    logger.info("Validated annotate_gnomad_v4_transcript_consequences (step 3) output")

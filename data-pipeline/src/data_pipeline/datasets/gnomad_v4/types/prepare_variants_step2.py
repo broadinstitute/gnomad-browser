@@ -1,6 +1,6 @@
 from typing import Union
 import attr
-from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as InputVariant
+from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as Step1Variant
 
 
 @attr.define
@@ -25,6 +25,6 @@ class Coverage:
 
 
 @attr.define
-class Variant(InputVariant):
+class Variant(Step1Variant):
     coverage: Coverage
     # caids go here too
