@@ -3,11 +3,17 @@ from typing import List, Set, Union
 
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
+    Faf,
+    FafMax,
+    FafMaxBySubset,
+    Grpmax,
     GrpmaxBySubset,
     InSilicoPredictors,
+    JointFafMax,
     Vep,
     Locus,
 )
+from pandas.core.frame import Frequency
 
 
 @attr.define
@@ -100,19 +106,45 @@ class AgeDistributions:
 
 
 @attr.define
-class Gnomad:
-    freq: FreqBySubset
-    faf95: FAF
-    faf99: FAF
-    age_distribution: AgeDistributions
-    filters: set[str]
-    quality_metrics: QualityMetrics
+class ColocatedVariantsExome:
+    all: List[str]
+    non_ukb: Union[List[str], None]
+
+
+@attr.define
+class ColocatedVariantsGenome:
+    all: List[str]
+    hgdp: Union[List[str], None]
+    tgp: Union[List[str], None]
 
 
 @attr.define
 class ColocatedVariants:
     all: List[str]
-    non_ukb: List[str]
+    non_ukb: Union[List[str], None]
+    hgdp: Union[List[str], None]
+    tgp: Union[List[str], None]
+
+
+@attr.define
+class Gnomad:
+    freq: FreqBySubset
+    faf95: FAF
+    faf99: FAF
+
+    fafmax: FafMaxBySubset
+    joint_freq: Union[List[Frequency], None]
+    joint_grpmax: Union[Grpmax, None]
+    joint_faf: Union[List[Union[Faf, None]], None]
+    joint_fafmax: Union[JointFafMax, None]
+
+    age_distribution: AgeDistributions
+    filters: set[str]
+    quality_metrics: QualityMetrics
+
+    flags: set[str]
+    subsets: set[str]
+    colocated_variants: Union[ColocatedVariantsExome, ColocatedVariantsGenome]
 
 
 @attr.define
@@ -125,6 +157,7 @@ class Variant:
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
-    gnomad: Gnomad
+    exome: Gnomad
+    genome: Gnomad
     subsets: set[str]
     flags: set[str]

@@ -118,11 +118,9 @@ DATASETS_CONFIG = {
     ##############################################################################################################
     # gnomAD v4
     ##############################################################################################################
-    "gnomad_v4_exome_variants": {
+    "gnomad_v4_variants": {
         "get_table": lambda: subset_table(
-            add_variant_document_id(
-                hl.read_table(gnomad_v4_variants_pipeline.get_output("exome_variants").get_output_path())
-            )
+            add_variant_document_id(hl.read_table(gnomad_v4_variants_pipeline.get_output("variants").get_output_path()))
         ),
         "args": {
             "index": "gnomad_v4_variants",
@@ -145,6 +143,12 @@ DATASETS_CONFIG = {
             hl.read_table(gnomad_v4_coverage_pipeline.get_output("exome_coverage").get_output_path())
         ),
         "args": {"index": "gnomad_v4_exome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
+    },
+    "gnomad_v4_genome_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_coverage_pipeline.get_output("genome_coverage").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_genome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
     },
     ##############################################################################################################
     # gnomAD v4 CNVs
