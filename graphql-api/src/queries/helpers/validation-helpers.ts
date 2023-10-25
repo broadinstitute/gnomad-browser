@@ -7,7 +7,7 @@ export const assertDatasetAndReferenceGenomeMatch = (datasetId: any, referenceGe
       `Dataset with id ${datasetId} does not exist`
     )
   }
-  
+
   if (DATASET_REFERENCE_GENOMES[datasetId] !== referenceGenome) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
