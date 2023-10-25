@@ -16,10 +16,10 @@ type CopyNumberVariant {
     length: Int
     pos: Int!
     type: String
-    posmin: Int!
-    posmax: Int!
-    endmin: Int!
-    endmax: Int!
+    posmin: Int
+    posmax: Int
+    endmin: Int
+    endmax: Int
     variant_id: String!
 }
 
@@ -38,9 +38,14 @@ type CopyNumberVariantDetails {
     qual: Float
     reference_genome: ReferenceGenomeId!
     type: String
-    posmin: Int!
-    posmax: Int!
-    endmin: Int!
-    endmax: Int!
+    posmin: Int
+    posmax: Int
+    endmin: Int
+    endmax: Int
     variant_id: String!
+}
+
+type CNVTrackCallabeCoverageBin {
+  pos: Float!
+  percent_callable: Float
 }
