@@ -19,7 +19,7 @@ import {
 } from './structuralVariantConsequences'
 import { svTypeColors } from './structuralVariantTypes'
 import StructuralVariantFilterControls from './StructuralVariantFilterControls'
-import StructrualVariantPropType from './StructuralVariantPropType'
+import StructuralVariantPropType from './StructuralVariantPropType'
 import structuralVariantTableColumns, {
   getColumnsForContext,
 } from './structuralVariantTableColumns'
@@ -44,7 +44,7 @@ const ControlWrapper = styled(Wrapper)`
   }
 `
 
-const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x: any, i: any) => `${i + 1}`), 'X', 'Y']
+const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (_x: any, i: any) => `${i + 1}`), 'X', 'Y']
 
 const DEFAULT_COLUMNS = [
   'source',
@@ -71,7 +71,7 @@ export interface Context {
 type StructuralVariantsProps = {
   context: Context
   exportFileName: string
-  variants: StructrualVariantPropType[]
+  variants: StructuralVariantPropType[]
 }
 
 const StructuralVariants = ({ context, exportFileName, variants }: StructuralVariantsProps) => {
@@ -158,8 +158,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
   const shouldHighlightTableRow = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
-    (variant) => {
+    (variant: StructuralVariantPropType) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
@@ -183,8 +182,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
 
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
-    (variant) => {
+    (variant: StructuralVariantPropType) => {
       if (colorKey === 'type') {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         return svTypeColors[variant.type] || svTypeColors.OTH
@@ -208,7 +206,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   // are based on, then offset the positions so that they are based on the
   // region viewer's coordinate system.
   const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(context.chrom) // eslint-disable-line react/destructuring-assignment
-  const positionCorrectedVariants = renderedVariants.map((variant) => {
+  const positionCorrectedVariants = renderedVariants.map((variant: StructuralVariantPropType) => {
     const copy = { ...variant }
 
     // This can only happen when chrom2/pos2/end2 is non-null
@@ -219,8 +217,8 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
       copy.pos += (chromIndex - currentChromIndex) * 1e9
       copy.end += (chromIndex - currentChromIndex) * 1e9
 
-      copy.pos2 += (endChromIndex - currentChromIndex) * 1e9
-      copy.end2 += (endChromIndex - currentChromIndex) * 1e9
+      copy.pos2! += (endChromIndex - currentChromIndex) * 1e9
+      copy.end2! += (endChromIndex - currentChromIndex) * 1e9
     }
 
     return copy
