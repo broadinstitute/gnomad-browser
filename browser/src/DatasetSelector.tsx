@@ -594,11 +594,11 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         label: 'More datasets',
         children: [
           {
-            id: 'gnomad_sv_r3',
-            label: labelForDataset('gnomad_sv_r3'),
-            url: datasetLink('gnomad_sv_r3'),
-            description: `${sampleCounts.gnomad_sv_r3.total.toLocaleString()} samples`,
-            childReferenceGenome: referenceGenome('gnomad_sv_r3'),
+            id: 'gnomad_sv_r4',
+            label: labelForDataset('gnomad_sv_r4'),
+            url: datasetLink('gnomad_sv_r4'),
+            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r4'),
           },
           {
             id: 'gnomad_sv_r2_1',

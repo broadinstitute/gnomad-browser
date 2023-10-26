@@ -18,9 +18,9 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -96,9 +96,9 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -174,9 +174,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -252,9 +252,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -330,9 +330,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -408,9 +408,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -486,9 +486,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -564,9 +564,9 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -642,9 +642,9 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -720,9 +720,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -798,9 +798,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -876,9 +876,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -954,9 +954,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -1032,9 +1032,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -1110,9 +1110,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -1188,9 +1188,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
@@ -1248,14 +1248,14 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
 </div>
 `;
 
-exports[`Searchbox with selected dataset gnomad_sv_r3 has no unexpected changes 1`] = `
+exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 <div
   className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
 >
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_sv_r3"
+    value="gnomad_sv_r4"
   >
     <optgroup
       label="GRCh38"
@@ -1266,9 +1266,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r3 has no unexpected changes 
         gnomAD v3.1.2
       </option>
       <option
-        value="gnomad_sv_r3"
+        value="gnomad_sv_r4"
       >
-        gnomAD SVs v3
+        gnomAD SVs v4
       </option>
     </optgroup>
     <optgroup
