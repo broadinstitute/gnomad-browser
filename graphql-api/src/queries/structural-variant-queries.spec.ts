@@ -10,7 +10,7 @@ const datasetIds = [
   'gnomad_sv_r2_1',
   'gnomad_sv_r2_1_controls',
   'gnomad_sv_r2_1_non_neuro',
-  'gnomad_sv_r3',
+  'gnomad_sv_r4',
 ] as const
 type SvDatasetId = (typeof datasetIds)[number]
 
@@ -18,7 +18,7 @@ const subsets: Record<SvDatasetId, string> = {
   gnomad_sv_r2_1: 'all',
   gnomad_sv_r2_1_controls: 'controls',
   gnomad_sv_r2_1_non_neuro: 'non_neuro',
-  gnomad_sv_r3: 'all',
+  gnomad_sv_r4: 'all',
 }
 
 const responseWithHits = (hits: any[]) => {
@@ -54,7 +54,7 @@ const makeMockClient = (response: any) => {
 }
 
 const expectedIndex = (datasetId: SvDatasetId) =>
-  datasetId === 'gnomad_sv_r3' ? 'gnomad_structural_variants_v3' : 'gnomad_structural_variants_v2'
+  datasetId === 'gnomad_sv_r4' ? 'gnomad_structural_variants_v3' : 'gnomad_structural_variants_v2'
 
 describe('fetchStructuralVariantById', () => {
   const variantId = 'dummy-variant'
@@ -62,7 +62,7 @@ describe('fetchStructuralVariantById', () => {
   describe.each(datasetIds)('with datasetId %s', (datasetId) => {
     test('constructs the correct ES query', async () => {
       const expectedVariantIdParams =
-        datasetId === 'gnomad_sv_r3'
+        datasetId === 'gnomad_sv_r4'
           ? { variant_id_upper_case: 'DUMMY-VARIANT' }
           : { variant_id: 'dummy-variant' }
 

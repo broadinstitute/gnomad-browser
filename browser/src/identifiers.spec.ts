@@ -21,7 +21,7 @@ describe('isStructuralVariantId', () => {
     })
   })
 
-  forDatasetsMatching(/gnomad_sv_r3/, 'with dataset %s', (datasetId) => {
+  forDatasetsMatching(/gnomad_sv_r4/, 'with dataset %s', (datasetId) => {
     const variantTypes = ['BND', 'CPX', 'CTX', 'DEL', 'DUP', 'INS', 'INV', 'CNV']
     const suffixes = ['0F1E2D3C', 'DEADBEEF', '12345678']
 
@@ -29,7 +29,7 @@ describe('isStructuralVariantId', () => {
       chromosomes.forEach((chromosome) => {
         suffixes.forEach((suffix) => {
           const variantId = [variantType, `CHR${chromosome}`, suffix].join('_')
-          test(`recognizes ${variantId} as a v3 variant ID`, () => {
+          test(`recognizes ${variantId} as a v4 variant ID`, () => {
             expect(isStructuralVariantId(variantId, datasetId)).toEqual(true)
           })
         })

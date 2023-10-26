@@ -4209,11 +4209,11 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
 </TrackPage>
 `;
 
-exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a mitochondrial region 1`] = `
+exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a mitochondrial region 1`] = `
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | gnomAD SVs v3"
+      title="M-345-456 | gnomAD SVs v4"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -4246,7 +4246,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
           }
         />
       }
-      selectedDataset="gnomad_sv_r3"
+      selectedDataset="gnomad_sv_r4"
     >
       M-345-456
     </GnomadPageHeading>
@@ -4302,7 +4302,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
     width={994}
   >
     <MitochondrialRegionCoverageTrack
-      datasetId="gnomad_sv_r3"
+      datasetId="gnomad_sv_r4"
       start={345}
       stop={456}
     />
@@ -4329,7 +4329,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
       />
     </React.Fragment>
     <StructuralVariantsInRegion
-      datasetId="gnomad_sv_r3"
+      datasetId="gnomad_sv_r4"
       region={
         {
           "chrom": "M",
@@ -4357,11 +4357,11 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
 </TrackPage>
 `;
 
-exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a non-mitochondrial region 1`] = `
+exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a non-mitochondrial region 1`] = `
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | gnomAD SVs v3"
+      title="12-345-456 | gnomAD SVs v4"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -4394,7 +4394,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
           }
         />
       }
-      selectedDataset="gnomad_sv_r3"
+      selectedDataset="gnomad_sv_r4"
     >
       12-345-456
     </GnomadPageHeading>
@@ -4451,7 +4451,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
   >
     <RegionCoverageTrack
       chrom="12"
-      datasetId="gnomad_sv_r3"
+      datasetId="gnomad_sv_r4"
       includeExomeCoverage={false}
       includeGenomeCoverage={true}
       start={345}
@@ -4480,7 +4480,7 @@ exports[`RegionPage with "gnomad_sv_r3" dataset has no unexpected changes for a 
       />
     </React.Fragment>
     <StructuralVariantsInRegion
-      datasetId="gnomad_sv_r3"
+      datasetId="gnomad_sv_r4"
       region={
         {
           "chrom": "12",

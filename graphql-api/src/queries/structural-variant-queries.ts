@@ -9,7 +9,7 @@ type SvDatasetId =
   | 'gnomad_sv_r2_1'
   | 'gnomad_sv_r2_1_controls'
   | 'gnomad_sv_r2_1_non_neuro'
-  | 'gnomad_sv_r3'
+  | 'gnomad_sv_r4'
 type Subset = 'all' | 'controls' | 'non_neuro'
 type DatasetDependentQueryParams = {
   index: string
@@ -38,7 +38,7 @@ const datasetDependentQueryParams: Record<SvDatasetId, DatasetDependentQueryPara
     subset: 'non_neuro',
     variantIdParams: v2VariantIdParams,
   },
-  gnomad_sv_r3: {
+  gnomad_sv_r4: {
     index: GNOMAD_STRUCTURAL_VARIANTS_V3_INDEX,
     subset: 'all',
     variantIdParams: v3VariantIdParams,

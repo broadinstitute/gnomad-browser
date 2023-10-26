@@ -3503,7 +3503,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected queries again
   "
 `;
 
-exports[`ReadData with "gnomad_sv_r3" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
 <div>
   <p>
     No read data available for this variant.
@@ -3511,7 +3511,7 @@ exports[`ReadData with "gnomad_sv_r3" dataset selected has no unexpected changes
 </div>
 `;
 
-exports[`ReadData with "gnomad_sv_r3" dataset selected has no unexpected changes with exome data present 1`] = `
+exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes with exome data present 1`] = `
 .c2 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -3687,10 +3687,10 @@ exports[`ReadData with "gnomad_sv_r3" dataset selected has no unexpected changes
 </div>
 `;
 
-exports[`ReadData with "gnomad_sv_r3" dataset selected queries against the correct dataset 1`] = `
+exports[`ReadData with "gnomad_sv_r4" dataset selected queries against the correct dataset 1`] = `
 "
     query ReadData {
-      variant_0: variantReads(dataset: gnomad_sv_r3, variantId: "123-45-A-G") {
+      variant_0: variantReads(dataset: gnomad_sv_r4, variantId: "123-45-A-G") {
         exome {
           bamPath
           category
