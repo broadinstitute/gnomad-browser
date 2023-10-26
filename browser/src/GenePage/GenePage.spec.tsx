@@ -253,5 +253,4 @@ describe.each([
         expectedIncludeShortTandemRepeats
       )
     })
-  }
-)
+  })
