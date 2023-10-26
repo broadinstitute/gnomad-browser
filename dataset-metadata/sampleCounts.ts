@@ -11,6 +11,7 @@ const {
   subsets: gnomadSvV2SubsetSampleCounts,
   ...gnomadSvV2SampleCounts
 } = require('./datasets/gnomad-sv-v2/sampleCounts')
+const gnomadCnvV4SubsetSampleCounts = require('./datasets/gnomad-cnv-v4/sampleCounts')
 
 const sampleCounts = [
   { exac: exacSampleCounts },
@@ -27,6 +28,7 @@ const sampleCounts = [
     [`gnomad_sv_r2_1_${subset}`]: gnomadSvV2SubsetSampleCounts[subset],
   })),
   { gnomad_sv_r4: { total: 63046 } },
+  { gnomad_cnv_r4: gnomadCnvV4SubsetSampleCounts },
 ].reduce(Object.assign, {})
 
 export default sampleCounts
