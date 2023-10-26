@@ -45,7 +45,7 @@ type CopyNumberVariantDetails {
     variant_id: String!
 }
 
-type CNVTrackCallabeCoverageBin {
-  pos: Float!
+type CNVTrackCallableCoverageBin {
+  xpos: Float!
   percent_callable: Float
 }
