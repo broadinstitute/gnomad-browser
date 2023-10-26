@@ -5,7 +5,7 @@ import { ExternalLink, List, ListItem } from '@gnomad/ui'
 import { CopyNumberVariant } from './CopyNumberVariantPage'
 
 const ucscUrl = (chrom: any, pos: any, end: any) =>
-  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${pos}-${end}`
+  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr${chrom}%3A${pos}-${end}`
 
 type CNVUCSCLinksProps = {
   variant: CopyNumberVariant

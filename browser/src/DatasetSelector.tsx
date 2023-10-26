@@ -586,17 +586,29 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     datasets = datasets.concat(shortVariantDatasets)
   }
 
-  if (includeStructuralVariants) {
+  if (includeStructuralVariants || includeCopyNumberVariants) {
+    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_sv_r2_1'
+
+    const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_cnv_r4'
+
+      const currentDataset = hasStructuralVariants(selectedDataset)
+    ? topLevelStructuralVariantDataset
+    : topLevelCopyNumberVariantDataset
+
     datasets.push(
       {
-        id: 'current_sv_dataset',
-        isActive: hasStructuralVariants(selectedDataset),
-        label: labelForDataset(topLevelStructuralVariantDataset),
-        url: datasetLink(topLevelStructuralVariantDataset),
+        id: 'current_sv_or_cnv_dataset',
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
+        label: labelForDataset(currentDataset),
+        url: datasetLink(currentDataset),
       },
       {
         id: 'other_structural_variant',
-        isActive: hasStructuralVariants(selectedDataset),
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
         children: [
           {
@@ -627,38 +639,35 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
-        ],
-      }
-    )
-  }
-
-  if (includeCopyNumberVariants) {
-    const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
-      ? selectedDataset
-      : 'gnomad_cnv_r4'
-
-    datasets.push(
-      {
-        id: 'current_cnv_dataset',
-        isActive: hasCopyNumberVariants(selectedDataset),
-        label: labelForDataset(topLevelCopyNumberVariantDataset),
-        url: datasetLink(topLevelCopyNumberVariantDataset),
-      },
-      {
-        id: 'other_cnv_variant',
-        isActive: hasCopyNumberVariants(selectedDataset),
-        label: 'More datasets',
-        children: [
           {
             id: 'gnomad_cnv_r4',
             label: labelForDataset('gnomad_cnv_r4'),
             url: datasetLink('gnomad_cnv_r4'),
-            description: `samples`,
-            // description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
             childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
           },
         ],
-      }
+      },
+      // {
+      //   id: 'current_cnv_dataset',
+      //   isActive: hasCopyNumberVariants(selectedDataset),
+      //   label: labelForDataset(topLevelCopyNumberVariantDataset),
+      //   url: datasetLink(topLevelCopyNumberVariantDataset),
+      // },
+      // {
+      //   id: 'other_cnv_variant',
+      //   isActive: hasCopyNumberVariants(selectedDataset),
+      //   label: 'More datasets',
+      //   children: [
+      //     {
+      //       id: 'gnomad_cnv_r4',
+      //       label: labelForDataset('gnomad_cnv_r4'),
+      //       url: datasetLink('gnomad_cnv_r4'),
+      //       description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
+      //       childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
+      //     },
+      //   ],
+      // }
     )
   }
 

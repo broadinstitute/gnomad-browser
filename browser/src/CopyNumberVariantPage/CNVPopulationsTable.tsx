@@ -250,7 +250,7 @@ export class CNVPopulationsTable extends Component<
             {this.renderColumnHeader({
               key: 'sc',
               label: columnLabels.sc || 'SC',
-              tooltip: 'Alternate allele count in high quality genotypes', // TODO
+              tooltip: 'Number of individuals that carry this variant',
               props: {
                 className: 'right-align',
               },
@@ -258,7 +258,7 @@ export class CNVPopulationsTable extends Component<
             {this.renderColumnHeader({
               key: 'sn',
               label: columnLabels.sn || 'SN',
-              tooltip: 'Total number of called high quality genotypes', // TODO
+              tooltip: 'Number of individuals that have a non-null genotype',
               props: {
                 className: 'right-align',
               },
@@ -266,7 +266,7 @@ export class CNVPopulationsTable extends Component<
             {this.renderColumnHeader({
               key: 'sf',
               label: columnLabels.sf || 'SF',
-              tooltip: 'Total number of called high quality genotypes', // TODO
+              tooltip: 'Proportion of individuals carrying this variant',
               props: {
                 className: 'right-align',
               },
