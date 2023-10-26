@@ -6,6 +6,14 @@ import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpe
 import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpers'
 
 const COVERAGE_INDICES = {
+  gnomad_cnv_r4: {
+    exome: 'gnomad_v4_exome_coverage',
+    genome: null,
+  },
+  gnomad_r4: {
+    exome: 'gnomad_v4_exome_coverage',
+    genome: null,
+  },
   gnomad_r3: {
     exome: null,
     genome: 'gnomad_v3_genome_coverage',
@@ -67,6 +75,28 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       },
     },
   })
+
+  console.log(
+    'RESPONSE Hits of query COVERAGE',
+    response.body.aggregations.coverage.buckets.map((bucket: any) => ({
+      pos: bucket.key,
+      mean: bucket.mean.value || 0,
+      median: bucket.median.value || 0,
+  
+      over_x: [
+        // Round values
+        Math.ceil((bucket.over_1.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_5.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_10.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_15.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_20.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_25.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_30.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_50.value || 0) * 100) / 100,
+        Math.ceil((bucket.over_100.value || 0) * 100) / 100,
+      ],
+    }))
+  )
 
   return response.body.aggregations.coverage.buckets.map((bucket: any) => ({
     pos: bucket.key,
