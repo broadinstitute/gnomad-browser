@@ -1,6 +1,4 @@
-import { UserVisibleError } from '../../errors'
 import {
-  fetchTrackCallableCoverageForRegion,
   fetchTrackCallableCoverageForGene,
 } from '../../queries/cnv-coverage-queries'
 
@@ -20,27 +18,16 @@ import {
 //     over_100: bin.over_x[8],
 //   }))
 
-const formatTrackCallableCoverageBins = (bins: any) =>
-  bins.map((bin: any) => ({
-    pos: bin.pos,
-    percent_callable: bin[0],
-  }))
 
-const resolveTrackCallableCoverageInRegion = async (obj: any, _args: any, ctx: any) => {
-  const coverage = await fetchTrackCallableCoverageForRegion(ctx.esClient, obj.dataset, obj)
-  return formatTrackCallableCoverageBins(coverage)
-}
+// const resolveTrackCallableCoverageInRegion = async (obj: any, _args: any, ctx: any) => {
+//   const coverage = await fetchTrackCallableCoverageForRegion(ctx.esClient, obj.dataset, obj)
+//   return formatTrackCallableCoverageBins(coverage)
+// }
 
-const resolveTrackCallableCoverageInGene = async (obj: any, _args: any, ctx: any) => {
-  try {
-    console.log("fetchTrackCallableCoverageForGene In Resolver")
-    const coverage = await fetchTrackCallableCoverageForGene(ctx.esClient, obj.dataset, obj)
-    return formatTrackCallableCoverageBins(coverage)
-  } catch (e) {
-    console.error('Error resolver coverager:', e)
-    throw e
+const resolveTrackCallableCoverageInGene = async (obj: any, args: any, ctx: any) => {
+      // Call your data fetching function
+      return fetchTrackCallableCoverageForGene(ctx.esClient, args.dataset, obj);
   }
-}
 
 // const resolveGenomeCoverageInRegion = async (obj: any, _args: any, ctx: any) => {
 //   const coverage = await fetchGenomeCoverageForRegion(ctx.esClient, obj.dataset, obj)
@@ -57,19 +44,19 @@ const resolveTrackCallableCoverageInGene = async (obj: any, _args: any, ctx: any
 // }
 
 const resolvers = {
-  Region: {
-    coverage: (obj: any, args: any) => {
-      if (obj.stop - obj.start >= 2.5e6) {
-        throw new UserVisibleError('Coverage is not available for a region this large')
-      }
-      return { ...obj, dataset: args.dataset }
-    },
-  },
-  RegionCoverage: {
-    track_callable: resolveTrackCallableCoverageInRegion,
-  },
+//   Region: {
+//     coverage: (obj: any, args: any) => {
+//       if (obj.stop - obj.start >= 2.5e6) {
+//         throw new UserVisibleError('Coverage is not available for a region this large')
+//       }
+//       return { ...obj, dataset: args.dataset }
+//     },
+//   },
+//   RegionCoverage: {
+//     track_callable: resolveTrackCallableCoverageInRegion,
+//   },
   Gene: {
-    track_callable: resolveTrackCallableCoverageInGene,
+    cnv_track_callable_coverage: resolveTrackCallableCoverageInGene,
   },
 }
 

@@ -24,11 +24,14 @@ import transcriptFieldResolvers from './resolvers/transcript-fields'
 import variantResolvers from './resolvers/variants'
 import variantFieldResolvers from './resolvers/variant-fields'
 import variantCooccurrenceResolvers from './resolvers/variant-cooccurrence'
+import cnvCoverageResolvers from './resolvers/cnv-coverage'
 
 const typeDefs = mergeTypeDefs([
   ...loadFilesSync(path.join(__dirname, './types')),
   'directive @cost(value: Int!, multipliers: [String!]) on FIELD_DEFINITION',
 ])
+
+
 
 const resolvers = mergeResolvers([
   aliasResolvers,
@@ -36,6 +39,7 @@ const resolvers = mergeResolvers([
   clinVarVariantResolvers,
   clinVarVariantFieldResolvers,
   copyNumberVariantResolvers,
+  cnvCoverageResolvers,
   coverageResolvers,
   geneResolvers,
   geneFieldResolvers,

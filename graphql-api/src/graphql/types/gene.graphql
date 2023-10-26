@@ -78,7 +78,7 @@ type Gene {
 
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
-  cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallabeCoverageBin!] @cost(value: 5)
+  cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallableCoverageBin!] @cost(value: 5)
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
   heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
