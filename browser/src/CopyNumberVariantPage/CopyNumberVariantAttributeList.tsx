@@ -3,7 +3,6 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
-import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { cnvTypeLabels } from '../CopyNumberVariantList/copyNumberVariantTypes'
 import { CopyNumberVariant } from './CopyNumberVariantPage'
@@ -64,9 +63,8 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
     </AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Class">
-      {console.log(variant.type)}
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-      {cnvTypeLabels[variant.type]} {/* TODO: ADD INFOBUTTONS*/}
+      {cnvTypeLabels[variant.type]} 
     </AttributeList.Item>
   </AttributeList>
 )

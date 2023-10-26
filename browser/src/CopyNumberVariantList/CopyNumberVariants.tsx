@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { Button, SegmentedControl } from '@gnomad/ui'
+import { Button } from '@gnomad/ui'
 
 import { showNotification } from '../Notifications'
 import StatusMessage from '../StatusMessage'
@@ -31,15 +31,6 @@ const Wrapper = styled.div`
   margin-bottom: 1em;
 `
 
-const ControlWrapper = styled(Wrapper)`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-
-  @media (min-width: 900px) {
-    margin-right: 160px;
-  }
-`
 
 const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x: any, i: any) => `${i + 1}`), 'X', 'Y']
 
@@ -167,9 +158,11 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
     }
   }, [])
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
     // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
+    // eslint-disable-next-line consistent-return
     (variant) => {
       if (colorKey === 'type') {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
