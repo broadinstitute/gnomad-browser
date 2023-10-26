@@ -89,25 +89,6 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
       <h2>Population Frequencies</h2>
       <CopyNumberVariantPopulationsTable variant={variant} />
     </section>
-
-    {/* <Wrapper>
-
-      <ResponsiveSection>
-        <h2>
-          Age Distribution <InfoButton topic="age" />
-        </h2>
-        {variant.age_distribution ? (
-          <React.Fragment>
-            {datasetId !== 'gnomad_sv_r2_1' && (
-              <p>Age distribution is based on the full SV dataset, not the selected subset.</p>
-            )}
-            <CopyNumberVariantAgeDistribution variant={variant} />
-          </React.Fragment>
-        ) : (
-          <p>Age data is not available for this variant.</p>
-        )}
-      </ResponsiveSection>
-    </Wrapper> */}
   </Page>
 )
 
