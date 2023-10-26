@@ -14,7 +14,7 @@ pipeline.add_task(
     prepare_gnomad_v4_cnvs,
     "/gnomad_v4/gnomad_v4_cnvs/cnvs.ht",
     {
-        "vcf_path": "gs://gnomad-v4-cnvs/2023-09-07-jfu-test4/GNOMAD_V4.4.3_browser_prototype_1.1.vcf.gz",
+        "vcf_path": "gs://gnomad-v4-cnvs/2023-10-24-jfu/GNOMAD_V4_release_1.0.vcf.gz",
     },
 )
 

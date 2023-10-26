@@ -23,7 +23,7 @@ def prepare_gnomad_v4_cnvs(vcf_path):
     ds = hl.import_vcf(vcf_path, force_bgz=True, min_partitions=32, reference_genome="GRCh38").rows()
 
     ds = ds.annotate(
-        variant_id=ds.rsid.replace("^variantbs80_", ""),
+        variant_id=ds.rsid.replace("^GD_", "").replace("^variant_is_80_", ""),
         reference_genome="GRCh38",
         # Start
         chrom=ds.locus.contig.replace("chr", ""),
