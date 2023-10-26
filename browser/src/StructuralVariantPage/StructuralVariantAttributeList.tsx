@@ -15,7 +15,7 @@ const FILTER_LABELS = {
   UNRESOLVED: 'Unresolved',
   UNSTABLE_AF_PCRMINUS: 'Unstable AF PCR-',
   OUTLIER_SAMPLE_ENRICHED: 'Outlier Sample Enriched',
-  LOWQUAL_WHAM_SR_DEL: 'Wham And Spilt-Read Evidence Only',
+  LOWQUAL_WHAM_SR_DEL: 'Wham And Split-Read Evidence Only',
 
   IGH_MCH_OVERLAP: 'Overlaps Somatic Recombination Site',
   FAIL_MANUAL_REVIEW: 'Failed Manual Review',
