@@ -38,7 +38,7 @@ describe('Searchbox', () => {
       gnomad_sv_r2_1: 'gnomad_sv_r2_1',
       gnomad_sv_r2_1_controls: 'gnomad_sv_r2_1',
       gnomad_sv_r2_1_non_neuro: 'gnomad_sv_r2_1',
-      gnomad_sv_r3: 'gnomad_sv_r3',
+      gnomad_sv_r4: 'gnomad_sv_r4',
     }
 
     test('has correct default dataset', () => {

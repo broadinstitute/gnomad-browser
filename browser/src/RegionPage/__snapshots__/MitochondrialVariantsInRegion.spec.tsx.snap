@@ -405,7 +405,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_non_neuro has
 ]
 `;
 
-exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r3 has no unexpected changes 1`] = `
+exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 [
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"

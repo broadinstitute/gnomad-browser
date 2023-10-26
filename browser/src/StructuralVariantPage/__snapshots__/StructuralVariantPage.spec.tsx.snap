@@ -79,13 +79,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -673,13 +673,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -1265,13 +1265,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -1857,13 +1857,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -2431,13 +2431,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -3005,13 +3005,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -3577,13 +3577,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -4151,13 +4151,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -5257,13 +5257,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -5851,13 +5851,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -6443,13 +6443,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -7035,13 +7035,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -7609,13 +7609,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -8183,13 +8183,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -8755,13 +8755,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -9329,13 +9329,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -10435,13 +10435,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -11029,13 +11029,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -11621,13 +11621,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -12213,13 +12213,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -12787,13 +12787,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -13361,13 +13361,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -13933,13 +13933,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
@@ -14507,13 +14507,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_sv_r3"
-                  href="/?dataset=gnomad_sv_r3"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v3
+                  gnomAD SVs v4
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >

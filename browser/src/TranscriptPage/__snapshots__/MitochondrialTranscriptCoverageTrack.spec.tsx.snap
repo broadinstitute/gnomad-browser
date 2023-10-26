@@ -342,7 +342,7 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
 </mockConstructor>
 `;
 
-exports[`MitochondrialTranscriptCoverageTrack with dataset gnomad_sv_r3 queries with proper parameters 1`] = `
+exports[`MitochondrialTranscriptCoverageTrack with dataset gnomad_sv_r4 queries with proper parameters 1`] = `
 <mockConstructor
   errorMessage="Unable to load coverage"
   loadingMessage="Loading coverage"
@@ -364,7 +364,7 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
   success={[Function]}
   variables={
     {
-      "datasetId": "gnomad_sv_r3",
+      "datasetId": "gnomad_sv_r4",
       "referenceGenome": "GRCh38",
       "transcriptId": "dummy-transcript",
     }

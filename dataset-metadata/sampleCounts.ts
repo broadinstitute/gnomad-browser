@@ -26,7 +26,7 @@ const sampleCounts = [
   ...Object.keys(gnomadSvV2SubsetSampleCounts).map((subset) => ({
     [`gnomad_sv_r2_1_${subset}`]: gnomadSvV2SubsetSampleCounts[subset],
   })),
-  { gnomad_sv_r3: { total: 63046 } },
+  { gnomad_sv_r4: { total: 63046 } },
 ].reduce(Object.assign, {})
 
 export default sampleCounts

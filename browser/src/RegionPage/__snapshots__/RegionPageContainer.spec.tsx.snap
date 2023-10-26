@@ -840,7 +840,7 @@ exports[`RegionPageContainer with dataset gnomad_sv_r2_1_non_neuro queries API w
 </Query>
 `;
 
-exports[`RegionPageContainer with dataset gnomad_sv_r3 queries API with correct parameters 1`] = `
+exports[`RegionPageContainer with dataset gnomad_sv_r4 queries API with correct parameters 1`] = `
 <Query
   errorMessage="Unable to load region"
   loadingMessage="Loading region"

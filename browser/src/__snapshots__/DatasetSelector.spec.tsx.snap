@@ -480,13 +480,13 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -1038,13 +1038,13 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -1596,13 +1596,13 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -2154,13 +2154,13 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -2712,13 +2712,13 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -3270,13 +3270,13 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -3828,13 +3828,13 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -4386,13 +4386,13 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -4944,13 +4944,13 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -5502,13 +5502,13 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -6060,13 +6060,13 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -6618,13 +6618,13 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -7131,12 +7131,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -7176,13 +7176,13 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -7689,12 +7689,12 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -7734,13 +7734,13 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -8247,12 +8247,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -8292,13 +8292,13 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -8805,12 +8805,12 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -8850,13 +8850,13 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -9363,12 +9363,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -9408,13 +9408,13 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -9921,12 +9921,12 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -9966,13 +9966,13 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -10479,12 +10479,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -10524,13 +10524,13 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -11037,12 +11037,12 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -11082,13 +11082,13 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -11595,12 +11595,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -11640,13 +11640,13 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -12153,12 +12153,12 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -12198,13 +12198,13 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -12711,12 +12711,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -12756,13 +12756,13 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -13269,12 +13269,12 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -13314,13 +13314,13 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -13872,13 +13872,13 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -14430,13 +14430,13 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -14988,13 +14988,13 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -15546,13 +15546,13 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -16104,13 +16104,13 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -16662,13 +16662,13 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -16740,7 +16740,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
 </ul>
 `;
 
-exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected changes 1`] = `
+exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected changes 1`] = `
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -17175,12 +17175,12 @@ exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected cha
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -17220,13 +17220,13 @@ exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected cha
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >
@@ -17298,7 +17298,7 @@ exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected cha
 </ul>
 `;
 
-exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -17733,12 +17733,12 @@ exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected cha
     <a
       className="c2 c3"
       data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r3"
+      href="/?dataset=gnomad_sv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v3
+      gnomAD SVs v4
     </a>
   </li>
   <li
@@ -17778,13 +17778,13 @@ exports[`DataSelector with "gnomad_sv_r3" dataset selected has no unexpected cha
         <li>
           <a
             className="-Link c7"
-            data-item="gnomad_sv_r3"
-            href="/?dataset=gnomad_sv_r3"
+            data-item="gnomad_sv_r4"
+            href="/?dataset=gnomad_sv_r4"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD SVs v3
+            gnomAD SVs v4
             <div
               className="c8"
             >

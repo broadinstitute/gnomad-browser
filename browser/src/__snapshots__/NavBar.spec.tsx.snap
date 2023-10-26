@@ -261,9 +261,9 @@ exports[`NavBar has no unexpected changes 1`] = `
           gnomAD v3.1.2
         </option>
         <option
-          value="gnomad_sv_r3"
+          value="gnomad_sv_r4"
         >
-          gnomAD SVs v3
+          gnomAD SVs v4
         </option>
       </optgroup>
       <optgroup
