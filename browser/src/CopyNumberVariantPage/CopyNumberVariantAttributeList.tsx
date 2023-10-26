@@ -45,7 +45,7 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Site Count">{variant.sc}</AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Number of Sites">{variant.sn}</AttributeList.Item>
+    <AttributeList.Item label="Number at Site">{variant.sn}</AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Site Frequency">
       {(variant.sn === 0 ? 0 : variant.sc / variant.sn).toPrecision(4)}
@@ -64,8 +64,9 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
     </AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Class">
+      {console.log(variant.type)}
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-      {cnvTypeLabels[variant.type]} <InfoButton topic={`cnv-class_${variant.type}`} />
+      {cnvTypeLabels[variant.type]} {/* TODO: ADD INFOBUTTONS*/}
     </AttributeList.Item>
   </AttributeList>
 )
