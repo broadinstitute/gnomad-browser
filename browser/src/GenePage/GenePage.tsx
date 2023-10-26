@@ -592,6 +592,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {/* eslint-disable-next-line no-nested-ternary */}
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+          // eslint-disable-next-line no-nested-ternary
         ) : hasCopyNumberVariants(datasetId) ? (
           <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (

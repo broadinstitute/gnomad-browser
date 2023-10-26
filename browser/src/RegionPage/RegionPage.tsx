@@ -11,7 +11,6 @@ import {
   regionsHaveGenomeCoverage,
   isSVs,
   isV4CNVs,
-  hasCopyNumberVariants,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
