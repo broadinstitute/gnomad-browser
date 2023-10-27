@@ -2,12 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Badge, List, ListItem } from '@gnomad/ui'
+import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
 
 const PREDICTORS = {
   cadd: { label: 'CADD', warningThreshold: 10, dangerThreshold: 20 },
   revel: { label: 'REVEL', warningThreshold: 0.5, dangerThreshold: 0.75 },
   primate_ai: { label: 'PrimateAI', warningThreshold: 0.5, dangerThreshold: 0.7 },
   splice_ai: { label: 'SpliceAI', warningThreshold: 0.5, dangerThreshold: 0.8 },
+  pangolin: { label: "Pangolin" },
+  sift: { label: "SIFT" },
+  polyphen: { label: "PolyPhen" },
+  phylop: { label: "phyloP" },
 }
 
 const FLAG_DESCRIPTIONS = {
@@ -43,27 +48,30 @@ type Props = {
       flags: string[]
     }[]
   }
+  datasetId: DatasetId
 }
 
-const VariantInSilicoPredictors = ({ variant }: Props) => {
+const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
   return (
     <div>
-      <p>
+      {!isV4(datasetId) && <p>
         Transcript-specific predictors SIFT and Polyphen are listed with Variant Effect Predictor
         annotations.
-      </p>
+      </p>}
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
-        {variant.in_silico_predictors.map(({ id, value, flags }) => {
+        {variant.in_silico_predictors && variant.in_silico_predictors.map(({ id, value, flags }) => {
           // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           const predictor = PREDICTORS[id]
 
           let color = null
           const parsedValue = parseFloat(value)
           if (!Number.isNaN(parsedValue)) {
-            if (parsedValue >= predictor.dangerThreshold) {
+            if (!predictor.dangerThreshold || !predictor.warningThreshold) {
+              color = 'grey'
+            } else if (predictor && predictor.dangerThreshold && parsedValue >= predictor.dangerThreshold) {
               color = '#FF583F'
-            } else if (parsedValue >= predictor.warningThreshold) {
+            } else if (predictor && predictor.warningThreshold && parsedValue >= predictor.warningThreshold) {
               color = '#F0C94D'
             } else {
               color = 'green'

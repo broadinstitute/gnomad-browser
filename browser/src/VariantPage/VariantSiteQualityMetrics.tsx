@@ -11,7 +11,10 @@ import exacSiteQualityMetricDistributions from '@gnomad/dataset-metadata/dataset
 import gnomadV2SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v2/siteQualityMetricDistributions.json'
 import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3/siteQualityMetricDistributions.json'
 
-import { DatasetId, isV2, isV3, isExac } from '@gnomad/dataset-metadata/metadata'
+import gnomadV4ExomeSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v4/exomeSiteQualityMetricDistributions.json'
+import gnomadV4GenomeSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v4/genomeSiteQualityMetricDistributions.json'
+
+import { DatasetId, isV2, isV3, isV4, isExac } from '@gnomad/dataset-metadata/metadata'
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
 import { Variant, SequencingType } from './VariantPage'
@@ -54,28 +57,43 @@ const getSiteQualityMetricDescription = (datasetId: any) => {
 // ================================================================================================
 // Data munging
 // ================================================================================================
+//
+//
 
-const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
+interface MetricDistribution {
+  bin_edges: number[]
+  bin_freq: number[]
+  n_smaller: number
+  n_larger: number
+  metric: string
+}
+
+interface SequencingTypeMetrics { binEdges: number[], binValues: number[], metricValue: number, description: string }
+
+
+const getMetricDataForSequencingType = ({ metric, genomeOrExome, metricDistributions }: { metric: string; genomeOrExome: SequencingType, metricDistributions: MetricDistribution[] }): SequencingTypeMetrics => {
   let key: any
   let description
 
-  const genomeMetric = genome.quality_metrics.site_quality_metrics.find(
+  const genomeOrExomeMetric = genomeOrExome.quality_metrics.site_quality_metrics.find(
     (m: any) => m.metric === metric
   )
-  const genomeMetricValue = genomeMetric && genomeMetric.value
+  const metricValue = genomeOrExomeMetric && genomeOrExomeMetric.value
 
-  const { ac, an } = genome
+  if (!metricValue) {
+    throw Error("Could not determine metric value")
+  }
+
+  const { ac, an } = genomeOrExome
   if (metric === 'SiteQuality' || metric === 'AS_QUALapprox') {
     if (ac === 1) {
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_singleton`
-      description = `${
-        metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-      } approximation for all singleton variants.`
+      description = `${metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+        } approximation for all singleton variants.`
     } else if (ac === 2) {
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_doubleton`
-      description = `${
-        metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-      } approximation for all doubleton variants.`
+      description = `${metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+        } approximation for all doubleton variants.`
     } else {
       const afBins = [
         { min: 0, max: 0.00005, key: '0.00005' },
@@ -97,25 +115,23 @@ const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: Seque
       const afBin = afBins.find((bin: any) => bin.min <= af && af < bin.max)
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       if (afBin.max === Infinity) {
-        description = `${
-          metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-        } approximation for all variants with AF >= ${
+        description = `${metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+          } approximation for all variants with AF >= ${
           // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
           afBin.min
-        }.`
+          }.`
       } else
-        description = `${
-          metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-        } approximation for all variants with ${
+        description = `${metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
+          } approximation for all variants with ${
           // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
           afBin.min
-        } <= AF ${
+          } <= AF ${
           // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
           afBin.max === 1 ? '<=' : '<'
-        } ${
+          } ${
           // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
           afBin.max
-        }.`
+          }.`
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_${afBin.key}`
     }
@@ -136,22 +152,65 @@ const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: Seque
       if (baseDescription) {
         description = `Allele-specific ${baseDescription
           .charAt(0)
-          .toLowerCase()}${baseDescription.slice(1)}`
+          .toLowerCase()}${baseDescription.slice(1)}` as string
       }
     } else {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      description = qualityMetricDescriptions[metric]
+      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message 
+      description = qualityMetricDescriptions[metric] as string
     }
   }
 
-  const histogram = gnomadV3SiteQualityMetricDistributions.find((m: any) => m.metric === key)
-  // @ts-expect-error
-  const binEdges = histogram.bin_edges
+  if (!description) {
+    throw new Error("Could not determine description")
+  }
 
-  // @ts-expect-error
-  const genomeBinValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
+  const histogram = metricDistributions.find((m: any) => m.metric === key)
 
-  return { binEdges, genomeBinValues, genomeMetricValue, description }
+  if (histogram) {
+
+    const binEdges = histogram.bin_edges
+
+    const binValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
+
+    return { binEdges, binValues, metricValue, description }
+
+  } else {
+    throw new Error(`Metric ${key} could not be found`)
+  }
+
+}
+
+const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Variant }) => {
+  let exomeMetrics: SequencingTypeMetrics | undefined
+  let genomeMetrics: SequencingTypeMetrics | undefined
+  let binEdges: number[] | undefined
+  let description: string | undefined
+
+  if (variant.exome) {
+    exomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: variant.exome, metricDistributions: gnomadV4ExomeSiteQualityMetricDistributions })
+    binEdges = exomeMetrics.binEdges
+    description = exomeMetrics.description
+
+  }
+
+  if (variant.genome) {
+    genomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: variant.genome, metricDistributions: gnomadV4GenomeSiteQualityMetricDistributions })
+    binEdges = genomeMetrics.binEdges
+    description = genomeMetrics.description
+  }
+
+  return {
+    binEdges,
+    description,
+    exomeBinValues: exomeMetrics && exomeMetrics.binValues,
+    genomeBinValues: genomeMetrics && genomeMetrics.binValues,
+    exomeMetricValue: exomeMetrics && exomeMetrics.metricValue,
+    genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+  }
+}
+
+const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
+  return getMetricDataForSequencingType({ metric, genomeOrExome: genome, metricDistributions: gnomadV3SiteQualityMetricDistributions })
 }
 
 const prepareDataGnomadV2 = ({ metric, variant }: any) => {
@@ -196,9 +255,8 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
           (bin: any) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
         )
         afBinHistogram = afBin.histogram
-        afBinLabel = `${sequencingType} variants with ${afBin.min_af} <= AF ${
-          afBin.max_af === 1 ? '<=' : '<'
-        } ${afBin.max_af}`
+        afBinLabel = `${sequencingType} variants with ${afBin.min_af} <= AF ${afBin.max_af === 1 ? '<=' : '<'
+          } ${afBin.max_af}`
       }
       return { histogram: afBinHistogram, label: afBinLabel }
     }
@@ -231,10 +289,10 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       : null
     genomeBinValues = genomeBin
       ? [
-          genomeBin.histogram.n_smaller,
-          ...genomeBin.histogram.bin_freq,
-          genomeBin.histogram.n_larger,
-        ]
+        genomeBin.histogram.n_smaller,
+        ...genomeBin.histogram.bin_freq,
+        genomeBin.histogram.n_larger,
+      ]
       : null
 
     if (variant.exome && variant.genome) {
@@ -244,7 +302,7 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       description = `This is the site quality distribution for all ${
         // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
         (exomeBin || genomeBin).label
-      }.`
+        }.`
     }
   } else {
     // @ts-expect-error
@@ -317,7 +375,7 @@ const prepareDataExac = ({ metric, variant }: any) => {
         // @ts-expect-error
         afBin.min_af
         // @ts-expect-error
-      } <= AF ${afBin.max_af === 1 ? '<=' : '<'} ${afBin.max_af}.`
+        } <= AF ${afBin.max_af === 1 ? '<=' : '<'} ${afBin.max_af}.`
     }
     binEdges = histogram.bin_edges.map((edge: any) => Math.log10(edge))
   } else {
@@ -329,7 +387,7 @@ const prepareDataExac = ({ metric, variant }: any) => {
       metric === 'DP'
         ? histogram.bin_edges.map((edge: any) => Math.log10(edge))
         : // @ts-expect-error
-          histogram.binEdges
+        histogram.binEdges
     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     description = qualityMetricDescriptions[metric]
   }
@@ -348,6 +406,11 @@ const prepareData = ({
   metric: string
   variant: Variant
 }) => {
+
+  if (isV4(datasetId)) {
+    return prepareDataGnomadV4({ metric, variant })
+  }
+
   if (isV3(datasetId)) {
     return prepareDataGnomadV3({ metric, genome: variant.genome! })
   }
@@ -364,6 +427,23 @@ const prepareData = ({
 }
 
 const getAvailableMetrics = (datasetId: any) => {
+  if (isV4(datasetId)) {
+    return [
+      'SiteQuality',
+      'InbreedingCoeff',
+      'AS_FS',
+      'AS_MQ',
+      'AS_MQRankSum',
+      'AS_pab_max',
+      'AS_QUALapprox',
+      'AS_QD',
+      'AS_ReadPosRankSum',
+      'AS_SOR',
+      'AS_VarDP',
+      'AS_VQSLOD',
+    ]
+  }
+
   if (isV3(datasetId)) {
     return [
       'SiteQuality',
@@ -560,11 +640,11 @@ const SiteQualityMetricsHistogram = ({
 
   const primaryYScale = primaryYDomain
     ? // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number)[]' is not assi... Remove this comment to see the full error message
-      scaleLinear().domain(primaryYDomain).range([plotHeight, 0])
+    scaleLinear().domain(primaryYDomain).range([plotHeight, 0])
     : null
   const secondaryYScale = secondaryYDomain
     ? // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number)[]' is not assi... Remove this comment to see the full error message
-      scaleLinear().domain(secondaryYDomain).range([plotHeight, 0])
+    scaleLinear().domain(secondaryYDomain).range([plotHeight, 0])
     : null
 
   const halfBandWidth = bandWidth / 2
@@ -572,49 +652,49 @@ const SiteQualityMetricsHistogram = ({
   const renderBars =
     exomeBinValues && genomeBinValues
       ? (binIndex: any) => {
-          // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-          const primaryY = primaryYScale(primaryValues[binIndex])
-          // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-          const secondaryY = secondaryYScale(secondaryValues[binIndex])
-          return (
-            <React.Fragment key={binIndex}>
-              <rect
-                x={0}
-                y={primaryY}
-                height={plotHeight - primaryY}
-                width={halfBandWidth}
-                fill={primaryBarColor}
-                stroke="#333"
-                strokeWidth={0.5}
-              />
-              <rect
-                x={halfBandWidth}
-                y={secondaryY}
-                height={plotHeight - secondaryY}
-                width={halfBandWidth}
-                fill={secondaryBarColor}
-                stroke="#333"
-                strokeWidth={0.5}
-              />
-            </React.Fragment>
-          )
-        }
-      : (binIndex: any) => {
-          // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-          const y = primaryYScale(primaryValues[binIndex])
-          return (
+        // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+        const primaryY = primaryYScale(primaryValues[binIndex])
+        // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+        const secondaryY = secondaryYScale(secondaryValues[binIndex])
+        return (
+          <React.Fragment key={binIndex}>
             <rect
-              key={binIndex}
               x={0}
-              y={y}
-              height={plotHeight - y}
-              width={bandWidth}
+              y={primaryY}
+              height={plotHeight - primaryY}
+              width={halfBandWidth}
               fill={primaryBarColor}
               stroke="#333"
-              strokeWidth={1}
+              strokeWidth={0.5}
             />
-          )
-        }
+            <rect
+              x={halfBandWidth}
+              y={secondaryY}
+              height={plotHeight - secondaryY}
+              width={halfBandWidth}
+              fill={secondaryBarColor}
+              stroke="#333"
+              strokeWidth={0.5}
+            />
+          </React.Fragment>
+        )
+      }
+      : (binIndex: any) => {
+        // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+        const y = primaryYScale(primaryValues[binIndex])
+        return (
+          <rect
+            key={binIndex}
+            x={0}
+            y={y}
+            height={plotHeight - y}
+            width={bandWidth}
+            fill={primaryBarColor}
+            stroke="#333"
+            strokeWidth={1}
+          />
+        )
+      }
 
   const getMetricValueX = (metricValue: any) => {
     const scaledValue = isLogScale ? Math.log10(metricValue) : metricValue
@@ -882,19 +962,15 @@ const VariantSiteQualityMetricsDistribution = ({
 
   let values
   if (variant.exome && variant.genome) {
-    values = `${
-      exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
-    } (exome samples), ${
-      genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
-    } (genome samples)`
+    values = `${exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
+      } (exome samples), ${genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
+      } (genome samples)`
   } else if (variant.exome) {
-    values = `${
-      exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
-    } (exome samples)`
+    values = `${exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
+      } (exome samples)`
   } else {
-    values = `${
-      genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
-    } (genome samples)`
+    values = `${genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
+      } (genome samples)`
   }
 
   return (
@@ -1019,21 +1095,21 @@ const VariantSiteQualityMetricsTable = ({
 
   const exomeMetricValues: Record<string, number> | null = variant.exome
     ? variant.exome.quality_metrics.site_quality_metrics.reduce(
-        (acc, m) => ({
-          ...acc,
-          [m.metric]: m.value,
-        }),
-        {}
-      )
+      (acc, m) => ({
+        ...acc,
+        [m.metric]: m.value,
+      }),
+      {}
+    )
     : null
   const genomeMetricValues: Record<string, number> | null = variant.genome
     ? variant.genome.quality_metrics.site_quality_metrics.reduce(
-        (acc, m) => ({
-          ...acc,
-          [m.metric]: m.value,
-        }),
-        {}
-      )
+      (acc, m) => ({
+        ...acc,
+        [m.metric]: m.value,
+      }),
+      {}
+    )
     : null
 
   const availableMetrics = getAvailableMetrics(datasetId)

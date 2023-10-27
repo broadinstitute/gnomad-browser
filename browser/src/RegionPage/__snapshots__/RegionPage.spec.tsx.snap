@@ -3673,12 +3673,11 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | "
+      title="M-345-456 | gnomAD v4.0.0"
     />
     <GnomadPageHeading
       datasetOptions={
         {
-          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3694,7 +3693,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
               "chrom": "M",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3719,7 +3718,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
               "chrom": "M",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3734,7 +3733,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
               "chrom": "M",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3752,7 +3751,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
           "chrom": "M",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3774,7 +3773,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
           "chrom": "M",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3788,7 +3787,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
           "chrom": "M",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3799,7 +3798,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
           "chrom": "M",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3814,15 +3813,14 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | "
+      title="12-345-456 | gnomAD v4.0.0"
     />
     <GnomadPageHeading
       datasetOptions={
         {
-          "includeCopyNumberVariants": true,
-          "includeExac": false,
-          "includeGnomad2": false,
-          "includeGnomad3": true,
+          "includeExac": true,
+          "includeGnomad2": true,
+          "includeGnomad3": false,
           "includeGnomad3Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
@@ -3835,7 +3833,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
               "chrom": "12",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3860,7 +3858,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
               "chrom": "12",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3875,7 +3873,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
               "chrom": "12",
               "genes": [],
               "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
+              "reference_genome": "GRCh37",
               "short_tandem_repeats": [],
               "start": 345,
               "stop": 456,
@@ -3893,7 +3891,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
           "chrom": "12",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3918,7 +3916,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
           "chrom": "12",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
@@ -3932,7 +3930,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
           "chrom": "12",
           "genes": [],
           "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
+          "reference_genome": "GRCh37",
           "short_tandem_repeats": [],
           "start": 345,
           "stop": 456,
