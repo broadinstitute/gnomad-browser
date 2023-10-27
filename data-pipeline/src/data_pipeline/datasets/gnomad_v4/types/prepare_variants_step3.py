@@ -1,4 +1,4 @@
-from typing import List, Union, Set
+from typing import List, Union, Set, Optional
 import attr
 
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import ColocatedVariants, Gnomad
@@ -48,8 +48,8 @@ class Variant:
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
-    exome: Gnomad
-    genome: Gnomad
-    subsets: set[str]
-    flags: set[str]
+    exome: Optional[Gnomad]
+    genome: Optional[Gnomad]
+    # subsets: set[str]
+    # flags: set[str]
     transcript_consequences: Union[List[TranscriptConsequence], None]

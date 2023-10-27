@@ -1,5 +1,5 @@
 import attr
-from typing import List
+from typing import List, Union, Any
 
 
 @attr.define
@@ -29,7 +29,6 @@ class TestResult:
 class Cutoff:
     bin: float
     min_score: float
-    bin_id: str
 
 
 @attr.define
@@ -116,7 +115,7 @@ class Globals:
     joint_freq_index_dict: List[MetaInt]
     joint_freq_meta_sample_count: List[int]
     joint_faf_meta: List[List[MetaString]]
-    downsamplings: List[Downsampling]
+    downsamplings: Any
     inbreeding_coeff_cutoff: float
     vrs_versions: VrsVersions
     date: str

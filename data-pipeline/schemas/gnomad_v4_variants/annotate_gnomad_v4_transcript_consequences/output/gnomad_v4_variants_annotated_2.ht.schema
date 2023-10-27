@@ -1,0 +1,388 @@
+----------------------------------------
+Global fields:
+    'mane_transcripts_version': str 
+----------------------------------------
+Row fields:
+    'locus': locus<GRCh38> 
+    'alleles': array<str> 
+    'exome': struct {
+        colocated_variants: struct {
+            all: array<str>, 
+            non_ukb: array<str>
+        }, 
+        subsets: set<str>, 
+        flags: set<str>, 
+        freq: struct {
+            all: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int64, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int64
+                }>
+            }, 
+            non_ukb: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int64, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int64
+                }>
+            }
+        }, 
+        faf95: struct {
+            grpmax: float64, 
+            grpmax_gen_anc: str
+        }, 
+        faf99: struct {
+            grpmax: float64, 
+            grpmax_gen_anc: str
+        }, 
+        fafmax: struct {
+            gnomad: struct {
+                faf95_max: float64, 
+                faf95_max_gen_anc: str, 
+                faf99_max: float64, 
+                faf99_max_gen_anc: str
+            }, 
+            non_ukb: struct {
+                faf95_max: float64, 
+                faf95_max_gen_anc: str, 
+                faf99_max: float64, 
+                faf99_max_gen_anc: str
+            }
+        }, 
+        age_distribution: struct {
+            het: struct {
+                bin_edges: array<float64>, 
+                bin_freq: array<int64>, 
+                n_smaller: int64, 
+                n_larger: int64
+            }, 
+            hom: struct {
+                bin_edges: array<float64>, 
+                bin_freq: array<int64>, 
+                n_smaller: int64, 
+                n_larger: int64
+            }
+        }, 
+        filters: set<str>, 
+        quality_metrics: struct {
+            allele_balance: struct {
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            genotype_depth: struct {
+                all_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                all_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            genotype_quality: struct {
+                all_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                all_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            site_quality_metrics: array<struct {
+                metric: str, 
+                value: float64
+            }>
+        }
+    } 
+    'genome': struct {
+        colocated_variants: struct {
+            hgdp: array<str>, 
+            tgp: array<str>, 
+            all: array<str>
+        }, 
+        subsets: set<str>, 
+        flags: set<str>, 
+        freq: struct {
+            hgdp: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int32, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int32
+                }>
+            }, 
+            tgp: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int32, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int32
+                }>
+            }, 
+            all: struct {
+                ac: int32, 
+                ac_raw: int32, 
+                an: int32, 
+                hemizygote_count: int32, 
+                homozygote_count: int32, 
+                ancestry_groups: array<struct {
+                    id: str, 
+                    ac: int32, 
+                    an: int32, 
+                    hemizygote_count: int32, 
+                    homozygote_count: int32
+                }>
+            }
+        }, 
+        faf95: struct {
+            grpmax: float64, 
+            grpmax_gen_anc: str
+        }, 
+        faf99: struct {
+            grpmax: float64, 
+            grpmax_gen_anc: str
+        }, 
+        fafmax: struct {
+            faf95_max: float64, 
+            faf95_max_gen_anc: str, 
+            faf99_max: float64, 
+            faf99_max_gen_anc: str
+        }, 
+        age_distribution: struct {
+            het: struct {
+                bin_edges: array<float64>, 
+                bin_freq: array<int64>, 
+                n_smaller: int64, 
+                n_larger: int64
+            }, 
+            hom: struct {
+                bin_edges: array<float64>, 
+                bin_freq: array<int64>, 
+                n_smaller: int64, 
+                n_larger: int64
+            }
+        }, 
+        filters: set<str>, 
+        quality_metrics: struct {
+            allele_balance: struct {
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            genotype_depth: struct {
+                all_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                all_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            genotype_quality: struct {
+                all_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                all_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_adj: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }, 
+                alt_raw: struct {
+                    bin_edges: array<float64>, 
+                    bin_freq: array<int64>, 
+                    n_smaller: int64, 
+                    n_larger: int64
+                }
+            }, 
+            site_quality_metrics: array<struct {
+                metric: str, 
+                value: float64
+            }>
+        }
+    } 
+    'rsids': set<str> 
+    'in_silico_predictors': struct {
+        cadd: struct {
+            phred: float32, 
+            raw_score: float32
+        }, 
+        revel_max: float64, 
+        spliceai_ds_max: float32, 
+        pangolin_largest_ds: float64, 
+        phylop: float64, 
+        sift_max: float64, 
+        polyphen_max: float64
+    } 
+    'variant_id': str 
+    'faf95_joint': struct {
+        grpmax: float64, 
+        grpmax_gen_anc: str
+    } 
+    'faf99_joint': struct {
+        grpmax: float64, 
+        grpmax_gen_anc: str
+    } 
+    'colocated_variants': struct {
+        all: array<str>, 
+        non_ukb: array<str>, 
+        hgdp: array<str>, 
+        tgp: array<str>
+    } 
+    'coverage': struct {
+        exome: struct {
+            mean: float64, 
+            median: int32, 
+            over_1: float64, 
+            over_5: float64, 
+            over_10: float64, 
+            over_15: float64, 
+            over_20: float64, 
+            over_25: float64, 
+            over_30: float64, 
+            over_50: float64, 
+            over_100: float64
+        }, 
+        genome: struct {
+            mean: float64, 
+            median: int32, 
+            over_1: float32, 
+            over_5: float32, 
+            over_10: float32, 
+            over_15: float32, 
+            over_20: float32, 
+            over_25: float32, 
+            over_30: float32, 
+            over_50: float32, 
+            over_100: float32
+        }
+    } 
+    'transcript_consequences': array<struct {
+        biotype: str, 
+        consequence_terms: array<str>, 
+        domains: set<str>, 
+        gene_id: str, 
+        gene_symbol: str, 
+        hgvsc: str, 
+        hgvsp: str, 
+        is_canonical: bool, 
+        lof_filter: str, 
+        lof_flags: str, 
+        lof: str, 
+        major_consequence: str, 
+        transcript_id: str, 
+        transcript_version: str, 
+        gene_version: str, 
+        is_mane_select: bool, 
+        is_mane_select_version: bool, 
+        refseq_id: str, 
+        refseq_version: str
+    }> 
+----------------------------------------
+Key: ['locus', 'alleles']
+----------------------------------------
