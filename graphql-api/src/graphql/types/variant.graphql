@@ -243,6 +243,8 @@ type VariantDetails {
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
+  faf95_joint: VariantFilteringAlleleFrequency
+  faf99_joint: VariantFilteringAlleleFrequency
 
   non_coding_constraint: NonCodingConstraintRegion
 
