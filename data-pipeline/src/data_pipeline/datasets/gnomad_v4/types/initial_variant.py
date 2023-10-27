@@ -1,5 +1,5 @@
 import attr
-from typing import List, Set, Union, Optional
+from typing import List, Set, Union, Optional, Any
 
 
 @attr.define
@@ -25,8 +25,7 @@ class Grpmax:
     gen_anc: Union[str, None] = None
 
 
-@attr.define
-class GrpmaxBySubset:
+class GrpmaxBySubsetGenomes:
     gnomad: Union[Grpmax, None]
     non_ukb: Union[Grpmax, None]
 
@@ -41,13 +40,9 @@ class Faf:
 class FafMax:
     faf95_max: Union[float, None]
     faf95_max_gen_anc: Union[str, None]
-    faf99_max: Union[float, None]
-    faf99_max_gen_anc: Union[str, None]
-
-
-@attr.define
-class JointFafMax(FafMax):
-    joint_fafmax_data_type: Optional[str]
+    faf99_max: Union[float, None] = None
+    faf99_max_gen_anc: Optional[str] = None
+    joint_fafmax_data_type: Optional[str] = None
 
 
 @attr.define
@@ -94,6 +89,7 @@ class Info:
     inbreeding_coeff: float
     vrs: Vrs
     only_het: bool
+    sibling_singleton: Optional[bool] = None
 
 
 @attr.define
@@ -176,7 +172,14 @@ class Vep:
 
 
 @attr.define
-class RegionFlags:
+class RegionFlagsGenomes:
+    lcr: bool
+    segdup: bool
+    non_par: bool
+
+
+@attr.define
+class RegionFlagsExomes:
     lcr: bool
     segdup: bool
     non_par: bool
@@ -191,7 +194,7 @@ class AlleleInfo:
     allele_type: str
     n_alt_alleles: int
     was_mixed: bool
-    has_star: bool
+    has_star: Optional[bool] = None
 
 
 @attr.define
@@ -235,7 +238,7 @@ class InSilicoPredictors:
     cadd: CaddPredictor
     revel_max: Union[float, None]
     spliceai_ds_max: Union[float, None]
-    pangolin_largest_ds: float
+    pangolin_largest_ds: Union[float, None]
     phylop: float
     sift_max: Union[float, None]
     polyphen_max: Union[float, None]
@@ -246,20 +249,33 @@ class InitialVariant:
     locus: Locus
     alleles: List[str]
     freq: List[Frequency]
-    grpmax: GrpmaxBySubset
-    faf: List[Union[Faf, None]]
-    fafmax: FafMaxBySubset
-    joint_freq: Union[List[Frequency], None]
-    joint_grpmax: Union[Grpmax, None]
-    joint_faf: Union[List[Union[Faf, None]], None]
-    joint_fafmax: Union[JointFafMax, None]
+
+    # grpmax: Grpmax
+    # faf: List[Union[Faf, None]]
+    # fafmax: Optional[FafMax]
+    # joint_freq: List[Frequency]
+    # joint_grpmax: Union[Grpmax, None]
+    # joint_faf: Union[List[Union[Faf, None]], None]
+    # joint_fafmax: Union[FafMax, None]
+    #
+
+    # grpmax: Any
+    fafmax: Any
+    joint_freq: Any
+    joint_grpmax: Any
+    joint_faf: Any
+    joint_fafmax: Any
+
     a_index: int
     was_split: bool
     rsid: Union[Set[str], None]
     filters: Set[str]
     info: Info
     vep: Union[Vep, None]
-    region_flags: RegionFlags
+    region_flags: Union[RegionFlagsGenomes, RegionFlagsExomes]
     allele_info: AlleleInfo
     histograms: Histograms
     in_silico_predictors: InSilicoPredictors
+
+    grpmax: Optional[Any] = None
+    faf: Optional[Any] = None
