@@ -1,15 +1,12 @@
 import attr
-from typing import List, Set, Union
+from typing import List, Set, Union, Optional, Any
 
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
     Faf,
     FafMax,
-    FafMaxBySubset,
     Grpmax,
-    GrpmaxBySubset,
     InSilicoPredictors,
-    JointFafMax,
     Vep,
     Locus,
 )
@@ -36,9 +33,16 @@ class Freq:
 
 
 @attr.define
-class FreqBySubset:
+class FreqBySubsetExome:
     all: Freq
     non_ukb: Freq
+
+
+@attr.define
+class FreqBySubsetGenome:
+    all: Freq
+    tgp: Freq
+    hgdp: Freq
 
 
 @attr.define
@@ -128,15 +132,21 @@ class ColocatedVariants:
 
 @attr.define
 class Gnomad:
-    freq: FreqBySubset
+    freq: Union[FreqBySubsetExome, FreqBySubsetGenome]
     faf95: FAF
     faf99: FAF
 
-    fafmax: FafMaxBySubset
-    joint_freq: Union[List[Frequency], None]
-    joint_grpmax: Union[Grpmax, None]
-    joint_faf: Union[List[Union[Faf, None]], None]
-    joint_fafmax: Union[JointFafMax, None]
+    # fafmax: Optional[FafMax]
+    # joint_freq: List[Frequency]
+    # joint_grpmax: Optional[Grpmax]
+    # joint_faf: Union[List[Union[Faf, None]], None]
+    # joint_fafmax: Union[FafMax, None]
+
+    fafmax: Any
+    joint_freq: Any
+    joint_grpmax: Any
+    joint_faf: Any
+    joint_fafmax: Any
 
     age_distribution: AgeDistributions
     filters: set[str]
@@ -144,20 +154,24 @@ class Gnomad:
 
     flags: set[str]
     subsets: set[str]
+
     colocated_variants: Union[ColocatedVariantsExome, ColocatedVariantsGenome]
+
+    grpmax: Optional[Any] = None
+    faf: Optional[Any] = None
 
 
 @attr.define
 class Variant:
     locus: Locus
     alleles: list[str]
-    grpmax: GrpmaxBySubset
+    # grpmax: Grpmax
     rsids: Union[Set[str], None]
     vep: Union[Vep, None]
     in_silico_predictors: InSilicoPredictors
     variant_id: str
     colocated_variants: ColocatedVariants
-    exome: Gnomad
-    genome: Gnomad
-    subsets: set[str]
-    flags: set[str]
+    exome: Optional[Gnomad]
+    genome: Optional[Gnomad]
+    # subsets: set[str]
+    # flags: set[str]

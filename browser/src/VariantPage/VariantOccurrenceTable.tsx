@@ -225,52 +225,55 @@ export const GnomadVariantOccurrenceTable = ({
 
   // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
   // Max AN is 2 * sample count, so 50% max AN is equal to sample count.
-  const datasetSampleCounts = sampleCounts[datasetId]
-  let exomeMaxAN
-  let genomeMaxAN
-  if (variant.chrom === 'X') {
-    exomeMaxAN = datasetSampleCounts.exomes
-      ? datasetSampleCounts.exomes.XX * 2 + datasetSampleCounts.exomes.XY
-      : null
-    genomeMaxAN = datasetSampleCounts.genomes
-      ? datasetSampleCounts.genomes.XX * 2 + datasetSampleCounts.genomes.XY
-      : null
-  } else if (variant.chrom === 'Y') {
-    exomeMaxAN = datasetSampleCounts.exomes ? datasetSampleCounts.exomes.XY : null
-    genomeMaxAN = datasetSampleCounts.genomes ? datasetSampleCounts.genomes.XY : null
-  } else {
-    exomeMaxAN = datasetSampleCounts.exomesTotal * 2
-    genomeMaxAN = datasetSampleCounts.genomesTotal * 2
-  }
-  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomeMaxAN / 2
-  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
+  // const datasetSampleCounts = sampleCounts[datasetId]
+  // let exomeMaxAN
+  // let genomeMaxAN
+  // if (variant.chrom === 'X') {
+  //   exomeMaxAN = datasetSampleCounts.exomes
+  //     ? datasetSampleCounts.exomes.XX * 2 + datasetSampleCounts.exomes.XY
+  //     : null
+  //   genomeMaxAN = datasetSampleCounts.genomes
+  //     ? datasetSampleCounts.genomes.XX * 2 + datasetSampleCounts.genomes.XY
+  //     : null
+  // } else if (variant.chrom === 'Y') {
+  //   exomeMaxAN = datasetSampleCounts.exomes ? datasetSampleCounts.exomes.XY : null
+  //   genomeMaxAN = datasetSampleCounts.genomes ? datasetSampleCounts.genomes.XY : null
+  // } else {
+  //   exomeMaxAN = datasetSampleCounts.exomesTotal * 2
+  //   genomeMaxAN = datasetSampleCounts.genomesTotal * 2
+  // }
 
-  // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
-  // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
-  const exomeHighAlleleBalanceSamples = isPresentInExome
-    ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
-      variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
-    : 0
-  const genomeHighAlleleBalanceSamples = isPresentInGenome
-    ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
-      variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
-    : 0
-  const totalHighAlleleBalanceSamples =
-    exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
 
-  const showExomeHighAlleleBalanceWarning =
-    exomeHighAlleleBalanceSamples > 0 &&
-    (exomeHomozygoteCount === 0 || exomeHighAlleleBalanceSamples / exomeHomozygoteCount >= 0.02)
-  const showGenomeHighAlleleBalanceWarning =
-    genomeHighAlleleBalanceSamples > 0 &&
-    (genomeHomozygoteCount === 0 || genomeHighAlleleBalanceSamples / genomeHomozygoteCount >= 0.02)
-  const showHighAlleleBalanceWarning =
-    showExomeHighAlleleBalanceWarning || showGenomeHighAlleleBalanceWarning
 
-  const highAlleleBalanceWarningMessage =
-    exomeHighAlleleBalanceSamples > 0 && genomeHighAlleleBalanceSamples > 0
-      ? `Up to ${totalHighAlleleBalanceSamples} individuals (${exomeHighAlleleBalanceSamples} in exomes and ${genomeHighAlleleBalanceSamples} in genomes) called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
-      : `Up to ${totalHighAlleleBalanceSamples} individuals called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+  // const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomeMaxAN / 2
+  // const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
+
+  // // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
+  // // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
+  // const exomeHighAlleleBalanceSamples = isPresentInExome
+  //   ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
+  //   variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
+  //   : 0
+  // const genomeHighAlleleBalanceSamples = isPresentInGenome
+  //   ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
+  //   variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
+  //   : 0
+  // const totalHighAlleleBalanceSamples =
+  //   exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
+
+  // const showExomeHighAlleleBalanceWarning =
+  //   exomeHighAlleleBalanceSamples > 0 &&
+  //   (exomeHomozygoteCount === 0 || exomeHighAlleleBalanceSamples / exomeHomozygoteCount >= 0.02)
+  // const showGenomeHighAlleleBalanceWarning =
+  //   genomeHighAlleleBalanceSamples > 0 &&
+  //   (genomeHomozygoteCount === 0 || genomeHighAlleleBalanceSamples / genomeHomozygoteCount >= 0.02)
+  // const showHighAlleleBalanceWarning =
+  //   showExomeHighAlleleBalanceWarning || showGenomeHighAlleleBalanceWarning
+
+  // const highAlleleBalanceWarningMessage =
+  //   exomeHighAlleleBalanceSamples > 0 && genomeHighAlleleBalanceSamples > 0
+  //     ? `Up to ${totalHighAlleleBalanceSamples} individuals (${exomeHighAlleleBalanceSamples} in exomes and ${genomeHighAlleleBalanceSamples} in genomes) called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
+  //     : `Up to ${totalHighAlleleBalanceSamples} individuals called as heterozygous for this variant have a skewed allele balance which suggests that some may actually be homozygous for the alternative allele.`
 
   return (
     <div>
@@ -309,33 +312,6 @@ export const GnomadVariantOccurrenceTable = ({
           <tr>
             <th scope="row">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="Total number of called high quality genotypes">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-                <TooltipHint>Allele Number</TooltipHint>
-              </TooltipAnchor>
-            </th>
-            {showExomes && (
-              <td>
-                {isPresentInExome && exomeAlleleNumber}
-                {hasLowAlleleNumberInExomes && ' *'}
-              </td>
-            )}
-            {showGenomes && (
-              <td>
-                {isPresentInGenome && genomeAlleleNumber}
-                {hasLowAlleleNumberInGenomes && ' *'}
-              </td>
-            )}
-            {showTotal && (
-              <td>
-                {totalAlleleNumber}
-                {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && ' *'}
-              </td>
-            )}
-          </tr>
-          <tr>
-            <th scope="row">
-              {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Alternate allele frequency in high quality genotypes">
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Allele Frequency</TooltipHint>
@@ -361,35 +337,6 @@ export const GnomadVariantOccurrenceTable = ({
             )}
             {showTotal && <td />}
           </tr>
-          {variant.chrom !== 'Y' && (
-            <tr>
-              <th scope="row">
-                {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-                <TooltipAnchor tooltip="Number of individuals homozygous for alternate allele">
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-                  <TooltipHint>Number of homozygotes</TooltipHint>
-                </TooltipAnchor>
-              </th>
-              {showExomes && (
-                <td>
-                  {isPresentInExome && exomeHomozygoteCount}
-                  {showExomeHighAlleleBalanceWarning && ' *'}
-                </td>
-              )}
-              {showGenomes && (
-                <td>
-                  {isPresentInGenome && genomeHomozygoteCount}
-                  {showGenomeHighAlleleBalanceWarning && ' *'}
-                </td>
-              )}
-              {showTotal && (
-                <td>
-                  {totalHomozygoteCount}
-                  {showHighAlleleBalanceWarning && ' *'}
-                </td>
-              )}
-            </tr>
-          )}
           {(variant.chrom === 'X' || variant.chrom === 'Y') && (
             <tr>
               <th scope="row">
@@ -418,21 +365,6 @@ export const GnomadVariantOccurrenceTable = ({
           </tr>
         </tbody>
       </Table>
-      {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && (
-        <LowAlleleNumberWarning
-          datasetId={datasetId}
-          hasLowAlleleNumberInExomes={hasLowAlleleNumberInExomes}
-          hasLowAlleleNumberInGenomes={hasLowAlleleNumberInGenomes}
-        />
-      )}
-      {showHighAlleleBalanceWarning && (
-        <p>
-          <Badge level="warning">Warning</Badge> {highAlleleBalanceWarningMessage}{' '}
-          <Link to="/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium">
-            More details.
-          </Link>
-        </p>
-      )}
     </div>
   )
 }

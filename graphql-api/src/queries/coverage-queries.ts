@@ -191,6 +191,7 @@ export const _fetchCoverageForGene = async (esClient: any, datasetId: any, gene:
     genome: genomeCoverage,
   }
 }
+
 export const fetchCoverageForGene = withCache(
   _fetchCoverageForGene,
   (_: any, datasetId: any, gene: any) => `coverage:${datasetId}:gene:${gene.gene_id}`,

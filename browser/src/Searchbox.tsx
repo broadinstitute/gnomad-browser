@@ -29,6 +29,9 @@ const Wrapper = styled.div`
 
 const getDefaultSearchDataset = (selectedDataset: any) => {
   if (selectedDataset) {
+    if (selectedDataset.startsWith('gnomad_r4')) {
+      return 'gnomad_r4'
+    }
     if (selectedDataset.startsWith('gnomad_r3')) {
       return 'gnomad_r3'
     }
@@ -76,11 +79,12 @@ export default withRouter((props: any) => {
         onChange={(e: any) => {
           setSearchDataset(e.target.value)
           if (innerSearchbox.current) {
-            ;(innerSearchbox.current as any).updateResults()
+            ; (innerSearchbox.current as any).updateResults()
           }
         }}
       >
         <optgroup label="GRCh38">
+          <option value="gnomad_r4">gnomAD v4.0.0</option>
           <option value="gnomad_r3">gnomAD v3.1.2</option>
         </optgroup>
         <optgroup label="GRCh37">

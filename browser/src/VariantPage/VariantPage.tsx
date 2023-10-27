@@ -784,12 +784,12 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                 <StatusMessage>
                   {graphQLErrors && graphQLErrors.length
                     ? Array.from(
-                        new Set(
-                          graphQLErrors
-                            .filter((e: any) => !e.message.includes('ClinVar'))
-                            .map((e: any) => e.message)
-                        )
-                      ).join(', ')
+                      new Set(
+                        graphQLErrors
+                          .filter((e: any) => !e.message.includes('ClinVar'))
+                          .map((e: any) => e.message)
+                      )
+                    ).join(', ')
                     : 'Unable to load variant'}
                 </StatusMessage>
               )

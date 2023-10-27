@@ -1,5 +1,4 @@
 import hail as hl
-from data_pipeline.config import PipelineConfig
 
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
@@ -190,6 +189,14 @@ pipeline.add_task(
 
 pipeline.add_task(
     "prepare_gnomad_v2_constraint",
+    prepare_gnomad_v2_constraint,
+    "/constraint/gnomad_v2_constraint.ht",
+    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
+)
+
+
+pipeline.add_task(
+    "prepare_gnomad_v4_constraint",
     prepare_gnomad_v2_constraint,
     "/constraint/gnomad_v2_constraint.ht",
     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},

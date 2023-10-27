@@ -29,6 +29,9 @@ const fullDatasetIds = allDatasetIds.filter(
 )
 
 const extractReadsDatasetId = (datasetId: DatasetId) => {
+  if (datasetId.startsWith('gnomad_r4')) {
+    return 'gnomad_r4'
+  }
   if (datasetId.startsWith('gnomad_r3')) {
     return 'gnomad_r3'
   }
@@ -39,6 +42,10 @@ const extractReadsDatasetId = (datasetId: DatasetId) => {
 }
 
 const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
+  if (datasetId.startsWith('gnomad_r4')) {
+    return 'gnomad_r4'
+  }
+
   // Coverage is not broken down by subset for gnomAD 3.1
   // Map all subset datasets to the main dataset.
   if (datasetId.startsWith('gnomad_r3')) {
@@ -60,6 +67,9 @@ const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
 }
 
 const extractVariantFeedbackDescription = (datasetId: DatasetId): string | null => {
+  if (datasetId.startsWith('gnomad_r4')) {
+    return 'gnomAD v4'
+  }
   if (datasetId.startsWith('gnomad_r3')) {
     return 'gnomAD v3'
   }
@@ -90,6 +100,7 @@ type DatasetMetadata = {
   usesGrch38: boolean
   isV2: boolean
   isV3: boolean
+  isV4: boolean
   isExac: boolean
   isSVs: boolean
   hasV2Genome: boolean
@@ -119,10 +130,10 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   isV3Subset: !fullDatasetIds.includes(datasetId) && datasetId.startsWith('gnomad_r3'),
   hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
-  hasConstraints: !datasetId.startsWith('gnomad_r3'),
+  hasConstraints: !(datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4')),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3'),
-  referenceGenome: datasetId.startsWith('gnomad_r3') ? 'GRCh38' : 'GRCh37',
+  referenceGenome: (datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4')) ? 'GRCh38' : 'GRCh37',
   hasExome: !datasetId.startsWith('gnomad_r3'),
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3'),
@@ -131,10 +142,11 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3'),
   isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
   isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
-  usesGrch37: !datasetId.startsWith('gnomad_r3'),
-  usesGrch38: datasetId.startsWith('gnomad_r3'),
+  usesGrch37: !(datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4')),
+  usesGrch38: datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4'),
   isV2: datasetId.startsWith('gnomad_r2'),
   isV3: datasetId.startsWith('gnomad_r3'),
+  isV4: datasetId.startsWith('gnomad_r4'),
   isSVs: datasetId.startsWith('gnomad_sv'),
   isExac: datasetId === 'exac',
   hasV2Genome: datasetId.startsWith('gnomad_r2'),
@@ -214,6 +226,8 @@ export const isV3Subset = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3
 export const isV2 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV2')
 
 export const isV3 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV3')
+
+export const isV4 = (datasetId: DatasetId) => getMetadata(datasetId, 'isV4')
 
 export const isExac = (datasetId: DatasetId) => getMetadata(datasetId, 'isExac')
 
