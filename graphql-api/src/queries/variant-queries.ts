@@ -113,11 +113,14 @@ const _fetchVariantsByGene = (esClient: any, datasetId: DatasetId, gene: any) =>
   return query(esClient, gene)
 }
 
-export const fetchVariantsByGene = withCache(
-  _fetchVariantsByGene,
-  (_: any, datasetId: DatasetId, gene: any) => `variants:${datasetId}:gene:${gene.gene_id}`,
-  { expiration: 604800 }
-)
+// export const fetchVariantsByGene = withCache(
+//   _fetchVariantsByGene,
+//   (_: any, datasetId: DatasetId, gene: any) => `variants:${datasetId}:gene:${gene.gene_id}`,
+//   { expiration: 604800 }
+// )
+
+
+export const fetchVariantsByGene = _fetchVariantsByGene // FIXME
 
 export const fetchVariantsByRegion = (esClient: any, datasetId: DatasetId, region: any) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, region.reference_genome)
