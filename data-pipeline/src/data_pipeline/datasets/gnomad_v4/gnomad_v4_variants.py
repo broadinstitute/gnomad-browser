@@ -201,26 +201,21 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
                 ),
             ),
         ),
+        faf95_joint=hl.if_else(
+            hl.is_defined(ds.joint_fafmax.joint_fafmax_data_type),
+            hl.struct(grpmax=ds.joint_fafmax.faf95_max, grpmax_gen_anc=ds.joint_fafmax.faf95_max_gen_anc),
+            hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
+        ),
+        faf99_joint=hl.if_else(
+            hl.is_defined(ds.joint_fafmax.joint_fafmax_data_type),
+            hl.struct(grpmax=ds.joint_fafmax.faf95_max, grpmax_gen_anc=ds.joint_fafmax.faf95_max_gen_anc),
+            hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
+        ),
     )
 
     ds = ds.annotate(gnomad=ds.gnomad.annotate(fafmax=ds.fafmax))
 
-    ds = ds.drop("faf", "fafmax")
-
-    ##############################
-    # Join FAF #
-    ##############################
-
-    ds = ds.annotate(
-        gnomad=ds.gnomad.annotate(
-            joint_freq=ds.joint_freq,
-            joint_grpmax=ds.joint_grpmax,
-            joint_faf=ds.joint_faf,
-            joint_fafmax=ds.joint_fafmax,
-        ),
-    )
-
-    ds = ds.drop("joint_freq", "joint_grpmax", "joint_faf", "joint_fafmax")
+    ds = ds.drop("faf", "fafmax", "joint_freq", "joint_grpmax", "joint_faf", "joint_fafmax")
 
     ####################
     # Age distribution #
@@ -342,6 +337,8 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
         "vep",
         "in_silico_predictors",
         "variant_id",
+        "faf95_joint",
+        "faf99_joint",
     ]
     variants = variants.annotate(
         **{field: hl.or_else(variants.exome[field], variants.genome[field]) for field in shared_fields}
