@@ -16,6 +16,7 @@ const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))
+const StatsPage = lazy(() => import('./StatsPage/StatsPage'))
 const PublicationsPage = lazy(() => import('./PublicationsPage'))
 const PoliciesPage = lazy(() => import('./PoliciesPage'))
 
@@ -166,6 +167,8 @@ const Routes = () => {
       <Route exact path="/feedback" render={() => <Redirect to="/contact" />} />
 
       <Route exact path="/mou" component={MOUPage} />
+
+      <Route exact path="/stats" component={StatsPage} />
 
       <Route
         exact
