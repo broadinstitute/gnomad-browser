@@ -1,17 +1,12 @@
-import redis from 'redis'
+import { Redis } from 'ioredis'
 import config from '../config'
 import { UserVisibleError } from '../errors'
 import logger from '../logger'
 
-const rateLimitDb = redis.createClient({
-  url: config.RATE_LIMITER_REDIS_URL,
-  retry_strategy:
-    process.env.NODE_ENV === 'development'
-      ? ({ attempt }: any) => {
-          logger.info('Retrying connection to rate limit database')
-          return Math.min(attempt * 100, 3000)
-        }
-      : ({ attempt }: any) => Math.min(attempt * 100, 3000),
+const rateLimitDb = new Redis({
+  sentinels: [{ host: config.RATE_LIMITER_REDIS_URL, port: 26379 }],
+  name: 'mymaster',
+  db: 2,
 })
 
 const increaseRateLimitCounter = (key: any, value: any) => {
@@ -19,7 +14,7 @@ const increaseRateLimitCounter = (key: any, value: any) => {
     new Promise((resolve, reject) => {
       rateLimitDb
         .multi()
-        .set([key, 0, 'EX', 59, 'NX'])
+        .set(key, 0, 'EX', 59, 'NX')
         .incrby(key, value)
         .exec((err: any, replies: any) => {
           if (err) {
