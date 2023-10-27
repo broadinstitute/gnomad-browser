@@ -52,7 +52,24 @@ const customValidateFn = (...args: Parameters<typeof validate>) => {
   )
 }
 
-const customFormatErrorFn = (error: any, request: any, graphqlRequestParams: any) => {
+const formatErrorAndSetNocache = (
+  error: any,
+  request: any,
+  graphqlRequestParams: any,
+  response: any
+) => {
+  // Setting the nocache header in this function that's just supposed to format
+  // an error is pretty gross, but given the multitude of places that this
+  // API can return or throw an error, this is the only obvious spot where we
+  // can intercept all errors. We can't just wrap the entire API in a try/catch
+  // either and set the header in a catch, since after the API's run we've
+  // already sent the response.
+  //
+  // Also, as written, this will no-cache not-found errors, which is
+  // undesirable, but something we can put off fixing until later.
+
+  response.set('Cache-Control', 'no-store')
+
   if (isHttpError(error.originalError)) {
     return error
   }
@@ -101,7 +118,7 @@ const queryComplexityCreateError = (max: any, actual: any) => {
 }
 
 const graphQLApi = ({ context }: any) =>
-  graphqlHTTP(async (request, _response, requestParams) => ({
+  graphqlHTTP(async (request, response, requestParams) => ({
     schema,
     graphiql: true,
     context,
@@ -186,7 +203,8 @@ const graphQLApi = ({ context }: any) =>
       return execute(args)
     },
 
-    customFormatErrorFn: (error: any) => customFormatErrorFn(error, request, requestParams),
+    customFormatErrorFn: (error: any) =>
+      formatErrorAndSetNocache(error, request, requestParams, response),
   }))
 
 export default graphQLApi
