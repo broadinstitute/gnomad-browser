@@ -1,4 +1,5 @@
 const exacSampleCounts = require('./datasets/exac/sampleCounts')
+
 const {
   subsets: gnomadV2SubsetSampleCounts,
   ...gnomadV2SampleCounts
@@ -12,6 +13,11 @@ const {
   ...gnomadSvV2SampleCounts
 } = require('./datasets/gnomad-sv-v2/sampleCounts')
 const gnomadCnvV4SubsetSampleCounts = require('./datasets/gnomad-cnv-v4/sampleCounts')
+
+const {
+  subsets: gnomadV4SubsetSampleCounts,
+  ...gnomadV4SampleCounts
+} = require('./datasets/gnomad-v4/sampleCounts')
 
 const sampleCounts = [
   { exac: exacSampleCounts },
@@ -28,7 +34,12 @@ const sampleCounts = [
     [`gnomad_sv_r2_1_${subset}`]: gnomadSvV2SubsetSampleCounts[subset],
   })),
   { gnomad_sv_r4: { total: 63046 } },
-  { gnomad_cnv_r4: gnomadCnvV4SubsetSampleCounts },
+  { gnomad_cnv_r4: gnomadCnvV4SubsetSampleCounts }, // TODO: should not be called "subset"
+  { gnomad_r4: gnomadV4SubsetSampleCounts },
+  ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
+    [`gnomad_v4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
+  })),
 ].reduce(Object.assign, {})
+
 
 export default sampleCounts
