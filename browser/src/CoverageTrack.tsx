@@ -201,19 +201,19 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     )
     return totalBases < 100
       ? this.renderBars({
-          isPositionDefined,
-          scaleCoverageMetric,
-          scalePosition,
-          totalBases,
-          width,
-        })
+        isPositionDefined,
+        scaleCoverageMetric,
+        scalePosition,
+        totalBases,
+        width,
+      })
       : this.renderArea({
-          isPositionDefined,
-          scaleCoverageMetric,
-          scalePosition,
-          totalBases,
-          width,
-        })
+        isPositionDefined,
+        scaleCoverageMetric,
+        scalePosition,
+        totalBases,
+        width,
+      })
   }
 
   render() {

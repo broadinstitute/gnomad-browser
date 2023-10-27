@@ -10321,7 +10321,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              
+              gnomAD v4.0.0
             </a>
           </li>
           <li
@@ -10369,7 +10369,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       76,156 samples
                     </div>
@@ -10386,7 +10386,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2 (non-cancer)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       74,023 samples
                     </div>
@@ -10403,7 +10403,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2 (non-neuro)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       67,442 samples
                     </div>
@@ -10420,7 +10420,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2 (non-v2)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       57,344 samples
                     </div>
@@ -10437,7 +10437,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2 (non-TOPMed)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       40,433 samples
                     </div>
@@ -10454,7 +10454,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v3.1.2 (controls/biobanks)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       16,465 samples
                     </div>
@@ -10478,7 +10478,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v2.1.1
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       141,456 samples
                     </div>
@@ -10495,7 +10495,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v2.1.1 (non-TOPMed)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       135,743 samples
                     </div>
@@ -10512,7 +10512,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v2.1.1 (non-cancer)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       134,187 samples
                     </div>
@@ -10529,7 +10529,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v2.1.1 (non-neuro)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       114,704 samples
                     </div>
@@ -10546,7 +10546,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     gnomAD v2.1.1 (controls)
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       60,146 samples
                     </div>
@@ -10563,152 +10563,9 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
                   >
                     ExAC v1.0
                     <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       60,706 samples
-                    </div>
-                  </a>
-                </li>
-              </li>
-            </ul>
-          </li>
-          <li
-            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
-          >
-            <a
-              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_cnv_r4"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-            >
-              gnomAD CNVs v4.0
-            </a>
-          </li>
-          <li
-            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
-          >
-            <a
-              aria-expanded={false}
-              aria-haspopup="true"
-              aria-label="More datasets"
-              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="other_structural_variant"
-              href="/"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-            >
-              <span
-                className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-              </span>
-            </a>
-            <ul
-              className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
-            >
-              <li>
-                <div
-                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-                >
-                  GRCh38
-                </div>
-                <li>
-                  <a
-                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                    data-item="gnomad_sv_r4"
-                    href="/?dataset=gnomad_sv_r4"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                  >
-                    gnomAD SVs v4
-                    <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
-                    >
-                      63,046 samples, genome
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                    data-item="gnomad_cnv_r4"
-                    href="/?dataset=gnomad_cnv_r4"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                  >
-                    gnomAD CNVs v4.0
-                    <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
-                    >
-                      464,297 samples, exome, rare (&lt;0.01)
-                    </div>
-                  </a>
-                </li>
-              </li>
-              <li>
-                <div
-                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-                >
-                  GRCh37
-                </div>
-                <li>
-                  <a
-                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                    data-item="gnomad_sv_r2_1"
-                    href="/?dataset=gnomad_sv_r2_1"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                  >
-                    gnomAD SVs v2.1
-                    <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
-                    >
-                      10,847 samples, genome
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                    data-item="gnomad_sv_r2_1_non_neuro"
-                    href="/?dataset=gnomad_sv_r2_1_non_neuro"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                  >
-                    gnomAD SVs v2.1 (non-neuro)
-                    <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
-                    >
-                      8,342 samples, genome
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                    data-item="gnomad_sv_r2_1_controls"
-                    href="/?dataset=gnomad_sv_r2_1_controls"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                  >
-                    gnomAD SVs v2.1 (controls)
-                    <div
-                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
-                    >
-                      5,192 samples, genome
                     </div>
                   </a>
                 </li>

@@ -43,8 +43,8 @@ const transcriptDetails = (
       transcriptId = geneOrTranscript.canonical_transcript_id
       const canonicalTranscript = transcriptId
         ? geneOrTranscript.transcripts.find(
-            (transcript) => transcript.transcript_id === transcriptId
-          )
+          (transcript) => transcript.transcript_id === transcriptId
+        )
         : null
       transcriptVersion = canonicalTranscript ? canonicalTranscript.transcript_version : null
       transcriptDescription = 'Ensembl canonical'
@@ -59,7 +59,7 @@ const transcriptDetails = (
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   if (!hasConstraints(datasetId)) {
-    return <p>Constraint not yet available for gnomAD v3.</p>
+    return <p>Constraint not yet available for {datasetId}.</p>
   }
 
   const { transcriptId, transcriptVersion, transcriptDescription } =
