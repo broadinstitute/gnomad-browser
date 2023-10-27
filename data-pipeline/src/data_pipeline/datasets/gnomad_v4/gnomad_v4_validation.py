@@ -24,7 +24,6 @@ c = Converter(forbid_extra_keys=True)
 
 def validate_rows(ht: hl.Table, cls: object):
     result = ht_to_json(ht)
-
     for variant in result:
         if variant:
             try:
@@ -38,8 +37,8 @@ def validate_rows(ht: hl.Table, cls: object):
                 logger.error(transform_error(e))
                 raise Exception(e)
             except Exception as e:
-                logger.info(variant["exome"])
-                logger.info(variant["genome"])
+                # logger.info(variant["exome"])
+                # logger.info(variant["genome"])
                 logger.error(e)
                 logger.error(transform_error(e))
                 raise Exception(e)
@@ -61,7 +60,7 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
     return objs
 
 
-def validate_globals_input(pipeline: Pipeline):
+def validate_exome_globals_input(pipeline: Pipeline):
     input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["exome_variants_path"]
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
@@ -71,12 +70,30 @@ def validate_globals_input(pipeline: Pipeline):
     logger.info("Validated prepare_gnomad_v4_variants input globals")
 
 
-def validate_variant_input(pipeline: Pipeline):
+def validate_genome_globals_input(pipeline: Pipeline):
+    input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["genome_variants_path"]
+    ht = hl.read_table(input_path)
+    ht = ht.sample(0.001, 1337)
+    result = ht_to_json(ht, "globals")[0]
+    # logger.info(result)
+    structure(result, Globals)
+    logger.info("Validated prepare_gnomad_v4_variants input globals")
+
+
+def validate_exome_variant_input(pipeline: Pipeline):
     input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["exome_variants_path"]
     ht = hl.read_table(input_path)
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, InitialVariant)
-    logger.info("Validated prepare_gnomad_v4_variants input variants")
+    logger.info("Validated prepare_gnomad_v4_variants input exome variants")
+
+
+def validate_genome_variant_input(pipeline: Pipeline):
+    input_path = pipeline.get_task("prepare_gnomad_v4_variants").get_inputs()["genome_variants_path"]
+    ht = hl.read_table(input_path)
+    ht = ht.sample(0.001, 1337)
+    validate_rows(ht, InitialVariant)
+    logger.info("Validated prepare_gnomad_v4_variants input genome variants")
 
 
 def validate_step1_output(pipeline: Pipeline):
