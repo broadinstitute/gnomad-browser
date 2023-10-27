@@ -301,7 +301,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
+              data-item="current_sv_or_cnv_dataset"
               href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
@@ -416,6 +416,30 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -713,7 +737,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -817,7 +841,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -878,7 +902,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -918,7 +942,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -958,7 +982,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -998,7 +1022,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -1038,7 +1062,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -1078,7 +1102,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -1118,7 +1142,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -1158,7 +1182,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -1198,7 +1222,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -1238,7 +1262,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -1726,7 +1750,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
+              data-item="current_sv_or_cnv_dataset"
               href="/?dataset=gnomad_sv_r2_1_controls"
               onBlur={[Function]}
               onClick={[Function]}
@@ -1841,6 +1865,30 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -2138,7 +2186,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -2242,7 +2290,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -2303,7 +2351,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -2343,7 +2391,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -2383,7 +2431,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -2423,7 +2471,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -2463,7 +2511,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -2503,7 +2551,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -2543,7 +2591,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -2583,7 +2631,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -2623,7 +2671,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -2663,7 +2711,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -3151,13 +3199,1462 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
+              data-item="current_sv_or_cnv_dataset"
               href="/?dataset=gnomad_sv_r2_1_non_neuro"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
               gnomAD SVs v2.1 (non-neuro)
+            </a>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+          >
+            <a
+              aria-expanded={false}
+              aria-haspopup="true"
+              aria-label="More datasets"
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="other_structural_variant"
+              href="/"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+              </span>
+            </a>
+            <ul
+              className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+            >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r4"
+                    href="/?dataset=gnomad_sv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v4
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      63,046 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh37
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1"
+                    href="/?dataset=gnomad_sv_r2_1"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      10,847 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1_non_neuro"
+                    href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      8,342 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1_controls"
+                    href="/?dataset=gnomad_sv_r2_1_controls"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1 (controls)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <span>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+    >
+      <div
+        className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
+      >
+        <dl
+          className="AttributeList-sc-1yjjegy-0 boDRvX"
+          style={
+            {
+              "marginTop": "1.25em",
+            }
+          }
+        >
+          <div>
+            <dt>
+              Genome build
+            </dt>
+            <dd>
+              GRCh37
+               / 
+              hg19
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Ensembl gene ID
+            </dt>
+            <dd>
+              dummy_gene-1
+              .
+              5.6.7.8
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Symbol in GENCODE v19
+            </dt>
+            <dd />
+          </div>
+          <div>
+            <dt>
+              Ensembl canonical transcript 
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Region
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/region/13-123-321"
+                onClick={[Function]}
+              >
+                13
+                :
+                123
+                -
+                321
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              External resources
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Ensembl
+              </a>
+              ,
+               
+              <a
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                UCSC Browser
+              </a>
+              ,
+               
+              <button
+                className="Button__TextButton-sc-1eobygi-3 gWkUTz"
+                onClick={[Function]}
+                type="button"
+              >
+                and more
+              </button>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div
+        className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
+      >
+        <div
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+        >
+          <div
+            className="sc-bdVaJa dDlceV"
+            onClick={[Function]}
+          >
+            Constraint 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </div>
+          <div
+            className="sc-bdVaJa gUKyFV"
+            onClick={[Function]}
+          >
+            Variant co-occurrence 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </div>
+        </div>
+        <p>
+          Constraint not available for this 
+          gene
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
+  >
+    <div
+      className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
+      style={
+        {
+          "width": 994,
+        }
+      }
+    >
+      <div
+        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+      >
+        <div
+          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          style={
+            {
+              "marginLeft": 115,
+              "marginRight": 80,
+              "width": 799,
+            }
+          }
+        >
+          <div
+            className="CoverageTrack__TopPanel-sc-1kumbsx-0 zEVsn"
+          >
+            <ul
+              className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jZEPop"
+            />
+            <label
+              htmlFor="coverage-metric"
+            >
+              Metric: 
+              <select
+                className="Select-sc-1lkyg9e-0 ivadCR"
+                id="coverage-metric"
+                onChange={[Function]}
+                value="mean"
+              >
+                <optgroup
+                  label="Per-base depth of coverage"
+                >
+                  <option
+                    value="mean"
+                  >
+                    Mean
+                  </option>
+                  <option
+                    value="median"
+                  >
+                    Median
+                  </option>
+                </optgroup>
+                <optgroup
+                  label="Fraction of individuals with coverage over X"
+                >
+                  <option
+                    value="over_1"
+                  >
+                    Over 
+                    1
+                  </option>
+                  <option
+                    value="over_5"
+                  >
+                    Over 
+                    5
+                  </option>
+                  <option
+                    value="over_10"
+                  >
+                    Over 
+                    10
+                  </option>
+                  <option
+                    value="over_15"
+                  >
+                    Over 
+                    15
+                  </option>
+                  <option
+                    value="over_20"
+                  >
+                    Over 
+                    20
+                  </option>
+                  <option
+                    value="over_25"
+                  >
+                    Over 
+                    25
+                  </option>
+                  <option
+                    value="over_30"
+                  >
+                    Over 
+                    30
+                  </option>
+                  <option
+                    value="over_50"
+                  >
+                    Over 
+                    50
+                  </option>
+                  <option
+                    value="over_100"
+                  >
+                    Over 
+                    100
+                  </option>
+                </optgroup>
+              </select>
+            </label>
+            <button
+              className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+              onClick={[Function]}
+              style={
+                {
+                  "marginLeft": "1em",
+                }
+              }
+              type="button"
+            >
+              Save plot
+            </button>
+          </div>
+        </div>
+        <div
+          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+        >
+          <div
+            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
+            >
+              Fraction of individuals with coverage over 30
+            </div>
+          </div>
+          <div
+            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              style={
+                {
+                  "marginLeft": -60,
+                }
+              }
+            >
+              <svg
+                height={200}
+                width={859}
+              >
+                <g
+                  className="vx-group vx-axis vx-axis-left"
+                  transform="translate(60, 0)"
+                >
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={180.7}
+                      y2={180.7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={180.7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.1
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={161.4}
+                      y2={161.4}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={161.4}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.2
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={142.1}
+                      y2={142.1}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={142.1}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.3
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={122.8}
+                      y2={122.8}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={122.8}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.4
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={103.5}
+                      y2={103.5}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={103.5}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.5
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={84.2}
+                      y2={84.2}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={84.2}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.6
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={64.9}
+                      y2={64.9}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={64.9}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.7
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={45.599999999999994}
+                      y2={45.599999999999994}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={45.599999999999994}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.8
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={26.299999999999997}
+                      y2={26.299999999999997}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={26.299999999999997}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.9
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={7}
+                      y2={7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          1.0
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <line
+                    className="vx-line vx-axis-line"
+                    fill="transparent"
+                    stroke="#333"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={0}
+                    y1={200.5}
+                    y2={7.5}
+                  />
+                  
+                </g>
+                <g
+                  transform="translate(60,0)"
+                >
+                  <line
+                    stroke="#333"
+                    x1={0}
+                    x2={799}
+                    y1={200}
+                    y2={200}
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        width={814}
+      >
+        Include:
+        <ul
+          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+        >
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-cds-regions"
+            >
+              <input
+                checked={false}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-cds-regions"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Coding regions (CDS)
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                color="#424242"
+                height={10}
+              />
+            </label>
+          </li>
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-utr-regions"
+            >
+              <input
+                checked={false}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-utr-regions"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Untranslated regions (UTRs)
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                color="#424242"
+                height={4}
+              />
+            </label>
+          </li>
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-nc-transcripts"
+            >
+              <input
+                checked={true}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-nc-transcripts"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Non-coding transcripts
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                color="#bdbdbd"
+                height={4}
+              />
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+      >
+        <div
+          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        >
+          <div
+            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          >
+            <div
+              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              style={
+                {
+                  "width": 115,
+                }
+              }
+            >
+              <div
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+              >
+                <button
+                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Show
+                   transcripts
+                </button>
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
+              </div>
+            </div>
+            <div
+              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              style={
+                {
+                  "width": 799,
+                }
+              }
+            >
+              <div
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+              >
+                <svg
+                  height={20}
+                  width={799}
+                >
+                  <line
+                    stroke="#bdbdbd"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={799}
+                    y1={10}
+                    y2={10}
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      >
+        No variants found
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+>
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+    >
+      <div
+        className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+      >
+        <h1
+          className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+        >
+          FAKEGENE
+           
+          <span
+            className="GenePage__GeneName-sc-rcxzgc-0 VEATZ"
+          />
+        </h1>
+      </div>
+      <div
+        className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+      >
+        <span
+          className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+        >
+          Dataset
+        </span>
+        <ul
+          className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+        >
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+          >
+            <a
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="current_short_variant"
+              href="/?dataset=gnomad_r3"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+            >
+              gnomAD v3.1.2
+            </a>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+          >
+            <a
+              aria-expanded={false}
+              aria-haspopup="true"
+              aria-label="More datasets"
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="other_short_variant"
+              href="/"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+              </span>
+            </a>
+            <ul
+              className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+            >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3"
+                    href="/?dataset=gnomad_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      76,156 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_cancer"
+                    href="/?dataset=gnomad_r3_non_cancer"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-cancer)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      74,023 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_neuro"
+                    href="/?dataset=gnomad_r3_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      67,442 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_v2"
+                    href="/?dataset=gnomad_r3_non_v2"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-v2)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      57,344 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_topmed"
+                    href="/?dataset=gnomad_r3_non_topmed"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-TOPMed)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      40,433 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_controls_and_biobanks"
+                    href="/?dataset=gnomad_r3_controls_and_biobanks"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (controls/biobanks)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      16,465 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh37
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1"
+                    href="/?dataset=gnomad_r2_1"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      141,456 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_topmed"
+                    href="/?dataset=gnomad_r2_1_non_topmed"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-TOPMed)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      135,743 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_cancer"
+                    href="/?dataset=gnomad_r2_1_non_cancer"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-cancer)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      134,187 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_neuro"
+                    href="/?dataset=gnomad_r2_1_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      114,704 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_controls"
+                    href="/?dataset=gnomad_r2_1_controls"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (controls)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      60,146 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="exac"
+                    href="/?dataset=exac"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    ExAC v1.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      60,706 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+            </ul>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+          >
+            <a
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="current_sv_dataset"
+              href="/?dataset=gnomad_sv_r4"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+            >
+              gnomAD SVs v4
             </a>
           </li>
           <li
@@ -3519,8 +5016,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint not available for this 
-          gene
+          Constraint not yet available for gnomAD v3.
         </p>
       </div>
     </div>
@@ -6000,13 +7496,13 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -6115,6 +7611,30 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -6423,7 +7943,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -6527,7 +8047,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -6588,7 +8108,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -6628,7 +8148,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -6668,7 +8188,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -6708,7 +8228,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -6748,7 +8268,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -6788,7 +8308,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -6828,7 +8348,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -6868,7 +8388,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -6908,7 +8428,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -6948,7 +8468,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -7459,13 +8979,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -7574,6 +9094,30 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -7882,7 +9426,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -7986,7 +9530,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -8047,7 +9591,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -8087,7 +9631,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -8127,7 +9671,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -8167,7 +9711,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -8207,7 +9751,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -8247,7 +9791,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -8287,7 +9831,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -8327,7 +9871,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -8367,7 +9911,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -8407,7 +9951,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -9013,13 +10557,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -9128,6 +10672,30 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -9436,7 +11004,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -9540,7 +11108,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -9601,7 +11169,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -9641,7 +11209,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -9681,7 +11249,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -9721,7 +11289,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -9761,7 +11329,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -9801,7 +11369,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -9841,7 +11409,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -9881,7 +11449,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -9921,7 +11489,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -9961,7 +11529,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -10567,13 +12135,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -10682,6 +12250,30 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -10990,7 +12582,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -11094,7 +12686,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -11155,7 +12747,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -11195,7 +12787,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -11235,7 +12827,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -11275,7 +12867,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -11315,7 +12907,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -11355,7 +12947,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -11395,7 +12987,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -11435,7 +13027,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -11475,7 +13067,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -11515,7 +13107,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -12121,13 +13713,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -12236,6 +13828,30 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -12544,7 +14160,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -12648,7 +14264,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -12709,7 +14325,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -12749,7 +14365,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -12789,7 +14405,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -12829,7 +14445,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -12869,7 +14485,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -12909,7 +14525,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -12949,7 +14565,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -12989,7 +14605,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -13029,7 +14645,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -13069,7 +14685,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -13675,13 +15291,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
           >
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-              data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r2_1"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v2.1
+              gnomAD exome CNVs v4.0
             </a>
           </li>
           <li
@@ -13790,6 +15406,30 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                     >
                       5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
                     </div>
                   </a>
                 </li>
@@ -14098,7 +15738,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -14202,7 +15842,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -14263,7 +15903,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -14303,7 +15943,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -14343,7 +15983,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -14383,7 +16023,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -14423,7 +16063,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -14463,7 +16103,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -14503,7 +16143,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -14543,7 +16183,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -14583,7 +16223,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -14623,7 +16263,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -15348,6 +16988,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -15651,7 +17315,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -15755,7 +17419,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -15816,7 +17480,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -15856,7 +17520,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -15896,7 +17560,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -15936,7 +17600,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -15976,7 +17640,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -16016,7 +17680,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -16056,7 +17720,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -16096,7 +17760,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -16136,7 +17800,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -16176,7 +17840,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -16806,6 +18470,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -17109,7 +18797,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -17213,7 +18901,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -17274,7 +18962,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -17314,7 +19002,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -17354,7 +19042,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -17394,7 +19082,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -17434,7 +19122,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -17474,7 +19162,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -17514,7 +19202,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -17554,7 +19242,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -17594,7 +19282,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -17634,7 +19322,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -18264,6 +19952,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -18567,7 +20279,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -18671,7 +20383,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -18732,7 +20444,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -18772,7 +20484,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -18812,7 +20524,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -18852,7 +20564,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -18892,7 +20604,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -18932,7 +20644,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -18972,7 +20684,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -19012,7 +20724,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -19052,7 +20764,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -19092,7 +20804,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -19722,6 +21434,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -20025,7 +21761,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -20129,7 +21865,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -20190,7 +21926,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -20230,7 +21966,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -20270,7 +22006,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -20310,7 +22046,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -20350,7 +22086,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -20390,7 +22126,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -20430,7 +22166,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -20470,7 +22206,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -20510,7 +22246,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -20550,7 +22286,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -21180,6 +22916,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -21483,7 +23243,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -21587,7 +23347,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -21648,7 +23408,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -21688,7 +23448,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -21728,7 +23488,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -21768,7 +23528,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -21808,7 +23568,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -21848,7 +23608,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -21888,7 +23648,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -21928,7 +23688,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -21968,7 +23728,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -22008,7 +23768,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
                         </tspan>
                       </text>
                     </svg>
@@ -22638,6 +24398,30 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                   </a>
                 </li>
               </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
             </ul>
           </li>
         </ul>
@@ -22941,7 +24725,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="mean"
+                value="over_30"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -23045,7 +24829,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Per-base mean depth of coverage
+              Fraction of individuals with coverage over 30
             </div>
           </div>
           <div
@@ -23106,7 +24890,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          10
+                          0.1
                         </tspan>
                       </text>
                     </svg>
@@ -23146,7 +24930,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          20
+                          0.2
                         </tspan>
                       </text>
                     </svg>
@@ -23186,7 +24970,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          30
+                          0.3
                         </tspan>
                       </text>
                     </svg>
@@ -23226,7 +25010,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          40
+                          0.4
                         </tspan>
                       </text>
                     </svg>
@@ -23266,7 +25050,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          50
+                          0.5
                         </tspan>
                       </text>
                     </svg>
@@ -23306,7 +25090,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          60
+                          0.6
                         </tspan>
                       </text>
                     </svg>
@@ -23346,7 +25130,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          70
+                          0.7
                         </tspan>
                       </text>
                     </svg>
@@ -23386,7 +25170,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          80
+                          0.8
                         </tspan>
                       </text>
                     </svg>
@@ -23426,7 +25210,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          90
+                          0.9
                         </tspan>
                       </text>
                     </svg>
@@ -23466,7 +25250,1466 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                           dy="0em"
                           x={-8}
                         >
-                          100
+                          1.0
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <line
+                    className="vx-line vx-axis-line"
+                    fill="transparent"
+                    stroke="#333"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={0}
+                    y1={190.5}
+                    y2={7.5}
+                  />
+                  
+                </g>
+                <g
+                  transform="translate(60,0)"
+                >
+                  <line
+                    stroke="#333"
+                    x1={0}
+                    x2={799}
+                    y1={190}
+                    y2={190}
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        width={814}
+      >
+        Include:
+        <ul
+          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+        >
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-cds-regions"
+            >
+              <input
+                checked={false}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-cds-regions"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Coding regions (CDS)
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                color="#424242"
+                height={10}
+              />
+            </label>
+          </li>
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-utr-regions"
+            >
+              <input
+                checked={false}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-utr-regions"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Untranslated regions (UTRs)
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                color="#424242"
+                height={4}
+              />
+            </label>
+          </li>
+          <li
+            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+          >
+            <label
+              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              htmlFor="include-nc-transcripts"
+            >
+              <input
+                checked={true}
+                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                disabled={true}
+                id="include-nc-transcripts"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Non-coding transcripts
+              <span
+                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                color="#bdbdbd"
+                height={4}
+              />
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+      >
+        <div
+          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        >
+          <div
+            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          >
+            <div
+              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              style={
+                {
+                  "width": 115,
+                }
+              }
+            >
+              <div
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+              >
+                <button
+                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Show
+                   transcripts
+                </button>
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
+              </div>
+            </div>
+            <div
+              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              style={
+                {
+                  "width": 799,
+                }
+              }
+            >
+              <div
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+              >
+                <svg
+                  height={20}
+                  width={799}
+                >
+                  <line
+                    stroke="#bdbdbd"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={799}
+                    y1={10}
+                    y2={10}
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+      >
+        <h2>
+          ClinVar variants
+        </h2>
+      </div>
+      <p
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+      >
+        No ClinVar variants found in this gene.
+      </p>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+      >
+        <h2
+          style={
+            {
+              "margin": "2em 0 0.25em",
+            }
+          }
+        >
+          gnomAD variants
+        </h2>
+        <p>
+          No gnomAD variants found.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] = `
+<div
+  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+>
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+    >
+      <div
+        className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+      >
+        <h1
+          className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+        >
+          FAKEGENE
+           
+          <span
+            className="GenePage__GeneName-sc-rcxzgc-0 VEATZ"
+          />
+        </h1>
+      </div>
+      <div
+        className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+      >
+        <span
+          className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+        >
+          Dataset
+        </span>
+        <ul
+          className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+        >
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+          >
+            <a
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="current_short_variant"
+              href="/?dataset=gnomad_r4"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+            >
+              
+            </a>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+          >
+            <a
+              aria-expanded={false}
+              aria-haspopup="true"
+              aria-label="More datasets"
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="other_short_variant"
+              href="/"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+              </span>
+            </a>
+            <ul
+              className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+            >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3"
+                    href="/?dataset=gnomad_r3"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      76,156 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_cancer"
+                    href="/?dataset=gnomad_r3_non_cancer"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-cancer)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      74,023 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_neuro"
+                    href="/?dataset=gnomad_r3_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      67,442 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_v2"
+                    href="/?dataset=gnomad_r3_non_v2"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-v2)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      57,344 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_non_topmed"
+                    href="/?dataset=gnomad_r3_non_topmed"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (non-TOPMed)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      40,433 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r3_controls_and_biobanks"
+                    href="/?dataset=gnomad_r3_controls_and_biobanks"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v3.1.2 (controls/biobanks)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      16,465 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh37
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1"
+                    href="/?dataset=gnomad_r2_1"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      141,456 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_topmed"
+                    href="/?dataset=gnomad_r2_1_non_topmed"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-TOPMed)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      135,743 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_cancer"
+                    href="/?dataset=gnomad_r2_1_non_cancer"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-cancer)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      134,187 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_non_neuro"
+                    href="/?dataset=gnomad_r2_1_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      114,704 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r2_1_controls"
+                    href="/?dataset=gnomad_r2_1_controls"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v2.1.1 (controls)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      60,146 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="exac"
+                    href="/?dataset=exac"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    ExAC v1.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      60,706 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+            </ul>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+          >
+            <a
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="current_sv_or_cnv_dataset"
+              href="/?dataset=gnomad_cnv_r4"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+            >
+              gnomAD exome CNVs v4.0
+            </a>
+          </li>
+          <li
+            className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+          >
+            <a
+              aria-expanded={false}
+              aria-haspopup="true"
+              aria-label="More datasets"
+              className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+              data-item="other_structural_variant"
+              href="/"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+              </span>
+            </a>
+            <ul
+              className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+            >
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh37
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1"
+                    href="/?dataset=gnomad_sv_r2_1"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      10,847 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1_non_neuro"
+                    href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1 (non-neuro)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      8,342 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_sv_r2_1_controls"
+                    href="/?dataset=gnomad_sv_r2_1_controls"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD SVs v2.1 (controls)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      5,192 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+              <li>
+                <div
+                  className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                >
+                  GRCh38
+                </div>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_cnv_r4"
+                    href="/?dataset=gnomad_cnv_r4"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD exome CNVs v4.0
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    >
+                      464,566 samples
+                    </div>
+                  </a>
+                </li>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <span>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+    >
+      <div
+        className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
+      >
+        <dl
+          className="AttributeList-sc-1yjjegy-0 boDRvX"
+          style={
+            {
+              "marginTop": "1.25em",
+            }
+          }
+        >
+          <div>
+            <dt>
+              Genome build
+            </dt>
+            <dd>
+              GRCh37
+               / 
+              hg19
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Ensembl gene ID
+            </dt>
+            <dd>
+              dummy_gene-1
+              .
+              5.6.7.8
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Symbol in GENCODE v19
+            </dt>
+            <dd />
+          </div>
+          <div>
+            <dt>
+              Ensembl canonical transcript 
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/transcript/transcript-999"
+                onClick={[Function]}
+              >
+                transcript-999
+                .
+                12.34.5
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              Region
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                href="/region/13-123-321"
+                onClick={[Function]}
+              >
+                13
+                :
+                123
+                -
+                321
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              External resources
+            </dt>
+            <dd>
+              <a
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Ensembl
+              </a>
+              ,
+               
+              <a
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                UCSC Browser
+              </a>
+              ,
+               
+              <button
+                className="Button__TextButton-sc-1eobygi-3 gWkUTz"
+                onClick={[Function]}
+                type="button"
+              >
+                and more
+              </button>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div
+        className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
+      >
+        <div
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+        >
+          <div
+            className="sc-bdVaJa dDlceV"
+            onClick={[Function]}
+          >
+            Constraint 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </div>
+          <div
+            className="sc-bdVaJa gUKyFV"
+            onClick={[Function]}
+          >
+            Variant co-occurrence 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </div>
+        </div>
+        <p>
+          Constraint not available for this 
+          gene
+        </p>
+      </div>
+    </div>
+  </div>
+  Viewing full 
+  gene
+  .
+   
+  <button
+    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+    onClick={[Function]}
+    type="button"
+  >
+    Zoom in
+  </button>
+  <div
+    className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
+  >
+    <div
+      className="RegionViewer__RegionViewerWrapper-tk0egb-0 kgUujm"
+      style={
+        {
+          "width": 994,
+        }
+      }
+    >
+      <div
+        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+      >
+        <div
+          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          style={
+            {
+              "marginLeft": 115,
+              "marginRight": 80,
+              "width": 799,
+            }
+          }
+        >
+          <div
+            className="CoverageTrack__TopPanel-sc-1kumbsx-0 zEVsn"
+          >
+            <ul
+              className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jZEPop"
+            />
+            <label
+              htmlFor="coverage-metric"
+            >
+              Metric: 
+              <select
+                className="Select-sc-1lkyg9e-0 ivadCR"
+                id="coverage-metric"
+                onChange={[Function]}
+                value="over_30"
+              >
+                <optgroup
+                  label="Per-base depth of coverage"
+                >
+                  <option
+                    value="mean"
+                  >
+                    Mean
+                  </option>
+                  <option
+                    value="median"
+                  >
+                    Median
+                  </option>
+                </optgroup>
+                <optgroup
+                  label="Fraction of individuals with coverage over X"
+                >
+                  <option
+                    value="over_1"
+                  >
+                    Over 
+                    1
+                  </option>
+                  <option
+                    value="over_5"
+                  >
+                    Over 
+                    5
+                  </option>
+                  <option
+                    value="over_10"
+                  >
+                    Over 
+                    10
+                  </option>
+                  <option
+                    value="over_15"
+                  >
+                    Over 
+                    15
+                  </option>
+                  <option
+                    value="over_20"
+                  >
+                    Over 
+                    20
+                  </option>
+                  <option
+                    value="over_25"
+                  >
+                    Over 
+                    25
+                  </option>
+                  <option
+                    value="over_30"
+                  >
+                    Over 
+                    30
+                  </option>
+                  <option
+                    value="over_50"
+                  >
+                    Over 
+                    50
+                  </option>
+                  <option
+                    value="over_100"
+                  >
+                    Over 
+                    100
+                  </option>
+                </optgroup>
+              </select>
+            </label>
+            <button
+              className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+              onClick={[Function]}
+              style={
+                {
+                  "marginLeft": "1em",
+                }
+              }
+              type="button"
+            >
+              Save plot
+            </button>
+          </div>
+        </div>
+        <div
+          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+        >
+          <div
+            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
+            >
+              Fraction of individuals with coverage over 30
+            </div>
+          </div>
+          <div
+            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              style={
+                {
+                  "marginLeft": -60,
+                }
+              }
+            >
+              <svg
+                height={190}
+                width={859}
+              >
+                <g
+                  className="vx-group vx-axis vx-axis-left"
+                  transform="translate(60, 0)"
+                >
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={171.7}
+                      y2={171.7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={171.7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.1
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={153.4}
+                      y2={153.4}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={153.4}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.2
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={135.1}
+                      y2={135.1}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={135.1}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.3
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={116.8}
+                      y2={116.8}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={116.8}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.4
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={98.5}
+                      y2={98.5}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={98.5}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.5
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={80.2}
+                      y2={80.2}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={80.2}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.6
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={61.900000000000006}
+                      y2={61.900000000000006}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={61.900000000000006}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.7
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={43.599999999999994}
+                      y2={43.599999999999994}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={43.599999999999994}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.8
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={25.299999999999997}
+                      y2={25.299999999999997}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={25.299999999999997}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.9
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={7}
+                      y2={7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          1.0
                         </tspan>
                       </text>
                     </svg>
