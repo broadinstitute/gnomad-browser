@@ -196,6 +196,8 @@ export const GnomadVariantOccurrenceTable = ({
 }: GnomadVariantOccurrenceTableProps) => {
   const showTotal = showExomes && showGenomes
 
+  console.log(variant.faf95_joint)
+
   const isPresentInExome = Boolean(variant.exome)
   const isPresentInGenome = Boolean(variant.genome)
 
@@ -242,6 +244,9 @@ export const GnomadVariantOccurrenceTable = ({
     exomeMaxAN = datasetSampleCounts.exomesTotal * 2
     genomeMaxAN = datasetSampleCounts.genomesTotal * 2
   }
+
+
+
   const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomeMaxAN / 2
   const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
 
@@ -249,11 +254,11 @@ export const GnomadVariantOccurrenceTable = ({
   // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
   const exomeHighAlleleBalanceSamples = isPresentInExome
     ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
-      variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
+    variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
     : 0
   const genomeHighAlleleBalanceSamples = isPresentInGenome
     ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
-      variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
+    variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
     : 0
   const totalHighAlleleBalanceSamples =
     exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
@@ -359,7 +364,7 @@ export const GnomadVariantOccurrenceTable = ({
             {showGenomes && (
               <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
             )}
-            {showTotal && <td />}
+            {showTotal && variant.faf95_joint && <td><FilteringAlleleFrequency {...variant.faf95_joint} /></td>}
           </tr>
           {variant.chrom !== 'Y' && (
             <tr>

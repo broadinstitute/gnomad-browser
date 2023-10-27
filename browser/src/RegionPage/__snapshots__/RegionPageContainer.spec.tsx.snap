@@ -672,6 +672,62 @@ exports[`RegionPageContainer with dataset gnomad_r3_non_v2 queries API with corr
 </Query>
 `;
 
+exports[`RegionPageContainer with dataset gnomad_r4 queries API with correct parameters 1`] = `
+<Query
+  errorMessage="Unable to load region"
+  loadingMessage="Loading region"
+  operationName="Region"
+  query="
+  query Region($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+    region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+      genes {
+        gene_id
+        symbol
+        start
+        stop
+        exons {
+          feature_type
+          start
+          stop
+        }
+        transcripts {
+          transcript_id
+          exons {
+            feature_type
+            start
+            stop
+          }
+        }
+      }
+      non_coding_constraints {
+        start
+        stop
+        oe
+        z
+      }
+      short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
+        id
+      }
+    }
+  }
+"
+  success={[Function]}
+  url="/api/"
+  variables={
+    {
+      "chrom": "12",
+      "includeShortTandemRepeats": false,
+      "referenceGenome": "GRCh37",
+      "shortTandemRepeatDatasetId": "gnomad_r3",
+      "start": 345,
+      "stop": 678,
+    }
+  }
+>
+  [Function]
+</Query>
+`;
+
 exports[`RegionPageContainer with dataset gnomad_sv_r2_1 queries API with correct parameters 1`] = `
 <Query
   errorMessage="Unable to load region"

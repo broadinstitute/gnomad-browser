@@ -250,10 +250,12 @@ export type Coverage = {
   over_100: number | null
 }
 
+
 export type Variant = {
   variant_id: string
   reference_genome: ReferenceGenome
   colocated_variants: string[] | null
+  faf95_joint: Faf95
   chrom: string
   pos: number
   ref: string
@@ -377,7 +379,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
           <ResponsiveSection>
             <h2>In Silico Predictors</h2>
             {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
-            <VariantInSilicoPredictors variant={variant} />
+            <VariantInSilicoPredictors variant={variant} datasetId={datasetId} />
           </ResponsiveSection>
         )}
         {hasNonCodingConstraints(datasetId) && (
@@ -445,6 +447,10 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     alt
     caid
     colocated_variants
+    faf95_joint {
+      popmax
+      popmax_population
+    }
     coverage {
       exome {
         mean
@@ -784,12 +790,12 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                 <StatusMessage>
                   {graphQLErrors && graphQLErrors.length
                     ? Array.from(
-                        new Set(
-                          graphQLErrors
-                            .filter((e: any) => !e.message.includes('ClinVar'))
-                            .map((e: any) => e.message)
-                        )
-                      ).join(', ')
+                      new Set(
+                        graphQLErrors
+                          .filter((e: any) => !e.message.includes('ClinVar'))
+                          .map((e: any) => e.message)
+                      )
+                    ).join(', ')
                     : 'Unable to load variant'}
                 </StatusMessage>
               )
