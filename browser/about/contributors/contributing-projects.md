@@ -6,9 +6,16 @@
 - Atrial Fibrillation Genetics Consortium (AFGen)
   - Duke Catheterization Genetics (CATHGEN)
 - Bangladesh Risk of Acute Vascular Events (BRAVE) Study
+- ​​BIOcd-plus
+- BioHeart
 - BioMe Biobank
+- BioVU
+- BipEx
 - Bulgarian Trios
+- CCDG IBD sequencing project
 - COPD-Gene
+- Crohn's & Colitis Foundation (CCFA) Genetics Initiative
+- ENGAGE-TIMI
 - Estonian Genome Center, University of Tartu (EGCUT)
 - Finland-United States Investigation of NIDDM Genetics (FUSION)
 - Finnish Migraine Study
@@ -16,7 +23,9 @@
 - FINN-ADGEN
 - FINRISK
 - Framingham Heart Study
+- Gene Discoveries in Subjects with Crohn’s Disease of African Descent
 - Genetics of Cardiometabolic Health in the Amish
+- Genizon Biobank
 - Génome Québec - Genizon Biobank
 - Genomic Psychiatry Cohort
 - GoT2D
@@ -26,16 +35,26 @@
 - Inflammatory Bowel Disease:
   - 1000IBD project
   - Helsinki University Hospital Finland
+  - IBD Genomic Medicine Consortium (iGenoMed)
+  - IBD: REMIND
+  - IBD: Understanding the biological, clinical, and psychosocial determinants of health outcomes in inflammatory bowel disease
+  - Inflammatory Bowel Disease Sequencing Study
   - NIDDK IBD Genetics Consortium
   - Quebec IBD Genetics Consortium
+  - University of Miami IBD Collaborative
+- IMAGINE
+- International Genome Sample Resource (IGSR)
 - Jackson Heart Study
 - Jewish Genome Project - funded by Bonei Olam
 - Kuopio Alzheimer Study
 - LifeLines Cohort
 - Lung Tissue Research Consortium (LTRC)
+- Material and Information Resources for Inflammatory And Digestive Diseases (M.I.R.I.A.D. Biobank)
 - McLean Program for Neuropsychiatric Research, Psychotic Disorders Division
 - MESTA
 - METabolic Syndrome In Men (METSIM)
+- Mass General Brigham biobank
+- Molecular Genetics of Cognitive Disorders in Northern Finland
 - Multi-Ethnic Study of Atherosclerosis (MESA)
 - Myocardial Infarction Genetics Consortium (MIGen):
   - Leicester Exome Seq
@@ -50,17 +69,37 @@
 - NHGRI CCDG
 - NHLBI-GO Exome Sequencing Project (ESP)
 - NHLBI TOPMed
+- NeuroDev
+- Nurses' Health Study
 - Osaka University Graduate School of Medicine
+- PEGASUS
 - Population Architecture Using Genomics and Epidemiology (PAGE) Consortium
+- PRISM
 - Pritzker Neuropsychiatric Disorders Research Consortium
+- Schizophrenia Exome Sequencing Meta-Analysis (SCHEMA)
+  - SCHEMA - Japan
+  - SCHEMA - Spain
 - Schizophrenia Trios from Taiwan
 - Sequencing Initiative Suomi (SiSu)
+- SHARE
 - SIGMA-T2D
 - SubPopulations and InteRmediate Outcome Measures In COPD Study (SPIROMICS)
+- SUPER Study – “A Finnish study of hereditary mechanisms of psychosis disorders”
 - Swedish Schizophrenia & Bipolar Studies
 - T2D-GENES
+  - BioMe
   - GoDARTS
+  - Framingham Heart Study
 - T2D-SEARCH
 - The Cancer Genome Atlas (TCGA)
+- The Fund for Resources for Psychiatric Research
+- The Genetics of Atrial Fibrillation
+- The Genetics of Cardiovascular Disease: Atrial Fibrillation and Atrioventricular Block
+- The Vanderbilt Atrial Fibrillation Ablation Registry (VAFAR)
+- TheWellcomeTrust Case Control Consortium
+- THL Biobank consent in accordance with the Finnish Biobank Act
+- UCSF atrial fibrillation cohort
+- UKIBDGC - Pharmacogenetic
+- UK BioBank
 - Whole Genome Sequencing in Psychiatric Disorders (WGSPD)
 - Women's Health Initiative (WHI)
