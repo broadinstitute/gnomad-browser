@@ -89,31 +89,6 @@ export default () => (
     {/* Import about blurb from .md file */}
     <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
 
-    {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
-    <SectionHeader>Data Contributors</SectionHeader>
-    <Credits>
-      <CreditsSection
-        // @ts-expect-error
-        width="45%"
-      >
-        <h3 id="principal-investigators">Data Contributors</h3>
-        <PrincipalInvestigators
-          aria-labelledby="principal-investigators"
-          dangerouslySetInnerHTML={{ __html: dataContributorsList.html }}
-        />
-      </CreditsSection>
-      <CreditsSection
-        // @ts-expect-error
-        width="45%"
-      >
-        <h3 id="contributing-projects">Contributing projects</h3>
-        <Contributors
-          aria-labelledby="contributing-projects"
-          dangerouslySetInnerHTML={{ __html: contributingProjectsList.html }}
-        />
-      </CreditsSection>
-    </Credits>
-
     {/* Funding Section */}
     <SectionHeader>Funding</SectionHeader>
     <Credits>
@@ -138,6 +113,31 @@ export default () => (
         <FundingSources
           aria-labelledby="gcbr"
           dangerouslySetInnerHTML={{ __html: gcbrContent.html }}
+        />
+      </CreditsSection>
+    </Credits>
+
+    {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
+    <SectionHeader>Data Contributors</SectionHeader>
+    <Credits>
+      <CreditsSection
+        // @ts-expect-error
+        width="45%"
+      >
+        <h3 id="principal-investigators">Data Contributors</h3>
+        <PrincipalInvestigators
+          aria-labelledby="principal-investigators"
+          dangerouslySetInnerHTML={{ __html: dataContributorsList.html }}
+        />
+      </CreditsSection>
+      <CreditsSection
+        // @ts-expect-error
+        width="45%"
+      >
+        <h3 id="contributing-projects">Contributing projects</h3>
+        <Contributors
+          aria-labelledby="contributing-projects"
+          dangerouslySetInnerHTML={{ __html: contributingProjectsList.html }}
         />
       </CreditsSection>
     </Credits>

@@ -1,15 +1,21 @@
 - Maria Abreu
+- Amina Abubakar
+- Rolf Adolfsson
 - Carlos A Aguilar Salinas
 - Tariq Ahmad
 - Christine M. Albert
 - Nicholette Allred
+- Matthieu Allez
 - David Altshuler
+- Celso Arango López
 - Diego Ardissino
 - Gil Atzmon
 - John Barnard
 - Laurent Beaugerie
 - Gary Beecham
 - Emelia J. Benjamin
+- Charles Bernstein
+- Douglas Blackwood
 - Michael Boehnke
 - Lori Bonnycastle
 - Erwin Bottinger
@@ -19,6 +25,7 @@
 - John Chambers
 - Juliana Chan
 - Daniel Chasman
+- Lea Ann Chen
 - Rex Chisholm
 - Judy Cho
 - Rajiv Chowdhury
@@ -26,11 +33,14 @@
 - Wendy Chung
 - Bruce Cohen
 - Adolfo Correa
+- Aiden Corvin
+- Nick Craddock
 - Dana Dabelea
 - Mark Daly
 - John Danesh
 - Dawood Darbar
 - Joshua Denny
+- Richard H. Duerr
 - Ravindranath Duggirala
 - Josée Dupuis
 - Patrick T. Ellinor
@@ -39,18 +49,23 @@
 - Tõnu Esko
 - Martt Färkkilä
 - Diane Fatkin
+- William Faubion
+- Gemma Figtree
 - Jose Florez
 - Andre Franke
+- Michel Georges
 - Gad Getz
 - David Glahn
 - Ben Glaser
 - Stephen Glatt
+- Fernando Goes
 - David Goldstein
 - Clicerio Gonzalez
 - Leif Groop
 - Christopher Haiman
 - Ira Hall
 - Craig Hanis
+- James Hanyok
 - Matthew Harms
 - Mikko Hiltunen
 - Matti Holi
@@ -58,6 +73,7 @@
 - Chaim Jalas
 - Mikko Kallela
 - Jaakko Kaprio
+- Elizabeth W. Karlson
 - Sekar Kathiresan
 - Eimear Kenny
 - Bong-Jo Kim
@@ -67,13 +83,18 @@
 - Seppo Koskinen
 - Harlan M. Krumholz
 - Subra Kugathasan
+- Juozas Kupcinskas
 - Soo Heon Kwak
 - Markku Laakso
+- Mikael Landén
 - Terho Lehtimäki
+- James Lewis
 - Ruth Loos
+- Edouard Louis
 - Steven A. Lubitz
 - Ronald Ma
 - Daniel MacArthur
+- Dara Manoach
 - Gregory M. Marcus
 - Jaume Marrugat
 - Kari Mattila
@@ -82,48 +103,69 @@
 - Jacob McCauley
 - Dermot McGovern
 - Ruth McPherson
+- Andrew McQuillian
 - James Meigs
 - Olle Melander
 - Deborah Meyers
 - Lili Milani
 - Braxton Mitchell
+- Paul Moayyedi
+- Sanghamitra Mohanty
 - Aliya Naheed
+- Andrea Natale
 - Saman Nazarian
 - Ben Neale
+- Charles R Newton
 - Peter Nilsson
 - Michael O'Donovan
 - Yuki Okada
 - Dost Ongur
+- Roel Ophoff
 - Lorena Orozco
+- Willem Ouwehand
 - Michael Owen
+- Nick Owen
 - Colin Palmer
 - Aarno Palotie
+- Mara Parellada
 - Kyong Soo Park
 - Carlos Pato
+- Nancy Pedersen
+- Danielle Posthuma
 - Ann Pulver
 - Dan Rader
 - Nazneen Rahman
+- Andreas Reif
 - Alex Reiner
 - Anne Remes
 - Stephen Rich
 - John D. Rioux
 - Samuli Ripatti
+- Jason Roberts
+- Elise Robinson
 - Dan Roden
 - Jerome I. Rotter
+- Guy Rouleau
+- Christian Ruff
+- Marc Sabatine
 - Danish Saleheen
 - Veikko Salomaa
 - Nilesh Samani
+- Akira Sawa
 - Jeremiah Scharf
 - Heribert Schunkert
 - Svati Shah
 - Moore Shoemaker
 - Tai Shyong
 - Edwin K. Silverman
+- Jurgita Skieceviciene
 - Pamela Sklar
 - Gustav Smith
+- Jordan Smoller
 - Hilkka Soininen
 - Harry Sokol
 - Tim Spector
+- David St Clair
 - Nathan Stitziel
 - Patrick Sullivan
 - Jaana Suvisaari
@@ -135,9 +177,12 @@
 - Teresa Tusie Luna
 - Erkki Vartiainen
 - Marquis Vawter
+- Severine Vermeire
+- Elisabet Vilella
 - James Ware
 - Hugh Watkins
 - Rinse Weersma
 - Maija Wessman
 - James Wilson
 - Ramnik Xavier
+- Robert Yolken
