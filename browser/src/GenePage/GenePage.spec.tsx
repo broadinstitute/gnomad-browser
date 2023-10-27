@@ -124,6 +124,7 @@ forDatasetsMatching(svRegexp, 'GenePage with SV dataset "%s"', (datasetId) => {
     )
     expect(tree).toMatchSnapshot()
   })
+})
 
   forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => {
     test('has no unexpected changes', () => {
@@ -143,8 +144,8 @@ forDatasetsMatching(svRegexp, 'GenePage with SV dataset "%s"', (datasetId) => {
       )
       expect(tree).toMatchSnapshot()
     })
-
-  test('queries the API for region coverage with the correct parameters', async () => {
+    
+    test('queries the API for region coverage with the correct parameters', async () => {
     const gene = geneFactory.build()
     setMockApiResponses({
       StructuralVariantsInGene: () => ({

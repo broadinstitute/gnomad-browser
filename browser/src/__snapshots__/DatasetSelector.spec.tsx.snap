@@ -434,13 +434,571 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "exac" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=exac"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      ExAC v1.0
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -1111,6 +1669,1146 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected changes 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: #cbd3da;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: none;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: #cbd3da;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: none;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1550,13 +3248,571 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -2227,6 +4483,30 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -2666,13 +4946,571 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1_controls"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1 (controls)
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -3343,6 +6181,30 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -3782,13 +6644,571 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1_non_cancer"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1 (non-cancer)
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -4459,6 +7879,30 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -4898,13 +8342,571 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1_non_neuro"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1 (non-neuro)
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -5575,6 +9577,30 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -6014,13 +10040,571 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
-      href="/?dataset=gnomad_sv_r2_1"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD SVs v2.1
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1_non_topmed"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1 (non-TOPMed)
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
     </a>
   </li>
   <li
@@ -6687,6 +11271,30 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
               className="c8"
             >
               5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
             </div>
           </a>
         </li>
@@ -7807,6 +12415,30 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -8919,6 +13551,30 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
               className="c8"
             >
               5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
             </div>
           </a>
         </li>
@@ -10039,6 +14695,30 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -11151,6 +15831,30 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
               className="c8"
             >
               5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
             </div>
           </a>
         </li>
@@ -12271,6 +16975,30 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -13387,6 +18115,1146 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected changes 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: #cbd3da;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: none;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_cnv_r4"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD exome CNVs v4.0
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -13826,7 +19694,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
+      data-item="current_sv_or_cnv_dataset"
       href="/?dataset=gnomad_sv_r2_1"
       onBlur={[Function]}
       onClick={[Function]}
@@ -14503,6 +20371,588 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: #cbd3da;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: none;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_sv_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD SVs v2.1
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -14942,7 +21392,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
+      data-item="current_sv_or_cnv_dataset"
       href="/?dataset=gnomad_sv_r2_1_controls"
       onBlur={[Function]}
       onClick={[Function]}
@@ -15619,6 +22069,588 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
           </a>
         </li>
       </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: #cbd3da;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: none;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_sv_r2_1_controls"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD SVs v2.1 (controls)
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
     </ul>
   </li>
 </ul>
@@ -16058,7 +23090,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
   >
     <a
       className="c2 c3"
-      data-item="current_sv_dataset"
+      data-item="current_sv_or_cnv_dataset"
       href="/?dataset=gnomad_sv_r2_1_non_neuro"
       onBlur={[Function]}
       onClick={[Function]}
@@ -17847,6 +24879,588 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
               className="c8"
             >
               5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpected changes when showing all possible datasets 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.375em 0.25em;
+  color: #000;
+  outline: none;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited {
+  color: #000;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+}
+
+.c9 .c2 {
+  background: #cbd3da;
+}
+
+.c9:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c9:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c1 {
+  position: relative;
+  display: inline-block;
+}
+
+.c1 .c2 {
+  background: none;
+}
+
+.c1:first-child .c2 {
+  padding-left: 0.75em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c1:last-child .c2 {
+  padding-right: 0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c4 img {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c5 {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  display: none;
+  width: 220px;
+  padding: 0.5em 0;
+  border: 1px solid #6c757d;
+  margin: 0;
+  background: #f8f9fa;
+  list-style-type: none;
+}
+
+.c7 {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+  color: #000;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c7:visited {
+  color: #000;
+}
+
+.c7:active,
+.c7:focus,
+.c7:hover {
+  background: rgba(66,139,202,0.25);
+}
+
+.c7:focus {
+  outline: 2px solid #428bca;
+}
+
+.c8 {
+  margin-top: 0.125em;
+  margin-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@media (max-width:1200px) {
+  .c5 {
+    right: auto;
+    left: -100px;
+  }
+}
+
+@media (max-width:900px) {
+  .c5 {
+    left: -150px;
+  }
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_short_variant"
+      href="/?dataset=gnomad_r2_1"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD v2.1.1
+    </a>
+  </li>
+  <li
+    className="c1"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_short_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3"
+            href="/?dataset=gnomad_r3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2
+            <div
+              className="c8"
+            >
+              76,156 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_cancer"
+            href="/?dataset=gnomad_r3_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-cancer)
+            <div
+              className="c8"
+            >
+              74,023 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_neuro"
+            href="/?dataset=gnomad_r3_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-neuro)
+            <div
+              className="c8"
+            >
+              67,442 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_v2"
+            href="/?dataset=gnomad_r3_non_v2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-v2)
+            <div
+              className="c8"
+            >
+              57,344 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_non_topmed"
+            href="/?dataset=gnomad_r3_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              40,433 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r3_controls_and_biobanks"
+            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v3.1.2 (controls/biobanks)
+            <div
+              className="c8"
+            >
+              16,465 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1"
+            href="/?dataset=gnomad_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1
+            <div
+              className="c8"
+            >
+              141,456 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_topmed"
+            href="/?dataset=gnomad_r2_1_non_topmed"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-TOPMed)
+            <div
+              className="c8"
+            >
+              135,743 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_cancer"
+            href="/?dataset=gnomad_r2_1_non_cancer"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-cancer)
+            <div
+              className="c8"
+            >
+              134,187 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_non_neuro"
+            href="/?dataset=gnomad_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              114,704 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_r2_1_controls"
+            href="/?dataset=gnomad_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v2.1.1 (controls)
+            <div
+              className="c8"
+            >
+              60,146 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="exac"
+            href="/?dataset=exac"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            ExAC v1.0
+            <div
+              className="c8"
+            >
+              60,706 samples
+            </div>
+          </a>
+        </li>
+      </li>
+    </ul>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      className="c2 c3"
+      data-item="current_sv_or_cnv_dataset"
+      href="/?dataset=gnomad_sv_r2_1_non_neuro"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      gnomAD SVs v2.1 (non-neuro)
+    </a>
+  </li>
+  <li
+    className="c9"
+  >
+    <a
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-label="More datasets"
+      className="c2 c3"
+      data-item="other_structural_variant"
+      href="/"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+    >
+      <span
+        className="c4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+      </span>
+    </a>
+    <ul
+      className="c5"
+    >
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh37
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1"
+            href="/?dataset=gnomad_sv_r2_1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1
+            <div
+              className="c8"
+            >
+              10,847 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_non_neuro"
+            href="/?dataset=gnomad_sv_r2_1_non_neuro"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (non-neuro)
+            <div
+              className="c8"
+            >
+              8,342 samples
+            </div>
+          </a>
+        </li>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_sv_r2_1_controls"
+            href="/?dataset=gnomad_sv_r2_1_controls"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v2.1 (controls)
+            <div
+              className="c8"
+            >
+              5,192 samples
+            </div>
+          </a>
+        </li>
+      </li>
+      <li>
+        <div
+          className="c6"
+        >
+          GRCh38
+        </div>
+        <li>
+          <a
+            className="-Link c7"
+            data-item="gnomad_cnv_r4"
+            href="/?dataset=gnomad_cnv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD exome CNVs v4.0
+            <div
+              className="c8"
+            >
+              464,566 samples
             </div>
           </a>
         </li>
