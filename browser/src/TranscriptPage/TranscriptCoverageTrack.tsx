@@ -99,6 +99,7 @@ const TranscriptCoverageTrack = ({
             datasets={coverageConfig}
             filenameForExport={() => `${transcriptId}_coverage`}
             height={190}
+            datasetId={datasetId}
           />
         )
       }}
