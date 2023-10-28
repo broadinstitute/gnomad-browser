@@ -98,6 +98,7 @@ const GeneCoverageTrack = ({
             datasets={coverageConfig}
             filenameForExport={() => `${geneId}_coverage`}
             height={190}
+            datasetId={datasetId}
           />
         )
       }}
