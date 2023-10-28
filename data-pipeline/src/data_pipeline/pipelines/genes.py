@@ -36,14 +36,14 @@ pipeline = Pipeline()
 ###############################################
 
 GENCODE_V19_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz"
-GENCODE_V35_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_35/gencode.v35.annotation.gtf.gz"
+GENCODE_V39_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.annotation.gtf.gz"
 
 pipeline.add_download_task(
     "download_gencode_v19_gtf", GENCODE_V19_URL, "/external_sources/" + GENCODE_V19_URL.split("/")[-1]
 )
 
 pipeline.add_download_task(
-    "download_gencode_v35_gtf", GENCODE_V35_URL, "/external_sources/" + GENCODE_V35_URL.split("/")[-1]
+    "download_gencode_v39_gtf", GENCODE_V39_URL, "/external_sources/" + GENCODE_V39_URL.split("/")[-1]
 )
 
 HGNC_COLUMNS = [
@@ -77,7 +77,7 @@ pipeline.add_task(
     "prepare_grch38_genes",
     prepare_genes,
     "/genes/genes_grch38_base.ht",
-    {"gencode_path": pipeline.get_task("download_gencode_v35_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
+    {"gencode_path": pipeline.get_task("download_gencode_v39_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
     {"reference_genome": "GRCh38"},
 )
 
