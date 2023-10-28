@@ -79,9 +79,8 @@ export default () => (
     </List>
 
     <p>
-      Please note that gnomAD v2.1.1 and v3.1.2 have substantially different but overlapping sample
-      compositions and are on different genome builds. For more information, see{' '}
-      <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
+      Please note that the gnomAD v3 genomes are now part of gnomAD v4.
+      For more information, see{' '}<Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
         &quot;Should I switch to the latest version of gnomAD?&quot;
       </Link>
     </p>
@@ -105,12 +104,12 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3.1.2 variant:{' '}
+        Variant:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
             pathname: '/variant/1-55051215-G-GA',
-            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
           }}
         >
           1-55051215-G-GA
@@ -118,7 +117,7 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3 mitochondrial variant:{' '}
+        Mitochondrial variant:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
@@ -131,10 +130,9 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
-          short tandem repeat
+        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4">
+          Short tandem repeat
         </ExternalLink>{' '}
         locus:{' '}
         <Link
@@ -149,33 +147,7 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v2.1.1 variant:{' '}
-        <Link
-          preserveSelectedDataset={false}
-          to={{
-            pathname: '/variant/1-55516888-G-GA',
-            search: queryString.stringify({ dataset: 'gnomad_r2_1' }),
-          }}
-        >
-          1-55516888-G-GA
-        </Link>
-      </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <ListItem>
-        gnomAD v2 structural variant:{' '}
-        <Link
-          preserveSelectedDataset={false}
-          to={{
-            pathname: '/variant/DUP_2_5708',
-            search: queryString.stringify({ dataset: 'gnomad_sv_r2_1' }),
-          }}
-        >
-          DUP_2_5708
-        </Link>
-      </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <ListItem>
-        Variant co-occurrence:{' '}
+        Variant co-occurrence (gnomAD v2):{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
