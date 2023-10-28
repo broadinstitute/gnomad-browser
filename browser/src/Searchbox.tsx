@@ -48,7 +48,7 @@ const getDefaultSearchDataset = (selectedDataset: any) => {
       return 'gnomad_cnv_r4'
     }
   }
-  return 'gnomad_r2_1'
+  return 'gnomad_r4'
 }
 
 export default withRouter((props: any) => {
