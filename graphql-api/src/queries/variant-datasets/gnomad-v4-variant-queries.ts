@@ -87,6 +87,10 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     filters.push('AC0')
   }
 
+  if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
+    filters.push('AC0')
+  }
+
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
   let { ancestry_groups: genome_ancestry_groups } = variant.genome.freq[subset]
@@ -234,17 +238,18 @@ const shapeVariantSummary = (subset: any, context: any) => {
 
     const filters = variant.genome.filters || []
 
+    const hasExomeVariant = variant.exome.freq[subset].ac_raw
+    const hasGenomeVariant = variant.genome.freq[subset].ac_raw
+
+
     if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
       filters.push('AC0')
     }
 
-    // console.log(variant.exome, variant.genome)
+    if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
+      filters.push('AC0')
+    }
 
-    const hasExomeVariant = variant.exome.freq[subset].ac_raw
-    const hasGenomeVariant = variant.genome.freq[subset].ac_raw
-
-    // console.log(hasGenomeVariant, variant.exome.freq.all)
-    //
     const hasJointFafData = variant.faf95_joint && variant.faf99_joint
 
     return {
@@ -391,7 +396,7 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
       'value.exome.filters',
       'value.genome.filters',
       'value.alleles',
-      'value.caid',
+      // 'value.caid',
       'value.locus',
       'value.flags',
       'value.rsids',
@@ -429,6 +434,18 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
 // ================================================================================================
 
 const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: any) => {
+
+  subset = "all"
+
+  let exomeSubset = "all"
+  let genomeSubset = "all"
+
+  if (subset === "tgp" || subset === "hgdp") {
+    genomeSubset = subset
+  }
+  if (subset === "non_ukb") {
+    exomeSubset = "non_ukb"
+  }
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
@@ -456,10 +473,13 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     type: '_doc',
     size: 10000,
     _source: [
-      `value.genome.freq.${subset}`,
+      `value.exome.freq.${exomeSubset}`,
+      `value.genome.freq.${genomeSubset}`,
+      'value.exome.filters',
+      'value.genome.filters',
       'value.genome.filters',
       'value.alleles',
-      'value.caid',
+      // 'value.caid',
       'value.locus',
       'value.flags',
       'value.rsids',
