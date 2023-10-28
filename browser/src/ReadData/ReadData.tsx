@@ -10,6 +10,7 @@ import {
   hasNonCodingReadData,
   readsDatasetId as getReadsDatasetId,
   readsIncludeLowQualityGenotypes,
+  isV4,
 } from '@gnomad/dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -246,16 +247,16 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   loadAllTracks() {
     const { tracksAvailable, tracksLoaded } = this.state
 
-    ;['exome', 'genome'].forEach((exomeOrGenome) => {
-      ;['het', 'hom', 'hemi'].forEach((category) => {
-        const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
-        const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
+      ;['exome', 'genome'].forEach((exomeOrGenome) => {
+        ;['het', 'hom', 'hemi'].forEach((category) => {
+          const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
+          const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
-        for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
-          this.loadNextTrack(exomeOrGenome, category)
-        }
+          for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
+            this.loadNextTrack(exomeOrGenome, category)
+          }
+        })
       })
-    })
   }
 
   renderLoadMoreButton(exomeOrGenome: any, category: any) {
@@ -288,42 +289,62 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
 
     const locus = `${chrom}:${start}-${stop}`
 
-    const browserConfig =
+    let browserConfig =
       referenceGenome === 'GRCh37'
         ? {
-            locus,
-            reference: {
-              fastaURL: '/reads/reference/Homo_sapiens_assembly19.fasta',
-              id: 'hg19',
-              indexURL: '/reads/reference/Homo_sapiens_assembly19.fasta.fai',
+          locus,
+          reference: {
+            fastaURL: '/reads/reference/Homo_sapiens_assembly19.fasta',
+            id: 'hg19',
+            indexURL: '/reads/reference/Homo_sapiens_assembly19.fasta.fai',
+          },
+          tracks: [
+            {
+              displayMode: 'SQUISHED',
+              indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
+              name: 'GENCODE v19',
+              removable: false,
+              url: '/reads/reference/gencode.v19.bed.gz',
             },
-            tracks: [
-              {
-                displayMode: 'SQUISHED',
-                indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
-                name: 'GENCODE v19',
-                removable: false,
-                url: '/reads/reference/gencode.v19.bed.gz',
-              },
-            ],
-          }
+          ],
+        }
         : {
-            locus,
-            reference: {
-              fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
-              id: 'hg38',
-              indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+          locus,
+          reference: {
+            fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
+            id: 'hg38',
+            indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+          },
+          tracks: [
+            {
+              displayMode: 'SQUISHED',
+              indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
+              name: 'GENCODE v35',
+              removable: false,
+              url: '/reads/reference/gencode.v35.bed.gz',
             },
-            tracks: [
-              {
-                displayMode: 'SQUISHED',
-                indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
-                name: 'GENCODE v35',
-                removable: false,
-                url: '/reads/reference/gencode.v35.bed.gz',
-              },
-            ],
-          }
+          ],
+        }
+
+    if (isV4(datasetId)) {
+      browserConfig = {
+        locus,
+        reference: {
+          fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
+          id: 'hg38',
+          indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+        },
+        tracks: [
+          {
+            displayMode: 'SQUISHED',
+            indexURL: '/reads/reference/gencode.v39.annotation.bed.bgz.tbi',
+            name: 'GENCODE v39',
+            removable: false,
+            url: '/reads/reference/gencode.v39.annotation.bed.bgz',
+          },
+        ],
+      }
+    }
 
     return (
       <div>
@@ -406,18 +427,18 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
 
 const interleaveReads = (allVariantReads: any) => {
   let reads: any = []
-  ;['het', 'hom', 'hemi'].forEach((category) => {
-    const allReadsInCategory = allVariantReads.map((variantReads: any) =>
-      variantReads.filter((read: any) => read.category === category)
-    )
-    while (allReadsInCategory.some((variantReads: any) => variantReads.length)) {
-      reads = reads.concat(
-        allReadsInCategory
-          .map((variantReads: any) => variantReads.shift())
-          .filter((read: any) => read !== undefined)
+    ;['het', 'hom', 'hemi'].forEach((category) => {
+      const allReadsInCategory = allVariantReads.map((variantReads: any) =>
+        variantReads.filter((read: any) => read.category === category)
       )
-    }
-  })
+      while (allReadsInCategory.some((variantReads: any) => variantReads.length)) {
+        reads = reads.concat(
+          allReadsInCategory
+            .map((variantReads: any) => variantReads.shift())
+            .filter((read: any) => read !== undefined)
+        )
+      }
+    })
   return reads
 }
 
@@ -437,11 +458,11 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   const query = `
     query ReadData {
       ${variantIds
-        .map(
-          (
-            variantId,
-            i
-          ) => `variant_${i}: variantReads(dataset: ${readsDatasetId}, variantId: "${variantId}") {
+      .map(
+        (
+          variantId,
+          i
+        ) => `variant_${i}: variantReads(dataset: ${readsDatasetId}, variantId: "${variantId}") {
         exome {
           bamPath
           category
@@ -455,8 +476,8 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
           readGroup
         }
       }`
-        )
-        .join('\n')}
+      )
+      .join('\n')}
     }
   `
 
@@ -493,9 +514,9 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
           positionDifference > 80
             ? [minPosition, maxPosition]
             : [
-                minPosition - Math.ceil((80 - positionDifference) / 2),
-                maxPosition + Math.floor((80 - positionDifference) / 2),
-              ]
+              minPosition - Math.ceil((80 - positionDifference) / 2),
+              maxPosition + Math.floor((80 - positionDifference) / 2),
+            ]
 
         // Concatenate reads from all variants
         const exomeReads = interleaveReads(
@@ -510,7 +531,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
                 label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${
                   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                   categoryCount[category]
-                }`,
+                  }`,
               }
             })
           })
@@ -528,7 +549,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
                 label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${
                   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                   categoryCount[category]
-                }`,
+                  }`,
               }
             })
           })
