@@ -9,10 +9,6 @@ const PREDICTORS = {
   revel: { label: 'REVEL', warningThreshold: 0.5, dangerThreshold: 0.75 },
   primate_ai: { label: 'PrimateAI', warningThreshold: 0.5, dangerThreshold: 0.7 },
   splice_ai: { label: 'SpliceAI', warningThreshold: 0.5, dangerThreshold: 0.8 },
-  pangolin: { label: "Pangolin" },
-  sift: { label: "SIFT" },
-  polyphen: { label: "PolyPhen" },
-  phylop: { label: "phyloP" },
 }
 
 const FLAG_DESCRIPTIONS = {
@@ -20,6 +16,21 @@ const FLAG_DESCRIPTIONS = {
   revel: { has_duplicate: 'This variant has multiple REVEL scores' },
   primate_ai: { has_duplicate: 'This variant has multiple PrimateAI scores' },
   splice_ai: { has_duplicate: 'This variant has multiple SpliceAI scores' },
+}
+
+const PREDICTORS_V4 = {
+  cadd_phred: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1 },
+  revel: { label: 'REVEL', warningThreshold: 0.644, dangerThreshold: 0.773 },
+  splice_ai: { label: 'SpliceAI', warningThreshold: 0.2, dangerThreshold: 0.5 },
+  pangolin: { label: 'Pangolin', warningThreshold: 0.2, dangerThreshold: 0.5 },
+  phylop: { label: 'phyloP', warningThreshold: 7.367, dangerThreshold: 9.741 },
+  sift: { label: 'SIFT (max)', warningThreshold: 0.001, dangerThreshold: 0 },
+  polyphen: { label: 'PolyPhen (max)', warningThreshold: 0.978, dangerThreshold: 0.999 },
+}
+
+const FLAG_DESCRIPTIONS_V4 = {
+  // polyphen: "We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts."
+  // sift: "We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts."
 }
 
 const Marker = styled.span`
@@ -52,6 +63,9 @@ type Props = {
 }
 
 const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
+  const predictors = isV4(datasetId) ? PREDICTORS_V4 : PREDICTORS
+  const flag_descriptions = isV4(datasetId) ? FLAG_DESCRIPTIONS_V4 : FLAG_DESCRIPTIONS
+
   return (
     <div>
       {!isV4(datasetId) && <p>
@@ -62,7 +76,7 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
       <List>
         {variant.in_silico_predictors && variant.in_silico_predictors.map(({ id, value, flags }) => {
           // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-          const predictor = PREDICTORS[id]
+          const predictor = predictors[id]
 
           let color = null
           const parsedValue = parseFloat(value)
@@ -88,7 +102,7 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
                   <p style={{ marginTop: '0.5em' }}>
                     <Badge level="info">Note</Badge>{' '}
                     {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                    {flags.map((flag) => FLAG_DESCRIPTIONS[id][flag] || flag).join(', ')}
+                    {flags.map((flag) => flag_descriptions[id][flag] || flag).join(', ')}
                   </p>
                 )}
               </ListItem>
@@ -102,7 +116,7 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
                 <p style={{ marginTop: '0.5em' }}>
                   <Badge level="info">Note</Badge>{' '}
                   {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                  {flags.map((flag) => FLAG_DESCRIPTIONS[id][flag] || flag).join(', ')}
+                  {flags.map((flag) => flag_descriptions[id][flag] || flag).join(', ')}
                 </p>
               )}
             </ListItem>
