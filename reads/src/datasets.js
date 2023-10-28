@@ -1,4 +1,16 @@
 const variantDatasets = {
+  gnomad_r4: {
+    exomes: {
+      readsDirectory: '/readviz/datasets/gnomad_r4',
+      publicPath: '/reads/gnomad_r4/exomes',
+      // meta: 's42811_gs50_gn857',
+    },
+    genomes: {
+      readsDirectory: '/readviz/datasets/gnomad_r3_1',
+      publicPath: '/reads/gnomad_r3/genomes',
+      meta: 's42811_gs50_gn857',
+    },
+  },
   gnomad_r3: {
     genomes: {
       readsDirectory: '/readviz/datasets/gnomad_r3_1',
