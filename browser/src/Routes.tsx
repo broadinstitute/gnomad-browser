@@ -35,7 +35,7 @@ const VariantCooccurrencePage = lazy(
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
 const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
 
-const defaultDataset = 'gnomad_r2_1'
+const defaultDataset = 'gnomad_r4'
 
 const Routes = () => {
   // ==================================================================================
