@@ -1,4 +1,4 @@
-FROM node:14.15.2-alpine
+FROM --platform=linux/amd64 node:14.15.2-alpine
 
 RUN mkdir /app && chown node:node /app
 
