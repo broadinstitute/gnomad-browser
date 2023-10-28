@@ -440,6 +440,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad2Subsets = true,
     includeGnomad3 = true,
     includeGnomad3Subsets = true,
+    includeGnomad4 = true,
   } = datasetOptions
 
   const datasetLink = (datasetId: any) => ({
@@ -468,6 +469,17 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         children: [] as ChildDataset[],
       },
     ]
+
+    if (includeGnomad4) {
+      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r4',
+        label: labelForDataset('gnomad_r4'),
+        url: datasetLink('gnomad_r4'),
+        description: `${sampleCounts.gnomad_r4.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r4'),
+      })
+    }
 
     if (includeGnomad3) {
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.

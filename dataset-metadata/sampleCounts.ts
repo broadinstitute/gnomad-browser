@@ -33,7 +33,7 @@ const sampleCounts = [
     [`gnomad_sv_r2_1_${subset}`]: gnomadSvV2SubsetSampleCounts[subset],
   })),
   { gnomad_sv_r4: { total: 63046 } },
-  { gnomad_r4: gnomadV4SubsetSampleCounts },
+  { gnomad_r4: gnomadV4SampleCounts },
   ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
     [`gnomad_v4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
   })),
