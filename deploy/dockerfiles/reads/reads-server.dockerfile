@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine
+FROM --platform=linux/amd64 nginx:stable-alpine
 
 COPY deploy/dockerfiles/reads/reads.nginx.conf /etc/nginx/reads.nginx.conf.template
 
