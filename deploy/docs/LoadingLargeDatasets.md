@@ -55,7 +55,7 @@ Then move ES shards from temporary pods onto permanent pods.
 
   ```
   curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
-  {"index.routing.allocation.require._name": "gnomad-es-data-blue"}
+  {"index.routing.allocation.require._name": "gnomad-es-data-blue*"}
   EOF
   ```
 
