@@ -7,6 +7,7 @@ import { AxisLeft } from '@vx/axis'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 import { Button, Select } from '@gnomad/ui'
+import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
 
 const TopPanel = styled.div`
   display: flex;
@@ -88,6 +89,7 @@ type OwnCoverageTrackProps = {
   filenameForExport?: (...args: any[]) => any
   height?: number
   maxCoverage?: number
+  datasetId: DatasetId,
 }
 
 type CoverageTrackState = any
@@ -105,7 +107,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   plotElement: any
 
   state = {
-    selectedMetric: 'over_30',
+    selectedMetric: isV4(this.props.datasetId) ? "over_30" : "mean",
   }
 
   plotRef = (el: any) => {
@@ -157,7 +159,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   renderBars({ isPositionDefined, scaleCoverageMetric, scalePosition, totalBases, width }: any) {
-    const { datasets, height } = this.props
+    const { datasets, height, datasetId } = this.props
     const { selectedMetric } = this.state
 
     const barWidth = width / totalBases - 1
