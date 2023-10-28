@@ -14,7 +14,6 @@ const sampleCounts = {
     XY: 37273,
   },
   genomesTotal: 76215,
-  total: 76215,
   exomes: {
     afr: 16740,
     amr: 22362,
@@ -29,7 +28,6 @@ const sampleCounts = {
     XY: 363624,
   },
   exomesTotal: 730947,
-  total: 730947,
   subsets: {
     non_ukb: {
       exomes: {
@@ -49,5 +47,6 @@ const sampleCounts = {
       total: 314392,
     },
   },
+  total: 807162,
 }
 module.exports = sampleCounts

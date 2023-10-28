@@ -35,7 +35,7 @@ const sampleCounts = [
   })),
   { gnomad_sv_r4: { total: 63046 } },
   { gnomad_cnv_r4: gnomadCnvV4SubsetSampleCounts }, // TODO: should not be called "subset"
-  { gnomad_r4: gnomadV4SubsetSampleCounts },
+  { gnomad_r4: gnomadV4SampleCounts },
   ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
     [`gnomad_v4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
   })),
