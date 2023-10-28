@@ -43,12 +43,13 @@ def generate_iso_timestamp_for_filename():
 
 
 # output_sub_dir = f"gnomad_v4_{generate_iso_timestamp_for_filename()}"
-output_sub_dir = "gnomad_v4_20231027T135454"
+# output_sub_dir = "gnomad_v4_20231027T135454"
+output_sub_dir = "gnomad_v4_20231027T203139"
 
 config = PipelineConfig(
     name=pipeline_name,
-    input_root="gs://gnomad-matt-data-pipeline/2023-10-19/inputs",
-    output_root="gs://gnomad-matt-data-pipeline/2023-10-19/outputs",
+    input_root="gs://gnomad-v4-data-pipeline/input",
+    output_root="gs://gnomad-v4-data-pipeline/output",
 )
 
 
@@ -59,8 +60,10 @@ pipeline.add_task(
     task_function=prepare_gnomad_v4_variants,
     output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
     inputs={
-        "exome_variants_path": "variants/gnomad.exomes.v4.0.sites.pcsk9.ht",
-        "genome_variants_path": "variants/gnomad.genomes.v4.0.sites.pcsk9.ht",
+        # "exome_variants_path": "gs://gnomad-matt-data-pipeline/2023-10-19/inputs/variants/gnomad.exomes.v4.0.sites.pcsk9.ht",
+        # "genome_variants_path": "gs://gnomad-matt-data-pipeline/2023-10-19/inputs/variants/gnomad.genomes.v4.0.sites.pcsk9.ht",
+        "exome_variants_path": "gs://gnomad-matt-data-pipeline/exomes-2023-10-27/gnomad.exomes.v4.0.sites.ht",
+        "genome_variants_path": "gs://gnomad-matt-data-pipeline/genomes-2023-10-27/gnomad.genomes.v4.0.sites.ht",
     },
 )
 
@@ -71,8 +74,8 @@ pipeline.add_task(
     inputs=(
         {
             "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
-            "exome_coverage_path": coverage_pipeline.get_output("exome_coverage"),
-            "genome_coverage_path": coverage_pipeline.get_output("genome_coverage"),
+            "exome_coverage_path": "gs://gnomad-matt-data-pipeline/gnomad_v4_coverage_test_2023-10-12-1142/gnomad_v4_exome_coverage.ht",
+            "genome_coverage_path": "gs://gnomad-browser-data-pipeline/output/gnomad_v3/gnomad_v3_genome_coverage.ht",
             # "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
         }
     ),
