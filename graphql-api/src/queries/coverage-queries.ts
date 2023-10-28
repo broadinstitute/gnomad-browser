@@ -8,7 +8,7 @@ import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpe
 const COVERAGE_INDICES = {
   gnomad_r4: {
     exome: 'gnomad_v4_exome_coverage',
-    genome: 'gnomad_v4_genome_coverage',
+    genome: 'gnomad_v3_genome_coverage',
   },
   gnomad_r3: {
     exome: null,
