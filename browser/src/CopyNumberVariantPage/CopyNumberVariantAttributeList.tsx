@@ -50,8 +50,6 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
       {(variant.sn === 0 ? 0 : variant.sc / variant.sn).toPrecision(4)}
     </AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Quality score">{variant.qual}</AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Position">
       <Link to={`/region/${variant.chrom}-${variant.pos}-${variant.end}`}>
         {variant.chrom}:{variant.pos}-{variant.end}
