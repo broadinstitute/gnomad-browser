@@ -63,9 +63,8 @@ const copyNumberVariantTableColumns = [
       const variantType = variant.type
       if (variantType === 'DEL') {
         return 'deletion'
-      } else {
-        return 'duplication'
       }
+        return 'duplication'
     },
     render: renderType,
   },
