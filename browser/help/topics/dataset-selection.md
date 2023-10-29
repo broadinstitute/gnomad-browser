@@ -57,8 +57,5 @@ The following subsets from previous versions are currently available, but access
 - _gnomAD SVs v2.1 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study._
 - _gnomAD SVs v2.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease._
 
-### Copy number variants
-
-+ gnomAD exome CNVs v4.0: Copy number variant (CNV) calls generated from a set of ES samples that largely overlaps those in gnomAD v4. This current CNV release includes 464,566  unrelated exomes
 
 The data selection drop-down also updates accompanying data such as the coverage plot, constraint statistics, regional constraint, and variant positional distribution plot.
