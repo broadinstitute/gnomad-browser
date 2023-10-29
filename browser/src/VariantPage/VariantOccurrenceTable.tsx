@@ -196,8 +196,6 @@ export const GnomadVariantOccurrenceTable = ({
 }: GnomadVariantOccurrenceTableProps) => {
   const showTotal = showExomes && showGenomes
 
-  console.log(variant.faf95_joint)
-
   const isPresentInExome = Boolean(variant.exome)
   const isPresentInGenome = Boolean(variant.genome)
 
