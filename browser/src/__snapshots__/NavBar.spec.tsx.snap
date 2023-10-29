@@ -265,6 +265,11 @@ exports[`NavBar has no unexpected changes 1`] = `
         >
           gnomAD SVs v4
         </option>
+        <option
+          value="gnomad_cnv_r4"
+        >
+          gnomAD exome CNVs v4.0
+        </option>
       </optgroup>
       <optgroup
         label="GRCh37"

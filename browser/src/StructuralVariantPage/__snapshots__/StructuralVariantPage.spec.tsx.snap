@@ -93,6 +93,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -684,6 +701,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -1279,6 +1313,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -1871,6 +1922,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -2442,6 +2510,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -3019,6 +3104,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -3588,6 +3690,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -4162,6 +4281,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -5271,6 +5407,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -5862,6 +6015,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -6457,6 +6627,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -7049,6 +7236,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -7620,6 +7824,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -8197,6 +8418,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -8766,6 +9004,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -9340,6 +9595,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -10449,6 +10721,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -11040,6 +11329,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -11635,6 +11941,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -12227,6 +12550,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -12798,6 +13138,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -13375,6 +13732,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   </div>
                 </a>
               </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
             </li>
             <li>
               <div
@@ -13944,6 +14318,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -14518,6 +14909,23 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
                   </div>
                 </a>
               </li>

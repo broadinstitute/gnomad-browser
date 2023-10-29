@@ -33,7 +33,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
         >
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="current_sv_or_cnv_dataset"
+            data-item="current_sv_dataset"
             href="/?dataset=gnomad_cnv_r4"
             onBlur={[Function]}
             onClick={[Function]}
@@ -70,6 +70,47 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v4
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -124,30 +165,6 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     5,192 samples
-                  </div>
-                </a>
-              </li>
-            </li>
-            <li>
-              <div
-                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              >
-                GRCh38
-              </div>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_cnv_r4"
-                  href="/?dataset=gnomad_cnv_r4"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD exome CNVs v4.0
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -235,14 +252,6 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           </dt>
           <dd>
             0.3565
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Quality score
-          </dt>
-          <dd>
-            99
           </dd>
         </div>
         <div>
@@ -422,6 +431,24 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
       </tfoot>
     </table>
   </section>
+  <div
+    className="CopyNumberVariantPage__Wrapper-sc-1ase2rg-0 elCRDU"
+  >
+    <section
+      className="CopyNumberVariantPage__ResponsiveSection-sc-1ase2rg-1 lfHhrQ"
+    >
+      <h2>
+        Consequences
+      </h2>
+      <p>
+        This variant has consequences in 
+        0
+         gene
+        s
+        .
+      </p>
+    </section>
+  </div>
 </div>
 `;
 
@@ -458,7 +485,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
         >
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
-            data-item="current_sv_or_cnv_dataset"
+            data-item="current_sv_dataset"
             href="/?dataset=gnomad_cnv_r4"
             onBlur={[Function]}
             onClick={[Function]}
@@ -495,6 +522,47 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v4
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    63,046 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD exome CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                  >
+                    464,566 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -549,30 +617,6 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
                   >
                     5,192 samples
-                  </div>
-                </a>
-              </li>
-            </li>
-            <li>
-              <div
-                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
-              >
-                GRCh38
-              </div>
-              <li>
-                <a
-                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
-                  data-item="gnomad_cnv_r4"
-                  href="/?dataset=gnomad_cnv_r4"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                >
-                  gnomAD exome CNVs v4.0
-                  <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
-                  >
-                    464,566 samples
                   </div>
                 </a>
               </li>
@@ -660,14 +704,6 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           </dt>
           <dd>
             0.3565
-          </dd>
-        </div>
-        <div>
-          <dt>
-            Quality score
-          </dt>
-          <dd>
-            99
           </dd>
         </div>
         <div>
@@ -847,5 +883,23 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
       </tfoot>
     </table>
   </section>
+  <div
+    className="CopyNumberVariantPage__Wrapper-sc-1ase2rg-0 elCRDU"
+  >
+    <section
+      className="CopyNumberVariantPage__ResponsiveSection-sc-1ase2rg-1 lfHhrQ"
+    >
+      <h2>
+        Consequences
+      </h2>
+      <p>
+        This variant has consequences in 
+        0
+         gene
+        s
+        .
+      </p>
+    </section>
+  </div>
 </div>
 `;
