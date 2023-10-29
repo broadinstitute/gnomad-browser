@@ -95,12 +95,12 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
           This variant has consequences in {variant.genes.length} gene
           {variant.genes.length !== 1 && 's'}.
         </p>
-          {variant.genes.map((gene) => (
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-            <ListItem key={gene}>
-              <Link to={`/gene/${gene}`}>{gene}</Link>
-            </ListItem>
-          ))}
+        {variant.genes.map((gene) => (
+          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+          <ListItem key={gene}>
+            <Link to={`/gene/${gene}`}>{gene}</Link>
+          </ListItem>
+        ))}
       </ResponsiveSection>
     </Wrapper>
   </Page>
