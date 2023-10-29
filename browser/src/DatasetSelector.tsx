@@ -16,7 +16,6 @@ import {
   referenceGenome,
   hasCopyNumberVariants,
   shortVariantDatasetId,
-  structuralVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -451,7 +450,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
 
   const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
   
-  console.log(topLevelShortVariantDataset)
   let datasets: any = []
 
   if (includeShortVariants) {
