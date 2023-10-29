@@ -210,7 +210,14 @@ const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Var
 }
 
 const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
-  return getMetricDataForSequencingType({ metric, genomeOrExome: genome, metricDistributions: gnomadV3SiteQualityMetricDistributions })
+  const genomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: genome, metricDistributions: gnomadV3SiteQualityMetricDistributions })
+
+  return {
+    binEdges: genomeMetrics.binEdges,
+    description: genomeMetrics.description,
+    genomeBinValues: genomeMetrics && genomeMetrics.binValues,
+    genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+  }
 }
 
 const prepareDataGnomadV2 = ({ metric, variant }: any) => {
@@ -526,6 +533,9 @@ const yTickFormat = (n: any) => {
 }
 
 const formatMetricValue = (value: any, metric: any) => {
+  if (!value) {
+    return "-"
+  }
   if (
     metric === 'SiteQuality' ||
     metric === 'AS_QUALapprox' ||
@@ -571,6 +581,9 @@ const SiteQualityMetricsHistogram = ({
   height,
   width,
 }: SiteQualityMetricsHistogramProps) => {
+
+  console.log(exomeMetricValue, genomeMetricValue)
+
   const isLogScale = metric === 'SiteQuality' || metric === 'AS_QUALapprox' || metric === 'DP'
 
   const primaryValues = exomeBinValues || genomeBinValues
@@ -1125,25 +1138,27 @@ const VariantSiteQualityMetricsTable = ({
         </tr>
       </thead>
       <tbody>
-        {availableMetrics.map((metric) => (
-          <tr key={metric}>
-            <th scope="row">{renderMetric(metric, datasetId)}</th>
-            {isVariantInExomes && (
-              <td>
-                {exomeMetricValues![metric] != null
-                  ? formatMetricValue(exomeMetricValues![metric], metric)
-                  : '–'}
-              </td>
-            )}
-            {isVariantInGenomes && (
-              <td>
-                {genomeMetricValues![metric] != null
-                  ? formatMetricValue(genomeMetricValues![metric], metric)
-                  : '–'}
-              </td>
-            )}
-          </tr>
-        ))}
+        {availableMetrics.map((metric) => {
+          return (
+            <tr key={metric}>
+              <th scope="row">{renderMetric(metric, datasetId)}</th>
+              {exomeMetricValues && metric in exomeMetricValues && isVariantInExomes && (
+                <td>
+                  {exomeMetricValues![metric] != null
+                    ? formatMetricValue(exomeMetricValues![metric], metric)
+                    : '–'}
+                </td>
+              )}
+              {metric in genomeMetricValues! && isVariantInGenomes && (
+                <td>
+                  {genomeMetricValues && ![metric] != null
+                    ? formatMetricValue(genomeMetricValues![metric], metric)
+                    : '–'}
+                </td>
+              )}
+            </tr>
+          )
+        })}
       </tbody>
     </BaseTable>
   )
