@@ -21,7 +21,6 @@ const resolvers = {
       'gtex_tissue_expression',
       'GTEx tissue expression'
     ),
-    gnomad_constraint: GRCh37TranscriptFieldResolver('gnomad_constraint', 'gnomAD v2 constraint'),
     exac_constraint: GRCh37TranscriptFieldResolver('exac_constraint', 'ExAC constraint'),
   },
 }

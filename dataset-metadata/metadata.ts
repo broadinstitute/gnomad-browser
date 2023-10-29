@@ -193,7 +193,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasCopyNumberVariants: copyNumberVariantDatasetIds.includes(datasetId),
   hasCopyNumberVariantCoverage: datasetId.startsWith('gnomad_cnv'),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
-  hasConstraints: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4' && !datasetId.startsWith('gnomad_r4'),
+  hasConstraints: datasetId.startsWith('gnomad_r4') || datasetId.startsWith('gnomad_r2') || datasetId === "exac",
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
   hasExome: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',

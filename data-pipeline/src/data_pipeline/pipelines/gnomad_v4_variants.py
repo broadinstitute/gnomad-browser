@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
 from pathlib import Path
+from data_pipeline.helpers.timestamp import generate_iso_timestamp_for_filename
 from loguru import logger
 
 
@@ -36,15 +36,9 @@ RUN = True
 pipeline_name = "gnomad_v4_variants"
 
 
-def generate_iso_timestamp_for_filename():
-    now = datetime.utcnow()
-    timestamp = now.strftime("%Y%m%dT%H%M%S%Z")
-    return timestamp
-
-
-# output_sub_dir = f"gnomad_v4_{generate_iso_timestamp_for_filename()}"
+output_sub_dir = f"gnomad_v4_{generate_iso_timestamp_for_filename()}"
 # output_sub_dir = "gnomad_v4_20231027T135454"
-output_sub_dir = "gnomad_v4_20231027T203139"
+# output_sub_dir = "gnomad_v4_20231027T203139"
 
 config = PipelineConfig(
     name=pipeline_name,
