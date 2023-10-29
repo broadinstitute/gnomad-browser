@@ -83,6 +83,10 @@ const extractVariantFeedbackDescription = (datasetId: DatasetId): string | null 
 }
 
 const extractShortVariantDatasetId = (datasetId: DatasetId): DatasetId => {
+  if (datasetId.startsWith('gnomad_cnv')) {
+    return 'gnomad_r3'
+  }
+
   if (!datasetId.startsWith('gnomad_sv')) {
     return datasetId
   }

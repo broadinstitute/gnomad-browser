@@ -16,7 +16,6 @@ import {
   referenceGenome,
   hasCopyNumberVariants,
   shortVariantDatasetId,
-  structuralVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -449,13 +448,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     search: queryString.stringify({ dataset: datasetId }),
   })
 
-  const topLevelStructuralVariantDataset = structuralVariantDatasetId(selectedDataset)
-
-  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
-  const topLevelShortVariantDataset = hasShortVariants(selectedDataset)
-    ? selectedDataset
-    : defaultTopLevelShortVariantDataset
-
+  const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
+  
   let datasets: any = []
 
   if (includeShortVariants) {
@@ -601,7 +595,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
 
     datasets.push(
       {
-        id: 'current_sv_or_cnv_dataset',
+        id: 'current_sv_dataset',
         isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
         label: labelForDataset(currentDataset),
         url: datasetLink(currentDataset),
@@ -648,26 +642,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           },
         ],
       },
-      // {
-      //   id: 'current_cnv_dataset',
-      //   isActive: hasCopyNumberVariants(selectedDataset),
-      //   label: labelForDataset(topLevelCopyNumberVariantDataset),
-      //   url: datasetLink(topLevelCopyNumberVariantDataset),
-      // },
-      // {
-      //   id: 'other_cnv_variant',
-      //   isActive: hasCopyNumberVariants(selectedDataset),
-      //   label: 'More datasets',
-      //   children: [
-      //     {
-      //       id: 'gnomad_cnv_r4',
-      //       label: labelForDataset('gnomad_cnv_r4'),
-      //       url: datasetLink('gnomad_cnv_r4'),
-      //       description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
-      //       childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
-      //     },
-      //   ],
-      // }
     )
   }
 
