@@ -582,8 +582,6 @@ const SiteQualityMetricsHistogram = ({
   width,
 }: SiteQualityMetricsHistogramProps) => {
 
-  console.log(exomeMetricValue, genomeMetricValue)
-
   const isLogScale = metric === 'SiteQuality' || metric === 'AS_QUALapprox' || metric === 'DP'
 
   const primaryValues = exomeBinValues || genomeBinValues
