@@ -73,6 +73,9 @@ const extractCoverageDatasetId = (datasetId: DatasetId): DatasetId => {
 }
 
 const extractVariantFeedbackDescription = (datasetId: DatasetId): string | null => {
+  if (datasetId.startsWith('gnomad_r4') || datasetId.startsWith('gnomad_cnv_r4')) {
+    return 'gnomAD v4'
+  }
   if (datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_sv_r4')) {
     return 'gnomAD v3'
   }

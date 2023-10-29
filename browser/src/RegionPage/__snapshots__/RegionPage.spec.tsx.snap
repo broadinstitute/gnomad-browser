@@ -4807,6 +4807,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -4955,6 +4956,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
