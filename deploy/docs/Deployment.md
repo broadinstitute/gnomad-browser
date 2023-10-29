@@ -57,6 +57,9 @@ To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
 After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
 
+## Deploy Redis
+
+Run kubectl apply -k . in the deploy/manifests/redis folder
 
 ## Before creating a deployment
 
