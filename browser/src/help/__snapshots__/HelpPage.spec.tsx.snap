@@ -727,6 +727,15 @@ exports[`Help Page has no unexpected changes 1`] = `
       <li>
         <a
           className="-Link c3"
+          href="/help/variant-cooccurrence"
+          onClick={[Function]}
+        >
+          variant-cooccurrence
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
           href="/help/hgdp-1kg-annotations"
           onClick={[Function]}
         >
@@ -976,6 +985,17 @@ exports[`Help Page has no unexpected changes 1`] = `
               onClick={[Function]}
             >
               sv-overview
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/variant-cooccurrence"
+              onClick={[Function]}
+            >
+              variant-cooccurrence
             </a>
           </li>
           <li
