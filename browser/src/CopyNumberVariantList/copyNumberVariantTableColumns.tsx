@@ -93,7 +93,7 @@ const copyNumberVariantTableColumns = [
     minWidth: 200,
     compareFunction: makeNumericCompareFunction('pos'),
     render: (variant: any) => {
-      const position = `${variant.pos} - ${variant.end}`
+      const position = `${variant.chrom}:${variant.pos} - ${variant.end}`
       return <Cell>{position}</Cell>
     },
   },
