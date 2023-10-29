@@ -3,8 +3,9 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import { PopulationsTable } from './PopulationsTable'
+import { DatasetId, isV3 } from '@gnomad/dataset-metadata/metadata'
 
-const HGDP_POPULATION_GROUPS = {
+const HGDP_POPULATION_GROUPS_V4 = {
   African: ['bantukenya', 'bantusouthafrica', 'biaka', 'mandenka', 'mbuti', 'san', 'yoruba'],
   'East Asian': [
     'cambodian',
@@ -43,7 +44,7 @@ const HGDP_POPULATION_GROUPS = {
   'Oceanian': ['bougainville', 'papuanhighlands', 'papuansepik'],
 }
 
-const HGDP_POPULATION_NAMES = {
+const HGDP_POPULATION_NAMES_V4 = {
   adygei: 'Adygei',
   balochi: 'Balochi',
   bantukenya: 'Bantu (Kenya)',
@@ -100,7 +101,96 @@ const HGDP_POPULATION_NAMES = {
   yoruba: 'Yoruba',
 }
 
-const addPopulationNames = (populations: any) => {
+const HGDP_POPULATION_GROUPS_V3 = {
+  African: ['bantukenya', 'bantusafrica', 'mandenka', 'yoruba'],
+  'East Asian': [
+    'cambodian',
+    'dai',
+    'daur',
+    'han',
+    'hezhen',
+    'japanese',
+    'lahu',
+    'miaozu',
+    'mongola',
+    'naxi',
+    'oroqen',
+    'she',
+    'tu',
+    'tujia',
+    'uygur',
+    'xibo',
+    'yakut',
+    'yizu',
+  ],
+  European: ['adygei', 'basque', 'french', 'italian', 'orcadian', 'russian', 'sardinian', 'tuscan'],
+  'Middle Eastern': ['bedouin', 'druze', 'mozabite', 'palestinian'],
+  'Native American': ['colombian', 'karitiana', 'maya', 'pima', 'surui'],
+  'Central/South Asian': [
+    'balochi',
+    'brahui',
+    'burusho',
+    'hazara',
+    'kalash',
+    'makrani',
+    'pathan',
+    'sindhi',
+  ],
+}
+
+const HGDP_POPULATION_NAMES_V3 = {
+  adygei: 'Adygei',
+  balochi: 'Balochi',
+  bantukenya: 'Bantu (Kenya)',
+  bantusafrica: 'Bantu (South Africa)',
+  basque: 'Basque',
+  bedouin: 'Bedouin',
+  brahui: 'Brahui',
+  burusho: 'Burusho',
+  cambodian: 'Cambodian',
+  colombian: 'Colombian',
+  dai: 'Dai',
+  daur: 'Daur',
+  druze: 'Druze',
+  french: 'French',
+  han: 'Han',
+  hazara: 'Hazara',
+  hezhen: 'Hezhen',
+  italian: 'Italian',
+  japanese: 'Japanese',
+  kalash: 'Kalash',
+  karitiana: 'Karitiana',
+  lahu: 'Lahu',
+  makrani: 'Makrani',
+  mandenka: 'Mandenka',
+  maya: 'Maya',
+  miaozu: 'Miaozu',
+  mongola: 'Mongola',
+  mozabite: 'Mozabite',
+  naxi: 'Naxi',
+  orcadian: 'Orcadian',
+  oroqen: 'Oroqen',
+  palestinian: 'Palestinian',
+  pathan: 'Pathan',
+  pima: 'Pima',
+  russian: 'Russian',
+  sardinian: 'Sardinian',
+  she: 'She',
+  sindhi: 'Sindhi',
+  surui: 'Surui',
+  tu: 'Tu',
+  tujia: 'Tujia',
+  tuscan: 'Tuscan',
+  uygur: 'Uygur',
+  xibo: 'Xibo',
+  yakut: 'Yakut',
+  yizu: 'Yizu',
+  yoruba: 'Yoruba',
+}
+
+const addPopulationNames = (populations: any, datasetId: DatasetId) => {
+  const HGDP_POPULATION_NAMES = isV3(datasetId) ? HGDP_POPULATION_NAMES_V3 : HGDP_POPULATION_NAMES_V4
+
   return populations.map((pop: any) => {
     let name
     if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
@@ -115,7 +205,26 @@ const addPopulationNames = (populations: any) => {
   })
 }
 
-const groupPopulations = (populations: any) => {
+
+function compareArrays(arr1: string[], arr2: string[]) {
+  const uniqueArr1 = new Set(arr1);
+  const uniqueArr2 = new Set(arr2);
+
+  let areSame = true;
+
+  for (let item of uniqueArr1) {
+    if (!uniqueArr2.has(item)) {
+      console.error(`Element "${item}" is in the first array but not in the second array.`);
+      areSame = false;
+    }
+  }
+
+  if (!areSame) {
+    throw new Error("Population definitions don't match")
+  }
+}
+
+const groupPopulations = (populations: any, datasetId: DatasetId) => {
   const populationsById = populations.reduce(
     // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
     (acc, pop) => ({
@@ -125,9 +234,13 @@ const groupPopulations = (populations: any) => {
     {}
   )
 
+  const HGDP_POPULATION_GROUPS = isV3(datasetId) ? HGDP_POPULATION_GROUPS_V3 : HGDP_POPULATION_GROUPS_V4
+
   // TODO: Improve this
   const groupedPopulations = []
   Object.keys(HGDP_POPULATION_GROUPS).forEach((group) => {
+    // @ts-ignore
+    compareArrays(HGDP_POPULATION_GROUPS[group], Object.keys(populationsById))
     groupedPopulations.push({
       id: group,
       name: group,
@@ -209,6 +322,7 @@ type OwnHGDPPopulationsTableProps = {
   }[]
   showHemizygotes?: boolean
   showHomozygotes?: boolean
+  datasetId: DatasetId
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'HGDPPopulationsTableProps' circularly ... Remove this comment to see the full error message
@@ -220,8 +334,9 @@ const HGDPPopulationsTable = ({
   populations,
   showHemizygotes,
   showHomozygotes,
+  datasetId
 }: HGDPPopulationsTableProps) => {
-  const renderedPopulations = groupPopulations(addPopulationNames(populations))
+  const renderedPopulations = groupPopulations(addPopulationNames(populations, datasetId), datasetId)
 
   return (
     <div>
