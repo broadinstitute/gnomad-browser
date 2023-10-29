@@ -15,6 +15,7 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     'pext',
     'regional-constraint',
     'sv-overview',
+    'variant-cooccurrence',
     'hgdp-1kg-annotations',
     'v4-hts',
   ],
