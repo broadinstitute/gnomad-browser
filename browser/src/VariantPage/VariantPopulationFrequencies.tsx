@@ -33,7 +33,7 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
       .filter((pop) => pop.id.startsWith('1kg:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(4) })) // Remove 1kg: prefix
 
-    const localAncestryPopulations = genome.local_ancestry_populations
+    const localAncestryPopulations = genome.local_ancestry_populations || []
 
     return (
       // @ts-expect-error TS(2741) FIXME: Property 'onChange' is missing in type '{ tabs: { ... Remove this comment to see the full error message
@@ -66,6 +66,7 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
                   <HGDPPopulationsTable
                     populations={hgdpPopulations}
                     showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
+                    datasetId={datasetId}
                   />
                 </TableWrapper>
               )
