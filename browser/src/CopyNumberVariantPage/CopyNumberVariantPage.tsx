@@ -1,16 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, Page } from '@gnomad/ui'
+import { ExternalLink, Page, ListItem } from '@gnomad/ui'
+import Link from '../Link'
 
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
-// import { Histogram } from '../VariantPage/VariantPage'
-// import InfoButton from '../help/InfoButton'
 import Query from '../Query'
 import { variantFeedbackUrl } from '../variantFeedback'
-// import CopyNumberVariantAgeDistribution from './CopyNumberVariantAgeDistribution'
 import CopyNumberVariantAttributeList from './CopyNumberVariantAttributeList'
 import CopyNumberVariantPopulationsTable from './CopyNumberVariantPopulationsTable'
 import CNVReferenceList from './CNVReferenceList'
@@ -89,6 +87,22 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
       <h2>Population Frequencies</h2>
       <CopyNumberVariantPopulationsTable variant={variant} />
     </section>
+
+    <Wrapper>
+      <ResponsiveSection>
+        <h2>Consequences</h2>
+        <p>
+          This variant has consequences in {variant.genes.length} gene
+          {variant.genes.length !== 1 && 's'}.
+        </p>
+          {variant.genes.map((gene) => (
+            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+            <ListItem key={gene}>
+              <Link to={`/gene/${gene}`}>{gene}</Link>
+            </ListItem>
+          ))}
+      </ResponsiveSection>
+    </Wrapper>
   </Page>
 )
 
