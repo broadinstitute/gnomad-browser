@@ -11,7 +11,7 @@ import { cnvTypeColors, cnvTypeLabels } from './copyNumberVariantTypes'
 import { Context } from './CopyNumberVariants'
 import { CopyNumberVariant } from '../CopyNumberVariantPage/CopyNumberVariantPage'
 
-const renderType = (variant: CopyNumberVariant,  _ :any, { colorKey, highlightWords }: any) => {
+const renderType = (variant: CopyNumberVariant, _: any, { colorKey, highlightWords }: any) => {
   return (
     <Cell>
       {colorKey === 'type' && (
@@ -59,7 +59,14 @@ const copyNumberVariantTableColumns = [
     heading: 'Class',
     minWidth: 130,
     compareFunction: makeStringCompareFunction('type'),
-    getSearchTerms: (variant: CopyNumberVariant) => variant.type === 'DEL' || 'DUP',
+    getSearchTerms: (variant: any) => {
+      const variantType = variant.type
+      if (variantType === 'DEL') {
+        return 'deletion'
+      } else {
+        return 'duplication'
+      }
+    },
     render: renderType,
   },
 
@@ -113,7 +120,7 @@ const copyNumberVariantTableColumns = [
     minWidth: 110,
     compareFunction: makeStringCompareFunction('variant_id'),
     getSearchTerms: (variant: any) => [variant.variant_id],
-    render: (variant: any, _ :any,{ highlightWords }: any) => {
+    render: (variant: any, _: any, { highlightWords }: any) => {
       return (
         <Cell>
           <Link target="_blank" to={`/variant/${variant.variant_id}`}>
