@@ -7,11 +7,9 @@ const filterVariants = (variants: any, filter: any, selectedColumns: any) => {
       : filter.includeTypes[v.type]
   )
 
-
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.filter((v: any) => v.filters.length === 0 )
+    filteredVariants = filteredVariants.filter((v: any) => v.filters.length === 0)
   }
-
 
   if (filter.searchText) {
     const searchColumns = selectedColumns.filter((column: any) => !!column.getSearchTerms)
