@@ -72,6 +72,14 @@ const DiversityBarGraph = styled.div`
   }
 `
 
+const SexDistributionList = styled.div`
+  width: 30%;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+`
+
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: space-around;
@@ -118,6 +126,24 @@ const CountriesColoredText = styled.span`
   font-weight: bold;
 `
 
+const DiversityBarGraphTooltip = (row: any) => {
+  return (
+    <>
+      <b>{row.label}</b>
+      {/* eslint-disable dot-notation */}
+      <div>{row['European'].toLocaleString()} European</div>
+      <div>{row['Remaining'].toLocaleString()} Remaining</div>
+      <div>{row['Ashkenazi Jewish'].toLocaleString()} Ashkenazi Jewish</div>
+      <div>{row['Admixed American'].toLocaleString()} Admixed American</div>
+      <div>{row['African'].toLocaleString()} African</div>
+      <div>{row['Middle Eastern'].toLocaleString()} Middle Eastern</div>
+      <div>{row['South Asian'].toLocaleString()} South Asian</div>
+      <div>{row['East Asian'].toLocaleString()} East Asian</div>
+      {/* eslint-enable dot-notation */}
+    </>
+  )
+}
+
 const StatsHighlightBlock = ({
   title,
   text,
@@ -153,10 +179,10 @@ const StatsPage = () => {
               <h2>gnomAD v4 includes 807,162 individuals</h2>
               <ul>
                 <li>
-                  730,947 <span style={{ color: gnomadGreen }}>genomes</span>
+                  730,947 <span style={{ color: gnomadBlue }}>exomes</span>
                 </li>
                 <li>
-                  76,215 <span style={{ color: gnomadBlue }}>exomes</span>
+                  76,215 <span style={{ color: gnomadGreen }}>genomes</span>
                 </li>
               </ul>
               <h2>v4 variants</h2>
@@ -197,13 +223,6 @@ const StatsPage = () => {
             What is the age and sex distribution in gnomAD?
           </SectionHeading>
           <TwoColumnLayout>
-            <div style={{ width: '30%' }}>
-              <h3>Sex</h3>
-              <ul>
-                <li>406,265 XX individuals</li>
-                <li>400,897 XY individuals</li>
-              </ul>
-            </div>
             <ResponsiveGnomadSamplesContainer>
               <h3>Age</h3>
               <TwoColumnLayout>
@@ -241,8 +260,14 @@ const StatsPage = () => {
                 </ResponsiveHalfWidthColumn>
               </TwoColumnLayout>
             </ResponsiveGnomadSamplesContainer>
+            <SexDistributionList>
+              <h3>Sex</h3>
+              <ul>
+                <li>406,265 XX individuals</li>
+                <li>400,897 XY individuals</li>
+              </ul>
+            </SexDistributionList>
           </TwoColumnLayout>
-
           <p>
             To learn more about how we calculate the sex and age distribution please see our{' '}
             <Link to="/help">FAQs</Link>
@@ -315,21 +340,7 @@ const StatsPage = () => {
                 barColors={gnomadV4GeneticAncestryCounts.colors}
                 barValues={gnomadV4GeneticAncestryCounts.data}
                 height={400}
-                formatTooltip={(row: any) => (
-                  <>
-                    <b>{row.label}</b>
-                    {/* eslint-disable dot-notation */}
-                    <div>{row['European'].toLocaleString()} European</div>
-                    <div>{row['Remaining'].toLocaleString()} Remaining</div>
-                    <div>{row['Ashkenazi Jewish'].toLocaleString()} Ashkenazi Jewish</div>
-                    <div>{row['Admixed American'].toLocaleString()} Admixed American</div>
-                    <div>{row['African'].toLocaleString()} African</div>
-                    <div>{row['Middle Eastern'].toLocaleString()} Middle Eastern</div>
-                    <div>{row['South Asian'].toLocaleString()} South Asian</div>
-                    <div>{row['East Asian'].toLocaleString()} East Asian</div>
-                    {/* eslint-enable dot-notation */}
-                  </>
-                )}
+                formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
                 yLabel=""
                 displayNumbers={false}
@@ -349,7 +360,7 @@ const StatsPage = () => {
               >
                 <b style={{ width: '80%' }}>
                   {
-                    'Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.001'
+                    'Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.1'
                   }
                 </b>
               </div>
@@ -357,21 +368,7 @@ const StatsPage = () => {
                 barColors={gnomadV4GeneticDiversityCounts.colors}
                 barValues={gnomadV4GeneticDiversityCounts.data}
                 height={400}
-                formatTooltip={(row: any) => (
-                  <>
-                    <b>{row.label}</b>
-                    {/* eslint-disable dot-notation */}
-                    <div>{row['Remaining'].toLocaleString()} Remaining</div>
-                    <div>{row['Ashkenazi Jewish'].toLocaleString()} Ashkenazi Jewish</div>
-                    <div>{row['Admixed American'].toLocaleString()} Admixed American</div>
-                    <div>{row['African'].toLocaleString()} African</div>
-                    <div>{row['Middle Eastern'].toLocaleString()} Middle Eastern</div>
-                    <div>{row['European'].toLocaleString()} European</div>
-                    <div>{row['South Asian'].toLocaleString()} South Asian</div>
-                    <div>{row['East Asian'].toLocaleString()} East Asian</div>
-                    {/* eslint-enable dot-notation */}
-                  </>
-                )}
+                formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
                 yLabel=""
                 displayNumbers={false}

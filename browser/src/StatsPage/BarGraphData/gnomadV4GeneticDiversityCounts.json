@@ -12,25 +12,25 @@
   "data": [
     {
       "label": "gnomAD v2",
-      "East Asian": 41467,
-      "South Asian": 71690,
+      "East Asian": 60371,
+      "South Asian": 71089,
       "Middle Eastern": 0,
-      "African": 74752,
-      "Admixed American": 78021,
-      "Ashkenazi Jewish": 53376,
-      "Remaining": 80821,
-      "European": 79884
+      "African": 104692,
+      "Admixed American": 70962,
+      "Ashkenazi Jewish": 66611,
+      "Remaining": 75826,
+      "European": 58348
     },
     {
       "label": "gnomAD v4",
-      "East Asian": 48231,
-      "South Asian": 73634,
-      "Middle Eastern": 69636,
-      "African": 76857,
-      "Admixed American": 76856,
-      "Ashkenazi Jewish": 62886,
-      "Remaining": 78120,
-      "European": 78634
+      "East Asian": 65222,
+      "South Asian": 80879,
+      "Middle Eastern": 93553,
+      "African": 118500,
+      "Admixed American": 90691,
+      "Ashkenazi Jewish": 75910,
+      "Remaining": 91847,
+      "European": 64635
     }
   ]
 }
