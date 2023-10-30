@@ -14,8 +14,8 @@ import {
   hasShortVariants,
   hasStructuralVariants,
   referenceGenome,
+  hasCopyNumberVariants,
   shortVariantDatasetId,
-  structuralVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -129,7 +129,7 @@ const SubNavigationLink = styled.a`
 const ItemDescription = styled.div`
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 `
 
@@ -440,6 +440,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad2Subsets = true,
     includeGnomad3 = true,
     includeGnomad3Subsets = true,
+    includeCopyNumberVariants = true,
   } = datasetOptions
 
   const datasetLink = (datasetId: any) => ({
@@ -448,22 +449,21 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   })
 
   const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
-  const topLevelStructuralVariantDataset = structuralVariantDatasetId(selectedDataset)
-
+  
   let datasets: any = []
 
   if (includeShortVariants) {
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
         childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
         children: [] as ChildDataset[],
       },
@@ -580,49 +580,68 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     datasets = datasets.concat(shortVariantDatasets)
   }
 
-  if (includeStructuralVariants) {
+  if (includeStructuralVariants || includeCopyNumberVariants) {
+    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_sv_r2_1'
+
+    const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_cnv_r4'
+
+      const currentDataset = hasStructuralVariants(selectedDataset)
+    ? topLevelStructuralVariantDataset
+    : topLevelCopyNumberVariantDataset
+
     datasets.push(
       {
         id: 'current_sv_dataset',
-        isActive: hasStructuralVariants(selectedDataset),
-        label: labelForDataset(topLevelStructuralVariantDataset),
-        url: datasetLink(topLevelStructuralVariantDataset),
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
+        label: labelForDataset(currentDataset),
+        url: datasetLink(currentDataset),
       },
       {
         id: 'other_structural_variant',
-        isActive: hasStructuralVariants(selectedDataset),
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
         children: [
           {
             id: 'gnomad_sv_r4',
             label: labelForDataset('gnomad_sv_r4'),
             url: datasetLink('gnomad_sv_r4'),
-            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r4'),
           },
           {
             id: 'gnomad_sv_r2_1',
             label: labelForDataset('gnomad_sv_r2_1'),
             url: datasetLink('gnomad_sv_r2_1'),
-            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1'),
           },
           {
             id: 'gnomad_sv_r2_1_non_neuro',
             label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
             url: datasetLink('gnomad_sv_r2_1_non_neuro'),
-            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_non_neuro'),
           },
           {
             id: 'gnomad_sv_r2_1_controls',
             label: labelForDataset('gnomad_sv_r2_1_controls'),
             url: datasetLink('gnomad_sv_r2_1_controls'),
-            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
+          {
+            id: 'gnomad_cnv_r4',
+            label: labelForDataset('gnomad_cnv_r4'),
+            url: datasetLink('gnomad_cnv_r4'),
+            description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples, exome, rare (<0.01)`,
+            childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
+          },
         ],
-      }
+      },
     )
   }
 
@@ -633,6 +652,7 @@ DatasetSelector.propTypes = {
   datasetOptions: PropTypes.shape({
     includeShortVariants: PropTypes.bool,
     includeStructuralVariants: PropTypes.bool,
+    includeCopyNumberVariants: PropTypes.bool,
     includeExac: PropTypes.bool,
     includeGnomad2Subsets: PropTypes.bool,
     includeGnomad3: PropTypes.bool,
@@ -645,6 +665,7 @@ DatasetSelector.defaultProps = {
   datasetOptions: {
     includeShortVariants: true,
     includeStructuralVariants: true,
+    includeCopyNumberVariants: true,
     includeExac: true,
     includeGnomad2: true,
     includeGnomad2Subsets: true,

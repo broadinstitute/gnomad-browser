@@ -37,6 +37,14 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
 )
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 
+from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
+
+from data_pipeline.pipelines.gnomad_v4_cnv_track_percent_callable import pipeline as gnomad_v4_cnv_coverage_pipeline
+
+from data_pipeline.pipelines.gnomad_v4_cnv_del_burden import pipeline as gnomad_v4_cnv_del_burden
+
+from data_pipeline.pipelines.gnomad_v4_cnv_dup_burden import pipeline as gnomad_v4_cnv_dup_burden
+
 
 logger = logging.getLogger("gnomad_data_pipeline")
 
@@ -103,6 +111,58 @@ DATASETS_CONFIG = {
             "index_fields": ["transcript_id"],
             "id_field": "transcript_id",
             "block_size": 1_000,
+        },
+    },
+    ##############################################################################################################
+    # gnomAD v4 CNVs
+    ##############################################################################################################
+    "gnomad_v4_cnvs": {
+        "get_table": lambda: hl.read_table(gnomad_v4_cnvs_pipeline.get_output("cnvs").get_output_path()),
+        "args": {
+            "index": "gnomad_v4_cnvs",
+            "index_fields": ["variant_id", "xpos", "xend", "genes"],
+            "id_field": "variant_id",
+            "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_exome_coverage": {
+        "get_table": lambda: hl.read_table(
+            "gs://gnomad-matt-data-pipeline/gnomad_v4_coverage_test_2023-10-12-1142/gnomad_v4_exome_coverage.ht"
+        ),
+        "args": {"index": "gnomad_v4_exome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
+    },
+    "gnomad_v4_cnv_track_callable": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_coverage_pipeline.get_output("track_percent_callable").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_track_callable",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
+        },
+    },
+    "gnomad_v4_cnv_del_burden": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_del_burden.get_output("del_burden").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_del_burden",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
+        },
+    },
+    "gnomad_v4_cnv_dup_burden": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_dup_burden.get_output("dup_burden").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_dup_burden",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
         },
     },
     ##############################################################################################################

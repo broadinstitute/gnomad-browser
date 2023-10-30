@@ -1994,6 +1994,14 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "exac" has no unexpec
 </DocumentFragment>
 `;
 
+exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_cnv_r4" has no unexpected changes and renders as placeholder text 1`] = `
+<DocumentFragment>
+  <p>
+    Variant co-occurrence is only available for gnomAD v2.
+  </p>
+</DocumentFragment>
+`;
+
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
@@ -2035,6 +2043,14 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_topmed
 `;
 
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_v2" has no unexpected changes and renders as placeholder text 1`] = `
+<DocumentFragment>
+  <p>
+    Variant co-occurrence is only available for gnomAD v2.
+  </p>
+</DocumentFragment>
+`;
+
+exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
     Variant co-occurrence is only available for gnomAD v2.

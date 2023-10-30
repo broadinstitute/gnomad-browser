@@ -9,6 +9,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -149,6 +150,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -272,6 +274,291 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
 </TrackPage>
 `;
 
+exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a mitochondrial region 1`] = `
+<TrackPage>
+  <TrackPage__TrackPageSection>
+    <DocumentTitle
+      title="M-345-456 | gnomAD CNVs v4.0"
+    />
+    <GnomadPageHeading
+      datasetOptions={
+        {
+          "includeCopyNumberVariants": true,
+          "includeExac": false,
+          "includeGnomad2": false,
+          "includeGnomad3": true,
+          "includeGnomad3Subsets": false,
+          "includeShortVariants": true,
+          "includeStructuralVariants": false,
+        }
+      }
+      extra={
+        <withRouter()
+          initialRegion={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+          style={
+            {
+              "marginLeft": "1em",
+            }
+          }
+        />
+      }
+      selectedDataset="gnomad_cnv_r4"
+    >
+      M-345-456
+    </GnomadPageHeading>
+    <RegionPage__RegionInfoColumnWrapper>
+      <div>
+        <RegionInfo
+          region={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </div>
+      <RegionPage__RegionControlsWrapper>
+        <withRouter()
+          region={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </RegionPage__RegionControlsWrapper>
+    </RegionPage__RegionInfoColumnWrapper>
+  </TrackPage__TrackPageSection>
+  <GnomadRegionViewer
+    leftPanelWidth={115}
+    regions={
+      [
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        },
+      ]
+    }
+    rightPanelWidth={80}
+    width={994}
+  >
+    <MitochondrialRegionCoverageTrack
+      datasetId="gnomad_cnv_r4"
+      start={345}
+      stop={456}
+    />
+    <GenesInRegionTrack
+      genes={[]}
+      region={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+    <CopyNumberVariantsInRegion
+      datasetId="gnomad_cnv_r4"
+      region={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+      zoomRegion={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+  </GnomadRegionViewer>
+</TrackPage>
+`;
+
+exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a non-mitochondrial region 1`] = `
+<TrackPage>
+  <TrackPage__TrackPageSection>
+    <DocumentTitle
+      title="12-345-456 | gnomAD CNVs v4.0"
+    />
+    <GnomadPageHeading
+      datasetOptions={
+        {
+          "includeCopyNumberVariants": true,
+          "includeExac": false,
+          "includeGnomad2": false,
+          "includeGnomad3": true,
+          "includeGnomad3Subsets": true,
+          "includeShortVariants": true,
+          "includeStructuralVariants": true,
+        }
+      }
+      extra={
+        <withRouter()
+          initialRegion={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+          style={
+            {
+              "marginLeft": "1em",
+            }
+          }
+        />
+      }
+      selectedDataset="gnomad_cnv_r4"
+    >
+      12-345-456
+    </GnomadPageHeading>
+    <RegionPage__RegionInfoColumnWrapper>
+      <div>
+        <RegionInfo
+          region={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </div>
+      <RegionPage__RegionControlsWrapper>
+        <withRouter()
+          region={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </RegionPage__RegionControlsWrapper>
+    </RegionPage__RegionInfoColumnWrapper>
+  </TrackPage__TrackPageSection>
+  <GnomadRegionViewer
+    leftPanelWidth={115}
+    regions={
+      [
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        },
+      ]
+    }
+    rightPanelWidth={80}
+    width={994}
+  >
+    <RegionCoverageTrack
+      chrom="12"
+      datasetId="gnomad_cnv_r4"
+      includeExomeCoverage={true}
+      includeGenomeCoverage={false}
+      start={345}
+      stop={456}
+    />
+    <GenesInRegionTrack
+      genes={[]}
+      region={
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+    <CopyNumberVariantsInRegion
+      datasetId="gnomad_cnv_r4"
+      region={
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+      zoomRegion={
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+  </GnomadRegionViewer>
+</TrackPage>
+`;
+
 exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a mitochondrial region 1`] = `
 <TrackPage>
   <TrackPage__TrackPageSection>
@@ -281,6 +568,7 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a m
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -421,6 +709,7 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a n
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -553,6 +842,7 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -693,6 +983,7 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -825,6 +1116,7 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -965,6 +1257,7 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -1097,6 +1390,7 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -1237,6 +1531,7 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -1369,6 +1664,7 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -1509,6 +1805,7 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -1641,6 +1938,7 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a mit
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -1789,6 +2087,7 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a non
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -1929,6 +2228,7 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2077,6 +2377,7 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2217,6 +2518,7 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2365,6 +2667,7 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2505,6 +2808,7 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2653,6 +2957,7 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2793,6 +3098,7 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -2941,6 +3247,7 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3081,6 +3388,7 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3229,6 +3537,7 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3360,6 +3669,280 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
 </TrackPage>
 `;
 
+exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mitochondrial region 1`] = `
+<TrackPage>
+  <TrackPage__TrackPageSection>
+    <DocumentTitle
+      title="M-345-456 | "
+    />
+    <GnomadPageHeading
+      datasetOptions={
+        {
+          "includeCopyNumberVariants": true,
+          "includeExac": false,
+          "includeGnomad2": false,
+          "includeGnomad3": true,
+          "includeGnomad3Subsets": false,
+          "includeShortVariants": true,
+          "includeStructuralVariants": false,
+        }
+      }
+      extra={
+        <withRouter()
+          initialRegion={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+          style={
+            {
+              "marginLeft": "1em",
+            }
+          }
+        />
+      }
+      selectedDataset="gnomad_r4"
+    >
+      M-345-456
+    </GnomadPageHeading>
+    <RegionPage__RegionInfoColumnWrapper>
+      <div>
+        <RegionInfo
+          region={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </div>
+      <RegionPage__RegionControlsWrapper>
+        <withRouter()
+          region={
+            {
+              "chrom": "M",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </RegionPage__RegionControlsWrapper>
+    </RegionPage__RegionInfoColumnWrapper>
+  </TrackPage__TrackPageSection>
+  <GnomadRegionViewer
+    leftPanelWidth={115}
+    regions={
+      [
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        },
+      ]
+    }
+    rightPanelWidth={80}
+    width={994}
+  >
+    <MitochondrialRegionCoverageTrack
+      datasetId="gnomad_r4"
+      start={345}
+      stop={456}
+    />
+    <GenesInRegionTrack
+      genes={[]}
+      region={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+    <MitochondrialVariantsInRegion
+      datasetId="gnomad_r4"
+      region={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+      zoomRegion={
+        {
+          "chrom": "M",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+  </GnomadRegionViewer>
+</TrackPage>
+`;
+
+exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non-mitochondrial region 1`] = `
+<TrackPage>
+  <TrackPage__TrackPageSection>
+    <DocumentTitle
+      title="12-345-456 | "
+    />
+    <GnomadPageHeading
+      datasetOptions={
+        {
+          "includeCopyNumberVariants": true,
+          "includeExac": false,
+          "includeGnomad2": false,
+          "includeGnomad3": true,
+          "includeGnomad3Subsets": true,
+          "includeShortVariants": true,
+          "includeStructuralVariants": true,
+        }
+      }
+      extra={
+        <withRouter()
+          initialRegion={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+          style={
+            {
+              "marginLeft": "1em",
+            }
+          }
+        />
+      }
+      selectedDataset="gnomad_r4"
+    >
+      12-345-456
+    </GnomadPageHeading>
+    <RegionPage__RegionInfoColumnWrapper>
+      <div>
+        <RegionInfo
+          region={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </div>
+      <RegionPage__RegionControlsWrapper>
+        <withRouter()
+          region={
+            {
+              "chrom": "12",
+              "genes": [],
+              "non_coding_constraints": [],
+              "reference_genome": "GRCh38",
+              "short_tandem_repeats": [],
+              "start": 345,
+              "stop": 456,
+            }
+          }
+        />
+      </RegionPage__RegionControlsWrapper>
+    </RegionPage__RegionInfoColumnWrapper>
+  </TrackPage__TrackPageSection>
+  <GnomadRegionViewer
+    leftPanelWidth={115}
+    regions={
+      [
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        },
+      ]
+    }
+    rightPanelWidth={80}
+    width={994}
+  >
+    <RegionCoverageTrack
+      chrom="12"
+      datasetId="gnomad_r4"
+      includeExomeCoverage={true}
+      includeGenomeCoverage={true}
+      start={345}
+      stop={456}
+    />
+    <GenesInRegionTrack
+      genes={[]}
+      region={
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+    <ConnectedVariantsInRegion
+      datasetId="gnomad_r4"
+      region={
+        {
+          "chrom": "12",
+          "genes": [],
+          "non_coding_constraints": [],
+          "reference_genome": "GRCh38",
+          "short_tandem_repeats": [],
+          "start": 345,
+          "stop": 456,
+        }
+      }
+    />
+  </GnomadRegionViewer>
+</TrackPage>
+`;
+
 exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for a mitochondrial region 1`] = `
 <TrackPage>
   <TrackPage__TrackPageSection>
@@ -3369,6 +3952,7 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3509,6 +4093,7 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -3652,6 +4237,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -3792,6 +4378,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -3935,6 +4522,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -4075,6 +4663,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": true,
           "includeGnomad2": true,
           "includeGnomad3": false,
@@ -4218,6 +4807,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,
@@ -4366,6 +4956,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     <GnomadPageHeading
       datasetOptions={
         {
+          "includeCopyNumberVariants": true,
           "includeExac": false,
           "includeGnomad2": false,
           "includeGnomad3": true,

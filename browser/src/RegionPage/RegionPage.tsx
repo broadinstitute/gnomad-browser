@@ -8,7 +8,9 @@ import {
   labelForDataset,
   hasNonCodingConstraints,
   regionsHaveExomeCoverage,
+  regionsHaveGenomeCoverage,
   isSVs,
+  isV4CNVs,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -27,6 +29,7 @@ import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import RegularVariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
+import CopyNumberVariantsInRegion from './CopyNumberVariantsInRegion'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
@@ -80,6 +83,10 @@ const variantsInRegion = (datasetId: DatasetId, region: Region) => {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
 
+  if (isV4CNVs(datasetId)) {
+    return <CopyNumberVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
+  }
+
   if (region.chrom === 'M') {
     return (
       <MitochondrialVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
@@ -119,6 +126,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           datasetOptions={{
             includeShortVariants: true,
             includeStructuralVariants: chrom !== 'M',
+            includeCopyNumberVariants: true,
             includeExac: region.reference_genome === 'GRCh37' && chrom !== 'M',
             includeGnomad2: region.reference_genome === 'GRCh37' && chrom !== 'M',
             includeGnomad3: region.reference_genome === 'GRCh38' || chrom === 'M',
@@ -158,6 +166,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             datasetId={datasetId}
             chrom={chrom}
             includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
+            includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
             start={start}
             stop={stop}
           />

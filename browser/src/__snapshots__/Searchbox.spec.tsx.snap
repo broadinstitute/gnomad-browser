@@ -22,6 +22,11 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -99,6 +104,94 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
+    </optgroup>
+    <optgroup
+      label="GRCh37"
+    >
+      <option
+        value="gnomad_r2_1"
+      >
+        gnomAD v2.1.1
+      </option>
+      <option
+        value="gnomad_sv_r2_1"
+      >
+        gnomAD SVs v2.1
+      </option>
+      <option
+        value="exac"
+      >
+        ExAC
+      </option>
+    </optgroup>
+  </select>
+  <span
+    style={
+      {
+        "flexGrow": 1,
+      }
+    }
+  >
+    <div
+      style={
+        {
+          "display": "inline-block",
+          "width": "100%",
+        }
+      }
+    >
+      <input
+        aria-autocomplete="list"
+        aria-expanded={false}
+        autoComplete="off"
+        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        data-testid="searchbox-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search by gene, region, or variant"
+        role="combobox"
+        value=""
+      />
+    </div>
+  </span>
+</div>
+`;
+
+exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
+<div
+  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+>
+  <select
+    className="Select-sc-1lkyg9e-0 ivadCR"
+    onChange={[Function]}
+    value="gnomad_cnv_r4"
+  >
+    <optgroup
+      label="GRCh38"
+    >
+      <option
+        value="gnomad_r3"
+      >
+        gnomAD v3.1.2
+      </option>
+      <option
+        value="gnomad_sv_r4"
+      >
+        gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -178,6 +271,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -255,6 +353,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -334,6 +437,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -411,6 +519,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -490,6 +603,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -567,6 +685,11 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -646,6 +769,11 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -723,6 +851,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -802,6 +935,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -879,6 +1017,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -958,6 +1101,94 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
+    </optgroup>
+    <optgroup
+      label="GRCh37"
+    >
+      <option
+        value="gnomad_r2_1"
+      >
+        gnomAD v2.1.1
+      </option>
+      <option
+        value="gnomad_sv_r2_1"
+      >
+        gnomAD SVs v2.1
+      </option>
+      <option
+        value="exac"
+      >
+        ExAC
+      </option>
+    </optgroup>
+  </select>
+  <span
+    style={
+      {
+        "flexGrow": 1,
+      }
+    }
+  >
+    <div
+      style={
+        {
+          "display": "inline-block",
+          "width": "100%",
+        }
+      }
+    >
+      <input
+        aria-autocomplete="list"
+        aria-expanded={false}
+        autoComplete="off"
+        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        data-testid="searchbox-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search by gene, region, or variant"
+        role="combobox"
+        value=""
+      />
+    </div>
+  </span>
+</div>
+`;
+
+exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`] = `
+<div
+  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+>
+  <select
+    className="Select-sc-1lkyg9e-0 ivadCR"
+    onChange={[Function]}
+    value="gnomad_r2_1"
+  >
+    <optgroup
+      label="GRCh38"
+    >
+      <option
+        value="gnomad_r3"
+      >
+        gnomAD v3.1.2
+      </option>
+      <option
+        value="gnomad_sv_r4"
+      >
+        gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -1035,6 +1266,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup
@@ -1114,6 +1350,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -1192,6 +1433,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
       >
         gnomAD SVs v4
       </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
     </optgroup>
     <optgroup
       label="GRCh37"
@@ -1269,6 +1515,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 
         value="gnomad_sv_r4"
       >
         gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
       </option>
     </optgroup>
     <optgroup

@@ -41,6 +41,9 @@ const getDefaultSearchDataset = (selectedDataset: any) => {
     if (selectedDataset === 'gnomad_sv_r4') {
       return 'gnomad_sv_r4'
     }
+    if (selectedDataset === 'gnomad_cnv_r4') {
+      return 'gnomad_cnv_r4'
+    }
   }
   return 'gnomad_r2_1'
 }
@@ -86,6 +89,7 @@ export default withRouter((props: any) => {
         <optgroup label="GRCh38">
           <option value="gnomad_r3">gnomAD v3.1.2</option>
           <option value="gnomad_sv_r4">gnomAD SVs v4</option>
+          <option value="gnomad_cnv_r4">gnomAD CNVs v4.0</option>
         </optgroup>
         <optgroup label="GRCh37">
           <option value="gnomad_r2_1">gnomAD v2.1.1</option>

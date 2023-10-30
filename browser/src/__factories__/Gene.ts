@@ -22,6 +22,7 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     variants = [],
     structural_variants = [],
     clinvar_variants = [],
+    copy_number_variants = [],
   } = params
 
   const heterozygous_variant_cooccurrence_counts =
@@ -67,6 +68,7 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     variants,
     structural_variants,
     clinvar_variants,
+    copy_number_variants,
   }
 })
 
