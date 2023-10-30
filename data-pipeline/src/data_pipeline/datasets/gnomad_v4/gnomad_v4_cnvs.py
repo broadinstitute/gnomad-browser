@@ -63,5 +63,4 @@ def prepare_gnomad_v4_cnvs(vcf_path):
     )
 
     ds = ds.drop("locus", "alleles", "info", "rsid")
-    ds = ds.annotate(variant_id_upper_case=ds.variant_id.upper())
     return ds

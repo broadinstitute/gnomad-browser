@@ -111,7 +111,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -131,7 +131,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -179,9 +179,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -194,11 +194,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -220,9 +220,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -237,9 +237,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -254,9 +254,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -8405,7 +8405,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -8425,7 +8425,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -8473,9 +8473,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -8488,11 +8488,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -8514,9 +8514,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -8531,9 +8531,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -8548,9 +8548,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -16609,7 +16609,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -16629,7 +16629,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -16677,9 +16677,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -16692,11 +16692,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -16718,9 +16718,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -16735,9 +16735,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -16752,9 +16752,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -24813,7 +24813,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -24833,7 +24833,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -24881,9 +24881,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -24896,11 +24896,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -24922,9 +24922,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -24939,9 +24939,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -24956,9 +24956,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -33017,7 +33017,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -33037,7 +33037,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -33085,9 +33085,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -33100,11 +33100,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -33126,9 +33126,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -33143,9 +33143,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -33160,9 +33160,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -41221,7 +41221,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -41241,7 +41241,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -41289,9 +41289,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -41304,11 +41304,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -41330,9 +41330,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -41347,9 +41347,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -41364,9 +41364,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -49425,7 +49425,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -49445,7 +49445,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -49493,9 +49493,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -49508,11 +49508,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -49534,9 +49534,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -49551,9 +49551,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -49568,9 +49568,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -57629,7 +57629,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -57649,7 +57649,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
           </a>
         </li>
         <li
@@ -57697,9 +57697,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -57712,11 +57712,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -57738,9 +57738,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -57755,9 +57755,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -57772,9 +57772,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -65833,7 +65833,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -65901,9 +65901,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -65916,11 +65916,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -65942,9 +65942,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -65959,9 +65959,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -65976,9 +65976,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -74037,7 +74037,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -74105,9 +74105,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -74120,11 +74120,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -74146,9 +74146,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -74163,9 +74163,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -74180,9 +74180,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -82241,7 +82241,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -82309,9 +82309,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -82324,11 +82324,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -82350,9 +82350,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -82367,9 +82367,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -82384,9 +82384,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -90445,7 +90445,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 >
                   gnomAD v3.1.2
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     76,156 samples
                   </div>
@@ -90513,9 +90513,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -90528,11 +90528,11 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -90554,9 +90554,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -90571,9 +90571,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -90588,9 +90588,9 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>

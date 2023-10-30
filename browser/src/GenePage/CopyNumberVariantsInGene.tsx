@@ -46,11 +46,9 @@ const CopyNumberVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       }
     }
   `
-  const url = datasetId === 'gnomad_cnv_r4' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
 
   return (
     <Query
-      url={url}
       operationName={operationName}
       query={query}
       variables={{
@@ -63,12 +61,13 @@ const CopyNumberVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       success={(data: any) => data.gene && data.gene.copy_number_variants}
     >
       {({ data }: any) => {
+        console.log(data) // Add this line to log the 'data' object
         const copy_number_variants = filterCopyNumberVariantsInZoomRegion(
           data.gene.copy_number_variants,
           zoomRegion
         ).map((variant: CopyNumberVariant) => ({
           ...variant,
-          variant_id: variant.variant_id.toUpperCase(),
+          variant_id: variant.variant_id,
         }))
 
         return (

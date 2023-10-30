@@ -87,9 +87,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -102,11 +102,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -128,9 +128,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -145,9 +145,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -162,9 +162,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -698,9 +698,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -713,11 +713,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -739,9 +739,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -756,9 +756,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -773,9 +773,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -1307,9 +1307,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -1322,11 +1322,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -1348,9 +1348,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -1365,9 +1365,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -1382,9 +1382,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -1916,9 +1916,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -1931,11 +1931,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -1957,9 +1957,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -1974,9 +1974,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -1991,9 +1991,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -2507,9 +2507,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -2522,11 +2522,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -2548,9 +2548,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -2565,9 +2565,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -2582,9 +2582,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -3098,9 +3098,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -3113,11 +3113,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -3139,9 +3139,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -3156,9 +3156,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -3173,9 +3173,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -3687,9 +3687,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -3702,11 +3702,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -3728,9 +3728,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -3745,9 +3745,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -3762,9 +3762,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -4278,9 +4278,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -4293,11 +4293,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -4319,9 +4319,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -4336,9 +4336,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -4353,9 +4353,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -5401,9 +5401,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -5416,11 +5416,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -5442,9 +5442,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -5459,9 +5459,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -5476,9 +5476,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -6012,9 +6012,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -6027,11 +6027,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -6053,9 +6053,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -6070,9 +6070,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -6087,9 +6087,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -6621,9 +6621,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -6636,11 +6636,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -6662,9 +6662,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -6679,9 +6679,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -6696,9 +6696,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -7230,9 +7230,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -7245,11 +7245,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -7271,9 +7271,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -7288,9 +7288,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -7305,9 +7305,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -7821,9 +7821,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -7836,11 +7836,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -7862,9 +7862,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -7879,9 +7879,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -7896,9 +7896,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -8412,9 +8412,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -8427,11 +8427,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -8453,9 +8453,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -8470,9 +8470,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -8487,9 +8487,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -9001,9 +9001,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -9016,11 +9016,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -9042,9 +9042,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -9059,9 +9059,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -9076,9 +9076,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -9592,9 +9592,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -9607,11 +9607,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -9633,9 +9633,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -9650,9 +9650,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -9667,9 +9667,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -10715,9 +10715,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -10730,11 +10730,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -10756,9 +10756,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -10773,9 +10773,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -10790,9 +10790,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -11326,9 +11326,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -11341,11 +11341,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -11367,9 +11367,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -11384,9 +11384,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -11401,9 +11401,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -11935,9 +11935,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -11950,11 +11950,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -11976,9 +11976,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -11993,9 +11993,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -12010,9 +12010,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -12544,9 +12544,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -12559,11 +12559,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -12585,9 +12585,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -12602,9 +12602,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -12619,9 +12619,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -13135,9 +13135,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -13150,11 +13150,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -13176,9 +13176,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -13193,9 +13193,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -13210,9 +13210,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -13726,9 +13726,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -13741,11 +13741,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -13767,9 +13767,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -13784,9 +13784,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -13801,9 +13801,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -14315,9 +14315,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -14330,11 +14330,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -14356,9 +14356,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -14373,9 +14373,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -14390,9 +14390,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>
@@ -14906,9 +14906,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v4
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    63,046 samples
+                    63,046 samples, genome
                   </div>
                 </a>
               </li>
@@ -14921,11 +14921,11 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD exome CNVs v4.0
+                  gnomAD CNVs v4.0
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    464,566 samples
+                    464,297 samples, exome, rare (&lt;0.01)
                   </div>
                 </a>
               </li>
@@ -14947,9 +14947,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    10,847 samples
+                    10,847 samples, genome
                   </div>
                 </a>
               </li>
@@ -14964,9 +14964,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (non-neuro)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    8,342 samples
+                    8,342 samples, genome
                   </div>
                 </a>
               </li>
@@ -14981,9 +14981,9 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                 >
                   gnomAD SVs v2.1 (controls)
                   <div
-                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 hlVhHR"
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
-                    5,192 samples
+                    5,192 samples, genome
                   </div>
                 </a>
               </li>

@@ -44,7 +44,7 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Site Count">{variant.sc}</AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Number at Site">{variant.sn}</AttributeList.Item>
+    <AttributeList.Item label="Site Number">{variant.sn}</AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Site Frequency">
       {(variant.sn === 0 ? 0 : variant.sc / variant.sn).toPrecision(4)}

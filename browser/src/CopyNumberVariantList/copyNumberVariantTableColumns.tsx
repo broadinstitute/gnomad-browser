@@ -39,7 +39,7 @@ const copyNumberVariantTableColumns = [
 
   {
     key: 'sn',
-    heading: 'Number at Site',
+    heading: 'Site Number',
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('sn'),
     render: renderAlleleCountCell,
@@ -109,7 +109,7 @@ const copyNumberVariantTableColumns = [
     heading: 'Source',
     grow: 0,
     minWidth: 70,
-    render: (variant: any) => <SampleSourceIcon source="genome" filters={variant.filters} />,
+    render: (variant: any) => <SampleSourceIcon source="exome" filters={variant.filters} />,
   },
 
   {

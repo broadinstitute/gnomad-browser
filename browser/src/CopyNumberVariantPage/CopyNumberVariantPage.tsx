@@ -116,7 +116,6 @@ const ConnectedCopyNumberVariantPage = ({
   variantId,
 }: ConnectedCopyNumberVariantPageProps) => {
   const operationName = 'CopyNumberVariant'
-  const url = datasetId === 'gnomad_cnv_r4' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
 
   const query = `
     query ${operationName}($datasetId: CopyNumberVariantDatasetId!, $variantId: String!) {
@@ -151,7 +150,6 @@ const ConnectedCopyNumberVariantPage = ({
 
   return (
     <Query
-      url={url}
       operationName={operationName}
       query={query}
       variables={{ datasetId, variantId }}
@@ -162,7 +160,7 @@ const ConnectedCopyNumberVariantPage = ({
       {({ data }: any) => {
         const variant = {
           ...data.copy_number_variant,
-          variant_id: data.copy_number_variant.variant_id.toUpperCase(),
+          variant_id: data.copy_number_variant.variant_id,
         }
         return <CopyNumberVariantPage datasetId={datasetId} variant={variant} />
       }}

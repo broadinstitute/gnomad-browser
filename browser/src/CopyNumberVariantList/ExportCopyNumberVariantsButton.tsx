@@ -32,7 +32,7 @@ const columns = [
     getValue: (variant: CopyNumberVariant) => JSON.stringify(variant.sc),
   },
   {
-    label: 'Number at Site',
+    label: 'Site Number',
     getValue: (variant: CopyNumberVariant) => JSON.stringify(variant.sn),
   },
   {

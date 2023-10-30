@@ -70,7 +70,7 @@ const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulat
 
   const columnLabels = {
     sc: 'Site Count',
-    sn: 'Number at Site',
+    sn: 'Site Number',
     sf: 'Site Frequency',
   }
 

@@ -129,7 +129,7 @@ const SubNavigationLink = styled.a`
 const ItemDescription = styled.div`
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 `
 
@@ -609,35 +609,35 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             id: 'gnomad_sv_r4',
             label: labelForDataset('gnomad_sv_r4'),
             url: datasetLink('gnomad_sv_r4'),
-            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r4'),
           },
           {
             id: 'gnomad_sv_r2_1',
             label: labelForDataset('gnomad_sv_r2_1'),
             url: datasetLink('gnomad_sv_r2_1'),
-            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1'),
           },
           {
             id: 'gnomad_sv_r2_1_non_neuro',
             label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
             url: datasetLink('gnomad_sv_r2_1_non_neuro'),
-            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_non_neuro'),
           },
           {
             id: 'gnomad_sv_r2_1_controls',
             label: labelForDataset('gnomad_sv_r2_1_controls'),
             url: datasetLink('gnomad_sv_r2_1_controls'),
-            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
           {
             id: 'gnomad_cnv_r4',
             label: labelForDataset('gnomad_cnv_r4'),
             url: datasetLink('gnomad_cnv_r4'),
-            description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples, exome, rare (<0.01)`,
             childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
           },
         ],

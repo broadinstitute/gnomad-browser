@@ -24,7 +24,6 @@ type Props = OwnProps & typeof CopyNumberVariantsInRegion.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'CopyNumberVariantsInRegion' implicitly has type '... Remove this comment to see the full error message
 const CopyNumberVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: Props) => {
-  const url = datasetId === 'gnomad_cnv_r4' ? '/api' : 'https://gnomad.broadinstitute.org/api/'
 
   const operationName = 'CopyNumberVariantsInRegion'
   const query = `
@@ -52,7 +51,6 @@ const CopyNumberVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: 
 
   return (
     <Query
-      url={url}
       operationName={operationName}
       query={query}
       variables={{
@@ -73,7 +71,7 @@ const CopyNumberVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: 
           zoomRegion
         ).map((variant: CopyNumberVariant) => ({
           ...variant,
-          variant_id: variant.variant_id.toUpperCase(),
+          variant_id: variant.variant_id,
         }))
 
         return (
