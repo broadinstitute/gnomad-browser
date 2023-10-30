@@ -246,12 +246,19 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
       </Table>
       {constraintFlags.length > 0 && (
         <React.Fragment>
-          {constraintFlags.map((flag) => (
-            <p key={flag} style={{ maxWidth: '460px' }}>
-              {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-              <Badge level="info">Note</Badge> {CONSTRAINT_FLAG_DESCRIPTIONS[flag]}
+          {constraintFlags.map((flag) => {
+            let flagDescription
+            if (flag in CONSTRAINT_FLAG_DESCRIPTIONS) {
+              {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */ }
+              flagDescription = CONSTRAINT_FLAG_DESCRIPTIONS[flag]
+            } else {
+              flagDescription = <span>Gene constraint flag: <code>{flag}</code></span>
+            }
+            return <p key={flag} style={{ maxWidth: '460px' }}>
+              <Badge level="info">Note</Badge> {flagDescription}
             </p>
-          ))}
+
+          })}
           <p>
             <Link
               preserveSelectedDataset={false}
