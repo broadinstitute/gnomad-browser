@@ -22,6 +22,7 @@ spec:
       containers:
         - name: web
           image: gnomad-browser
+          imagePullPolicy: Always
           env:
             - name: API_URL
               value: http://$(API_SERVICE)
