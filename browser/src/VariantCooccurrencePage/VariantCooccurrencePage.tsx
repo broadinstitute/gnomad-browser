@@ -153,7 +153,7 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
         ) && (
           <p>
             * A likely co-occurrence pattern cannot be calculated in some cases, such as when only
-            one of the variants is observed in a population.
+            one of the variants is observed in a genetic ancestry group.
           </p>
         )}
       </Section>
@@ -164,7 +164,10 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           : // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             `Details for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} Population`}
       </h2>
-      <p>Select a population in the overview table to view genotype counts for that population.</p>
+      <p>
+        Select a genetic ancestry group in the overview table to view genotype counts for that
+        group.
+      </p>
       <Wrapper>
         <ResponsiveSection>
           <h3>Genotype Counts</h3>
