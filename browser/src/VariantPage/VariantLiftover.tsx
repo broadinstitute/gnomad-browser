@@ -29,7 +29,7 @@ const VariantLiftover = ({ variant }: Props) => {
     const liftoverTargetReferenceGenome =
       variant.reference_genome === 'GRCh37' ? 'GRCh38' : 'GRCh37'
     const liftoverTargetDataset =
-      variant.reference_genome === 'GRCh37' ? 'gnomad_r3' : 'gnomad_r2_1'
+      variant.reference_genome === 'GRCh37' ? 'gnomad_r4' : 'gnomad_r2_1'
 
     // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     const isPlural = variant.liftover.length > 1
@@ -81,7 +81,7 @@ const VariantLiftover = ({ variant }: Props) => {
     const liftoverSourceReferenceGenome =
       variant.reference_genome === 'GRCh37' ? 'GRCh38' : 'GRCh37'
     const liftoverSourceDataset =
-      variant.reference_genome === 'GRCh37' ? 'gnomad_r3' : 'gnomad_r2_1'
+      variant.reference_genome === 'GRCh37' ? 'gnomad_r4' : 'gnomad_r2_1'
 
     // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     const isPlural = variant.liftover_sources.length > 1
