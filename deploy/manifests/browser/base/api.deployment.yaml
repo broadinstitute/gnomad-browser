@@ -18,6 +18,7 @@ spec:
       containers:
         - name: app
           image: gnomad-api
+          imagePullPolicy: Always
           env:
             - name: PORT
               value: '8000'
