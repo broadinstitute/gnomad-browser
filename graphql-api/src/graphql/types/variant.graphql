@@ -79,7 +79,7 @@ type TranscriptConsequence {
   refseq_version: String
   sift_prediction: String
   transcript_id: String!
-  transcript_version: String!
+  transcript_version: String
 
   # Deprecated - replaced by is_canonical
   canonical: Boolean
