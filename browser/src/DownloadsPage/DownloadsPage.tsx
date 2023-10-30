@@ -222,12 +222,16 @@ const DownloadsPage = () => {
         <hr />
 
         <GnomadV4Downloads />
+
         <GnomadV3Downloads />
-        <GnomadV2Downloads />
+
         <GnomadV2LiftoverDownloads />
+
+        <GnomadV2Downloads />
+
         <ExacDownloads />
 
-        {/* TODO:(rgrant) I put these here as a spacer so you can highlight the last items successfully */}
+        {/* This spacer is needed to let users scroll to the last element with the ToC */}
         <BottomSpacer />
       </TextSection>
     </InfoPage>
