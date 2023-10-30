@@ -102,7 +102,7 @@ const extractShortVariantDatasetId = (datasetId: DatasetId): DatasetId => {
     return 'gnomad_r2_1'
   }
 
-  return 'gnomad_r3'
+  return 'gnomad_r4'
 }
 
 const extractStructuralVariantDatasetId = (datasetId: DatasetId): DatasetId => {
