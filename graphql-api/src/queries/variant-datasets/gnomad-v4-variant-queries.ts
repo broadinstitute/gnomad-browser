@@ -184,6 +184,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           Number.isFinite(m.value)
         ),
       },
+      local_ancestry_populations: []
     },
     genome: hasGenomeVariant && {
       ...variant.genome,
