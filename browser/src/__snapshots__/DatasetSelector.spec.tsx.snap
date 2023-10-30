@@ -131,7 +131,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -440,7 +440,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -490,7 +490,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -503,11 +503,11 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -531,7 +531,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -548,7 +548,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -565,7 +565,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -706,7 +706,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -1015,7 +1015,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -1065,7 +1065,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -1078,11 +1078,11 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -1106,7 +1106,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -1123,7 +1123,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -1140,7 +1140,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -1281,7 +1281,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -1590,7 +1590,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -1640,7 +1640,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -1653,11 +1653,11 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -1681,7 +1681,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -1698,7 +1698,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -1715,7 +1715,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -1856,7 +1856,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -2165,7 +2165,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -2215,7 +2215,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -2228,11 +2228,11 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -2256,7 +2256,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -2273,7 +2273,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -2290,7 +2290,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -2431,7 +2431,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -2740,7 +2740,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -2790,7 +2790,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -2803,11 +2803,11 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -2831,7 +2831,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -2848,7 +2848,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -2865,7 +2865,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -3006,7 +3006,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -3315,7 +3315,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -3365,7 +3365,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -3378,11 +3378,11 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -3406,7 +3406,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -3423,7 +3423,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -3440,7 +3440,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -3581,7 +3581,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -3890,7 +3890,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -3940,7 +3940,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -3953,11 +3953,11 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -3981,7 +3981,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -3998,7 +3998,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -4015,7 +4015,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -4156,7 +4156,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -4465,7 +4465,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -4515,7 +4515,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -4528,11 +4528,11 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -4556,7 +4556,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -4573,7 +4573,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -4590,7 +4590,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -4731,7 +4731,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -5040,7 +5040,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -5090,7 +5090,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -5103,11 +5103,11 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -5131,7 +5131,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -5148,7 +5148,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -5165,7 +5165,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -5306,7 +5306,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -5615,7 +5615,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -5665,7 +5665,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -5678,11 +5678,11 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -5706,7 +5706,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -5723,7 +5723,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -5740,7 +5740,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -5881,7 +5881,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -6190,7 +6190,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -6240,7 +6240,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -6253,11 +6253,11 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -6281,7 +6281,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -6298,7 +6298,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -6315,7 +6315,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -6456,7 +6456,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -6765,7 +6765,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -6815,7 +6815,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -6828,11 +6828,11 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -6856,7 +6856,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -6873,7 +6873,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -6890,7 +6890,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -7031,7 +7031,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -7340,7 +7340,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -7390,7 +7390,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -7403,11 +7403,11 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -7431,7 +7431,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -7448,7 +7448,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -7465,7 +7465,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -7606,7 +7606,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -7915,7 +7915,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -7965,7 +7965,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -7978,11 +7978,11 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -8006,7 +8006,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -8023,7 +8023,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -8040,7 +8040,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -8181,7 +8181,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -8490,7 +8490,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -8540,7 +8540,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -8553,11 +8553,11 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -8581,7 +8581,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -8598,7 +8598,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -8615,7 +8615,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -8756,7 +8756,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -9065,7 +9065,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -9115,7 +9115,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -9128,11 +9128,11 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -9156,7 +9156,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -9173,7 +9173,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -9190,7 +9190,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -9331,7 +9331,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -9640,7 +9640,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -9690,7 +9690,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -9703,11 +9703,11 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -9731,7 +9731,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -9748,7 +9748,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -9765,7 +9765,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -9906,7 +9906,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -10215,7 +10215,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -10265,7 +10265,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -10278,11 +10278,11 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -10306,7 +10306,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -10323,7 +10323,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -10340,7 +10340,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -10481,7 +10481,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -10790,7 +10790,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -10840,7 +10840,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -10853,11 +10853,11 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -10881,7 +10881,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -10898,7 +10898,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -10915,7 +10915,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -11056,7 +11056,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -11365,7 +11365,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -11415,7 +11415,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -11428,11 +11428,11 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -11456,7 +11456,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -11473,7 +11473,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -11490,7 +11490,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -11631,7 +11631,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -11940,7 +11940,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -11990,7 +11990,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -12003,11 +12003,11 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -12031,7 +12031,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -12048,7 +12048,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -12065,7 +12065,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -12206,7 +12206,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -12515,7 +12515,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -12565,7 +12565,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -12578,11 +12578,11 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -12606,7 +12606,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -12623,7 +12623,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -12640,7 +12640,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -12781,7 +12781,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -13090,7 +13090,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -13140,7 +13140,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -13153,11 +13153,11 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -13181,7 +13181,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -13198,7 +13198,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -13215,7 +13215,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -13356,7 +13356,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -13665,7 +13665,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -13715,7 +13715,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -13728,11 +13728,11 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -13756,7 +13756,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -13773,7 +13773,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -13790,7 +13790,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -13931,7 +13931,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -14240,7 +14240,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -14290,7 +14290,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -14303,11 +14303,11 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -14331,7 +14331,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -14348,7 +14348,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -14365,7 +14365,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -14506,7 +14506,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -14815,7 +14815,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -14865,7 +14865,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -14878,11 +14878,11 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -14906,7 +14906,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -14923,7 +14923,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -14940,7 +14940,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -15081,7 +15081,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -15390,7 +15390,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -15440,7 +15440,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -15453,11 +15453,11 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -15481,7 +15481,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -15498,7 +15498,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -15515,7 +15515,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -15656,7 +15656,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -15965,7 +15965,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD exome CNVs v4.0
+      gnomAD CNVs v4.0
     </a>
   </li>
   <li
@@ -16015,7 +16015,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -16028,11 +16028,11 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -16056,7 +16056,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -16073,7 +16073,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -16090,7 +16090,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -16231,7 +16231,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -16590,7 +16590,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -16603,11 +16603,11 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -16631,7 +16631,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -16648,7 +16648,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -16665,7 +16665,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -16806,7 +16806,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -17165,7 +17165,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -17178,11 +17178,11 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -17206,7 +17206,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -17223,7 +17223,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -17240,7 +17240,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -17381,7 +17381,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -17740,7 +17740,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -17753,11 +17753,11 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -17781,7 +17781,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -17798,7 +17798,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -17815,7 +17815,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -17956,7 +17956,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -18315,7 +18315,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -18328,11 +18328,11 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -18356,7 +18356,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -18373,7 +18373,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -18390,7 +18390,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -18531,7 +18531,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -18890,7 +18890,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -18903,11 +18903,11 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -18931,7 +18931,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -18948,7 +18948,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -18965,7 +18965,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -19106,7 +19106,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -19465,7 +19465,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -19478,11 +19478,11 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -19506,7 +19506,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -19523,7 +19523,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -19540,7 +19540,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -19681,7 +19681,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -20040,7 +20040,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -20053,11 +20053,11 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -20081,7 +20081,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -20098,7 +20098,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -20115,7 +20115,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>
@@ -20256,7 +20256,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
 .c8 {
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 }
 
@@ -20615,7 +20615,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              63,046 samples
+              63,046 samples, genome
             </div>
           </a>
         </li>
@@ -20628,11 +20628,11 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD exome CNVs v4.0
+            gnomAD CNVs v4.0
             <div
               className="c8"
             >
-              464,566 samples
+              464,297 samples, exome, rare (&lt;0.01)
             </div>
           </a>
         </li>
@@ -20656,7 +20656,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              10,847 samples
+              10,847 samples, genome
             </div>
           </a>
         </li>
@@ -20673,7 +20673,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              8,342 samples
+              8,342 samples, genome
             </div>
           </a>
         </li>
@@ -20690,7 +20690,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             <div
               className="c8"
             >
-              5,192 samples
+              5,192 samples, genome
             </div>
           </a>
         </li>

@@ -46,7 +46,7 @@ The following subsets from previous versions are currently available, but access
 - **gnomAD genome SVs v4.0**: Structural variant (SV) calls generated from a set of GS samples that largely overlaps those in gnomAD v4. This current SV release includes 63,046 unrelated genomes. See the [gnomAD-SV blog post](https://gnomad.broadinstitute.org/news/2023-11-v4-structural-variants) for details.
 - gnomAD genome SVs v4.0 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study. ([Download only](/downloads#v4))
 - gnomAD genome SVs v4.0 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease. ([Download only](/downloads#v4))
-- **gnomAD exome CNVs v4.0**: Copy number variant (CNV) calls generated from a set of ES samples that largely overlaps those in gnomAD v4. This current CNV release includes 464,566 unrelated exomes.
+- **gnomAD exome CNVs v4.0**: Copy number variant (CNV) calls generated from a set of ES samples that largely overlaps those in gnomAD v4. This current CNV release includes 464,297 unrelated exomes.
 - gnomAD exome CNVs v4.0 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study. ([Download only](/downloads#v4))
 - gnomAD exome CNVs v4.0 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease. ([Download only](/downloads#v4))
 - gnomAD SVs v2.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease.

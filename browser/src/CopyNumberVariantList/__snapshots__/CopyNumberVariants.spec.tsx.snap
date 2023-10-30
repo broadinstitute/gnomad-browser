@@ -256,7 +256,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             },
             {
               "compareFunction": [Function],
-              "heading": "Number at Site",
+              "heading": "Site Number",
               "isSortable": true,
               "key": "sn",
               "minWidth": 110,
