@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, PageHeading, Link } from '@gnomad/ui'
+import { ExternalLink, PageHeading } from '@gnomad/ui'
+
+import Link from '../Link'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
@@ -13,14 +15,14 @@ import DownloadsPageTableOfContents from './TableOfContents'
 // @ts-expect-error
 import styles from './DownloadsPage.module.css'
 
+import GnomadV4Downloads from './GnomadV4Downloads'
+import GnomadV3Downloads from './GnomadV3Downloads'
 import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
-import GnomadV3Downloads from './GnomadV3Downloads'
 import ExacDownloads from './ExacDownloads'
 
 const CodeBlock = styled.code`
   display: inline-block;
-  overflow-x: scroll;
   box-sizing: border-box;
   max-width: 100%;
   padding: 0.5em 1em;
@@ -195,9 +197,9 @@ const DownloadsPage = () => {
 
           <h3>Downloads</h3>
           <StyledParagraph>
-            See {/* @ts-expect-error */}
+            See{' '}
             <Link to="/help/whats-the-difference-between-the-different-versions-of-gnomad">
-              &ldquo;What&apos;s the difference between gnomAD v2 and v3?&rdquo;
+              &ldquo;What&apos;s the difference between different versions of gnomad?&rdquo;
             </Link>{' '}
             to decide which version is right for you.
           </StyledParagraph>
@@ -221,12 +223,16 @@ const DownloadsPage = () => {
 
         <hr />
 
-        <GnomadV2Downloads />
-        <GnomadV2LiftoverDownloads />
+        <GnomadV4Downloads />
+
         <GnomadV3Downloads />
+
+        <GnomadV2LiftoverDownloads />
+
+        <GnomadV2Downloads />
+
         <ExacDownloads />
 
-        {/* TODO:(rgrant) I put these here as a spacer so you can highlight the last items successfully */}
         <BottomSpacer />
       </TextSection>
     </InfoPage>

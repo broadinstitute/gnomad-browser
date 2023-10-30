@@ -57,6 +57,8 @@ const DownloadsPageTableOfContents = () => {
       setActiveSection('v2-liftover')
     } else if (activeId.indexOf('v2') > -1) {
       setActiveSection('v2')
+    } else if (activeId.indexOf('v4') > -1) {
+      setActiveSection('v4')
     } else if (activeId.indexOf('v3') > -1) {
       setActiveSection('v3')
     } else if (activeId.indexOf('exac') > -1) {
