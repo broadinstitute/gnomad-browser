@@ -3,6 +3,8 @@ import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { ExternalLink } from '@gnomad/ui'
+
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -65,11 +67,20 @@ const Banner = styled.div`
   text-align: center;
 
   a {
-    color: #fff !important;
+    color: #8ac8f4 !important;
+    text-decoration: underline;
   }
 `
 
-const BANNER_CONTENT = null
+const BANNER_CONTENT = (
+  <>
+    gnomAD v4 is here! Read our {/* @ts-expect-error */}
+    <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
+      blog post
+    </ExternalLink>{' '}
+    for more details
+  </>
+)
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
