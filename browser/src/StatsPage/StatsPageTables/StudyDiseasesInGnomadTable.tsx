@@ -1,6 +1,9 @@
 import React from 'react'
 
+import { Button } from '@gnomad/ui'
+
 import {
+  downloadTableAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableBody,
@@ -9,9 +12,11 @@ import {
 } from './TableStyles'
 
 const StudyDiseasesInGnomadTable = () => {
+  const elementID = 'study-diseases-in-gnomad-table'
+
   return (
-    <>
-      <StatsTable>
+    <div>
+      <StatsTable id={elementID} style={{ marginBottom: '3em' }}>
         <thead>
           <StatsTableHeaderRow>
             <th>Phenotypes</th>
@@ -133,8 +138,8 @@ const StudyDiseasesInGnomadTable = () => {
 
         <StatsTableCaption>
           <div>
-            * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as
-            theFinnGen and MGB biobank samples when no phenotype was specified
+            * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as the
+            FinnGen and MGB biobank samples when no phenotype was specified
           </div>
           <div>
             {' '}
@@ -147,7 +152,10 @@ const StudyDiseasesInGnomadTable = () => {
           </div>
         </StatsTableCaption>
       </StatsTable>
-    </>
+      <div>
+        <Button onClick={() => downloadTableAsPNG(elementID)}>Download Table</Button>
+      </div>
+    </div>
   )
 }
 

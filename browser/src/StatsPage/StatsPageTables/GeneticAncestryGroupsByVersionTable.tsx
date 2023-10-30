@@ -1,6 +1,9 @@
 import React from 'react'
 
+import { Button } from '@gnomad/ui'
+
 import {
+  downloadTableAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -9,10 +12,12 @@ import {
   StatsTableFooter,
 } from './TableStyles'
 
-const V4GeneticAncestryTable = () => {
+const GeneticAncestryGroupsByVersionTable = () => {
+  const elementID = 'gnomad-genetic-ancestry-group-size-by-version-table'
+
   return (
-    <>
-      <StatsTable>
+    <div>
+      <StatsTable id={elementID} style={{ marginBottom: '3em' }}>
         <thead>
           <StatsTableHeaderRow>
             <th>&nbsp;</th>
@@ -126,8 +131,11 @@ const V4GeneticAncestryTable = () => {
           </div>
         </StatsTableCaption>
       </StatsTable>
-    </>
+      <div>
+        <Button onClick={() => downloadTableAsPNG(elementID)}>Download Table</Button>
+      </div>
+    </div>
   )
 }
 
-export default V4GeneticAncestryTable
+export default GeneticAncestryGroupsByVersionTable
