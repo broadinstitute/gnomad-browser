@@ -61,7 +61,6 @@ const CopyNumberVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       success={(data: any) => data.gene && data.gene.copy_number_variants}
     >
       {({ data }: any) => {
-        console.log(data) // Add this line to log the 'data' object
         const copy_number_variants = filterCopyNumberVariantsInZoomRegion(
           data.gene.copy_number_variants,
           zoomRegion
