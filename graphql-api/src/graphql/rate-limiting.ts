@@ -3,11 +3,21 @@ import config from '../config'
 import { UserVisibleError } from '../errors'
 import logger from '../logger'
 
-const rateLimitDb = new Redis({
-  sentinels: [{ host: config.RATE_LIMITER_REDIS_URL, port: 26379 }],
-  name: 'mymaster',
-  db: 2,
-})
+let rateLimitDb: Redis
+
+if (config.REDIS_USE_SENTINEL) {
+  rateLimitDb = new Redis({
+    sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
+    name: config.REDIS_GROUP_NAME,
+    db: 2,
+  })
+} else {
+  rateLimitDb = new Redis({
+    host: config.REDIS_HOST,
+    port: config.REDIS_PORT,
+    db: 2,
+  })
+}
 
 const increaseRateLimitCounter = (key: any, value: any) => {
   return Promise.race([
