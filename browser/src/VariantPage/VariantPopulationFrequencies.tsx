@@ -23,9 +23,12 @@ type Props = {
 const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
   if (hasLocalAncestryPopulations(datasetId) && variant.genome) {
     const genome = variant.genome!
-    const gnomadPopulations = genome.populations.filter(
+    const genomePopulations = genome.populations.filter(
       (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
     )
+    const exomePopulations = variant.exome ? variant.exome.populations.filter(
+      (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
+    ) : []
     const hgdpPopulations = genome.populations
       .filter((pop) => pop.id.startsWith('hgdp:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
@@ -46,8 +49,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
               <TableWrapper>
                 <GnomadPopulationsTable
                   datasetId={datasetId}
-                  exomePopulations={[]}
-                  genomePopulations={gnomadPopulations}
+                  exomePopulations={exomePopulations}
+                  genomePopulations={genomePopulations}
                   showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                 />
               </TableWrapper>
