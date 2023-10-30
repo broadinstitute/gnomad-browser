@@ -6,9 +6,10 @@ export const GNOMAD_POPULATION_NAMES = {
   amr: 'Admixed American',
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
-  fin: 'European (Finnish)',
   mid: 'Middle Eastern',
+  eur: 'European',
   nfe: 'European (non-Finnish)',
+  fin: 'European (Finnish)',
   oth: 'Remaining individuals',
   sas: 'South Asian',
 
@@ -29,4 +30,4 @@ export const GNOMAD_POPULATION_NAMES = {
 export type PopulationId = keyof typeof GNOMAD_POPULATION_NAMES
 
 export const populationName = (populationId: string) =>
-  textOrMissingTextWarning('population name', GNOMAD_POPULATION_NAMES, populationId)
+  textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)
