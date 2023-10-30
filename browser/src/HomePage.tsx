@@ -117,6 +117,19 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
+        Structural variant region:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/region/19-11078371-11144910',
+            search: queryString.stringify({ dataset: 'gnomad_sv_r4' }),
+          }}
+        >
+          19-11078371-11144910
+        </Link>
+      </ListItem>
+      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
+      <ListItem>
         Mitochondrial variant:{' '}
         <Link
           preserveSelectedDataset={false}
@@ -131,7 +144,7 @@ export default () => (
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4">
+        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
           Short tandem repeat
         </ExternalLink>{' '}
         locus:{' '}
