@@ -160,7 +160,20 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        Variant co-occurrence (gnomAD v2):{' '}
+        Regional missense constraint (gnomAD v2, GRCh37):{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/gene/ENSG00000183454',
+            search: queryString.stringify({
+              dataset: 'gnomad_r2_1',
+              variant: ['1-55505647-G-T', '1-55523855-G-A'],
+            }),
+          }}>GRIN2A</Link>
+      </ListItem>
+      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
+      <ListItem>
+        Variant co-occurrence (gnomAD v2, GRCh37):{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
