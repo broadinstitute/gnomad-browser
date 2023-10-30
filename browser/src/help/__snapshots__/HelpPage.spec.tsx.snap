@@ -1092,7 +1092,7 @@ exports[`Help Page has no unexpected changes 1`] = `
               <details>
                 <summary>
                   <h4>
-                    whats-the-difference-between-different-versions-of-gnomad.md
+                    whats-the-difference-between-the-different-versions-of-gnomad.md
                   </h4>
                 </summary>
                 <div
@@ -1103,12 +1103,55 @@ exports[`Help Page has no unexpected changes 1`] = `
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
-question: "What's the difference between different versions of gnomAD"
+question: "What's the difference between the different versions of gnomAD?"
 ---
 
 The gnomAD v4.0 data set contains 730,947 exomes plus the 76,215 genomes previously called gnomAD v3.1, all mapped to the GRCh38/hg38 reference sequence.
 
 The gnomAD v2.1 data set contained data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence. Most of the data from v2 are included in v4.0.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-features-are-not-yet-in-v4-and-where-can-i-find-them.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      {
+                        "__html": "---
+question: 'What features are not yet in v4 and where can I find them?'
+---
+
+The v4.0 release is a minimum viable product (MVP) release, which allows us to get the most critical piece of the gnomAD database, high quality aggregate allele frequencies and updated constraint metrics, to our users as soon as possible. It also means that a few of the existing features found in v2 or v3 are not yet included in v4 but **will be coming soon**.
+
+Below is a list of all features not included in the v4 MVP and where to find them in our past datasets until we are able to add them to v4:
+
+<br />
+
+| Non MVP feature                                 | Past versions with this data                          |
+| ----------------------------------------------- | ----------------------------------------------------- |
+| Pext score                                      | v2 gene page                                          |
+| Sub-genetic ancestry groups (prevously subpops) | v2 variant page                                       |
+| Multi Nucleotide (MNV) calls                    | v2 variant table and variant page                     |
+| Variant co-occurrence                           | v2 gene page                                          |
+| Manual LoF curation                             | v2 variant table and variant page                     |
+| Regional Missense Constraint                    | Now available on v2 gene page                         |
+| Linkage disequilibrium scores                   | [v2](/downloads/#v2-linkage-disequilibrium) downloads |
+| Short Tandem Repeats (STRs)                     | [v3](/short-tandem-repeats?dataset=gnomad_r3)         |
+| Mitochondrial Variants                          | v3                                                    |
 ",
                       }
                     }
@@ -1564,6 +1607,8 @@ Genes that were outliers in certain assessments will not have constraint metrics
 - \`outlier_syn\`: Number of synonymous variants is significantly different than expectation
 
 Possible reasons that one might observe the deviations listed above include mismapped reads due to homologous regions or poor quality sequencing data.
+
+Currently, constraint scores are only available for autosomes. We will release scores for chromosomes X in the near future.
 ",
                       }
                     }
@@ -1881,16 +1926,18 @@ See [ancestry documentation](/help/ancestry) and [blog post](https://gnomad.broa
                         For current stats on genetic ancestry groups present in v4, please see the
                          
                         <a
-                          className="c2"
-                          to="/stats"
+                          className="-Link c3"
+                          href="/stats#diversity"
+                          onClick={[Function]}
                         >
                           stats page
                         </a>
                         . For technical details, please see our
                          
                         <a
-                          className="c2"
-                          to="/help/ancestry"
+                          className="-Link c3"
+                          href="/help/ancestry"
+                          onClick={[Function]}
                         >
                           Genetic Ancestry in gnomAD
                         </a>
@@ -9883,7 +9930,7 @@ question: 'What are your calling intervals? What intervals are used for the geno
 
 The calling intervals for our exomes include the bait-covered regions ±50 bp. For v4, our exome calling regions file includes information about the two sets of calling intervals used for v4 samples: Broad exome calling intervals and UK Biobank exome calling intervals.
 
-- [Exome calling regions](/downloads#v4-variants)
+- [Exome calling regions](https://storage.googleapis.com/gcp-public-data--gnomad/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals)
 
 <br /><br />
 

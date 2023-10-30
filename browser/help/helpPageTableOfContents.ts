@@ -23,7 +23,8 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     {
       heading: 'General',
       topics: [
-        'whats-the-difference-between-different-versions-of-gnomad',
+        'whats-the-difference-between-the-different-versions-of-gnomad',
+        'what-features-are-not-yet-in-v4-and-where-can-i-find-them',
         'what-are-the-restrictions-on-data-usage',
         'i-have-identified-a-rare-variant-what-phenotype-data-are-available',
         'can-i-get-access-to-individual-level-genotype-data-from-gnomad',

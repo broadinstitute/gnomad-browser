@@ -20,7 +20,7 @@ The following subsets from previous versions are currently available, but access
 
 #### gnomAD v3.1.2
 
-- _gnomAD v3.1.2_
+- **gnomAD v3.1.2**
 - _gnomAD v3.1.2 (non-cancer): Only samples from individuals who were not ascertained for having cancer in a cancer study._
 - _gnomAD v3.1.2 (non-neuro): Only samples that were not collected as part of a neurologic or psychiatric case/control study, or samples collected as part of a neurologic or psychiatric case/control study but designated as controls._
 - _gnomAD v3.1.2 (non-v2): Only samples that are new to the v3 or v3.1 release and not included in gnomAD v2._
@@ -56,6 +56,5 @@ The following subsets from previous versions are currently available, but access
 - _gnomAD SVs v2.1: Structural variant (SV) calls generated from a set of GS samples that largely overlaps those in gnomAD v2.1. This current SV release includes 10,847 unrelated genomes. See the [gnomAD-SV paper](https://broad.io/gnomad_sv) for details._
 - _gnomAD SVs v2.1 (non-neuro): Only samples from individuals who were not ascertained for having a neurological condition in a neurological case/control study._
 - _gnomAD SVs v2.1 (controls): Only samples from individuals who were not selected as a case in a case/control study of common disease._
-
 
 The data selection drop-down also updates accompanying data such as the coverage plot, constraint statistics, regional constraint, and variant positional distribution plot.
