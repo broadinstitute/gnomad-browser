@@ -1,6 +1,9 @@
 import React from 'react'
 
+import { Button } from '@gnomad/ui'
+
 import {
+  downloadTableAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -8,10 +11,12 @@ import {
   StatsTableCaption,
 } from './TableStyles'
 
-const GeneticAncestryGroupsByVersionTable = () => {
+const V4GeneticAncestryTable = () => {
+  const elementID = 'gnomad-v4-genetic-ancestry-group-size-table'
+
   return (
-    <>
-      <StatsTable>
+    <div>
+      <StatsTable id={elementID} style={{ marginBottom: '3em' }}>
         <thead>
           <StatsTableHeaderRow>
             <th style={{ width: '15%' }}>Imputed Genetic Ancestry Group for v4</th>
@@ -235,12 +240,15 @@ const GeneticAncestryGroupsByVersionTable = () => {
           <br />
           <div>
             These labels are also a mix of researcher assigned, sometimes participant self reported.
-            Non of these labels are used for training our imputed ancestry data.
+            None of these labels are used for training our imputed ancestry data.
           </div>
         </StatsTableCaption>
       </StatsTable>
-    </>
+      <div>
+        <Button onClick={() => downloadTableAsPNG(elementID)}>Download Table</Button>
+      </div>
+    </div>
   )
 }
 
-export default GeneticAncestryGroupsByVersionTable
+export default V4GeneticAncestryTable

@@ -1,6 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stats Page has no unexpected changes 1`] = `
+.c35 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c35:active,
+.c35:hover {
+  background-color: #cbd3da;
+}
+
+.c35:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c35:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c35 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
 .c1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -21,6 +61,49 @@ exports[`Stats Page has no unexpected changes 1`] = `
 
 .c2 {
   margin: 0;
+}
+
+.c20 {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1em;
+}
+
+.c21 {
+  pointer-events: visible;
+  fill: none;
+}
+
+.c21:hover {
+  fill: rgba(0,0,0,0.05);
+}
+
+.c18 {
+  position: absolute;
+  -webkit-transform: translate(-15px,calc(50% - 0.5em));
+  -ms-transform: translate(-15px,calc(50% - 0.5em));
+  transform: translate(-15px,calc(50% - 0.5em));
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 15px;
+  height: 1em;
+  visibility: hidden;
+  vertical-align: middle;
+}
+
+.c16 {
+  position: relative;
+}
+
+.c16:hover .c17 {
+  visibility: visible;
 }
 
 .c22 {
@@ -55,10 +138,79 @@ exports[`Stats Page has no unexpected changes 1`] = `
   line-height: 1.4;
 }
 
+.c5 {
+  margin-left: 2rem;
+}
+
+.c6 {
+  margin-bottom: 1em;
+}
+
+.c7 {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.c8 {
+  margin-top: 0.5em;
+}
+
+.c8 li {
+  margin-bottom: 0.5em;
+}
+
+.c13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  margin: 0 1em 0 0;
+  list-style-type: none;
+}
+
+.c14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 1em 0.33em 0;
+}
+
+.c10 {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1em;
+}
+
+.c12 {
+  margin-left: 5em;
+}
+
+.c11 {
+  pointer-events: visible;
+  fill: none;
+}
+
+.c11:hover {
+  fill: rgba(0,0,0,0.05);
+}
+
 .c29 {
   border-collapse: collapse;
   min-width: 400px;
   font-size: 0.9em;
+  -webkit-letter-spacing: 0.01px;
+  -moz-letter-spacing: 0.01px;
+  -ms-letter-spacing: 0.01px;
+  letter-spacing: 0.01px;
 }
 
 .c29 th,
@@ -108,114 +260,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-align: left;
 }
 
-.c5 {
-  margin-left: 2rem;
-}
-
-.c6 {
-  margin-bottom: 1em;
-}
-
-.c7 {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
-.c8 {
-  margin-top: 0.5em;
-}
-
-.c8 li {
-  margin-bottom: 0.5em;
-}
-
-.c20 {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  margin-bottom: 1em;
-}
-
-.c21 {
-  pointer-events: visible;
-  fill: none;
-}
-
-.c21:hover {
-  fill: rgba(0,0,0,0.05);
-}
-
-.c13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding: 0;
-  margin: 0 1em 0 0;
-  list-style-type: none;
-}
-
-.c14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 0 1em 0.33em 0;
-}
-
-.c10 {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  margin-bottom: 1em;
-}
-
-.c12 {
-  margin-left: 5em;
-}
-
-.c11 {
-  pointer-events: visible;
-  fill: none;
-}
-
-.c11:hover {
-  fill: rgba(0,0,0,0.05);
-}
-
-.c18 {
-  position: absolute;
-  -webkit-transform: translate(-15px,calc(50% - 0.5em));
-  -ms-transform: translate(-15px,calc(50% - 0.5em));
-  transform: translate(-15px,calc(50% - 0.5em));
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 15px;
-  height: 1em;
-  visibility: hidden;
-  vertical-align: middle;
-}
-
-.c16 {
-  position: relative;
-}
-
-.c16:hover .c17 {
-  visibility: visible;
-}
-
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -235,7 +279,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   width: 70%;
 }
 
-.c35 {
+.c36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -246,7 +290,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c36 {
+.c37 {
   width: 70%;
 }
 
@@ -386,14 +430,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c35 {
+  .c36 {
     display: block;
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c36 {
+  .c37 {
     display: block;
     width: 100%;
   }
@@ -577,13 +621,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     coming soon
                   </i>
                   )
-                  <ul
-                    className="c8"
-                  >
-                    <li>
-                      On average we see 2 SNVs every 3 base pairs
-                    </li>
-                  </ul>
                 </li>
                 <li>
                   1 rare (&lt;1% AF) coding CNV per individual
@@ -4102,286 +4139,303 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         }
       >
-        <table
-          className="c29"
-        >
-          <thead>
-            <tr
-              className="c30"
-            >
-              <th>
-                 
-              </th>
-              <th>
-                ExAC
-              </th>
-              <th>
-                gnomAD v2
-              </th>
-              <th>
-                gnomAD v3
-              </th>
-              <th
-                colSpan={3}
+        <div>
+          <table
+            className="c29"
+            id="gnomad-genetic-ancestry-group-size-by-version-table"
+            style={
+              {
+                "marginBottom": "3em",
+              }
+            }
+          >
+            <thead>
+              <tr
+                className="c30"
               >
-                gnomAD v4*
-              </th>
-            </tr>
-            <tr
-              className="c31"
+                <th>
+                   
+                </th>
+                <th>
+                  ExAC
+                </th>
+                <th>
+                  gnomAD v2
+                </th>
+                <th>
+                  gnomAD v3
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  gnomAD v4*
+                </th>
+              </tr>
+              <tr
+                className="c31"
+              >
+                <th>
+                   
+                </th>
+                <th>
+                  #
+                </th>
+                <th>
+                  #
+                </th>
+                <th>
+                  #
+                </th>
+                <th>
+                  #
+                </th>
+                <th>
+                  %
+                </th>
+                <th>
+                  Fold increase from v2
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c32"
             >
-              <th>
-                 
-              </th>
-              <th>
-                #
-              </th>
-              <th>
-                #
-              </th>
-              <th>
-                #
-              </th>
-              <th>
-                #
-              </th>
-              <th>
-                %
-              </th>
-              <th>
-                Fold increase from v2
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="c32"
-          >
-            <tr>
-              <td>
-                Admixed American
-              </td>
-              <td>
-                5,789
-              </td>
-              <td>
-                17,720
-              </td>
-              <td>
-                7,647
-              </td>
-              <td>
-                30,019
-              </td>
-              <td>
-                3.72%
-              </td>
-              <td>
-                1.7x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                African
-              </td>
-              <td>
-                5,203
-              </td>
-              <td>
-                12,487
-              </td>
-              <td>
-                20,744
-              </td>
-              <td>
-                37,545
-              </td>
-              <td>
-                4.65%
-              </td>
-              <td>
-                3x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Ashkenazi Jewish
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                5,185
-              </td>
-              <td>
-                1,736
-              </td>
-              <td>
-                14,804
-              </td>
-              <td>
-                1.83%
-              </td>
-              <td>
-                2.9x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                East Asian
-              </td>
-              <td>
-                4,327
-              </td>
-              <td>
-                9,977
-              </td>
-              <td>
-                2,604
-              </td>
-              <td>
-                22,448
-              </td>
-              <td>
-                2.78%
-              </td>
-              <td>
-                2.3x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                European^
-              </td>
-              <td>
-                36,667
-              </td>
-              <td>
-                77,165
-              </td>
-              <td>
-                39,345
-              </td>
-              <td>
-                622,057
-              </td>
-              <td>
-                77.07%
-              </td>
-              <td>
-                8.1x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Middle Eastern
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                158
-              </td>
-              <td>
-                3,031
-              </td>
-              <td>
-                0.38%
-              </td>
-              <td>
-                New
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Remaining Individuals^
-              </td>
-              <td>
-                454
-              </td>
-              <td>
-                3,614
-              </td>
-              <td>
-                1,503
-              </td>
-              <td>
-                31,172
-              </td>
-              <td>
-                3.93%
-              </td>
-              <td>
-                8.8x
-              </td>
-            </tr>
-            <tr>
-              <td>
-                South Asian
-              </td>
-              <td>
-                8,256
-              </td>
-              <td>
-                15,308
-              </td>
-              <td>
-                2,419
-              </td>
-              <td>
-                45,546
-              </td>
-              <td>
-                5.64%
-              </td>
-              <td>
-                3x
-              </td>
-            </tr>
-          </tbody>
-          <tfoot
-            className="c33"
-          >
-            <tr>
-              <td>
-                Total
-              </td>
-              <td>
-                60,706
-              </td>
-              <td>
-                141,456
-              </td>
-              <td>
-                76,156
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                807,162
-              </td>
-              <td>
-                -
-              </td>
-            </tr>
-          </tfoot>
-          <caption
-            className="c34"
-          >
-            <div>
-              *v4 includes all v3 samples
-            </div>
-            <div>
-              ^ Due to small sample sizes Finnish was included in European and Amish was included in Remaining Individuals
-            </div>
-          </caption>
-        </table>
+              <tr>
+                <td>
+                  Admixed American
+                </td>
+                <td>
+                  5,789
+                </td>
+                <td>
+                  17,720
+                </td>
+                <td>
+                  7,647
+                </td>
+                <td>
+                  30,019
+                </td>
+                <td>
+                  3.72%
+                </td>
+                <td>
+                  1.7x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  African
+                </td>
+                <td>
+                  5,203
+                </td>
+                <td>
+                  12,487
+                </td>
+                <td>
+                  20,744
+                </td>
+                <td>
+                  37,545
+                </td>
+                <td>
+                  4.65%
+                </td>
+                <td>
+                  3x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  5,185
+                </td>
+                <td>
+                  1,736
+                </td>
+                <td>
+                  14,804
+                </td>
+                <td>
+                  1.83%
+                </td>
+                <td>
+                  2.9x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  East Asian
+                </td>
+                <td>
+                  4,327
+                </td>
+                <td>
+                  9,977
+                </td>
+                <td>
+                  2,604
+                </td>
+                <td>
+                  22,448
+                </td>
+                <td>
+                  2.78%
+                </td>
+                <td>
+                  2.3x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European^
+                </td>
+                <td>
+                  36,667
+                </td>
+                <td>
+                  77,165
+                </td>
+                <td>
+                  39,345
+                </td>
+                <td>
+                  622,057
+                </td>
+                <td>
+                  77.07%
+                </td>
+                <td>
+                  8.1x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  158
+                </td>
+                <td>
+                  3,031
+                </td>
+                <td>
+                  0.38%
+                </td>
+                <td>
+                  New
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Remaining Individuals^
+                </td>
+                <td>
+                  454
+                </td>
+                <td>
+                  3,614
+                </td>
+                <td>
+                  1,503
+                </td>
+                <td>
+                  31,172
+                </td>
+                <td>
+                  3.93%
+                </td>
+                <td>
+                  8.8x
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  South Asian
+                </td>
+                <td>
+                  8,256
+                </td>
+                <td>
+                  15,308
+                </td>
+                <td>
+                  2,419
+                </td>
+                <td>
+                  45,546
+                </td>
+                <td>
+                  5.64%
+                </td>
+                <td>
+                  3x
+                </td>
+              </tr>
+            </tbody>
+            <tfoot
+              className="c33"
+            >
+              <tr>
+                <td>
+                  Total
+                </td>
+                <td>
+                  60,706
+                </td>
+                <td>
+                  141,456
+                </td>
+                <td>
+                  76,156
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  807,162
+                </td>
+                <td>
+                  -
+                </td>
+              </tr>
+            </tfoot>
+            <caption
+              className="c34"
+            >
+              <div>
+                *v4 includes all v3 samples
+              </div>
+              <div>
+                ^ Due to small sample sizes Finnish was included in European and Amish was included in Remaining Individuals
+              </div>
+            </caption>
+          </table>
+          <div>
+            <button
+              className="c35"
+              onClick={[Function]}
+              type="button"
+            >
+              Download Table
+            </button>
+          </div>
+        </div>
       </div>
       <div
-        className="c35"
+        className="c36"
         style={
           {
             "marginBottom": "1em",
@@ -4389,7 +4443,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c36"
+          className="c37"
           style={
             {
               "marginBottom": "1em",
@@ -5693,7 +5747,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="c35"
+        className="c36"
         style={
           {
             "marginBottom": "6em",
@@ -5701,7 +5755,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c36"
+          className="c37"
           style={
             {
               "marginBottom": "0",
@@ -5709,6 +5763,26 @@ exports[`Stats Page has no unexpected changes 1`] = `
             }
           }
         >
+          <div
+            style={
+              {
+                "display": "flex",
+                "justifyContent": "space-around",
+                "marginBottom": "1em",
+                "width": "100%",
+              }
+            }
+          >
+            <b
+              style={
+                {
+                  "width": "80%",
+                }
+              }
+            >
+              Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF &gt;0.001
+            </b>
+          </div>
           <div
             className="c10"
           >
@@ -5867,8 +5941,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={327.4943566591422}
-                    y2={327.4943566591422}
+                    y1={328.13335835454825}
+                    y2={328.13335835454825}
                   />
                   <svg
                     fontSize={10}
@@ -5885,13 +5959,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={327.4943566591422}
+                      y={328.13335835454825}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        2.00K
+                        50.0K
                       </tspan>
                     </text>
                   </svg>
@@ -5907,8 +5981,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={294.98871331828445}
-                    y2={294.98871331828445}
+                    y1={296.2667167090965}
+                    y2={296.2667167090965}
                   />
                   <svg
                     fontSize={10}
@@ -5925,13 +5999,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={294.98871331828445}
+                      y={296.2667167090965}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        4.00K
+                        100K
                       </tspan>
                     </text>
                   </svg>
@@ -5947,8 +6021,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={262.4830699774266}
-                    y2={262.4830699774266}
+                    y1={264.40007506364475}
+                    y2={264.40007506364475}
                   />
                   <svg
                     fontSize={10}
@@ -5965,13 +6039,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={262.4830699774266}
+                      y={264.40007506364475}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        6.00K
+                        150K
                       </tspan>
                     </text>
                   </svg>
@@ -5987,8 +6061,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={229.97742663656885}
-                    y2={229.97742663656885}
+                    y1={232.53343341819306}
+                    y2={232.53343341819306}
                   />
                   <svg
                     fontSize={10}
@@ -6005,13 +6079,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={229.97742663656885}
+                      y={232.53343341819306}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        8.00K
+                        200K
                       </tspan>
                     </text>
                   </svg>
@@ -6027,8 +6101,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={197.47178329571108}
-                    y2={197.47178329571108}
+                    y1={200.66679177274128}
+                    y2={200.66679177274128}
                   />
                   <svg
                     fontSize={10}
@@ -6045,13 +6119,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={197.47178329571108}
+                      y={200.66679177274128}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        10.0K
+                        250K
                       </tspan>
                     </text>
                   </svg>
@@ -6067,8 +6141,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={164.96613995485325}
-                    y2={164.96613995485325}
+                    y1={168.80015012728953}
+                    y2={168.80015012728953}
                   />
                   <svg
                     fontSize={10}
@@ -6085,13 +6159,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={164.96613995485325}
+                      y={168.80015012728953}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        12.0K
+                        300K
                       </tspan>
                     </text>
                   </svg>
@@ -6107,8 +6181,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={132.46049661399547}
-                    y2={132.46049661399547}
+                    y1={136.93350848183778}
+                    y2={136.93350848183778}
                   />
                   <svg
                     fontSize={10}
@@ -6125,13 +6199,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={132.46049661399547}
+                      y={136.93350848183778}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        14.0K
+                        350K
                       </tspan>
                     </text>
                   </svg>
@@ -6147,8 +6221,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={99.95485327313769}
-                    y2={99.95485327313769}
+                    y1={105.06686683638605}
+                    y2={105.06686683638605}
                   />
                   <svg
                     fontSize={10}
@@ -6165,13 +6239,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={99.95485327313769}
+                      y={105.06686683638605}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        16.0K
+                        400K
                       </tspan>
                     </text>
                   </svg>
@@ -6187,8 +6261,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={67.4492099322799}
-                    y2={67.4492099322799}
+                    y1={73.2002251909343}
+                    y2={73.2002251909343}
                   />
                   <svg
                     fontSize={10}
@@ -6205,13 +6279,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={67.4492099322799}
+                      y={73.2002251909343}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        18.0K
+                        450K
                       </tspan>
                     </text>
                   </svg>
@@ -6227,8 +6301,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={34.94356659142212}
-                    y2={34.94356659142212}
+                    y1={41.33358354548253}
+                    y2={41.33358354548253}
                   />
                   <svg
                     fontSize={10}
@@ -6245,13 +6319,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={34.94356659142212}
+                      y={41.33358354548253}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        20.0K
+                        500K
                       </tspan>
                     </text>
                   </svg>
@@ -6267,8 +6341,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     strokeLinecap="square"
                     x1={0}
                     x2={-8}
-                    y1={2.437923250564338}
-                    y2={2.437923250564338}
+                    y1={9.466941900030793}
+                    y2={9.466941900030793}
                   />
                   <svg
                     fontSize={10}
@@ -6285,13 +6359,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       fontSize={10}
                       textAnchor="end"
                       x={-8}
-                      y={2.437923250564338}
+                      y={9.466941900030793}
                     >
                       <tspan
                         dy="0em"
                         x={-8}
                       >
-                        22.0K
+                        550K
                       </tspan>
                     </text>
                   </svg>
@@ -6310,22 +6384,22 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </g>
               East Asian
               South Asian
-              European
               Middle Eastern
               African
               Admixed American
               Ashkenazi Jewish
               Remaining
+              European
               <g
                 transform="translate(60,10)"
               >
                 <rect
                   fill="#0e8b45"
-                  height={9.751693002257355}
+                  height={26.428280582238983}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={350.24830699774265}
+                  y={333.571719417761}
                 />
                 <rect
                   className="c11"
@@ -6338,28 +6412,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#ff9a10"
-                  height={12.18961625282168}
+                  height={45.69039079124872}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={338.05869074492097}
-                />
-                <rect
-                  className="c11"
-                  height={360}
-                  onMouseEnter={[Function]}
-                  onMouseLeave={[Function]}
-                  width={40.6}
-                  x={-37.8}
-                  y={0}
-                />
-                <rect
-                  fill="#6aa5ce"
-                  height={7.31376975169303}
-                  stroke="#333"
-                  width={40.6}
-                  x={-37.8}
-                  y={330.74492099322794}
+                  y={287.8813286265123}
                 />
                 <rect
                   className="c11"
@@ -6376,7 +6433,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={330.74492099322794}
+                  y={287.8813286265123}
                 />
                 <rect
                   className="c11"
@@ -6389,11 +6446,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#931193"
-                  height={21.941309255078977}
+                  height={47.641903925616134}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={308.80361173814896}
+                  y={240.23942470089617}
                 />
                 <rect
                   className="c11"
@@ -6406,11 +6463,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#ed1e23"
-                  height={12.18961625282168}
+                  height={49.725344956395816}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={296.6139954853273}
+                  y={190.51407974450035}
                 />
                 <rect
                   className="c11"
@@ -6423,11 +6480,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#edc800"
-                  height={5.68848758465009}
+                  height={34.018277289352625}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={290.9255079006772}
+                  y={156.49580245514773}
                 />
                 <rect
                   className="c11"
@@ -6440,11 +6497,28 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#acb8b9"
-                  height={24.37923250564336}
+                  height={51.5098768885411}
                   stroke="#333"
                   width={40.6}
                   x={-37.8}
-                  y={266.54627539503383}
+                  y={104.98592556660662}
+                />
+                <rect
+                  className="c11"
+                  height={360}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  width={40.6}
+                  x={-37.8}
+                  y={0}
+                />
+                <rect
+                  fill="#6aa5ce"
+                  height={50.912696024105344}
+                  stroke="#333"
+                  width={40.6}
+                  x={-37.8}
+                  y={54.07322954250128}
                 />
                 <rect
                   className="c11"
@@ -6457,11 +6531,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#0e8b45"
-                  height={32.50564334085777}
+                  height={30.73919986403564}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={327.4943566591422}
+                  y={329.26080013596436}
                 />
                 <rect
                   className="c11"
@@ -6474,28 +6548,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#ff9a10"
-                  height={48.75846501128666}
+                  height={46.92936581842389}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={278.73589164785557}
-                />
-                <rect
-                  className="c11"
-                  height={360}
-                  onMouseEnter={[Function]}
-                  onMouseLeave={[Function]}
-                  width={40.6}
-                  x={-72.8}
-                  y={0}
-                />
-                <rect
-                  fill="#6aa5ce"
-                  height={32.50564334085777}
-                  stroke="#333"
-                  width={40.6}
-                  x={-72.8}
-                  y={246.2302483069978}
+                  y={282.33143431754047}
                 />
                 <rect
                   className="c11"
@@ -6508,11 +6565,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#050080"
-                  height={48.75846501128666}
+                  height={44.381309152453525}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={197.47178329571113}
+                  y={237.95012516508694}
                 />
                 <rect
                   className="c11"
@@ -6525,11 +6582,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#931193"
-                  height={65.01128668171555}
+                  height={48.98348953888967}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={132.4604966139956}
+                  y={188.96663562619727}
                 />
                 <rect
                   className="c11"
@@ -6542,11 +6599,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#ed1e23"
-                  height={56.88487584650113}
+                  height={48.982852206056805}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={75.57562076749446}
+                  y={139.98378342014047}
                 />
                 <rect
                   className="c11"
@@ -6559,11 +6616,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#edc800"
-                  height={18.69074492099321}
+                  height={40.079312530317566}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={56.884875846501245}
+                  y={99.9044708898229}
                 />
                 <rect
                   className="c11"
@@ -6576,11 +6633,28 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 />
                 <rect
                   fill="#acb8b9"
-                  height={56.88487584650113}
+                  height={49.78844090685379}
                   stroke="#333"
                   width={40.6}
                   x={-72.8}
-                  y={1.1368683772161603e-13}
+                  y={50.11602998296911}
+                />
+                <rect
+                  className="c11"
+                  height={360}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  width={40.6}
+                  x={-72.8}
+                  y={0}
+                />
+                <rect
+                  fill="#6aa5ce"
+                  height={50.11602998296905}
+                  stroke="#333"
+                  width={40.6}
+                  x={-72.8}
+                  y={5.684341886080802e-14}
                 />
                 <rect
                   className="c11"
@@ -6599,6 +6673,32 @@ exports[`Stats Page has no unexpected changes 1`] = `
               <ul
                 className="c13"
               >
+                <li
+                  className="c14"
+                >
+                  <svg
+                    height={16}
+                    width={16}
+                  >
+                    <rect
+                      fill="#6aa5ce"
+                      height={16}
+                      stroke="#000"
+                      width={16}
+                      x={0}
+                      y={0}
+                    />
+                  </svg>
+                  <span
+                    style={
+                      {
+                        "marginLeft": "0.25em",
+                      }
+                    }
+                  >
+                    European
+                  </span>
+                </li>
                 <li
                   className="c14"
                 >
@@ -6737,32 +6837,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     width={16}
                   >
                     <rect
-                      fill="#6aa5ce"
-                      height={16}
-                      stroke="#000"
-                      width={16}
-                      x={0}
-                      y={0}
-                    />
-                  </svg>
-                  <span
-                    style={
-                      {
-                        "marginLeft": "0.25em",
-                      }
-                    }
-                  >
-                    European
-                  </span>
-                </li>
-                <li
-                  className="c14"
-                >
-                  <svg
-                    height={16}
-                    width={16}
-                  >
-                    <rect
                       fill="#ff9a10"
                       height={16}
                       stroke="#000"
@@ -6809,15 +6883,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </li>
               </ul>
             </div>
-          </div>
-          <div
-            style={
-              {
-                "width": "80%",
-              }
-            }
-          >
-            Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF &gt;0.001
           </div>
         </div>
       </div>
@@ -6866,401 +6931,418 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <div
         className="c28"
       >
-        <table
-          className="c29"
-        >
-          <thead>
-            <tr
-              className="c30"
-            >
-              <th
-                style={
-                  {
-                    "width": "15%",
-                  }
-                }
+        <div>
+          <table
+            className="c29"
+            id="gnomad-v4-genetic-ancestry-group-size-table"
+            style={
+              {
+                "marginBottom": "3em",
+              }
+            }
+          >
+            <thead>
+              <tr
+                className="c30"
               >
-                Imputed Genetic Ancestry Group for v4
-              </th>
-              <th
-                style={
-                  {
-                    "width": "15%",
-                  }
-                }
-              >
-                # of individuals
-              </th>
-              <th
-                style={
-                  {
-                    "width": "20%",
-                  }
-                }
-              >
-                <span>
-                  Study-provided* labels
-                </span>
-                <div
+                <th
                   style={
                     {
-                      "fontSize": "0.65em",
+                      "width": "15%",
                     }
                   }
                 >
-                   
-                  (% of imputed genetic ancestry group with self-reported or research assigned label)
-                </div>
-              </th>
-              <th
-                style={
-                  {
-                    "width": "50%",
+                  Imputed Genetic Ancestry Group for v4
+                </th>
+                <th
+                  style={
+                    {
+                      "width": "15%",
+                    }
                   }
-                }
+                >
+                  # of individuals
+                </th>
+                <th
+                  style={
+                    {
+                      "width": "20%",
+                    }
+                  }
+                >
+                  <span>
+                    Study-provided* labels
+                  </span>
+                  <div
+                    style={
+                      {
+                        "fontSize": "0.65em",
+                      }
+                    }
+                  >
+                     
+                    (% of imputed genetic ancestry group with self-reported or research assigned label)
+                  </div>
+                </th>
+                <th
+                  style={
+                    {
+                      "width": "50%",
+                    }
+                  }
+                >
+                  Study-provided* labels that make up &lt;1%
+                </th>
+              </tr>
+              <tr
+                className="c31"
               >
-                Study-provided* labels that make up &lt;1%
-              </th>
-            </tr>
-            <tr
-              className="c31"
+                <th>
+                  <i>
+                    Genetically Derived
+                  </i>
+                </th>
+                <th>
+                  <i>
+                    #
+                  </i>
+                </th>
+                <th>
+                  <i>
+                    Self-reported or researcher assigned
+                  </i>
+                </th>
+                <th>
+                  <i>
+                    Self-reported or researcher assigned
+                  </i>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c32"
             >
-              <th>
-                <i>
-                  Genetically Derived
-                </i>
-              </th>
-              <th>
-                <i>
-                  #
-                </i>
-              </th>
-              <th>
-                <i>
-                  Self-reported or researcher assigned
-                </i>
-              </th>
-              <th>
-                <i>
-                  Self-reported or researcher assigned
-                </i>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="c32"
-          >
-            <tr>
-              <td>
-                Admixed American (AMR)
-              </td>
-              <td>
-                30,019
-              </td>
-              <td>
-                <div>
-                  Mexican (24.70%)
-                </div>
-                <div>
-                  Costa Rican (8.54%)
-                </div>
-                <div>
-                  Latino (8.52%)
-                </div>
-                <br />
-                <div>
-                  No label provided (53.86%)
-                </div>
-              </td>
-              <td>
-                Black, British, Colombian, Do not Know, Dutch, Finnish, French Canadian, Hawaiian, Indigenous American, Karitiana, Maya, Mexican-American, Mixed, Other, Other Mixed, Other white, Peruvian, Pima, Prefer not to answer, Puerto Rican, Rapa Nui from Easter Island, Surui, White, White and Asian, White and Black Caribbean
-              </td>
-            </tr>
-            <tr>
-              <td>
-                African/African American (AFR)
-              </td>
-              <td>
-                37,545
-              </td>
-              <td>
-                <div>
-                  Caribbean (9.49%)
-                </div>
-                <div>
-                  African (7.36%)
-                </div>
-                <div>
-                  Other (1.97%)
-                </div>
-                <div>
-                  Black (1.66%)
-                </div>
-                <br />
-                <div>
-                  No label provided (75.06%)
-                </div>
-              </td>
-              <td>
-                African / Pygmy, African American, African Caribbean, African-American, Asian, Bantu Kenya, Bantu S Africa, Biaka Pygmy, Black or Black British, British, Costa Rican, Do not Know, Esan, Finnish, French Canadian, Gambian, Indigenous American, Latino, Luhya, Mandenka, Mbuti Pygmy, Mende, Mexican, Mixed, Mozabite, Other Asian, Other Black, Other Mixed, Prefer not to answer, Puerto Rican, Qatari, San, South Asian, Sub-Saharan African, White, White and Asian, White and Black African, White and Black Caribbean, Yoruba
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Amish (AMI)
-              </td>
-              <td>
-                456
-              </td>
-              <td>
-                <p>
-                  No label provided (100.00%)
-                </p>
-              </td>
-              <td>
-                -
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Ashkenazi Jewish (ASJ)
-              </td>
-              <td>
-                14,804
-              </td>
-              <td>
-                <div>
-                  British (10.23%)
-                </div>
-                <div>
-                  Other white (5.57%)
-                </div>
-                <div>
-                  White (4.67%)
-                </div>
-                <div>
-                  Other (1.28%)
-                </div>
-                <br />
-                <div>
-                  No label provided (77.63%)
-                </div>
-              </td>
-              <td>
-                Asian, Costa Rican, Do not Know, Dutch, Finnish, French Canadian, Irish, Not Hispanic or Latino, Other Mixed, Prefer not to answer
-              </td>
-            </tr>
-            <tr>
-              <td>
-                East Asian (EAS)
-              </td>
-              <td>
-                22,448
-              </td>
-              <td>
-                <div>
-                  Japanese (19.99%)
-                </div>
-                <div>
-                  Chinese (5.90%)
-                </div>
-                <div>
-                  Other (1.43%)
-                </div>
-                <div>
-                  Asian (1.35%)
-                </div>
-                <br />
-                <div>
-                  No label provided (67.94%)
-                </div>
-              </td>
-              <td>
-                Asian or Asian British, British, Cambodian, Chinese Dai, Costa Rican, Dai, Daur, Do not Know, Finnish, French Canadian, Han, Han Chinese, Hezhen, Indigenous American, Kinh, Lahu, Miaozu, Mixed, Mongola, Naxi, Oroqen, Other Asian, Other Mixed, Prefer not to answer, She, Southern Han Chinese, Tu, Tujia, Uygur, White, White and Asian, Xibo, Yakut, Yizu
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Finnish (FIN)
-              </td>
-              <td>
-                32,026
-              </td>
-              <td>
-                <div>
-                  Finnish (81.20%)
-                </div>
-                <br />
-                <div>
-                  No label provided (18.31%)
-                </div>
-              </td>
-              <td>
-                British, Estonian, Other, Other white, Swedish, White
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Middle Eastern (MID)
-              </td>
-              <td>
-                3,031
-              </td>
-              <td>
-                <div>
-                  Other (16.07%)
-                </div>
-                <div>
-                  Bedouin (13.89%)
-                </div>
-                <div>
-                  Arab (5.386%)
-                </div>
-                <div>
-                  Persian (4.55%)
-                </div>
-                <div>
-                  Other white (4.06%)
-                </div>
-                <div>
-                  Other Asian (3.73%)
-                </div>
-                <div>
-                  Qatari (2.94%)
-                </div>
-                <div>
-                  White (2.73%)
-                </div>
-                <div>
-                  Palestinian (1.09%)
-                </div>
-                <div>
-                  French Canadian (1.06%)
-                </div>
-                <br />
-                <div>
-                  No label provided (38.677%)
-                </div>
-              </td>
-              <td>
-                Asian, Asian or Asian British, British, Do not Know, Druze, Dutch, European, Finnish, German, Indian, Mixed, Mozabite, Other Mixed, Pakistani, Prefer not to answer, South Asian, Sub-Saharan African, White and Asian, White and Black African
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Non-Finnish European (NFE)
-              </td>
-              <td>
-                590,031
-              </td>
-              <td>
-                <div>
-                  British (60.63%)
-                </div>
-                <div>
-                  Other white (2.02%)
-                </div>
-                <div>
-                  White (1.871%)
-                </div>
-                <div>
-                  Irish (1.50%)
-                </div>
-                <br />
-                <div>
-                  No label provided (32.40%)
-                </div>
-              </td>
-              <td>
-                Adygei, American Indian, Asian or Asian British, Basque, Black, Black or Black British, Chinese, Costa Rican, Do not Know, Dutch, English, English_Scottish, Estonian, European, Finnish, French, French Acadian, French Acadian_French Quebecois, French Acadian_Scottish, French Canadian, German, German_Irish, German/English_Scottish, Iberian, Indian, Indigenous American, Irish_French Acadian, Irish_French Quebecois, Irish_Scottish, Italian, Latino, Mexican, Mixed, Native Hawaiian, Not Hispanic or Latino, Orcadian, Other, Other Asian, Other Mixed, Persian, Prefer not to answer, Qatari, Russian, Sardinian, Scottish, Scottish_English, Scottish_European French, Scottish_German, Scottish_Irish, Swedish, Toscani, Utah Residents (European Ancestry), White and Asian, White and Black African, White and Black Caribbean
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Remaining Individuals (RMI)
-              </td>
-              <td>
-                31,256
-              </td>
-              <td>
-                <div>
-                  British (21.79%)
-                </div>
-                <div>
-                  Irish (6.45%)
-                </div>
-                <div>
-                  Other (3.33%)
-                </div>
-                <div>
-                  Other white (3.23%)
-                </div>
-                <div>
-                  White (3.13%)
-                </div>
-                <div>
-                  Finnish (2.61%)
-                </div>
-                <div>
-                  White and Asian (1.91%)
-                </div>
-                <div>
-                  Other Mixed (1.61%)
-                </div>
-                <div>
-                  Other Asian (1.38%)
-                </div>
-                <br />
-                <div>
-                  No label provided (48.26%)
-                </div>
-              </td>
-              <td>
-                African, African American, African-American, Asian, Asian or Asian British, Bangladeshi, Bedouin, Black, Black or Black British, Cambodian, Caribbean, Chinese, Colombian, Costa Rican, Do not Know, Druze, Dutch, Estonian, French Canadian, Hazara, Hispanic, Indian, Indigenous American, Japanese, Latino, Melanesian, Mexican, Mixed, Mozabite, Native Hawaiian, Not Hispanic or Latino, Other Black, Pakistani, Palestinian, Papuan, Persian, Prefer not to answer, Puerto Rican, Qatari, South Asian, Sub-Saharan African, Uygur, White and Black African, White and Black Caribbean, Yakut
-              </td>
-            </tr>
-            <tr>
-              <td>
-                South Asian (SAS)
-              </td>
-              <td>
-                45,546
-              </td>
-              <td>
-                <div>
-                  South Asian (61.38%)
-                </div>
-                <div>
-                  Indian (10.63%)
-                </div>
-                <div>
-                  Pakistani (5.79%)
-                </div>
-                <div>
-                  Other Asian (1.97%)
-                </div>
-                <br />
-                <div>
-                  No label provided (16.47%)
-                </div>
-              </td>
-              <td>
-                African, Asian, Asian or Asian British, Balochi, Bangladeshi, Bengali, Black, Brahui, British, Burusho, Caribbean, Chinese, Do not Know, Dutch, Finnish, French Canadian, Gujarati, Hazara, Indian Telugu, Kalash, Makrani, Mixed, Other, Other Black, Other Mixed, Other white, Pathan, Prefer not to answer, Punjabi, Qatari, Sindhi, Sri Lankan Tamil, Uygur, White, White and Asian, White and Black Caribbean
-              </td>
-            </tr>
-          </tbody>
-          <caption
-            className="c34"
-          >
-            <div>
-              *Study-provided labels are the descriptions given to the gnomAD team in the accompanying metadata. These labels can sometime be assigned at the study-level, others are provided at the individual level.
-            </div>
-            <br />
-            <div>
-              These labels are also a mix of researcher assigned, sometimes participant self reported. Non of these labels are used for training our imputed ancestry data.
-            </div>
-          </caption>
-        </table>
+              <tr>
+                <td>
+                  Admixed American (AMR)
+                </td>
+                <td>
+                  30,019
+                </td>
+                <td>
+                  <div>
+                    Mexican (24.70%)
+                  </div>
+                  <div>
+                    Costa Rican (8.54%)
+                  </div>
+                  <div>
+                    Latino (8.52%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (53.86%)
+                  </div>
+                </td>
+                <td>
+                  Black, British, Colombian, Do not Know, Dutch, Finnish, French Canadian, Hawaiian, Indigenous American, Karitiana, Maya, Mexican-American, Mixed, Other, Other Mixed, Other white, Peruvian, Pima, Prefer not to answer, Puerto Rican, Rapa Nui from Easter Island, Surui, White, White and Asian, White and Black Caribbean
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  African/African American (AFR)
+                </td>
+                <td>
+                  37,545
+                </td>
+                <td>
+                  <div>
+                    Caribbean (9.49%)
+                  </div>
+                  <div>
+                    African (7.36%)
+                  </div>
+                  <div>
+                    Other (1.97%)
+                  </div>
+                  <div>
+                    Black (1.66%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (75.06%)
+                  </div>
+                </td>
+                <td>
+                  African / Pygmy, African American, African Caribbean, African-American, Asian, Bantu Kenya, Bantu S Africa, Biaka Pygmy, Black or Black British, British, Costa Rican, Do not Know, Esan, Finnish, French Canadian, Gambian, Indigenous American, Latino, Luhya, Mandenka, Mbuti Pygmy, Mende, Mexican, Mixed, Mozabite, Other Asian, Other Black, Other Mixed, Prefer not to answer, Puerto Rican, Qatari, San, South Asian, Sub-Saharan African, White, White and Asian, White and Black African, White and Black Caribbean, Yoruba
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Amish (AMI)
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  <p>
+                    No label provided (100.00%)
+                  </p>
+                </td>
+                <td>
+                  -
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish (ASJ)
+                </td>
+                <td>
+                  14,804
+                </td>
+                <td>
+                  <div>
+                    British (10.23%)
+                  </div>
+                  <div>
+                    Other white (5.57%)
+                  </div>
+                  <div>
+                    White (4.67%)
+                  </div>
+                  <div>
+                    Other (1.28%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (77.63%)
+                  </div>
+                </td>
+                <td>
+                  Asian, Costa Rican, Do not Know, Dutch, Finnish, French Canadian, Irish, Not Hispanic or Latino, Other Mixed, Prefer not to answer
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  East Asian (EAS)
+                </td>
+                <td>
+                  22,448
+                </td>
+                <td>
+                  <div>
+                    Japanese (19.99%)
+                  </div>
+                  <div>
+                    Chinese (5.90%)
+                  </div>
+                  <div>
+                    Other (1.43%)
+                  </div>
+                  <div>
+                    Asian (1.35%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (67.94%)
+                  </div>
+                </td>
+                <td>
+                  Asian or Asian British, British, Cambodian, Chinese Dai, Costa Rican, Dai, Daur, Do not Know, Finnish, French Canadian, Han, Han Chinese, Hezhen, Indigenous American, Kinh, Lahu, Miaozu, Mixed, Mongola, Naxi, Oroqen, Other Asian, Other Mixed, Prefer not to answer, She, Southern Han Chinese, Tu, Tujia, Uygur, White, White and Asian, Xibo, Yakut, Yizu
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Finnish (FIN)
+                </td>
+                <td>
+                  32,026
+                </td>
+                <td>
+                  <div>
+                    Finnish (81.20%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (18.31%)
+                  </div>
+                </td>
+                <td>
+                  British, Estonian, Other, Other white, Swedish, White
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern (MID)
+                </td>
+                <td>
+                  3,031
+                </td>
+                <td>
+                  <div>
+                    Other (16.07%)
+                  </div>
+                  <div>
+                    Bedouin (13.89%)
+                  </div>
+                  <div>
+                    Arab (5.386%)
+                  </div>
+                  <div>
+                    Persian (4.55%)
+                  </div>
+                  <div>
+                    Other white (4.06%)
+                  </div>
+                  <div>
+                    Other Asian (3.73%)
+                  </div>
+                  <div>
+                    Qatari (2.94%)
+                  </div>
+                  <div>
+                    White (2.73%)
+                  </div>
+                  <div>
+                    Palestinian (1.09%)
+                  </div>
+                  <div>
+                    French Canadian (1.06%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (38.677%)
+                  </div>
+                </td>
+                <td>
+                  Asian, Asian or Asian British, British, Do not Know, Druze, Dutch, European, Finnish, German, Indian, Mixed, Mozabite, Other Mixed, Pakistani, Prefer not to answer, South Asian, Sub-Saharan African, White and Asian, White and Black African
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Non-Finnish European (NFE)
+                </td>
+                <td>
+                  590,031
+                </td>
+                <td>
+                  <div>
+                    British (60.63%)
+                  </div>
+                  <div>
+                    Other white (2.02%)
+                  </div>
+                  <div>
+                    White (1.871%)
+                  </div>
+                  <div>
+                    Irish (1.50%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (32.40%)
+                  </div>
+                </td>
+                <td>
+                  Adygei, American Indian, Asian or Asian British, Basque, Black, Black or Black British, Chinese, Costa Rican, Do not Know, Dutch, English, English_Scottish, Estonian, European, Finnish, French, French Acadian, French Acadian_French Quebecois, French Acadian_Scottish, French Canadian, German, German_Irish, German/English_Scottish, Iberian, Indian, Indigenous American, Irish_French Acadian, Irish_French Quebecois, Irish_Scottish, Italian, Latino, Mexican, Mixed, Native Hawaiian, Not Hispanic or Latino, Orcadian, Other, Other Asian, Other Mixed, Persian, Prefer not to answer, Qatari, Russian, Sardinian, Scottish, Scottish_English, Scottish_European French, Scottish_German, Scottish_Irish, Swedish, Toscani, Utah Residents (European Ancestry), White and Asian, White and Black African, White and Black Caribbean
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Remaining Individuals (RMI)
+                </td>
+                <td>
+                  31,256
+                </td>
+                <td>
+                  <div>
+                    British (21.79%)
+                  </div>
+                  <div>
+                    Irish (6.45%)
+                  </div>
+                  <div>
+                    Other (3.33%)
+                  </div>
+                  <div>
+                    Other white (3.23%)
+                  </div>
+                  <div>
+                    White (3.13%)
+                  </div>
+                  <div>
+                    Finnish (2.61%)
+                  </div>
+                  <div>
+                    White and Asian (1.91%)
+                  </div>
+                  <div>
+                    Other Mixed (1.61%)
+                  </div>
+                  <div>
+                    Other Asian (1.38%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (48.26%)
+                  </div>
+                </td>
+                <td>
+                  African, African American, African-American, Asian, Asian or Asian British, Bangladeshi, Bedouin, Black, Black or Black British, Cambodian, Caribbean, Chinese, Colombian, Costa Rican, Do not Know, Druze, Dutch, Estonian, French Canadian, Hazara, Hispanic, Indian, Indigenous American, Japanese, Latino, Melanesian, Mexican, Mixed, Mozabite, Native Hawaiian, Not Hispanic or Latino, Other Black, Pakistani, Palestinian, Papuan, Persian, Prefer not to answer, Puerto Rican, Qatari, South Asian, Sub-Saharan African, Uygur, White and Black African, White and Black Caribbean, Yakut
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  South Asian (SAS)
+                </td>
+                <td>
+                  45,546
+                </td>
+                <td>
+                  <div>
+                    South Asian (61.38%)
+                  </div>
+                  <div>
+                    Indian (10.63%)
+                  </div>
+                  <div>
+                    Pakistani (5.79%)
+                  </div>
+                  <div>
+                    Other Asian (1.97%)
+                  </div>
+                  <br />
+                  <div>
+                    No label provided (16.47%)
+                  </div>
+                </td>
+                <td>
+                  African, Asian, Asian or Asian British, Balochi, Bangladeshi, Bengali, Black, Brahui, British, Burusho, Caribbean, Chinese, Do not Know, Dutch, Finnish, French Canadian, Gujarati, Hazara, Indian Telugu, Kalash, Makrani, Mixed, Other, Other Black, Other Mixed, Other white, Pathan, Prefer not to answer, Punjabi, Qatari, Sindhi, Sri Lankan Tamil, Uygur, White, White and Asian, White and Black Caribbean
+                </td>
+              </tr>
+            </tbody>
+            <caption
+              className="c34"
+            >
+              <div>
+                *Study-provided labels are the descriptions given to the gnomAD team in the accompanying metadata. These labels can sometime be assigned at the study-level, others are provided at the individual level.
+              </div>
+              <br />
+              <div>
+                These labels are also a mix of researcher assigned, sometimes participant self reported. None of these labels are used for training our imputed ancestry data.
+              </div>
+            </caption>
+          </table>
+          <div>
+            <button
+              className="c35"
+              onClick={[Function]}
+              type="button"
+            >
+              Download Table
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -7312,317 +7394,334 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         }
       >
-        <table
-          className="c29"
-        >
-          <thead>
-            <tr
-              className="c30"
+        <div>
+          <table
+            className="c29"
+            id="study-diseases-in-gnomad-table"
+            style={
+              {
+                "marginBottom": "3em",
+              }
+            }
+          >
+            <thead>
+              <tr
+                className="c30"
+              >
+                <th>
+                  Phenotypes
+                </th>
+                <th>
+                  Case
+                </th>
+                <th>
+                  Control
+                </th>
+                <th>
+                  Unknown
+                </th>
+                <th>
+                  Total
+                </th>
+                <th>
+                  % of cases out of all v4 exomes
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c32"
             >
-              <th>
-                Phenotypes
-              </th>
-              <th>
-                Case
-              </th>
-              <th>
-                Control
-              </th>
-              <th>
-                Unknown
-              </th>
-              <th>
-                Total
-              </th>
-              <th>
-                % of cases out of all v4 exomes
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="c32"
-          >
-            <tr>
-              <td>
-                Alzheimer's disease
-              </td>
-              <td>
-                2,594
-              </td>
-              <td>
-                665
-              </td>
-              <td>
-                1,632
-              </td>
-              <td>
-                4,890
-              </td>
-              <td>
-                0.35%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Atrial Fibrillation
-              </td>
-              <td>
-                4,398
-              </td>
-              <td>
-                3,546
-              </td>
-              <td>
-                38,289
-              </td>
-              <td>
-                46,233
-              </td>
-              <td>
-                0.60%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Biobank or control dataset*
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                24,016
-              </td>
-              <td>
-                447,750
-              </td>
-              <td>
-                471,766
-              </td>
-              <td>
-                N/A
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Bipolar disorder
-              </td>
-              <td>
-                19,284
-              </td>
-              <td>
-                16,383
-              </td>
-              <td>
-                80
-              </td>
-              <td>
-                35,747
-              </td>
-              <td>
-                2.64%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Cardiac arrhythmia
-              </td>
-              <td>
-                458
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                458
-              </td>
-              <td>
-                0.06%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Coronary heart disease
-              </td>
-              <td>
-                1,557
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                1,557
-              </td>
-              <td>
-                0.21%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Inflammatory bowel disease spectrum and related disorders^
-              </td>
-              <td>
-                35,008
-              </td>
-              <td>
-                11,928
-              </td>
-              <td>
-                280
-              </td>
-              <td>
-                47,217
-              </td>
-              <td>
-                4.79%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Myocardial infarction
-              </td>
-              <td>
-                11,900
-              </td>
-              <td>
-                369
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                12,269
-              </td>
-              <td>
-                1.63%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Neurodevelopmental**
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                132
-              </td>
-              <td>
-                -
-              </td>
-              <td>
-                143
-              </td>
-              <td>
-                N/A
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Non-specific cardiovascular disease
-              </td>
-              <td>
-                1,888
-              </td>
-              <td>
-                11,376
-              </td>
-              <td>
-                15,000
-              </td>
-              <td>
-                28,264
-              </td>
-              <td>
-                0.26%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Schizophrenia spectrum and related disorders
-              </td>
-              <td>
-                30,278
-              </td>
-              <td>
-                17,689
-              </td>
-              <td>
-                39
-              </td>
-              <td>
-                47,994
-              </td>
-              <td>
-                4.14%
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Type 2 Diabetes
-              </td>
-              <td>
-                17,506
-              </td>
-              <td>
-                13,096
-              </td>
-              <td>
-                3,807
-              </td>
-              <td>
-                34,409
-              </td>
-              <td>
-                2.39%
-              </td>
-            </tr>
-          </tbody>
-          <tfoot
-            className="c33"
-          >
-            <tr>
-              <td>
-                Grand Total
-              </td>
-              <td>
-                124,871
-              </td>
-              <td>
-                99,200
-              </td>
-              <td>
-                506,877
-              </td>
-              <td>
-                730,947
-              </td>
-              <td>
-                17.08%
-              </td>
-            </tr>
-          </tfoot>
-          <caption
-            className="c34"
-          >
-            <div>
-              * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as theFinnGen and MGB biobank samples when no phenotype was specified
-            </div>
-            <div>
-               
-              ^ includes diseases like Crohn's disease, irritable bowel syndrome, interstitial cystitis, ulcerative colitis
-               
-            </div>
-            <div>
-              ** Neurodevelopmental controls are unaffected parents of children with confirmed or suspected de novo cause of their neurodevelopmental disorder
-            </div>
-          </caption>
-        </table>
+              <tr>
+                <td>
+                  Alzheimer's disease
+                </td>
+                <td>
+                  2,594
+                </td>
+                <td>
+                  665
+                </td>
+                <td>
+                  1,632
+                </td>
+                <td>
+                  4,890
+                </td>
+                <td>
+                  0.35%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Atrial Fibrillation
+                </td>
+                <td>
+                  4,398
+                </td>
+                <td>
+                  3,546
+                </td>
+                <td>
+                  38,289
+                </td>
+                <td>
+                  46,233
+                </td>
+                <td>
+                  0.60%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Biobank or control dataset*
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  24,016
+                </td>
+                <td>
+                  447,750
+                </td>
+                <td>
+                  471,766
+                </td>
+                <td>
+                  N/A
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Bipolar disorder
+                </td>
+                <td>
+                  19,284
+                </td>
+                <td>
+                  16,383
+                </td>
+                <td>
+                  80
+                </td>
+                <td>
+                  35,747
+                </td>
+                <td>
+                  2.64%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Cardiac arrhythmia
+                </td>
+                <td>
+                  458
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  458
+                </td>
+                <td>
+                  0.06%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Coronary heart disease
+                </td>
+                <td>
+                  1,557
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  1,557
+                </td>
+                <td>
+                  0.21%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Inflammatory bowel disease spectrum and related disorders^
+                </td>
+                <td>
+                  35,008
+                </td>
+                <td>
+                  11,928
+                </td>
+                <td>
+                  280
+                </td>
+                <td>
+                  47,217
+                </td>
+                <td>
+                  4.79%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Myocardial infarction
+                </td>
+                <td>
+                  11,900
+                </td>
+                <td>
+                  369
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  12,269
+                </td>
+                <td>
+                  1.63%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Neurodevelopmental**
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  132
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  143
+                </td>
+                <td>
+                  N/A
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Non-specific cardiovascular disease
+                </td>
+                <td>
+                  1,888
+                </td>
+                <td>
+                  11,376
+                </td>
+                <td>
+                  15,000
+                </td>
+                <td>
+                  28,264
+                </td>
+                <td>
+                  0.26%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Schizophrenia spectrum and related disorders
+                </td>
+                <td>
+                  30,278
+                </td>
+                <td>
+                  17,689
+                </td>
+                <td>
+                  39
+                </td>
+                <td>
+                  47,994
+                </td>
+                <td>
+                  4.14%
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Type 2 Diabetes
+                </td>
+                <td>
+                  17,506
+                </td>
+                <td>
+                  13,096
+                </td>
+                <td>
+                  3,807
+                </td>
+                <td>
+                  34,409
+                </td>
+                <td>
+                  2.39%
+                </td>
+              </tr>
+            </tbody>
+            <tfoot
+              className="c33"
+            >
+              <tr>
+                <td>
+                  Grand Total
+                </td>
+                <td>
+                  124,871
+                </td>
+                <td>
+                  99,200
+                </td>
+                <td>
+                  506,877
+                </td>
+                <td>
+                  730,947
+                </td>
+                <td>
+                  17.08%
+                </td>
+              </tr>
+            </tfoot>
+            <caption
+              className="c34"
+            >
+              <div>
+                * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as the FinnGen and MGB biobank samples when no phenotype was specified
+              </div>
+              <div>
+                 
+                ^ includes diseases like Crohn's disease, irritable bowel syndrome, interstitial cystitis, ulcerative colitis
+                 
+              </div>
+              <div>
+                ** Neurodevelopmental controls are unaffected parents of children with confirmed or suspected de novo cause of their neurodevelopmental disorder
+              </div>
+            </caption>
+          </table>
+          <div>
+            <button
+              className="c35"
+              onClick={[Function]}
+              type="button"
+            >
+              Download Table
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -7672,7 +7771,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           <img
             alt="Browser users location"
             src="test-file-stub"
-            width="500px"
+            width="100%"
           />
         </div>
       </div>
