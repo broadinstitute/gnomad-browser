@@ -1467,10 +1467,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 gKANCX"
         >
           <ul
-            className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+            className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
           >
             <li
-              className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
             >
               <svg
                 height={16}
@@ -1496,7 +1496,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               </span>
             </li>
             <li
-              className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
             >
               <svg
                 height={16}
@@ -3835,10 +3835,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               }
             >
               <ul
-                className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
               >
                 <li
-                  className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
                 >
                   <svg
                     height={16}
@@ -3864,7 +3864,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                   </span>
                 </li>
                 <li
-                  className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
                 >
                   <svg
                     height={16}
@@ -50781,10 +50781,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 gKANCX"
         >
           <ul
-            className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+            className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
           >
             <li
-              className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
             >
               <svg
                 height={16}
@@ -50810,7 +50810,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               </span>
             </li>
             <li
-              className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+              className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
             >
               <svg
                 height={16}
@@ -53149,10 +53149,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               }
             >
               <ul
-                className="Legend__LegendWrapper-sc-14kdszv-0 brnjtE"
+                className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
               >
                 <li
-                  className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
                 >
                   <svg
                     height={16}
@@ -53178,7 +53178,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                   </span>
                 </li>
                 <li
-                  className="Legend__LegendItem-sc-14kdszv-1 jAnCbe"
+                  className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
                 >
                   <svg
                     height={16}
