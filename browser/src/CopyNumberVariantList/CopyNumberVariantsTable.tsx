@@ -26,7 +26,6 @@ const CopyNumberVariantsTable = ({
   variants,
   ...rest
 }: Props) => {
-  console.log(variants)
   return (
     <Grid
       // @ts-expect-error TS(2769) FIXME: No overload matches this call.

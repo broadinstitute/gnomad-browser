@@ -65,7 +65,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   const table = useRef(null)
   const tracks = useRef(null)
 
-  console.log(variants)
   const [selectedColumns, setSelectedColumns] = useState(() => {
     try {
       return userPreferences.getPreference('copyNumberVariantTableColumns') || DEFAULT_COLUMNS
@@ -198,7 +197,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   })
 
 
-  console.log(renderedVariants)
   return (
     <div>
       <Wrapper>
