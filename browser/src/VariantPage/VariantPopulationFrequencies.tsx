@@ -21,7 +21,7 @@ type Props = {
 }
 
 const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
-  if (hasLocalAncestryPopulations(datasetId)) {
+  if (hasLocalAncestryPopulations(datasetId) && variant.genome) {
     const genome = variant.genome!
     const gnomadPopulations = genome.populations.filter(
       (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
