@@ -15,8 +15,36 @@ const GraphWrapper = styled.div`
   margin-bottom: 1em;
 `
 
+const TwoColumns = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  @media (max-width: 992px) {
+    display: block;
+  }
+`
+
+const GraphSide = styled.div`
+  width: 75%;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+`
+const LegendSide = styled.div`
+  width: 25%;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+`
+
 const LegendWrapper = styled.div`
-  margin-left: 5em;
+  margin-top: 3em;
+
+  @media (max-width: 992px) {
+    margin-top: 0;
+  }
 `
 
 const BinHoverTarget = styled.rect`
@@ -46,6 +74,7 @@ const margin = {
   left: 60,
   right: 10,
   top: 10,
+  legend: 50,
   bar: 25,
 }
 
@@ -103,18 +132,10 @@ const StackedBarGraph = withSize()(
   }) => {
     const dataCategories = getDataCategories(barValues[0])
 
-    const seriesLegend: { label: string; color: string }[] = []
-    dataCategories.forEach((category: string) => {
-      seriesLegend.unshift({
-        label: category,
-        color: barColors[category],
-      })
-    })
-
     const maxY = getMaxRowSum(barValues as { [x: string]: number }[], dataCategories)
     const yDomain = [0, maxY]
 
-    const plotWidth = width - (margin.left + margin.right)
+    const plotWidth = width - margin.legend - (margin.left + margin.right)
     const plotHeight = height - (margin.top + margin.bottom)
 
     const xBandScale = scaleBand()
@@ -129,7 +150,7 @@ const StackedBarGraph = withSize()(
 
     return (
       <GraphWrapper>
-        <svg height={height} width={width}>
+        <svg height={height} width={width - margin.legend}>
           <AxisBottom
             label={xLabel}
             labelOffset={30}
@@ -215,12 +236,60 @@ const StackedBarGraph = withSize()(
             })}
           </g>
         </svg>
-        <LegendWrapper>
-          <Legend series={seriesLegend} />
-        </LegendWrapper>
       </GraphWrapper>
     )
   }
 )
 
-export default StackedBarGraph
+const StackedBarGraphWithLegend = ({
+  barColors,
+  barValues,
+  formatTooltip,
+  height,
+  xLabel,
+  yLabel,
+  displayNumbers,
+}: {
+  barColors: { [x: string]: string }
+  barValues: DataRow[]
+  formatTooltip: (row: DataRow) => string | ReactNode
+  height: number
+  xLabel: string
+  yLabel: string
+  displayNumbers: boolean
+}) => {
+  const dataCategories = getDataCategories(barValues[0])
+
+  const seriesLegend: { label: string; color: string }[] = []
+  dataCategories.forEach((category: string) => {
+    seriesLegend.unshift({
+      label: category,
+      color: barColors[category],
+    })
+  })
+
+  return (
+    <TwoColumns>
+      <GraphSide>
+        <StackedBarGraph
+          barColors={barColors}
+          barValues={barValues}
+          formatTooltip={formatTooltip}
+          // size={size}
+          height={height}
+          xLabel={xLabel}
+          yLabel={yLabel}
+          displayNumbers={displayNumbers}
+        />
+      </GraphSide>
+      <LegendSide>
+        <LegendWrapper>
+          <Legend series={seriesLegend} />
+        </LegendWrapper>
+      </LegendSide>
+    </TwoColumns>
+  )
+}
+
+export default StackedBarGraphWithLegend
+// export default StackedBarGraph
