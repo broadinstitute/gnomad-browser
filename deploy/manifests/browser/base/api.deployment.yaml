@@ -31,12 +31,12 @@ spec:
                 secretKeyRef:
                   name: gnomad-es-elastic-user # FIXME: This depends on using "gnomad" as the ES cluster name
                   key: elastic
-            - name: READ_CACHE_REDIS_URL
-              value: redis
-            - name: WRITE_CACHE_REDIS_URL
-              value: redis
-            - name: RATE_LIMITER_REDIS_URL
-              value: redis
+            - name: REDIS_HOST
+              value: 'redis'
+            - name: REDIS_PORT
+              value: '26379'
+            - name: REDIS_USE_SENTINEL
+              value: 'true'
             - name: TRUST_PROXY
               valueFrom:
                 configMapKeyRef:
