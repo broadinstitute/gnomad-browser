@@ -118,7 +118,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     <Table>
       <thead>
         <tr>
-          {renderColumnHeader('id', 'Population', null)}
+          {renderColumnHeader('id', 'Genetic ancestry group', null)}
           {renderColumnHeader(
             'an',
             'Allele Number',

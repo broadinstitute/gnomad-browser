@@ -518,7 +518,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -652,7 +652,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -9203,7 +9203,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -9337,7 +9337,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -17891,7 +17891,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -18025,7 +18025,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -26579,7 +26579,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -26713,7 +26713,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -35267,7 +35267,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -35401,7 +35401,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -43955,7 +43955,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -44089,7 +44089,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                         onClick={[Function]}
                         type="button"
                       >
-                        Population
+                        Genetic ancestry group
                       </button>
                     </th>
                     <th
@@ -52580,7 +52580,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -52627,7 +52627,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
@@ -59710,7 +59710,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -59757,7 +59757,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
@@ -68448,7 +68448,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -68495,7 +68495,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
@@ -77186,7 +77186,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -77233,7 +77233,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
@@ -85924,7 +85924,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -85971,7 +85971,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
@@ -94662,7 +94662,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Population Frequencies 
+        Genetic ancestry group Frequencies 
         <button
           className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
           onClick={[Function]}
@@ -94709,7 +94709,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   onClick={[Function]}
                   type="button"
                 >
-                  Population
+                  Genetic ancestry group
                 </button>
               </th>
               <th
