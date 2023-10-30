@@ -27,8 +27,10 @@ const config: Record<string, any> = {
   ELASTICSEARCH_QUEUE_TIMEOUT: JSON.parse(env.ELASTICSEARCH_QUEUE_TIMEOUT || '30') * 1000,
   ELASTICSEARCH_REQUEST_TIMEOUT: JSON.parse(env.ELASTICSEARCH_REQUEST_TIMEOUT || '60') * 1000,
   // Cache
-  READ_CACHE_REDIS_URL: env.READ_CACHE_REDIS_URL,
-  WRITE_CACHE_REDIS_URL: env.WRITE_CACHE_REDIS_URL,
+  REDIS_GROUP_NAME: env.REDIS_GROUP_NAME || 'gnomad',
+  REDIS_HOST: env.REDIS_HOST,
+  REDIS_PORT: JSON.parse(env.REDIS_PORT || '6379'),
+  REDIS_USE_SENTINEL: env.REDIS_USE_SENTINEL,
   CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
   // Web server
   PORT: JSON.parse(env.PORT || '8000'),
@@ -39,10 +41,9 @@ const config: Record<string, any> = {
   MAX_QUERY_COST: JSON.parse(env.MAX_QUERY_COST || '25'),
   MAX_QUERY_COST_PER_MINUTE: JSON.parse(env.MAX_QUERY_COST_PER_MINUTE || '100'),
   MAX_REQUESTS_PER_MINUTE: JSON.parse(env.MAX_REQUESTS_PER_MINUTE || '30'),
-  RATE_LIMITER_REDIS_URL: env.RATE_LIMITER_REDIS_URL,
 }
 
-const requiredConfig = ['ELASTICSEARCH_URL', 'RATE_LIMITER_REDIS_URL']
+const requiredConfig = ['ELASTICSEARCH_URL']
 
 for (const setting of requiredConfig) {
   if (!config[setting]) {

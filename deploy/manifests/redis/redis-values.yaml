@@ -3,6 +3,7 @@ auth:
   enabled: false
 sentinel:
   enabled: true
+  masterSet: gnomad
   resources:
     requests:
       cpu: '500m'

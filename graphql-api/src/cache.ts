@@ -9,19 +9,33 @@ let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
 let setCacheExpiration = () => Promise.resolve()
 
-if (config.READ_CACHE_REDIS_URL) {
-  const readCacheDb = new Redis({
-    sentinels: [{ host: config.READ_CACHE_REDIS_URL, port: 26379 }],
-    name: 'mymaster',
-    role: 'slave',
-    db: 1,
-  })
+if (config.REDIS_HOST) {
+  let readCacheDb
+  let writeCacheDb
+  if (config.REDIS_USE_SENTINEL) {
+    readCacheDb = new Redis({
+      sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
+      name: config.REDIS_GROUP_NAME,
+      role: 'slave',
+      db: 1,
+    })
 
-  const writeCacheDb = new Redis({
-    sentinels: [{ host: config.WRITE_CACHE_REDIS_URL, port: 26379 }],
-    name: 'mymaster',
-    db: 1,
-  })
+    writeCacheDb = new Redis({
+      sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
+      name: config.REDIS_GROUP_NAME,
+      db: 1,
+    })
+  } else {
+    readCacheDb = new Redis({
+      host: config.REDIS_HOST,
+      db: 1,
+    })
+
+    writeCacheDb = new Redis({
+      host: config.REDIS_HOST,
+      db: 1,
+    })
+  }
 
   const withTimeout = (fn: any, timeout: any) => {
     return (...args: any[]) =>
