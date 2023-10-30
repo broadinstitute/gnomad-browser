@@ -39,6 +39,8 @@ def prepare_gnomad_v4_constraint(path):
         flags=ds.constraint_flags,
     )
 
+    ds = ds.filter(ds.transcript.contains("ENST"))
+
     ds = ds.key_by("transcript_id")
 
     return ds
