@@ -54,6 +54,7 @@ DIVISIONS = list(
     )
 ) + [("XX", "FEMALE"), ("XY", "MALE")]
 
+
 # For MCNVs, sum AC/AF for all alt alleles except CN=2
 def sum_mcnv_ac_or_af(alts, values):
     return hl.bind(

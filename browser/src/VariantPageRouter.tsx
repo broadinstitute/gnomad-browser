@@ -9,6 +9,7 @@ import {
   DatasetId,
   labelForDataset,
   hasStructuralVariants,
+  hasCopyNumberVariants,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
@@ -21,6 +22,7 @@ const MitochondrialVariantPage = lazy(
 )
 const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
 const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
+const CopyNumberVariantPage = lazy(() => import('./CopyNumberVariantPage/CopyNumberVariantPage'))
 const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
 
 type VariantSearchProps = {
@@ -109,6 +111,10 @@ type VariantPageRouterProps = {
 const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
   if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
+  }
+
+  if (hasCopyNumberVariants(datasetId)){
+    return <CopyNumberVariantPage datasetId={datasetId} variantId={variantId} />
   }
 
   if (isVariantId(variantId)) {

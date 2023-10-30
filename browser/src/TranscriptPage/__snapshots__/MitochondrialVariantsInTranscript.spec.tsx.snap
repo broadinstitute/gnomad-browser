@@ -18,6 +18,39 @@ exports[`MitochondrialVariantsInTranscript with dataset exac has no unexpected c
 </div>
 `;
 
+exports[`MitochondrialVariantsInTranscript with dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this transcript.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
   className="StatusMessage-sc-neg7mh-0 hJFlwG"
@@ -274,6 +307,39 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_topmed has
 `;
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>,
+  <p
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    No ClinVar variants found in this transcript.
+  </p>,
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2
+      style={
+        {
+          "margin": "2em 0 0.25em",
+        }
+      }
+    >
+      gnomAD variants
+    </h2>
+    <p>
+      No gnomAD variants found.
+    </p>
+  </div>,
+]
+`;
+
+exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4 has no unexpected changes 1`] = `
 [
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"

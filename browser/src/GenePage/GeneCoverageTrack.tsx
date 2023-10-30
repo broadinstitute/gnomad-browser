@@ -42,7 +42,6 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
   }
 }
 `
-
 type OwnProps = {
   datasetId: string
   geneId: string

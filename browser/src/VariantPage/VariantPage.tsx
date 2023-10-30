@@ -126,6 +126,12 @@ export type StructuralVariant = {
   ac_hom: number | null
 }
 
+export type CopyNumberVariant = {
+  id: string
+  sc: number
+  sn: number
+}
+
 export type Histogram = {
   bin_edges: number[]
   bin_freq: number[]
@@ -825,6 +831,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                   includeGnomad3: usesGrch38(datasetId),
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
+                  includeCopyNumberVariants: false,
                 }}
                 selectedDataset={datasetId}
                 extra={

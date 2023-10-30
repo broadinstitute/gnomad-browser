@@ -105,7 +105,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   plotElement: any
 
   state = {
-    selectedMetric: 'mean',
+    selectedMetric: 'over_30',
   }
 
   plotRef = (el: any) => {

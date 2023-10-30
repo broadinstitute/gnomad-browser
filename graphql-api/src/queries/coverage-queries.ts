@@ -6,6 +6,14 @@ import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpe
 import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpers'
 
 const COVERAGE_INDICES = {
+  gnomad_cnv_r4: {
+    exome: 'gnomad_v4_exome_coverage',
+    genome: null,
+  },
+  gnomad_r4: {
+    exome: 'gnomad_v4_exome_coverage',
+    genome: null,
+  },
   gnomad_r3: {
     exome: null,
     genome: 'gnomad_v3_genome_coverage',
@@ -67,6 +75,7 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       },
     },
   })
+
 
   return response.body.aggregations.coverage.buckets.map((bucket: any) => ({
     pos: bucket.key,
