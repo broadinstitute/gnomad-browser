@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, Link } from '@gnomad/ui'
+import { BaseTable } from '@gnomad/ui'
+
+import Link from '../../../src/Link'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
@@ -27,9 +29,7 @@ const SampleCountTables = () => (
       <h4>gnomAD v4</h4>
       <p>
         For current stats on genetic ancestry groups present in v4, please see the{' '}
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <Link to="/stats">stats page</Link>. For technical details, please see our{' '}
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <Link to="/stats#diversity">stats page</Link>. For technical details, please see our{' '}
         <Link to="/help/ancestry">Genetic Ancestry in gnomAD</Link> help text.
       </p>
     </div>

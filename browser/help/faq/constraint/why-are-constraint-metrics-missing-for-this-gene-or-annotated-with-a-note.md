@@ -13,3 +13,5 @@ Genes that were outliers in certain assessments will not have constraint metrics
 - `outlier_syn`: Number of synonymous variants is significantly different than expectation
 
 Possible reasons that one might observe the deviations listed above include mismapped reads due to homologous regions or poor quality sequencing data.
+
+Currently, constraint scores are only available for autosomes. We will release scores for chromosomes X in the near future.

@@ -1,5 +1,5 @@
 ---
-question: "What's the difference between different versions of gnomAD"
+question: "What's the difference between the different versions of gnomAD?"
 ---
 
 The gnomAD v4.0 data set contains 730,947 exomes plus the 76,215 genomes previously called gnomAD v3.1, all mapped to the GRCh38/hg38 reference sequence.
