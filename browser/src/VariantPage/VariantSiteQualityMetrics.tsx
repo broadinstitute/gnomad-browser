@@ -1147,7 +1147,7 @@ const VariantSiteQualityMetricsTable = ({
                     : '–'}
                 </td>
               )}
-              {metric in genomeMetricValues! && isVariantInGenomes && (
+              {genomeMetricValues && metric in genomeMetricValues && isVariantInGenomes && (
                 <td>
                   {genomeMetricValues && ![metric] != null
                     ? formatMetricValue(genomeMetricValues![metric], metric)
