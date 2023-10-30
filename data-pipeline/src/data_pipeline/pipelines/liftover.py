@@ -13,7 +13,7 @@ pipeline = Pipeline()
 
 
 def prepare_gnomad_v2_liftover(
-    gnomad_v2_liftover_exomes_path, gnomad_v2_liftover_genomes_path, gnomad_v3_variants_path
+    gnomad_v2_liftover_exomes_path, gnomad_v2_liftover_genomes_path, gnomad_v4_variants_path
 ):
     exome_liftover = hl.read_table(gnomad_v2_liftover_exomes_path)
     exome_liftover = exome_liftover.select(
@@ -50,11 +50,11 @@ def prepare_gnomad_v2_liftover(
         datasets=hl.set(["gnomad_r2_1"]),
     )
 
-    gnomad_v3_variants = hl.read_table(gnomad_v3_variants_path)
+    gnomad_v3_variants = hl.read_table(gnomad_v4_variants_path)
     ds = ds.annotate(
         datasets=hl.if_else(
             hl.is_defined(gnomad_v3_variants[ds.liftover.locus, ds.liftover.alleles]),
-            ds.datasets.add("gnomad_r3"),
+            ds.datasets.add("gnomad_r4"),
             ds.datasets,
         )
     )
@@ -69,7 +69,7 @@ pipeline.add_task(
     {
         "gnomad_v2_liftover_exomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht",
         "gnomad_v2_liftover_genomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht",
-        "gnomad_v3_variants_path": "gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht",
+        "gnomad_v4_variants_path": "gs://gnomad-v4-data-pipeline/output/gnomad_v4_20231027T203139/gnomad_v4_variants_annotated_2.ht",
     },
 )
 

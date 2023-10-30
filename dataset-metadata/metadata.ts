@@ -206,7 +206,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   regionsHaveGenomeCoverage: !datasetId.startsWith('gnomad_cnv'),
   hasLocalAncestryPopulations: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4' || datasetId.startsWith('gnomad_r4'),
   isLiftoverSource: datasetId.startsWith('gnomad_r2_1'),
-  isLiftoverTarget: datasetId.startsWith('gnomad_r3'),
+  isLiftoverTarget: datasetId.startsWith('gnomad_r4'),
   usesGrch37: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4' && !datasetId.startsWith('gnomad_r4'),
   usesGrch38: datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4') || datasetId === 'gnomad_sv_r4',
   isV2: datasetId.startsWith('gnomad_r2'),
