@@ -31,7 +31,7 @@ const NumberOfVariantsInGnomadList = () => {
           <li>Total SNVs: 786,500,648</li>
           <li>Total InDels: 122,583,462</li>
           <li>
-            Variant type totals
+            Variant type* counts
             <SectionList>
               <li>Synonymous: 9,643,254</li>
               <li>Missense: 16,412,219</li>
@@ -41,6 +41,9 @@ const NumberOfVariantsInGnomadList = () => {
             </SectionList>
           </li>
         </SectionList>
+        <div style={{ fontSize: '0.75em' }}>
+          *This is only a subset of commonly asked for variant types from the dataset.
+        </div>
       </Section>
       <Section>
         <SectionHeader>Structural variants</SectionHeader>
@@ -58,10 +61,10 @@ const NumberOfVariantsInGnomadList = () => {
             </SectionList>
           </li>
           <li>
-            {`66,826 rare (<1% AF) exome CNVs`}
+            {`66,903 rare (<1% SF) exome CNVs`}
             <SectionList>
-              <li>30,855 Deletions</li>
-              <li>35,971 Duplications</li>
+              <li>36,026 Duplications</li>
+              <li>30,877 Deletions</li>
             </SectionList>
           </li>
         </SectionList>
