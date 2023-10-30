@@ -64,7 +64,7 @@ const VariantCooccurrenceSummaryTable = ({
     <Table>
       <thead>
         <tr>
-          <th scope="col">Population</th>
+          <th scope="col">Genetic ancestry group</th>
           <th scope="col">
             Samples consistent with variants appearing in isolation or on different haplotypes
           </th>

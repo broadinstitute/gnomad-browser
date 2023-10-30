@@ -330,7 +330,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
 
       <Section>
         <h2>
-          Population Frequencies <InfoButton topic="ancestry" />
+          Genetic ancestry group Frequencies <InfoButton topic="ancestry" />
         </h2>
         {hasLocalAncestryPopulations(datasetId) &&
           ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (

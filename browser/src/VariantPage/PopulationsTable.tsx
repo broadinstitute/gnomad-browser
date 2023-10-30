@@ -250,7 +250,11 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
       <Table>
         <thead>
           <tr>
-            {this.renderColumnHeader({ key: 'name', label: 'Population', props: { colSpan: 2 } })}
+            {this.renderColumnHeader({
+              key: 'name',
+              label: 'Genetic ancestry group',
+              props: { colSpan: 2 },
+            })}
             {this.renderColumnHeader({
               key: 'ac',
               label: columnLabels.ac || 'Allele Count',

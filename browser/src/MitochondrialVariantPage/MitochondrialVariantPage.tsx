@@ -189,7 +189,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
       </ResponsiveSection>
     </Wrapper>
     <Section>
-      <h2>Population Frequencies</h2>
+      <h2>Genetic ancestry group Frequencies</h2>
       <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
     </Section>
     <Section>

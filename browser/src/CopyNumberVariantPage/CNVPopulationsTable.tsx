@@ -180,7 +180,7 @@ export class CNVPopulationsTable extends Component<
       .map((pop) => {
         const transformedSubpopulations = (pop.subpopulations || [])
           .map((subPop) => ({
-            id: subPop.id, 
+            id: subPop.id,
             name: subPop.name,
             sc: subPop.sc,
             sn: subPop.sn,
@@ -246,7 +246,11 @@ export class CNVPopulationsTable extends Component<
       <Table>
         <thead>
           <tr>
-            {this.renderColumnHeader({ key: 'name', label: 'Population', props: { colSpan: 2 } })}
+            {this.renderColumnHeader({
+              key: 'name',
+              label: 'Genetic ancestry group',
+              props: { colSpan: 2 },
+            })}
             {this.renderColumnHeader({
               key: 'sc',
               label: columnLabels.sc || 'SC',
