@@ -188,12 +188,16 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   isSubset: !fullDatasetIds.includes(datasetId),
   isV3Subset: !fullDatasetIds.includes(datasetId) && datasetId.startsWith('gnomad_r3'),
   isV4SVs: datasetId === 'gnomad_sv_r4',
-  hasShortVariants: !structuralVariantDatasetIds.includes(datasetId),
+  hasShortVariants: !structuralVariantDatasetIds.includes(datasetId) && !copyNumberVariantDatasetIds.includes(datasetId),
   hasStructuralVariants: structuralVariantDatasetIds.includes(datasetId),
   hasCopyNumberVariants: copyNumberVariantDatasetIds.includes(datasetId),
   hasCopyNumberVariantCoverage: datasetId.startsWith('gnomad_cnv'),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
-  hasConstraints: datasetId.includes('r4') || datasetId.startsWith('gnomad_r2') || datasetId === "exac",
+  hasConstraints: datasetId.includes('r4') ||
+    datasetId.startsWith("gnomad_sv_r4") ||
+    datasetId.startsWith('gnomad_r2') ||
+    datasetId.startsWith('gnomad_sv_r2') ||
+    datasetId === "exac",
   hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
   hasExome: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
@@ -366,3 +370,4 @@ export const copyNumberVariantDatasetId = (datasetId: DatasetId) =>
 
 export const hasCopyNumberVariantCoverage = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasCopyNumberVariantCoverage')
+
