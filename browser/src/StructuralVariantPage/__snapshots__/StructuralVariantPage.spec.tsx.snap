@@ -400,7 +400,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -416,7 +416,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -1009,7 +1009,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -1025,7 +1025,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -1618,7 +1618,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -1634,7 +1634,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -2209,7 +2209,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -2225,7 +2225,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -2800,7 +2800,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -2816,7 +2816,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -3389,7 +3389,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -3405,7 +3405,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -3980,7 +3980,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -3996,7 +3996,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -4571,7 +4571,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -4587,7 +4587,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -5714,7 +5714,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -5730,7 +5730,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -6323,7 +6323,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -6339,7 +6339,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -6932,7 +6932,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -6948,7 +6948,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -7523,7 +7523,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -7539,7 +7539,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -8114,7 +8114,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -8130,7 +8130,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -8703,7 +8703,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -8719,7 +8719,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -9294,7 +9294,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -9310,7 +9310,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -9885,7 +9885,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -9901,7 +9901,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -11028,7 +11028,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -11044,7 +11044,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -11637,7 +11637,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -11653,7 +11653,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -12246,7 +12246,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -12262,7 +12262,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -12837,7 +12837,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -12853,7 +12853,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -13428,7 +13428,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -13444,7 +13444,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -14017,7 +14017,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -14033,7 +14033,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -14608,7 +14608,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -14624,7 +14624,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th
@@ -15199,7 +15199,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
@@ -15215,7 +15215,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               onClick={[Function]}
               type="button"
             >
-              Genetic ancestry group
+              Genetic Ancestry Group
             </button>
           </th>
           <th

@@ -327,7 +327,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 CNVPopulationsTable__Table-sc-1dnyyn-0 iypcwR"
@@ -779,7 +779,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
   </div>
   <section>
     <h2>
-      Genetic ancestry group Frequencies
+      Genetic Ancestry Group Frequencies
     </h2>
     <table
       className="Table__BaseTable-sc-7fgtt2-0 CNVPopulationsTable__Table-sc-1dnyyn-0 iypcwR"

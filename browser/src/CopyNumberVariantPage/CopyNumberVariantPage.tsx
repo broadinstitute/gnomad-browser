@@ -84,7 +84,7 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
     </Wrapper>
 
     <section>
-      <h2>Genetic ancestry group Frequencies</h2>
+      <h2>Genetic Ancestry Group Frequencies</h2>
       <CopyNumberVariantPopulationsTable variant={variant} />
     </section>
 
