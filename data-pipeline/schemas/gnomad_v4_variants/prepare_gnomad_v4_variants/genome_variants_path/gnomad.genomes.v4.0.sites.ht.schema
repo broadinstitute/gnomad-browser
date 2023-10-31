@@ -16,7 +16,6 @@ Global fields:
         n_smaller: int32, 
         n_larger: int32
     } 
-    'downsamplings': array<int32> 
     'filtering_model': struct {
         filter_name: str, 
         score_name: str, 

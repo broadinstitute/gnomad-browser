@@ -69,7 +69,50 @@ Row fields:
             refseq_version: str
         }, 
         preferred_transcript_id: str, 
-        preferred_transcript_source: str
+        preferred_transcript_source: str, 
+        gnomad_constraint: struct {
+            gene: str, 
+            transcript: str, 
+            mane_select: bool, 
+            gene_id: str, 
+            exp_lof: float64, 
+            exp_mis: float64, 
+            exp_syn: float64, 
+            obs_lof: int64, 
+            obs_mis: int64, 
+            obs_syn: int64, 
+            oe_lof: float64, 
+            oe_lof_lower: float64, 
+            oe_lof_upper: float64, 
+            oe_mis: float64, 
+            oe_mis_lower: float64, 
+            oe_mis_upper: float64, 
+            oe_syn: float64, 
+            oe_syn_lower: float64, 
+            oe_syn_upper: float64, 
+            lof_z: float64, 
+            mis_z: float64, 
+            syn_z: float64, 
+            pli: float64, 
+            flags: set<str>
+        }, 
+        heterozygous_variant_cooccurrence_counts: array<struct {
+            csq: str, 
+            af_cutoff: str, 
+            data: struct {
+                in_cis: int32, 
+                in_trans: int32, 
+                unphased: int32, 
+                two_het_total: int32
+            }
+        }>, 
+        homozygous_variant_cooccurrence_counts: array<struct {
+            csq: str, 
+            af_cutoff: str, 
+            data: struct {
+                hom_total: int32
+            }
+        }>
     } 
     'interval': interval<locus<GRCh38>> 
     'transcript_id': str 
