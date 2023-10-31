@@ -13,7 +13,7 @@ Due to their size and disruptive nature, SVs can often result in alterations to 
 
 ### Description of gnomAD SV data
 
-The gnomAD v4 release has two SV data sets, 1) those detected in 63,046 unrelated genomes 2) and those detected in 464,566 exomes, the latter excluding common CNVs above 1%. In the gnomAD browser, we provide site, frequency, and annotation information for 1,199,106 high-quality SVs, as well as 66,826 high-quality rare coding CNVs. As with the gnomAD short variant data set, we have removed cohorts recruited for severe pediatric disease.
+The gnomAD v4 release has two SV data sets, 1) those detected in 63,046 unrelated genomes 2) and those detected in 464,297 exomes, the latter excluding common CNVs above 1%. In the gnomAD browser, we provide site, frequency, and annotation information for 1,199,117 high-quality SVs, as well as 66,903 high-quality rare coding CNVs. As with the gnomAD short variant data set, we have removed cohorts recruited for severe pediatric disease.
 
 We have also produced VCF and BED files for both datasets, which are available via [the gnomAD Downloads page](https://gnomad.broadinstitute.org/downloads).
 
