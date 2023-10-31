@@ -12,7 +12,6 @@ from data_pipeline.data_types.transcript import (
     annotate_gene_transcripts_with_refseq_id,
     extract_transcripts,
 )
-from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
 from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
@@ -31,25 +30,13 @@ from data_pipeline.data_types.gene import reject_par_y_genes
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import prepare_gnomad_v4_constraint
 
-pipeline = Pipeline(
-    # PipelineConfig(
-    #     name="genes",
-    #     input_root="gs://gnomad-matt-data-pipeline/2023-10-19/inputs",
-    #     output_root="gs://gnomad-matt-data-pipeline/2023-10-19/outputs",
-    # )
-)  # TODO: FIXME
-
+pipeline = Pipeline()
 # use_new_timestamp = True
 
 external_sources_subdir = "external_sources_20231029T172613"
 genes_subdir = "genes_new"
 constraint_subdir = "constraint"
 
-# if use_new_timestamp:
-#     timestamp = generate_iso_timestamp_for_filename()
-# external_sources_subdir = f"external_sources_{timestamp}"
-# genes_subdir = f"genes_{timestamp}"
-# constraint_subdir = f"constraint_{timestamp}"
 
 ###############################################
 # Import GENCODE and HGNC files
