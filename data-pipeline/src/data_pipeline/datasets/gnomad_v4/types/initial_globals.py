@@ -1,5 +1,5 @@
 import attr
-from typing import List, Union, Any
+from typing import List, Optional
 
 
 @attr.define
@@ -108,6 +108,7 @@ class Globals:
     freq_meta_sample_count: List[int]
     faf_meta: List[List[MetaString]]
     faf_index_dict: List[MetaInt]
+    downsamplings: Optional[Downsampling]
     filtering_model: FilteringModel
     tool_versions: ToolVersions
     vep_globals: VepGlobals
@@ -115,7 +116,6 @@ class Globals:
     joint_freq_index_dict: List[MetaInt]
     joint_freq_meta_sample_count: List[int]
     joint_faf_meta: List[List[MetaString]]
-    downsamplings: Any
     inbreeding_coeff_cutoff: float
     vrs_versions: VrsVersions
     date: str

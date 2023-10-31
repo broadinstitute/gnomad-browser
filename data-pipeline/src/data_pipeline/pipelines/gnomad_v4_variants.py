@@ -1,11 +1,9 @@
 import os
-from pathlib import Path
-from data_pipeline.helpers.timestamp import generate_iso_timestamp_for_filename
 from loguru import logger
 
 
-from data_pipeline.config import PipelineConfig, get_data_environment, DataEnvironment
-from data_pipeline.pipeline import Pipeline, PipelineMock, run_pipeline
+from data_pipeline.config import PipelineConfig
+from data_pipeline.pipeline import Pipeline, run_pipeline
 from data_pipeline.helpers.write_schemas import write_schemas
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
@@ -13,7 +11,6 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
 )
 
 
-from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as coverage_pipeline
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_validation import (
@@ -36,7 +33,7 @@ RUN = True
 pipeline_name = "gnomad_v4_variants"
 
 
-output_sub_dir = f"gnomad_v4_{generate_iso_timestamp_for_filename()}"
+output_sub_dir = "gnomad_v4"
 # output_sub_dir = "gnomad_v4_20231027T135454"
 # output_sub_dir = "gnomad_v4_20231027T203139"
 
@@ -54,10 +51,8 @@ pipeline.add_task(
     task_function=prepare_gnomad_v4_variants,
     output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
     inputs={
-        # "exome_variants_path": "gs://gnomad-matt-data-pipeline/2023-10-19/inputs/variants/gnomad.exomes.v4.0.sites.pcsk9.ht",
-        # "genome_variants_path": "gs://gnomad-matt-data-pipeline/2023-10-19/inputs/variants/gnomad.genomes.v4.0.sites.pcsk9.ht",
-        "exome_variants_path": "gs://gnomad-matt-data-pipeline/exomes-2023-10-27/gnomad.exomes.v4.0.sites.ht",
-        "genome_variants_path": "gs://gnomad-matt-data-pipeline/genomes-2023-10-27/gnomad.genomes.v4.0.sites.ht",
+        "exome_variants_path": "gs://gnomad-matt-data-pipeline/gnomad-variant-release-2023-10-31/gnomad.exomes.v4.0.sites.ht",
+        "genome_variants_path": "gs://gnomad-matt-data-pipeline/gnomad-variant-release-2023-10-31/gnomad.genomes.v4.0.sites.ht",
     },
 )
 
