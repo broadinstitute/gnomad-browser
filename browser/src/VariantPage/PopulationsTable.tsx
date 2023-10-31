@@ -252,7 +252,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
           <tr>
             {this.renderColumnHeader({
               key: 'name',
-              label: 'Genetic ancestry group',
+              label: 'Genetic Ancestry Group',
               props: { colSpan: 2 },
             })}
             {this.renderColumnHeader({
