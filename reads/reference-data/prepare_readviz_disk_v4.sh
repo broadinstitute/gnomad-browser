@@ -36,9 +36,9 @@ sudo resize2fs /dev/disk/by-id/google-reads-disk
 
 # On my machine, copy gencode files to VM
 
-gcloud compute scp gencode.v39.annotation.bed.bgz v4-readviz-update:~/
+gcloud compute scp gencode.v39.hg38.sorted.txt.gz v4-readviz-update:~/
 
-gcloud compute scp gencode.v39.annotation.bed.bgz.tbi v4-readviz-update:~/
+gcloud compute scp gencode.v39.hg38.sorted.txt.gz.tbi v4-readviz-update:~/
 
 # On VM, move them to reference folder
 sudo mv ~/gencode* /mnt/disks/reads/reference/
