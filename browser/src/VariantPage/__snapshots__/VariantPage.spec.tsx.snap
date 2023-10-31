@@ -52266,6 +52266,30 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
               >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
                 GRCh37
               </div>
               <li>
@@ -52868,9 +52892,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -52936,9 +52958,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -57861,7 +57881,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       x={-9.166666666666666}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -58911,7 +58931,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all variants with 0 &lt;= AF &lt; 0.0001.
@@ -58970,7 +58990,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -58986,7 +59006,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59002,7 +59022,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59018,7 +59038,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59034,7 +59054,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59050,7 +59070,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59066,7 +59086,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59082,7 +59102,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59098,7 +59118,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59114,7 +59134,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -59130,7 +59150,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>
@@ -59300,6 +59320,30 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -59611,7 +59655,6 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     0
                   </span>
                 </td>
-                <td />
                 <td />
               </tr>
               <tr>
@@ -59998,9 +60041,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -60066,9 +60107,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -66624,7 +66663,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       x={-9.078947368421053}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -67601,7 +67640,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all exome variants with 0 &lt;= AF &lt; 0.00005.
@@ -67660,7 +67699,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67676,7 +67715,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67692,7 +67731,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67708,7 +67747,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67724,7 +67763,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67740,7 +67779,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67756,7 +67795,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67772,7 +67811,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67788,7 +67827,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67804,7 +67843,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67820,7 +67859,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67836,7 +67875,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67852,7 +67891,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -67868,7 +67907,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>
@@ -68038,6 +68077,30 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -68349,7 +68412,6 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     0
                   </span>
                 </td>
-                <td />
                 <td />
               </tr>
               <tr>
@@ -68736,9 +68798,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -68804,9 +68864,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -75362,7 +75420,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       x={-9.078947368421053}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -76339,7 +76397,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all exome variants with 0 &lt;= AF &lt; 0.00005.
@@ -76398,7 +76456,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76414,7 +76472,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76430,7 +76488,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76446,7 +76504,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76462,7 +76520,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76478,7 +76536,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76494,7 +76552,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76510,7 +76568,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76526,7 +76584,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76542,7 +76600,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76558,7 +76616,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76574,7 +76632,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76590,7 +76648,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -76606,7 +76664,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>
@@ -76776,6 +76834,30 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -77087,7 +77169,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     0
                   </span>
                 </td>
-                <td />
                 <td />
               </tr>
               <tr>
@@ -77474,9 +77555,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -77542,9 +77621,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -84100,7 +84177,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       x={-9.078947368421053}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -85077,7 +85154,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all exome variants with 0 &lt;= AF &lt; 0.00005.
@@ -85136,7 +85213,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85152,7 +85229,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85168,7 +85245,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85184,7 +85261,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85200,7 +85277,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85216,7 +85293,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85232,7 +85309,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85248,7 +85325,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85264,7 +85341,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85280,7 +85357,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85296,7 +85373,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85312,7 +85389,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85328,7 +85405,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -85344,7 +85421,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>
@@ -85514,6 +85591,30 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -85825,7 +85926,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     0
                   </span>
                 </td>
-                <td />
                 <td />
               </tr>
               <tr>
@@ -86212,9 +86312,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -86280,9 +86378,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -92838,7 +92934,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       x={-9.078947368421053}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -93815,7 +93911,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all exome variants with 0 &lt;= AF &lt; 0.00005.
@@ -93874,7 +93970,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93890,7 +93986,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93906,7 +94002,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93922,7 +94018,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93938,7 +94034,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93954,7 +94050,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93970,7 +94066,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -93986,7 +94082,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94002,7 +94098,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94018,7 +94114,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94034,7 +94130,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94050,7 +94146,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94066,7 +94162,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -94082,7 +94178,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>
@@ -94252,6 +94348,30 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           <ul
             className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
           >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
             <li>
               <div
                 className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
@@ -94563,7 +94683,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     0
                   </span>
                 </td>
-                <td />
                 <td />
               </tr>
               <tr>
@@ -94950,9 +95069,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       href="/transcript/ENST123456"
                       onClick={[Function]}
                     >
-                      ENST123456
-                      .
-                      1
+                      ENST123456.1
                     </a>
                     <div
                       className="TranscriptConsequenceList__TranscriptInfoWrapper-sc-qi0gmz-0 cXgLUx"
@@ -95018,9 +95135,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       href="/transcript/ENST012345"
                       onClick={[Function]}
                     >
-                      ENST012345
-                      .
-                      1
+                      ENST012345.1
                     </a>
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
@@ -101576,7 +101691,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       x={-9.078947368421053}
                       y={-5}
                     >
-                      0
+                      -
                     </text>
                   </g>
                   <g
@@ -102553,7 +102668,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
               </div>
               <p>
                 Value: 
-                0 (exome samples)
+                - (exome samples)
               </p>
               <p>
                 This is the site quality distribution for all exome variants with 0 &lt;= AF &lt; 0.00005.
@@ -102612,7 +102727,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102628,7 +102743,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102644,7 +102759,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102660,7 +102775,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102676,7 +102791,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102692,7 +102807,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102708,7 +102823,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102724,7 +102839,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102740,7 +102855,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102756,7 +102871,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102772,7 +102887,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102788,7 +102903,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102804,7 +102919,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
                 <tr>
@@ -102820,7 +102935,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    0
+                    -
                   </td>
                 </tr>
               </tbody>

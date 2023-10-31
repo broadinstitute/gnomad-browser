@@ -2058,6 +2058,14 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4" has no un
 </DocumentFragment>
 `;
 
+exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_sv_r4" has no unexpected changes and renders as placeholder text 1`] = `
+<DocumentFragment>
+  <p>
+    Variant co-occurrence is only available for gnomAD v2.
+  </p>
+</DocumentFragment>
+`;
+
 exports[`VariantCoocurrenceCountsTable with v2 dataset "gnomad_r2_1" has no unexpected changes and renders as a table 1`] = `
 <DocumentFragment>
   <div>

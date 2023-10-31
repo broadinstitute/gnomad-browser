@@ -195,11 +195,16 @@ exports[`Home Page has no unexpected changes 1`] = `
     <select
       className="c4"
       onChange={[Function]}
-      value="gnomad_r2_1"
+      value="gnomad_r4"
     >
       <optgroup
         label="GRCh38"
       >
+        <option
+          value="gnomad_r4"
+        >
+          gnomAD v4.0.0
+        </option>
         <option
           value="gnomad_r3"
         >
@@ -335,7 +340,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     </li>
   </ul>
   <p>
-    Please note that gnomAD v2.1.1 and v3.1.2 have substantially different but overlapping sample compositions and are on different genome builds. For more information, see
+    Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see
      
     <a
       className="-Link c8"
@@ -386,11 +391,11 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c7"
     >
-      gnomAD v3.1.2 variant:
+      Variant:
        
       <a
         className="-Link c8"
-        href="/variant/1-55051215-G-GA?dataset=gnomad_r3"
+        href="/variant/1-55051215-G-GA?dataset=gnomad_r4"
         onClick={[Function]}
       >
         1-55051215-G-GA
@@ -399,7 +404,33 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c7"
     >
-      gnomAD v3 mitochondrial variant:
+      Structural variant region:
+       
+      <a
+        className="-Link c8"
+        href="/region/19-11078371-11144910?dataset=gnomad_sv_r4"
+        onClick={[Function]}
+      >
+        19-11078371-11144910
+      </a>
+    </li>
+    <li
+      className="c7"
+    >
+      Copy number variant region:
+       
+      <a
+        className="-Link c8"
+        href="/region/2-49918501-51225575?dataset=gnomad_cnv_r4"
+        onClick={[Function]}
+      >
+        19-11078371-11144910
+      </a>
+    </li>
+    <li
+      className="c7"
+    >
+      Mitochondrial variant:
        
       <a
         className="-Link c8"
@@ -412,15 +443,13 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c7"
     >
-      gnomAD v3
-       
       <a
         className="c9"
         href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3"
         rel="noopener noreferrer"
         target="_blank"
       >
-        short tandem repeat
+        Short tandem repeat
       </a>
        
       locus:
@@ -436,33 +465,20 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c7"
     >
-      gnomAD v2.1.1 variant:
+      Regional missense constraint (gnomAD v2, GRCh37):
        
       <a
         className="-Link c8"
-        href="/variant/1-55516888-G-GA?dataset=gnomad_r2_1"
+        href="/gene/ENSG00000183454?dataset=gnomad_r2_1&variant=1-55505647-G-T&variant=1-55523855-G-A"
         onClick={[Function]}
       >
-        1-55516888-G-GA
+        GRIN2A
       </a>
     </li>
     <li
       className="c7"
     >
-      gnomAD v2 structural variant:
-       
-      <a
-        className="-Link c8"
-        href="/variant/DUP_2_5708?dataset=gnomad_sv_r2_1"
-        onClick={[Function]}
-      >
-        DUP_2_5708
-      </a>
-    </li>
-    <li
-      className="c7"
-    >
-      Variant co-occurrence:
+      Variant co-occurrence (gnomAD v2, GRCh37):
        
       <a
         className="-Link c8"

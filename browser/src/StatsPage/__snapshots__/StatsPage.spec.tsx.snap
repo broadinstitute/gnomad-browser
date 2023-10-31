@@ -3419,8 +3419,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={160.33646493336246}
-                        y2={160.33646493336246}
+                        y1={158.9866915713285}
+                        y2={158.9866915713285}
                       />
                       <svg
                         fontSize={10}
@@ -3437,7 +3437,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={160.33646493336246}
+                          y={158.9866915713285}
                         >
                           <tspan
                             dy="0em"
@@ -3459,8 +3459,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={140.67292986672493}
-                        y2={140.67292986672493}
+                        y1={137.973383142657}
+                        y2={137.973383142657}
                       />
                       <svg
                         fontSize={10}
@@ -3477,7 +3477,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={140.67292986672493}
+                          y={137.973383142657}
                         >
                           <tspan
                             dy="0em"
@@ -3499,8 +3499,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={121.00939480008739}
-                        y2={121.00939480008739}
+                        y1={116.96007471398552}
+                        y2={116.96007471398552}
                       />
                       <svg
                         fontSize={10}
@@ -3517,7 +3517,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={121.00939480008739}
+                          y={116.96007471398552}
                         >
                           <tspan
                             dy="0em"
@@ -3539,8 +3539,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={101.34585973344986}
-                        y2={101.34585973344986}
+                        y1={95.94676628531403}
+                        y2={95.94676628531403}
                       />
                       <svg
                         fontSize={10}
@@ -3557,7 +3557,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={101.34585973344986}
+                          y={95.94676628531403}
                         >
                           <tspan
                             dy="0em"
@@ -3579,8 +3579,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={81.68232466681232}
-                        y2={81.68232466681232}
+                        y1={74.93345785664253}
+                        y2={74.93345785664253}
                       />
                       <svg
                         fontSize={10}
@@ -3597,7 +3597,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={81.68232466681232}
+                          y={74.93345785664253}
                         >
                           <tspan
                             dy="0em"
@@ -3619,8 +3619,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={62.018789600174784}
-                        y2={62.018789600174784}
+                        y1={53.92014942797104}
+                        y2={53.92014942797104}
                       />
                       <svg
                         fontSize={10}
@@ -3637,7 +3637,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={62.018789600174784}
+                          y={53.92014942797104}
                         >
                           <tspan
                             dy="0em"
@@ -3659,8 +3659,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={42.35525453353725}
-                        y2={42.35525453353725}
+                        y1={32.90684099929955}
+                        y2={32.90684099929955}
                       />
                       <svg
                         fontSize={10}
@@ -3677,7 +3677,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={42.35525453353725}
+                          y={32.90684099929955}
                         >
                           <tspan
                             dy="0em"
@@ -3699,8 +3699,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={22.69171946689971}
-                        y2={22.69171946689971}
+                        y1={11.893532570628073}
+                        y2={11.893532570628073}
                       />
                       <svg
                         fontSize={10}
@@ -3717,53 +3717,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={22.69171946689971}
+                          y={11.893532570628073}
                         >
                           <tspan
                             dy="0em"
                             x={-8}
                           >
                             4.00K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="vx-group vx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="vx-line"
-                        fill="transparent"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        x1={0}
-                        x2={-8}
-                        y1={3.0281844002621727}
-                        y2={3.0281844002621727}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          x={-8}
-                          y={3.0281844002621727}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            4.50K
                           </tspan>
                         </text>
                       </svg>
@@ -3810,11 +3770,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   >
                     <rect
                       fill="#508A14"
-                      height={147.86978370111427}
+                      height={158.0200793836096}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-5.833333333333343}
-                      y={32.13021629888574}
+                      y={21.979920616390384}
                     />
                     <rect
                       className="c24"
@@ -3827,11 +3787,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={56.1590561503168}
+                      height={55.97945365398084}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-11.666666666666671}
-                      y={123.8409438496832}
+                      y={124.02054634601916}
                     />
                     <rect
                       className="c24"
@@ -3844,11 +3804,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={63.159274634039775}
+                      height={58.87929021713752}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-17.5}
-                      y={116.84072536596022}
+                      y={121.12070978286248}
                     />
                     <rect
                       className="c24"
@@ -3861,11 +3821,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={74.91806860388901}
+                      height={69.00770487975718}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-23.333333333333336}
-                      y={105.08193139611099}
+                      y={110.99229512024282}
                     />
                     <rect
                       className="c24"
@@ -3878,11 +3838,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={126.94778239021194}
+                      height={123.93649311230448}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-29.16666666666667}
-                      y={53.05221760978806}
+                      y={56.06350688769553}
                     />
                     <rect
                       className="c24"
@@ -3912,11 +3872,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={154.31942320297136}
+                      height={151.33784730329208}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-40.833333333333336}
-                      y={25.68057679702863}
+                      y={28.66215269670792}
                     />
                     <rect
                       className="c24"
@@ -3929,11 +3889,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={143.77976840725367}
+                      height={137.93135652579969}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-46.66666666666667}
-                      y={36.22023159274634}
+                      y={42.06864347420032}
                     />
                     <rect
                       className="c24"
@@ -3946,11 +3906,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={125.61066200568057}
+                      height={122.25542843801074}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-52.5}
-                      y={54.38933799431943}
+                      y={57.744571561989254}
                     />
                     <rect
                       className="c24"
@@ -3963,11 +3923,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={84.67118199694121}
+                      height={82.16203595610554}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-58.333333333333336}
-                      y={95.32881800305879}
+                      y={97.83796404389446}
                     />
                     <rect
                       className="c24"
@@ -3980,11 +3940,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={50.45663098099192}
+                      height={50.51599346252627}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-64.16666666666667}
-                      y={129.54336901900808}
+                      y={129.48400653747373}
                     />
                     <rect
                       className="c24"
@@ -3997,11 +3957,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#508A14"
-                      height={17.854489840506886}
+                      height={18.407658183516247}
                       stroke="#333"
                       width={5.833333333333333}
                       x={-70}
-                      y={162.1455101594931}
+                      y={161.59234181648375}
                     />
                     <rect
                       className="c24"

@@ -301,7 +301,7 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
   variables={
     {
       "datasetId": "gnomad_r4",
-      "referenceGenome": "GRCh37",
+      "referenceGenome": "GRCh38",
       "transcriptId": "dummy-transcript",
     }
   }
