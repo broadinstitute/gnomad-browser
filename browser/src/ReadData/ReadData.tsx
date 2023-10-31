@@ -337,18 +337,17 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
         tracks: [
           {
             name: 'GENCODE v39',
-            // format: 'refgene',
+            // @ts-ignore
+            format: 'refgene',
             url: '/reads/reference/gencode.v39.hg38.sorted.txt.gz',
             indexURL: '/reads/reference/gencode.v39.hg38.sorted.txt.gz.tbi',
-            // indexed: true,
+            indexed: true,
             displayMode: 'SQUISHED',
-            // searchable: true,
+            searchable: true,
             removable: false,
             // height: 350,
-            // visibilityWindow: -1,
-            // order: gencodeGeneTrackOrder,
-            // color: 'rgb(76,171,225)',
-            // oauthToken: getGoogleAccessToken,
+            visibilityWindow: -1,
+            color: 'rgb(76,171,225)',
           },
         ],
       }
