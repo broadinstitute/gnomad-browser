@@ -66,15 +66,15 @@ export default () => (
     <List style={{ marginBottom: '2em' }}>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
-      </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-      <ListItem>
         <Link to="/downloads">Download gnomAD data</Link>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/publications">Read gnomAD publications</Link>
+      </ListItem>
+      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+      <ListItem>
+        <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
       </ListItem>
     </List>
 
@@ -164,11 +164,11 @@ export default () => (
         <Link
           preserveSelectedDataset={false}
           to={{
-            pathname: 'short-tandem-repeat/DMD',
+            pathname: 'short-tandem-repeat/ATXN1',
             search: queryString.stringify({ dataset: 'gnomad_r3' }),
           }}
         >
-          DMD
+          ATXN1
         </Link>
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
