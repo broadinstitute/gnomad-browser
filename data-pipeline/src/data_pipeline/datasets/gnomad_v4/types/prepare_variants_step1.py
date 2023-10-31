@@ -3,14 +3,10 @@ from typing import List, Set, Union, Optional, Any
 
 
 from data_pipeline.datasets.gnomad_v4.types.initial_variant import (
-    Faf,
-    FafMax,
-    Grpmax,
     InSilicoPredictors,
     Vep,
     Locus,
 )
-from pandas.core.frame import Frequency
 
 
 @attr.define
