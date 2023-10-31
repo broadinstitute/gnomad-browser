@@ -250,11 +250,16 @@ exports[`NavBar has no unexpected changes 1`] = `
     <select
       className="c5"
       onChange={[Function]}
-      value="gnomad_r2_1"
+      value="gnomad_r4"
     >
       <optgroup
         label="GRCh38"
       >
+        <option
+          value="gnomad_r4"
+        >
+          gnomAD v4.0.0
+        </option>
         <option
           value="gnomad_r3"
         >
@@ -388,6 +393,15 @@ exports[`NavBar has no unexpected changes 1`] = `
         onClick={[Function]}
       >
         Downloads
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://discuss.gnomad.broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Forum
       </a>
     </li>
     <li>

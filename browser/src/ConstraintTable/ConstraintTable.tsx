@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DatasetId, hasConstraints } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, hasConstraints, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import { Gene } from '../GenePage/GenePage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 
@@ -59,7 +59,7 @@ const transcriptDetails = (
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   if (!hasConstraints(datasetId)) {
-    return <p>Constraint not yet available for {datasetId}.</p>
+    return <p>Constraint not yet available for {labelForDataset(datasetId)}.</p>
   }
 
   const { transcriptId, transcriptVersion, transcriptDescription } =
