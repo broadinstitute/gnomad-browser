@@ -159,24 +159,21 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   renderBars({ isPositionDefined, scaleCoverageMetric, scalePosition, totalBases, width }: any) {
-    const { datasets, height, datasetId } = this.props
+    const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
     const barWidth = width / totalBases - 1
 
-    return datasets.map((dataset) => (
+    return datasets.map((dataset: any) => (
       <g key={dataset.name}>
         {dataset.buckets
           .filter(
-            (bucket) =>
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            (bucket: any) =>
               bucket[selectedMetric] !== undefined &&
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
               bucket[selectedMetric] !== null &&
               isPositionDefined(bucket.pos)
           )
-          .map((bucket) => {
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+          .map((bucket: any) => {
             const barHeight = height - scaleCoverageMetric(bucket[selectedMetric])
             const x = scalePosition(bucket.pos)
             return (

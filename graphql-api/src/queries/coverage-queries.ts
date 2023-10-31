@@ -95,8 +95,7 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       ],
     }))
   } catch (error) {
-    console.error('Error fetching coverage:', error)
-    throw error // Re-throwing the error to be handled by the caller or higher up in the call stack
+    throw new Error(`Couldn't fetch coverage, ${error}`)
   }
 }
 // ================================================================================================

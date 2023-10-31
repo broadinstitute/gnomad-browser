@@ -140,11 +140,12 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           // @ts-ignore
           name = renamePredictorMapping[id]
         }
-        if (id == 'cadd') {
+        if (id === 'cadd') {
           return { id: name, value: variant.in_silico_predictors.cadd.phred, flags: [] }
         }
         return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
       }
+      throw new Error('In silico predictor not found in variant')
     })
     .filter((item) => item)
 
@@ -312,18 +313,10 @@ const shapeVariantSummary = (subset: any, context: any) => {
 // Gene query
 // ================================================================================================
 
-const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
-  subset = 'all'
-
-  let exomeSubset = 'all'
-  let genomeSubset = 'all'
-
-  if (subset === 'tgp' || subset === 'hgdp') {
-    genomeSubset = subset
-  }
-  if (subset === 'non_ukb') {
-    exomeSubset = 'non_ukb'
-  }
+const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
+  const subset = 'all'
+  const exomeSubset = 'all'
+  const genomeSubset = 'all'
 
   try {
     const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
@@ -385,8 +378,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
 
     return shapedHits
   } catch (error) {
-    console.error('Error fetching variants by gene:', error)
-    throw error // You can re-throw the error if needed or handle it accordingly.
+    throw new Error(`'Error fetching variants by gene:', ${error}`)
   }
 }
 
@@ -394,16 +386,10 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
 // Region query
 // ================================================================================================
 
-const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) => {
-  let exomeSubset = 'all'
-  let genomeSubset = 'all'
-
-  if (subset === 'tgp' || subset === 'hgdp') {
-    genomeSubset = subset
-  }
-  if (subset === 'non_ukb') {
-    exomeSubset = 'non_ukb'
-  }
+const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) => {
+  const subset = 'all'
+  const exomeSubset = 'all'
+  const genomeSubset = 'all'
 
   const hits = await fetchAllSearchResults(esClient, {
     index: GNOMAD_V4_VARIANT_INDEX,
@@ -452,18 +438,11 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
 // Transcript query
 // ================================================================================================
 
-const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: any) => {
-  subset = 'all'
+const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset: any) => {
+  const subset = 'all'
+  const exomeSubset = 'all'
+  const genomeSubset = 'all'
 
-  let exomeSubset = 'all'
-  let genomeSubset = 'all'
-
-  if (subset === 'tgp' || subset === 'hgdp') {
-    genomeSubset = subset
-  }
-  if (subset === 'non_ukb') {
-    exomeSubset = 'non_ukb'
-  }
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
