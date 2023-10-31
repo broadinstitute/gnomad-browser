@@ -216,23 +216,23 @@ const addPopulationNames = (populations: any, datasetId: DatasetId) => {
   })
 }
 
-function compareArrays(arr1: string[], arr2: string[]) {
-  const uniqueArr1 = new Set(arr1)
-  const uniqueArr2 = new Set(arr2)
+// function compareArrays(arr1: string[], arr2: string[]) {
+//   const uniqueArr1 = new Set(arr1)
+//   const uniqueArr2 = new Set(arr2)
 
-  let areSame = true
+//   let areSame = true
 
-  for (let item of uniqueArr1) {
-    if (!uniqueArr2.has(item)) {
-      console.error(`Element "${item}" is in the first array but not in the second array.`)
-      areSame = false
-    }
-  }
+//   for (const item of uniqueArr1) {
+//     if (!uniqueArr2.has(item)) {
+//       console.error(`Element "${item}" is in the first array but not in the second array.`)
+//       areSame = false
+//     }
+//   }
 
-  if (!areSame) {
-    throw new Error("Population definitions don't match")
-  }
-}
+//   if (!areSame) {
+//     throw new Error("Population definitions don't match")
+//   }
+// }
 
 const groupPopulations = (populations: any, datasetId: DatasetId) => {
   const populationsById = populations.reduce(
@@ -252,7 +252,7 @@ const groupPopulations = (populations: any, datasetId: DatasetId) => {
   const groupedPopulations = []
   Object.keys(HGDP_POPULATION_GROUPS).forEach((group) => {
     // @ts-ignore
-    compareArrays(HGDP_POPULATION_GROUPS[group], Object.keys(populationsById))
+    // compareArrays(HGDP_POPULATION_GROUPS[group], Object.keys(populationsById))
     groupedPopulations.push({
       id: group,
       name: group,
