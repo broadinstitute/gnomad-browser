@@ -93,8 +93,7 @@ const getMetricDataForSequencingType = ({
   const metricValue = genomeOrExomeMetric && genomeOrExomeMetric.value
 
   if (!metricValue) {
-    console.warn(`Could not determine metric value ${metricValue}`)
-    return null
+    throw new Error(`Could not determine metric value ${metricValue}`)
   }
 
   const { ac, an } = genomeOrExome
@@ -189,9 +188,8 @@ const getMetricDataForSequencingType = ({
     const binValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
 
     return { binEdges, binValues, metricValue, description }
-  } else {
-    throw new Error(`Metric ${key} could not be found`)
   }
+  throw new Error(`Metric ${key} could not be found`)
 }
 
 const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Variant }) => {
@@ -248,9 +246,8 @@ const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: Seque
       genomeBinValues: genomeMetrics && genomeMetrics.binValues,
       genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
     }
-  } else {
-    throw new Error(`Could not derive genome metrics`)
   }
+  throw new Error(`Could not derive genome metrics`)
 }
 
 const prepareDataGnomadV2 = ({ metric, variant }: any) => {
