@@ -91,6 +91,10 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
     clinvar = null,
     coverage = { exome: null, genome: null },
     transcript_consequences = [],
+    faf95_joint = {
+      popmax: 1,
+      popmax_population: 'nfe',
+    },
   } = associations
   return {
     reference_genome,
@@ -109,6 +113,7 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
     non_coding_constraint,
     rsids,
     colocated_variants,
+    faf95_joint,
     transcript_consequences,
     coverage,
     liftover,
