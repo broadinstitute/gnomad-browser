@@ -110,7 +110,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
       {['controls', 'non_neuro', 'non_cancer', 'non_topmed'].some((subset) =>
         datasetId.includes(subset)
       ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
-      <GnomadConstraintTable constraint={gnomadConstraint} />
+      <GnomadConstraintTable constraint={gnomadConstraint} datasetId={datasetId} />
       {isGene(geneOrTranscript) && (
         <p style={{ marginBottom: 0 }}>
           Constraint metrics based on {transcriptDescription} transcript (
