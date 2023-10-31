@@ -64,7 +64,7 @@ const copyNumberVariantTableColumns = [
       if (variantType === 'DEL') {
         return 'deletion'
       }
-        return 'duplication'
+      return 'duplication'
     },
     render: renderType,
   },

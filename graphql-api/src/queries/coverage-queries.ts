@@ -95,8 +95,8 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       ],
     }))
   } catch (error) {
-    console.error("Error fetching coverage:", error);
-    throw error;  // Re-throwing the error to be handled by the caller or higher up in the call stack
+    console.error('Error fetching coverage:', error)
+    throw error // Re-throwing the error to be handled by the caller or higher up in the call stack
   }
 }
 // ================================================================================================
@@ -118,11 +118,11 @@ export const fetchExomeCoverageForRegion = (esClient: any, datasetId: any, regio
 
   return exomeCoverageIndex
     ? fetchCoverage(esClient, {
-      index: exomeCoverageIndex,
-      contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
-      regions: [{ start: region.start - 75, stop: region.stop + 75 }],
-      bucketSize,
-    })
+        index: exomeCoverageIndex,
+        contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
+        regions: [{ start: region.start - 75, stop: region.stop + 75 }],
+        bucketSize,
+      })
     : []
 }
 
@@ -141,11 +141,11 @@ export const fetchGenomeCoverageForRegion = (esClient: any, datasetId: any, regi
 
   return genomeCoverageIndex
     ? fetchCoverage(esClient, {
-      index: genomeCoverageIndex,
-      contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
-      regions: [{ start: region.start - 75, stop: region.stop + 75 }],
-      bucketSize,
-    })
+        index: genomeCoverageIndex,
+        contig: region.reference_genome === 'GRCh38' ? `chr${region.chrom}` : region.chrom,
+        regions: [{ start: region.start - 75, stop: region.stop + 75 }],
+        bucketSize,
+      })
     : []
 }
 
@@ -174,20 +174,20 @@ export const _fetchCoverageForGene = async (esClient: any, datasetId: any, gene:
 
   const exomeCoverage = exomeCoverageIndex
     ? await fetchCoverage(esClient, {
-      index: exomeCoverageIndex,
-      contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
-      regions: mergedExons,
-      bucketSize,
-    })
+        index: exomeCoverageIndex,
+        contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
+        regions: mergedExons,
+        bucketSize,
+      })
     : []
 
   const genomeCoverage = genomeCoverageIndex
     ? await fetchCoverage(esClient, {
-      index: genomeCoverageIndex,
-      contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
-      regions: mergedExons,
-      bucketSize,
-    })
+        index: genomeCoverageIndex,
+        contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
+        regions: mergedExons,
+        bucketSize,
+      })
     : []
 
   return {
@@ -226,22 +226,22 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
 
   const exomeCoverage = exomeCoverageIndex
     ? await fetchCoverage(esClient, {
-      index: exomeCoverageIndex,
-      contig:
-        transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
-      regions: mergedExons,
-      bucketSize,
-    })
+        index: exomeCoverageIndex,
+        contig:
+          transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
+        regions: mergedExons,
+        bucketSize,
+      })
     : []
 
   const genomeCoverage = genomeCoverageIndex
     ? await fetchCoverage(esClient, {
-      index: genomeCoverageIndex,
-      contig:
-        transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
-      regions: mergedExons,
-      bucketSize,
-    })
+        index: genomeCoverageIndex,
+        contig:
+          transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
+        regions: mergedExons,
+        bucketSize,
+      })
     : []
 
   return {

@@ -79,8 +79,8 @@ export default () => (
     </List>
 
     <p>
-      Please note that the gnomAD v3 genomes are now part of gnomAD v4.
-      For more information, see{' '}<Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
+      Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see{' '}
+      <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
         &quot;Should I switch to the latest version of gnomAD?&quot;
       </Link>
     </p>
@@ -182,7 +182,10 @@ export default () => (
               dataset: 'gnomad_r2_1',
               variant: ['1-55505647-G-T', '1-55523855-G-A'],
             }),
-          }}>GRIN2A</Link>
+          }}
+        >
+          GRIN2A
+        </Link>
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>

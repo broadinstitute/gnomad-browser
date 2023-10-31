@@ -137,7 +137,11 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
-          <a href="https://discuss.gnomad.broadinstitute.org" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://discuss.gnomad.broadinstitute.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Forum
           </a>
         </li>

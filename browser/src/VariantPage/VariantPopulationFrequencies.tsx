@@ -26,9 +26,11 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
     const genomePopulations = genome.populations.filter(
       (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
     )
-    const exomePopulations = variant.exome ? variant.exome.populations.filter(
-      (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
-    ) : []
+    const exomePopulations = variant.exome
+      ? variant.exome.populations.filter(
+          (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
+        )
+      : []
     const hgdpPopulations = genome.populations
       .filter((pop) => pop.id.startsWith('hgdp:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix

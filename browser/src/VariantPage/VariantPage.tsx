@@ -257,7 +257,6 @@ export type Coverage = {
   over_100: number | null
 }
 
-
 export type Variant = {
   variant_id: string
   reference_genome: ReferenceGenome
@@ -347,7 +346,8 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
               }}
             >
               <p>
-                <Badge level="info">Note</Badge> Local ancestry data is available for this variant by selecting the tab below. See our blog post on{' '}
+                <Badge level="info">Note</Badge> Local ancestry data is available for this variant
+                by selecting the tab below. See our blog post on{' '}
                 {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
                   local ancestry inference for Latino/Admixed American samples in gnomAD
@@ -767,7 +767,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
         query={variantQuery}
         variables={{
           datasetId,
-          includeLocalAncestry: (isV3(datasetId) && !isV3Subset(datasetId)) || (isV4(datasetId)),
+          includeLocalAncestry: (isV3(datasetId) && !isV3Subset(datasetId)) || isV4(datasetId),
           includeLiftoverAsSource: isLiftoverSource(datasetId),
           includeLiftoverAsTarget: isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
@@ -796,12 +796,12 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                 <StatusMessage>
                   {graphQLErrors && graphQLErrors.length
                     ? Array.from(
-                      new Set(
-                        graphQLErrors
-                          .filter((e: any) => !e.message.includes('ClinVar'))
-                          .map((e: any) => e.message)
-                      )
-                    ).join(', ')
+                        new Set(
+                          graphQLErrors
+                            .filter((e: any) => !e.message.includes('ClinVar'))
+                            .map((e: any) => e.message)
+                        )
+                      ).join(', ')
                     : 'Unable to load variant'}
                 </StatusMessage>
               )

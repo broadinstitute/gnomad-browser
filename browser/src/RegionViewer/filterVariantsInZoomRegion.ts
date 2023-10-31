@@ -25,13 +25,13 @@ export const filterStructuralVariantsInZoomRegion = (structuralVariants: any, zo
   )
 }
 
-export const filterCopyNumberVariantsInZoomRegion = (copyNumberVariants: CopyNumberVariant[], zoomRegion: any) => {
+export const filterCopyNumberVariantsInZoomRegion = (
+  copyNumberVariants: CopyNumberVariant[],
+  zoomRegion: any
+) => {
   if (!zoomRegion) {
     return copyNumberVariants
   }
   const { start, stop } = zoomRegion
-  return copyNumberVariants.filter(
-    (variant: any) =>
-      (variant.pos <= stop && variant.end >= start)
-  )
+  return copyNumberVariants.filter((variant: any) => variant.pos <= stop && variant.end >= start)
 }

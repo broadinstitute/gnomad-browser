@@ -43,8 +43,8 @@ const transcriptDetails = (
       transcriptId = geneOrTranscript.canonical_transcript_id
       const canonicalTranscript = transcriptId
         ? geneOrTranscript.transcripts.find(
-          (transcript) => transcript.transcript_id === transcriptId
-        )
+            (transcript) => transcript.transcript_id === transcriptId
+          )
         : null
       transcriptVersion = canonicalTranscript ? canonicalTranscript.transcript_version : null
       transcriptDescription = 'Ensembl canonical'

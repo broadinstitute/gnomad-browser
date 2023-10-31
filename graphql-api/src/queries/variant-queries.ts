@@ -119,7 +119,6 @@ const _fetchVariantsByGene = (esClient: any, datasetId: DatasetId, gene: any) =>
 //   { expiration: 604800 }
 // )
 
-
 export const fetchVariantsByGene = _fetchVariantsByGene // FIXME
 
 export const fetchVariantsByRegion = (esClient: any, datasetId: DatasetId, region: any) => {

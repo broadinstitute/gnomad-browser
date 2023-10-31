@@ -3,9 +3,7 @@ import { UserVisibleError } from '../../errors'
 
 export const assertDatasetAndReferenceGenomeMatch = (datasetId: any, referenceGenome: any) => {
   if (!(datasetId in DATASET_LABELS)) {
-    throw new UserVisibleError(
-      `Dataset with id ${datasetId} does not exist`
-    )
+    throw new UserVisibleError(`Dataset with id ${datasetId} does not exist`)
   }
 
   if (DATASET_REFERENCE_GENOMES[datasetId] !== referenceGenome) {

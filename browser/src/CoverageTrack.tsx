@@ -89,7 +89,7 @@ type OwnCoverageTrackProps = {
   filenameForExport?: (...args: any[]) => any
   height?: number
   maxCoverage?: number
-  datasetId: DatasetId,
+  datasetId: DatasetId
 }
 
 type CoverageTrackState = any
@@ -107,7 +107,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   plotElement: any
 
   state = {
-    selectedMetric: isV4(this.props.datasetId) ? "over_30" : "mean",
+    selectedMetric: isV4(this.props.datasetId) ? 'over_30' : 'mean',
   }
 
   plotRef = (el: any) => {
@@ -203,19 +203,19 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     )
     return totalBases < 100
       ? this.renderBars({
-        isPositionDefined,
-        scaleCoverageMetric,
-        scalePosition,
-        totalBases,
-        width,
-      })
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
       : this.renderArea({
-        isPositionDefined,
-        scaleCoverageMetric,
-        scalePosition,
-        totalBases,
-        width,
-      })
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
   }
 
   render() {

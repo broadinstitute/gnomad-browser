@@ -349,9 +349,8 @@ const TissueExpressionTrack = ({
   preferredTranscriptDescription,
 }: TissueExpressionTrackProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [showTranscriptTissueExpressionModal, setShowTranscriptTissueExpressionModal] = useState(
-    false
-  )
+  const [showTranscriptTissueExpressionModal, setShowTranscriptTissueExpressionModal] =
+    useState(false)
   const [tissueFilterText, setTissueFilterText] = useState('')
   const mainTrack = useRef()
 
