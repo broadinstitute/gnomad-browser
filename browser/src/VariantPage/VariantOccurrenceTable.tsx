@@ -348,7 +348,7 @@ export const GnomadVariantOccurrenceTable = ({
           <tr>
             <th scope="row">
               <NoWrap>
-                Popmax Filtering AF <InfoButton topic="faf" />
+                Grpmax Filtering AF <InfoButton topic="faf" />
               </NoWrap>
               <br />
               (95% confidence)
