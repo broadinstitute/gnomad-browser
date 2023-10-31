@@ -113,7 +113,7 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
   }
 
-  if (hasCopyNumberVariants(datasetId)){
+  if (hasCopyNumberVariants(datasetId)) {
     return <CopyNumberVariantPage datasetId={datasetId} variantId={variantId} />
   }
 

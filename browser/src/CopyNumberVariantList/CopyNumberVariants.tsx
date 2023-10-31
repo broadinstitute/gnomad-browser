@@ -31,19 +31,9 @@ const Wrapper = styled.div`
   margin-bottom: 1em;
 `
 
-
 const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x: any, i: any) => `${i + 1}`), 'X', 'Y']
 
-
-const DEFAULT_COLUMNS = [
-  'source',
-  'class',
-  'pos',
-  'length',
-  'sc',
-  'sn',
-  'sf',
-]
+const DEFAULT_COLUMNS = ['source', 'class', 'pos', 'length', 'sc', 'sn', 'sf']
 
 const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   const sortColumn = copyNumberVariantTableColumns.find((column: any) => column.key === sortKey)
@@ -158,7 +148,7 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
     }
   }, [])
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
     // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
@@ -195,7 +185,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
 
     return copy
   })
-
 
   return (
     <div>
@@ -251,7 +240,10 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
               // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; cellData: { c... Remove this comment to see the full error message
               cellData={{
                 colorKey,
-                highlightWords: filter.searchText.split(',').map((s) => s.trim()).filter((term) => term !== ''),
+                highlightWords: filter.searchText
+                  .split(',')
+                  .map((s) => s.trim())
+                  .filter((term) => term !== ''),
               }}
               columns={renderedTableColumns}
               numRowsRendered={numRowsRendered}

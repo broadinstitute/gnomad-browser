@@ -27,7 +27,16 @@ const HGDP_POPULATION_GROUPS_V4 = {
     'yakut',
     'yi',
   ],
-  European: ['adygei', 'basque', 'french', 'bergamoitalian', 'orcadian', 'russian', 'sardinian', 'tuscan'],
+  European: [
+    'adygei',
+    'basque',
+    'french',
+    'bergamoitalian',
+    'orcadian',
+    'russian',
+    'sardinian',
+    'tuscan',
+  ],
   'Middle Eastern': ['bedouin', 'druze', 'mozabite', 'palestinian'],
   'Native American': ['colombian', 'karitiana', 'maya', 'pima', 'surui'],
   'Central/South Asian': [
@@ -41,7 +50,7 @@ const HGDP_POPULATION_GROUPS_V4 = {
     'sindhi',
     'uygur',
   ],
-  'Oceanian': ['bougainville', 'papuanhighlands', 'papuansepik'],
+  Oceanian: ['bougainville', 'papuanhighlands', 'papuansepik'],
 }
 
 const HGDP_POPULATION_NAMES_V4 = {
@@ -189,7 +198,9 @@ const HGDP_POPULATION_NAMES_V3 = {
 }
 
 const addPopulationNames = (populations: any, datasetId: DatasetId) => {
-  const HGDP_POPULATION_NAMES = isV3(datasetId) ? HGDP_POPULATION_NAMES_V3 : HGDP_POPULATION_NAMES_V4
+  const HGDP_POPULATION_NAMES = isV3(datasetId)
+    ? HGDP_POPULATION_NAMES_V3
+    : HGDP_POPULATION_NAMES_V4
 
   return populations.map((pop: any) => {
     let name
@@ -205,17 +216,16 @@ const addPopulationNames = (populations: any, datasetId: DatasetId) => {
   })
 }
 
-
 function compareArrays(arr1: string[], arr2: string[]) {
-  const uniqueArr1 = new Set(arr1);
-  const uniqueArr2 = new Set(arr2);
+  const uniqueArr1 = new Set(arr1)
+  const uniqueArr2 = new Set(arr2)
 
-  let areSame = true;
+  let areSame = true
 
   for (let item of uniqueArr1) {
     if (!uniqueArr2.has(item)) {
-      console.error(`Element "${item}" is in the first array but not in the second array.`);
-      areSame = false;
+      console.error(`Element "${item}" is in the first array but not in the second array.`)
+      areSame = false
     }
   }
 
@@ -234,7 +244,9 @@ const groupPopulations = (populations: any, datasetId: DatasetId) => {
     {}
   )
 
-  const HGDP_POPULATION_GROUPS = isV3(datasetId) ? HGDP_POPULATION_GROUPS_V3 : HGDP_POPULATION_GROUPS_V4
+  const HGDP_POPULATION_GROUPS = isV3(datasetId)
+    ? HGDP_POPULATION_GROUPS_V3
+    : HGDP_POPULATION_GROUPS_V4
 
   // TODO: Improve this
   const groupedPopulations = []
@@ -334,9 +346,12 @@ const HGDPPopulationsTable = ({
   populations,
   showHemizygotes,
   showHomozygotes,
-  datasetId
+  datasetId,
 }: HGDPPopulationsTableProps) => {
-  const renderedPopulations = groupPopulations(addPopulationNames(populations, datasetId), datasetId)
+  const renderedPopulations = groupPopulations(
+    addPopulationNames(populations, datasetId),
+    datasetId
+  )
 
   return (
     <div>

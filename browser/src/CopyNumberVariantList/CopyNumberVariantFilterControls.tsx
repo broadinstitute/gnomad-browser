@@ -56,9 +56,7 @@ type Props = {
 const CopyNumberVariantFilterControls = ({ onChange, colorKey, value }: Props) => (
   <SettingsWrapper>
     <CategoryFiltersWrapper>
-      <CategoryFilterLabel>
-        Classes
-      </CategoryFilterLabel>
+      <CategoryFilterLabel>Classes</CategoryFilterLabel>
       <CategoryFilterControl
         categories={cnvTypes.map((type) => ({
           id: type,

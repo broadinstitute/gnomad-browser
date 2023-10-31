@@ -450,7 +450,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   })
 
   const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
-  
+
   let datasets: any = []
 
   if (includeShortVariants) {
@@ -601,9 +601,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       ? selectedDataset
       : 'gnomad_cnv_r4'
 
-      const currentDataset = hasStructuralVariants(selectedDataset)
-    ? topLevelStructuralVariantDataset
-    : topLevelCopyNumberVariantDataset
+    const currentDataset = hasStructuralVariants(selectedDataset)
+      ? topLevelStructuralVariantDataset
+      : topLevelCopyNumberVariantDataset
 
     datasets.push(
       {
@@ -653,7 +653,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
             childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
           },
         ],
-      },
+      }
     )
   }
 

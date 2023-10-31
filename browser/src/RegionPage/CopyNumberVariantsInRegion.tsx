@@ -24,7 +24,6 @@ type Props = OwnProps & typeof CopyNumberVariantsInRegion.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'CopyNumberVariantsInRegion' implicitly has type '... Remove this comment to see the full error message
 const CopyNumberVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: Props) => {
-
   const operationName = 'CopyNumberVariantsInRegion'
   const query = `
     query ${operationName}($datasetId: CopyNumberVariantDatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {

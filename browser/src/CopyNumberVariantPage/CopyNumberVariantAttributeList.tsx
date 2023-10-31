@@ -62,7 +62,7 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Class">
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-      {cnvTypeLabels[variant.type]} 
+      {cnvTypeLabels[variant.type]}
     </AttributeList.Item>
   </AttributeList>
 )

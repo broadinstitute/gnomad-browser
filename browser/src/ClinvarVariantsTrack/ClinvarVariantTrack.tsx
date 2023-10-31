@@ -134,7 +134,7 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       includedConsequenceCategories[getCategoryFromConsequence(v.major_consequence)] &&
       (!showOnlyGnomad || v.in_gnomad) &&
-      (v.gold_stars >= starFilter)
+      v.gold_stars >= starFilter
   )
 
   return (
@@ -229,7 +229,7 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
             <label htmlFor="star-filtering">
               Filter by{' '}
               {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-              <ExternalLink href='https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/'>
+              <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
                 review status
               </ExternalLink>
               : &nbsp;

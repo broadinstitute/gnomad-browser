@@ -34,7 +34,9 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
-import RegionalMissenseConstraintTrack, { RegionalMissenseConstraint} from '../RegionalMissenseConstraintTrack'
+import RegionalMissenseConstraintTrack, {
+  RegionalMissenseConstraint,
+} from '../RegionalMissenseConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -592,8 +594,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {/* eslint-disable-next-line no-nested-ternary */}
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-          // eslint-disable-next-line no-nested-ternary
-        ) : hasCopyNumberVariants(datasetId) ? (
+        ) : // eslint-disable-next-line no-nested-ternary
+        hasCopyNumberVariants(datasetId) ? (
           <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (
           <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />

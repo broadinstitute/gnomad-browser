@@ -59,16 +59,13 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
     filter.includeCategories.synonymous &&
     filter.includeCategories.other
 
-
   if (!isEveryConsequenceCategorySelected) {
     filteredVariants = variants.filter((variant: any) => {
-      const category = getCategoryFromConsequence(variant.consequence) as keyof Categories || 'other'
-      return (filter.includeCategories)[category] 
-      
+      const category =
+        (getCategoryFromConsequence(variant.consequence) as keyof Categories) || 'other'
+      return filter.includeCategories[category]
     })
   }
-  
-
 
   if (!filter.includeFilteredVariants) {
     filteredVariants = filteredVariants.map((v: Variant) => ({

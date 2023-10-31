@@ -88,7 +88,7 @@ export default withRouter((props: any) => {
         onChange={(e: any) => {
           setSearchDataset(e.target.value)
           if (innerSearchbox.current) {
-            ; (innerSearchbox.current as any).updateResults()
+            ;(innerSearchbox.current as any).updateResults()
           }
         }}
       >
