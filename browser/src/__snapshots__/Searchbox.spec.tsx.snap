@@ -271,7 +271,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r2_1"
   >
     <optgroup
       label="GRCh38"
@@ -359,7 +359,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r2_1"
   >
     <optgroup
       label="GRCh38"
@@ -447,7 +447,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r2_1"
   >
     <optgroup
       label="GRCh38"
@@ -535,7 +535,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r2_1"
   >
     <optgroup
       label="GRCh38"
@@ -623,7 +623,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
   <select
     className="Select-sc-1lkyg9e-0 ivadCR"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r2_1"
   >
     <optgroup
       label="GRCh38"
