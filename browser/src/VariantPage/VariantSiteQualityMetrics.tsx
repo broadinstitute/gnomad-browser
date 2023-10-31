@@ -71,7 +71,7 @@ interface MetricDistribution {
 interface SequencingTypeMetrics { binEdges: number[], binValues: number[], metricValue: number, description: string }
 
 
-const getMetricDataForSequencingType = ({ metric, genomeOrExome, metricDistributions }: { metric: string; genomeOrExome: SequencingType, metricDistributions: MetricDistribution[] }): SequencingTypeMetrics => {
+const getMetricDataForSequencingType = ({ metric, genomeOrExome, metricDistributions }: { metric: string; genomeOrExome: SequencingType, metricDistributions: MetricDistribution[] }): SequencingTypeMetrics | null => {
   let key: any
   let description
 
@@ -81,7 +81,8 @@ const getMetricDataForSequencingType = ({ metric, genomeOrExome, metricDistribut
   const metricValue = genomeOrExomeMetric && genomeOrExomeMetric.value
 
   if (!metricValue) {
-    throw Error("Could not determine metric value")
+    console.warn(`Could not determine metric value ${metricValue}`)
+    return null
   }
 
   const { ac, an } = genomeOrExome
@@ -181,13 +182,14 @@ const getMetricDataForSequencingType = ({ metric, genomeOrExome, metricDistribut
 }
 
 const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Variant }) => {
-  let exomeMetrics: SequencingTypeMetrics | undefined
-  let genomeMetrics: SequencingTypeMetrics | undefined
+  let exomeMetrics: SequencingTypeMetrics | null = null
+  let genomeMetrics: SequencingTypeMetrics | null = null
   let binEdges: number[] | undefined
   let description: string | undefined
 
   if (variant.exome) {
     exomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: variant.exome, metricDistributions: gnomadV4ExomeSiteQualityMetricDistributions })
+    if (!exomeMetrics) throw new Error("Could not derive exome metrics even though there is a exome variant")
     binEdges = exomeMetrics.binEdges
     description = exomeMetrics.description
 
@@ -195,8 +197,9 @@ const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Var
 
   if (variant.genome) {
     genomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: variant.genome, metricDistributions: gnomadV4GenomeSiteQualityMetricDistributions })
-    binEdges = genomeMetrics.binEdges
-    description = genomeMetrics.description
+    if (!genomeMetrics) throw new Error("Could not derive genome metrics even though there is a genome variant")
+    binEdges = genomeMetrics && genomeMetrics.binEdges
+    description = genomeMetrics && genomeMetrics.description
   }
 
   return {
@@ -212,11 +215,15 @@ const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Var
 const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
   const genomeMetrics = getMetricDataForSequencingType({ metric, genomeOrExome: genome, metricDistributions: gnomadV3SiteQualityMetricDistributions })
 
-  return {
-    binEdges: genomeMetrics.binEdges,
-    description: genomeMetrics.description,
-    genomeBinValues: genomeMetrics && genomeMetrics.binValues,
-    genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+  if (genomeMetrics) {
+    return {
+      binEdges: genomeMetrics.binEdges,
+      description: genomeMetrics.description,
+      genomeBinValues: genomeMetrics && genomeMetrics.binValues,
+      genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+    }
+  } else {
+    throw new Error(`Could not derive genome metrics`)
   }
 }
 
