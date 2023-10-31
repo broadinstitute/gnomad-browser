@@ -310,17 +310,6 @@ exports[`Home Page has no unexpected changes 1`] = `
     >
       <a
         className="-Link c8"
-        href="/variant-cooccurrence"
-        onClick={[Function]}
-      >
-        Find co-occurrence of two variants
-      </a>
-    </li>
-    <li
-      className="c7"
-    >
-      <a
-        className="-Link c8"
         href="/downloads"
         onClick={[Function]}
       >
@@ -336,6 +325,17 @@ exports[`Home Page has no unexpected changes 1`] = `
         onClick={[Function]}
       >
         Read gnomAD publications
+      </a>
+    </li>
+    <li
+      className="c7"
+    >
+      <a
+        className="-Link c8"
+        href="/variant-cooccurrence"
+        onClick={[Function]}
+      >
+        Find co-occurrence of two variants
       </a>
     </li>
   </ul>
@@ -456,10 +456,10 @@ exports[`Home Page has no unexpected changes 1`] = `
        
       <a
         className="-Link c8"
-        href="short-tandem-repeat/DMD?dataset=gnomad_r3"
+        href="short-tandem-repeat/ATXN1?dataset=gnomad_r3"
         onClick={[Function]}
       >
-        DMD
+        ATXN1
       </a>
     </li>
     <li
