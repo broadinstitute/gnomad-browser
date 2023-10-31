@@ -60611,6 +60611,22 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   </span>
                 </td>
                 <td />
+                <td>
+                  <span>
+                    <span
+                      className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      1.000
+                    </span>
+                    <div
+                      className="VariantOccurrenceTable__FilteringAlleleFrequencyPopulation-sc-8b13g7-2 fRZHhe"
+                    >
+                      European (non-Finnish)
+                    </div>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th
@@ -69619,6 +69635,22 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   </span>
                 </td>
                 <td />
+                <td>
+                  <span>
+                    <span
+                      className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      1.000
+                    </span>
+                    <div
+                      className="VariantOccurrenceTable__FilteringAlleleFrequencyPopulation-sc-8b13g7-2 fRZHhe"
+                    >
+                      European (non-Finnish)
+                    </div>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th
@@ -78627,6 +78659,22 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   </span>
                 </td>
                 <td />
+                <td>
+                  <span>
+                    <span
+                      className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      1.000
+                    </span>
+                    <div
+                      className="VariantOccurrenceTable__FilteringAlleleFrequencyPopulation-sc-8b13g7-2 fRZHhe"
+                    >
+                      European (non-Finnish)
+                    </div>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th
@@ -87635,6 +87683,22 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   </span>
                 </td>
                 <td />
+                <td>
+                  <span>
+                    <span
+                      className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      1.000
+                    </span>
+                    <div
+                      className="VariantOccurrenceTable__FilteringAlleleFrequencyPopulation-sc-8b13g7-2 fRZHhe"
+                    >
+                      European (non-Finnish)
+                    </div>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th
@@ -96643,6 +96707,22 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   </span>
                 </td>
                 <td />
+                <td>
+                  <span>
+                    <span
+                      className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      1.000
+                    </span>
+                    <div
+                      className="VariantOccurrenceTable__FilteringAlleleFrequencyPopulation-sc-8b13g7-2 fRZHhe"
+                    >
+                      European (non-Finnish)
+                    </div>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th
