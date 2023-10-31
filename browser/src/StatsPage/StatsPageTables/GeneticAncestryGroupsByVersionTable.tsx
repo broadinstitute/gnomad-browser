@@ -82,7 +82,6 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <td>77.07%</td>
             <td>8.1x</td>
           </tr>
-
           <tr>
             <td>Middle Eastern</td>
             <td>-</td>
@@ -90,7 +89,7 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <td>158</td>
             <td>3,031</td>
             <td>0.38%</td>
-            <td>New</td>
+            <td>19.2x</td>
           </tr>
           <tr>
             <td>Remaining Individuals^</td>
