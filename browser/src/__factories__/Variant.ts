@@ -9,8 +9,8 @@ import {
 export const defaultHistogram: Histogram = {
   bin_edges: [0.5],
   bin_freq: [100],
-  n_larger: 0,
-  n_smaller: 0,
+  n_larger: 1,
+  n_smaller: 1,
 }
 
 const transcriptConsequenceFactory = Factory.define<TranscriptConsequence>(({ params }) => {
@@ -118,15 +118,15 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
 
 export const sequencingFactory = Factory.define<SequencingType>(({ params, associations }) => {
   const {
-    ac = 0,
-    an = 0,
+    ac = 1,
+    an = 1,
     homozygote_count = null,
     hemizygote_count = null,
     filters = [],
     populations = [],
     local_ancestry_populations = [],
-    ac_hemi = 0,
-    ac_hom = 0,
+    ac_hemi = 1,
+    ac_hom = 1,
   } = params
 
   const {
@@ -138,7 +138,7 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
       genotype_quality: { all: defaultHistogram, alt: defaultHistogram },
     },
     faf95 = {
-      popmax: 0,
+      popmax: 1,
       popmax_population: 'nfe',
     },
   } = associations
@@ -165,20 +165,20 @@ export const v2SequencingFactory = sequencingFactory.associations({
     genotype_depth: { all: defaultHistogram, alt: defaultHistogram },
     genotype_quality: { all: defaultHistogram, alt: defaultHistogram },
     site_quality_metrics: [
-      { metric: 'BaseQRankSum', value: 0 },
-      { metric: 'ClippingRankSum', value: 0 },
-      { metric: 'DP', value: 0 },
-      { metric: 'FS', value: 0 },
-      { metric: 'InbreedingCoeff', value: 0 },
-      { metric: 'MQ', value: 0 },
-      { metric: 'MQRankSum', value: 0 },
-      { metric: 'pab_max', value: 0 },
-      { metric: 'QD', value: 0 },
-      { metric: 'ReadPosRankSum', value: 0 },
-      { metric: 'RF', value: 0 },
-      { metric: 'SiteQuality', value: 0 },
-      { metric: 'SOR', value: 0 },
-      { metric: 'VQSLOD', value: 0 },
+      { metric: 'BaseQRankSum', value: 1 },
+      { metric: 'ClippingRankSum', value: 1 },
+      { metric: 'DP', value: 1 },
+      { metric: 'FS', value: 1 },
+      { metric: 'InbreedingCoeff', value: 1 },
+      { metric: 'MQ', value: 1 },
+      { metric: 'MQRankSum', value: 1 },
+      { metric: 'pab_max', value: 1 },
+      { metric: 'QD', value: 1 },
+      { metric: 'ReadPosRankSum', value: 1 },
+      { metric: 'RF', value: 1 },
+      { metric: 'SiteQuality', value: 1 },
+      { metric: 'SOR', value: 1 },
+      { metric: 'VQSLOD', value: 1 },
     ],
   },
 })
@@ -189,18 +189,18 @@ export const v3SequencingFactory = sequencingFactory.associations({
     genotype_depth: { all: defaultHistogram, alt: defaultHistogram },
     genotype_quality: { all: defaultHistogram, alt: defaultHistogram },
     site_quality_metrics: [
-      { metric: 'SiteQuality', value: 0 },
-      { metric: 'InbreedingCoeff', value: 0 },
-      { metric: 'AS_FS', value: 0 },
-      { metric: 'AS_MQ', value: 0 },
-      { metric: 'AS_MQRankSum', value: 0 },
-      { metric: 'AS_pab_max', value: 0 },
-      { metric: 'AS_QUALapprox', value: 0 },
-      { metric: 'AS_QD', value: 0 },
-      { metric: 'AS_ReadPosRankSum', value: 0 },
-      { metric: 'AS_SOR', value: 0 },
-      { metric: 'AS_VarDP', value: 0 },
-      { metric: 'AS_VQSLOD', value: 0 },
+      { metric: 'SiteQuality', value: 1 },
+      { metric: 'InbreedingCoeff', value: 1 },
+      { metric: 'AS_FS', value: 1 },
+      { metric: 'AS_MQ', value: 1 },
+      { metric: 'AS_MQRankSum', value: 1 },
+      { metric: 'AS_pab_max', value: 1 },
+      { metric: 'AS_QUALapprox', value: 1 },
+      { metric: 'AS_QD', value: 1 },
+      { metric: 'AS_ReadPosRankSum', value: 1 },
+      { metric: 'AS_SOR', value: 1 },
+      { metric: 'AS_VarDP', value: 1 },
+      { metric: 'AS_VQSLOD', value: 1 },
     ],
   },
 })
