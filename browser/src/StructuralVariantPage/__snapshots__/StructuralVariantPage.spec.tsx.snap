@@ -85,7 +85,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -696,7 +696,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -1305,7 +1305,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -1914,7 +1914,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -2505,7 +2505,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -3096,7 +3096,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -3685,7 +3685,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -4276,7 +4276,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -5399,7 +5399,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -6010,7 +6010,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -6619,7 +6619,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -7228,7 +7228,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -7819,7 +7819,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -8410,7 +8410,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -8999,7 +8999,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -9590,7 +9590,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -10713,7 +10713,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -11324,7 +11324,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -11933,7 +11933,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -12542,7 +12542,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -13133,7 +13133,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -13724,7 +13724,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -14313,7 +14313,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -14904,7 +14904,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4
+                  gnomAD SVs v4.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >

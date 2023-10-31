@@ -308,7 +308,7 @@ query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: Datas
   variables={
     {
       "datasetId": "gnomad_r4",
-      "referenceGenome": "GRCh37",
+      "referenceGenome": "GRCh38",
       "start": 123,
       "stop": 456,
     }
