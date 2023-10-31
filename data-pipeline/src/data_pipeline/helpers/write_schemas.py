@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from typing import List
 import hail as hl
-from loguru import logger
 from data_pipeline.pipeline import DownloadTask, Pipeline
 
 
@@ -27,7 +26,7 @@ def write_schemas(pipelines: List[Pipeline], schema_dir: str = DEFAULT_SCHEMA_DI
         if pipeline.config:
             pipeline_name = pipeline.config.name
             all_task_names = pipeline.get_all_task_names()
-            out_dir = os.path.join(schema_dir, pipeline_name)
+            os.path.join(schema_dir, pipeline_name)
 
             for task_name in all_task_names:
                 if task_name in task_names:

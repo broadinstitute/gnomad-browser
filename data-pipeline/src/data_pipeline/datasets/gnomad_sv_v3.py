@@ -185,7 +185,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
                 (
                     pop_id,
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False),
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
                         ds.info[f"{pop_id}_MALE_N_HEMIALT"],
                         0,
                     ),
@@ -197,7 +197,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
                 (
                     f"{pop_id}_XY",
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False),
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
                         ds.info[f"{pop_id}_MALE_N_HEMIALT"],
                         0,
                     ),
@@ -208,7 +208,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
             + [
                 (
                     "XY",
-                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.MALE_N_HEMIALT, 0),
+                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.MALE_N_HEMIALT, 0),
                 )
             ]
         )
@@ -218,7 +218,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
         freq=ds.freq.annotate(
             hemizygote_count=hl.or_missing(
                 ds.type != "MCNV",
-                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.MALE_N_HEMIALT, 0),
+                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.MALE_N_HEMIALT, 0),
             ),
             populations=hl.if_else(
                 ds.type != "MCNV",
