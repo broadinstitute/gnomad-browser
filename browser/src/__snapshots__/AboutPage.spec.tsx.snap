@@ -268,8 +268,8 @@ The aggregation and release of summary data from the exomes and genomes collecte
 ## Stats
 
 - v4 release is composed of 730,947 exomes and 76,215 genomes (GRCh38)
-- gnomAD v4 structural variants (SV) represent 63,057 genomes (GRCh38)
-- gnomAD v4 copy number variants (CNV) represent variants in less than 1% of 464,566 exomes (GRCh38)
+- gnomAD v4 structural variants (SV) represent 63,046 genomes (GRCh38)
+- gnomAD v4 copy number variants (CNV) represent variants in less than 1% of 464,297 exomes (GRCh38)
 
 For more Stats on gnomAD v4 please see our [stats page](/stats)
 ",
