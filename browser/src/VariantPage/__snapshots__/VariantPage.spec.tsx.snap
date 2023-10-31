@@ -379,7 +379,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -9064,7 +9064,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -17752,7 +17752,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -26440,7 +26440,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -35128,7 +35128,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -43816,7 +43816,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -59573,7 +59573,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -68311,7 +68311,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -77049,7 +77049,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -85787,7 +85787,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
@@ -94525,7 +94525,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   <span
                     className="VariantOccurrenceTable__NoWrap-sc-8b13g7-1 kmxNQ"
                   >
-                    Popmax Filtering AF 
+                    Grpmax Filtering AF 
                     <button
                       className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
                       onClick={[Function]}
