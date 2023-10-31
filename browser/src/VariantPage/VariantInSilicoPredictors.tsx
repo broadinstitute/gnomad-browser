@@ -19,14 +19,16 @@ const FLAG_DESCRIPTIONS = {
 }
 
 const PREDICTORS_V4 = {
-  cadd_phred: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1 },
-  revel: { label: 'REVEL', warningThreshold: 0.644, dangerThreshold: 0.773 },
-  splice_ai: { label: 'SpliceAI', warningThreshold: 0.2, dangerThreshold: 0.5 },
-  pangolin: { label: 'Pangolin', warningThreshold: 0.2, dangerThreshold: 0.5 },
+  revel_max: { label: 'REVEL', warningThreshold: 0.644, dangerThreshold: 0.773 },
+  spliceai_ds_max: { label: 'SpliceAI', warningThreshold: 0.2, dangerThreshold: 0.5 },
+  pangolin_largest_ds: { label: 'Pangolin', warningThreshold: 0.2, dangerThreshold: 0.5 },
   phylop: { label: 'phyloP', warningThreshold: 7.367, dangerThreshold: 9.741 },
-  sift: { label: 'SIFT (max)', warningThreshold: 0.001, dangerThreshold: 0 },
-  polyphen: { label: 'PolyPhen (max)', warningThreshold: 0.978, dangerThreshold: 0.999 },
+  sift_max: { label: 'SIFT (max)', warningThreshold: 0.001, dangerThreshold: 0 },
+  polyphen_max: { label: 'PolyPhen (max)', warningThreshold: 0.978, dangerThreshold: 0.999 },
+  cadd: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1 },
 }
+
+const EXCLUDED_v4_PREDICTORS = ["sift_max"]
 
 const FLAG_DESCRIPTIONS_V4 = {
   // polyphen: "We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts."
@@ -77,7 +79,12 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         {variant.in_silico_predictors &&
-          variant.in_silico_predictors.map(({ id, value, flags }) => {
+          variant.in_silico_predictors.filter(({ id }) => {
+            if (isV4(datasetId) && EXCLUDED_v4_PREDICTORS.includes(id)) {
+              return false
+            }
+            return true
+          }).map(({ id, value, flags }) => {
             // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             const predictor = predictors[id]
 
