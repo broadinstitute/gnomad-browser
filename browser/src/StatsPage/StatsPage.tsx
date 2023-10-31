@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import gnomadV4AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v4/ageDistribution.json'
-import { PageHeading } from '@gnomad/ui'
+import { ExternalLink, PageHeading } from '@gnomad/ui'
 
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import BrowserPageviews from '../../about/stats/browser_pageviews.png'
@@ -268,7 +268,7 @@ const StatsPage = () => {
               </ul>
             </SexDistributionList>
           </TwoColumnLayout>
-          <p>
+          <p style={{ marginTop: '5em' }}>
             To learn more about how we calculate the sex and age distribution please see our{' '}
             <Link to="/help">FAQs</Link>
           </p>
@@ -324,8 +324,13 @@ const StatsPage = () => {
                 representation of historically underrepresented populations.
               </p>
               <p>
-                To learn more about how we determine genetic ancestry groups please see our help
-                page and blog post on genetic ancestry.
+                To learn more about how we determine genetic ancestry groups please see our{' '}
+                <Link to="help/ancestry">help page</Link> and{' '}
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-genetic-ancestry">
+                  blog post
+                </ExternalLink>{' '}
+                on genetic ancestry.
               </p>
             </ResponsiveHalfWidthColumn>
           </TwoColumnLayout>
