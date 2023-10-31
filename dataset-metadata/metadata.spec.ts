@@ -53,6 +53,7 @@ describe.each([
   ['gnomad_sv_r2_1_controls', 'gnomAD SVs v2.1 (controls)'],
   ['gnomad_sv_r2_1_non_neuro', 'gnomAD SVs v2.1 (non-neuro)'],
   ['gnomad_r4', 'gnomAD v4.0.0'],
+  ['gnomad_cnv_r4', 'gnomAD CNVs v4.0'],
 ] as [DatasetId, string][])('labelForDataset(%s)', (datasetId, expectedResult) => {
   test(`Label for ${datasetId} is "${expectedResult}"`, () =>
     expect(labelForDataset(datasetId)).toEqual(expectedResult))
@@ -74,7 +75,8 @@ describe.each([
   ['gnomad_sv_r2_1', false],
   ['gnomad_sv_r2_1_controls', false],
   ['gnomad_sv_r2_1_non_neuro', false],
-  ['gnomad_r4', true], // This will change
+  ['gnomad_cnv_r4', false],
+  ['gnomad_r4', true],
 ] as [DatasetId, boolean][])('hasShortVariants(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} short variants`, () =>
@@ -97,7 +99,8 @@ describe.each([
   ['gnomad_sv_r2_1', true],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
-  ['gnomad_r4', false], // This will change
+  ['gnomad_cnv_r4', false],
+  ['gnomad_r4', false],
 ] as [DatasetId, boolean][])('hasStructuralVariants(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} structural variants`, () =>
@@ -120,7 +123,9 @@ describe.each([
   ['gnomad_sv_r2_1', true],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
-  ['gnomad_r4', false], // This will change
+  ['gnomad_sv_r4', true],
+  ['gnomad_cnv_r4', true],
+  ['gnomad_r4', true],
 ] as [DatasetId, boolean][])('hasConstraints(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} constraints`, () =>
@@ -144,6 +149,8 @@ describe.each([
   ['gnomad_sv_r2_1', 'GRCh37'],
   ['gnomad_sv_r2_1_controls', 'GRCh37'],
   ['gnomad_sv_r2_1_non_neuro', 'GRCh37'],
+  ['gnomad_sv_r4', 'GRCh38'],
+  ['gnomad_cnv_r4', 'GRCh38'],
   ['gnomad_r4', 'GRCh38'],
 ] as [DatasetId, ReferenceGenome][])('referenceGenome(%s)', (datasetId, expectedResult) => {
   test(`${datasetId} uses reference genome ${expectedResult}`, () =>
@@ -166,6 +173,8 @@ describe.each([
   ['gnomad_sv_r2_1', true],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
+  ['gnomad_sv_r4', false],
+  ['gnomad_cnv_r4', true],
   ['gnomad_r4', true],
 ] as [DatasetId, boolean][])('genesHaveExomeCoverage(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
@@ -189,6 +198,8 @@ describe.each([
   ['gnomad_sv_r2_1', true],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
+  ['gnomad_sv_r4', false],
+  ['gnomad_cnv_r4', true],
   ['gnomad_r4', true],
 ] as [DatasetId, boolean][])('transcriptsHaveExomeCoverage(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
