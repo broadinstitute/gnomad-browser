@@ -552,17 +552,24 @@ exports[`Home Page has no unexpected changes 1`] = `
     (gnomAD) is a resource developed by an international coalition of investigators, with the goal of aggregating and harmonizing both exome and genome sequencing data from a wide variety of large-scale sequencing projects, and making summary data available for the wider scientific community.
   </p>
   <p>
-    The v2.1.1 data set (GRCh37/hg19) provided on this website spans 125,748 exome sequences and 15,708 whole-genome sequences from unrelated individuals sequenced as part of various disease-specific and population genetic studies. The v3.1.2 data set (GRCh38) spans 76,156 genomes
+    The v4 data set (GRCh38) provided on this website spans 730,947 exome sequences and 76,215 whole-genome sequences from unrelated individuals, of
      
     <a
-      className="c9"
-      href="https://gnomad.broadinstitute.org/help/what-genetic-ancestry-groups-are-represented-in-the-gnomad-data"
-      rel="noopener noreferrer"
-      target="_blank"
+      className="-Link c8"
+      href="/stats#diversity"
+      onClick={[Function]}
     >
-      of diverse ancestries
+      diverse ancestries
     </a>
-    , selected as in v2. The gnomAD Principal Investigators and groups that have contributed data to the current release are listed
+    , sequenced as part of various disease-specific and population genetic studies. The gnomAD Principal Investigators and team can be found 
+    <a
+      className="-Link c8"
+      href="/team"
+      onClick={[Function]}
+    >
+      here
+    </a>
+    , and the groups that have contributed data to the current release are listed
      
     <a
       className="-Link c8"
