@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stats Page has no unexpected changes 1`] = `
-.c39 {
+.c40 {
   box-sizing: border-box;
   height: calc(2em + 2px);
   padding: 0.375em 0.75em;
@@ -20,25 +20,42 @@ exports[`Stats Page has no unexpected changes 1`] = `
   user-select: none;
 }
 
-.c39:active,
-.c39:hover {
+.c40:active,
+.c40:hover {
   background-color: #cbd3da;
 }
 
-.c39:disabled {
+.c40:disabled {
   background-color: rgba(248,249,250,0.5);
   cursor: not-allowed;
 }
 
-.c39:focus {
+.c40:focus {
   box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
 }
 
-.c39 svg {
+.c40 svg {
   position: relative;
   top: 0.11em;
   width: 0.9em;
   height: 0.9em;
+}
+
+.c32 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c32:visited,
+.c32:active {
+  color: #1173bb;
+}
+
+.c32:focus,
+.c32:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .c1 {
@@ -222,7 +239,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   fill: rgba(0,0,0,0.05);
 }
 
-.c33 {
+.c34 {
   border-collapse: collapse;
   min-width: 400px;
   font-size: 0.9em;
@@ -232,49 +249,49 @@ exports[`Stats Page has no unexpected changes 1`] = `
   letter-spacing: 0.01px;
 }
 
-.c33 th,
-.c33 td {
+.c34 th,
+.c34 td {
   padding: 12px 15px;
   text-align: center;
 }
 
-.c34 {
+.c35 {
   background-color: #0e6fbf;
   color: #fafafa;
 }
 
-.c34 th {
+.c35 th {
   font-weight: bold;
 }
 
-.c35 {
+.c36 {
   background-color: #41a2f1;
   color: #fafafa;
 }
 
-.c35 th {
+.c36 th {
   font-weight: normal;
 }
 
-.c37 tr {
+.c38 tr {
   background-color: #508a14;
   color: #fafafa;
 }
 
-.c37 td {
+.c38 td {
   font-weight: bold;
 }
 
-.c36 tr {
+.c37 tr {
   border-bottom: 1px solid #ddd;
   text-align: center;
 }
 
-.c36 tr:nth-of-type(even) {
+.c37 tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 
-.c38 {
+.c39 {
   caption-side: bottom;
   text-align: left;
 }
@@ -298,7 +315,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   width: 70%;
 }
 
-.c40 {
+.c41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -309,7 +326,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c41 {
+.c42 {
   width: 70%;
 }
 
@@ -328,7 +345,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c32 {
+.c33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -477,14 +494,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c40 {
+  .c41 {
     display: block;
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c41 {
+  .c42 {
     display: block;
     width: 100%;
   }
@@ -497,7 +514,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c32 {
+  .c33 {
     display: block;
   }
 }
@@ -609,7 +626,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   }
                 }
               >
-                *This is only a subset of commonly asked for variant types from the dataset.
+                <i>
+                  *This is only a subset of commonly asked for variant types from the dataset.
+                </i>
               </div>
             </div>
             <div
@@ -624,15 +643,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 className="c8"
               >
                 <li>
-                  1,199,106 genome SVs
+                  1,199,117 genome SVs
                   <ul
                     className="c8"
                   >
                     <li>
-                      627,942 Depletions
+                      627,947 Deletions
                     </li>
                     <li>
-                      258,876 Duplications
+                      258,882 Duplications
                     </li>
                     <li>
                       711 CNVs
@@ -652,15 +671,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   </ul>
                 </li>
                 <li>
-                  66,903 rare (&lt;1% SF) exome CNVs
+                  66,903 rare (&lt;1% site frequency (SF)) exome CNVs
                   <ul
                     className="c8"
                   >
                     <li>
-                      36,026 Duplications
+                      30,877 Deletions
                     </li>
                     <li>
-                      30,877 Deletions
+                      36,026 Duplications
                     </li>
                   </ul>
                 </li>
@@ -685,7 +704,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   )
                 </li>
                 <li>
-                  1 rare (&lt;1% AF) coding CNV per individual
+                  1 rare (&lt;1% SF) coding CNV per individual
                 </li>
                 <li>
                   11,844 SVs per genome
@@ -3994,7 +4013,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </ul>
         </div>
       </div>
-      <p>
+      <p
+        style={
+          {
+            "marginTop": "5em",
+          }
+        }
+      >
         To learn more about how we calculate the sex and age distribution please see our
          
         <a
@@ -4157,12 +4182,32 @@ exports[`Stats Page has no unexpected changes 1`] = `
             We continue to improve the diversity of the genetic ancestry groups within gnomAD. While v4 does have some improvements we continue to strive to increase representation of historically underrepresented populations.
           </p>
           <p>
-            To learn more about how we determine genetic ancestry groups please see our help page and blog post on genetic ancestry.
+            To learn more about how we determine genetic ancestry groups please see our
+             
+            <a
+              className="-Link c26"
+              href="help/ancestry"
+              onClick={[Function]}
+            >
+              help page
+            </a>
+             and
+             
+            <a
+              className="c32"
+              href="https://gnomad.broadinstitute.org/news/2023-11-genetic-ancestry"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              blog post
+            </a>
+             
+            on genetic ancestry.
           </p>
         </div>
       </div>
       <div
-        className="c32"
+        className="c33"
         style={
           {
             "marginBottom": "3em",
@@ -4171,7 +4216,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c33"
+            className="c34"
             id="gnomad-genetic-ancestry-group-size-by-version-table"
             style={
               {
@@ -4181,7 +4226,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c34"
+                className="c35"
               >
                 <th>
                    
@@ -4202,7 +4247,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c35"
+                className="c36"
               >
                 <th>
                    
@@ -4228,7 +4273,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c36"
+              className="c37"
             >
               <tr>
                 <td>
@@ -4365,7 +4410,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   0.38%
                 </td>
                 <td>
-                  New
+                  19.2x
                 </td>
               </tr>
               <tr>
@@ -4416,7 +4461,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c37"
+              className="c38"
             >
               <tr>
                 <td>
@@ -4443,7 +4488,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c38"
+              className="c39"
             >
               <div>
                 *v4 includes all v3 samples
@@ -4455,7 +4500,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c39"
+              className="c40"
               onClick={[Function]}
               type="button"
             >
@@ -4465,7 +4510,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="c40"
+        className="c41"
         style={
           {
             "marginBottom": "1em",
@@ -4473,7 +4518,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c41"
+          className="c42"
           style={
             {
               "marginBottom": "1em",
@@ -5789,7 +5834,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="c40"
+        className="c41"
         style={
           {
             "marginBottom": "6em",
@@ -5797,7 +5842,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c41"
+          className="c42"
           style={
             {
               "marginBottom": "0",
@@ -7063,11 +7108,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
         It is of note that imputed ancestry groups are genetically derived, while the study-provided labels are either self-reported or researcher assigned. As such, these values have no equivalency.
       </p>
       <div
-        className="c32"
+        className="c33"
       >
         <div>
           <table
-            className="c33"
+            className="c34"
             id="gnomad-v4-genetic-ancestry-group-size-table"
             style={
               {
@@ -7077,7 +7122,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c34"
+                className="c35"
               >
                 <th
                   style={
@@ -7129,7 +7174,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c35"
+                className="c36"
               >
                 <th>
                   <i>
@@ -7154,7 +7199,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c36"
+              className="c37"
             >
               <tr>
                 <td>
@@ -7456,7 +7501,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <caption
-              className="c38"
+              className="c39"
             >
               <div>
                 *Study-provided labels are the descriptions given to the gnomAD team in the accompanying metadata. These labels can sometime be assigned at the study-level, others are provided at the individual level.
@@ -7469,7 +7514,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c39"
+              className="c40"
               onClick={[Function]}
               type="button"
             >
@@ -7521,7 +7566,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
          
       </p>
       <div
-        className="c32"
+        className="c33"
         style={
           {
             "marginBottom": "3em",
@@ -7530,7 +7575,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c33"
+            className="c34"
             id="study-diseases-in-gnomad-table"
             style={
               {
@@ -7540,7 +7585,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c34"
+                className="c35"
               >
                 <th>
                   Phenotypes
@@ -7563,7 +7608,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c36"
+              className="c37"
             >
               <tr>
                 <td>
@@ -7807,7 +7852,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c37"
+              className="c38"
             >
               <tr>
                 <td>
@@ -7831,7 +7876,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c38"
+              className="c39"
             >
               <div>
                 * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as the FinnGen and MGB biobank samples when no phenotype was specified
@@ -7848,7 +7893,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c39"
+              className="c40"
               onClick={[Function]}
               type="button"
             >

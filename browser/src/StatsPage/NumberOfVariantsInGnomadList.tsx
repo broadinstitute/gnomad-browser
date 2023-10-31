@@ -42,17 +42,17 @@ const NumberOfVariantsInGnomadList = () => {
           </li>
         </SectionList>
         <div style={{ fontSize: '0.75em' }}>
-          *This is only a subset of commonly asked for variant types from the dataset.
+          <i>*This is only a subset of commonly asked for variant types from the dataset.</i>
         </div>
       </Section>
       <Section>
         <SectionHeader>Structural variants</SectionHeader>
         <SectionList>
           <li>
-            1,199,106 genome SVs
+            1,199,117 genome SVs
             <SectionList>
-              <li>627,942 Depletions</li>
-              <li>258,876 Duplications</li>
+              <li>627,947 Deletions</li>
+              <li>258,882 Duplications</li>
               <li>711 CNVs</li>
               <li>296,184 Insertions</li>
               <li>2,185 Inversersions</li>
@@ -61,10 +61,10 @@ const NumberOfVariantsInGnomadList = () => {
             </SectionList>
           </li>
           <li>
-            {`66,903 rare (<1% SF) exome CNVs`}
+            {`66,903 rare (<1% site frequency (SF)) exome CNVs`}
             <SectionList>
-              <li>36,026 Duplications</li>
               <li>30,877 Deletions</li>
+              <li>36,026 Duplications</li>
             </SectionList>
           </li>
         </SectionList>
@@ -75,7 +75,7 @@ const NumberOfVariantsInGnomadList = () => {
           <li>
             SNVs per person (<i>coming soon</i>)
           </li>
-          <li>{`1 rare (<1% AF) coding CNV per individual`}</li>
+          <li>{`1 rare (<1% SF) coding CNV per individual`}</li>
           <li>11,844 SVs per genome</li>
         </SectionList>
       </Section>
