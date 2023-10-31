@@ -88,9 +88,9 @@ const DownloadsPageTableOfContents = () => {
   }
 
   type ContentItem = {
-    link: string,
-    indent: string,
-    text: string,
+    link: string
+    indent: string
+    text: string
   }
 
   return (

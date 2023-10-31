@@ -10,8 +10,8 @@ type ShortTandemRepeatRepeatUnitPropType = {
 }
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ repeat_unit: Valida... Remove this comment to see the full error message
-const ShortTandemRepeatRepeatUnitPropType: PropTypes.Requireable<ShortTandemRepeatRepeatUnitPropType> = PropTypes.shape(
-  {
+const ShortTandemRepeatRepeatUnitPropType: PropTypes.Requireable<ShortTandemRepeatRepeatUnitPropType> =
+  PropTypes.shape({
     repeat_unit: PropTypes.string.isRequired,
     distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     populations: PropTypes.arrayOf(
@@ -20,8 +20,7 @@ const ShortTandemRepeatRepeatUnitPropType: PropTypes.Requireable<ShortTandemRepe
         distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
       })
     ).isRequired,
-  }
-)
+  })
 
 type ShortTandemRepeatAdjacentRepeatPropType = {
   id: string
@@ -58,8 +57,8 @@ type ShortTandemRepeatAdjacentRepeatPropType = {
 }
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ id: Validator<strin... Remove this comment to see the full error message
-const ShortTandemRepeatAdjacentRepeatPropType: PropTypes.Requireable<ShortTandemRepeatAdjacentRepeatPropType> = PropTypes.shape(
-  {
+const ShortTandemRepeatAdjacentRepeatPropType: PropTypes.Requireable<ShortTandemRepeatAdjacentRepeatPropType> =
+  PropTypes.shape({
     id: PropTypes.string.isRequired,
     reference_region: PropTypes.shape({
       chrom: PropTypes.string.isRequired,
@@ -99,8 +98,7 @@ const ShortTandemRepeatAdjacentRepeatPropType: PropTypes.Requireable<ShortTandem
         })
       ).isRequired,
     }).isRequired,
-  }
-)
+  })
 export { ShortTandemRepeatAdjacentRepeatPropType }
 
 type ShortTandemRepeatPropType = {

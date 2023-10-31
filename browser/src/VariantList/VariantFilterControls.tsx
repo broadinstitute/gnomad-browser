@@ -171,14 +171,14 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
             <InfoButton topic="include-filtered-variants" />
           </span>
           <span>
-          <Checkbox
-            checked={value.includeContext}
-            id="context-variant-filter"
-            label="Display neighboring variants"
-            onChange={(includeContext) => {
-              onChange({ ...value, includeContext })
-            }}
-          />
+            <Checkbox
+              checked={value.includeContext}
+              id="context-variant-filter"
+              label="Display neighboring variants"
+              onChange={(includeContext) => {
+                onChange({ ...value, includeContext })
+              }}
+            />
           </span>
         </CheckboxSection>
       </CheckboxFiltersWrapper>
@@ -203,7 +203,7 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
             // preventDefault to avoid typing a "/" in the search input
             e.preventDefault()
             if (searchInput.current) {
-              ; (searchInput.current as any).focus()
+              ;(searchInput.current as any).focus()
             }
           }}
         />

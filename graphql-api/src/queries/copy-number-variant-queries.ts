@@ -4,15 +4,13 @@ const GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX = 'gnomad_v4_cnvs'
 
 type CnvDatasetId = 'gnomad_cnv_r4'
 type DatasetDependentQueryParams = {
-  index: string,
+  index: string
 }
-
-
 
 const datasetDependentQueryParams: Record<CnvDatasetId, DatasetDependentQueryParams> = {
   gnomad_cnv_r4: {
     index: GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX,
-  }
+  },
 } as const
 
 export type GeneQueryParams = { symbol: string }
@@ -33,7 +31,7 @@ export const fetchCopyNumberVariantById = async (
   datasetId: CnvDatasetId,
   variantId: string
 ) => {
-  const { index }= datasetDependentQueryParams[datasetId]
+  const { index } = datasetDependentQueryParams[datasetId]
   const response = await esClient.search({
     index,
     type: '_doc',
@@ -57,7 +55,6 @@ export const fetchCopyNumberVariantById = async (
     ...variant.freq,
   }
 }
-
 
 // ================================================================================================
 // Gene query

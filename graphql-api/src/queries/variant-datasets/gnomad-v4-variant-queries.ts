@@ -115,25 +115,38 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     )
   }
 
-  const inSilicoPredictorIds = ["revel_max", "spliceai_ds_max", "pangolin_largest_ds", "phylop", "sift_max", "polyphen_max"]
+  const inSilicoPredictorIds = [
+    'revel_max',
+    'spliceai_ds_max',
+    'pangolin_largest_ds',
+    'phylop',
+    'sift_max',
+    'polyphen_max',
+  ]
 
-  const renamePredictorMapping = { "revel_max": "revel", "spliceai_ds_max": "splice_ai", "pangolin_largest_ds": "pangolin", "sift_max": "sift", "polyphen_max": "polyphen" }
+  const renamePredictorMapping = {
+    revel_max: 'revel',
+    spliceai_ds_max: 'splice_ai',
+    pangolin_largest_ds: 'pangolin',
+    sift_max: 'sift',
+    polyphen_max: 'polyphen',
+  }
 
-
-  const inSilicoPredictorsList = inSilicoPredictorIds.map(id => {
-    if (variant.in_silico_predictors[id]) {
-      let name: string = id
-      if (id in renamePredictorMapping) {
-        // @ts-ignore
-        name = renamePredictorMapping[id]
+  const inSilicoPredictorsList = inSilicoPredictorIds
+    .map((id) => {
+      if (variant.in_silico_predictors[id]) {
+        let name: string = id
+        if (id in renamePredictorMapping) {
+          // @ts-ignore
+          name = renamePredictorMapping[id]
+        }
+        if (id == 'cadd') {
+          return { id: name, value: variant.in_silico_predictors.cadd.phred, flags: [] }
+        }
+        return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
       }
-      if (id == "cadd") {
-        return { id: name, value: variant.in_silico_predictors.cadd.phred, flags: [] }
-      }
-      return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
-    }
-  }).filter(item => item)
-
+    })
+    .filter((item) => item)
 
   const localAncestryPopulations =
     subset === 'all'
@@ -150,21 +163,22 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     colocated_variants: variant.colocated_variants[subset] || [],
     faf95_joint: hasJointFafData && {
       popmax_population: variant.faf95_joint.grpmax_gen_anc,
-      popmax: variant.faf95_joint.grpmax
+      popmax: variant.faf95_joint.grpmax,
     },
     faf99_joint: hasJointFafData && {
       popmax_population: variant.faf99_joint.grpmax_gen_anc,
-      popmax: variant.faf99_joint.grpmax
+      popmax: variant.faf99_joint.grpmax,
     },
     exome: hasExomeVariant && {
       ...variant.exome,
       ...variant.exome.freq[subset],
       filters,
       populations: variant.exome.freq[subset].ancestry_groups,
-      faf95: hasExomeVariant && variant.exome.faf95 && {
-        popmax_population: variant.exome.faf95.grpmax_gen_anc,
-        popmax: variant.exome.faf95.grpmax
-      },
+      faf95: hasExomeVariant &&
+        variant.exome.faf95 && {
+          popmax_population: variant.exome.faf95.grpmax_gen_anc,
+          popmax: variant.exome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -184,17 +198,18 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           Number.isFinite(m.value)
         ),
       },
-      local_ancestry_populations: []
+      local_ancestry_populations: [],
     },
     genome: hasGenomeVariant && {
       ...variant.genome,
       ...variant.genome.freq[subset],
       filters,
       populations: genome_ancestry_groups,
-      faf95: hasGenomeVariant && variant.genome.faf95 && {
-        popmax_population: variant.genome.faf95.grpmax_gen_anc,
-        popmax: variant.genome.faf95.grpmax
-      },
+      faf95: hasGenomeVariant &&
+        variant.genome.faf95 && {
+          popmax_population: variant.genome.faf95.grpmax_gen_anc,
+          popmax: variant.genome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -242,7 +257,6 @@ const shapeVariantSummary = (subset: any, context: any) => {
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = variant.genome.freq[subset].ac_raw
 
-
     if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
       filters.push('AC0')
     }
@@ -260,31 +274,35 @@ const shapeVariantSummary = (subset: any, context: any) => {
       pos: variant.locus.position,
       ref: variant.alleles[0],
       alt: variant.alleles[1],
-      exome: hasExomeVariant ? {
-        ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-        ...variant.exome.freq[subset],
-        populations: variant.exome.freq[subset].ancestry_groups.filter(
-          (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-        ),
-        filters,
-      } : null,
-      genome: hasGenomeVariant ? {
-        ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-        ...variant.genome.freq[subset],
-        populations: variant.genome.freq[subset].ancestry_groups.filter(
-          (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-        ),
-        filters,
-      } : null,
+      exome: hasExomeVariant
+        ? {
+            ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.exome.freq[subset],
+            populations: variant.exome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters,
+          }
+        : null,
+      genome: hasGenomeVariant
+        ? {
+            ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.genome.freq[subset],
+            populations: variant.genome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters,
+          }
+        : null,
       flags,
       transcript_consequence: transcriptConsequence,
       faf95_joint: hasJointFafData && {
         popmax_population: variant.faf95_joint.grpmax_gen_anc,
-        popmax: variant.faf95_joint.grpmax
+        popmax: variant.faf95_joint.grpmax,
       },
       faf99_joint: hasJointFafData && {
         popmax_population: variant.faf99_joint.grpmax_gen_anc,
-        popmax: variant.faf99_joint.grpmax
+        popmax: variant.faf99_joint.grpmax,
       },
     }
   }
@@ -295,17 +313,16 @@ const shapeVariantSummary = (subset: any, context: any) => {
 // ================================================================================================
 
 const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
+  subset = 'all'
 
-  subset = "all"
+  let exomeSubset = 'all'
+  let genomeSubset = 'all'
 
-  let exomeSubset = "all"
-  let genomeSubset = "all"
-
-  if (subset === "tgp" || subset === "hgdp") {
+  if (subset === 'tgp' || subset === 'hgdp') {
     genomeSubset = subset
   }
-  if (subset === "non_ukb") {
-    exomeSubset = "non_ukb"
+  if (subset === 'non_ukb') {
+    exomeSubset = 'non_ukb'
   }
 
   try {
@@ -360,14 +377,16 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
 
     const shapedHits = hits
       .map((hit: any) => hit._source.value)
-      .filter((variant: any) => variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0)
+      .filter(
+        (variant: any) =>
+          variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+      )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
     return shapedHits
-
   } catch (error) {
-    console.error("Error fetching variants by gene:", error);
-    throw error; // You can re-throw the error if needed or handle it accordingly.
+    console.error('Error fetching variants by gene:', error)
+    throw error // You can re-throw the error if needed or handle it accordingly.
   }
 }
 
@@ -376,15 +395,14 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
 // ================================================================================================
 
 const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) => {
+  let exomeSubset = 'all'
+  let genomeSubset = 'all'
 
-  let exomeSubset = "all"
-  let genomeSubset = "all"
-
-  if (subset === "tgp" || subset === "hgdp") {
+  if (subset === 'tgp' || subset === 'hgdp') {
     genomeSubset = subset
   }
-  if (subset === "non_ukb") {
-    exomeSubset = "non_ukb"
+  if (subset === 'non_ukb') {
+    exomeSubset = 'non_ukb'
   }
 
   const hits = await fetchAllSearchResults(esClient, {
@@ -435,17 +453,16 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
 // ================================================================================================
 
 const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: any) => {
+  subset = 'all'
 
-  subset = "all"
+  let exomeSubset = 'all'
+  let genomeSubset = 'all'
 
-  let exomeSubset = "all"
-  let genomeSubset = "all"
-
-  if (subset === "tgp" || subset === "hgdp") {
+  if (subset === 'tgp' || subset === 'hgdp') {
     genomeSubset = subset
   }
-  if (subset === "non_ukb") {
-    exomeSubset = "non_ukb"
+  if (subset === 'non_ukb') {
+    exomeSubset = 'non_ukb'
   }
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)

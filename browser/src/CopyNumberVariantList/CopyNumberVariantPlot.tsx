@@ -45,13 +45,12 @@ const CopyNumberVariantPlot = ({
   // If one endpoint is undefined, which should only happen if the SV extends outside the visible region,
   // offset the start/stop coordinate to make room for the arrow marker at the end of the bar.
 
-    if (!startIsDefined) {
-      startX += arrowWidth
-    }
-    if (!stopIsDefined) {
-      stopX -= arrowWidth
-    }
-  
+  if (!startIsDefined) {
+    startX += arrowWidth
+  }
+  if (!stopIsDefined) {
+    stopX -= arrowWidth
+  }
 
   return (
     <svg height={trackHeight} width={width} style={{ overflow: 'visible' }}>
@@ -76,21 +75,21 @@ const CopyNumberVariantPlot = ({
         strokeWidth={1}
       />
       (
-        <React.Fragment>
-          {!startIsDefined && (
-            <path
-              d={`M ${startX} ${barY} l -${arrowWidth} ${halfBarHeight} l ${arrowWidth} ${halfBarHeight} z`}
-              fill={color}
-            />
-          )}
-          <rect x={startX} y={barY} width={stopX - startX} height={barHeight} fill={color} />
-          {!stopIsDefined && (
-            <path
-              d={`M ${stopX} ${barY} l ${arrowWidth} ${halfBarHeight} l -${arrowWidth} ${halfBarHeight} z`}
-              fill={color}
-            />
-          )}
-        </React.Fragment>
+      <React.Fragment>
+        {!startIsDefined && (
+          <path
+            d={`M ${startX} ${barY} l -${arrowWidth} ${halfBarHeight} l ${arrowWidth} ${halfBarHeight} z`}
+            fill={color}
+          />
+        )}
+        <rect x={startX} y={barY} width={stopX - startX} height={barHeight} fill={color} />
+        {!stopIsDefined && (
+          <path
+            d={`M ${stopX} ${barY} l ${arrowWidth} ${halfBarHeight} l -${arrowWidth} ${halfBarHeight} z`}
+            fill={color}
+          />
+        )}
+      </React.Fragment>
       )
     </svg>
   )

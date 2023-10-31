@@ -5,22 +5,20 @@ import { populationName } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { CNVPopulationsTable } from './CNVPopulationsTable'
 
 type CopyNumberVariantPopulation = {
-    id: string,
-    sc: number,
-    sn: number,
-    sf: number,
-    name: string
+  id: string
+  sc: number
+  sn: number
+  sf: number
+  name: string
 }
 
 type Subpopulations = {
-    [key: string]: CopyNumberVariantPopulation[];
+  [key: string]: CopyNumberVariantPopulation[]
 }
-
 
 const nestPopulations = (populations: CopyNumberVariantPopulation[]) => {
   const popIndices = []
   const subpopulations: Subpopulations = {}
-  
 
   for (let i = 0; i < populations.length; i += 1) {
     const pop = populations[i]
@@ -74,12 +72,7 @@ const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulat
     sf: 'Site Frequency',
   }
 
-  return (
-    <CNVPopulationsTable
-      columnLabels={columnLabels}
-      populations={populations}
-     />
-  )
+  return <CNVPopulationsTable columnLabels={columnLabels} populations={populations} />
 }
 
 export default CopyNumberVariantPopulationsTable

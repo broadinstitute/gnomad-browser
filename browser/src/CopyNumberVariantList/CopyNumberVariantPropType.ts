@@ -28,11 +28,11 @@ type CopyNumberVariantPropType = {
 }
 
 const PopulationPropType = PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    sc: PropTypes.number.isRequired,
-    sn: PropTypes.number.isRequired,
-    sf: PropTypes.number.isRequired,
-  })
+  id: PropTypes.string.isRequired,
+  sc: PropTypes.number.isRequired,
+  sn: PropTypes.number.isRequired,
+  sf: PropTypes.number.isRequired,
+})
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ ac: Validator<numbe... Remove this comment to see the full error message
 const CopyNumberVariantPropType: PropTypes.Requireable<CopyNumberVariantPropType> = PropTypes.shape(
