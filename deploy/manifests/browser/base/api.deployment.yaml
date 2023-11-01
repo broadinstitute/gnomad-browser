@@ -44,16 +44,16 @@ spec:
                   key: ips
             # Global rate limiting
             - name: MAX_CONCURRENT_ES_REQUESTS
-              value: '10'
-            - name: MAX_QUEUED_ES_REQUESTS
               value: '100'
+            - name: MAX_QUEUED_ES_REQUESTS
+              value: '1000'
             # Individual rate limiting
             - name: MAX_REQUESTS_PER_MINUTE
-              value: '30'
-            - name: MAX_QUERY_COST
-              value: '25'
-            - name: MAX_QUERY_COST_PER_MINUTE
               value: '300'
+            - name: MAX_QUERY_COST
+              value: '2500'
+            - name: MAX_QUERY_COST_PER_MINUTE
+              value: '30000'
           ports:
             - name: http
               containerPort: 8000
