@@ -75,7 +75,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -8904,7 +8904,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -17736,7 +17736,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -26568,7 +26568,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -35400,7 +35400,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -44232,7 +44232,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -53064,7 +53064,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -60202,7 +60202,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -69226,7 +69226,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -78250,7 +78250,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -87274,7 +87274,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
@@ -96298,7 +96298,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           onClick={[Function]}
           style={
             {
-              "margin": "0 1em 0 -0.33em",
+              "margin": "0 1em 0 1em",
             }
           }
           type="button"
