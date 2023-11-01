@@ -460,9 +460,11 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     coverage {
       exome {
         mean
+        over_30
       }
       genome {
         mean
+        over_30
       }
     }
     multi_nucleotide_variants {
