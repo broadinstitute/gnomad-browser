@@ -34,7 +34,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with ava
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -42,7 +52,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and transcript wi
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -50,7 +70,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal ge
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -58,7 +88,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal tr
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -66,7 +106,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -74,7 +124,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
 <p>
   Constraint not yet available for 
   gnomAD CNVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -3999,7 +4059,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with availab
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4007,7 +4077,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and transcript with a
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4015,7 +4095,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal gene h
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4023,7 +4113,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal transc
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4031,7 +4131,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4039,7 +4149,17 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4047,7 +4167,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4055,7 +4185,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4063,7 +4203,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4071,7 +4221,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4079,7 +4239,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4087,7 +4257,17 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4095,7 +4275,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene w
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4103,7 +4293,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and transc
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4111,7 +4311,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a min
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4119,7 +4329,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a min
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4127,7 +4347,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4135,7 +4365,17 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4143,7 +4383,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene wi
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4151,7 +4401,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and transcr
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4159,7 +4419,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mini
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4167,7 +4437,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mini
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4175,7 +4455,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4183,7 +4473,17 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4191,7 +4491,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene w
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4199,7 +4509,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and transc
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4207,7 +4527,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a min
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4215,7 +4545,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a min
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4223,7 +4563,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4231,7 +4581,17 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4239,7 +4599,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with 
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4247,7 +4617,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and transcript
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4255,7 +4635,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4263,7 +4653,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4271,7 +4671,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4279,7 +4689,17 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4287,7 +4707,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with availab
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4295,7 +4725,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and transcript with a
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4303,7 +4743,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal gene h
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4311,7 +4761,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal transc
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4319,7 +4779,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -4327,7 +4797,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
 <p>
   Constraint not yet available for 
   gnomAD v4.0.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6682,7 +7162,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with avai
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6690,7 +7180,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and transcript wit
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6698,7 +7198,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal gen
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6706,7 +7216,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal tra
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6714,7 +7234,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 
@@ -6722,7 +7252,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
 <p>
   Constraint not yet available for 
   gnomAD SVs v4.0
-  .
+  . Refer to 
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/gene/dummy_gene?dataset=gnomad_r2_1"
+    onClick={[Function]}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    gnomAD v2.1.1
+  </a>
+   for now.
 </p>
 `;
 

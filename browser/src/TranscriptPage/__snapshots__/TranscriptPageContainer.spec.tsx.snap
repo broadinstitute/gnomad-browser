@@ -2032,7 +2032,17 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
         <p>
           Constraint not yet available for 
           gnomAD CNVs v4.0
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -10475,7 +10485,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -11883,7 +11903,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (controls/biobanks)
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -13291,7 +13321,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-cancer)
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -14699,7 +14739,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-neuro)
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -16107,7 +16157,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-TOPMed)
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -17515,7 +17575,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-v2)
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
@@ -18923,7 +18993,17 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
         <p>
           Constraint not yet available for 
           gnomAD v4.0.0
-          .
+          . Refer to 
+          <a
+            className="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/dummy_gene?dataset=gnomad_r2_1"
+            onClick={[Function]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            gnomAD v2.1.1
+          </a>
+           for now.
         </p>
       </div>
     </div>
