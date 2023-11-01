@@ -222,11 +222,11 @@ export const GnomadVariantOccurrenceTable = ({
 
   const exomeCoverage = {
     mean: (variant.coverage.exome || { mean: null }).mean,
-    over30: (variant.coverage.exome || { over_30: null }).over_30,
+    over20: (variant.coverage.exome || { over_20: null }).over_20,
   }
   const genomeCoverage = {
     mean: (variant.coverage.genome || { mean: null }).mean,
-    over30: (variant.coverage.genome || { over_30: null }).over_30,
+    over20: (variant.coverage.genome || { over_20: null }).over_20,
   }
 
   // Display a warning if a variant's AN is < 50% of the max AN for exomes/genomes.
@@ -439,19 +439,19 @@ export const GnomadVariantOccurrenceTable = ({
             <tr>
               <th scope="row">
                 {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-                <TooltipAnchor tooltip="Fraction of individuals with >30x coverage at this variant's locus">
+                <TooltipAnchor tooltip="Fraction of individuals with >20x coverage at this variant's locus">
                   {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-                  <TooltipHint>Fraction of individuals with &gt;30x coverage</TooltipHint>
+                  <TooltipHint>Fraction of individuals with &gt;20x coverage</TooltipHint>
                 </TooltipAnchor>
               </th>
               {/* TODO: this logic can be extracted into a helper, and cleaned for clarity, todo after V4 mvp launch */}
               {variant.exome ? (
-                <td>{exomeCoverage.over30 !== null ? exomeCoverage.over30.toFixed(1) : '–'}</td>
+                <td>{exomeCoverage.over20 !== null ? exomeCoverage.over20.toFixed(1) : '–'}</td>
               ) : (
                 <td />
               )}
               {variant.genome ? (
-                <td>{genomeCoverage.over30 !== null ? genomeCoverage.over30.toFixed(1) : '–'}</td>
+                <td>{genomeCoverage.over20 !== null ? genomeCoverage.over20.toFixed(1) : '–'}</td>
               ) : (
                 <td />
               )}
