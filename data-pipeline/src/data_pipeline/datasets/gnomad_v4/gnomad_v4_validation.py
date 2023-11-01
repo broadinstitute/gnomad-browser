@@ -1,7 +1,6 @@
 from cattrs import (
     ClassValidationError,
     IterableValidationError,
-    # IterableValidationError,
     structure,
     Converter,
     transform_error,
@@ -31,14 +30,11 @@ def validate_rows(ht: hl.Table, cls: object):
             except ClassValidationError as e:
                 logger.error(e)
                 logger.error(transform_error(e))
-                # raise Exception(e)
             except IterableValidationError as e:
                 logger.error(e)
                 logger.error(transform_error(e))
                 raise Exception(e)
             except Exception as e:
-                # logger.info(variant["exome"])
-                # logger.info(variant["genome"])
                 logger.error(e)
                 logger.error(transform_error(e))
                 raise Exception(e)

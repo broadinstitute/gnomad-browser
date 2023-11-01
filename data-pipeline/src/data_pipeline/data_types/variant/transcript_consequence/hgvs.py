@@ -36,9 +36,7 @@ def hgvsp_from_consequence_amino_acids(csq):
         hl.bind(
             lambda protein_letters: "p." + protein_letters + hl.str(csq.protein_start) + protein_letters,
             hl.delimit(
-                csq.amino_acids.split("")
-                .filter(lambda letter: letter != "")
-                .map(lambda letter: PROTEIN_LETTERS_1TO3.get(letter)),  # pylint: disable=unnecessary-lambda
+                csq.amino_acids.split("").filter(lambda letter: letter != "").map(PROTEIN_LETTERS_1TO3.get),
                 "",
             ),
         ),
