@@ -312,7 +312,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
   const genomeSubset = 'all'
 
   if (gene.symbol === "TTN") {
-    throw new UserVisibleError("TTN coming soon to gnomAD v4")
+    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
   }
 
   try {
@@ -445,7 +445,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
 
 
   if (transcript.gene.symbol === "TTN") {
-    throw new UserVisibleError("TTN coming soon to gnomAD v4")
+    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
   }
 
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
