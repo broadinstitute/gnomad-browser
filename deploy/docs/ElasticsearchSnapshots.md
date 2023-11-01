@@ -36,6 +36,28 @@ This creates a snapshot named with the current date.
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT 'http://localhost:9200/_snapshot/backups/%3Csnapshot-%7Bnow%7BYYYY.MM.dd.HH.mm%7D%7D%3E'
 ```
 
+### Create automated snapshots on a schedule
+
+This creates a snapshot lifecycle policy, which starts a snapshot on the 15th of the month, with the date of the snapshot:
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" -X PUT "localhost:9200/_slm/policy/monthly-snapshot" -H 'Content-Type: application/json' --data @- <<EOF
+{
+  "schedule": "0 0 0 15 * ?",
+  "name": "<month-snapshot-{now/d}>",
+  "repository": "backups",
+  "config": {
+    "ignore_unavailable": false
+  },
+  "retention": {
+   "expire_after": "45d"
+  }
+}
+EOF
+```
+
+Snapshots which are older than 45 days at the time the automated snapshots are taken are removed. This ensures that the current and previous months snapshots are always kupt, while older ones are removed.
+
 ### List all snapshots in repository
 
 ```
