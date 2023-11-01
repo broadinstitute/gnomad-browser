@@ -28,11 +28,13 @@ const PREDICTORS_V4 = {
   cadd: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1 },
 }
 
-const EXCLUDED_v4_PREDICTORS = ["sift_max"]
+const EXCLUDED_v4_PREDICTORS = ['sift_max']
 
 const FLAG_DESCRIPTIONS_V4 = {
-  // polyphen: "We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts."
-  // sift: "We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts."
+  polyphen_max:
+    'We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.',
+  sift_max:
+    'We prioritized max scores for MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.',
 }
 
 const Marker = styled.span`
@@ -79,43 +81,59 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         {variant.in_silico_predictors &&
-          variant.in_silico_predictors.filter(({ id }) => {
-            if (isV4(datasetId) && EXCLUDED_v4_PREDICTORS.includes(id)) {
-              return false
-            }
-            return true
-          }).map(({ id, value, flags }) => {
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            const predictor = predictors[id]
-
-            let color = null
-            const parsedValue = parseFloat(value)
-            if (!Number.isNaN(parsedValue)) {
-              if (!predictor.dangerThreshold || !predictor.warningThreshold) {
-                color = 'grey'
-              } else if (
-                predictor &&
-                predictor.dangerThreshold &&
-                parsedValue >= predictor.dangerThreshold
-              ) {
-                color = '#FF583F'
-              } else if (
-                predictor &&
-                predictor.warningThreshold &&
-                parsedValue >= predictor.warningThreshold
-              ) {
-                color = '#F0C94D'
-              } else {
-                color = 'green'
+          variant.in_silico_predictors
+            .filter(({ id }) => {
+              if (isV4(datasetId) && EXCLUDED_v4_PREDICTORS.includes(id)) {
+                return false
               }
-            }
+              return true
+            })
+            .map(({ id, value, flags }) => {
+              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+              const predictor = predictors[id]
 
-            if (predictor) {
+              let color = null
+              const parsedValue = parseFloat(value)
+              if (!Number.isNaN(parsedValue)) {
+                if (!predictor.dangerThreshold || !predictor.warningThreshold) {
+                  color = 'grey'
+                } else if (
+                  predictor &&
+                  predictor.dangerThreshold &&
+                  parsedValue >= predictor.dangerThreshold
+                ) {
+                  color = '#FF583F'
+                } else if (
+                  predictor &&
+                  predictor.warningThreshold &&
+                  parsedValue >= predictor.warningThreshold
+                ) {
+                  color = '#F0C94D'
+                } else {
+                  color = 'green'
+                }
+              }
+
+              if (predictor) {
+                return (
+                  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+                  <ListItem key={id}>
+                    {color && <Marker color={color} />}
+                    {predictor.label}: {value}
+                    {flags && flags.length > 0 && (
+                      <p style={{ marginTop: '0.5em' }}>
+                        <Badge level="info">Note</Badge>{' '}
+                        {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
+                        {flags.map((flag) => flag_descriptions[id][flag] || flag).join(', ')}
+                      </p>
+                    )}
+                  </ListItem>
+                )
+              }
               return (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={id}>
-                  {color && <Marker color={color} />}
-                  {predictor.label}: {value}
+                  {id}: {value}
                   {flags && flags.length > 0 && (
                     <p style={{ marginTop: '0.5em' }}>
                       <Badge level="info">Note</Badge>{' '}
@@ -125,21 +143,7 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
                   )}
                 </ListItem>
               )
-            }
-            return (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-              <ListItem key={id}>
-                {id}: {value}
-                {flags && flags.length > 0 && (
-                  <p style={{ marginTop: '0.5em' }}>
-                    <Badge level="info">Note</Badge>{' '}
-                    {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                    {flags.map((flag) => flag_descriptions[id][flag] || flag).join(', ')}
-                  </p>
-                )}
-              </ListItem>
-            )
-          })}
+            })}
       </List>
     </div>
   )

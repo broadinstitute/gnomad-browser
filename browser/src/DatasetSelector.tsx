@@ -470,8 +470,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       },
     ]
 
+    if (!shortVariantDatasets[1].children) throw new Error('Dataset children undefined')
+
     if (includeGnomad4) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r4',
         label: labelForDataset('gnomad_r4'),
@@ -482,7 +483,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     }
 
     if (includeGnomad3) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r3',
         label: labelForDataset('gnomad_r3'),
@@ -493,7 +493,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     }
 
     if (includeGnomad3 && includeGnomad3Subsets) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r3_non_cancer',
@@ -534,7 +533,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     }
 
     if (includeGnomad2) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r2_1',
         label: labelForDataset('gnomad_r2_1'),
@@ -545,7 +543,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     }
 
     if (includeGnomad2 && includeGnomad2Subsets) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r2_1_non_topmed',
@@ -579,7 +576,6 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     }
 
     if (includeExac) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'exac',
         label: labelForDataset('exac'),

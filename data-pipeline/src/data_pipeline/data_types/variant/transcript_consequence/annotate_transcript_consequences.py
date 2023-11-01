@@ -48,17 +48,17 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
         "lof_flags",
         "lof",
         "major_consequence",
-        # "polyphen_prediction",
-        # "sift_prediction",
         "transcript_id",
     ]
 
+    # gnomAD v2 and v3 have these consequences. gnomAD v4 does not.
+    v2_and_v3_only_consequences = ["polyphen_prediction", "sift_prediction"]
+
     available_consequences = list(transcript_consequences[0])
 
-    if "polyphen_prediction" in available_consequences:
-        consequences.append("polyphen_prediction")
-    if "sift_prediction" in available_consequences:
-        consequences.append("sift_prediction")
+    for csq in v2_and_v3_only_consequences:
+        if csq in available_consequences:
+            consequences.append(csq)
 
     transcript_consequences = transcript_consequences.map(lambda c: c.select(*consequences))
 

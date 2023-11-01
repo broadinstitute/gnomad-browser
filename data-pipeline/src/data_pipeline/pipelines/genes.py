@@ -154,6 +154,8 @@ pipeline.add_download_task(
     f"/{external_sources_subdir}/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
 )
 
+# This step can no longer be run with current versions of Hail
+
 # pipeline.add_task(
 #     "prepare_gtex_v7_expression_data",
 #     prepare_gtex_expression_data,
@@ -251,6 +253,7 @@ pipeline.add_task(
     f"/{genes_subdir}/genes_grch37_annotated_2.ht",
     {
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
+        # This table can no longer be generated with current versions of Hail
         # "gtex_tissue_expression_path": pipeline.get_task("prepare_gtex_v7_expression_data"),
         "gtex_tissue_expression_path": "gs://gnomad-matt-data-pipeline/2023-10-19/outputs/gtex/gtex_v7_tissue_expression.ht",
     },

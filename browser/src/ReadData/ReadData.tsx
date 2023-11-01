@@ -11,11 +11,83 @@ import {
   readsDatasetId as getReadsDatasetId,
   readsIncludeLowQualityGenotypes,
   isV4,
+  usesGrch38,
+  usesGrch37,
 } from '@gnomad/dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 const IGVBrowser = lazy(() => import('./IGVBrowser'))
+
+function getBrowserConfig(datasetId: DatasetId, locus: string) {
+  if (isV4(datasetId)) {
+    return {
+      locus,
+      reference: {
+        fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
+        id: 'hg38',
+        indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+      },
+      tracks: [
+        {
+          name: 'GENCODE v39',
+          // @ts-ignore
+          format: 'refgene',
+          url: '/reads/reference/gencode.v39.hg38.sorted.txt.gz',
+          indexURL: '/reads/reference/gencode.v39.hg38.sorted.txt.gz.tbi',
+          indexed: true,
+          displayMode: 'SQUISHED',
+          searchable: true,
+          removable: false,
+          // height: 350,
+          visibilityWindow: -1,
+          color: 'rgb(76,171,225)',
+        },
+      ],
+    }
+  }
+
+  if (usesGrch37(datasetId)) {
+    return {
+      locus,
+      reference: {
+        fastaURL: '/reads/reference/Homo_sapiens_assembly19.fasta',
+        id: 'hg19',
+        indexURL: '/reads/reference/Homo_sapiens_assembly19.fasta.fai',
+      },
+      tracks: [
+        {
+          displayMode: 'SQUISHED',
+          indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
+          name: 'GENCODE v19',
+          removable: false,
+          url: '/reads/reference/gencode.v19.bed.gz',
+        },
+      ],
+    }
+  }
+
+  if (usesGrch38(datasetId)) {
+    return {
+      locus,
+      reference: {
+        fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
+        id: 'hg38',
+        indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
+      },
+      tracks: [
+        {
+          displayMode: 'SQUISHED',
+          indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
+          name: 'GENCODE v35',
+          removable: false,
+          url: '/reads/reference/gencode.v35.bed.gz',
+        },
+      ],
+    }
+  }
+  throw new Error('Could not determine browser config for readviz')
+}
 
 const ControlContainer = styled.div`
   /* Offset the 80px wide label to center buttons under the IGV browser */
@@ -247,16 +319,16 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   loadAllTracks() {
     const { tracksAvailable, tracksLoaded } = this.state
 
-      ;['exome', 'genome'].forEach((exomeOrGenome) => {
-        ;['het', 'hom', 'hemi'].forEach((category) => {
-          const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
-          const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
+    ;['exome', 'genome'].forEach((exomeOrGenome) => {
+      ;['het', 'hom', 'hemi'].forEach((category) => {
+        const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
+        const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
-          for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
-            this.loadNextTrack(exomeOrGenome, category)
-          }
-        })
+        for (let i = tracksLoadedForCategory; i < tracksAvailableForCategory; i += 1) {
+          this.loadNextTrack(exomeOrGenome, category)
+        }
       })
+    })
   }
 
   renderLoadMoreButton(exomeOrGenome: any, category: any) {
@@ -271,7 +343,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   }
 
   render() {
-    const { children, datasetId, referenceGenome, chrom, start, stop, showHemizygotes } = this.props
+    const { children, datasetId, chrom, start, stop, showHemizygotes } = this.props
 
     if (!this.hasReadData('exome') && !this.hasReadData('genome')) {
       return (
@@ -289,69 +361,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
 
     const locus = `${chrom}:${start}-${stop}`
 
-    let browserConfig =
-      referenceGenome === 'GRCh37'
-        ? {
-          locus,
-          reference: {
-            fastaURL: '/reads/reference/Homo_sapiens_assembly19.fasta',
-            id: 'hg19',
-            indexURL: '/reads/reference/Homo_sapiens_assembly19.fasta.fai',
-          },
-          tracks: [
-            {
-              displayMode: 'SQUISHED',
-              indexURL: '/reads/reference/gencode.v19.bed.gz.tbi',
-              name: 'GENCODE v19',
-              removable: false,
-              url: '/reads/reference/gencode.v19.bed.gz',
-            },
-          ],
-        }
-        : {
-          locus,
-          reference: {
-            fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
-            id: 'hg38',
-            indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
-          },
-          tracks: [
-            {
-              displayMode: 'SQUISHED',
-              indexURL: '/reads/reference/gencode.v35.bed.gz.tbi',
-              name: 'GENCODE v35',
-              removable: false,
-              url: '/reads/reference/gencode.v35.bed.gz',
-            },
-          ],
-        }
-
-    if (isV4(datasetId)) {
-      browserConfig = {
-        locus,
-        reference: {
-          fastaURL: '/reads/reference/Homo_sapiens_assembly38.fasta',
-          id: 'hg38',
-          indexURL: '/reads/reference/Homo_sapiens_assembly38.fasta.fai',
-        },
-        tracks: [
-          {
-            name: 'GENCODE v39',
-            // @ts-ignore
-            format: 'refgene',
-            url: '/reads/reference/gencode.v39.hg38.sorted.txt.gz',
-            indexURL: '/reads/reference/gencode.v39.hg38.sorted.txt.gz.tbi',
-            indexed: true,
-            displayMode: 'SQUISHED',
-            searchable: true,
-            removable: false,
-            // height: 350,
-            visibilityWindow: -1,
-            color: 'rgb(76,171,225)',
-          },
-        ],
-      }
-    }
+    const browserConfig = getBrowserConfig(datasetId, locus)
 
     return (
       <div>
@@ -434,18 +444,18 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
 
 const interleaveReads = (allVariantReads: any) => {
   let reads: any = []
-    ;['het', 'hom', 'hemi'].forEach((category) => {
-      const allReadsInCategory = allVariantReads.map((variantReads: any) =>
-        variantReads.filter((read: any) => read.category === category)
+  ;['het', 'hom', 'hemi'].forEach((category) => {
+    const allReadsInCategory = allVariantReads.map((variantReads: any) =>
+      variantReads.filter((read: any) => read.category === category)
+    )
+    while (allReadsInCategory.some((variantReads: any) => variantReads.length)) {
+      reads = reads.concat(
+        allReadsInCategory
+          .map((variantReads: any) => variantReads.shift())
+          .filter((read: any) => read !== undefined)
       )
-      while (allReadsInCategory.some((variantReads: any) => variantReads.length)) {
-        reads = reads.concat(
-          allReadsInCategory
-            .map((variantReads: any) => variantReads.shift())
-            .filter((read: any) => read !== undefined)
-        )
-      }
-    })
+    }
+  })
   return reads
 }
 
@@ -465,11 +475,11 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   const query = `
     query ReadData {
       ${variantIds
-      .map(
-        (
-          variantId,
-          i
-        ) => `variant_${i}: variantReads(dataset: ${readsDatasetId}, variantId: "${variantId}") {
+        .map(
+          (
+            variantId,
+            i
+          ) => `variant_${i}: variantReads(dataset: ${readsDatasetId}, variantId: "${variantId}") {
         exome {
           bamPath
           category
@@ -483,8 +493,8 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
           readGroup
         }
       }`
-      )
-      .join('\n')}
+        )
+        .join('\n')}
     }
   `
 
@@ -521,9 +531,9 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
           positionDifference > 80
             ? [minPosition, maxPosition]
             : [
-              minPosition - Math.ceil((80 - positionDifference) / 2),
-              maxPosition + Math.floor((80 - positionDifference) / 2),
-            ]
+                minPosition - Math.ceil((80 - positionDifference) / 2),
+                maxPosition + Math.floor((80 - positionDifference) / 2),
+              ]
 
         // Concatenate reads from all variants
         const exomeReads = interleaveReads(
@@ -538,7 +548,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
                 label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${
                   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                   categoryCount[category]
-                  }`,
+                }`,
               }
             })
           })
@@ -556,7 +566,7 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
                 label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${
                   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                   categoryCount[category]
-                  }`,
+                }`,
               }
             })
           })
