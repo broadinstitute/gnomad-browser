@@ -35,10 +35,6 @@ def write_schemas(pipelines: List[Pipeline], schema_dir: str = DEFAULT_SCHEMA_DI
                         inputs = task.get_inputs()
                         output_path = task.get_output_path()
 
-                        # logger.info(f"task_name: {task}")
-                        # logger.info(f"inputs {str(inputs)}")
-                        # logger.info(f"output_path {str(output_path)}")
-
                         tables = {
                             **inputs,
                             "output": output_path,

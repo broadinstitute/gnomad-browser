@@ -216,28 +216,9 @@ const addPopulationNames = (populations: any, datasetId: DatasetId) => {
   })
 }
 
-// function compareArrays(arr1: string[], arr2: string[]) {
-//   const uniqueArr1 = new Set(arr1)
-//   const uniqueArr2 = new Set(arr2)
-
-//   let areSame = true
-
-//   for (const item of uniqueArr1) {
-//     if (!uniqueArr2.has(item)) {
-//       console.error(`Element "${item}" is in the first array but not in the second array.`)
-//       areSame = false
-//     }
-//   }
-
-//   if (!areSame) {
-//     throw new Error("Population definitions don't match")
-//   }
-// }
-
 const groupPopulations = (populations: any, datasetId: DatasetId) => {
   const populationsById = populations.reduce(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
-    (acc, pop) => ({
+    (acc: any, pop: any) => ({
       ...acc,
       [pop.id]: pop,
     }),
@@ -251,8 +232,6 @@ const groupPopulations = (populations: any, datasetId: DatasetId) => {
   // TODO: Improve this
   const groupedPopulations = []
   Object.keys(HGDP_POPULATION_GROUPS).forEach((group) => {
-    // @ts-ignore
-    // compareArrays(HGDP_POPULATION_GROUPS[group], Object.keys(populationsById))
     groupedPopulations.push({
       id: group,
       name: group,

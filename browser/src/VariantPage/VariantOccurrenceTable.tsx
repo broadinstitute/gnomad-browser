@@ -248,14 +248,16 @@ export const GnomadVariantOccurrenceTable = ({
 
   // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
   // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
-  const exomeHighAlleleBalanceSamples = isPresentInExome && variant.exome.quality_metrics.allele_balance.alt
-    ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
-    variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
-    : 0
-  const genomeHighAlleleBalanceSamples = isPresentInGenome && variant.genome.quality_metrics.allele_balance.alt
-    ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
-    variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
-    : 0
+  const exomeHighAlleleBalanceSamples =
+    isPresentInExome && variant.exome.quality_metrics.allele_balance.alt
+      ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
+        variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
+      : 0
+  const genomeHighAlleleBalanceSamples =
+    isPresentInGenome && variant.genome.quality_metrics.allele_balance.alt
+      ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
+        variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
+      : 0
   const totalHighAlleleBalanceSamples =
     exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
 
