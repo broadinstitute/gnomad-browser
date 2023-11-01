@@ -415,17 +415,17 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           <td
             className="right-align"
           >
-            0
+            123
           </td>
           <td
             className="right-align"
           >
-            0
+            345
           </td>
           <td
             className="right-align"
           >
-            0.000
+            0.3565
           </td>
         </tr>
       </tfoot>
@@ -867,17 +867,17 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           <td
             className="right-align"
           >
-            0
+            123
           </td>
           <td
             className="right-align"
           >
-            0
+            345
           </td>
           <td
             className="right-align"
           >
-            0.000
+            0.3565
           </td>
         </tr>
       </tfoot>
