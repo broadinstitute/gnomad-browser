@@ -1431,8 +1431,9 @@ exports[`TranscriptPage with dataset "gnomad_cnv_r4" has no unexpected changes 1
           </button>
         </h2>
         <p>
-          Constraint not available for this 
-          transcript
+          Constraint not yet available for 
+          gnomAD CNVs v4.0
+          .
         </p>
       </div>
     </div>
@@ -11133,8 +11134,9 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
           </button>
         </h2>
         <p>
-          Constraint not available for this 
-          transcript
+          Constraint not yet available for 
+          gnomAD v4.0.0
+          .
         </p>
       </div>
     </div>
@@ -14365,8 +14367,9 @@ exports[`TranscriptPage with dataset "gnomad_sv_r4" has no unexpected changes 1`
           </button>
         </h2>
         <p>
-          Constraint not available for this 
-          transcript
+          Constraint not yet available for 
+          gnomAD SVs v4.0
+          .
         </p>
       </div>
     </div>

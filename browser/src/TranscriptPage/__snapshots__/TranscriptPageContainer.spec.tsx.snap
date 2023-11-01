@@ -2030,8 +2030,9 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
           </button>
         </h2>
         <p>
-          Constraint not available for this 
-          transcript
+          Constraint not yet available for 
+          gnomAD CNVs v4.0
+          .
         </p>
       </div>
     </div>
@@ -18920,8 +18921,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
           </button>
         </h2>
         <p>
-          Constraint not available for this 
-          transcript
+          Constraint not yet available for 
+          gnomAD v4.0.0
+          .
         </p>
       </div>
     </div>
