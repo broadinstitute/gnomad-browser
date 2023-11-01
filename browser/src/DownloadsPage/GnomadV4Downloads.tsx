@@ -137,7 +137,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht"
-                  includeAWS={false}
                   includeAzure={false}
                 />
               </ListItem>
@@ -149,7 +148,6 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAWS={false}
                     includeAzure={false}
                   />
                 </ListItem>
@@ -165,7 +163,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/"
-                  includeAWS={false}
                   includeAzure={false}
                 />
               </ListItem>
@@ -177,7 +174,6 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAWS={false}
                     includeAzure={false}
                   />
                 </ListItem>
@@ -195,7 +191,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome coverage Hail Table"
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -206,7 +201,6 @@ const GnomadV4Downloads = () => {
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.summary.tsv.bgz"
               size="3.77 GiB"
               md5="a6955332c9cccae7efb9c95581282a73"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -228,7 +222,6 @@ const GnomadV4Downloads = () => {
                 path={`/release/4.0/genome_sv/gnomad.v4.0.sv.chr${chrom}.vcf.gz`}
                 size={size}
                 crc32={crc32}
-                includeAWS={false}
                 includeAzure={false}
               />
             </ListItem>
@@ -248,7 +241,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.all.vcf.gz"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -257,7 +249,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV non neuro VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro.vcf.gz"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -266,7 +257,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV non-neuro controls VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro_controls.vcf.gz"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -281,7 +271,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome sex ploidy cutoffs TSV"
               path="/release/4.0/sex_inference/gnomad.exomes.v4.0.sample_qc.sex_inference.ploidy_cutoffs.tsv"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -290,7 +279,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome calling intervals Hail Table"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.interval_list.ht"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
@@ -299,7 +287,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome calling intervals flat file"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
-              includeAWS={false}
               includeAzure={false}
             />
           </ListItem>
