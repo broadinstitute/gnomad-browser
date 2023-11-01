@@ -46,7 +46,9 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a minimal gene', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        <ConstraintTable datasetId={datasetId} geneOrTranscript={geneFactory.build()} />
+        withDummyRouter(
+          <ConstraintTable datasetId={datasetId} geneOrTranscript={geneFactory.build()} />
+        )
       )
       expect(tree).toMatchSnapshot()
     })
@@ -55,7 +57,9 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a minimal transcript', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        <ConstraintTable datasetId={datasetId} geneOrTranscript={transcriptFactory.build()} />
+        withDummyRouter(
+          <ConstraintTable datasetId={datasetId} geneOrTranscript={transcriptFactory.build()} />
+        )
       )
       expect(tree).toMatchSnapshot()
     })
@@ -64,10 +68,12 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a mitochondrial gene', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        <ConstraintTable
-          datasetId={datasetId}
-          geneOrTranscript={geneFactory.build({ chrom: 'M' })}
-        />
+        withDummyRouter(
+          <ConstraintTable
+            datasetId={datasetId}
+            geneOrTranscript={geneFactory.build({ chrom: 'M' })}
+          />
+        )
       )
       expect(tree).toMatchSnapshot()
     })
@@ -76,10 +82,12 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a mitochondrial transcript', () => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        <ConstraintTable
-          datasetId={datasetId}
-          geneOrTranscript={transcriptFactory.build({ chrom: 'M' })}
-        />
+        withDummyRouter(
+          <ConstraintTable
+            datasetId={datasetId}
+            geneOrTranscript={transcriptFactory.build({ chrom: 'M' })}
+          />
+        )
       )
       expect(tree).toMatchSnapshot()
     })
