@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { BaseTable, TextButton, TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { CopyNumberVariant } from './CopyNumberVariantPage'
 
 const Table = styled(BaseTable)`
   min-width: 100%;
@@ -80,6 +81,7 @@ type OwnPopulationsTableProps = {
     }[]
   }[]
   initiallyExpandRows?: boolean
+  variant: CopyNumberVariant
 }
 
 type CNVPopulationsTableState = any
@@ -87,15 +89,16 @@ type CNVPopulationsTableState = any
 type CNVPopulationsTableProps = OwnPopulationsTableProps & typeof CNVPopulationsTable.defaultProps
 
 export class CNVPopulationsTable extends Component<
-  CNVPopulationsTableProps,
+  CNVPopulationsTableProps & { variant: CopyNumberVariant},
   CNVPopulationsTableState
 > {
   static defaultProps = {
     columnLabels: {},
     initiallyExpandRows: false,
+    variant: {}
   }
 
-  constructor(props: CNVPopulationsTableProps) {
+  constructor(props: CNVPopulationsTableProps ) {
     super(props)
 
     this.state = {
@@ -173,7 +176,7 @@ export class CNVPopulationsTable extends Component<
   }
 
   render() {
-    const { columnLabels, populations } = this.props
+    const { columnLabels, populations, variant } = this.props
     const { expandedPopulations, sortAscending, sortBy } = this.state
 
     const renderedPopulations = populations
@@ -232,14 +235,8 @@ export class CNVPopulationsTable extends Component<
       })
 
     // XX/XY numbers are included in the ancestry populations.
-    const totalSC = renderedPopulations
-      .filter((pop) => !isSexSpecificPopulation(pop))
-      .map((pop) => pop.sc)
-      .reduce((acc, n) => acc + n, 0)
-    const totalSN = renderedPopulations
-      .filter((pop) => !isSexSpecificPopulation(pop))
-      .map((pop) => pop.sn)
-      .reduce((acc, n) => acc + n, 0)
+    const totalSC = variant.sc
+    const totalSN = variant.sn
     const totalSF = totalSN !== 0 ? totalSC / totalSN : 0
 
     return (
