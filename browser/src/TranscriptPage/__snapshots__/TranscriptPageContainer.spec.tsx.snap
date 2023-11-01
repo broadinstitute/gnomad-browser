@@ -19057,7 +19057,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                 className="Select-sc-1lkyg9e-0 ivadCR"
                 id="coverage-metric"
                 onChange={[Function]}
-                value="over_30"
+                value="over_20"
               >
                 <optgroup
                   label="Per-base depth of coverage"
@@ -19161,7 +19161,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
             <div
               className="CoverageTrack__TitlePanel-sc-1kumbsx-4 bwGOoh"
             >
-              Fraction of individuals with coverage over 30
+              Fraction of individuals with coverage over 20
             </div>
           </div>
           <div
