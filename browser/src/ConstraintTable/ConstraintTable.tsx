@@ -1,5 +1,7 @@
 import React from 'react'
 
+import queryString from 'query-string'
+
 import { DatasetId, hasConstraints, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import { Gene } from '../GenePage/GenePage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
@@ -43,8 +45,8 @@ const transcriptDetails = (
       transcriptId = geneOrTranscript.canonical_transcript_id
       const canonicalTranscript = transcriptId
         ? geneOrTranscript.transcripts.find(
-            (transcript) => transcript.transcript_id === transcriptId
-          )
+          (transcript) => transcript.transcript_id === transcriptId
+        )
         : null
       transcriptVersion = canonicalTranscript ? canonicalTranscript.transcript_version : null
       transcriptDescription = 'Ensembl canonical'
@@ -58,8 +60,25 @@ const transcriptDetails = (
 }
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
+
+  const geneId = isGene(geneOrTranscript) ? geneOrTranscript.gene_id : geneOrTranscript.gene.gene_id
+
+  const constraintLink = <Link
+    preserveSelectedDataset={false}
+    target="_blank"
+    rel="noopener noreferrer"
+    to={{
+      pathname: `/gene/${geneId}`,
+      search: queryString.stringify({
+        dataset: 'gnomad_r2_1',
+      }),
+    }}
+  >
+    {labelForDataset("gnomad_r2_1")}
+  </Link>
+
   if (!hasConstraints(datasetId)) {
-    return <p>Constraint not yet available for {labelForDataset(datasetId)}.</p>
+    return <p>Constraint not yet available for {labelForDataset(datasetId)}. Refer to {constraintLink} for now.</p>
   }
 
   const { transcriptId, transcriptVersion, transcriptDescription } =
