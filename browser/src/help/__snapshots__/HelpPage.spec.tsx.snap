@@ -1135,7 +1135,7 @@ The gnomAD v2.1 data set contained data from 125,748 exomes and 15,708 whole gen
 question: 'What features are not yet in v4 and where can I find them?'
 ---
 
-The v4.0 release is a minimum viable product (MVP) release, which allows us to get the most critical piece of the gnomAD database, high quality aggregate allele frequencies and updated constraint metrics, to our users as soon as possible. It also means that a few of the existing features found in v2 or v3 are not yet included in v4 but **will be coming soon**.
+The v4.0 release is a minimum viable product (MVP) release, which allows us to get the most critical piece of the gnomAD database, high quality aggregate allele frequencies, to our users as soon as possible. It also means that a few of the existing features found in v2 or v3 are not yet included in v4 but **will be coming soon**.
 
 Below is a list of all features not included in the v4 MVP and where to find them in our past datasets until we are able to add them to v4:
 
@@ -1143,6 +1143,7 @@ Below is a list of all features not included in the v4 MVP and where to find the
 
 | Non MVP feature                                 | Past versions with this data                          |
 | ----------------------------------------------- | ----------------------------------------------------- |
+| Gene constraint                                 | v2 gene page                                          |
 | Pext score                                      | v2 gene page                                          |
 | Sub-genetic ancestry groups (prevously subpops) | v2 variant page                                       |
 | Multi Nucleotide (MNV) calls                    | v2 variant table and variant page                     |
@@ -1488,7 +1489,7 @@ question: 'How do you pronounce gnomAD?'
 question: 'How was the expected number of variants determined?'
 ---
 
-We used a mutational model that accounts for local sequence context, CpG methylation, and sequencing depth to predict the number of expected single nucleotide variants per functional class per gene. More details can be found in the help section on [gene constraint](/help/constraint) and in [Karczewski _et al._ Nature 2020](https://doi.org/10.1038/s41586-020-2308-7). Note that the expected variant counts for bases with a median depth <1 were removed from the totals. In v4, we applied our mutational model only to sites with a median depth in the exomes ≥30.
+We used a mutational model that accounts for local sequence context, CpG methylation, and sequencing depth to predict the number of expected single nucleotide variants per functional class per gene. More details can be found in the help section on [gene constraint](/help/constraint) and in [Karczewski _et al._ Nature 2020](https://doi.org/10.1038/s41586-020-2308-7). Note that the expected variant counts for bases with a median depth <1 were removed from the totals.
 ",
                       }
                     }
@@ -1542,7 +1543,7 @@ Please review our [gene constraint](/help/constraint#methods) help text to learn
 question: 'Why are there fewer variants in the constraint table than displayed on the gene page?'
 ---
 
-We only included single nucleotide variants that were found in the MANE Select (v3 and v4 on GRCh38) or canonical (ExAC and v2 on GRCh37/hg19) transcript of the gene. On the gene page, variants found in all transcripts are displayed. Additionally, both observed and expected variant counts were removed for sites with a median depth < 30.
+We only included single nucleotide variants that were found in the canonical (ExAC and v2 on GRCh37/hg19) transcript of the gene. On the gene page, variants found in all transcripts are displayed.
 ",
                       }
                     }
@@ -1596,19 +1597,17 @@ Nonsense, splice acceptor, and splice donor variants caused by single nucleotide
 question: 'Why are constraint metrics missing for this gene or annotated with a note?'
 ---
 
-Genes that were outliers in certain assessments will not have constraint metrics or will be flagged with a note warning of various error modes. Please note that these assessments were applied to the canonical transcripts of the genes. If a gene was not annotated as a protein-coding gene in GENCODE v19, we did not calculate constraint. The following list describes the reason names given in the constraint_flag column of the [constraint files](/downloads#v4-constraint):
+Genes that were outliers in certain assessments will not have constraint metrics or will be flagged with a note warning of various error modes. Please note that these assessments were applied to the canonical transcripts of the genes. If a gene was not annotated as a protein-coding gene in GENCODE v19, we did not calculate constraint. The following list describes the reason names given in the constraint_flag column of the [constraint files](/downloads#v2-constraint):
 
-- \`no_variants\`: Zero observed synonymous, missense, pLoF variants
-- \`no_exp_lof\`: Zero expected pLoF variants
-- \`outlier_lof\`: Number of pLoF variants is significantly different than expectation
-- \`no_exp_mis\`: Zero expected missense variants
-- \`outlier_mis\`: Number of missense variants is significantly different than expectation
-- \`no_exp_syn\`: Zero expected synonymous variants
-- \`outlier_syn\`: Number of synonymous variants is significantly different than expectation
+- no_variants: Zero observed synonymous, missense, pLoF variants
+- no_exp_lof: Zero expected pLoF variants
+- lof_too_many: More pLoF variants than expected
+- no_exp_mis: Zero expected missense variants
+- mis_too_many: More missense variants than expected
+- no_exp_syn: Zero expected synonymous variants
+- syn_outlier: More or fewer synonymous variants than expected
 
 Possible reasons that one might observe the deviations listed above include mismapped reads due to homologous regions or poor quality sequencing data.
-
-Currently, constraint scores are only available for autosomes. We will release scores for chromosomes X in the near future.
 ",
                       }
                     }
@@ -1691,7 +1690,7 @@ LOEUF is pronounced like its French-inspired name "l'œuf". Another accepted pro
 question: 'What are the fields included in constraint files?'
 ---
 
-Descriptions of the fields in these files can be found in the [README file](/downloads#v4-variants) supplied with the download.
+Descriptions of the fields in these files can be found in the Supplementary Dataset 11 section on pages 74-77 of the [Supplementary Information](https://www.nature.com/articles/s41586-020-2308-7#Sec12) of [_The mutational constraint spectrum quantified from variation in 141,456 humans._ Nature 581, 434–443 (2020)](https://doi.org/10.1038/s41586-020-2308-7).
 ",
                       }
                     }
