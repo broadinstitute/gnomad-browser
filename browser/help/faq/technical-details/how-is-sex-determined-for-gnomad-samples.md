@@ -8,7 +8,7 @@ We used normalized coverage across the X and Y chromosomes to assign sex for eac
 
 #### Exomes
 
-Due to the heterogeneity of the v4 exome data, we calculated sex cutoffs for each exome capture platform separately. You can access the sex inference files on our [downloads page](/downloads#v4-sex-inference).
+Due to the heterogeneity of the v4 exome data, we calculated sex cutoffs for each exome capture platform separately. You can access the sex inference files on our [downloads page](/downloads#v4-resources).
 
 - Normalized X coverage was calculated using depth of only variant sites in non-pseudoautosomal regions using Hail's impute_sex_chromosome_ploidy function
 - Normalized Y coverage was calculated using depth of only reference sites in non-pseudoautosomal regions using Hail's impute_sex_chromosome_ploidy function
