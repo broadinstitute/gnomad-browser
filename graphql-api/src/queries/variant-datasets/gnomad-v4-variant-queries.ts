@@ -430,7 +430,10 @@ const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) =
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter((variant: any) => variant.genome.freq[subset].ac_raw > 0)
+    .filter(
+      (variant: any) =>
+        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+    )
     .map(shapeVariantSummary(subset, { type: 'region' }))
 }
 
@@ -498,7 +501,10 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter((variant: any) => variant.genome.freq[subset].ac_raw > 0)
+    .filter(
+      (variant: any) =>
+        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+    )
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
     )
@@ -540,13 +546,16 @@ const fetchMatchingVariants = async (
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter((variant: any) => variant.genome.freq[subset].ac_raw > 0)
+    .filter(
+      (variant: any) =>
+        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+    )
     .map((variant: any) => ({
       variant_id: variant.variant_id,
     }))
 }
 
-const gnomadV3VariantQueries = {
+const gnomadV4VariantQueries = {
   countVariantsInRegion,
   fetchVariantById,
   fetchVariantsByGene,
@@ -555,4 +564,4 @@ const gnomadV3VariantQueries = {
   fetchMatchingVariants,
 }
 
-export default gnomadV3VariantQueries
+export default gnomadV4VariantQueries
