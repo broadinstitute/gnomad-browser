@@ -8,7 +8,7 @@
 
 2. Run data pipeline
 
-   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1, GRCh37 ClinVar variants should be annotated with VEP 85. To match gnomAD v3.1, GRCh38 ClinVar variants should be annotated with VEP 101.
+   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.0 (GRCh38) ClinVar variants should be annotated with VEP 101.
 
    1. Start Dataproc cluster
 
@@ -23,8 +23,8 @@
       GRCh38
 
       ```
-      ./deployctl dataproc-cluster start vep101 \
-         --init=gs://gcp-public-data--gnomad/resources/vep/v101/init-vep101.sh \
+      ./deployctl dataproc-cluster start vep105 \
+         --init=gs://gcp-public-data--gnomad/resources/vep/v105/vep105-init.sh \
          --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
          --master-machine-type n1-highmem-8 \
          --worker-machine-type n1-highmem-8 \
@@ -44,8 +44,10 @@
       GRCh38
 
       ```
-      ./deployctl data-pipeline run --cluster vep101 clinvar_grch38
+      ./deployctl data-pipeline run --cluster vep105 clinvar_grch38
       ```
+
+      \*Note: The `vep105-init.sh` script is inconsistent about starting Docker. As a workaround, after starting the Dataproc Cluster, SSH into every individual node and run `sudo systemctl start docker`
 
 3. Load variants to Elasticsearch
 
@@ -58,7 +60,7 @@
    GRCh38
 
    ```
-   ./deployctl elasticsearch load-datasets --dataproc-cluster vep101 clinvar_grch38_variants
+   ./deployctl elasticsearch load-datasets --dataproc-cluster vep105 clinvar_grch38_variants
    ```
 
 4. [Update Elasticsearch index aliases](./ElasticsearchIndexAliases.md)
