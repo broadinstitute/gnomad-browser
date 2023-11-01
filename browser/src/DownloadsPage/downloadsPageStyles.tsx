@@ -113,6 +113,7 @@ type OwnGetUrlButtonsProps = {
   path: string
   size?: string
   md5?: string
+  crc32c?: string
   includeGCP?: boolean
   includeAWS?: boolean
   includeAzure?: boolean
@@ -327,6 +328,7 @@ type OwnIndexedFileDownloadLinksProps = {
   path: string
   size?: string
   md5?: string
+  crc32?: string
   gcsBucket?: string
   includeGCP?: boolean
   includeAWS?: boolean
@@ -343,6 +345,7 @@ export const IndexedFileDownloadLinks = ({
   path,
   size,
   md5,
+  crc32,
   gcsBucket,
   includeGCP,
   includeAWS,
@@ -356,6 +359,14 @@ export const IndexedFileDownloadLinks = ({
         <>
           <span>
             {size}, MD5:&nbsp;{md5}
+          </span>
+          <br />
+        </>
+      )}
+      {size && crc32 && (
+        <>
+          <span>
+            {size}, CRC32:&nbsp;{crc32}
           </span>
           <br />
         </>
