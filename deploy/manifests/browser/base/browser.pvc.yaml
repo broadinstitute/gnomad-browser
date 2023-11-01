@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: browsercache
+spec:
+  resources:
+    requests:
+      storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: premium-rwo
