@@ -847,7 +847,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                         onClick={() => {
                           navigator.clipboard.writeText(variantId)
                         }}
-                        style={{ margin: '0 1em' }}
+                        style={{ margin: '0 0 0 1em' }}
                       >
                         Copy variant ID
                       </Button>
@@ -858,7 +858,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                         onClick={() => {
                           location.href = `/gene/${gene.ensembleId}?dataset=${datasetId}`
                         }}
-                        style={{ margin: '0 1em 0 -0.33em' }}
+                        style={{ margin: '0 1em 0 1em' }}
                       >
                         Gene page
                       </Button>
