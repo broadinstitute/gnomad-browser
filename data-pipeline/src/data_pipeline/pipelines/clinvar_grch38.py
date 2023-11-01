@@ -61,8 +61,8 @@ pipeline.add_task(
     "/clinvar/clinvar_grch38_annotated_2.ht",
     {
         "clinvar_path": pipeline.get_task("annotate_clinvar_grch38_transcript_consequences"),
-        "gnomad_genome_variants_path": "gs://gcp-public-data--gnomad/release/3.1.2/ht/genomes/gnomad.genomes.v3.1.2.sites.ht",
-        "gnomad_mitochondrial_variants_path": "gs://gcp-public-data--gnomad/release/3.1/ht/genomes/gnomad.genomes.v3.1.sites.chrM.ht",
+        "gnomad_exome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht",
+        "gnomad_genome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht",
     },
 )
 
