@@ -28,7 +28,7 @@ const exomeChromosomeVcfs = [
   { chrom: '10', size: '11.23 GiB', md5: 'd85984b39664d800ec8da815004029c1' },
   { chrom: '11', size: '16.58 GiB', md5: '882f7345687996ac5e728fe771debeb2' },
   { chrom: '12', size: '15.21 GiB', md5: '1b11c7c60a205703a977ba03c30f2f41' },
-  { chrom: '13', size: '5.18 MiB', md5: '4611cd7c3e0a1111ba52b2ec544484b4' },
+  { chrom: '13', size: '5.18 GiB', md5: '4611cd7c3e0a1111ba52b2ec544484b4' },
   { chrom: '14', size: '9.54 GiB', md5: '628757952a5114929bf1150901bc34bb' },
   { chrom: '15', size: '10.65 GiB', md5: '63574925084fa8e48dac46185c41975f' },
   { chrom: '16', size: '13.90 GiB', md5: 'ba59445b0fb0f1a1d78df5dc623c40dd' },
