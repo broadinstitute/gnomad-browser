@@ -6,7 +6,7 @@ metadata:
   labels:
     component: gnomad-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: gnomad-api
