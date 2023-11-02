@@ -68,6 +68,7 @@ const CopyNumberVariantsRegionCoverageTrack = ({ datasetId, chrom, start, stop }
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
             height={190}
             maxCoverage={3000}
+            datasetId={datasetId}
           />
         )
       }}

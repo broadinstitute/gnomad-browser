@@ -70,6 +70,7 @@ const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => 
             filenameForExport={() => `M-${start}-${stop}_coverage`}
             height={190}
             maxCoverage={3000}
+            datasetId={datasetId}
           />
         )
       }}

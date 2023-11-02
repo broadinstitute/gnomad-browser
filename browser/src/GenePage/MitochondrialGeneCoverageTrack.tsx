@@ -68,6 +68,7 @@ const MitochondrialGeneCoverageTrack = ({ datasetId, geneId }: Props) => {
             filenameForExport={() => `${geneId}_coverage`}
             height={190}
             maxCoverage={3000}
+            datasetId={datasetId}
           />
         )
       }}
