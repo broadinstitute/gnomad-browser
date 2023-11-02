@@ -67,6 +67,7 @@ const MitochondrialTranscriptCoverageTrack = ({ datasetId, transcriptId }: Props
             filenameForExport={() => `${transcriptId}_coverage`}
             height={190}
             maxCoverage={3000}
+            datasetId={datasetId}
           />
         )
       }}
