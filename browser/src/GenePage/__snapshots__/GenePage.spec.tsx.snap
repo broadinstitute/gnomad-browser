@@ -703,19 +703,8 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
           </div>
         </div>
         <p>
-          Constraint not yet available for 
-          gnomAD CNVs v4.0
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          Constraint not available for this 
+          gene
         </p>
       </div>
     </div>
@@ -6561,19 +6550,8 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
           </div>
         </div>
         <p>
-          Constraint not yet available for 
-          gnomAD SVs v4.0
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          Constraint not available for this 
+          gene
         </p>
       </div>
     </div>
@@ -9524,19 +9502,8 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
           </div>
         </div>
         <p>
-          Constraint not yet available for 
-          gnomAD CNVs v4.0
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          Constraint not available for this 
+          gene
         </p>
       </div>
     </div>
@@ -18947,17 +18914,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -20451,17 +20408,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (controls/biobanks)
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -21955,17 +21902,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-cancer)
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -23459,17 +23396,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-neuro)
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -24963,17 +24890,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-TOPMed)
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -26467,17 +26384,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         <p>
           Constraint not yet available for 
           gnomAD v3.1.2 (non-v2)
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          .
         </p>
       </div>
     </div>
@@ -27969,19 +27876,8 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
           </div>
         </div>
         <p>
-          Constraint not yet available for 
-          gnomAD v4.0.0
-          . Refer to 
-          <a
-            className="Link-sc-14lgydv-0-Link jBvaYQ"
-            href="/gene/dummy_gene-1?dataset=gnomad_r2_1"
-            onClick={[Function]}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            gnomAD v2.1.1
-          </a>
-           for now.
+          Constraint not available for this 
+          gene
         </p>
       </div>
     </div>

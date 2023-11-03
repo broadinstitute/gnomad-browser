@@ -196,6 +196,8 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasCopyNumberVariantCoverage: datasetId.startsWith('gnomad_cnv'),
   hasVariantCoocurrence: datasetId.startsWith('gnomad') && datasetId.includes('r2'),
   hasConstraints:
+    datasetId.includes('r4') ||
+    datasetId.startsWith('gnomad_sv_r4') ||
     datasetId.startsWith('gnomad_r2') ||
     datasetId.startsWith('gnomad_sv_r2') ||
     datasetId === 'exac',
