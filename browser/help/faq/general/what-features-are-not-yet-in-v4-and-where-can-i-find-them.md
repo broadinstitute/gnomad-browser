@@ -10,7 +10,6 @@ Below is a list of all features not included in the v4 MVP and where to find the
 
 | Non MVP feature                                 | Past versions with this data                          |
 | ----------------------------------------------- | ----------------------------------------------------- |
-| Gene constraint                                 | v2 gene page                                          |
 | Pext score                                      | v2 gene page                                          |
 | Sub-genetic ancestry groups (prevously subpops) | v2 variant page                                       |
 | Multi Nucleotide (MNV) calls                    | v2 variant table and variant page                     |
