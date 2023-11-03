@@ -123,10 +123,11 @@ const GeneticAncestryGroupsByVersionTable = () => {
         </StatsTableFooter>
 
         <StatsTableCaption>
-          <div>*v4 includes all v3 samples</div>
+          <div>*v4 includes all v3 samples.</div>
           <div>
-            ^ Due to small sample sizes Finnish was included in European and Amish was included in
-            Remaining Individuals
+            ^ Due to small sample size, Amish are included in remaining individuals, and based on
+            population proximity Finns are included in European totals. Both are presented
+            separately in the v4 browser as before.
           </div>
         </StatsTableCaption>
       </StatsTable>
