@@ -591,15 +591,15 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   if (includeStructuralVariants || includeCopyNumberVariants) {
     const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
       ? selectedDataset
-      : 'gnomad_sv_r2_1'
+      : 'gnomad_sv_r4'
 
     const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
       ? selectedDataset
       : 'gnomad_cnv_r4'
 
-    const currentDataset = hasStructuralVariants(selectedDataset)
-      ? topLevelStructuralVariantDataset
-      : topLevelCopyNumberVariantDataset
+    const currentDataset = hasCopyNumberVariants(selectedDataset)
+      ? topLevelCopyNumberVariantDataset
+      : topLevelStructuralVariantDataset
 
     datasets.push(
       {
