@@ -4491,10 +4491,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c39"
             >
               <div>
-                *v4 includes all v3 samples
+                *v4 includes all v3 samples.
               </div>
               <div>
-                ^ Due to small sample sizes Finnish was included in European and Amish was included in Remaining Individuals
+                ^ Due to small sample size, Amish are included in remaining individuals, and based on population proximity Finns are included in European totals. Both are presented separately in the v4 browser as before.
               </div>
             </caption>
           </table>
@@ -4770,8 +4770,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={310.7488231020854}
-                        y2={310.7488231020854}
+                        y1={315.3992878752964}
+                        y2={315.3992878752964}
                       />
                       <svg
                         fontSize={10}
@@ -4788,7 +4788,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={310.7488231020854}
+                          y={315.3992878752964}
                         >
                           <tspan
                             dy="0em"
@@ -4810,8 +4810,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={261.49764620417074}
-                        y2={261.49764620417074}
+                        y1={270.7985757505928}
+                        y2={270.7985757505928}
                       />
                       <svg
                         fontSize={10}
@@ -4828,7 +4828,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={261.49764620417074}
+                          y={270.7985757505928}
                         >
                           <tspan
                             dy="0em"
@@ -4850,8 +4850,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={212.24646930625616}
-                        y2={212.24646930625616}
+                        y1={226.1978636258892}
+                        y2={226.1978636258892}
                       />
                       <svg
                         fontSize={10}
@@ -4868,7 +4868,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={212.24646930625616}
+                          y={226.1978636258892}
                         >
                           <tspan
                             dy="0em"
@@ -4890,8 +4890,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={162.9952924083415}
-                        y2={162.9952924083415}
+                        y1={181.59715150118564}
+                        y2={181.59715150118564}
                       />
                       <svg
                         fontSize={10}
@@ -4908,7 +4908,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={162.9952924083415}
+                          y={181.59715150118564}
                         >
                           <tspan
                             dy="0em"
@@ -4930,8 +4930,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={113.7441155104269}
-                        y2={113.7441155104269}
+                        y1={136.99643937648204}
+                        y2={136.99643937648204}
                       />
                       <svg
                         fontSize={10}
@@ -4948,7 +4948,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={113.7441155104269}
+                          y={136.99643937648204}
                         >
                           <tspan
                             dy="0em"
@@ -4970,8 +4970,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={64.49293861251228}
-                        y2={64.49293861251228}
+                        y1={92.39572725177847}
+                        y2={92.39572725177847}
                       />
                       <svg
                         fontSize={10}
@@ -4988,7 +4988,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={64.49293861251228}
+                          y={92.39572725177847}
                         >
                           <tspan
                             dy="0em"
@@ -5010,8 +5010,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         strokeLinecap="square"
                         x1={0}
                         x2={-8}
-                        y1={15.241761714597644}
-                        y2={15.241761714597644}
+                        y1={47.795015127074876}
+                        y2={47.795015127074876}
                       />
                       <svg
                         fontSize={10}
@@ -5028,13 +5028,53 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={10}
                           textAnchor="end"
                           x={-8}
-                          y={15.241761714597644}
+                          y={47.795015127074876}
                         >
                           <tspan
                             dy="0em"
                             x={-8}
                           >
                             700K
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={0}
+                        x2={-8}
+                        y1={3.194303002371255}
+                        y2={3.194303002371255}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          x={-8}
+                          y={3.194303002371255}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-8}
+                          >
+                            800K
                           </tspan>
                         </text>
                       </svg>
@@ -5064,11 +5104,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   >
                     <rect
                       fill="#0e8b45"
-                      height={2.1310984243727944}
+                      height={1.9298728136359387}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={357.8689015756272}
+                      y={358.07012718636406}
                     />
                     <rect
                       className="c13"
@@ -5081,11 +5121,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ff9a10"
-                      height={4.066177164691794}
+                      height={3.682234793015539}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={353.8027244109354}
+                      y={354.3878923933485}
                     />
                     <rect
                       className="c13"
@@ -5102,7 +5142,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={353.8027244109354}
+                      y={354.3878923933485}
                     />
                     <rect
                       className="c13"
@@ -5115,11 +5155,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#931193"
-                      height={2.562538733998508}
+                      height={2.320575051848323}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={351.2401856769369}
+                      y={352.0673173415002}
                     />
                     <rect
                       className="c13"
@@ -5132,11 +5172,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ed1e23"
-                      height={2.851150630620282}
+                      height={2.581935224899098}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={348.3890350463166}
+                      y={349.4853821166011}
                     />
                     <rect
                       className="c13"
@@ -5153,7 +5193,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={348.3890350463166}
+                      y={349.4853821166011}
                     />
                     <rect
                       className="c13"
@@ -5166,11 +5206,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#acb8b9"
-                      height={0.2236003431165159}
+                      height={0.20248723304615623}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={348.1654347032001}
+                      y={349.28289488355495}
                     />
                     <rect
                       className="c13"
@@ -5183,11 +5223,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#6aa5ce"
-                      height={18.063854150848158}
+                      height={16.358203185977516}
                       stroke="#333"
                       width={39.6}
                       x={-34.8}
-                      y={330.10158055235195}
+                      y={332.92469169757743}
                     />
                     <rect
                       className="c13"
@@ -5200,11 +5240,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#0e8b45"
-                      height={4.913789919104943}
+                      height={4.449813048681676}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={355.08621008089506}
+                      y={355.5501869513183}
                     />
                     <rect
                       className="c13"
@@ -5217,11 +5257,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ff9a10"
-                      height={7.53937015953278}
+                      height={6.827477012049599}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={347.5468399213623}
+                      y={348.7227099392687}
                     />
                     <rect
                       className="c13"
@@ -5238,7 +5278,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={347.5468399213623}
+                      y={348.7227099392687}
                     />
                     <rect
                       className="c13"
@@ -5251,11 +5291,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#931193"
-                      height={6.149994459242578}
+                      height={5.569290923011749}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={341.3968454621197}
+                      y={343.153419016257}
                     />
                     <rect
                       className="c13"
@@ -5268,11 +5308,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ed1e23"
-                      height={8.727308546310496}
+                      height={7.903246188497462}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={332.6695369158092}
+                      y={335.2501728277595}
                     />
                     <rect
                       className="c13"
@@ -5285,11 +5325,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#edc800"
-                      height={2.5536735221568847}
+                      height={2.3125469236658773}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={330.1158633936523}
+                      y={332.93762590409364}
                     />
                     <rect
                       className="c13"
@@ -5302,11 +5342,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#acb8b9"
-                      height={1.7799375330906173}
+                      height={1.6118697361868044}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={328.3359258605617}
+                      y={331.32575616790683}
                     />
                     <rect
                       className="c13"
@@ -5319,11 +5359,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#6aa5ce"
-                      height={38.00467065327581}
+                      height={34.41613951102755}
                       stroke="#333"
                       width={39.6}
                       x={-64.8}
-                      y={290.3312552072859}
+                      y={296.9096166568793}
                     />
                     <rect
                       className="c13"
@@ -5336,11 +5376,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#0e8b45"
-                      height={1.2825006464216813}
+                      height={1.161402543727263}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={358.7174993535783}
+                      y={358.83859745627274}
                     />
                     <rect
                       className="c13"
@@ -5353,11 +5393,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ff9a10"
-                      height={1.1913859691605353}
+                      height={1.078891226296605}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={357.5261133844178}
+                      y={357.75970622997613}
                     />
                     <rect
                       className="c13"
@@ -5370,11 +5410,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#050080"
-                      height={0.07781685949868233}
+                      height={0.07046912515704662}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={357.4482965249191}
+                      y={357.6892371048191}
                     />
                     <rect
                       className="c13"
@@ -5387,11 +5427,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#931193"
-                      height={10.216664135703411}
+                      height={9.251971723148529}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={347.2316323892157}
+                      y={348.43726538167056}
                     />
                     <rect
                       className="c13"
@@ -5404,11 +5444,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ed1e23"
-                      height={3.7662374973835426}
+                      height={3.4106164561761148}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={343.46539489183215}
+                      y={345.02664892549444}
                     />
                     <rect
                       className="c13"
@@ -5421,11 +5461,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#edc800"
-                      height={0.8550004309478254}
+                      height={0.774268362484861}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={342.6103944608843}
+                      y={344.2523805630096}
                     />
                     <rect
                       className="c13"
@@ -5438,11 +5478,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#acb8b9"
-                      height={0.7402451887756456}
+                      height={0.6703487032342537}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={341.8701492721087}
+                      y={343.5820318597753}
                     />
                     <rect
                       className="c13"
@@ -5455,11 +5495,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#6aa5ce"
-                      height={19.377875550484532}
+                      height={17.548150185464635}
                       stroke="#333"
                       width={39.6}
                       x={-94.8}
-                      y={322.49227372162414}
+                      y={326.0338816743107}
                     />
                     <rect
                       className="c13"
@@ -5472,11 +5512,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#0e8b45"
-                      height={9.776358614236017}
+                      height={10.011967857753461}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={350.223641385764}
+                      y={349.98803214224654}
                     />
                     <rect
                       className="c13"
@@ -5489,11 +5529,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ff9a10"
-                      height={21.241540084301562}
+                      height={20.313840344317498}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={328.9821013014624}
+                      y={329.67419179792904}
                     />
                     <rect
                       className="c13"
@@ -5506,11 +5546,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#050080"
-                      height={1.4204039417358558}
+                      height={1.351847584499751}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={327.56169735972657}
+                      y={328.3223442134293}
                     />
                     <rect
                       className="c13"
@@ -5523,11 +5563,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#931193"
-                      height={8.244647012710914}
+                      height={16.745337367219975}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={319.31705034701565}
+                      y={311.5770068462093}
                     />
                     <rect
                       className="c13"
@@ -5540,11 +5580,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#ed1e23"
-                      height={11.013548177911673}
+                      height={13.388687772714775}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={308.303502169104}
+                      y={298.18831907349454}
                     />
                     <rect
                       className="c13"
@@ -5557,11 +5597,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#edc800"
-                      height={6.436143797019497}
+                      height={6.6026894229411255}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={301.8673583720845}
+                      y={291.5856296505534}
                     />
                     <rect
                       className="c13"
@@ -5574,11 +5614,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#acb8b9"
-                      height={14.87287039963229}
+                      height={14.143777828986003}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={286.9944879724522}
+                      y={277.4418518215674}
                     />
                     <rect
                       className="c13"
@@ -5591,11 +5631,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     />
                     <rect
                       fill="#6aa5ce"
-                      height={286.9944879724522}
+                      height={277.4418518215674}
                       stroke="#333"
                       width={39.6}
                       x={-124.8}
-                      y={0}
+                      y={-1.4210854715202004e-14}
                     />
                     <rect
                       className="c13"
