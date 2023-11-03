@@ -123,9 +123,9 @@ describe.each([
   ['gnomad_sv_r2_1', true],
   ['gnomad_sv_r2_1_controls', true],
   ['gnomad_sv_r2_1_non_neuro', true],
-  ['gnomad_sv_r4', false],
-  ['gnomad_cnv_r4', false],
-  ['gnomad_r4', false],
+  ['gnomad_sv_r4', true],
+  ['gnomad_cnv_r4', true],
+  ['gnomad_r4', true],
 ] as [DatasetId, boolean][])('hasConstraints(%s)', (datasetId, expectedResult) => {
   const verbPhrase = expectedResult ? 'has' : 'does not have'
   test(`${datasetId} ${verbPhrase} constraints`, () =>
