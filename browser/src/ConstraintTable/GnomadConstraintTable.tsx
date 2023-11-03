@@ -120,14 +120,19 @@ const renderOEGraph = (constraint: any, category: any, color: any) => {
   )
 }
 
+// Duplicate flag descriptions (e.g. lof_too_many and outlier_lof) exist because
+//   several of these fields got renamed between v2 and v4
 const CONSTRAINT_FLAG_DESCRIPTIONS = {
   lof_too_many: 'More pLoF variants than expected',
+  outlier_lof: 'More pLoF variants than expected',
   mis_too_many: 'More missense variants than expected',
+  outlier_mis: 'More missense variants than expected',
   no_exp_lof: 'Zero expected pLoF variants',
   no_exp_mis: 'Zero expected missense variants',
   no_exp_syn: 'Zero expected synonymous variants',
   no_variants: 'Zero observed synonymous, missense, pLoF variants',
   syn_outlier: 'More or fewer synonymous variants than expected',
+  outlier_syn: 'More or fewer synonymous variants than expected',
 }
 
 export type GnomadConstraint = {
