@@ -208,6 +208,37 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-constraint">Constraint</SectionTitle>
+        <p>
+          For information on constraint, see our <Link to="/help/constraint">help text</Link>
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks label="README" path="/release/v4.0/constraint/README.txt" />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Constraint metrics Hail Table"
+              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
+              includeAWS={false}
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Constraint metrics TSV"
+              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              includeAWS={false}
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-structural-variants">Structural variants</SectionTitle>
         <p>
           For information on structural variants, see our{' '}
