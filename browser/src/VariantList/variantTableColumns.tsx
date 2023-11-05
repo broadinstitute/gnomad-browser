@@ -14,6 +14,7 @@ import {
 } from './sortUtilities'
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
+import { Variant } from '../VariantPage/VariantPage'
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -45,8 +46,22 @@ const getConsequenceDescription = (contextType: any) => {
       return ' for consequence in this transcript'
   }
 }
+export type VariantTableColumn = {
+  key: string
+  heading: string
+  description?: string
+  grow?: number
+  minWidth?: number
+  compareFunction?: (a: any, b: any) => number
+  render: (variant: any, key: string, options: any) => JSX.Element | null
+  shouldShowInContext?: (context: string, contextType: string) => boolean
+  contextNotes?: string
+  getSearchTerms?: (variant: Variant) => Variant[]
+  descriptionInContext?: (context: string, contextType: string) => string
+  isRowHeader?: boolean
+}
 
-const variantTableColumns = [
+const variantTableColumns: VariantTableColumn[] = [
   {
     key: 'ac',
     heading: 'Allele Count',
@@ -93,7 +108,7 @@ const variantTableColumns = [
           })}
       </NumericCell>
     ),
-    shouldShowInContext: (context: any, contextType: any) => contextType === 'gene',
+    shouldShowInContext: (context: string, contextType: string) => contextType === 'gene',
   },
 
   {
@@ -124,7 +139,7 @@ const variantTableColumns = [
     key: 'consequence',
     heading: 'VEP Annotation',
     description: 'Variant Effect Predictor (VEP) annotation',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (context: string, contextType: string) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
     minWidth: 140,
@@ -177,7 +192,7 @@ const variantTableColumns = [
     grow: 0,
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hemi'),
-    render: (variant: any) => renderAlleleCountCell(variant, 'ac_hemi'),
+    render: (variant: Variant) => renderAlleleCountCell(variant, 'ac_hemi'),
     shouldShowInContext: (context: any) => context.chrom === 'X' || context.chrom === 'Y',
   },
 

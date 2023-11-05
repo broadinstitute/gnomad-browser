@@ -7,6 +7,7 @@ import { AxisLeft } from '@vx/axis'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 import { Button, Select } from '@gnomad/ui'
+import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
 
 const TopPanel = styled.div`
   display: flex;
@@ -88,6 +89,7 @@ type OwnCoverageTrackProps = {
   filenameForExport?: (...args: any[]) => any
   height?: number
   maxCoverage?: number
+  datasetId: DatasetId
 }
 
 type CoverageTrackState = any
@@ -105,7 +107,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   plotElement: any
 
   state = {
-    selectedMetric: 'mean',
+    selectedMetric: isV4(this.props.datasetId) ? 'over_20' : 'mean',
   }
 
   plotRef = (el: any) => {
@@ -162,19 +164,16 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
 
     const barWidth = width / totalBases - 1
 
-    return datasets.map((dataset) => (
+    return datasets.map((dataset: any) => (
       <g key={dataset.name}>
         {dataset.buckets
           .filter(
-            (bucket) =>
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            (bucket: any) =>
               bucket[selectedMetric] !== undefined &&
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
               bucket[selectedMetric] !== null &&
               isPositionDefined(bucket.pos)
           )
-          .map((bucket) => {
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+          .map((bucket: any) => {
             const barHeight = height - scaleCoverageMetric(bucket[selectedMetric])
             const x = scalePosition(bucket.pos)
             return (

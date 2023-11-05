@@ -35,25 +35,32 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
         )
     )
 
-    transcript_consequences = transcript_consequences.map(
-        lambda c: c.select(
-            "biotype",
-            "consequence_terms",
-            "domains",
-            "gene_id",
-            "gene_symbol",
-            "hgvsc",
-            "hgvsp",
-            "is_canonical",
-            "lof_filter",
-            "lof_flags",
-            "lof",
-            "major_consequence",
-            "polyphen_prediction",
-            "sift_prediction",
-            "transcript_id",
-        )
-    )
+    consequences = [
+        "biotype",
+        "consequence_terms",
+        "domains",
+        "gene_id",
+        "gene_symbol",
+        "hgvsc",
+        "hgvsp",
+        "is_canonical",
+        "lof_filter",
+        "lof_flags",
+        "lof",
+        "major_consequence",
+        "transcript_id",
+    ]
+
+    # gnomAD v2 and v3 have these consequences. gnomAD v4 does not.
+    v2_and_v3_only_consequences = ["polyphen_prediction", "sift_prediction"]
+
+    available_consequences = list(transcript_consequences[0])
+
+    for csq in v2_and_v3_only_consequences:
+        if csq in available_consequences:
+            consequences.append(csq)
+
+    transcript_consequences = transcript_consequences.map(lambda c: c.select(*consequences))
 
     transcripts = hl.read_table(transcripts_path)
 

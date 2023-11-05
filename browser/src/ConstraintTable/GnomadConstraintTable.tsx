@@ -79,7 +79,11 @@ Graph.defaultProps = {
   color: undefined,
 }
 
-const renderOEMetrics = (constraint: GnomadConstraint, category: ConstraintFieldWithOEMetrics, highlightColor: string | null) => {
+const renderOEMetrics = (
+  constraint: GnomadConstraint,
+  category: ConstraintFieldWithOEMetrics,
+  highlightColor: string | null
+) => {
   const value = constraint[`oe_${category}` as OEMetricField]
   const lower = constraint[`oe_${category}_lower` as OEMetricField]
   const upper = constraint[`oe_${category}_upper` as OEMetricField]
@@ -116,14 +120,19 @@ const renderOEGraph = (constraint: any, category: any, color: any) => {
   )
 }
 
+// Duplicate flag descriptions (e.g. lof_too_many and outlier_lof) exist because
+//   several of these fields got renamed between v2 and v4
 const CONSTRAINT_FLAG_DESCRIPTIONS = {
   lof_too_many: 'More pLoF variants than expected',
+  outlier_lof: 'More pLoF variants than expected',
   mis_too_many: 'More missense variants than expected',
+  outlier_mis: 'More missense variants than expected',
   no_exp_lof: 'Zero expected pLoF variants',
   no_exp_mis: 'Zero expected missense variants',
   no_exp_syn: 'Zero expected synonymous variants',
   no_variants: 'Zero observed synonymous, missense, pLoF variants',
   syn_outlier: 'More or fewer synonymous variants than expected',
+  outlier_syn: 'More or fewer synonymous variants than expected',
 }
 
 export type GnomadConstraint = {
@@ -150,7 +159,10 @@ export type GnomadConstraint = {
 }
 
 type ConstraintFieldWithOEMetrics = 'lof' | 'mis' | 'syn'
-type OEMetricField = `oe_${ConstraintFieldWithOEMetrics}` | `oe_${ConstraintFieldWithOEMetrics}_lower` | `oe_${ConstraintFieldWithOEMetrics}_upper`
+type OEMetricField =
+  | `oe_${ConstraintFieldWithOEMetrics}`
+  | `oe_${ConstraintFieldWithOEMetrics}_lower`
+  | `oe_${ConstraintFieldWithOEMetrics}_upper`
 
 type GnomadConstraintTableProps = {
   constraint: GnomadConstraint
@@ -246,12 +258,24 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
       </Table>
       {constraintFlags.length > 0 && (
         <React.Fragment>
-          {constraintFlags.map((flag) => (
-            <p key={flag} style={{ maxWidth: '460px' }}>
-              {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-              <Badge level="info">Note</Badge> {CONSTRAINT_FLAG_DESCRIPTIONS[flag]}
-            </p>
-          ))}
+          {constraintFlags.map((flag) => {
+            let flagDescription
+            if (flag in CONSTRAINT_FLAG_DESCRIPTIONS) {
+              /* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */
+              flagDescription = CONSTRAINT_FLAG_DESCRIPTIONS[flag]
+            } else {
+              flagDescription = (
+                <span>
+                  Gene constraint flag: <code>{flag}</code>
+                </span>
+              )
+            }
+            return (
+              <p key={flag} style={{ maxWidth: '460px' }}>
+                <Badge level="info">Note</Badge> {flagDescription}
+              </p>
+            )
+          })}
           <p>
             <Link
               preserveSelectedDataset={false}

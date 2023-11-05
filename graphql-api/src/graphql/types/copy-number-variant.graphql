@@ -1,0 +1,51 @@
+type CopyNumberVariantPopulation {
+    id: String!
+    sc: Float!
+    sn: Float!
+    sf: Float!
+}
+
+type CopyNumberVariant {
+    sc: Float!
+    sn: Float!
+    sf: Float!
+    reference_genome: ReferenceGenomeId!
+    chrom: String!
+    end: Int!
+    filters: [String!]
+    length: Int
+    pos: Int!
+    type: String
+    posmin: Int
+    posmax: Int
+    endmin: Int
+    endmax: Int
+    variant_id: String!
+}
+
+type CopyNumberVariantDetails {
+    alts: [String!]
+    sc: Float!
+    sn: Float!
+    sf: Float!
+    chrom: String!
+    end: Int!
+    filters: [String!]
+    genes: [String!]
+    length: Int
+    populations: [CopyNumberVariantPopulation!]
+    pos: Int!
+    qual: Float
+    reference_genome: ReferenceGenomeId!
+    type: String
+    posmin: Int
+    posmax: Int
+    endmin: Int
+    endmax: Int
+    variant_id: String!
+}
+
+type CNVTrackCallableCoverageBin {
+  xpos: Float!
+  percent_callable: Float
+}

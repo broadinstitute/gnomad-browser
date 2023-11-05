@@ -27,9 +27,10 @@ export const getSelectedAlleleSizeDistribution = (
         {}
       )
 
-      const repeatUnits = shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.repeat_units.filter(
-        (r: any) => repeatUnitClassification[r.repeat_unit] === selectedClassification
-      )
+      const repeatUnits =
+        shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.repeat_units.filter(
+          (r: any) => repeatUnitClassification[r.repeat_unit] === selectedClassification
+        )
 
       const distributions = repeatUnits.map(
         selectedPopulationId

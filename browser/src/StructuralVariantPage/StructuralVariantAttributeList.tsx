@@ -6,13 +6,20 @@ import AttributeList from '../AttributeList'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
+import { textOrMissingTextWarning } from '../missingContent'
 
 const FILTER_LABELS = {
   LOW_CALL_RATE: 'Low Call Rate',
   PCRPLUS_ENRICHED: 'PCR+ Enriched',
   UNRESOLVED: 'Unresolved',
   UNSTABLE_AF_PCRMINUS: 'Unstable AF PCR-',
+  OUTLIER_SAMPLE_ENRICHED: 'Outlier Sample Enriched',
+  LOWQUAL_WHAM_SR_DEL: 'Wham And Split-Read Evidence Only',
+
+  IGH_MCH_OVERLAP: 'Overlaps Somatic Recombination Site',
+  FAIL_MANUAL_REVIEW: 'Failed Manual Review',
+  HIGH_NCR: 'High No-Call Rate',
 }
 
 const FILTER_DESCRIPTIONS = {
@@ -23,6 +30,14 @@ const FILTER_DESCRIPTIONS = {
   UNRESOLVED: 'Variant is unresolved',
   UNSTABLE_AF_PCRMINUS:
     'Allele frequency for this variant in PCR- samples is sensitive to choice of GQ filtering thresholds. All PCR- samples have been assigned null GTs for these sites.',
+  OUTLIER_SAMPLE_ENRICHED:
+    'SV was enriched for non-reference genotypes in outlier samples prior to filtering; may indicate a noisier or less reliable locus.',
+  LOWQUAL_WHAM_SR_DEL:
+    'SV was detected exclusively by Wham and only has split-read evidence, which usually correlates with lower-quality variants with elevated false discovery rates.',
+  IGH_MCH_OVERLAP:
+    'SV overlaps sites of known somatic recombination, such as immunoglobulin gene and/or major hisocompatability complex loci, making germline SV detecting and genotyping especially difficult.',
+  FAIL_MANUAL_REVIEW: 'Variant failed manual review of evidence by a gnomAD analyst.',
+  HIGH_NCR: 'Variant has excessively high rate of no-call (i.e., missing) genotypes.',
 }
 
 const EVIDENCE_LABELS = {
@@ -37,6 +52,7 @@ const ALGORITHM_LABELS = {
   depth: 'Depth',
   manta: 'Manta',
   melt: 'MELT',
+  wham: 'Wham',
 }
 
 const COMPLEX_TYPE_LABELS = {
@@ -54,7 +70,22 @@ const COMPLEX_TYPE_LABELS = {
   INS_iDEL: 'Insertion with insert site deletion',
   piDUP_FR: 'Palindromic inverted duplication',
   piDUP_RF: 'Palindromic inverted duplication',
+  'CTX_PQ/QP': 'Reciprocal translocation of P:Q and Q:P arms',
+  CTX_INV: 'Reciprocal translocation with derivative junction inversion',
+  'CTX_PP/QQ': 'Reciprocal translocation of P:P and Q:Q arms',
 }
+
+const algorithmLabel = (algorithm: string) =>
+  textOrMissingTextWarning('algorithm label', ALGORITHM_LABELS, algorithm)
+
+const complexTypeLabel = (complexType: string) =>
+  textOrMissingTextWarning('complex type label', COMPLEX_TYPE_LABELS, complexType)
+
+const filterLabel = (filter: string) =>
+  textOrMissingTextWarning('filter label', FILTER_LABELS, filter)
+
+const filterDescription = (filter: string) =>
+  textOrMissingTextWarning('filter description', FILTER_DESCRIPTIONS, filter)
 
 type OwnPointLinkProps = {
   chrom: string
@@ -120,21 +151,17 @@ ComplexTypeHelpButton.defaultProps = {
 }
 
 type StructuralVariantAttributeListProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeListProps) => (
   <AttributeList style={{ marginTop: '1.25em' }}>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Filter">
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
       {variant.filters.length > 0 ? (
-        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
         variant.filters.map((filter) => (
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-          <Badge key={filter} level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
-            {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-            {FILTER_LABELS[filter] || filter}
+          <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
+            {filterLabel(filter)}
           </Badge>
         ))
       ) : (
@@ -190,17 +217,15 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
           .join(', ')})`}
       <InfoButton topic={`sv-class_${variant.type}`} />
     </AttributeList.Item>
-    {variant.type === 'CPX' && (
+    {variant.type === 'CPX' && variant.cpx_type && (
       <React.Fragment>
         {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
         <AttributeList.Item label="Complex SV Class">
-          {/* @ts-expect-error TS(2538) FIXME: Type 'undefined' cannot be used as an index type. */}
-          {variant.cpx_type} ({COMPLEX_TYPE_LABELS[variant.cpx_type]}){' '}
+          {variant.cpx_type} ({complexTypeLabel(variant.cpx_type)}){' '}
           <ComplexTypeHelpButton complexType={variant.cpx_type} />
         </AttributeList.Item>
         {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
         <AttributeList.Item label="Rearranged Segments">
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
           {variant.cpx_intervals.join(', ')}
         </AttributeList.Item>
       </React.Fragment>
@@ -212,8 +237,7 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
     </AttributeList.Item>
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item label="Algorithms">
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-      {variant.algorithms.map((a) => ALGORITHM_LABELS[a]).join(', ')}
+      {variant.algorithms.map((a) => algorithmLabel(a)).join(', ')}
     </AttributeList.Item>
   </AttributeList>
 )

@@ -86,10 +86,11 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
     const { transcriptConsequences } = this.props
     const { isExpanded } = this.state
 
-    const {
-      gene_symbol: geneSymbol,
-      major_consequence: consequenceTerm,
-    } = transcriptConsequences[0]
+    const { gene_symbol: geneSymbol, major_consequence: consequenceTerm } =
+      transcriptConsequences[0]
+
+    const qualifiedTranscriptId = (csq: TranscriptConsequencePropType) =>
+      csq.transcript_version ? `${csq.transcript_id}.${csq.transcript_version}` : csq.transcript_id
 
     return (
       // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
@@ -97,9 +98,7 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
         {transcriptConsequences.slice(0, 3).map((csq) => (
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={csq.transcript_id}>
-            <Link to={`/transcript/${csq.transcript_id}`}>
-              {csq.transcript_id}.{csq.transcript_version}
-            </Link>
+            <Link to={`/transcript/${csq.transcript_id}`}>{qualifiedTranscriptId(csq)}</Link>
             <TranscriptInfo transcriptConsequence={csq} />
             <TranscriptConsequence consequence={csq} />
           </ListItem>
@@ -130,9 +129,7 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
               {transcriptConsequences.map((csq) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={csq.transcript_id}>
-                  <Link to={`/transcript/${csq.transcript_id}`}>
-                    {csq.transcript_id}.{csq.transcript_version}
-                  </Link>
+                  <Link to={`/transcript/${csq.transcript_id}`}>{qualifiedTranscriptId(csq)}</Link>
                   <TranscriptInfo transcriptConsequence={csq} />
                   <TranscriptConsequence consequence={csq} />
                 </ListItem>

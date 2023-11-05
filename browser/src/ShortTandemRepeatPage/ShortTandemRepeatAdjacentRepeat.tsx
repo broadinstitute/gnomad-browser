@@ -39,14 +39,12 @@ const ShortTandemRepeatAdjacentRepeat = ({
     adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
   )
 
-  const [
-    selectedGenotypeDistributionRepeatUnits,
-    setSelectedGenotypeDistributionRepeatUnits,
-  ] = useState(
-    adjacentRepeat.genotype_distribution.repeat_units.length === 1
-      ? adjacentRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
-      : ''
-  )
+  const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
+    useState(
+      adjacentRepeat.genotype_distribution.repeat_units.length === 1
+        ? adjacentRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
+        : ''
+    )
 
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 

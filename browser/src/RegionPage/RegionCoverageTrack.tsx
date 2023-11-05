@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { coverageDataset } from '../coverage'
+import { referenceGenome, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 
 const operationName = 'RegionCoverage'
@@ -73,8 +72,8 @@ const RegionCoverageTrack = ({
         chrom,
         start,
         stop,
-        datasetId: coverageDataset(datasetId),
-        referenceGenome: referenceGenome(coverageDataset(datasetId)),
+        datasetId: coverageDatasetId(datasetId),
+        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
         includeExomeCoverage,
         includeGenomeCoverage,
       }}
@@ -103,9 +102,10 @@ const RegionCoverageTrack = ({
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <CoverageTrack
             coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-            datasets={coverageConfig}
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
+            datasets={coverageConfig}
             height={200}
+            datasetId={datasetId}
           />
         )
       }}

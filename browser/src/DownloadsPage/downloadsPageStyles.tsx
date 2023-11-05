@@ -11,8 +11,21 @@ export const FileList = styled(List)`
   }
 `
 
-const BaseSectionTitle = styled.h2``
-export const SectionTitle = withAnchor(BaseSectionTitle)
+const BaseSectionTitle = styled.h2`
+  font-size: ${(props) =>
+    // eslint-disable-next-line no-nested-ternary
+    props.theme.type === 'release'
+      ? '2.25rem'
+      : props.theme.type === 'datasets'
+      ? '1.88rem'
+      : '1.5rem'};
+`
+
+export const SectionTitle = styled(withAnchor(BaseSectionTitle))``
+
+export const StyledParagraph = styled.p`
+  padding-bottom: 1rem;
+`
 
 export const ColumnsWrapper = styled.div`
   display: flex;
@@ -30,6 +43,10 @@ export const Column = styled.div`
   > h3 {
     margin-top: 0;
   }
+`
+
+export const DownloadsSection = styled.section`
+  margin-bottom: 5rem;
 `
 
 type ShowURLButtonProps = {
@@ -96,6 +113,7 @@ type OwnGetUrlButtonsProps = {
   path: string
   size?: string
   md5?: string
+  crc32c?: string
   includeGCP?: boolean
   includeAWS?: boolean
   includeAzure?: boolean
@@ -310,6 +328,7 @@ type OwnIndexedFileDownloadLinksProps = {
   path: string
   size?: string
   md5?: string
+  crc32?: string
   gcsBucket?: string
   includeGCP?: boolean
   includeAWS?: boolean
@@ -326,6 +345,7 @@ export const IndexedFileDownloadLinks = ({
   path,
   size,
   md5,
+  crc32,
   gcsBucket,
   includeGCP,
   includeAWS,
@@ -339,6 +359,14 @@ export const IndexedFileDownloadLinks = ({
         <>
           <span>
             {size}, MD5:&nbsp;{md5}
+          </span>
+          <br />
+        </>
+      )}
+      {size && crc32 && (
+        <>
+          <span>
+            {size}, CRC32:&nbsp;{crc32}
           </span>
           <br />
         </>

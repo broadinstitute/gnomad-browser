@@ -1,8 +1,13 @@
 import React from 'react'
 
+import {
+  labelForDataset,
+  referenceGenome,
+  DatasetId,
+  hasMitochondrialVariants,
+} from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -10,6 +15,7 @@ import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
+import { Region } from './RegionPage'
 
 const operationName = 'MitochondrialVariantsInRegion'
 const query = `
@@ -67,29 +73,18 @@ query ${operationName}($start: Int!, $stop: Int!, $datasetId: DatasetId!, $refer
 }
 `
 
-type OwnProps = {
-  datasetId: string
-  region: {
-    chrom: string
-    start: number
-    stop: number
-    genes: {
-      transcripts: any[]
-    }[]
-  }
+type Props = {
+  datasetId: DatasetId
+  region: Region
   zoomRegion?: {
     start: number
     stop: number
-  }
+  } | null
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof MitochondrialVariantsInRegion.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'MitochondrialVariantsInRegion' implicitly has typ... Remove this comment to see the full error message
 const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: Props) => {
   const regionId = `${region.chrom}-${region.start}-${region.stop}`
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}
@@ -157,7 +152,6 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest 
               {...rest}
               clinvarReleaseDate={data.meta.clinvar_release_date}
               context={region}
-              datasetId={datasetId}
               exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
               variants={filterVariantsInZoomRegion(
                 annotateVariantsWithClinvar(
@@ -172,10 +166,6 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest 
       }}
     </Query>
   )
-}
-
-MitochondrialVariantsInRegion.defaultProps = {
-  zoomRegion: null,
 }
 
 export default MitochondrialVariantsInRegion

@@ -13,6 +13,9 @@ import {
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
+  referenceGenome,
+  hasCopyNumberVariants,
+  shortVariantDatasetId,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -126,24 +129,33 @@ const SubNavigationLink = styled.a`
 const ItemDescription = styled.div`
   margin-top: 0.125em;
   margin-left: 5px;
-  font-size: 0.8em;
+  font-size: 0.68em;
   opacity: 0.6;
 `
 
+const GroupedNav = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 2px;
+  font-weight: bold;
+`
+type ChildDataset = {
+  id: string
+  label: string
+  url: string
+  description: string
+  childReferenceGenome?: string
+}
+
 type Props = {
-  items: (
-    | {
-        id: string
-        isActive?: boolean
-        label: string
-        url: string | any
-      }
-    | {
-        id: string
-        isActive?: boolean
-        label: string
-      }
-  )[]
+  items: {
+    id: string
+    isActive?: boolean
+    label: string
+    url: string | any
+    children: ChildDataset[]
+  }[]
 }
 
 type State = any
@@ -378,23 +390,34 @@ class NavigationMenu extends Component<Props, State> {
                   </TopLevelNavigationLink>
                   {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                   <SubNavigationMenu isExpanded={isExpanded}>
-                    {(item as any).children.map((childItem: any) => (
-                      <li key={childItem.id}>
-                        <SubNavigationLink
-                          data-item={childItem.id}
-                          to={childItem.url}
-                          onBlur={this.onBlur}
-                          onClick={() => {
-                            this.setState({ expandedItem: null })
-                            this.focusItem(item.id)
-                          }}
-                          onKeyDown={this.onKeyDownSubMenuItem}
-                        >
-                          {childItem.label}
-                          {childItem.description && (
-                            <ItemDescription>{childItem.description}</ItemDescription>
-                          )}
-                        </SubNavigationLink>
+                    {Array.from(
+                      new Set(item.children.map((childItem) => childItem.childReferenceGenome))
+                    ).map((childReferenceGenome) => (
+                      <li key={childReferenceGenome}>
+                        <GroupedNav>{childReferenceGenome}</GroupedNav>
+                        {item.children
+                          .filter(
+                            (childItem) => childItem.childReferenceGenome === childReferenceGenome
+                          )
+                          .map((childItem) => (
+                            <li key={childItem.id}>
+                              <SubNavigationLink
+                                data-item={childItem.id}
+                                to={childItem.url}
+                                onBlur={this.onBlur}
+                                onClick={() => {
+                                  this.setState({ expandedItem: null })
+                                  this.focusItem(item.id)
+                                }}
+                                onKeyDown={this.onKeyDownSubMenuItem}
+                              >
+                                {childItem.label}
+                                {childItem.description && (
+                                  <ItemDescription>{childItem.description}</ItemDescription>
+                                )}
+                              </SubNavigationLink>
+                            </li>
+                          ))}
                       </li>
                     ))}
                   </SubNavigationMenu>
@@ -417,6 +440,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad2Subsets = true,
     includeGnomad3 = true,
     includeGnomad3Subsets = true,
+    includeGnomad4 = true,
+    includeCopyNumberVariants = true,
   } = datasetOptions
 
   const datasetLink = (datasetId: any) => ({
@@ -424,10 +449,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     search: queryString.stringify({ dataset: datasetId }),
   })
 
-  const defaultTopLevelShortVariantDataset = includeGnomad2 ? 'gnomad_r2_1' : 'gnomad_r3'
-  const topLevelShortVariantDataset = hasShortVariants(selectedDataset)
-    ? selectedDataset
-    : defaultTopLevelShortVariantDataset
+  const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
 
   let datasets: any = []
 
@@ -435,151 +457,196 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
+        childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: hasShortVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
-        children: [] as { id: string; label: string; url: string; description: string }[],
+        children: [] as ChildDataset[],
       },
     ]
 
+    if (!shortVariantDatasets[1].children) throw new Error('Dataset children undefined')
+
+    if (includeGnomad4) {
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r4',
+        label: labelForDataset('gnomad_r4'),
+        url: datasetLink('gnomad_r4'),
+        description: `${sampleCounts.gnomad_r4.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r4'),
+      })
+    }
+
     if (includeGnomad3) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r3',
         label: labelForDataset('gnomad_r3'),
         url: datasetLink('gnomad_r3'),
         description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r3'),
       })
     }
 
     if (includeGnomad3 && includeGnomad3Subsets) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r3_non_cancer',
           label: labelForDataset('gnomad_r3_non_cancer'),
           url: datasetLink('gnomad_r3_non_cancer'),
           description: `${sampleCounts.gnomad_r3_non_cancer.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r3_non_cancer'),
         },
         {
           id: 'gnomad_r3_non_neuro',
           label: labelForDataset('gnomad_r3_non_neuro'),
           url: datasetLink('gnomad_r3_non_neuro'),
           description: `${sampleCounts.gnomad_r3_non_neuro.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r3_non_neuro'),
         },
         {
           id: 'gnomad_r3_non_v2',
           label: labelForDataset('gnomad_r3_non_v2'),
           url: datasetLink('gnomad_r3_non_v2'),
           description: `${sampleCounts.gnomad_r3_non_v2.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r3_non_v2'),
         },
         {
           id: 'gnomad_r3_non_topmed',
           label: labelForDataset('gnomad_r3_non_topmed'),
           url: datasetLink('gnomad_r3_non_topmed'),
           description: `${sampleCounts.gnomad_r3_non_topmed.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r3_non_topmed'),
         },
         {
           id: 'gnomad_r3_controls_and_biobanks',
           label: labelForDataset('gnomad_r3_controls_and_biobanks'),
           url: datasetLink('gnomad_r3_controls_and_biobanks'),
           description: `${sampleCounts.gnomad_r3_controls_and_biobanks.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r3_controls_and_biobanks'),
         }
       )
     }
 
     if (includeGnomad2) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r2_1',
         label: labelForDataset('gnomad_r2_1'),
         url: datasetLink('gnomad_r2_1'),
         description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r2_1'),
       })
     }
 
     if (includeGnomad2 && includeGnomad2Subsets) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r2_1_non_topmed',
           label: labelForDataset('gnomad_r2_1_non_topmed'),
           url: datasetLink('gnomad_r2_1_non_topmed'),
           description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r2_1_non_topmed'),
         },
         {
           id: 'gnomad_r2_1_non_cancer',
           label: labelForDataset('gnomad_r2_1_non_cancer'),
           url: datasetLink('gnomad_r2_1_non_cancer'),
           description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r2_1_non_cancer'),
         },
         {
           id: 'gnomad_r2_1_non_neuro',
           label: labelForDataset('gnomad_r2_1_non_neuro'),
           url: datasetLink('gnomad_r2_1_non_neuro'),
           description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r2_1_non_neuro'),
         },
         {
           id: 'gnomad_r2_1_controls',
           label: labelForDataset('gnomad_r2_1_controls'),
           url: datasetLink('gnomad_r2_1_controls'),
           description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
+          childReferenceGenome: referenceGenome('gnomad_r2_1_controls'),
         }
       )
     }
 
     if (includeExac) {
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       shortVariantDatasets[1].children.push({
         id: 'exac',
         label: labelForDataset('exac'),
         url: datasetLink('exac'),
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('exac'),
       })
     }
 
     datasets = datasets.concat(shortVariantDatasets)
   }
 
-  if (includeStructuralVariants) {
+  if (includeStructuralVariants || includeCopyNumberVariants) {
     const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
       ? selectedDataset
       : 'gnomad_sv_r2_1'
 
+    const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
+      ? selectedDataset
+      : 'gnomad_cnv_r4'
+
+    const currentDataset = hasStructuralVariants(selectedDataset)
+      ? topLevelStructuralVariantDataset
+      : topLevelCopyNumberVariantDataset
+
     datasets.push(
       {
         id: 'current_sv_dataset',
-        isActive: hasStructuralVariants(selectedDataset),
-        label: labelForDataset(topLevelStructuralVariantDataset),
-        url: datasetLink(topLevelStructuralVariantDataset),
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
+        label: labelForDataset(currentDataset),
+        url: datasetLink(currentDataset),
       },
       {
         id: 'other_structural_variant',
-        isActive: hasStructuralVariants(selectedDataset),
+        isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
         label: 'More datasets',
         children: [
+          {
+            id: 'gnomad_sv_r4',
+            label: labelForDataset('gnomad_sv_r4'),
+            url: datasetLink('gnomad_sv_r4'),
+            description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples, genome`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r4'),
+          },
           {
             id: 'gnomad_sv_r2_1',
             label: labelForDataset('gnomad_sv_r2_1'),
             url: datasetLink('gnomad_sv_r2_1'),
-            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples, genome`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r2_1'),
           },
           {
             id: 'gnomad_sv_r2_1_non_neuro',
             label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
             url: datasetLink('gnomad_sv_r2_1_non_neuro'),
-            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples, genome`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r2_1_non_neuro'),
           },
           {
             id: 'gnomad_sv_r2_1_controls',
             label: labelForDataset('gnomad_sv_r2_1_controls'),
             url: datasetLink('gnomad_sv_r2_1_controls'),
-            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples`,
+            description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples, genome`,
+            childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
+          },
+          {
+            id: 'gnomad_cnv_r4',
+            label: labelForDataset('gnomad_cnv_r4'),
+            url: datasetLink('gnomad_cnv_r4'),
+            description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples, exome, rare (<0.01)`,
+            childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
           },
         ],
       }
@@ -593,6 +660,7 @@ DatasetSelector.propTypes = {
   datasetOptions: PropTypes.shape({
     includeShortVariants: PropTypes.bool,
     includeStructuralVariants: PropTypes.bool,
+    includeCopyNumberVariants: PropTypes.bool,
     includeExac: PropTypes.bool,
     includeGnomad2Subsets: PropTypes.bool,
     includeGnomad3: PropTypes.bool,
@@ -605,6 +673,7 @@ DatasetSelector.defaultProps = {
   datasetOptions: {
     includeShortVariants: true,
     includeStructuralVariants: true,
+    includeCopyNumberVariants: true,
     includeExac: true,
     includeGnomad2: true,
     includeGnomad2Subsets: true,

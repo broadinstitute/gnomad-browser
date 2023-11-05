@@ -1,14 +1,16 @@
 import React from 'react'
 
-import { Badge, ExternalLink, Link, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
 
 import {
   Column,
   ColumnsWrapper,
+  DownloadsSection,
   FileList,
   GetUrlButtons,
   IndexedFileDownloadLinks,
   SectionTitle,
+  StyledParagraph,
 } from './downloadsPageStyles'
 
 const liftoverExomeChromosomeVcfs = [
@@ -64,121 +66,120 @@ const liftoverGenomeChromosomeVcfs = [
   { chrom: 'X', size: '16.41 GiB', md5: '898a122480632cfdc58450bbbb3554c1' },
 ]
 
-export default () => (
-  <React.Fragment>
-    <p>
-      The gnomAD v2.1.1 liftover data set contains data from 125,748 exomes and 15,708 whole
-      genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
-    </p>
-    <section>
-      <h2>Summary</h2>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <List>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#v2-liftover-variants">Variants (GRCh38 liftover)</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#v2-liftover-structural-variants">Structural variants (GRCh38 liftover)</Link>
-        </ListItem>
-      </List>
-    </section>
-
-    <section>
-      <SectionTitle id="v2-liftover-variants">Variants (GRCh38 liftover)</SectionTitle>
-      <p>
-        The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
-        and non-TOPMed).
-      </p>
-      <ColumnsWrapper>
-        <Column>
-          <h3>Exomes</h3>
-          <FileList>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <ListItem>
-              <GetUrlButtons
-                label="Sites Hail Table"
-                path="/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht"
-              />
-            </ListItem>
-
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <ListItem>
-              <IndexedFileDownloadLinks
-                label="All chromosomes VCF"
-                path="/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
-                size="85.31 GiB"
-                md5="cff8d0cfed50adc9211d1feaed2d4ca7"
-              />
-            </ListItem>
-            {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-              <ListItem key={chrom}>
-                <IndexedFileDownloadLinks
-                  label={`chr${chrom} sites VCF`}
-                  path={`/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
-                  size={size}
-                  md5={md5}
-                />
-              </ListItem>
-            ))}
-          </FileList>
-        </Column>
-
-        <Column>
-          <h3>Genomes</h3>
-          <FileList>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <ListItem>
-              <GetUrlButtons
-                label="Sites Hail Table"
-                path="/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht"
-              />
-            </ListItem>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <ListItem>
-              <IndexedFileDownloadLinks
-                label="All chromosomes VCF"
-                path="/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
-                size="743.06 GiB"
-                md5="83de3d5b52669f714e810d4fcf047c18"
-              />
-            </ListItem>
-            {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-              <ListItem key={chrom}>
-                <IndexedFileDownloadLinks
-                  label={`chr${chrom} sites VCF`}
-                  path={`/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
-                  size={size}
-                  md5={md5}
-                />
-              </ListItem>
-            ))}
-          </FileList>
-        </Column>
-      </ColumnsWrapper>
-    </section>
-    <section>
-      <SectionTitle id="v2-liftover-structural-variants">
-        Structural variants (GRCh38 liftover)
+const Gnomadv2LiftoverDownloads = () => {
+  return (
+    <>
+      <SectionTitle id="v2-liftover" theme={{ type: 'release' }}>
+        v2 Liftover Downloads
       </SectionTitle>
-      <p>
-        <Badge level="info">Note</Badge> The lifted over structural variant dataset was created by
-        dbVar and has not been assessed by the gnomAD production team.
-      </p>
-      <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-          <ExternalLink href="https://www.ncbi.nlm.nih.gov/sites/dbvarapp/studies/nstd166/">
-            nstd166 (gnomAD Structural Variants)
-          </ExternalLink>
-        </ListItem>
-      </FileList>
-    </section>
-  </React.Fragment>
-)
+      <StyledParagraph>
+        The gnomAD v2.1.1 liftover data set contains data from 125,748 exomes and 15,708 whole
+        genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
+      </StyledParagraph>
+
+      <SectionTitle id="v2-liftover-core-dataset" theme={{ type: 'datasets' }}>
+        Core Dataset
+      </SectionTitle>
+      <StyledParagraph>
+        gnomAD database and features created and maintained by the gnomAD production team.
+      </StyledParagraph>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-liftover-variants">Variants (GRCh38 liftover)</SectionTitle>
+        <p>
+          The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
+          and non-TOPMed).
+        </p>
+        <ColumnsWrapper>
+          <Column>
+            <h3>Exomes</h3>
+            <FileList>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <GetUrlButtons
+                  label="Sites Hail Table"
+                  path="/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht"
+                />
+              </ListItem>
+
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <IndexedFileDownloadLinks
+                  label="All chromosomes VCF"
+                  path="/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
+                  size="85.31 GiB"
+                  md5="cff8d0cfed50adc9211d1feaed2d4ca7"
+                />
+              </ListItem>
+              {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
+                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+                <ListItem key={chrom}>
+                  <IndexedFileDownloadLinks
+                    label={`chr${chrom} sites VCF`}
+                    path={`/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
+                    size={size}
+                    md5={md5}
+                  />
+                </ListItem>
+              ))}
+            </FileList>
+          </Column>
+
+          <Column>
+            <h3>Genomes</h3>
+            <FileList>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <GetUrlButtons
+                  label="Sites Hail Table"
+                  path="/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht"
+                />
+              </ListItem>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <IndexedFileDownloadLinks
+                  label="All chromosomes VCF"
+                  path="/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
+                  size="743.06 GiB"
+                  md5="83de3d5b52669f714e810d4fcf047c18"
+                />
+              </ListItem>
+              {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
+                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+                <ListItem key={chrom}>
+                  <IndexedFileDownloadLinks
+                    label={`chr${chrom} sites VCF`}
+                    path={`/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
+                    size={size}
+                    md5={md5}
+                  />
+                </ListItem>
+              ))}
+            </FileList>
+          </Column>
+        </ColumnsWrapper>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-liftover-structural-variants">
+          Structural variants (GRCh38 liftover)
+        </SectionTitle>
+        <p>
+          <Badge level="info">Note</Badge> The lifted over structural variant dataset was created by
+          dbVar and has not been assessed by the gnomAD production team.
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+            <ExternalLink href="https://www.ncbi.nlm.nih.gov/sites/dbvarapp/studies/nstd166/">
+              nstd166 (gnomAD Structural Variants)
+            </ExternalLink>
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+    </>
+  )
+}
+
+export default Gnomadv2LiftoverDownloads

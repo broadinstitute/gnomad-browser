@@ -13,7 +13,8 @@ type Props = {
 }
 
 const VariantTranscriptConsequences = ({ variant }: Props) => {
-  const { transcript_consequences: transcriptConsequences } = variant
+  const { transcript_consequences } = variant
+  const transcriptConsequences = transcript_consequences || []
   const numTranscripts = transcriptConsequences.length
   const geneIds = Array.from(new Set(transcriptConsequences.map((csq) => csq.gene_id)))
   const numGenes = geneIds.length

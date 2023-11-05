@@ -1,14 +1,18 @@
+import { textOrMissingTextWarning } from '../browser/src/missingContent'
+
 export const GNOMAD_POPULATION_NAMES = {
   afr: 'African/African American',
   ami: 'Amish',
-  amr: 'Latino/Admixed American',
+  amr: 'Admixed American',
   asj: 'Ashkenazi Jewish',
   eas: 'East Asian',
-  fin: 'European (Finnish)',
   mid: 'Middle Eastern',
+  eur: 'European',
   nfe: 'European (non-Finnish)',
-  oth: 'Other',
+  fin: 'European (Finnish)',
+  oth: 'Remaining individuals',
   sas: 'South Asian',
+  remaining: 'Remaining',
 
   // EAS subpopulations
   eas_jpn: 'Japanese',
@@ -25,3 +29,6 @@ export const GNOMAD_POPULATION_NAMES = {
 } as const
 
 export type PopulationId = keyof typeof GNOMAD_POPULATION_NAMES
+
+export const populationName = (populationId: string) =>
+  textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)

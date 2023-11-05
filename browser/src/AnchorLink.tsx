@@ -26,9 +26,14 @@ const AnchorWrapper = styled.span`
 `
 
 export const withAnchor = (Component: any) => {
-  const ComposedComponent = ({ children, id }: any) => (
+  // theme was added as an additional prop to allow for conditional styling
+  //   of a given styled component as the 'Component' parameter. The theme prop
+  //   is a keyword with Styled Components and allows the table of contents to
+  //   dynamically grab all '<SectionTitles> from a page to use in the ToC, while
+  //   still allowing each <SectionTitle> to render differently.
+  const ComposedComponent = ({ children, id, theme }: any) => (
     <AnchorWrapper>
-      <Component>
+      <Component theme={theme}>
         <AnchorLink href={`#${id}`} id={id}>
           <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
         </AnchorLink>

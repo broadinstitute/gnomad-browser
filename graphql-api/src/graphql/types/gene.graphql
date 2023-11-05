@@ -18,6 +18,29 @@ type ManeSelectTranscript {
   refseq_version: String!
 }
 
+type HeterozygousVariantCooccurrenceCountsData {
+  in_cis: Int!
+  in_trans: Int!
+  unphased: Int!
+  two_het_total: Int!
+}
+
+type HomozygousVariantCooccurrenceCountsData {
+  hom_total: Int!
+}
+
+type HeterozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HeterozygousVariantCooccurrenceCountsData!
+}
+
+type HomozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HomozygousVariantCooccurrenceCountsData!
+}
+
 type Gene {
   reference_genome: ReferenceGenomeId!
   gene_id: String!
@@ -42,6 +65,8 @@ type Gene {
   pext: Pext
 
   gnomad_constraint: GnomadConstraint
+  gnomad_v2_regional_missense_constraint: GnomadV2RegionalMissenseConstraint
+
   exac_constraint: ExacConstraint
   exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
 
@@ -53,8 +78,13 @@ type Gene {
 
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
+  cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallableCoverageBin!] @cost(value: 5)
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
+  heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
+    @cost(value: 5)
+  homozygous_variant_cooccurrence_counts: [HomozygousVariantCooccurrenceCounts!]! @cost(value: 5)
+  copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]! @cost(value: 10) 
 }
 
 type GeneSearchResult {

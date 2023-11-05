@@ -2,7 +2,9 @@ const path = require('path')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { EnvironmentPlugin } = require('webpack')
+const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
 const extraResolveOptions = isDev
@@ -47,19 +49,22 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(j|t)sx?$/,
+        test: /\.tsx?$/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          tsconfigRaw: tsConfig,
+        },
+      },
+      {
+        test: /\.(j)sx?$/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
             options: {
               rootMode: 'upward',
-            },
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              configFile: 'tsconfig.build.json',
             },
           },
         ],
@@ -78,6 +83,10 @@ const config = {
         use: {
           loader: '@gnomad/markdown-loader',
         },
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -110,6 +119,7 @@ const config = {
             minifyJS: true,
           },
     }),
+    new FaviconsWebpackPlugin('./src/logo.svg'),
   ],
   // Use browserslist queries from .browserslistrc
   // Set to web in development as workaround for https://github.com/webpack/webpack-dev-server/issues/2758

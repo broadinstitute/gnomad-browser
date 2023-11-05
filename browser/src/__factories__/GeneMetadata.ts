@@ -1,5 +1,5 @@
 import { Factory } from 'fishery'
-import { GeneMetadata } from '../types'
+import { GeneMetadata } from '../GenePage/GenePage'
 
 const geneMetadataFactory = Factory.define<GeneMetadata>(() => ({
   gene_id: 'dummy_gene',

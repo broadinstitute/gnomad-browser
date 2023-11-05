@@ -1,15 +1,8 @@
 import React from 'react'
 
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
-
-const populationNames = {
-  afr: 'African/African American',
-  amr: 'Latino',
-  eas: 'East Asian',
-  eur: 'European',
-  oth: 'Other',
-}
+import { StructuralVariant } from './StructuralVariantPage'
+import { populationName } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 const nestPopulations = (populations: any) => {
   const popIndices = []
@@ -57,15 +50,14 @@ const addPopulationNames = (populations: any) => {
     } else if (pop.id === 'XY' || pop.id.endsWith('_XY')) {
       name = 'XY'
     } else {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      name = populationNames[pop.id] || pop.id
+      name = populationName(pop.id)
     }
     return { ...pop, name }
   })
 }
 
 type StructuralVariantPopulationsTableProps = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantPopulationsTable = ({ variant }: StructuralVariantPopulationsTableProps) => {

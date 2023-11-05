@@ -1,6 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReadData with "exac" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "exac" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "exac" dataset selected has no unexpected changes with exome data present 1`] = `
 .c2 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -164,7 +194,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes 1`] = `
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -176,1029 +206,36 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes 1`] = `
 </div>
 `;
 
-exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 1`] = `
-.c3 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+exports[`ReadData with "exac" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: exac, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
 
-.c3:active,
-.c3:hover {
-  background-color: #cbd3da;
-}
-
-.c3:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c3:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c3 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c1 {
-  position: relative;
-  top: -0.1em;
-  display: inline-block;
-  padding: 0.25em 0.4em 0.2em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: #424242;
-  color: #fff;
-  font-size: 0.75em;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.c0 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c0:visited,
-.c0:active {
-  color: #1173bb;
-}
-
-.c0:focus,
-.c0:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c2 {
-  padding-right: 80px;
-  margin-top: 1em;
-  text-align: center;
-}
-
-.c2 strong {
-  display: inline-block;
-  width: 80px;
-  text-align: right;
-}
-
-.c2 button {
-  margin-left: 2em;
-}
-
-@media (max-width:500px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding-right: 0;
-  }
-
-  .c2 strong {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-
-  .c2 button {
-    margin-left: 0 !important;
-  }
-
-  .c2 button:last-child {
-    margin-top: 1em;
-  }
-}
-
+exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
 <div>
   <p>
-    This interactive
-     
-    <a
-      className="c0"
-      href="https://github.com/igvteam/igv.js"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      IGV.js
-    </a>
-     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+    No read data available for this variant.
   </p>
-  <p>
-    These are reassembled reads produced by
-     
-    <a
-      className="c0"
-      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      GATK HaplotypeCaller --bamOutput
-    </a>
-    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Reads shown here may include low quality genotypes that were excluded from allele counts.
-  </p>
-  <div
-    className="c2"
-  >
-    <strong>
-      Exomes:
-    </strong>
-    <button
-      className="c3"
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      het
-    </button>
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      hom
-    </button>
-  </div>
-  <div
-    className="c2"
-  >
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "marginLeft": "80px",
-        }
-      }
-      type="button"
-    >
-      Load all
-    </button>
-  </div>
 </div>
 `;
 
-exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected changes 1`] = `
-.c3 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c3:active,
-.c3:hover {
-  background-color: #cbd3da;
-}
-
-.c3:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c3:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c3 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c1 {
-  position: relative;
-  top: -0.1em;
-  display: inline-block;
-  padding: 0.25em 0.4em 0.2em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: #424242;
-  color: #fff;
-  font-size: 0.75em;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.c0 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c0:visited,
-.c0:active {
-  color: #1173bb;
-}
-
-.c0:focus,
-.c0:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c2 {
-  padding-right: 80px;
-  margin-top: 1em;
-  text-align: center;
-}
-
-.c2 strong {
-  display: inline-block;
-  width: 80px;
-  text-align: right;
-}
-
-.c2 button {
-  margin-left: 2em;
-}
-
-@media (max-width:500px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding-right: 0;
-  }
-
-  .c2 strong {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-
-  .c2 button {
-    margin-left: 0 !important;
-  }
-
-  .c2 button:last-child {
-    margin-top: 1em;
-  }
-}
-
-<div>
-  <p>
-    This interactive
-     
-    <a
-      className="c0"
-      href="https://github.com/igvteam/igv.js"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      IGV.js
-    </a>
-     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
-  </p>
-  <p>
-    These are reassembled reads produced by
-     
-    <a
-      className="c0"
-      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      GATK HaplotypeCaller --bamOutput
-    </a>
-    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Reads shown here may include low quality genotypes that were excluded from allele counts.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Samples shown below are not guaranteed to be part of the selected subset.
-  </p>
-  <div
-    className="c2"
-  >
-    <strong>
-      Exomes:
-    </strong>
-    <button
-      className="c3"
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      het
-    </button>
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      hom
-    </button>
-  </div>
-  <div
-    className="c2"
-  >
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "marginLeft": "80px",
-        }
-      }
-      type="button"
-    >
-      Load all
-    </button>
-  </div>
-</div>
-`;
-
-exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpected changes 1`] = `
-.c3 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c3:active,
-.c3:hover {
-  background-color: #cbd3da;
-}
-
-.c3:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c3:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c3 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c1 {
-  position: relative;
-  top: -0.1em;
-  display: inline-block;
-  padding: 0.25em 0.4em 0.2em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: #424242;
-  color: #fff;
-  font-size: 0.75em;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.c0 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c0:visited,
-.c0:active {
-  color: #1173bb;
-}
-
-.c0:focus,
-.c0:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c2 {
-  padding-right: 80px;
-  margin-top: 1em;
-  text-align: center;
-}
-
-.c2 strong {
-  display: inline-block;
-  width: 80px;
-  text-align: right;
-}
-
-.c2 button {
-  margin-left: 2em;
-}
-
-@media (max-width:500px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding-right: 0;
-  }
-
-  .c2 strong {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-
-  .c2 button {
-    margin-left: 0 !important;
-  }
-
-  .c2 button:last-child {
-    margin-top: 1em;
-  }
-}
-
-<div>
-  <p>
-    This interactive
-     
-    <a
-      className="c0"
-      href="https://github.com/igvteam/igv.js"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      IGV.js
-    </a>
-     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
-  </p>
-  <p>
-    These are reassembled reads produced by
-     
-    <a
-      className="c0"
-      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      GATK HaplotypeCaller --bamOutput
-    </a>
-    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Reads shown here may include low quality genotypes that were excluded from allele counts.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Samples shown below are not guaranteed to be part of the selected subset.
-  </p>
-  <div
-    className="c2"
-  >
-    <strong>
-      Exomes:
-    </strong>
-    <button
-      className="c3"
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      het
-    </button>
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      hom
-    </button>
-  </div>
-  <div
-    className="c2"
-  >
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "marginLeft": "80px",
-        }
-      }
-      type="button"
-    >
-      Load all
-    </button>
-  </div>
-</div>
-`;
-
-exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpected changes 1`] = `
-.c3 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c3:active,
-.c3:hover {
-  background-color: #cbd3da;
-}
-
-.c3:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c3:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c3 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c1 {
-  position: relative;
-  top: -0.1em;
-  display: inline-block;
-  padding: 0.25em 0.4em 0.2em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: #424242;
-  color: #fff;
-  font-size: 0.75em;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.c0 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c0:visited,
-.c0:active {
-  color: #1173bb;
-}
-
-.c0:focus,
-.c0:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c2 {
-  padding-right: 80px;
-  margin-top: 1em;
-  text-align: center;
-}
-
-.c2 strong {
-  display: inline-block;
-  width: 80px;
-  text-align: right;
-}
-
-.c2 button {
-  margin-left: 2em;
-}
-
-@media (max-width:500px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding-right: 0;
-  }
-
-  .c2 strong {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-
-  .c2 button {
-    margin-left: 0 !important;
-  }
-
-  .c2 button:last-child {
-    margin-top: 1em;
-  }
-}
-
-<div>
-  <p>
-    This interactive
-     
-    <a
-      className="c0"
-      href="https://github.com/igvteam/igv.js"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      IGV.js
-    </a>
-     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
-  </p>
-  <p>
-    These are reassembled reads produced by
-     
-    <a
-      className="c0"
-      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      GATK HaplotypeCaller --bamOutput
-    </a>
-    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Reads shown here may include low quality genotypes that were excluded from allele counts.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Samples shown below are not guaranteed to be part of the selected subset.
-  </p>
-  <div
-    className="c2"
-  >
-    <strong>
-      Exomes:
-    </strong>
-    <button
-      className="c3"
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      het
-    </button>
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      hom
-    </button>
-  </div>
-  <div
-    className="c2"
-  >
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "marginLeft": "80px",
-        }
-      }
-      type="button"
-    >
-      Load all
-    </button>
-  </div>
-</div>
-`;
-
-exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpected changes 1`] = `
-.c3 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c3:active,
-.c3:hover {
-  background-color: #cbd3da;
-}
-
-.c3:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c3:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c3 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c1 {
-  position: relative;
-  top: -0.1em;
-  display: inline-block;
-  padding: 0.25em 0.4em 0.2em;
-  border: 1px solid #000;
-  border-radius: 0.3em;
-  background: #424242;
-  color: #fff;
-  font-size: 0.75em;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.c0 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c0:visited,
-.c0:active {
-  color: #1173bb;
-}
-
-.c0:focus,
-.c0:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c2 {
-  padding-right: 80px;
-  margin-top: 1em;
-  text-align: center;
-}
-
-.c2 strong {
-  display: inline-block;
-  width: 80px;
-  text-align: right;
-}
-
-.c2 button {
-  margin-left: 2em;
-}
-
-@media (max-width:500px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    padding-right: 0;
-  }
-
-  .c2 strong {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-
-  .c2 button {
-    margin-left: 0 !important;
-  }
-
-  .c2 button:last-child {
-    margin-top: 1em;
-  }
-}
-
-<div>
-  <p>
-    This interactive
-     
-    <a
-      className="c0"
-      href="https://github.com/igvteam/igv.js"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      IGV.js
-    </a>
-     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
-  </p>
-  <p>
-    These are reassembled reads produced by
-     
-    <a
-      className="c0"
-      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      GATK HaplotypeCaller --bamOutput
-    </a>
-    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Reads shown here may include low quality genotypes that were excluded from allele counts.
-  </p>
-  <p>
-    <span
-      className="c1"
-    >
-      Note
-    </span>
-     Samples shown below are not guaranteed to be part of the selected subset.
-  </p>
-  <div
-    className="c2"
-  >
-    <strong>
-      Exomes:
-    </strong>
-    <button
-      className="c3"
-      disabled={true}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      het
-    </button>
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Load +1 
-      hom
-    </button>
-  </div>
-  <div
-    className="c2"
-  >
-    <button
-      className="c3"
-      disabled={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "marginLeft": "80px",
-        }
-      }
-      type="button"
-    >
-      Load all
-    </button>
-  </div>
-</div>
-`;
-
-exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected changes with exome data present 1`] = `
 .c2 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -1362,7 +399,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes 1`
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1374,7 +411,58 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes 1`
 </div>
 `;
 
-exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_cnv_r4" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_cnv_r4, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -1525,7 +613,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
     >
       Note
     </span>
-     Samples shown below are not guaranteed to be part of the selected subset.
+     Reads shown here may include low quality genotypes that were excluded from allele counts.
   </p>
   <div
     className="c2"
@@ -1560,7 +648,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1572,7 +660,58 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 </div>
 `;
 
-exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r2_1" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r2, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -1723,6 +862,14 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
     >
       Note
     </span>
+     Reads shown here may include low quality genotypes that were excluded from allele counts.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
      Samples shown below are not guaranteed to be part of the selected subset.
   </p>
   <div
@@ -1758,7 +905,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1770,7 +917,58 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 </div>
 `;
 
-exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r2_1_controls" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r2, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -1921,6 +1119,14 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
     >
       Note
     </span>
+     Reads shown here may include low quality genotypes that were excluded from allele counts.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
      Samples shown below are not guaranteed to be part of the selected subset.
   </p>
   <div
@@ -1956,7 +1162,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -1968,7 +1174,58 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 </div>
 `;
 
-exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r2, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -2119,6 +1376,14 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
     >
       Note
     </span>
+     Reads shown here may include low quality genotypes that were excluded from allele counts.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
      Samples shown below are not guaranteed to be part of the selected subset.
   </p>
   <div
@@ -2154,7 +1419,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2166,7 +1431,58 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 </div>
 `;
 
-exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r2, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+  <p>
+    <span
+      className="c0"
+    >
+      Note
+    </span>
+     Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -2317,6 +1633,14 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
     >
       Note
     </span>
+     Reads shown here may include low quality genotypes that were excluded from allele counts.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
      Samples shown below are not guaranteed to be part of the selected subset.
   </p>
   <div
@@ -2352,7 +1676,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2364,7 +1688,36 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 </div>
 `;
 
-exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r2, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes with exome data present 1`] = `
 .c2 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -2528,7 +1881,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2540,7 +1893,36 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 </div>
 `;
 
-exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r3" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -2726,7 +2108,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2738,7 +2120,36 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 </div>
 `;
 
-exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpected changes 1`] = `
+exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected changes with exome data present 1`] = `
 .c3 {
   box-sizing: border-box;
   height: calc(2em + 2px);
@@ -2924,7 +2335,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "80px",
         }
       }
@@ -2934,4 +2345,1775 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
     </button>
   </div>
 </div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_cancer" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected changes with exome data present 1`] = `
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c2 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c2 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c2 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c2 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c2 button {
+    margin-left: 0 !important;
+  }
+
+  .c2 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
+     Samples shown below are not guaranteed to be part of the selected subset.
+  </p>
+  <div
+    className="c2"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c3"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c2"
+  >
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_neuro" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected changes with exome data present 1`] = `
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c2 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c2 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c2 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c2 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c2 button {
+    margin-left: 0 !important;
+  }
+
+  .c2 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
+     Samples shown below are not guaranteed to be part of the selected subset.
+  </p>
+  <div
+    className="c2"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c3"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c2"
+  >
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_topmed" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected changes with exome data present 1`] = `
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c2 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c2 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c2 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c2 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c2 button {
+    margin-left: 0 !important;
+  }
+
+  .c2 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
+     Samples shown below are not guaranteed to be part of the selected subset.
+  </p>
+  <div
+    className="c2"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c3"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c2"
+  >
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r3_non_v2" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r3, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes with exome data present 1`] = `
+.c2 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c2:active,
+.c2:hover {
+  background-color: #cbd3da;
+}
+
+.c2:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c2:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c2 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c1 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c1 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c1 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c1 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c1 button {
+    margin-left: 0 !important;
+  }
+
+  .c1 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <div
+    className="c1"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c2"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c1"
+  >
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_r4" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_r4, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected changes with exome data present 1`] = `
+.c2 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c2:active,
+.c2:hover {
+  background-color: #cbd3da;
+}
+
+.c2:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c2:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c2 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c1 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c1 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c1 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c1 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c1 button {
+    margin-left: 0 !important;
+  }
+
+  .c1 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <div
+    className="c1"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c2"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c1"
+  >
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_sv_r2_1, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpected changes with exome data present 1`] = `
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c2 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c2 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c2 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c2 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c2 button {
+    margin-left: 0 !important;
+  }
+
+  .c2 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
+     Samples shown below are not guaranteed to be part of the selected subset.
+  </p>
+  <div
+    className="c2"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c3"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c2"
+  >
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_sv_r2_1_controls, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpected changes with exome data present 1`] = `
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c2 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c2 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c2 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c2 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c2 button {
+    margin-left: 0 !important;
+  }
+
+  .c2 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <p>
+    <span
+      className="c1"
+    >
+      Note
+    </span>
+     Samples shown below are not guaranteed to be part of the selected subset.
+  </p>
+  <div
+    className="c2"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c3"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c2"
+  >
+    <button
+      className="c3"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_sv_r2_1_non_neuro, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
+`;
+
+exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes with exome and genome data both missing 1`] = `
+<div>
+  <p>
+    No read data available for this variant.
+  </p>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes with exome data present 1`] = `
+.c2 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c2:active,
+.c2:hover {
+  background-color: #cbd3da;
+}
+
+.c2:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c2:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c2 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c0 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0:visited,
+.c0:active {
+  color: #1173bb;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c1 {
+  padding-right: 80px;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.c1 strong {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+
+.c1 button {
+  margin-left: 2em;
+}
+
+@media (max-width:500px) {
+  .c1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .c1 strong {
+    width: auto;
+    margin-bottom: 0.5em;
+  }
+
+  .c1 button {
+    margin-left: 0 !important;
+  }
+
+  .c1 button:last-child {
+    margin-top: 1em;
+  }
+}
+
+<div>
+  <p>
+    This interactive
+     
+    <a
+      className="c0"
+      href="https://github.com/igvteam/igv.js"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      IGV.js
+    </a>
+     visualization shows reads that went into calling this variant. Reads may not be available for every sample carrying this variant.
+  </p>
+  <p>
+    These are reassembled reads produced by
+     
+    <a
+      className="c0"
+      href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GATK HaplotypeCaller --bamOutput
+    </a>
+    , so they accurately represent what HaplotypeCaller was seeing when it called this variant.
+  </p>
+  <div
+    className="c1"
+  >
+    <strong>
+      Exomes:
+    </strong>
+    <button
+      className="c2"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      het
+    </button>
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Load +1 
+      hom
+    </button>
+  </div>
+  <div
+    className="c1"
+  >
+    <button
+      className="c2"
+      disabled={false}
+      onClick={[Function]}
+      style={
+        {
+          "marginLeft": "80px",
+        }
+      }
+      type="button"
+    >
+      Load all
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ReadData with "gnomad_sv_r4" dataset selected queries against the correct dataset 1`] = `
+"
+    query ReadData {
+      variant_0: variantReads(dataset: gnomad_sv_r4, variantId: "123-45-A-G") {
+        exome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+        genome {
+          bamPath
+          category
+          indexPath
+          readGroup
+        }
+      }
+    }
+  "
 `;

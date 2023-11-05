@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Searchbox, Select } from '@gnomad/ui'
 
 import { fetchSearchResults } from './search'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,8 +29,14 @@ const Wrapper = styled.div`
 
 const getDefaultSearchDataset = (selectedDataset: any) => {
   if (selectedDataset) {
+    if (selectedDataset.startsWith('gnomad_r4')) {
+      return 'gnomad_r4'
+    }
     if (selectedDataset.startsWith('gnomad_r3')) {
       return 'gnomad_r3'
+    }
+    if (selectedDataset.startsWith('gnomad_r2')) {
+      return 'gnomad_r2_1'
     }
     if (selectedDataset.startsWith('gnomad_sv_r2')) {
       return 'gnomad_sv_r2_1'
@@ -37,15 +44,21 @@ const getDefaultSearchDataset = (selectedDataset: any) => {
     if (selectedDataset === 'exac') {
       return 'exac'
     }
+    if (selectedDataset === 'gnomad_sv_r4') {
+      return 'gnomad_sv_r4'
+    }
+    if (selectedDataset === 'gnomad_cnv_r4') {
+      return 'gnomad_cnv_r4'
+    }
   }
-  return 'gnomad_r2_1'
+  return 'gnomad_r4'
 }
 
 export default withRouter((props: any) => {
   const {
     history,
     location,
-    match,
+    _match,
     placeholder = 'Search by gene, region, or variant',
     width,
     ...rest
@@ -53,7 +66,7 @@ export default withRouter((props: any) => {
 
   const currentParams = queryString.parse(location.search)
   const defaultSearchDataset = getDefaultSearchDataset(currentParams.dataset)
-  const [searchDataset, setSearchDataset] = useState(defaultSearchDataset)
+  const [searchDataset, setSearchDataset] = useState<DatasetId>(defaultSearchDataset)
 
   // Update search dataset when active dataset changes.
   // Cannot rely on props for this because the top bar does not re-render.
@@ -79,10 +92,17 @@ export default withRouter((props: any) => {
           }
         }}
       >
-        <option value="gnomad_r3">gnomAD v3.1.2</option>
-        <option value="gnomad_r2_1">gnomAD v2.1.1</option>
-        <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
-        <option value="exac">ExAC</option>
+        <optgroup label="GRCh38">
+          <option value="gnomad_r4">gnomAD v4.0.0</option>
+          <option value="gnomad_r3">gnomAD v3.1.2</option>
+          <option value="gnomad_sv_r4">gnomAD SVs v4</option>
+          <option value="gnomad_cnv_r4">gnomAD CNVs v4.0</option>
+        </optgroup>
+        <optgroup label="GRCh37">
+          <option value="gnomad_r2_1">gnomAD v2.1.1</option>
+          <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
+          <option value="exac">ExAC</option>
+        </optgroup>
       </Select>
       <span style={{ flexGrow: 1 }}>
         <Searchbox

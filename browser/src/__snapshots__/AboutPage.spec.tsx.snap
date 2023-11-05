@@ -1,0 +1,685 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About Page has no unexpected changes 1`] = `
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c2 {
+  margin: 0;
+}
+
+.c0 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto 40px;
+  font-size: 14px;
+  font-size: 16px;
+}
+
+.c0 p {
+  margin-bottom: 1em;
+  line-height: 1.4;
+}
+
+.c3 {
+  font-size: 16px;
+}
+
+.c3 h1,
+.c3 h2,
+.c3 h3 {
+  font-weight: bold;
+}
+
+.c3 h1 {
+  font-size: 2em;
+}
+
+.c3 h2 {
+  font-size: 1.5em;
+}
+
+.c3 p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.c3 a {
+  color: #428bca;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3 img {
+  max-width: 100%;
+}
+
+.c3 blockquote {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.c3 ol,
+.c3 ul {
+  padding-left: 20px;
+  margin: 1em 0;
+}
+
+.c3 li {
+  margin-bottom: 0.5em;
+}
+
+.c3 table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c3 td {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+  text-align: left;
+}
+
+.c3 th {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-weight: bold;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c4 {
+  padding-top: 2rem;
+  margin-top: 2rem;
+}
+
+.c6 {
+  width: calc( 45% - 15px );
+}
+
+.c9 {
+  line-height: 1.5;
+}
+
+.c9 ul {
+  padding-left: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c9 ul ul {
+  padding-left: 20px;
+  margin: 0.5em 0;
+}
+
+.c8 {
+  line-height: 1.5;
+  -webkit-columns: 2;
+  columns: 2;
+}
+
+.c8 ul {
+  padding-left: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c8 ul ul {
+  padding-left: 20px;
+  margin: 0.5em 0;
+}
+
+.c7 {
+  line-height: 1.5;
+}
+
+.c7 ul {
+  padding-left: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c7 ul ul {
+  padding-left: 20px;
+  margin: 0.5em 0;
+}
+
+.c7 li {
+  margin-bottom: 1rem;
+}
+
+@media (max-width:900px) {
+  .c1 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: none;
+  }
+}
+
+@media (max-width:900px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media (max-width:992px) {
+  .c5 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-size: 16px;
+  }
+}
+
+@media (max-width:992px) {
+  .c6 {
+    width: 100%;
+  }
+}
+
+@media (max-width:992px) {
+  .c8 {
+    -webkit-columns: 1;
+    columns: 1;
+  }
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <h1
+      className="c2"
+    >
+      About gnomAD
+    </h1>
+  </div>
+  <div
+    className="c3"
+    dangerouslySetInnerHTML={
+      {
+        "__html": "The Genome Aggregation Database (gnomAD), originally launched in 2014 as the Exome Aggregation Consortium (ExAC), is the result of a coalition of investigators willing to share aggregate exome and genome sequencing data from a variety of large-scale sequencing projects, and make summary data available for the wider scientific community. The project is overseen by co-directors Heidi Rehm and Mark Daly, and steering committee members Samantha Baxter, Katherine Chao, Julia Goodrich, Konrad Karczewski, Daniel MacArthur, Benjamin Neale, Anne O'Donnell-Luria, Kaitlin Samocha, Matthew Solomonson, and Michael Talkowski. To learn more about the team that produces gnomAD please see our [team page](/team). A list of investigators and groups that have contributed data is available below.
+
+The gnomAD database is composed of exome and genome sequences from around the world. We have removed cohorts that were recruited for pediatric disease, except for a small number of diverse cohorts where we have included unaffected relatives. As such, the gnomAD resource should serve as useful reference sets of allele frequencies for severe pediatric disease studies - however, note that some individuals with severe disease may still be included in the data sets such as biobanks, albeit likely at a frequency equivalent to or lower than that seen in the general population.
+
+All of the raw data from these projects have been reprocessed through equivalent pipelines, and jointly variant-called to increase consistency across projects. The processing pipelines were written in the [WDL workflow definition language](https://software.broadinstitute.org/wdl/) and executed using the [Cromwell execution engine](https://github.com/broadinstitute/cromwell), open-source projects for defining and executing genomic workflows at massive scale on multiple platforms. The gnomAD data set contains individuals sequenced using multiple exome capture methods and sequencing chemistries, so coverage varies between individuals and across sites. This variation in coverage is incorporated into the variant frequency calculations for each variant. gnomAD was QCed and analyzed using the [Hail](https://hail.is/) open-source framework for scalable genetic analysis. The full gnomAD datasets are released publicly via [download](/downloads) for the benefit of the wider biomedical community. For terms of use and other policies please see our [policy page](/policies).
+
+For the specific details on any of our releases, including methods for annotation and QC, the calling of [structural variants](https://gnomad.broadinstitute.org/news/2019-03-structural-variants-in-gnomad/), [mitochondrial variants](https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/), and [STRs](https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/) as well as guidance for use of gnomAD-specific metrics and browser features, please see our [blog posts](https://gnomad.broadinstitute.org/news/), [help page](/help) and [publications](/publications).
+
+The aggregation and release of summary data from the exomes and genomes collected by the Genome Aggregation Database has been approved by the Mass General Brigham IRB (protocol 2013P001339, "Large-scale aggregation of human genomic data").
+
+<br />
+
+## Stats
+
+- v4 release is composed of 730,947 exomes and 76,215 genomes (GRCh38)
+- gnomAD v4 structural variants (SV) represent 63,046 genomes (GRCh38)
+- gnomAD v4 copy number variants (CNV) represent variants in less than 1% of 464,297 exomes (GRCh38)
+
+For more Stats on gnomAD v4 please see our [stats page](/stats)
+",
+      }
+    }
+    onClick={[Function]}
+  />
+  <h2
+    className="c4"
+  >
+    Funding
+  </h2>
+  <div
+    className="c5"
+  >
+    <div
+      className="c6"
+      width="45%"
+    >
+      <div
+        aria-labelledby="funding"
+        className="c7"
+        dangerouslySetInnerHTML={
+          {
+            "__html": "**Current Funding**
+
+- NIH/NHGRI U24HG011450<br/>(MPIs: Rehm and Daly)
+- NIH/NHGRI U01HG011755<br/>(MPIs: O’Donnell-Luria, Rehm and Talkowski)
+- NIMH MH115957<br/>(PI: Talkowski)
+- NICHD HD081256<br/>(PI: Talkowski)
+- Broad Institute contributes data storage, computing resources, and human effort
+
+<br/>
+
+**Past Funding**
+
+- NIGMS R01 GM104371<br/>(PI: MacArthur)
+- NIDDK U54 DK105566<br/>(PIs: MacArthur and Neale)
+- NHGRI U24 HG010262<br/>(PI: Philippakis)
+- NIMH R56 MH115957<br/>(PI: Talkowski)
+- NHLBI R01 HL143295<br/>(PI: Green)
+- Wellcome Trust WT200990/Z/16/Z<br/>(PI: Birney)
+- BioMarin
+- Sanofi-Genzyme
+",
+          }
+        }
+      />
+      <p>
+        The vast majority of the data storage, computing resources, and human effort used to generate this call set were donated by the Broad Institute
+      </p>
+    </div>
+    <div
+      className="c6"
+      width="45%"
+    >
+      <div
+        aria-labelledby="gcbr"
+        className="c7"
+        dangerouslySetInnerHTML={
+          {
+            "__html": "![GCBR Logo](./GCBR-Logo-RGB.png)
+
+gnomAD is a Global Core Biodata Resource (GCBR).
+See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-selected-as-global-core-biodata-resource/) and learn more about GCBRs [here](https://globalbiodata.org/scientific-activities/global-core-biodata-resources/).
+",
+          }
+        }
+      />
+    </div>
+  </div>
+  <h2
+    className="c4"
+  >
+    Data Contributors
+  </h2>
+  <div
+    className="c5"
+  >
+    <div
+      className="c6"
+      width="45%"
+    >
+      <h3
+        id="principal-investigators"
+      >
+        Data Contributors
+      </h3>
+      <div
+        aria-labelledby="principal-investigators"
+        className="c8"
+        dangerouslySetInnerHTML={
+          {
+            "__html": "- Maria Abreu
+- Amina Abubakar
+- Rolf Adolfsson
+- Carlos A Aguilar Salinas
+- Tariq Ahmad
+- Christine M. Albert
+- Nicholette Allred
+- Matthieu Allez
+- David Altshuler
+- Celso Arango López
+- Diego Ardissino
+- Gil Atzmon
+- John Barnard
+- Laurent Beaugerie
+- Gary Beecham
+- Emelia J. Benjamin
+- Charles Bernstein
+- Douglas Blackwood
+- Michael Boehnke
+- Lori Bonnycastle
+- Erwin Bottinger
+- Donald Bowden
+- Matthew Bown
+- Hannia Campos
+- John Chambers
+- Juliana Chan
+- Daniel Chasman
+- Lea Ann Chen
+- Rex Chisholm
+- Judy Cho
+- Rajiv Chowdhury
+- Mina Chung
+- Wendy Chung
+- Bruce Cohen
+- Adolfo Correa
+- Aiden Corvin
+- Nick Craddock
+- Dana Dabelea
+- Mark Daly
+- John Danesh
+- Dawood Darbar
+- Joshua Denny
+- Richard H. Duerr
+- Ravindranath Duggirala
+- Josée Dupuis
+- Patrick T. Ellinor
+- Roberto Elosua
+- Jeanette Erdmann
+- Tõnu Esko
+- Martt Färkkilä
+- Diane Fatkin
+- William Faubion
+- Gemma Figtree
+- Jose Florez
+- Andre Franke
+- Michel Georges
+- Gad Getz
+- David Glahn
+- Ben Glaser
+- Stephen Glatt
+- Fernando Goes
+- David Goldstein
+- Clicerio Gonzalez
+- Leif Groop
+- Christopher Haiman
+- Ira Hall
+- Craig Hanis
+- James Hanyok
+- Matthew Harms
+- Mikko Hiltunen
+- Matti Holi
+- Christina Hultman
+- Chaim Jalas
+- Mikko Kallela
+- Jaakko Kaprio
+- Elizabeth W. Karlson
+- Sekar Kathiresan
+- Eimear Kenny
+- Bong-Jo Kim
+- Young Jin Kim
+- George Kirov
+- Jaspal Kooner
+- Seppo Koskinen
+- Harlan M. Krumholz
+- Subra Kugathasan
+- Juozas Kupcinskas
+- Soo Heon Kwak
+- Markku Laakso
+- Mikael Landén
+- Terho Lehtimäki
+- James Lewis
+- Ruth Loos
+- Edouard Louis
+- Steven A. Lubitz
+- Ronald Ma
+- Daniel MacArthur
+- Dara Manoach
+- Gregory M. Marcus
+- Jaume Marrugat
+- Kari Mattila
+- Steve McCarroll
+- Mark McCarthy
+- Jacob McCauley
+- Dermot McGovern
+- Ruth McPherson
+- Andrew McQuillian
+- James Meigs
+- Olle Melander
+- Deborah Meyers
+- Lili Milani
+- Braxton Mitchell
+- Paul Moayyedi
+- Sanghamitra Mohanty
+- Aliya Naheed
+- Andrea Natale
+- Saman Nazarian
+- Ben Neale
+- Charles R Newton
+- Peter Nilsson
+- Michael O'Donovan
+- Yuki Okada
+- Dost Ongur
+- Roel Ophoff
+- Lorena Orozco
+- Willem Ouwehand
+- Michael Owen
+- Nick Owen
+- Colin Palmer
+- Aarno Palotie
+- Mara Parellada
+- Kyong Soo Park
+- Carlos Pato
+- Nancy Pedersen
+- Danielle Posthuma
+- Ann Pulver
+- Dan Rader
+- Nazneen Rahman
+- Andreas Reif
+- Alex Reiner
+- Anne Remes
+- Stephen Rich
+- John D. Rioux
+- Samuli Ripatti
+- Jason Roberts
+- Elise Robinson
+- Dan Roden
+- Jerome I. Rotter
+- Guy Rouleau
+- Christian Ruff
+- Marc Sabatine
+- Danish Saleheen
+- Veikko Salomaa
+- Nilesh Samani
+- Akira Sawa
+- Jeremiah Scharf
+- Heribert Schunkert
+- Svati Shah
+- Moore Shoemaker
+- Tai Shyong
+- Edwin K. Silverman
+- Jurgita Skieceviciene
+- Pamela Sklar
+- Gustav Smith
+- Jordan Smoller
+- Hilkka Soininen
+- Harry Sokol
+- Tim Spector
+- David St Clair
+- Nathan Stitziel
+- Patrick Sullivan
+- Jaana Suvisaari
+- Kent Taylor
+- Yik-Ying Teo
+- Tuomi Tiinamaija
+- Ming Tsuang
+- Dan Turner
+- Teresa Tusie Luna
+- Erkki Vartiainen
+- Marquis Vawter
+- Severine Vermeire
+- Elisabet Vilella
+- James Ware
+- Hugh Watkins
+- Rinse Weersma
+- Maija Wessman
+- James Wilson
+- Ramnik Xavier
+- Robert Yolken
+",
+          }
+        }
+      />
+    </div>
+    <div
+      className="c6"
+      width="45%"
+    >
+      <h3
+        id="contributing-projects"
+      >
+        Contributing projects
+      </h3>
+      <div
+        aria-labelledby="contributing-projects"
+        className="c9"
+        dangerouslySetInnerHTML={
+          {
+            "__html": "- 1000 Genomes
+- 1958 Birth Cohort
+- African American Coronary Artery Calcification project (AACAC)
+- ALSGEN
+- Alzheimer's Disease Sequencing Project (ADSP)
+- Atrial Fibrillation Genetics Consortium (AFGen)
+  - Duke Catheterization Genetics (CATHGEN)
+- Bangladesh Risk of Acute Vascular Events (BRAVE) Study
+- ​​BIOcd-plus
+- BioHeart
+- BioMe Biobank
+- BioVU
+- BipEx
+- Bulgarian Trios
+- CCDG IBD sequencing project
+- COPD-Gene
+- Crohn's & Colitis Foundation (CCFA) Genetics Initiative
+- ENGAGE-TIMI
+- Estonian Genome Center, University of Tartu (EGCUT)
+- Finland-United States Investigation of NIDDM Genetics (FUSION)
+- Finnish Migraine Study
+- Finnish Twin Cohort Study
+- FINN-ADGEN
+- FINRISK
+- Framingham Heart Study
+- Gene Discoveries in Subjects with Crohn’s Disease of African Descent
+- Genetics of Cardiometabolic Health in the Amish
+- Genizon Biobank
+- Génome Québec - Genizon Biobank
+- Genomic Psychiatry Cohort
+- GoT2D
+- Genotype-Tissue Expression Project (GTEx)
+- Health2000
+- Human Genome Diversity Project
+- Inflammatory Bowel Disease:
+  - 1000IBD project
+  - Helsinki University Hospital Finland
+  - IBD Genomic Medicine Consortium (iGenoMed)
+  - IBD: REMIND
+  - IBD: Understanding the biological, clinical, and psychosocial determinants of health outcomes in inflammatory bowel disease
+  - Inflammatory Bowel Disease Sequencing Study
+  - NIDDK IBD Genetics Consortium
+  - Quebec IBD Genetics Consortium
+  - University of Miami IBD Collaborative
+- IMAGINE
+- International Genome Sample Resource (IGSR)
+- Jackson Heart Study
+- Jewish Genome Project - funded by Bonei Olam
+- Kuopio Alzheimer Study
+- LifeLines Cohort
+- Lung Tissue Research Consortium (LTRC)
+- Material and Information Resources for Inflammatory And Digestive Diseases (M.I.R.I.A.D. Biobank)
+- McLean Program for Neuropsychiatric Research, Psychotic Disorders Division
+- MESTA
+- METabolic Syndrome In Men (METSIM)
+- Mass General Brigham biobank
+- Molecular Genetics of Cognitive Disorders in Northern Finland
+- Multi-Ethnic Study of Atherosclerosis (MESA)
+- Myocardial Infarction Genetics Consortium (MIGen):
+  - Leicester Exome Seq
+  - North German MI Study
+  - Ottawa Genomics Heart Study
+  - Pakistan Risk of Myocardial Infarction Study (PROMIS)
+  - Precocious Coronary Artery Disease Study (PROCARDIS)
+  - Registre Gironi del COR (REGICOR)
+  - South German MI Study
+  - Variation in Recovery: Role of Gender on Outcomes of Young AMI Patients (VIRGO)
+- National Institute of Mental Health (NIMH) Controls
+- NHGRI CCDG
+- NHLBI-GO Exome Sequencing Project (ESP)
+- NHLBI TOPMed
+- NeuroDev
+- Nurses' Health Study
+- Osaka University Graduate School of Medicine
+- PEGASUS
+- Population Architecture Using Genomics and Epidemiology (PAGE) Consortium
+- PRISM
+- Pritzker Neuropsychiatric Disorders Research Consortium
+- Schizophrenia Exome Sequencing Meta-Analysis (SCHEMA)
+  - SCHEMA - Japan
+  - SCHEMA - Spain
+- Schizophrenia Trios from Taiwan
+- Sequencing Initiative Suomi (SiSu)
+- SHARE
+- SIGMA-T2D
+- SubPopulations and InteRmediate Outcome Measures In COPD Study (SPIROMICS)
+- SUPER Study – “A Finnish study of hereditary mechanisms of psychosis disorders”
+- Swedish Schizophrenia & Bipolar Studies
+- T2D-GENES
+  - BioMe
+  - GoDARTS
+  - Framingham Heart Study
+- T2D-SEARCH
+- The Cancer Genome Atlas (TCGA)
+- The Fund for Resources for Psychiatric Research
+- The Genetics of Atrial Fibrillation
+- The Genetics of Cardiovascular Disease: Atrial Fibrillation and Atrioventricular Block
+- The Vanderbilt Atrial Fibrillation Ablation Registry (VAFAR)
+- TheWellcomeTrust Case Control Consortium
+- THL Biobank consent in accordance with the Finnish Biobank Act
+- UCSF atrial fibrillation cohort
+- UKIBDGC - Pharmacogenetic
+- UK BioBank
+- Whole Genome Sequencing in Psychiatric Disorders (WGSPD)
+- Women's Health Initiative (WHI)
+",
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

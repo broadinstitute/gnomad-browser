@@ -7,7 +7,7 @@ import { AxisBottom, AxisLeft } from '@vx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -51,8 +51,12 @@ const labelProps = {
   textAnchor: 'middle',
 }
 
-// @ts-expect-error TS(2339) FIXME: Property 'variant' does not exist on type '{}'.
-const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width } }) => {
+type Props = {
+  variant: StructuralVariant
+  size: { width: number }
+}
+
+const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width } }: Props) => {
   const height = 250
 
   const xScale = scaleBand()
@@ -61,11 +65,10 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
     .range([0, width - (margin.left + margin.right)])
 
   const yScale = scaleLinear()
-    // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number)[]' is not assi... Remove this comment to see the full error message
     .domain([0, max(variant.copy_numbers, (d: any) => d.ac) || 1])
     .range([height - (margin.top + margin.bottom), margin.top])
 
-  const labelInterval = Math.max(Math.round(variant.copy_numbers.length / 100) * 10, 1)
+  const labelInterval = Math.max(Math.round((variant.copy_numbers || []).length / 100) * 10, 1)
 
   return (
     <GraphWrapper>
@@ -93,7 +96,7 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
           top={margin.top}
         />
         <g transform={`translate(${margin.left},${margin.top})`}>
-          {variant.copy_numbers.map(({ copy_number: copyNumber, ac }: any) => (
+          {(variant.copy_numbers || []).map(({ copy_number: copyNumber, ac }: any) => (
             <React.Fragment key={copyNumber}>
               <rect
                 x={xScale(copyNumber)}
@@ -123,10 +126,5 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
 })
 
 MultiallelicCopyNumberVariantPlot.displayName = 'MultiallelicCopyNumberVariantPlot'
-
-MultiallelicCopyNumberVariantPlot.propTypes = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ variant: Validator<StructuralVariantDetail... Remove this comment to see the full error message
-  variant: StructuralVariantDetailPropType.isRequired,
-}
 
 export default MultiallelicCopyNumberVariantPlot

@@ -1,15 +1,30 @@
 import React from 'react'
 
-import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  referenceGenome,
+  hasShortTandemRepeats,
+} from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 import GeneNotFound from './GeneNotFound'
-import GenePage from './GenePage'
+import GenePage, { Gene } from './GenePage'
+import {
+  HeterozygousVariantCooccurrenceSeverity,
+  HeterozygousVariantCooccurrenceAfCutoff,
+  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HeterozygousCountCellSchema,
+  HomozygousVariantCooccurrenceSeverity,
+  HomozygousVariantCooccurrenceAfCutoff,
+  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HomozygousCountCellSchema,
+} from './VariantCooccurrenceCountsTable'
 
 const operationName = 'Gene'
+
 const query = `
 query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
@@ -209,8 +224,41 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
+    gnomad_v2_regional_missense_constraint {
+      passed_qc
+      has_no_rmc_evidence
+      regions {
+        chrom
+        start
+        stop
+        aa_start
+        aa_stop
+        obs_mis
+        exp_mis
+        obs_exp
+        chisq_diff_null
+        p_value
+      }
+    }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
       id
+    }
+    heterozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+        two_het_total
+	in_cis
+	in_trans
+	unphased
+      }
+    }
+    homozygous_variant_cooccurrence_counts {
+      csq
+      af_cutoff
+      data {
+	hom_total
+      }
     }
   }
 }
@@ -221,16 +269,64 @@ type Props = {
   geneIdOrSymbol: string
 }
 
+interface UnrolledVariantCooccurrenceCounts {
+  heterozygous_variant_cooccurrence_counts: {
+    csq: HeterozygousVariantCooccurrenceSeverity
+    af_cutoff: HeterozygousVariantCooccurrenceAfCutoff
+    data: HeterozygousCountCellSchema
+  }[]
+  homozygous_variant_cooccurrence_counts: {
+    csq: HomozygousVariantCooccurrenceSeverity
+    af_cutoff: HomozygousVariantCooccurrenceAfCutoff
+    data: HomozygousCountCellSchema
+  }[]
+}
+
+type RolledUpVariantCooccurrenceCounts = {
+  heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
+}
+
+const rollUpVariantCooccurrenceCounts = (
+  unrolledGene: UnrolledVariantCooccurrenceCounts
+): RolledUpVariantCooccurrenceCounts => {
+  const heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
+  const homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf =
+    {}
+
+  unrolledGene.heterozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
+    const severity = unrolledGeneCount.csq
+    const afCutoff = unrolledGeneCount.af_cutoff
+    const data = unrolledGeneCount.data
+
+    heterozygous_variant_cooccurrence_counts[severity] =
+      heterozygous_variant_cooccurrence_counts[severity] || {}
+    heterozygous_variant_cooccurrence_counts[severity]![afCutoff] = data
+  })
+
+  unrolledGene.homozygous_variant_cooccurrence_counts.forEach((unrolledGeneCount) => {
+    const severity = unrolledGeneCount.csq
+    const afCutoff = unrolledGeneCount.af_cutoff
+    const data = unrolledGeneCount.data
+
+    homozygous_variant_cooccurrence_counts[severity] =
+      homozygous_variant_cooccurrence_counts[severity] || {}
+    homozygous_variant_cooccurrence_counts[severity]![afCutoff] = data
+  })
+
+  return { heterozygous_variant_cooccurrence_counts, homozygous_variant_cooccurrence_counts }
+}
+
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
   const variables = {
     [geneIdOrSymbol.startsWith('ENSG') ? 'geneId' : 'geneSymbol']: geneIdOrSymbol,
     referenceGenome: referenceGenome(datasetId),
     shortTandemRepeatDatasetId: 'gnomad_r3',
-    includeShortTandemRepeats: datasetId.startsWith('gnomad_r3'),
+    includeShortTandemRepeats: hasShortTandemRepeats(datasetId),
   }
 
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseQuery operationName={operationName} query={query} variables={variables}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
@@ -264,7 +360,9 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
           )
         }
 
-        return <GenePage datasetId={datasetId} gene={data.gene} geneId={data.gene.gene_id} />
+        const rolledUpCounts = rollUpVariantCooccurrenceCounts(data.gene)
+        const gene: Gene = { ...data.gene, ...rolledUpCounts }
+        return <GenePage datasetId={datasetId} gene={gene} geneId={data.gene.gene_id} />
       }}
     </BaseQuery>
   )

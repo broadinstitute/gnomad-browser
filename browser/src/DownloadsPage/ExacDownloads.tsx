@@ -1,13 +1,15 @@
 import React from 'react'
 
-import { Link, List, ListItem } from '@gnomad/ui'
+import { ListItem } from '@gnomad/ui'
 
 import {
+  DownloadsSection,
   FileList,
   GenericDownloadLinks,
   GetUrlButtons,
   IndexedFileDownloadLinks,
   SectionTitle,
+  StyledParagraph,
 } from './downloadsPageStyles'
 
 const coverageFiles = [
@@ -37,50 +39,24 @@ const coverageFiles = [
   { chrom: 'Y', size: '1.6 MiB', md5: 'cc42d39bde6e6591901060b3c43b3956' },
 ]
 
-export default () => (
-  <React.Fragment>
-    <p>
+const ExacDownloads = () => (
+  <>
+    <SectionTitle id="exac" theme={{ type: 'release' }}>
+      ExAC Downloads
+    </SectionTitle>
+    <StyledParagraph>
       The ExAC data set contains data from 60,706 exomes, all mapped to the GRCh37/hg19 reference
       sequence.
-    </p>
-    <section>
-      <h2>Summary</h2>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <List>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-variants">Variants</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-coverage">Coverage</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-constraint">Constraint</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-regional-missense-constraint">Regional Missense Constraint</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-resources">Resources</Link>
-        </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <Link href="#exac-other">Other</Link>
-        </ListItem>
-      </List>
-    </section>
+    </StyledParagraph>
 
-    <section>
+    <SectionTitle id="exac-core-dataset" theme={{ type: 'datasets' }}>
+      Core Dataset
+    </SectionTitle>
+    <StyledParagraph>
+      gnomAD database and features created and maintained by the gnomAD production team.
+    </StyledParagraph>
+
+    <DownloadsSection>
       <SectionTitle id="exac-variants">Variants</SectionTitle>
       <h3>Exomes</h3>
       <FileList>
@@ -94,9 +70,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="exac-coverage">Coverage</SectionTitle>
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
@@ -111,9 +87,9 @@ export default () => (
           </ListItem>
         ))}
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="exac-constraint">Constraint</SectionTitle>
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -124,9 +100,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="exac-regional-missense-constraint">
         Regional Missense Constraint
       </SectionTitle>
@@ -139,9 +115,9 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
-    <section>
+    <DownloadsSection>
       <SectionTitle id="exac-resources">Resources</SectionTitle>
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -152,7 +128,7 @@ export default () => (
           />
         </ListItem>
       </FileList>
-    </section>
+    </DownloadsSection>
 
     <section>
       <SectionTitle id="exac-other">Other</SectionTitle>
@@ -180,5 +156,7 @@ export default () => (
         </ListItem>
       </FileList>
     </section>
-  </React.Fragment>
+  </>
 )
+
+export default ExacDownloads

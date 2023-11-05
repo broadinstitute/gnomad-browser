@@ -17,6 +17,7 @@
 - Rachel Son (production and analysis)
 - Jose Soto (data generation contributor)
 - Kat Tarasova (operations)
+- Grace Tiao (product owner, production and analysis)
 - Gordon Wade (data generation, structural variants)
 - Arcturus Wang (production/Hail)
 - Qingbo Wang (production and analysis)

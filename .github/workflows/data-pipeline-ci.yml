@@ -18,7 +18,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Use pip cache
         uses: actions/cache@v2
         with:
@@ -29,10 +29,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install wheel
-          pip install -r requirements-dev.txt
-          pip install hail
           pip install -r data-pipeline/requirements.txt
       - name: Check formatting
         run: black --check data-pipeline/src/data_pipeline
-      - name: Run Pylint
-        run: pylint --disable=fixme data-pipeline/src/data_pipeline
+      - name: Run Ruff
+        run: ruff data-pipeline/src/data_pipeline
+      - name: Run Pyright
+        run: pyright --project data-pipeline

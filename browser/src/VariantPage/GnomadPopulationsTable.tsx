@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { Checkbox } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
-
+import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 import { PopulationsTable } from './PopulationsTable'
+import { Population } from './VariantPage'
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -101,21 +102,9 @@ const nestPopulations = (populations: any) => {
 }
 
 type OwnGnomadPopulationsTableProps = {
-  datasetId: string
-  exomePopulations: {
-    id: string
-    ac: number
-    an: number
-    ac_hemi?: number
-    ac_hom: number
-  }[]
-  genomePopulations: {
-    id: string
-    ac: number
-    an: number
-    ac_hemi?: number
-    ac_hom: number
-  }[]
+  datasetId: DatasetId
+  exomePopulations: Population[]
+  genomePopulations: Population[]
   showHemizygotes?: boolean
   showHomozygotes?: boolean
 }
@@ -144,13 +133,8 @@ export class GnomadPopulationsTable extends Component<
   }
 
   render() {
-    const {
-      datasetId,
-      exomePopulations,
-      genomePopulations,
-      showHemizygotes,
-      showHomozygotes,
-    } = this.props
+    const { datasetId, exomePopulations, genomePopulations, showHemizygotes, showHomozygotes } =
+      this.props
     const { includeExomes, includeGenomes } = this.state
 
     let includedPopulations: any = []
@@ -162,7 +146,7 @@ export class GnomadPopulationsTable extends Component<
     }
 
     let populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
-    if (datasetId.startsWith('gnomad_r2_1') && includeGenomes) {
+    if (hasV2Genome(datasetId) && includeGenomes) {
       populations = populations.map((pop) => {
         if (pop.id === 'eas') {
           // If the variant is only present in genomes, sub-continental populations won't be present at all.
@@ -197,7 +181,7 @@ export class GnomadPopulationsTable extends Component<
           showHemizygotes={showHemizygotes}
           showHomozygotes={showHomozygotes}
         />
-        {datasetId.startsWith('gnomad_r2_1') && includeGenomes && (
+        {hasV2Genome(datasetId) && includeGenomes && (
           <p>
             * Allele frequencies for some sub-continental populations were not computed for genome
             samples.

@@ -7,10 +7,20 @@ import { Checkbox, Select } from '@gnomad/ui'
 
 import gnomadV2AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v2/ageDistribution.json'
 import gnomadV3AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3/ageDistribution.json'
+import gnomadV4AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v4/ageDistribution.json'
+
+import {
+  DatasetId,
+  isV2,
+  isV3,
+  isV4,
+  showAllIndividualsInAgeDistributionByDefault,
+} from '@gnomad/dataset-metadata/metadata'
 
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
+import { Variant } from './VariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -41,32 +51,32 @@ const prepareVariantData = ({
   return [
     [
       exomeData
-        ? (includeHeterozygotes ? exomeData.het.n_smaller : 0) +
-          (includeHomozygotes ? exomeData.hom.n_smaller : 0)
+        ? (includeHeterozygotes && exomeData.het ? exomeData.het.n_smaller : 0) +
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.n_smaller : 0)
         : 0,
       genomeData
-        ? (includeHeterozygotes ? genomeData.het.n_smaller : 0) +
-          (includeHomozygotes ? genomeData.hom.n_smaller : 0)
+        ? (includeHeterozygotes && genomeData.het ? genomeData.het.n_smaller : 0) +
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.n_smaller : 0)
         : 0,
     ],
     ...[...Array(nBins)].map((_, i) => [
       exomeData
-        ? (includeHeterozygotes ? exomeData.het.bin_freq[i] : 0) +
-          (includeHomozygotes ? exomeData.hom.bin_freq[i] : 0)
+        ? (includeHeterozygotes && exomeData.het ? exomeData.het.bin_freq[i] : 0) +
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.bin_freq[i] : 0)
         : 0,
       genomeData
-        ? (includeHeterozygotes ? genomeData.het.bin_freq[i] : 0) +
-          (includeHomozygotes ? genomeData.hom.bin_freq[i] : 0)
+        ? (includeHeterozygotes && genomeData.het ? genomeData.het.bin_freq[i] : 0) +
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.bin_freq[i] : 0)
         : 0,
     ]),
     [
       exomeData
-        ? (includeHeterozygotes ? exomeData.het.n_larger : 0) +
-          (includeHomozygotes ? exomeData.hom.n_larger : 0)
+        ? (includeHeterozygotes && exomeData.het ? exomeData.het.n_larger : 0) +
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.n_larger : 0)
         : 0,
       genomeData
-        ? (includeHeterozygotes ? genomeData.het.n_larger : 0) +
-          (includeHomozygotes ? genomeData.hom.n_larger : 0)
+        ? (includeHeterozygotes && genomeData.het ? genomeData.het.n_larger : 0) +
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.n_larger : 0)
         : 0,
     ],
   ]
@@ -74,9 +84,11 @@ const prepareVariantData = ({
 
 const prepareOverallData = ({ datasetId, includeExomes, includeGenomes }: any) => {
   let overallAgeDistribution = null
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (isV4(datasetId)) {
+    overallAgeDistribution = gnomadV4AgeDistribution
+  } else if (isV3(datasetId)) {
     overallAgeDistribution = gnomadV3AgeDistribution
-  } else if (datasetId.startsWith('gnomad_r2')) {
+  } else if (isV2(datasetId)) {
     overallAgeDistribution = gnomadV2AgeDistribution
   }
 
@@ -117,16 +129,8 @@ const getDefaultSelectedSequencingType = (variant: any) => {
 }
 
 type GnomadAgeDistributionProps = {
-  datasetId: string
-  variant: {
-    chrom: string
-    exome?: {
-      age_distribution: AgeDistributionPropType
-    }
-    genome?: {
-      age_distribution: AgeDistributionPropType
-    }
-  }
+  datasetId: DatasetId
+  variant: Variant
 }
 
 const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProps) => {
@@ -138,7 +142,9 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
   const [includeHomozygotes, setIncludeHomozygotes] = useState(true)
 
   const showVariantCarriers = includeHeterozygotes || includeHomozygotes
-  const [showAllIndividuals, setShowAllIndividuals] = useState(datasetId !== 'exac')
+  const [showAllIndividuals, setShowAllIndividuals] = useState(
+    showAllIndividualsInAgeDistributionByDefault(datasetId)
+  )
 
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const binEdges = (variant.exome || variant.genome).age_distribution.het.bin_edges

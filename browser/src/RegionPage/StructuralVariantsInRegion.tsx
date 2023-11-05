@@ -4,6 +4,7 @@ import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Query from '../Query'
 import { filterStructuralVariantsInZoomRegion } from '../RegionViewer/filterVariantsInZoomRegion'
 import StructuralVariants from '../StructuralVariantList/StructuralVariants'
+import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 
 type OwnProps = {
   datasetId: string
@@ -65,16 +66,20 @@ const StructuralVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: 
     >
       {({ data }: any) => {
         const regionId = `${region.chrom}-${region.start}-${region.stop}`
+        const variants = filterStructuralVariantsInZoomRegion(
+          data.region.structural_variants,
+          zoomRegion
+        ).map((variant: StructuralVariant) => ({
+          ...variant,
+          variant_id: variant.variant_id.toUpperCase(),
+        }))
 
         return (
           <StructuralVariants
             {...rest}
             context={region}
             exportFileName={`gnomad_structural_variants_${regionId}`}
-            variants={filterStructuralVariantsInZoomRegion(
-              data.region.structural_variants,
-              zoomRegion
-            )}
+            variants={variants}
           />
         )
       }}

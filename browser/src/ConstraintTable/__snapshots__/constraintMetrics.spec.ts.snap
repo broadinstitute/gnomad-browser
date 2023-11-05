@@ -2,7 +2,7 @@
 
 exports[`renderRoundedNumber allows for arbitrary formatting of tooltip 1`] = `
 <TooltipAnchor
-  tooltip="I AM A ROUND NUMBER AS FOLLOWS: \\"1.200\\" THANK YOU FOR YOUR TIME"
+  tooltip="I AM A ROUND NUMBER AS FOLLOWS: "1.200" THANK YOU FOR YOUR TIME"
   tooltipComponent={[Function]}
 >
   <TooltipHint>
@@ -27,10 +27,10 @@ exports[`renderRoundedNumber uses proper highlight color 1`] = `
   tooltip="1.200"
   tooltipComponent={[Function]}
 >
-  <styled.span
+  <constraintMetrics__ConstraintHighlight
     highlightColor="#ABCDEF"
   >
     1.2
-  </styled.span>
+  </constraintMetrics__ConstraintHighlight>
 </TooltipAnchor>
 `;

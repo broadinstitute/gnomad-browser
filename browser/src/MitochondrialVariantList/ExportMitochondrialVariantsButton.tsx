@@ -36,8 +36,7 @@ const BASE_COLUMNS = [
   {
     label: 'Flags',
     getValue: (variant: any) =>
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      variant.flags.map((flag: any) => FLAGS_CONFIG[flag].label).join(';'),
+      variant.flags.map((flag: string) => FLAGS_CONFIG[flag].label).join(';'),
   },
   {
     label: 'Allele Number',
@@ -92,16 +91,13 @@ const exportVariantsToCsv = (variants: any, baseFileName: any, includeGene: any)
   const date = new Date()
   const timestamp = `${date.getFullYear()}_${(date.getMonth() + 1)
     .toString()
-    .padStart(2, '0')}_${date
-    .getDate()
-    .toString()
-    .padStart(2, '0')}_${date
+    .padStart(2, '0')}_${date.getDate().toString().padStart(2, '0')}_${date
     .getHours()
     .toString()
-    .padStart(2, '0')}_${date
-    .getMinutes()
+    .padStart(2, '0')}_${date.getMinutes().toString().padStart(2, '0')}_${date
+    .getSeconds()
     .toString()
-    .padStart(2, '0')}_${date.getSeconds().toString().padStart(2, '0')}`
+    .padStart(2, '0')}`
 
   const blob = new Blob([csv], { type: 'text/csv' })
   const url = URL.createObjectURL(blob)

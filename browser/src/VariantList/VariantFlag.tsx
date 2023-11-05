@@ -2,7 +2,13 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-export const FLAGS_CONFIG = {
+type Flag = {
+  label: string
+  level: 'info' | 'warning' | 'error' | 'success' | undefined
+  formatTooltip: (input: any) => string
+}
+
+export const FLAGS_CONFIG: Record<string, Flag> = {
   lcr: {
     label: 'LCR',
     level: 'info',
@@ -29,13 +35,18 @@ export const FLAGS_CONFIG = {
     label: 'OS pLoF',
     level: 'info',
     formatTooltip: () =>
-      'Variant predicted to create or disrupt a splice site outside the canonical splice site (beta)',
+      'Other Splice Predicted Loss-of-Function: this variant is predicted to create or disrupt a splice site outside the canonical splice site (beta)',
   },
   mnv: {
     label: 'MNV',
     level: 'error',
     formatTooltip: () =>
       'Multi-nucleotide variant: this variant is found in phase with another variant in some individuals, altering the amino acid sequence\nVariant annotation dubious',
+  },
+  monoallelic: {
+    label: 'Monoallelic',
+    level: 'info',
+    formatTooltip: () => 'All samples are homozygous alternate for the variant',
   },
   // Mitochondrial variants
   common_low_heteroplasmy: {
@@ -47,18 +58,21 @@ export const FLAGS_CONFIG = {
 }
 
 type Props = {
-  type: any // TODO: PropTypes.oneOf(Object.keys(FLAGS_CONFIG))
+  type: string
   variant: any
 }
 
 const VariantFlag = ({ type, variant }: Props) => {
-  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-  const { label, level, formatTooltip } = FLAGS_CONFIG[type]
-  return (
-    <Badge level={level} tooltip={formatTooltip(variant)}>
-      {label}
-    </Badge>
-  )
+  if (type in FLAGS_CONFIG) {
+    const { label, level, formatTooltip } = FLAGS_CONFIG[type as keyof typeof FLAGS_CONFIG]
+    return (
+      <Badge level={level} tooltip={formatTooltip(variant)}>
+        {label}
+      </Badge>
+    )
+  }
+
+  return null
 }
 
 export default VariantFlag

@@ -23,8 +23,8 @@ type TranscriptConsequencePropType = {
 }
 
 // @ts-expect-error TS(2322) FIXME: Type 'Requireable<InferProps<{ consequence_terms: ... Remove this comment to see the full error message
-const TranscriptConsequencePropType: PropTypes.Requireable<TranscriptConsequencePropType> = PropTypes.shape(
-  {
+const TranscriptConsequencePropType: PropTypes.Requireable<TranscriptConsequencePropType> =
+  PropTypes.shape({
     consequence_terms: PropTypes.arrayOf(PropTypes.string),
     domains: PropTypes.arrayOf(PropTypes.string),
     gene_id: PropTypes.string.isRequired,
@@ -44,7 +44,6 @@ const TranscriptConsequencePropType: PropTypes.Requireable<TranscriptConsequence
     sift_prediction: PropTypes.string,
     transcript_id: PropTypes.string.isRequired,
     transcript_version: PropTypes.string.isRequired,
-  }
-)
+  })
 
 export default TranscriptConsequencePropType

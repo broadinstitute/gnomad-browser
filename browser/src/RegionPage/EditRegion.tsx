@@ -227,7 +227,7 @@ const EditRegion = ({ initialRegion, onSubmit, ...otherProps }: EditRegionProps)
   )
 }
 
-const GnomadEditRegion = withRouter(({ history, location, match, ...otherProps }: any) => (
+const GnomadEditRegion = withRouter(({ history, location, match: _match, ...otherProps }: any) => (
   <EditRegion
     {...otherProps}
     onSubmit={(region) => {

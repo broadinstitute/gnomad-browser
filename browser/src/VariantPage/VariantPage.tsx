@@ -8,13 +8,23 @@ import {
   hasNonCodingConstraints,
   labelForDataset,
   referenceGenome,
+  ReferenceGenome,
+  hasExome,
+  hasLocalAncestryPopulations,
+  isLiftoverSource,
+  isLiftoverTarget,
+  usesGrch37,
+  usesGrch38,
+  isV3,
+  isV3Subset,
+  isV4,
+  isExac,
 } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { BaseQuery } from '../Query'
-import Link from '../Link'
 import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
@@ -55,44 +65,244 @@ const FlexWrapper = styled.div`
 `
 
 export type NonCodingConstraint = {
+  chrom: string
   start: number
   stop: number
+  element_id: string
   possible: number
   observed: number
   expected: number
   oe: number
   z: number
+  coding_prop: number
+}
+
+export type ClinvarSubmission = {
+  clinical_significance: string
+  conditions: {
+    medgen_id?: string
+    name: string
+  }[]
+  last_evaluated: string
+  review_status: string
+  submitter_name: string
+}
+
+export type ClinvarVariant = {
+  clinical_significance: string
+  clinvar_variation_id: string
+  gold_stars: number
+  last_evaluated: string | null
+  release_date: string
+  review_status: string
+  submissions: ClinvarSubmission[]
+  gnomad: null | {
+    exome: null | {
+      ac: number
+      an: number
+      filters: string[]
+    }
+    genome: null | {
+      ac: number
+      an: number
+      filters: string[]
+    }
+  }
+  hgvsc: null | string
+  hgvsp: null | string
+  in_gnomad: boolean
+  major_consequence: null | string
+  pos: number
+  transcript_id: string
+  variant_id: string
+}
+
+export type StructuralVariant = {
+  id: string
+  ac: number
+  an: number
+  homozygote_count: number | null
+  hemizygote_count: number | null
+  ac_hemi: number | null
+  ac_hom: number | null
+}
+
+export type CopyNumberVariant = {
+  id: string
+  sc: number
+  sn: number
+}
+
+export type Histogram = {
+  bin_edges: number[]
+  bin_freq: number[]
+  n_smaller: number
+  n_larger: number
+}
+
+export type Population = {
+  id: string
+  ac: number
+  an: number
+  ac_hemi: number | null
+  ac_hom: number
+  homozygote_count: number
+  hemizygote_count: number | null
+}
+
+export type LocalAncestryPopulation = {
+  id: string
+  ac: number
+  an: number
+}
+
+export type AgeDistribution = {
+  het: Histogram
+  hom: Histogram
+}
+
+export type SiteQualityMetric = {
+  metric: string
+  value: number | null
+}
+
+export type VariantQualityMetrics = {
+  allele_balance: {
+    alt: Histogram
+  }
+  genotype_depth: {
+    all: Histogram
+    alt: Histogram
+  }
+  genotype_quality: {
+    all: Histogram
+    alt: Histogram
+  }
+  site_quality_metrics: SiteQualityMetric[]
+}
+
+export type Faf95 = {
+  popmax: number
+  popmax_population: string
+}
+
+export type SequencingType = {
+  ac: number
+  an: number
+  ac_hemi: number | null
+  ac_hom: number
+  homozygote_count: number | null
+  hemizygote_count: number | null
+  faf95: Faf95
+  filters: string[]
+  populations: Population[]
+  local_ancestry_populations: LocalAncestryPopulation[]
+  age_distribution: AgeDistribution | null
+  quality_metrics: VariantQualityMetrics
+}
+
+export type LofCuration = {
+  gene_id: string
+  gene_version: string
+  gene_symbol: string | null
+  verdict: string
+  flags: string[] | null
+  project: string
+}
+
+export type InSilicoPredictor = {
+  id: string
+  value: string
+  flags: string[]
+}
+
+export type TranscriptConsequence = {
+  consequence_terms: string[]
+  domains: string[]
+  gene_id: string
+  gene_version: string | null
+  gene_symbol: string | null
+  hgvs: string | null
+  hgvsc: string | null
+  hgvsp: string | null
+  is_canonical: boolean | null
+  is_mane_select: boolean | null
+  is_mane_select_version: boolean | null
+  lof: string | null
+  lof_flags: string | null
+  lof_filter: string | null
+  major_consequence: string | null
+  polyphen_prediction: string | null
+  refseq_id: string | null
+  refseq_version: string | null
+  sift_prediction: string | null
+  transcript_id: string
+  transcript_version: string
+
+  canonical: boolean | null
+}
+
+export type Coverage = {
+  pos: number
+  mean: number | null
+  median: number | null
+  over_1: number | null
+  over_5: number | null
+  over_10: number | null
+  over_15: number | null
+  over_20: number | null
+  over_25: number | null
+  over_30: number | null
+  over_50: number | null
+  over_100: number | null
+}
+
+export type Variant = {
+  variant_id: string
+  reference_genome: ReferenceGenome
+  colocated_variants: string[] | null
+  faf95_joint: Faf95
+  chrom: string
+  pos: number
+  ref: string
+  alt: string
+  flags: string[] | null
+  clinvar: ClinvarVariant | null
+  exome: SequencingType | null
+  genome: SequencingType | null
+  lof_curations: LofCuration[] | null
+  in_silico_predictors: InSilicoPredictor[] | null
+  transcript_consequences: TranscriptConsequence[] | null
+  liftover: any[] | null
+  liftover_sources: any[] | null
+  multi_nucleotide_variants?: any[]
+  caid: string | null
+  rsids: string[] | null
+  coverage: {
+    exome: Coverage | null
+    genome: Coverage | null
+  }
+  non_coding_constraint: NonCodingConstraint | null
 }
 
 type VariantPageContentProps = {
   datasetId: DatasetId
-  variant: {
-    variant_id: string
-    chrom: string
-    flags: string[]
-    clinvar?: any
-    exome?: any
-    genome?: any
-    lof_curations?: any[]
-    in_silico_predictors?: any[]
-    non_coding_constraint: NonCodingConstraint | null
-    transcript_consequences?: any[]
-  }
+  variant: Variant
 }
 
-const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
   return (
     <FlexWrapper>
       <ResponsiveSection>
         <TableWrapper>
-          {datasetId === 'exac' ? (
+          {isExac(datasetId) ? (
             // @ts-expect-error TS(2741) FIXME: Property 'coverage' is missing in type '{ variant_... Remove this comment to see the full error message
             <ExacVariantOccurrenceTable variant={variant} />
           ) : (
             <GnomadVariantOccurrenceTable
               datasetId={datasetId}
               variant={variant}
-              showExomes={!datasetId.startsWith('gnomad_r3')}
+              showExomes={hasExome(datasetId)}
             />
           )}
         </TableWrapper>
@@ -122,10 +332,10 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
 
       <Section>
         <h2>
-          Population Frequencies <InfoButton topic="ancestry" />
+          Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
         </h2>
-        {datasetId.startsWith('gnomad_r3') &&
-          (variant.genome.local_ancestry_populations || []).length > 0 && (
+        {hasLocalAncestryPopulations(datasetId) &&
+          ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (
             <div
               style={{
                 padding: '0 1em',
@@ -136,8 +346,8 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
               }}
             >
               <p>
-                <Badge level="info">NEW</Badge> Local ancestry is now available for gnomAD v3.
-                Select the &ldquo;Local Ancestry&rdquo; tab below to view data. See our blog post on{' '}
+                <Badge level="info">Note</Badge> Local ancestry data is available for this variant
+                by selecting the tab below. See our blog post on{' '}
                 {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
                   local ancestry inference for Latino/Admixed American samples in gnomAD
@@ -175,7 +385,7 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
           <ResponsiveSection>
             <h2>In Silico Predictors</h2>
             {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
-            <VariantInSilicoPredictors variant={variant} />
+            <VariantInSilicoPredictors variant={variant} datasetId={datasetId} />
           </ResponsiveSection>
         )}
         {hasNonCodingConstraints(datasetId) && (
@@ -193,8 +403,7 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
       {variant.clinvar && (
         <Section>
           <h2>ClinVar</h2>
-          {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
-          <VariantClinvarInfo variant={variant} />
+          <VariantClinvarInfo clinvar={variant.clinvar} />
         </Section>
       )}
 
@@ -205,7 +414,7 @@ const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => 
               <h2>
                 Age Distribution <InfoButton topic="age" />
               </h2>
-              {datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_r3' && (
+              {isV3Subset(datasetId) && (
                 <p>
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
                 </p>
@@ -244,12 +453,18 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     alt
     caid
     colocated_variants
+    faf95_joint {
+      popmax
+      popmax_population
+    }
     coverage {
       exome {
         mean
+        over_20
       }
       genome {
         mean
+        over_20
       }
     }
     multi_nucleotide_variants {
@@ -506,21 +721,57 @@ type VariantPageProps = {
   variantId: string
 }
 
+// Returns the gene_id to be linked to in the Variant page header
+// The vast majority of cases have a single gene associated, the logic for those that don't is:
+//   If there is a mane select transcript, use that to determine which gene to link to
+//   If there is no mane select transcript, check if there is a single canonical transcript
+//     If there is a single canonical transcript, link to that gene
+// As such, if a variant has multiple associated genes, multiple canonical transcripts, and
+//   no MANE select transcript, the "Gene page" button will not appear as it is non-trivial,
+//   and users should navigate further down the page to the VEP consequences section
+const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) => {
+  if (!transcript_consequences) {
+    return null
+  }
+
+  const maneSelectTranscript = transcript_consequences.filter(
+    (transcript: TranscriptConsequence) => transcript.is_mane_select
+  )
+
+  if (maneSelectTranscript.length === 1) {
+    return {
+      ensembleId: maneSelectTranscript[0].gene_id,
+    }
+  }
+
+  const canonicalTranscripts = transcript_consequences.filter(
+    (transcript: TranscriptConsequence) => transcript.is_canonical
+  )
+
+  if (canonicalTranscripts.length !== 1) {
+    return null
+  }
+
+  return {
+    ensembleId: canonicalTranscripts[0].gene_id,
+  }
+}
+
 const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
+  const gene = { ensembleId: '' }
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
       <BaseQuery
         key={datasetId}
-        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
         operationName={operationName}
         query={variantQuery}
         variables={{
           datasetId,
-          includeLocalAncestry: datasetId === 'gnomad_r3',
-          includeLiftoverAsSource: datasetId.startsWith('gnomad_r2_1'),
-          includeLiftoverAsTarget: datasetId.startsWith('gnomad_r3'),
+          includeLocalAncestry: (isV3(datasetId) && !isV3Subset(datasetId)) || isV4(datasetId),
+          includeLiftoverAsSource: isLiftoverSource(datasetId),
+          includeLiftoverAsTarget: isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
           variantId,
         }}
@@ -566,6 +817,14 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               liftover: data.liftover,
               liftover_sources: data.liftover_sources,
             }
+
+            // In this branch, a variant was successfully loaded. Check the symbol
+            //   and ensemble ID to create a 'Gene page' button with the correct link
+            const geneData = checkGeneLink(variant.transcript_consequences)
+            if (geneData) {
+              gene.ensembleId = geneData.ensembleId
+            }
+
             pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
           }
 
@@ -574,26 +833,39 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               <GnomadPageHeading
                 datasetOptions={{
                   // Include ExAC for GRCh37 datasets
-                  includeExac: !datasetId.startsWith('gnomad_r3'),
+                  includeExac: usesGrch37(datasetId),
                   // Include gnomAD versions based on the same reference genome as the current dataset
-                  includeGnomad2: !datasetId.startsWith('gnomad_r3'),
-                  includeGnomad3: datasetId.startsWith('gnomad_r3'),
+                  includeGnomad2: usesGrch37(datasetId),
+                  includeGnomad3: usesGrch38(datasetId),
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
+                  includeCopyNumberVariants: false,
                 }}
                 selectedDataset={datasetId}
                 extra={
-                  navigator.clipboard &&
-                  navigator.clipboard.writeText && (
-                    <Button
-                      onClick={() => {
-                        navigator.clipboard.writeText(variantId)
-                      }}
-                      style={{ margin: '0 1em' }}
-                    >
-                      Copy variant ID
-                    </Button>
-                  )
+                  <>
+                    {navigator.clipboard && navigator.clipboard.writeText && (
+                      <Button
+                        onClick={() => {
+                          navigator.clipboard.writeText(variantId)
+                        }}
+                        style={{ margin: '0 0 0 1em' }}
+                      >
+                        Copy variant ID
+                      </Button>
+                    )}
+
+                    {gene.ensembleId && (
+                      <Button
+                        onClick={() => {
+                          location.href = `/gene/${gene.ensembleId}?dataset=${datasetId}`
+                        }}
+                        style={{ margin: '0 1em 0 1em' }}
+                      >
+                        Gene page
+                      </Button>
+                    )}
+                  </>
                 }
               >
                 <VariantPageTitle variantId={variantId} datasetId={datasetId} />

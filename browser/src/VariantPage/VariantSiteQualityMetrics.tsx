@@ -11,8 +11,13 @@ import exacSiteQualityMetricDistributions from '@gnomad/dataset-metadata/dataset
 import gnomadV2SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v2/siteQualityMetricDistributions.json'
 import gnomadV3SiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3/siteQualityMetricDistributions.json'
 
+import gnomadV4ExomeSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v4/exomeSiteQualityMetricDistributions.json'
+import gnomadV4GenomeSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v4/genomeSiteQualityMetricDistributions.json'
+
+import { DatasetId, isV2, isV3, isV4, isExac } from '@gnomad/dataset-metadata/metadata'
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
+import { Variant, SequencingType } from './VariantPage'
 
 // ================================================================================================
 // Metric descriptions
@@ -22,8 +27,7 @@ const qualityMetricDescriptions = {
   BaseQRankSum: 'Z-score from Wilcoxon rank sum test of alternate vs. reference base qualities.',
   ClippingRankSum:
     'Z-score from Wilcoxon rank sum test of alternate vs. reference number of hard clipped bases.',
-  DP:
-    'Depth of informative coverage for each sample; reads with MQ=255 or with bad mates are filtered.',
+  DP: 'Depth of informative coverage for each sample; reads with MQ=255 or with bad mates are filtered.',
   FS: "Phred-scaled p-value of Fisher's exact test for strand bias.",
   InbreedingCoeff:
     'Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation.',
@@ -45,7 +49,7 @@ const qualityMetricDescriptions = {
 }
 
 const getSiteQualityMetricDescription = (datasetId: any) => {
-  return datasetId.startsWith('gnomad_r2') || datasetId === 'exac'
+  return isV2(datasetId) || isExac(datasetId)
     ? 'Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
     : 'Sum of PL[0] values; used to approximate the Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(no variant). High Phred-scaled quality scores indicate high confidence calls.'
 }
@@ -53,16 +57,46 @@ const getSiteQualityMetricDescription = (datasetId: any) => {
 // ================================================================================================
 // Data munging
 // ================================================================================================
+//
+//
 
-const prepareDataGnomadV3 = ({ metric, variant }: any) => {
+interface MetricDistribution {
+  bin_edges: number[]
+  bin_freq: number[]
+  n_smaller: number
+  n_larger: number
+  metric: string
+}
+
+interface SequencingTypeMetrics {
+  binEdges: number[]
+  binValues: number[]
+  metricValue: number
+  description: string
+}
+
+const getMetricDataForSequencingType = ({
+  metric,
+  genomeOrExome,
+  metricDistributions,
+}: {
+  metric: string
+  genomeOrExome: SequencingType
+  metricDistributions: MetricDistribution[]
+}): SequencingTypeMetrics | null => {
   let key: any
   let description
 
-  const genomeMetricValue = variant.genome.quality_metrics.site_quality_metrics.find(
+  const genomeOrExomeMetric = genomeOrExome.quality_metrics.site_quality_metrics.find(
     (m: any) => m.metric === metric
-  ).value
+  )
+  const metricValue = genomeOrExomeMetric && genomeOrExomeMetric.value
 
-  const { ac, an } = variant.genome
+  if (!metricValue) {
+    throw new Error(`Could not determine metric value ${metricValue}`)
+  }
+
+  const { ac, an } = genomeOrExome
   if (metric === 'SiteQuality' || metric === 'AS_QUALapprox') {
     if (ac === 1) {
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_singleton`
@@ -120,7 +154,7 @@ const prepareDataGnomadV3 = ({ metric, variant }: any) => {
   } else if (metric === 'InbreedingCoeff') {
     const af = an === 0 ? 0 : ac / an
     if (af < 0.0005) {
-      key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-under_0.0005`
+      key = `InbreedingCoeff-under_0.0005`
       description = 'InbreedingCoeff for all variants with AF < 0.0005.'
     } else {
       key = 'InbreedingCoeff-over_0.0005'
@@ -134,22 +168,86 @@ const prepareDataGnomadV3 = ({ metric, variant }: any) => {
       if (baseDescription) {
         description = `Allele-specific ${baseDescription
           .charAt(0)
-          .toLowerCase()}${baseDescription.slice(1)}`
+          .toLowerCase()}${baseDescription.slice(1)}` as string
       }
     } else {
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      description = qualityMetricDescriptions[metric]
+      description = qualityMetricDescriptions[metric] as string
     }
   }
 
-  const histogram = gnomadV3SiteQualityMetricDistributions.find((m: any) => m.metric === key)
-  // @ts-expect-error
-  const binEdges = histogram.bin_edges
+  if (!description) {
+    throw new Error('Could not determine description')
+  }
 
-  // @ts-expect-error
-  const genomeBinValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
+  const histogram = metricDistributions.find((m: any) => m.metric === key)
 
-  return { binEdges, genomeBinValues, genomeMetricValue, description }
+  if (histogram) {
+    const binEdges = histogram.bin_edges
+
+    const binValues = [histogram.n_smaller, ...histogram.bin_freq, histogram.n_larger]
+
+    return { binEdges, binValues, metricValue, description }
+  }
+  throw new Error(`Metric ${key} could not be found`)
+}
+
+const prepareDataGnomadV4 = ({ metric, variant }: { metric: string; variant: Variant }) => {
+  let exomeMetrics: SequencingTypeMetrics | null = null
+  let genomeMetrics: SequencingTypeMetrics | null = null
+  let binEdges: number[] | undefined
+  let description: string | undefined
+
+  if (variant.exome) {
+    exomeMetrics = getMetricDataForSequencingType({
+      metric,
+      genomeOrExome: variant.exome,
+      metricDistributions: gnomadV4ExomeSiteQualityMetricDistributions,
+    })
+    if (!exomeMetrics)
+      throw new Error('Could not derive exome metrics even though there is a exome variant')
+    binEdges = exomeMetrics.binEdges
+    description = exomeMetrics.description
+  }
+
+  if (variant.genome) {
+    genomeMetrics = getMetricDataForSequencingType({
+      metric,
+      genomeOrExome: variant.genome,
+      metricDistributions: gnomadV4GenomeSiteQualityMetricDistributions,
+    })
+    if (!genomeMetrics)
+      throw new Error('Could not derive genome metrics even though there is a genome variant')
+    binEdges = genomeMetrics && genomeMetrics.binEdges
+    description = genomeMetrics && genomeMetrics.description
+  }
+
+  return {
+    binEdges,
+    description,
+    exomeBinValues: exomeMetrics && exomeMetrics.binValues,
+    genomeBinValues: genomeMetrics && genomeMetrics.binValues,
+    exomeMetricValue: exomeMetrics && exomeMetrics.metricValue,
+    genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+  }
+}
+
+const prepareDataGnomadV3 = ({ metric, genome }: { metric: string; genome: SequencingType }) => {
+  const genomeMetrics = getMetricDataForSequencingType({
+    metric,
+    genomeOrExome: genome,
+    metricDistributions: gnomadV3SiteQualityMetricDistributions,
+  })
+
+  if (genomeMetrics) {
+    return {
+      binEdges: genomeMetrics.binEdges,
+      description: genomeMetrics.description,
+      genomeBinValues: genomeMetrics && genomeMetrics.binValues,
+      genomeMetricValue: genomeMetrics && genomeMetrics.metricValue,
+    }
+  }
+  throw new Error(`Could not derive genome metrics`)
 }
 
 const prepareDataGnomadV2 = ({ metric, variant }: any) => {
@@ -337,16 +435,28 @@ const prepareDataExac = ({ metric, variant }: any) => {
   return { binEdges, exomeBinValues, exomeMetricValue, description }
 }
 
-const prepareData = ({ datasetId, metric, variant }: any) => {
-  if (datasetId.startsWith('gnomad_r3')) {
-    return prepareDataGnomadV3({ metric, variant })
+const prepareData = ({
+  datasetId,
+  metric,
+  variant,
+}: {
+  datasetId: DatasetId
+  metric: string
+  variant: Variant
+}) => {
+  if (isV4(datasetId)) {
+    return prepareDataGnomadV4({ metric, variant })
   }
 
-  if (datasetId.startsWith('gnomad_r2')) {
+  if (isV3(datasetId)) {
+    return prepareDataGnomadV3({ metric, genome: variant.genome! })
+  }
+
+  if (isV2(datasetId)) {
     return prepareDataGnomadV2({ metric, variant })
   }
 
-  if (datasetId === 'exac') {
+  if (isExac(datasetId)) {
     return prepareDataExac({ metric, variant })
   }
 
@@ -354,7 +464,7 @@ const prepareData = ({ datasetId, metric, variant }: any) => {
 }
 
 const getAvailableMetrics = (datasetId: any) => {
-  if (datasetId.startsWith('gnomad_r3')) {
+  if (isV4(datasetId)) {
     return [
       'SiteQuality',
       'InbreedingCoeff',
@@ -371,7 +481,24 @@ const getAvailableMetrics = (datasetId: any) => {
     ]
   }
 
-  if (datasetId.startsWith('gnomad_r2')) {
+  if (isV3(datasetId)) {
+    return [
+      'SiteQuality',
+      'InbreedingCoeff',
+      'AS_FS',
+      'AS_MQ',
+      'AS_MQRankSum',
+      'AS_pab_max',
+      'AS_QUALapprox',
+      'AS_QD',
+      'AS_ReadPosRankSum',
+      'AS_SOR',
+      'AS_VarDP',
+      'AS_VQSLOD',
+    ]
+  }
+
+  if (isV2(datasetId)) {
     return [
       'BaseQRankSum',
       'ClippingRankSum',
@@ -390,7 +517,7 @@ const getAvailableMetrics = (datasetId: any) => {
     ]
   }
 
-  if (datasetId === 'exac') {
+  if (isExac(datasetId)) {
     return [
       'BaseQRankSum',
       'ClippingRankSum',
@@ -436,6 +563,9 @@ const yTickFormat = (n: any) => {
 }
 
 const formatMetricValue = (value: any, metric: any) => {
+  if (!value) {
+    return '-'
+  }
   if (
     metric === 'SiteQuality' ||
     metric === 'AS_QUALapprox' ||
@@ -807,69 +937,18 @@ const AutosizedSiteQualityMetricsHistogram = withSize()(({ size, ...props }) => 
 ))
 
 type VariantSiteQualityMetricsDistributionProps = {
-  datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  datasetId: DatasetId
+  variant: Variant
 }
 
 type VariantSiteQualityMetricsTableProps = {
-  datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  datasetId: DatasetId
+  variant: Variant
 }
 
 type VariantSiteQualityMetricsProps = {
-  datasetId: string
-  variant: {
-    exome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-    genome?: {
-      quality_metrics: {
-        site_quality_metrics: {
-          metric: string
-          value?: number
-        }[]
-      }
-    }
-  }
+  datasetId: DatasetId
+  variant: Variant
 }
 
 const LegendWrapper = styled.div`
@@ -1006,7 +1085,7 @@ const VariantSiteQualityMetricsDistribution = ({
 
       {selectedMetric === 'SiteQuality' && <p>{description}</p>}
 
-      {!datasetId.startsWith('gnomad_r3') && (
+      {!isV3(datasetId) && (
         <p>
           Note: These are site-level quality metrics, they may be unpredictable for multi-allelic
           sites.
@@ -1058,7 +1137,7 @@ const VariantSiteQualityMetricsTable = ({
   const isVariantInExomes = Boolean(variant.exome)
   const isVariantInGenomes = Boolean(variant.genome)
 
-  const exomeMetricValues = variant.exome
+  const exomeMetricValues: Record<string, number> | null = variant.exome
     ? variant.exome.quality_metrics.site_quality_metrics.reduce(
         (acc, m) => ({
           ...acc,
@@ -1067,7 +1146,7 @@ const VariantSiteQualityMetricsTable = ({
         {}
       )
     : null
-  const genomeMetricValues = variant.genome
+  const genomeMetricValues: Record<string, number> | null = variant.genome
     ? variant.genome.quality_metrics.site_quality_metrics.reduce(
         (acc, m) => ({
           ...acc,
@@ -1090,29 +1169,27 @@ const VariantSiteQualityMetricsTable = ({
         </tr>
       </thead>
       <tbody>
-        {availableMetrics.map((metric) => (
-          <tr key={metric}>
-            <th scope="row">{renderMetric(metric, datasetId)}</th>
-            {isVariantInExomes && (
-              <td>
-                {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
-                {exomeMetricValues[metric] != null
-                  ? // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-                    formatMetricValue(exomeMetricValues[metric], metric)
-                  : '–'}
-              </td>
-            )}
-            {isVariantInGenomes && (
-              <td>
-                {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
-                {genomeMetricValues[metric] != null
-                  ? // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-                    formatMetricValue(genomeMetricValues[metric], metric)
-                  : '–'}
-              </td>
-            )}
-          </tr>
-        ))}
+        {availableMetrics.map((metric) => {
+          return (
+            <tr key={metric}>
+              <th scope="row">{renderMetric(metric, datasetId)}</th>
+              {exomeMetricValues && metric in exomeMetricValues && isVariantInExomes && (
+                <td>
+                  {exomeMetricValues![metric] != null
+                    ? formatMetricValue(exomeMetricValues![metric], metric)
+                    : '–'}
+                </td>
+              )}
+              {genomeMetricValues && metric in genomeMetricValues && isVariantInGenomes && (
+                <td>
+                  {genomeMetricValues && ![metric] != null
+                    ? formatMetricValue(genomeMetricValues![metric], metric)
+                    : '–'}
+                </td>
+              )}
+            </tr>
+          )
+        })}
       </tbody>
     </BaseTable>
   )

@@ -70,11 +70,14 @@ type Props = {
     includeFilteredVariants: boolean
     includeSNVs: boolean
     includeIndels: boolean
+    includeContext: boolean
     searchText: string
   }
+  jumpToRow: (...args: any[]) => any
+  position: number
 }
 
-const VariantFilterControls = ({ onChange, value }: Props) => {
+const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
   const searchInput = useRef(null)
 
   return (
@@ -159,13 +162,23 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
           <span>
             <Checkbox
               checked={value.includeFilteredVariants}
-              id="qc-variant-fil;ter"
+              id="qc-variant-filter"
               label="Filtered variants"
               onChange={(includeFilteredVariants) => {
                 onChange({ ...value, includeFilteredVariants })
               }}
             />
             <InfoButton topic="include-filtered-variants" />
+          </span>
+          <span>
+            <Checkbox
+              checked={value.includeContext}
+              id="context-variant-filter"
+              label="Display neighboring variants"
+              onChange={(includeContext) => {
+                onChange({ ...value, includeContext })
+              }}
+            />
           </span>
         </CheckboxSection>
       </CheckboxFiltersWrapper>
@@ -178,6 +191,7 @@ const VariantFilterControls = ({ onChange, value }: Props) => {
           style={{ marginBottom: '1em', width: '210px' }}
           value={value.searchText}
           onChange={(searchText) => {
+            jumpToRow(position)
             onChange({ ...value, searchText })
           }}
         />

@@ -1,11 +1,12 @@
 import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
+import { NcbiReference, ClinvarReference } from '../VariantPage/ReferenceList'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 type Props = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantReferenceList = ({ variant }: Props) => {
@@ -24,38 +25,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <List>
-      {((variant as any).rsids || []).length === 1 && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <ExternalLink
-            href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${
-              (variant as any).rsids[0]
-            }`}
-          >
-            dbSNP ({(variant as any).rsids[0]})
-          </ExternalLink>
-        </ListItem>
-      )}
-      {((variant as any).rsids || []).length > 1 && (
-        // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
-        <ListItem>
-          dbSNP (
-          {(variant as any).rsids
-            .map((rsid: any) => (
-              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-              <ExternalLink
-                key={rsid}
-                href={`https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=${rsid}`}
-              >
-                {rsid}
-              </ExternalLink>
-            ))
-            .reduce((acc: any, el: any) => [...acc, ', ', el], [])
-            .slice(1)}
-          )
-        </ListItem>
-      )}
+      {variant.rsids && NcbiReference(variant.rsids)}
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -72,7 +42,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
         <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
       {/* Show MitoVisualize links only for RNA gene variants */}
-      {((variant as any).transcript_consequences || []).some(
+      {(variant.transcript_consequences || []).some(
         (csq: any) => csq.gene_symbol.startsWith('MT-T') || csq.gene_symbol.startsWith('MT-R')
       ) && (
         // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
@@ -83,19 +53,7 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
           </ExternalLink>
         </ListItem>
       )}
-      {(variant as any).clinvar && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
-        <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-          <ExternalLink
-            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${
-              (variant as any).clinvar.clinvar_variation_id
-            }/`}
-          >
-            ClinVar ({(variant as any).clinvar.clinvar_variation_id})
-          </ExternalLink>
-        </ListItem>
-      )}
+      {variant.clinvar && ClinvarReference(variant.clinvar.clinvar_variation_id)}
     </List>
   )
 }

@@ -37,16 +37,15 @@ const cancelable = (promise: any) => {
   }
 }
 
-type OwnBaseQueryProps = {
-  operationName: string | null
-  query: string
-  url?: string
-  variables?: any
-}
-
 type BaseQueryState = any
 
-type BaseQueryProps = OwnBaseQueryProps & typeof BaseQuery.defaultProps
+type BaseQueryProps = {
+  operationName: string | null
+  query: string
+  url: string
+  variables?: any
+  children: (state: BaseQueryState) => JSX.Element
+}
 
 export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   static defaultProps = {
@@ -56,6 +55,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   currentRequest: any
+
   mounted: any
 
   state = {
@@ -71,7 +71,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   componentDidUpdate(prevProps: BaseQueryProps) {
-    const { operationName, query, variables } = this.props
+    const { query, variables } = this.props
     if (query !== prevProps.query || !areVariablesEqual(variables, prevProps.variables)) {
       this.loadData()
     }
@@ -134,7 +134,6 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   render() {
-    // @ts-expect-error TS(2339) FIXME: Property 'children' does not exist on type 'Readon... Remove this comment to see the full error message
     const { children } = this.props
     return children(this.state)
   }
@@ -148,7 +147,7 @@ type OwnQueryProps = {
   operationName: string | null
   query: string
   success?: (...args: any[]) => any
-  url?: string
+  url: string
   variables?: any
 }
 
@@ -168,7 +167,6 @@ const Query = ({
   variables,
 }: QueryProps) => {
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseQuery operationName={operationName} query={query} url={url} variables={variables}>
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {

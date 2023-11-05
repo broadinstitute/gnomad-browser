@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { coverageDataset } from '../coverage'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { coverageDatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -67,8 +66,8 @@ const TranscriptCoverageTrack = ({
       query={coverageQuery}
       variables={{
         transcriptId,
-        datasetId: coverageDataset(datasetId),
-        referenceGenome: referenceGenome(coverageDataset(datasetId)),
+        datasetId: coverageDatasetId(datasetId),
+        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
         includeExomeCoverage,
         includeGenomeCoverage,
       }}
@@ -100,6 +99,7 @@ const TranscriptCoverageTrack = ({
             datasets={coverageConfig}
             filenameForExport={() => `${transcriptId}_coverage`}
             height={190}
+            datasetId={datasetId}
           />
         )
       }}

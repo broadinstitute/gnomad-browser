@@ -8,7 +8,7 @@ export const apiCallsMatching = (
 ): ApiCallParameters[] => {
   const calls = (mockFetch.mock.calls as unknown) as [string, { body: string }][]
   const matchingQueries = calls.filter((kall) => {
-    if (kall[0] !== '/api/') {
+    if (!RegExp('api/?$').test(kall[0])) {
       return false
     }
 

@@ -1,0 +1,36 @@
+{
+  "colors": {
+    "East Asian": "#0e8b45",
+    "South Asian": "#ff9a10",
+    "European": "#6aa5ce",
+    "Middle Eastern": "#050080",
+    "African": "#931193",
+    "Admixed American": "#ed1e23",
+    "Ashkenazi Jewish": "#edc800",
+    "Remaining": "#acb8b9"
+  },
+  "data": [
+    {
+      "label": "gnomAD v2",
+      "East Asian": 60371,
+      "South Asian": 71089,
+      "Middle Eastern": 0,
+      "African": 104692,
+      "Admixed American": 70962,
+      "Ashkenazi Jewish": 66611,
+      "Remaining": 75826,
+      "European": 58348
+    },
+    {
+      "label": "gnomAD v4",
+      "East Asian": 65222,
+      "South Asian": 80879,
+      "Middle Eastern": 93553,
+      "African": 118500,
+      "Admixed American": 90691,
+      "Ashkenazi Jewish": 75910,
+      "Remaining": 91847,
+      "European": 64635
+    }
+  ]
+}

@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: '14.15.2'
+          node-version: '^14.17.0'
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -33,5 +33,7 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive --no-progress
       - name: Run ESLint
         run: yarn run eslint graphql-api
+      - name: Type check
+        run: yarn run ts-node ./browser/build/buildHelp.ts && yarn run typecheck
       - name: Run tests
         run: yarn run jest --selectProjects graphql-api

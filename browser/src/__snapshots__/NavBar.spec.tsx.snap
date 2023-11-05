@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar has no unexpected changes 1`] = `
+.c6 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.25em;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  background-image: none;
+}
+
+.c6:focus {
+  box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
+}
+
+.c5 {
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 1em;
+  line-height: 1.25;
+}
+
+.c5:focus {
+  outline: none;
+  border-color: rgb(70,130,180);
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  width: 360px;
+}
+
+.c4 select {
+  border-right: 1px solid #ddd;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+}
+
+.c4 input {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 30px;
+  background-color: black;
+}
+
+.c0 a {
+  color: white;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2 {
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.c3 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid #fafafa;
+  background: black;
+  color: white;
+}
+
+.c3:active,
+.c3:hover {
+  background-color: #cbd3da;
+}
+
+.c3:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c3:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c3 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.c7 a {
+  padding: 0.5em;
+}
+
+@media (max-width:900px) {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 10px;
+  }
+}
+
+@media (max-width:900px) {
+  .c1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+@media (min-width:901px) {
+  .c3 {
+    display: none;
+  }
+}
+
+@media (max-width:900px) {
+  .c7 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    height: 0;
+  }
+
+  .c7 a {
+    display: inline-block;
+    width: 100%;
+    padding: 1em 0;
+  }
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      <div
+        className="c2"
+      >
+        gnomAD browser
+      </div>
+    </a>
+    <button
+      className="c3"
+      onClick={[Function]}
+      type="button"
+    >
+      ☰
+    </button>
+  </div>
+  <div
+    className="c4"
+    width="360px"
+  >
+    <select
+      className="c5"
+      onChange={[Function]}
+      value="gnomad_r4"
+    >
+      <optgroup
+        label="GRCh38"
+      >
+        <option
+          value="gnomad_r4"
+        >
+          gnomAD v4.0.0
+        </option>
+        <option
+          value="gnomad_r3"
+        >
+          gnomAD v3.1.2
+        </option>
+        <option
+          value="gnomad_sv_r4"
+        >
+          gnomAD SVs v4
+        </option>
+        <option
+          value="gnomad_cnv_r4"
+        >
+          gnomAD CNVs v4.0
+        </option>
+      </optgroup>
+      <optgroup
+        label="GRCh37"
+      >
+        <option
+          value="gnomad_r2_1"
+        >
+          gnomAD v2.1.1
+        </option>
+        <option
+          value="gnomad_sv_r2_1"
+        >
+          gnomAD SVs v2.1
+        </option>
+        <option
+          value="exac"
+        >
+          ExAC
+        </option>
+      </optgroup>
+    </select>
+    <span
+      style={
+        {
+          "flexGrow": 1,
+        }
+      }
+    >
+      <div
+        style={
+          {
+            "display": "inline-block",
+            "width": "100%",
+          }
+        }
+      >
+        <input
+          aria-autocomplete="list"
+          aria-expanded={false}
+          autoComplete="off"
+          className="c6"
+          data-testid="searchbox-input"
+          id="navbar-search"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search"
+          role="combobox"
+          value=""
+        />
+      </div>
+    </span>
+  </div>
+  <ul
+    className="c7"
+  >
+    <li>
+      <a
+        href="/about"
+        onClick={[Function]}
+      >
+        About
+      </a>
+    </li>
+    <li>
+      <a
+        href="/team"
+        onClick={[Function]}
+      >
+        Team
+      </a>
+    </li>
+    <li>
+      <a
+        href="/stats"
+        onClick={[Function]}
+      >
+        Stats
+      </a>
+    </li>
+    <li>
+      <a
+        href="/policies"
+        onClick={[Function]}
+      >
+        Policies
+      </a>
+    </li>
+    <li>
+      <a
+        href="/publications"
+        onClick={[Function]}
+      >
+        Publications
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://gnomad.broadinstitute.org/news/"
+      >
+        Blog
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://gnomad.broadinstitute.org/news/changelog/"
+      >
+        Changelog
+      </a>
+    </li>
+    <li>
+      <a
+        href="/downloads"
+        onClick={[Function]}
+      >
+        Downloads
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://discuss.gnomad.broadinstitute.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Forum
+      </a>
+    </li>
+    <li>
+      <a
+        href="/contact"
+        onClick={[Function]}
+      >
+        Contact
+      </a>
+    </li>
+    <li>
+      <a
+        href="/help"
+        onClick={[Function]}
+      >
+        Help/FAQ
+      </a>
+    </li>
+  </ul>
+</div>
+`;

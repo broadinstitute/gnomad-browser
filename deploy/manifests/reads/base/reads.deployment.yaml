@@ -74,10 +74,10 @@ spec:
             - name: readviz
               mountPath: /readviz
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        cloud.google.com/gke-nodepool: 'main-pool'
       volumes:
         - name: readviz
           gcePersistentDisk:
             fsType: ext4
-            pdName: readviz-data-2022-01-20
+            pdName: readviz-data-v4-2023-10-28  
             readOnly: true

@@ -48,7 +48,7 @@ export const showNotification = notificationService.publish.bind(notificationSer
 
 type State = any
 
-class Notifications extends Component<{}, State> {
+class Notifications extends Component<Record<string, never>, State> {
   state = {
     notifications: [],
   }

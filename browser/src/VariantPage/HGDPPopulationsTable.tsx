@@ -3,8 +3,114 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import { PopulationsTable } from './PopulationsTable'
+import { DatasetId, isV3 } from '@gnomad/dataset-metadata/metadata'
 
-const HGDP_POPULATION_GROUPS = {
+const HGDP_POPULATION_GROUPS_V4 = {
+  African: ['bantukenya', 'bantusouthafrica', 'biaka', 'mandenka', 'mbuti', 'san', 'yoruba'],
+  'East Asian': [
+    'cambodian',
+    'dai',
+    'daur',
+    'han',
+    'hezhen',
+    'japanese',
+    'lahu',
+    'miao',
+    'mongolian',
+    'naxi',
+    'northernhan',
+    'oroqen',
+    'she',
+    'tu',
+    'tujia',
+    'xibo',
+    'yakut',
+    'yi',
+  ],
+  European: [
+    'adygei',
+    'basque',
+    'french',
+    'bergamoitalian',
+    'orcadian',
+    'russian',
+    'sardinian',
+    'tuscan',
+  ],
+  'Middle Eastern': ['bedouin', 'druze', 'mozabite', 'palestinian'],
+  'Native American': ['colombian', 'karitiana', 'maya', 'pima', 'surui'],
+  'Central/South Asian': [
+    'balochi',
+    'brahui',
+    'burusho',
+    'hazara',
+    'kalash',
+    'makrani',
+    'pathan',
+    'sindhi',
+    'uygur',
+  ],
+  Oceanian: ['bougainville', 'papuanhighlands', 'papuansepik'],
+}
+
+const HGDP_POPULATION_NAMES_V4 = {
+  adygei: 'Adygei',
+  balochi: 'Balochi',
+  bantukenya: 'Bantu (Kenya)',
+  bantusouthafrica: 'Bantu (South Africa)',
+  basque: 'Basque',
+  bedouin: 'Bedouin',
+  bergamoitalian: 'Bergamo (Italian)',
+  biaka: 'Biaka',
+  brahui: 'Brahui',
+  burusho: 'Burusho',
+  bougainville: 'Bougainville',
+  cambodian: 'Cambodian',
+  colombian: 'Colombian',
+  dai: 'Dai',
+  daur: 'Daur',
+  druze: 'Druze',
+  french: 'French',
+  han: 'Han',
+  hazara: 'Hazara',
+  hezhen: 'Hezhen',
+  japanese: 'Japanese',
+  kalash: 'Kalash',
+  karitiana: 'Karitiana',
+  lahu: 'Lahu',
+  makrani: 'Makrani',
+  mandenka: 'Mandenka',
+  maya: 'Maya',
+  mbuti: 'Mbuti',
+  miao: 'Miao',
+  mongolian: 'Mongolian',
+  mozabite: 'Mozabite',
+  naxi: 'Naxi',
+  northernhan: 'Northern Han',
+  orcadian: 'Orcadian',
+  oroqen: 'Oroqen',
+  palestinian: 'Palestinian',
+  papuanhighlands: 'Papuan (Highlands)',
+  papuansepik: 'Papuan (Sepik)',
+  pathan: 'Pathan',
+  pima: 'Pima',
+  russian: 'Russian',
+  san: 'San',
+  sardinian: 'Sardinian',
+  she: 'She',
+  sindhi: 'Sindhi',
+  surui: 'Surui',
+  tu: 'Tu',
+  tujia: 'Tujia',
+  tuscan: 'Tuscan',
+  uygur: 'Uygur',
+  xibo: 'Xibo',
+  yakut: 'Yakut',
+  yi: 'Yi',
+  yoruba: 'Yoruba',
+}
+
+const HGDP_POPULATION_GROUPS_V3 = {
   African: ['bantukenya', 'bantusafrica', 'mandenka', 'yoruba'],
   'East Asian': [
     'cambodian',
@@ -41,7 +147,7 @@ const HGDP_POPULATION_GROUPS = {
   ],
 }
 
-const HGDP_POPULATION_NAMES = {
+const HGDP_POPULATION_NAMES_V3 = {
   adygei: 'Adygei',
   balochi: 'Balochi',
   bantukenya: 'Bantu (Kenya)',
@@ -91,7 +197,11 @@ const HGDP_POPULATION_NAMES = {
   yoruba: 'Yoruba',
 }
 
-const addPopulationNames = (populations: any) => {
+const addPopulationNames = (populations: any, datasetId: DatasetId) => {
+  const HGDP_POPULATION_NAMES = isV3(datasetId)
+    ? HGDP_POPULATION_NAMES_V3
+    : HGDP_POPULATION_NAMES_V4
+
   return populations.map((pop: any) => {
     let name
     if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
@@ -106,15 +216,18 @@ const addPopulationNames = (populations: any) => {
   })
 }
 
-const groupPopulations = (populations: any) => {
+const groupPopulations = (populations: any, datasetId: DatasetId) => {
   const populationsById = populations.reduce(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
-    (acc, pop) => ({
+    (acc: any, pop: any) => ({
       ...acc,
       [pop.id]: pop,
     }),
     {}
   )
+
+  const HGDP_POPULATION_GROUPS = isV3(datasetId)
+    ? HGDP_POPULATION_GROUPS_V3
+    : HGDP_POPULATION_GROUPS_V4
 
   // TODO: Improve this
   const groupedPopulations = []
@@ -200,6 +313,7 @@ type OwnHGDPPopulationsTableProps = {
   }[]
   showHemizygotes?: boolean
   showHomozygotes?: boolean
+  datasetId: DatasetId
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'HGDPPopulationsTableProps' circularly ... Remove this comment to see the full error message
@@ -211,8 +325,12 @@ const HGDPPopulationsTable = ({
   populations,
   showHemizygotes,
   showHomozygotes,
+  datasetId,
 }: HGDPPopulationsTableProps) => {
-  const renderedPopulations = groupPopulations(addPopulationNames(populations))
+  const renderedPopulations = groupPopulations(
+    addPopulationNames(populations, datasetId),
+    datasetId
+  )
 
   return (
     <div>

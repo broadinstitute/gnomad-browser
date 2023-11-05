@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
+import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -298,37 +298,39 @@ const ConnectedVariantsInGene = ({
   datasetId,
   gene,
   ...otherProps
-}: ConnectedVariantsInGeneProps) => (
-  <Query
-    operationName={operationName}
-    query={query}
-    variables={{
-      datasetId,
-      geneId: gene.gene_id,
-      referenceGenome: referenceGenome(datasetId),
-    }}
-    loadingMessage="Loading variants"
-    errorMessage="Unable to load variants"
-    success={(data: any) => data.gene && data.gene.variants}
-  >
-    {({ data }: any) => {
-      let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
-      if (gene.pext) {
-        variants = annotateVariantsWithPext(variants, gene.pext)
-      }
+}: ConnectedVariantsInGeneProps) => {
+  return (
+    <Query
+      operationName={operationName}
+      query={query}
+      variables={{
+        datasetId,
+        geneId: gene.gene_id,
+        referenceGenome: referenceGenome(datasetId),
+      }}
+      loadingMessage="Loading variants"
+      errorMessage="Unable to load variants"
+      success={(data: any) => data.gene && data.gene.variants}
+    >
+      {({ data }: any) => {
+        let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
+        if (gene.pext) {
+          variants = annotateVariantsWithPext(variants, gene.pext)
+        }
 
-      return (
-        <VariantsInGene
-          {...otherProps}
-          clinvarReleaseDate={data.meta.clinvar_release_date}
-          clinvarVariants={data.gene.clinvar_variants}
-          datasetId={datasetId}
-          gene={gene}
-          variants={variants}
-        />
-      )
-    }}
-  </Query>
-)
+        return (
+          <VariantsInGene
+            {...otherProps}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+            clinvarVariants={data.gene.clinvar_variants}
+            datasetId={datasetId}
+            gene={gene}
+            variants={variants}
+          />
+        )
+      }}
+    </Query>
+  )
+}
 
 export default ConnectedVariantsInGene

@@ -40,6 +40,23 @@ const SEX_IDENTIFIERS = ['XX', 'XY']
 const isSexSpecificPopulation = (pop: any) =>
   SEX_IDENTIFIERS.includes(pop.id) || SEX_IDENTIFIERS.some((id) => pop.id.endsWith(`_${id}`))
 
+// if the allele number (denominator) is 0, return a non-number
+//   to signal to users that there is no information to be displayed about
+//   the frequency, rather than artificially calling it 0
+const calculatePopAF = (ac: number, an: number) => {
+  if (an === 0) {
+    return '-'
+  }
+  return ac / an
+}
+
+const renderPopAF = (af: number | string) => {
+  if (typeof af === 'number') {
+    return af.toPrecision(4)
+  }
+  return af
+}
+
 type OwnPopulationsTableProps = {
   columnLabels?: {
     ac?: string
@@ -162,13 +179,11 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
     const renderedPopulations = populations
       .map((pop) => ({
         ...pop,
-        // af: pop.an !== 0 ? pop.ac / pop.an : 0,
-        af: pop.an !== 0 ? pop.ac / pop.an : 0,
+        af: calculatePopAF(pop.ac, pop.an),
         subpopulations: (pop.subpopulations || [])
           .map((subPop) => ({
             ...subPop,
-            af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
-            // af: subPop.an !== 0 ? subPop.ac / subPop.an : 0,
+            af: calculatePopAF(subPop.ac, subPop.an),
           }))
           .sort((a, b) => {
             // Sort XX/XY subpopulations to bottom of list
@@ -235,7 +250,11 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
       <Table>
         <thead>
           <tr>
-            {this.renderColumnHeader({ key: 'name', label: 'Population', props: { colSpan: 2 } })}
+            {this.renderColumnHeader({
+              key: 'name',
+              label: 'Genetic Ancestry Group',
+              props: { colSpan: 2 },
+            })}
             {this.renderColumnHeader({
               key: 'ac',
               label: columnLabels.ac || 'Allele Count',
@@ -297,7 +316,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
               <td className="right-align">{pop.an}</td>
               {showHomozygotes && <td className="right-align">{pop.ac_hom}</td>}
               {showHemizygotes && <td className="right-align">{pop.ac_hemi}</td>}
-              <td style={{ paddingLeft: '25px' }}>{pop.af.toPrecision(4)}</td>
+              <td style={{ paddingLeft: '25px' }}>{renderPopAF(pop.af)}</td>
             </tr>
             {pop.subpopulations &&
               expandedPopulations[pop.name] &&
@@ -321,7 +340,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
                       {subPop.ac_hemi !== null ? subPop.ac_hemi : '—'}
                     </td>
                   )}
-                  <td style={{ paddingLeft: '25px' }}>{subPop.af.toPrecision(4)}</td>
+                  <td style={{ paddingLeft: '25px' }}>{renderPopAF(subPop.af)}</td>
                 </tr>
               ))}
           </tbody>

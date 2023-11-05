@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { Button, Link as BaseLink, List, ListItem, PageHeading, Searchbox } from '@gnomad/ui'
 
-import tableOfContents from '../../help/helpPageTableOfContents.json'
+import helpPageTableOfContents, { FaqTopic } from '../../help/helpPageTableOfContents'
 
 import { withAnchor } from '../AnchorLink'
 import DocumentTitle from '../DocumentTitle'
@@ -24,8 +24,8 @@ const searchApi = new SearchApi({
   indexMode: INDEX_MODES.PREFIXES,
 })
 
-indexTexts.forEach(({ id, texts }: any) => {
-  texts.forEach((text: any) => {
+indexTexts.forEach(({ id, texts }: { id: string; texts: string[] }) => {
+  texts.forEach((text: string) => {
     searchApi.indexDocument(id, text)
   })
 })
@@ -131,7 +131,7 @@ const HelpPage = () => {
             {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <BaseLink href="#search">Search</BaseLink>
           </li>
-          {tableOfContents.topics.map((topicId: any) => (
+          {helpPageTableOfContents.topics.map((topicId: string) => (
             <li key={topicId}>
               {/* @ts-expect-error TS(2786) FIXME: 'Link' cannot be used as a JSX component. */}
               <Link to={`/help/${topicId}`}>{helpTopics[topicId].title}</Link>
@@ -141,7 +141,7 @@ const HelpPage = () => {
             {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <BaseLink href="#frequently-asked-questions">Frequently asked questions</BaseLink>
             <ul>
-              {tableOfContents.faq.map((section: any) => (
+              {helpPageTableOfContents.faq.map((section: FaqTopic) => (
                 <li key={section.heading}>
                   {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                   <BaseLink href={`#${slugify(section.heading)}`}>{section.heading}</BaseLink>
@@ -184,7 +184,7 @@ const HelpPage = () => {
           <section>
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <List>
-              {tableOfContents.topics.map((topicId: any) => (
+              {helpPageTableOfContents.topics.map((topicId: string) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={topicId}>
                   {/* @ts-expect-error TS(2786) FIXME: 'Link' cannot be used as a JSX component. */}
@@ -198,7 +198,7 @@ const HelpPage = () => {
             <SectionHeading id="frequently-asked-questions">
               Frequently asked questions
             </SectionHeading>
-            {tableOfContents.faq.map((section: any) => (
+            {helpPageTableOfContents.faq.map((section: FaqTopic) => (
               <div key={section.heading}>
                 <SectionSubheading id={slugify(section.heading)}>
                   {section.heading}

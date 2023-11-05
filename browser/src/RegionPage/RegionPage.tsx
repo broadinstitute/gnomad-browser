@@ -3,7 +3,15 @@ import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  hasNonCodingConstraints,
+  regionsHaveExomeCoverage,
+  regionsHaveGenomeCoverage,
+  isSVs,
+  isV4CNVs,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -19,10 +27,9 @@ import MitochondrialVariantsInRegion from './MitochondrialVariantsInRegion'
 import RegionControls from './RegionControls'
 import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
-import VariantsInRegion from './VariantsInRegion'
+import RegularVariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
-
-import { hasNonCodingConstraints } from '@gnomad/dataset-metadata/metadata'
+import CopyNumberVariantsInRegion from './CopyNumberVariantsInRegion'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
@@ -54,23 +61,42 @@ type NonCodingConstraint = {
   z: number
 }
 
-type Props = {
-  datasetId: DatasetId
-  region: {
-    reference_genome: 'GRCh37' | 'GRCh38'
-    chrom: string
-    start: number
-    stop: number
-    genes: any[]
-    short_tandem_repeats?: {
-      id: string
-    }[]
-    non_coding_constraints: NonCodingConstraint[] | null
-  }
+export type Region = {
+  reference_genome: 'GRCh37' | 'GRCh38'
+  chrom: string
+  start: number
+  stop: number
+  genes: any[]
+  short_tandem_repeats?: {
+    id: string
+  }[]
+  non_coding_constraints: NonCodingConstraint[] | null
 }
 
-// eslint-disable-next-line no-shadow
-const RegionPage = ({ datasetId, region }: Props) => {
+type RegionPageProps = {
+  datasetId: DatasetId
+  region: Region
+}
+
+const variantsInRegion = (datasetId: DatasetId, region: Region) => {
+  if (isSVs(datasetId)) {
+    return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
+  }
+
+  if (isV4CNVs(datasetId)) {
+    return <CopyNumberVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
+  }
+
+  if (region.chrom === 'M') {
+    return (
+      <MitochondrialVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
+    )
+  }
+
+  return <RegularVariantsInRegion datasetId={datasetId} region={region} />
+}
+
+const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const { chrom, start, stop } = region
 
   const { width: windowWidth } = useWindowSize()
@@ -100,6 +126,7 @@ const RegionPage = ({ datasetId, region }: Props) => {
           datasetOptions={{
             includeShortVariants: true,
             includeStructuralVariants: chrom !== 'M',
+            includeCopyNumberVariants: true,
             includeExac: region.reference_genome === 'GRCh37' && chrom !== 'M',
             includeGnomad2: region.reference_genome === 'GRCh37' && chrom !== 'M',
             includeGnomad3: region.reference_genome === 'GRCh38' || chrom === 'M',
@@ -133,20 +160,13 @@ const RegionPage = ({ datasetId, region }: Props) => {
         width={regionViewerWidth}
       >
         {region.chrom === 'M' ? (
-          <MitochondrialRegionCoverageTrack
-            datasetId={datasetId}
-            // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; chrom: string; start: n... Remove this comment to see the full error message
-            chrom={chrom}
-            start={start}
-            stop={stop}
-          />
+          <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
         ) : (
           <RegionCoverageTrack
             datasetId={datasetId}
             chrom={chrom}
-            includeExomeCoverage={
-              !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3')
-            }
+            includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
+            includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
             start={start}
             stop={stop}
           />
@@ -167,20 +187,7 @@ const RegionPage = ({ datasetId, region }: Props) => {
             />
           </>
         )}
-
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
-          <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
-        ) : region.chrom === 'M' ? (
-          <MitochondrialVariantsInRegion
-            datasetId={datasetId}
-            region={region}
-            zoomRegion={region}
-          />
-        ) : (
-          // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; region: { reference_gen... Remove this comment to see the full error message
-          <VariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
-        )}
+        {variantsInRegion(datasetId, region)}
       </RegionViewer>
     </TrackPage>
   )

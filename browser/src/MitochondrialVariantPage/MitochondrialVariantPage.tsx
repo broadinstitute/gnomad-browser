@@ -3,7 +3,14 @@ import styled from 'styled-components'
 
 import { Badge, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  referenceGenome,
+  hasMitochondrialVariants,
+} from '@gnomad/dataset-metadata/metadata'
+
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -13,16 +20,20 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
+import { ClinvarVariant, Histogram, TranscriptConsequence } from '../VariantPage/VariantPage'
 import VariantClinvarInfo from '../VariantPage/VariantClinvarInfo'
 import MitochondrialVariantAgeDistribution from './MitochondrialVariantAgeDistribution'
 import MitochondrialVariantAttributeList from './MitochondrialVariantAttributeList'
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
 import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGenotypeQualityMetrics'
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
 import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
 import MitochondrialVariantPopulationFrequenciesTable from './MitochondrialVariantPopulationFrequenciesTable'
 import MitochondrialVariantReferenceList from './MitochondrialVariantReferenceList'
 import MitochondrialVariantSiteQualityMetrics from './MitochondrialVariantSiteQualityMetrics'
+import {
+  MitotipTrnaPrediction,
+  PonMtTrnaPrediction,
+} from './MitochondrialVariantTranscriptConsequence'
 import MitochondrialVariantTranscriptConsequenceList from './MitochondrialVariantTranscriptConsequenceList'
 
 const Wrapper = styled.div`
@@ -45,8 +56,8 @@ const ResponsiveSection = styled.section`
   }
 `
 
-const VariantType = ({ variantId }: any) => {
-  const [chrom, pos, ref, alt] = variantId.split('-') // eslint-disable-line no-unused-vars
+const variantType = (variantId: string) => {
+  const [_chrom, _pos, ref, alt] = variantId.split('-')
   if (!ref || !alt) {
     return 'Variant'
   }
@@ -66,9 +77,62 @@ const VariantId = styled.span`
   white-space: nowrap;
 `
 
+export type GenotypeQualityFilter = {
+  name: string
+  filtered: Histogram | null
+}
+
+export type MitochondrialVariant = {
+  alt: string
+  an: number
+  ac_hom: number
+  ac_hom_mnv: number
+  age_distribution: { het: Histogram; hom: Histogram }
+  ac_het: number
+  excluded_ac: number | null
+  flags: string[] | null
+  haplogroup_defining: boolean | null
+  haplogroups: {
+    id: string
+    an: number
+    ac_hom: number
+    ac_het: number
+  }[]
+  max_heteroplasmy: number | null
+  populations: {
+    id: PopulationId
+    an: number
+    ac_het: number
+    ac_hom: number
+  }[]
+  pos: number
+  ref: string
+  reference_genome: string
+  variant_id: string
+  rsids: string[] | null
+  clinvar: ClinvarVariant | null
+  site_quality_metrics: {
+    name: string
+    value: number | null
+  }[]
+  genotype_quality_filters: GenotypeQualityFilter[]
+  genotype_quality_metrics: {
+    name: string
+    all: Histogram | null
+    alt: Histogram | null
+  }[]
+  transcript_consequences: TranscriptConsequence[]
+  heteroplasmy_distribution: Histogram
+  filters: string[] | null
+  mitotip_trna_prediction: MitotipTrnaPrediction | null
+  pon_mt_trna_prediction: PonMtTrnaPrediction | null
+  mitotip_score: number | null
+  pon_ml_probability_of_pathogenicity: number | null
+}
+
 type MitochondrialVariantPageProps = {
   datasetId: DatasetId
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPageProps) => (
@@ -86,9 +150,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
         includeGnomad3Subsets: false,
       }}
     >
-      {/* @ts-expect-error TS(2786) FIXME: 'VariantType' cannot be used as a JSX component. */}
-      <VariantType variantId={variant.variant_id} />:{' '}
-      <VariantId>{variant.variant_id} (GRCh38)</VariantId>
+      {variantType(variant.variant_id)}: <VariantId>{variant.variant_id} (GRCh38)</VariantId>
     </GnomadPageHeading>
     <Wrapper>
       <ResponsiveSection>
@@ -127,7 +189,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
       </ResponsiveSection>
     </Wrapper>
     <Section>
-      <h2>Population Frequencies</h2>
+      <h2>Genetic Ancestry Group Frequencies</h2>
       <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
     </Section>
     <Section>
@@ -141,29 +203,25 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
     <Wrapper>
       <ResponsiveSection>
         <h2>Heteroplasmy Distribution</h2>
-        {/* @ts-expect-error TS(2741) FIXME: Property 'heteroplasmy_distribution' is missing in... Remove this comment to see the full error message */}
         <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>
           Age Distribution <InfoButton topic="age" />
         </h2>
-        {/* @ts-expect-error TS(2559) FIXME: Type 'MitochondrialVariantDetailPropType' has no p... Remove this comment to see the full error message */}
         <MitochondrialVariantAgeDistribution variant={variant} />
       </ResponsiveSection>
     </Wrapper>
     <Wrapper>
       <ResponsiveSection>
         <h2>Annotations</h2>
-        {/* @ts-expect-error TS(2741) FIXME: Property 'transcript_consequences' is missing in t... Remove this comment to see the full error message */}
         <MitochondrialVariantTranscriptConsequenceList variant={variant} />
       </ResponsiveSection>
 
-      {(variant as any).clinvar && (
+      {variant.clinvar && (
         <ResponsiveSection>
           <h2>ClinVar</h2>
-          {/* @ts-expect-error TS(2741) FIXME: Property 'clinvar' is missing in type 'Mitochondri... Remove this comment to see the full error message */}
-          <VariantClinvarInfo variant={variant} />
+          <VariantClinvarInfo clinvar={variant.clinvar} />
         </ResponsiveSection>
       )}
     </Wrapper>
@@ -174,8 +232,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>Site Quality Metrics</h2>
-        {/* @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; variant: MitochondrialV... Remove this comment to see the full error message */}
-        <MitochondrialVariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
+        <MitochondrialVariantSiteQualityMetrics variant={variant} />
       </ResponsiveSection>
     </Wrapper>
     <Section>
@@ -318,7 +375,7 @@ const ConnectedMitochondrialVariantPage = ({
   datasetId,
   variantId,
 }: ConnectedMitochondrialVariantPageProps) => {
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}

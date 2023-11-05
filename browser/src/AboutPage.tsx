@@ -10,6 +10,8 @@ import contributingProjectsList from '../about/contributors/contributing-project
 import fundingSources from '../about/contributors/funding.md'
 // @ts-expect-error
 import dataContributorsList from '../about/contributors/data-contributors.md'
+// @ts-expect-error
+import gcbrContent from '../about/contributors/gcbr/gcbr.md'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
@@ -87,12 +89,39 @@ export default () => (
     {/* Import about blurb from .md file */}
     <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
 
+    {/* Funding Section */}
+    <SectionHeader>Funding</SectionHeader>
+    <Credits>
+      <CreditsSection
+        // @ts-expect-error
+        width="45%"
+      >
+        <FundingSources
+          aria-labelledby="funding"
+          dangerouslySetInnerHTML={{ __html: fundingSources.html }}
+        />
+        <p>
+          The vast majority of the data storage, computing resources, and human effort used to
+          generate this call set were donated by the Broad Institute
+        </p>
+      </CreditsSection>
+
+      <CreditsSection
+        // @ts-expect-error
+        width="45%"
+      >
+        <FundingSources
+          aria-labelledby="gcbr"
+          dangerouslySetInnerHTML={{ __html: gcbrContent.html }}
+        />
+      </CreditsSection>
+    </Credits>
+
     {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
     <SectionHeader>Data Contributors</SectionHeader>
     <Credits>
       <CreditsSection
         // @ts-expect-error
-
         width="45%"
       >
         <h3 id="principal-investigators">Data Contributors</h3>
@@ -103,7 +132,6 @@ export default () => (
       </CreditsSection>
       <CreditsSection
         // @ts-expect-error
-
         width="45%"
       >
         <h3 id="contributing-projects">Contributing projects</h3>
@@ -113,21 +141,5 @@ export default () => (
         />
       </CreditsSection>
     </Credits>
-
-    {/* Funding Section */}
-    <SectionHeader>Funding</SectionHeader>
-    <CreditsSection
-      // @ts-expect-error
-      width="70%"
-    >
-      <FundingSources
-        aria-labelledby="funding"
-        dangerouslySetInnerHTML={{ __html: fundingSources.html }}
-      />
-      <p>
-        The vast majority of the data storage, computing resources, and human effort used to
-        generate this call set were donated by the Broad Institute
-      </p>
-    </CreditsSection>
   </InfoPage>
 )

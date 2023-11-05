@@ -4,7 +4,7 @@ services:
     command:
       - sh
       - -c
-      - gcloud container clusters get-credentials gnomad --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
+      - gcloud container clusters get-credentials gnomad-prod --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
     environment:
       - PROJECT
       - ZONE
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: deploy/dockerfiles/browser/api.dockerfile
-    command: npx nodemon --ext js,graphql graphql-api/src/app.js
+    command: yarn run node /build/app.js
     environment:
       - NODE_ENV=development
       - PORT=8000

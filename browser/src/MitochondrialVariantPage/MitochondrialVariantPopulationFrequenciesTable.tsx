@@ -5,7 +5,7 @@ import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 const CountCell = styled.span`
   display: inline-block;
@@ -31,13 +31,16 @@ const Table = styled(BaseTable)`
   }
 `
 
-const useSort = (defaultSortKey: any) => {
-  const [key, setKey] = useState(defaultSortKey)
-  const [ascending, setAscending] = useState(false)
+type SortKey = 'id' | 'an' | 'af_het' | 'af_hom' | 'ac_het' | 'ac_hom'
+
+const useSort = (
+  defaultSortKey: SortKey
+): [{ key: SortKey; ascending: boolean }, (key: SortKey) => void] => {
+  const [key, setKey] = useState<SortKey>(defaultSortKey)
+  const [ascending, setAscending] = useState<boolean>(false)
 
   const setSortKey = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'newKey' implicitly has an 'any' type.
-    (newKey) => {
+    (newKey: SortKey) => {
       setKey(newKey)
       setAscending(newKey === key ? !ascending : false)
     },
@@ -48,27 +51,24 @@ const useSort = (defaultSortKey: any) => {
 }
 
 type MitochondrialVariantPopulationFrequenciesTableProps = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantPopulationFrequenciesTable = ({
   variant,
 }: MitochondrialVariantPopulationFrequenciesTableProps) => {
-  // @ts-expect-error TS(2339) FIXME: Property 'key' does not exist on type '((newKey: a... Remove this comment to see the full error message
   const [{ key: sortBy, ascending: sortAscending }, setSortBy] = useSort('af_hom')
 
   const renderColumnHeader = (key: any, label: any, tooltip: any) => {
-    let ariaSortAttr = 'none'
+    let ariaSortAttr: React.AriaAttributes['aria-sort'] = 'none'
     if (sortBy === key) {
       ariaSortAttr = sortAscending ? 'ascending' : 'descending'
     }
 
     return tooltip ? (
-      // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; "aria-sort": string; sc... Remove this comment to see the full error message
       <th aria-sort={ariaSortAttr} scope="col">
         {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
         <TooltipAnchor tooltip={tooltip}>
-          {/* @ts-expect-error TS(2349) FIXME: This expression is not callable. */}
           <button type="button" onClick={() => setSortBy(key)}>
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <TooltipHint>{label}</TooltipHint>
@@ -76,9 +76,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
         </TooltipAnchor>
       </th>
     ) : (
-      // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; "aria-sort": string; sc... Remove this comment to see the full error message
       <th aria-sort={ariaSortAttr} scope="col">
-        {/* @ts-expect-error TS(2349) FIXME: This expression is not callable. */}
         <button type="button" onClick={() => setSortBy(key)}>
           {label}
         </button>
@@ -86,7 +84,6 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     )
   }
 
-  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const renderedPopulations = variant.populations
     .map((population) => ({
       ...population,
@@ -98,8 +95,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
 
       return sortBy === 'id'
         ? population1.id.localeCompare(population2.id)
-        : // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-          population1[sortBy] - population2[sortBy]
+        : population1[sortBy] - population2[sortBy]
     })
 
   const totalAlleleNumber = renderedPopulations
@@ -122,7 +118,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     <Table>
       <thead>
         <tr>
-          {renderColumnHeader('id', 'Population', null)}
+          {renderColumnHeader('id', 'Genetic Ancestry Group', null)}
           {renderColumnHeader(
             'an',
             'Allele Number',
@@ -153,7 +149,6 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
       <tbody>
         {renderedPopulations.map((population) => (
           <tr key={population.id}>
-            {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
             <th scope="row">{GNOMAD_POPULATION_NAMES[population.id]}</th>
             <td>
               <CountCell>{population.an}</CountCell>

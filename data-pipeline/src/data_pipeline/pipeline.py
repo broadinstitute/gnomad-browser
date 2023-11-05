@@ -1,21 +1,20 @@
 import argparse
 import datetime
-import logging
 import os
 import shutil
 import subprocess
 import tempfile
 import time
+from pathlib import Path
+from typing import Callable, Dict, List, Optional, Union
+import attr
 from collections import OrderedDict
+
+from loguru import logger
 
 import hail as hl
 
-
-logger = logging.getLogger("gnomad_data_pipeline")
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
+from data_pipeline.config import PipelineConfig
 
 
 class GoogleCloudStorageFileSystem:
@@ -57,14 +56,22 @@ def modified_time(path):
 _pipeline_config = {}
 
 
+@attr.define
 class DownloadTask:
-    def __init__(self, name, url, output_path):
-        self._name = name
-        self._url = url
-        self._output_path = output_path
+    _config: Optional[PipelineConfig]
+    _name: str
+    _url: str
+    _output_path: str
+
+    @classmethod
+    def create(cls, config: Optional[PipelineConfig], name: str, url: str, output_path: str):
+        return cls(config, name, url, output_path)
 
     def get_output_path(self):
-        return _pipeline_config["output_root"] + self._output_path
+        if self._config:
+            return self._config.output_root + self._output_path
+        else:
+            return _pipeline_config["output_root"] + self._output_path
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -73,11 +80,14 @@ class DownloadTask:
 
         return (False, None)
 
+    def get_inputs(self):
+        raise NotImplementedError("Method not valid for DownloadTask")
+
     def run(self, force=False):
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
-            logger.info("Running %s (%s)", self._name, reason)
+            logger.info(f"Running {self._name} ({reason}")
 
             start = time.perf_counter()
             with tempfile.NamedTemporaryFile() as tmp:
@@ -95,19 +105,55 @@ class DownloadTask:
             logger.info("Skipping %s", self._name)
 
 
+@attr.define
 class Task:
-    def __init__(self, name, work, output_path, inputs=None, params=None):
-        self._name = name
-        self._work = work
-        self._output_path = output_path
-        self._inputs = inputs or {}
-        self._params = params or {}
+    _name: str
+    _task_function: Callable
+    _output_path: str
+    _inputs: dict
+    _params: dict
+    _config: Optional[PipelineConfig] = None
+
+    @classmethod
+    def create(
+        cls,
+        config: Optional[PipelineConfig],
+        name: str,
+        task_function: Callable,
+        output_path: str,
+        inputs: Optional[dict] = None,
+        params: Optional[dict] = None,
+    ):
+        if inputs is None:
+            inputs = {}
+        if params is None:
+            params = {}
+        return cls(name, task_function, output_path, inputs, params, config)
 
     def get_output_path(self):
-        return _pipeline_config["output_root"] + self._output_path
+        if self._config:
+            return os.path.join(self._config.output_root, self._output_path)
+        else:
+            return _pipeline_config["output_root"] + self._output_path
 
     def get_inputs(self):
-        return {k: v.get_output_path() if isinstance(v, (Task, DownloadTask)) else v for k, v in self._inputs.items()}
+        paths = {}
+
+        for k, v in self._inputs.items():
+            if isinstance(v, (Task, DownloadTask)):
+                paths.update({k: v.get_output_path()})
+            else:
+                if self._config:
+                    if self._config.input_root:
+                        paths.update({k: os.path.join(self._config.input_root, v)})
+                        if "gs://" in v:
+                            paths.update({k: v})
+                    else:
+                        paths.update({k: v})
+                else:
+                    paths.update({k: v})
+
+        return paths
 
     def should_run(self):
         output_path = self.get_output_path()
@@ -127,71 +173,103 @@ class Task:
         output_path = self.get_output_path()
         should_run, reason = (True, "Forced") if force else self.should_run()
         if should_run:
-            logger.info("Running %s (%s)", self._name, reason)
+            logger.info(f"Running {self._name} ({reason})")
             start = time.perf_counter()
-            result = self._work(**self.get_inputs(), **self._params)
+            result = self._task_function(**self.get_inputs(), **self._params)
+
+            if self._config:
+                if "gs://" not in self._config.output_root:
+                    Path(self._config.output_root).mkdir(parents=True, exist_ok=True)
+
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
-            logger.info("Finished %s in %dm%02ds", self._name, elapsed // 60, elapsed % 60)
+            logger.info(f"Finished {self._name} in {elapsed // 60}m{elapsed % 60:02}s")
         else:
-            logger.info("Skipping %s", self._name)
+            logger.info(f"Skipping {self._name}")
 
 
+@attr.define
 class Pipeline:
-    def __init__(self):
-        self._tasks = OrderedDict()
-        self._outputs = {}
+    config: Optional[PipelineConfig] = None
+    _tasks: OrderedDict = OrderedDict()
+    _outputs: dict = {}
 
-    def add_task(self, name, *args, **kwargs):
-        task = Task(name, *args, **kwargs)
+    def add_task(
+        self,
+        name: str,
+        task_function: Callable,
+        output_path: str,
+        inputs: Optional[dict] = None,
+        params: Optional[dict] = None,
+    ):
+        if inputs is None:
+            inputs = {}
+        if params is None:
+            params = {}
+        task = Task.create(self.config, name, task_function, output_path, inputs, params)
         self._tasks[name] = task
         return task
 
-    def add_download_task(self, name, *args, **kwargs):
-        task = DownloadTask(name, *args, **kwargs)
+    def add_download_task(self, name, *args, **kwargs) -> DownloadTask:
+        task = DownloadTask.create(self.config, name, *args, **kwargs)
         self._tasks[name] = task
         return task
 
-    def get_task(self, name):
+    def get_task(self, name: str) -> Union[Task, DownloadTask]:
         try:
             return self._tasks[name]
         except KeyError as error:
             raise ValueError(f"Pipeline contains no task named '{name}'") from error
 
-    def get_all_tasks(self):
+    def get_all_task_names(self) -> List[str]:
         return list(self._tasks.keys())
 
-    def run(self, force_tasks=None):
+    def run(self, force_tasks=None) -> None:
         for task_name, task in self._tasks.items():
             task.run(force=force_tasks and task_name in force_tasks)
 
-    def set_outputs(self, outputs):
+    def set_outputs(self, outputs) -> None:
         for output_name, task_name in outputs.items():
             assert task_name in self._tasks, f"Unable to set output '{output_name}', no task named '{task_name}'"
 
         self._outputs = outputs
 
-    def get_output(self, output_name):
+    def get_output(self, output_name) -> Union[Task, DownloadTask]:
         task_name = self._outputs[output_name]
         return self._tasks[task_name]
 
 
-def run_pipeline(pipeline):
-    tasks = pipeline.get_all_tasks()
+@attr.define
+class PipelineMock:
+    output_mappings: Dict[str, str]
+
+    @classmethod
+    def create(cls, output_mappings: Dict[str, str]):
+        return cls(output_mappings)
+
+    def get_output(self, output_name):
+        if output_name in self.output_mappings:
+            return self.output_mappings.get(output_name)
+        raise ValueError("Output name is not valid")
+
+
+def run_pipeline(pipeline: Pipeline):
+    task_names = pipeline.get_all_task_names()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-root", required=True)
+    parser.add_argument("--output-root")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--force", choices=tasks, nargs="+")
+    group.add_argument("--force", choices=task_names, nargs="+")
     group.add_argument("--force-all", action="store_true")
     args = parser.parse_args()
 
-    _pipeline_config["output_root"] = args.output_root.rstrip("/")
+    if args.output_root:
+        _pipeline_config["output_root"] = args.output_root.rstrip("/")
 
     pipeline_args = {}
     if args.force_all:
-        pipeline_args["force_tasks"] = tasks
+        pipeline_args["force_tasks"] = task_names
     elif args.force:
         pipeline_args["force_tasks"] = args.force
 

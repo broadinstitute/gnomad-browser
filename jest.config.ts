@@ -4,8 +4,13 @@ module.exports = {
   projects: [
     {
       displayName: 'browser',
+      transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+        '^.+\\.md$': '<rootDir>/tests/utils/jestRawMdFileTransformer.js',
+        '^.+\\.pdf$': '<rootDir>/tests/utils/jestFileTransformer.js',
+      },
       moduleNameMapper: {
-        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|css)$':
           '<rootDir>/tests/__mocks__/fileMock.js',
         // workaround for yet another extremely cursed aspect of the JS stack
         '^lodash-es$': 'lodash',

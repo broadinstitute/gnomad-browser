@@ -1,0 +1,8 @@
+/*
+	This CSS module is used alongside Styled Components to allow modification of a single
+	html page for smooth scrolling
+*/
+
+html {
+  scroll-behavior: smooth;
+}

@@ -3,3 +3,5 @@
 !dataset-metadata
 !graphql-api/package.json
 !graphql-api/src
+!tsconfig.json
+!tsconfig.build.json

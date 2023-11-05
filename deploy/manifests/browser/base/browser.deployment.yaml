@@ -15,9 +15,14 @@ spec:
       labels:
         name: gnomad-browser
     spec:
+      volumes:
+        - name: nginx-cache
+          emptyDir:
+            sizeLimit: 20Gi
       containers:
         - name: web
           image: gnomad-browser
+          imagePullPolicy: Always
           env:
             - name: API_URL
               value: http://$(API_SERVICE)
@@ -26,6 +31,9 @@ spec:
                 configMapKeyRef:
                   name: proxy-ips
                   key: ips
+          volumeMounts:
+            - mountPath: '/var/cache/nginx'
+              name: nginx-cache
           ports:
             - name: http
               containerPort: 80
@@ -43,4 +51,4 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        cloud.google.com/gke-nodepool: 'main-pool'

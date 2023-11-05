@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:14.15.2-alpine as build
+FROM --platform=linux/amd64 node:14.17-alpine as build
 
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -34,6 +34,7 @@ FROM --platform=linux/amd64 nginx:stable-alpine
 
 COPY --from=build /home/node/app/browser/dist/public /usr/share/nginx/html
 
+COPY deploy/dockerfiles/browser/browser.proxy_cache.conf /etc/nginx/browser.proxy_cache.conf
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/browser.nginx.conf.template
 
 CMD REAL_IP_CONFIG=$([ -z "${PROXY_IPS:-}" ] || echo "$PROXY_IPS" | awk 'BEGIN { RS="," } { print "set_real_ip_from " $1 ";" }') \

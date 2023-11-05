@@ -15,4 +15,25 @@ forAllDatasets('DataSelector with "%s" dataset selected', (datasetId) => {
     )
     expect(tree).toMatchSnapshot()
   })
+
+  test('has no unexpected changes when showing all possible datasets', () => {
+    const tree = renderer.create(
+      withDummyRouter(
+        <DatasetSelector
+          selectedDataset={datasetId}
+          datasetOptions={{
+            includeShortVariants: true,
+            includeStructuralVariants: true,
+            includeExac: true,
+            includeGnomad2: true,
+            includeGnomad2Subsets: true,
+            includeGnomad3: true,
+            includeGnomad3Subsets: true,
+            includeCopyNumberVariants: true,
+          }}
+        />
+      )
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })

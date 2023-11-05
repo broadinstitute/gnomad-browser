@@ -1,0 +1,354 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CopyNumberVariants has no unexpected changes 1`] = `
+<div>
+  <CopyNumberVariants__Wrapper>
+    <ForwardRef
+      highlightedVariant={null}
+      numTracksRendered={3}
+      onHover={[Function]}
+      onScroll={[Function]}
+      trackColor={[Function]}
+      trackHeight={14}
+      variants={
+        [
+          {
+            "alts": null,
+            "chrom": "21",
+            "end": 456,
+            "endmax": 100168742,
+            "endmin": 100168738,
+            "filters": [],
+            "genes": [],
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "posmax": 100121284,
+            "posmin": 100121281,
+            "qual": 99,
+            "sc": 123,
+            "sf": 0.5,
+            "sn": 345,
+            "type": "DUP",
+            "variant_id": "21__DUP",
+          },
+          {
+            "alts": null,
+            "chrom": "21",
+            "end": 456,
+            "endmax": 100168742,
+            "endmin": 100168738,
+            "filters": [],
+            "genes": [],
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "posmax": 100121284,
+            "posmin": 100121281,
+            "qual": 99,
+            "sc": 123,
+            "sf": 0.5,
+            "sn": 345,
+            "type": "DUP",
+            "variant_id": "21__DUP",
+          },
+          {
+            "alts": null,
+            "chrom": "21",
+            "end": 456,
+            "endmax": 100168742,
+            "endmin": 100168738,
+            "filters": [],
+            "genes": [],
+            "length": 333,
+            "populations": [],
+            "pos": 123,
+            "posmax": 100121284,
+            "posmin": 100121281,
+            "qual": 99,
+            "sc": 123,
+            "sf": 0.5,
+            "sn": 345,
+            "type": "DUP",
+            "variant_id": "21__DUP",
+          },
+        ]
+      }
+    />
+  </CopyNumberVariants__Wrapper>
+  <CopyNumberVariants__Wrapper>
+    <PositionAxisTrack />
+  </CopyNumberVariants__Wrapper>
+  <TrackPage__TrackPageSection
+    style={
+      {
+        "fontSize": "14px",
+      }
+    }
+  >
+    <CopyNumberVariants__Wrapper>
+      <div>
+        <CopyNumberVariantFilterControls
+          colorKey="type"
+          onChange={[Function]}
+          value={
+            {
+              "includeFilteredVariants": false,
+              "includeTypes": {
+                "DEL": true,
+                "DUP": true,
+              },
+              "searchText": "",
+            }
+          }
+        />
+        <ExportCopyNumberVariantsButton
+          exportFileName="somefile.tar.gz"
+          variants={
+            [
+              {
+                "alts": null,
+                "chrom": "21",
+                "end": 456,
+                "endmax": 100168742,
+                "endmin": 100168738,
+                "filters": [],
+                "genes": [],
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "posmax": 100121284,
+                "posmin": 100121281,
+                "qual": 99,
+                "sc": 123,
+                "sf": 0.5,
+                "sn": 345,
+                "type": "DUP",
+                "variant_id": "21__DUP",
+              },
+              {
+                "alts": null,
+                "chrom": "21",
+                "end": 456,
+                "endmax": 100168742,
+                "endmin": 100168738,
+                "filters": [],
+                "genes": [],
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "posmax": 100121284,
+                "posmin": 100121281,
+                "qual": 99,
+                "sc": 123,
+                "sf": 0.5,
+                "sn": 345,
+                "type": "DUP",
+                "variant_id": "21__DUP",
+              },
+              {
+                "alts": null,
+                "chrom": "21",
+                "end": 456,
+                "endmax": 100168742,
+                "endmin": 100168738,
+                "filters": [],
+                "genes": [],
+                "length": 333,
+                "populations": [],
+                "pos": 123,
+                "posmax": 100121284,
+                "posmin": 100121281,
+                "qual": 99,
+                "sc": 123,
+                "sf": 0.5,
+                "sn": 345,
+                "type": "DUP",
+                "variant_id": "21__DUP",
+              },
+            ]
+          }
+        />
+        <Button
+          onClick={[Function]}
+          style={
+            {
+              "marginLeft": "1ch",
+            }
+          }
+        >
+          Configure table
+        </Button>
+      </div>
+    </CopyNumberVariants__Wrapper>
+    <CopyNumberVariants__Wrapper
+      style={
+        {
+          "minHeight": 115,
+        }
+      }
+    >
+      <ForwardRef
+        cellData={
+          {
+            "colorKey": "type",
+            "highlightWords": [],
+          }
+        }
+        columns={
+          [
+            {
+              "compareFunction": [Function],
+              "getSearchTerms": [Function],
+              "heading": "Variant ID",
+              "isRowHeader": true,
+              "isSortable": true,
+              "key": "variant_id",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "grow": 0,
+              "heading": "Source",
+              "isSortable": false,
+              "key": "source",
+              "minWidth": 70,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "getSearchTerms": [Function],
+              "heading": "Class",
+              "isSortable": true,
+              "key": "class",
+              "minWidth": 130,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Position",
+              "isSortable": true,
+              "key": "pos",
+              "minWidth": 200,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Size",
+              "isSortable": true,
+              "key": "length",
+              "minWidth": 100,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Site Count",
+              "isSortable": true,
+              "key": "sc",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Site Number",
+              "isSortable": true,
+              "key": "sn",
+              "minWidth": 110,
+              "render": [Function],
+              "tooltip": undefined,
+            },
+            {
+              "compareFunction": [Function],
+              "heading": "Site Frequency",
+              "isSortable": true,
+              "key": "sf",
+              "minWidth": 110,
+              "render": [Function],
+              "shouldShowInContext": [Function],
+              "tooltip": undefined,
+            },
+          ]
+        }
+        numRowsRendered={3}
+        onHoverVariant={[Function]}
+        onRequestSort={[Function]}
+        onScroll={[Function]}
+        rowHeight={25}
+        shouldHighlightRow={[Function]}
+        sortKey="variant_id"
+        sortOrder="ascending"
+        variants={
+          [
+            {
+              "alts": null,
+              "chrom": "21",
+              "end": 456,
+              "endmax": 100168742,
+              "endmin": 100168738,
+              "filters": [],
+              "genes": [],
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "posmax": 100121284,
+              "posmin": 100121281,
+              "qual": 99,
+              "sc": 123,
+              "sf": 0.5,
+              "sn": 345,
+              "type": "DUP",
+              "variant_id": "21__DUP",
+            },
+            {
+              "alts": null,
+              "chrom": "21",
+              "end": 456,
+              "endmax": 100168742,
+              "endmin": 100168738,
+              "filters": [],
+              "genes": [],
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "posmax": 100121284,
+              "posmin": 100121281,
+              "qual": 99,
+              "sc": 123,
+              "sf": 0.5,
+              "sn": 345,
+              "type": "DUP",
+              "variant_id": "21__DUP",
+            },
+            {
+              "alts": null,
+              "chrom": "21",
+              "end": 456,
+              "endmax": 100168742,
+              "endmin": 100168738,
+              "filters": [],
+              "genes": [],
+              "length": 333,
+              "populations": [],
+              "pos": 123,
+              "posmax": 100121284,
+              "posmin": 100121281,
+              "qual": 99,
+              "sc": 123,
+              "sf": 0.5,
+              "sn": 345,
+              "type": "DUP",
+              "variant_id": "21__DUP",
+            },
+          ]
+        }
+      />
+    </CopyNumberVariants__Wrapper>
+  </TrackPage__TrackPageSection>
+</div>
+`;

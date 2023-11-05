@@ -4,9 +4,10 @@ import styled from 'styled-components'
 
 import { Checkbox } from '@gnomad/ui'
 
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 import overallAgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantAgeDistribution.json'
 
-import Legend, { StripedSwatch } from '../Legend'
+import Legend, { StripedSwatch, SeriesLegendProps } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from '../VariantPage/ControlSection'
 
@@ -24,22 +25,7 @@ const CheckboxWrapper = styled.div`
 `
 
 type Props = {
-  variant: {
-    age_distribution?: {
-      het: {
-        bin_edges: number[]
-        bin_freq: number[]
-        n_smaller?: number
-        n_larger?: number
-      }
-      hom: {
-        bin_edges: number[]
-        bin_freq: number[]
-        n_smaller?: number
-        n_larger?: number
-      }
-    }
-  }
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantAgeDistribution = ({ variant }: Props) => {
@@ -55,26 +41,22 @@ const MitochondrialVariantAgeDistribution = ({ variant }: Props) => {
     `> ${binEdges[binEdges.length - 1]}`,
   ]
 
-  const values = [
-    [
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-      (includeHeteroplasmic ? variant.age_distribution.het.n_smaller : 0) +
-        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-        (includeHomoplasmic ? variant.age_distribution.hom.n_smaller : 0),
-    ],
-    ...[...Array(overallAgeDistribution.bin_freq.length)].map((_, i) => [
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-      (includeHeteroplasmic ? variant.age_distribution.het.bin_freq[i] : 0) +
-        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-        (includeHomoplasmic ? variant.age_distribution.hom.bin_freq[i] : 0),
-    ]),
-    [
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-      (includeHeteroplasmic ? variant.age_distribution.het.n_larger : 0) +
-        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-        (includeHomoplasmic ? variant.age_distribution.hom.n_larger : 0),
-    ],
-  ]
+  const values = variant.age_distribution
+    ? [
+        [
+          (includeHeteroplasmic ? variant.age_distribution.het.n_smaller : 0) +
+            (includeHomoplasmic ? variant.age_distribution.hom.n_smaller : 0),
+        ],
+        ...[...Array(overallAgeDistribution.bin_freq.length)].map((_, i) => [
+          (includeHeteroplasmic ? variant.age_distribution.het.bin_freq[i] : 0) +
+            (includeHomoplasmic ? variant.age_distribution.hom.bin_freq[i] : 0),
+        ]),
+        [
+          (includeHeteroplasmic ? variant.age_distribution.het.n_larger : 0) +
+            (includeHomoplasmic ? variant.age_distribution.hom.n_larger : 0),
+        ],
+      ]
+    : []
 
   const secondaryValues = [
     [overallAgeDistribution.n_smaller],
@@ -82,11 +64,10 @@ const MitochondrialVariantAgeDistribution = ({ variant }: Props) => {
     [overallAgeDistribution.n_larger],
   ]
 
-  const series = [{ label: 'Variant carriers', color: '#73ab3d' }]
+  const series: SeriesLegendProps[] = [{ label: 'Variant carriers', color: '#73ab3d' }]
   if (showAllIndividuals) {
     series.push({
       label: 'All individuals',
-      // @ts-expect-error TS(2345) FIXME: Argument of type '{ label: string; swatch: JSX.Ele... Remove this comment to see the full error message
       swatch: <StripedSwatch id="age-distribution-legend-swatch" color="#73ab3d" />,
     })
   }

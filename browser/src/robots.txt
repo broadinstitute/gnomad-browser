@@ -3,10 +3,11 @@ Disallow: *
 Allow: /$
 Allow: /about/
 Allow: /team/
+Allow: /stats/
 Allow: /news/
 Allow: /news/changelog/
 Allow: /downloads/
 Allow: /policies/
 Allow: /publications/
-Allow: /feedback/
+Allow: /contact/
 Allow: /help/

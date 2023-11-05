@@ -1,0 +1,1158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Clinvar Variants Track renders correctly with default props 1`] = `
+[
+  .c26 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c26:active,
+.c26:hover {
+  background-color: #cbd3da;
+}
+
+.c26:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c26:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c26 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c23 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c24 {
+  margin-right: 0.5em;
+}
+
+.c28 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c28:visited,
+.c28:active {
+  color: #1173bb;
+}
+
+.c28:focus,
+.c28:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c11 {
+  box-sizing: border-box;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.75em;
+  background: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 18px;
+  outline: none;
+}
+
+.c11:active,
+.c11:hover {
+  border-color: #b7b7b7;
+}
+
+.c11:focus {
+  box-shadow: 0 0 0 0.2em rgba(221,221,221,0.5);
+}
+
+.c11::-moz-focus-inner {
+  border: 0;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  border-width: 1px;
+  margin: 0 0.7em;
+  border-color: #000;
+  border-radius: 3px;
+  border-style: solid;
+  font-size: 10px;
+}
+
+.c9 > img {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+}
+
+.c7 {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c7:focus + .c8 {
+  border-color: #428bca;
+  box-shadow: 0 0 0 0.2em #428bca;
+}
+
+.c5 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+  border-color: #E6573D;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c5:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c5:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c12 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+  border-color: #FAB470;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c12:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c12:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c14 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+  border-color: #5E6F9E;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c14:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c14:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c16 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+  border-color: #bababa;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c16:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c16:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c6 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: linear-gradient(to right,rgba(230,87,61,0.5),rgba(230,87,61,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c13 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: linear-gradient(to right,rgba(250,180,112,0.5),rgba(250,180,112,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c15 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: linear-gradient(to right,rgba(94,111,158,0.5),rgba(94,111,158,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c17 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: linear-gradient(to right,rgba(186,186,186,0.5),rgba(186,186,186,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c10 {
+  padding: 0.375em 0.75em;
+  line-height: 1.15em;
+}
+
+.c19 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0 0.5em;
+}
+
+.c19:active,
+.c19:hover {
+  background-color: #cbd3da;
+}
+
+.c19:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c19:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c19 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c20 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  outline: none;
+  padding: 0 3px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.c20 img {
+  position: relative;
+  top: 0.13em;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.c20:focus img {
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c0 {
+  padding: 0 80px 0 115px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.c21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+}
+
+.c21 input[type='checkbox'] {
+  position: relative;
+  top: 2px;
+}
+
+.c21 label {
+  margin-left: 1em;
+}
+
+.c21 label:first-child {
+  margin-left: 0;
+}
+
+.c22 {
+  margin-right: 1ch;
+}
+
+.c25 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  line-height: 18px;
+}
+
+.c25:active,
+.c25:hover {
+  background-color: #cbd3da;
+}
+
+.c25:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c25:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c25 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media (max-width:1200px) {
+  .c3 .c4 {
+    border-radius: 0.5em;
+    margin: 0 0.5em 0.5em 0;
+  }
+
+  .c3 .c18 {
+    margin: 0 0.5em 0.5em;
+  }
+}
+
+@media (max-width:900px) {
+  .c0 {
+    padding: 0;
+  }
+}
+
+@media (max-width:600px) {
+  .c2 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width:600px) {
+  .c21 {
+    margin-bottom: 0.5em;
+  }
+}
+
+<div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div>
+          <div
+            className="c3"
+            id="clinvar-track-included-categories"
+          >
+            <span
+              className="c4 c5"
+            >
+              <label
+                className="c6"
+                htmlFor="clinvar-track-included-categories-pathogenic"
+              >
+                <input
+                  checked={true}
+                  className="c7"
+                  id="clinvar-track-included-categories-pathogenic"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden={true}
+                  className="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  className="c10"
+                >
+                  Pathogenic / likely pathogenic
+                </span>
+              </label>
+              <button
+                className="c11"
+                onClick={[Function]}
+              >
+                only
+              </button>
+            </span>
+            <span
+              className="c4 c12"
+            >
+              <label
+                className="c13"
+                htmlFor="clinvar-track-included-categories-uncertain"
+              >
+                <input
+                  checked={true}
+                  className="c7"
+                  id="clinvar-track-included-categories-uncertain"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden={true}
+                  className="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  className="c10"
+                >
+                  Uncertain significance / conflicting
+                </span>
+              </label>
+              <button
+                className="c11"
+                onClick={[Function]}
+              >
+                only
+              </button>
+            </span>
+            <span
+              className="c4 c14"
+            >
+              <label
+                className="c15"
+                htmlFor="clinvar-track-included-categories-benign"
+              >
+                <input
+                  checked={true}
+                  className="c7"
+                  id="clinvar-track-included-categories-benign"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden={true}
+                  className="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  className="c10"
+                >
+                  Benign / likely benign
+                </span>
+              </label>
+              <button
+                className="c11"
+                onClick={[Function]}
+              >
+                only
+              </button>
+            </span>
+            <span
+              className="c4 c16"
+            >
+              <label
+                className="c17"
+                htmlFor="clinvar-track-included-categories-other"
+              >
+                <input
+                  checked={true}
+                  className="c7"
+                  id="clinvar-track-included-categories-other"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden={true}
+                  className="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  className="c10"
+                >
+                  Other
+                </span>
+              </label>
+              <button
+                className="c11"
+                onClick={[Function]}
+              >
+                only
+              </button>
+            </span>
+            <button
+              className="c18 c19"
+              onClick={[Function]}
+              type="button"
+            >
+              all
+            </button>
+          </div>
+           
+          <button
+            className="c20"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="c2"
+      >
+        <div
+          className="c21"
+        >
+          <div
+            className="c22"
+          >
+            <label
+              className="c23"
+              htmlFor="clinvar-track-include-lof"
+            >
+              <input
+                checked={true}
+                className="c24"
+                disabled={false}
+                id="clinvar-track-include-lof"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              pLoF
+            </label>
+             
+            <button
+              className="c25"
+              onClick={[Function]}
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            className="c22"
+          >
+            <label
+              className="c23"
+              htmlFor="clinvar-track-include-missense"
+            >
+              <input
+                checked={true}
+                className="c24"
+                disabled={false}
+                id="clinvar-track-include-missense"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Missense / Inframe indel
+            </label>
+             
+            <button
+              className="c25"
+              onClick={[Function]}
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            className="c22"
+          >
+            <label
+              className="c23"
+              htmlFor="clinvar-track-include-synonymous"
+            >
+              <input
+                checked={true}
+                className="c24"
+                disabled={false}
+                id="clinvar-track-include-synonymous"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Synonymous
+            </label>
+             
+            <button
+              className="c25"
+              onClick={[Function]}
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            className="c22"
+          >
+            <label
+              className="c23"
+              htmlFor="clinvar-track-include-other"
+            >
+              <input
+                checked={true}
+                className="c24"
+                disabled={false}
+                id="clinvar-track-include-other"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              Other
+            </label>
+             
+            <button
+              className="c25"
+              onClick={[Function]}
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <button
+            className="c25"
+            onClick={[Function]}
+            style={
+              {
+                "marginLeft": "0.5em",
+              }
+            }
+            type="button"
+          >
+            all
+          </button>
+        </div>
+        <button
+          className="c26"
+          onClick={[Function]}
+          style={
+            {
+              "flexShrink": 0,
+            }
+          }
+          type="button"
+        >
+          Expand to all variants
+        </button>
+      </div>
+      <div
+        className="c27"
+      >
+        <label
+          className="c23"
+          htmlFor="clinvar-track-in-gnomad"
+        >
+          <input
+            checked={false}
+            className="c24"
+            disabled={false}
+            id="clinvar-track-in-gnomad"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Only show ClinVar variants that are in gnomAD
+        </label>
+        <label
+          htmlFor="star-filtering"
+        >
+          Filter by
+           
+          <a
+            className="c28"
+            href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            review status
+          </a>
+          :  
+          <select
+            id="clinvar-star-filter"
+            onChange={[Function]}
+            value={0}
+          >
+            <option
+              value={0}
+            >
+               0-4 Stars 
+            </option>
+            <option
+              value={1}
+            >
+               
+              &gt;
+              =1 Stars 
+            </option>
+            <option
+              value={2}
+            >
+               
+              &gt;
+              =2 Stars 
+            </option>
+            <option
+              value={3}
+            >
+               
+              &gt;
+              =3 Stars 
+            </option>
+            <option
+              value={4}
+            >
+               4 Stars 
+            </option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>,
+  .c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  padding-right: 20px;
+}
+
+<div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="c3"
+        >
+          ClinVar variants (
+          5
+          )
+        </div>
+      </div>
+      <div
+        className="c4"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <svg
+          height={50}
+          style={
+            {
+              "overflow": "visible",
+            }
+          }
+          width={3}
+        >
+          <g>
+            <text
+              dy="0.3em"
+              textAnchor="end"
+              x={-7}
+              y={0}
+            >
+              1
+            </text>
+            <line
+              stroke="#000"
+              strokeWidth={1}
+              x1={-5}
+              x2={0}
+              y1={0}
+              y2={0}
+            />
+            <text
+              dy="0.3em"
+              textAnchor="end"
+              x={-7}
+              y={50}
+            >
+              0
+            </text>
+            <line
+              stroke="#000"
+              strokeWidth={1}
+              x1={-5}
+              x2={0}
+              y1={50}
+              y2={50}
+            />
+            <line
+              stroke="#000"
+              strokeWidth={1}
+              x1={0}
+              x2={0}
+              y1={0}
+              y2={50}
+            />
+          </g>
+          <g />
+          <line
+            stroke="#000"
+            x1={0}
+            x2={3}
+            y1={50}
+            y2={50}
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+]
+`;

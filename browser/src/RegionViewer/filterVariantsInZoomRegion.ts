@@ -1,4 +1,5 @@
 import { sortedIndexBy, sortedLastIndexBy } from 'lodash-es'
+import { CopyNumberVariant } from '../CopyNumberVariantPage/CopyNumberVariantPage'
 
 const filterVariantsInZoomRegion = (variants: any, zoomRegion: any) => {
   if (!zoomRegion) {
@@ -22,4 +23,15 @@ export const filterStructuralVariantsInZoomRegion = (structuralVariants: any, zo
       (variant.pos <= stop && variant.end >= start) ||
       (variant.pos2 <= stop && variant.end2 >= start)
   )
+}
+
+export const filterCopyNumberVariantsInZoomRegion = (
+  copyNumberVariants: CopyNumberVariant[],
+  zoomRegion: any
+) => {
+  if (!zoomRegion) {
+    return copyNumberVariants
+  }
+  const { start, stop } = zoomRegion
+  return copyNumberVariants.filter((variant: any) => variant.pos <= stop && variant.end >= start)
 }

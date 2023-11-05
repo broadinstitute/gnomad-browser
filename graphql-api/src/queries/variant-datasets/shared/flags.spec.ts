@@ -1,4 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
+
 const { getFlagsForContext } = require('./flags')
 
 describe('LOFTEE', () => {
@@ -20,6 +21,11 @@ describe('LOFTEE', () => {
           // does not annotate a transcript that VEP marks as pLoF
           { gene_id: 'G7', lof: '' },
           { gene_id: 'G7', lof: 'LC' },
+          // This should not flag OS as lc_lof because it's rare enough that there
+          //   is effectively no confidence
+          { gene_id: 'G8', lof: 'OS' },
+          { gene_id: 'G8', lof: 'OS' },
+          { gene_id: 'G8', lof: '' },
         ],
       }
 
@@ -33,7 +39,7 @@ describe('LOFTEE', () => {
         ['G7', false],
         ['G8', false],
       ])(
-        'should be included only if there are LOFTEE annotated consequences in the specified gene, none of them are annotated HC, and the highest ranked transcript is LOFTEE annotated',
+        'should be included only if there are LOFTEE annotated consequences in the specified gene, none of them are annotated HC, the highest ranked transcript is LOFTEE annotated, and the highest ranked transcript is not OS',
         (geneId, expected) => {
           expect(getFlagsForContext({ type: 'gene', geneId })(variant).includes('lc_lof')).toBe(
             expected
@@ -87,8 +93,20 @@ describe('LOFTEE', () => {
           },
           false,
         ],
+        [
+          {
+            transcript_consequences: [
+              // This should not flag OS as lc_lof because it's rare enough that there
+              //   is effectively no confidence
+              { lof: 'OS' },
+              { lof: 'OS' },
+              { lof: '' },
+            ],
+          },
+          false,
+        ],
       ])(
-        'should be included only if there are LOFTEE annotated consequences, none of them are annotated HC, and the highest ranked transcript is LOFTEE annotated',
+        'should be included only if there are LOFTEE annotated consequences, none of them are annotated HC, the highest ranked transcript is LOFTEE annotated, and the highest ranked transcript is not OS',
         (variant, expected) => {
           expect(getFlagsForContext({ type: 'region' })(variant).includes('lc_lof')).toBe(expected)
         }

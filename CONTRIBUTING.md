@@ -36,6 +36,14 @@ The production API can be used for browser development. To start a local instanc
 - with Docker
 
   ```
+  # create browser/build.env file
+  cat <<EOF > browser/build.env
+  GA_TRACKING_ID=
+  REPORT_VARIANT_URL=
+  REPORT_VARIANT_VARIANT_ID_PARAMETER=
+  REPORT_VARIANT_DATASET_PARAMETER=
+  EOF
+
   ./development/env.sh browser up
   ```
 

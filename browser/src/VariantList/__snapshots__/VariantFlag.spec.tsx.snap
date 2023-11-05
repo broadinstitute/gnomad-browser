@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Variant flag correctly formats as nothing when given a non-existent variant flag 1`] = `null`;
+
+exports[`Variant flag correctly formats with key of 'common_low_heteroplasmy' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: orange;
+  color: #000;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  Common Low Heteroplasmy
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'lc_lof' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #DD2C00;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  LC pLoF
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'lcr' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  LCR
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'lof_flag' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: orange;
+  color: #000;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  pLoF flag
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'mnv' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #DD2C00;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  MNV
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'monoallelic' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  Monoallelic
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'nc_transcript' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #DD2C00;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  NC Transcript
+</span>
+`;
+
+exports[`Variant flag correctly formats with key of 'os_lof' 1`] = `
+.c0 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #424242;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+<span
+  className="c0"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  OS pLoF
+</span>
+`;

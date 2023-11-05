@@ -6,7 +6,7 @@ metadata:
   labels:
     component: gnomad-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: gnomad-api
@@ -18,22 +18,23 @@ spec:
       containers:
         - name: app
           image: gnomad-api
+          imagePullPolicy: Always
           env:
             - name: PORT
               value: '8000'
             - name: ELASTICSEARCH_URL
-              value: http://gnomad-es-http:9200  # FIXME: This depends on using "gnomad" as the ES cluster name
+              value: http://gnomad-es-http:9200 # FIXME: This depends on using "gnomad" as the ES cluster name
             - name: ELASTICSEARCH_USERNAME
               value: elastic
             - name: ELASTICSEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: gnomad-es-elastic-user  # FIXME: This depends on using "gnomad" as the ES cluster name
+                  name: gnomad-es-elastic-user # FIXME: This depends on using "gnomad" as the ES cluster name
                   key: elastic
-            - name: CACHE_REDIS_URL
-              value: redis://redis:6379/1
-            - name: RATE_LIMITER_REDIS_URL
-              value: redis://redis:6379/2
+            - name: REDIS_HOST
+              value: 'redis'
+            - name: REDIS_PORT
+              value: '6379'
             - name: TRUST_PROXY
               valueFrom:
                 configMapKeyRef:
@@ -41,16 +42,16 @@ spec:
                   key: ips
             # Global rate limiting
             - name: MAX_CONCURRENT_ES_REQUESTS
-              value: '10'
-            - name: MAX_QUEUED_ES_REQUESTS
               value: '100'
+            - name: MAX_QUEUED_ES_REQUESTS
+              value: '1000'
             # Individual rate limiting
             - name: MAX_REQUESTS_PER_MINUTE
-              value: '30'
-            - name: MAX_QUERY_COST
-              value: '25'
-            - name: MAX_QUERY_COST_PER_MINUTE
               value: '300'
+            - name: MAX_QUERY_COST
+              value: '2500'
+            - name: MAX_QUERY_COST_PER_MINUTE
+              value: '30000'
           ports:
             - name: http
               containerPort: 8000
@@ -68,4 +69,4 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 10
       nodeSelector:
-        cloud.google.com/gke-nodepool: 'default-pool'
+        cloud.google.com/gke-nodepool: 'main-pool'

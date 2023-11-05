@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Contact Page has no unexpected changes 1`] = `
+.c3 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3:visited,
+.c3:active {
+  color: #1173bb;
+}
+
+.c3:focus,
+.c3:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c2 {
+  margin: 0;
+}
+
+.c0 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto 40px;
+  font-size: 14px;
+  font-size: 16px;
+}
+
+.c0 p {
+  margin-bottom: 1em;
+  line-height: 1.4;
+}
+
+@media (max-width:900px) {
+  .c1 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: none;
+  }
+}
+
+@media (max-width:900px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em;
+  }
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <h1
+      className="c2"
+    >
+      Contact
+    </h1>
+  </div>
+  <p>
+    Tell us how you use gnomAD and your wish list by filling out
+     
+    <a
+      className="c3"
+      href="http://broad.io/gnomad_user_survey"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      our user survey
+    </a>
+    .
+  </p>
+  <p>
+    Report data problems or feature suggestions by
+     
+    <a
+      className="c3"
+      href="mailto:gnomad@broadinstitute.org"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      email
+    </a>
+    .
+  </p>
+  <p>
+    Report errors in the website on
+     
+    <a
+      className="c3"
+      href="https://github.com/broadinstitute/gnomad-browser/issues"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      GitHub
+    </a>
+    .
+  </p>
+  <p>
+    For questions about gnomAD, check out the
+     
+    <a
+      className="c3"
+      href="/help"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      help page
+    </a>
+    .
+  </p>
+  <p>
+    Note that, for many reasons (including consent and data usage restrictions), we do not have (and cannot share) phenotype information. Overall, we have limited information that we can share for some cohorts, such as last known age in bins of 5 years (when known) and chromosomal sex.
+  </p>
+  <p>
+    Follow us on Twitter
+     
+    <a
+      className="c3"
+      href="https://twitter.com/gnomad_project"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      @gnomad_project
+    </a>
+    .
+  </p>
+</div>
+`;

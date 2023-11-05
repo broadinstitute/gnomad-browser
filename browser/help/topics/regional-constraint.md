@@ -3,40 +3,38 @@ id: regional-constraint
 title: 'Regional constraint'
 ---
 
-Important: Currently regional constraint is only available / displayed when selecting the ExAC dataset. In addition, it is only displayed for genes that exhibit regional missense constraint.
+Important: The regional missense constraint track is currently only available / displayed when selecting the gnomAD v2.1.1 dataset. In addition, there are three distinct views:
 
-### Overall interpretation
+- Regional constraint information for genes that exhibit evidence of regional missense constraint (RMC)
+- Transcript-wide missense information for genes that were searched for but did not exhibit any evidence of RMC
+- Text for [outlier genes](https://gnomad.broadinstitute.org/help/why-are-constraint-metrics-missing-for-this-gene-or-annotated-with-a-note) not searched for evidence of RMC
 
-We searched for regions within transcripts that were intolerant of missense variation within the ExAC dataset. We used the observed and expected missense variation in each transcript in a likelihood ratio test to identify those transcipts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of expected missense variation). Missense constraint values closer to zero indicate increased intolerance against missense variation.
+### Methods
 
-Note that these data currently reflect the regional constraint seen in the ExAC dataset. They will be updated to gnomAD in the near future.
+We searched for regions within transcripts that were differentially intolerant of missense variation within the v2.1.1 dataset. We used likelihood ratio tests to identify transcripts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of observed rare missense variation compared to expected). Missense constraint values closer to zero indicate increased intolerance against missense variation.
 
-More details can be found in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).
+Note that these data currently reflect the regional constraint seen in the gnomAD v2.1.1, which was mapped to GRCh37. We will update to gnomAD v4 (GRCh38) in the near future.
+
+More details can be found in [Samocha _et al._ bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353), or the open-source [GitHub repository](https://github.com/broadinstitute/regional_missense_constraint/tree/main).
 
 ### Transcripts included in the analyses
 
-Similar to the overall constraint analyses, we used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,621 transcripts. Additionally, we excluded:
-* 795 transcripts that had zero observed variants when removing exons with a median depth < 1
-* 251 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10<sup>-4</sup> and 10<sup>-3</sup>, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10<sup>-4</sup> and 10<sup>-3</sup>, respectively)
-* 310 transcripts with synonymous Z scores that were significantly high or significantly low (p < 10<sup>-3</sup>)
-
-This left 17,915 transcripts for regional constraint analyses.
+We used the canonical transcripts of protein-coding genes as defined by GENCODE v19. We removed transcripts that lacked a methionine at the start of the coding sequence, a stop codon at the end of coding sequence, or were indivisible by three, which left 19,704 transcripts. Additionally, we excluded 517 transcripts that had zero observed variants when removing exons with a median depth < 1 as well as 556 transcripts that had either (1) far too many synonymous and missense variants as determined by a Z score (p < 10-4 and 10-3, respectively) or (2) far too few synonymous and missense variants as determined by a Z score (p < 10-4 and 10-3, respectively). When all outliers were removed, there were 18,629 transcripts left for analyses.
 
 ### Observed missense variants
 
-The observed number of missense variants per exon was determined by extracting all variants from ExAC that met the following criteria:
-* Defined as a missense change by the predicted amino acid substitution. Variants that would be considered “initiator_codon_variants” and “stop_lost” by annotation programs such as Variant Effect Predictor (VEP) are therefore
-included in the total.
-* Caused by a single nucleotide change.
-* Had an adjusted allele count ≤ 123, corresponding to a minor allele frequency (MAF) < 0.1% in ExAC. The adjusted allele count only includes individuals with a depth (DP) ≥ 10 and a genotype quality (GQ) ≥ 20.
-* Had a VQSLOD ≥ -2.632.
+The observed number of rare missense variants per base in gnomAD v2.1.1 was determined by extracting all variants that met the following criteria:
 
-Variants in exons with a median depth < 1 were removed from the total counts.
+- Defined as a missense change ("missense_variant") by the Variant Effect Predictor (VEP)
+- Had an allele count > 0
+- Had an allele frequency of < 0.001 across gnomAD v2.1.1 exomes
+- Had a median coverage > 0 across gnomAD v2.1.1 exomes
+- Passed all variant QC filters
 
 ### Expected variant count
 
-We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in section 4.1 of the supplement in [Lek et al Nature 2016](https://www.nature.com/articles/nature19057) and [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353). Expected variants in exons with a median depth < 1 were removed from the total counts.
+We used a depth corrected probability of mutation for each gene to predict the expected variant counts. More details can be found in the supplement of [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
 
 ### Identification of missense constrained regions
 
-We used likelihood ratio tests to identify regions within transcripts that were intolerant of missense variation. Briefly, we searched for significant breaks between amino acids that would split the transcript into two or more regions with varying levels of missense constraint. We used a likelihood ratio test to determine if splitting a transcript into multiple regions was significantly better at modeling the gene's observed variation than the null model (assuming no regional variability in missense constraint). For these analyses, we assumed that observed counts should follow a Poisson distribution around the expected number. More details of this analysis are included in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).
+We used likelihood ratio tests to identify regions within transcripts that were differentially intolerant of missense variation. Briefly, we searched for breaks between base pairs that would split a transcript into two or more regions with significantly different levels of missense constraint. We used a likelihood ratio test to determine if splitting a transcript into multiple regions was significantly better at modeling the gene's observed pattern of missense variation than the null model that assumes no regional variability in missense constraint. For these analyses, we assumed that observed counts should follow a Poisson distribution around the product of the expected counts and the model-specific observed / expected proportion. More details of this analysis are included in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).

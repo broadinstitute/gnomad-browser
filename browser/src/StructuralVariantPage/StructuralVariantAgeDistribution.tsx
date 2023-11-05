@@ -9,7 +9,7 @@ import overallAgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-sv-
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from '../VariantPage/ControlSection'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const CheckboxWrapper = styled.div`
 `
 
 type Props = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 const StructuralVariantAgeDistribution = ({ variant }: Props) => {

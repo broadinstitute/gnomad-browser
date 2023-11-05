@@ -1,10 +1,8 @@
-import { Gene } from '../types'
-
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState } from 'react'
+import React, { useState, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -13,14 +11,32 @@ import { Track } from '@gnomad/region-viewer'
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
 
+import {
+  DatasetId,
+  genesHaveExomeCoverage,
+  genesHaveGenomeCoverage,
+  labelForDataset,
+  hasStructuralVariants,
+  ReferenceGenome,
+  hasExons,
+  isExac,
+  hasCopyNumberVariants,
+  isV2,
+} from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import { DatasetId, hasExomeCoverage, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import VariantCooccurrenceCountsTable, {
+  HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
+  HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
+} from './VariantCooccurrenceCountsTable'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
+import RegionalMissenseConstraintTrack, {
+  RegionalMissenseConstraint,
+} from '../RegionalMissenseConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
@@ -36,6 +52,80 @@ import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import TissueExpressionTrack from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
+
+import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
+import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
+import {
+  Variant,
+  ClinvarVariant,
+  StructuralVariant,
+  CopyNumberVariant,
+} from '../VariantPage/VariantPage'
+import CopyNumberVariantsInGene from './CopyNumberVariantsInGene'
+
+export type Strand = '+' | '-'
+
+export type GeneMetadata = {
+  gene_id: string
+  gene_version: string
+  symbol: string
+  mane_select_transcript?: {
+    ensembl_id: string
+    ensembl_version: string
+    refseq_id: string
+    refseq_version: string
+  }
+  canonical_transcript_id: string | null
+  flags: string[]
+}
+
+export type Gene = GeneMetadata & {
+  reference_genome: ReferenceGenome
+  name?: string
+  chrom: string
+  strand: Strand
+  start: number
+  stop: number
+  exons: {
+    feature_type: string
+    start: number
+    stop: number
+  }[]
+  transcripts: {
+    transcript_id: string
+    transcript_version: string
+    exons: {
+      feature_type: string
+      start: number
+      stop: number
+    }[]
+  }[]
+  flags: string[]
+  gnomad_constraint?: GnomadConstraint
+  exac_constraint?: ExacConstraint
+  pext?: {
+    regions: {
+      start: number
+      stop: number
+      mean: number
+      tissues: {
+        [key: string]: number
+      }
+    }[]
+    flags: string[]
+  }
+  short_tandem_repeats?: {
+    id: string
+  }[]
+  exac_regional_missense_constraint_regions?: any
+  gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
+  variants: Variant[]
+  structural_variants: StructuralVariant[]
+  copy_number_variants: CopyNumberVariant[]
+  clinvar_variants: ClinvarVariant[]
+  homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
+  heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+}
 
 const GeneName = styled.span`
   overflow: hidden;
@@ -59,6 +149,22 @@ const GeneInfoColumnWrapper = styled.div`
   /* Matches responsive styles in AttributeList */
   @media (max-width: 600px) {
     align-items: stretch;
+  }
+`
+
+const GeneInfoColumn = styled.div`
+  width: 40%;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+`
+
+const ConstraintOrCooccurrenceColumn = styled.div`
+  width: 55%;
+
+  @media (max-width: 1200px) {
+    width: 100%;
   }
 `
 
@@ -115,6 +221,36 @@ const LegendSwatch = styled.span`
     height: ${(props: any) => props.height}px;
     background: ${(props: any) => props.color};
   }
+`
+
+type TableName = 'constraint' | 'cooccurrence'
+
+type TableSelectorProps = {
+  ownTableName: TableName
+  selectedTableName: TableName
+  setSelectedTableName: Dispatch<SetStateAction<TableName>>
+}
+
+// prettier-ignore
+const BaseTableSelector = styled.div<TableSelectorProps>
+
+const TableSelector = BaseTableSelector.attrs(
+  ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
+    onClick: () => setSelectedTableName(ownTableName),
+  })
+)`
+  border: 1px solid black;
+  border-radius: 0.5em;
+  cursor: pointer;
+  margin-right: 0.5em;
+  padding: 0.25em;
+
+  background-color: ${({ ownTableName, selectedTableName }: TableSelectorProps) =>
+    ownTableName === selectedTableName ? '#cbd3da' : 'transparent'};
+`
+
+const TableSelectorWrapper = styled.div`
+  display: flex;
 `
 
 const TrackWrapper = styled.div`
@@ -175,6 +311,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
   const [includeUTRs, setIncludeUTRs] = useState(false)
   const [showTranscripts, setShowTranscripts] = useState(false)
+  const [selectedTableName, setSelectedTableName] = useState<TableName>('constraint')
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
@@ -189,7 +326,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
     (tx) => !tx.exons.some((exon) => exon.feature_type === 'CDS')
   )
 
-  const regionViewerRegions = datasetId.startsWith('gnomad_sv')
+  const regionViewerRegions = !hasExons(datasetId)
     ? [
         {
           start: Math.max(1, gene.start - 75),
@@ -221,6 +358,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           datasetOptions={{
             includeShortVariants: true,
             includeStructuralVariants: gene.chrom !== 'M',
+            includeCopyNumberVariants: true,
             includeExac: gene.chrom !== 'M',
             includeGnomad2: gene.chrom !== 'M',
             includeGnomad3: true,
@@ -230,7 +368,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           {gene.symbol} <GeneName>{gene.name}</GeneName>
         </GnomadPageHeading>
         <GeneInfoColumnWrapper>
-          <div style={{ maxWidth: '50%' }}>
+          <GeneInfoColumn>
             {/* @ts-expect-error TS(2741) FIXME: Property 'gencode_symbol' is missing in type '{ ge... Remove this comment to see the full error message */}
             <GeneInfo gene={gene} />
             <GeneFlags gene={gene} />
@@ -243,11 +381,38 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 .
               </p>
             )}
-          </div>
-          <div>
-            <h2>Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
-            <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
-          </div>
+          </GeneInfoColumn>
+          <ConstraintOrCooccurrenceColumn>
+            <TableSelectorWrapper>
+              <TableSelector
+                selectedTableName={selectedTableName}
+                ownTableName="constraint"
+                setSelectedTableName={setSelectedTableName}
+              >
+                Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}
+              </TableSelector>
+              <TableSelector
+                selectedTableName={selectedTableName}
+                setSelectedTableName={setSelectedTableName}
+                ownTableName="cooccurrence"
+              >
+                Variant co-occurrence <InfoButton topic="variant-cooccurrence-table" />
+              </TableSelector>
+            </TableSelectorWrapper>
+            {selectedTableName === 'constraint' ? (
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
+            ) : (
+              <VariantCooccurrenceCountsTable
+                datasetId={datasetId}
+                heterozygous_variant_cooccurrence_counts={
+                  gene.heterozygous_variant_cooccurrence_counts!
+                }
+                homozygous_variant_cooccurrence_counts={
+                  gene.homozygous_variant_cooccurrence_counts!
+                }
+              />
+            )}
+          </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
@@ -266,12 +431,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             width={overviewWidth}
           />
         )}
-        zoomDisabled={datasetId.startsWith('gnomad_sv')}
+        zoomDisabled={!hasExons(datasetId)}
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
+        {!hasExons(datasetId) ? (
           <RegionCoverageTrack
             chrom={gene.chrom}
             datasetId={datasetId}
@@ -285,7 +450,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <GeneCoverageTrack
             datasetId={datasetId}
             geneId={geneId}
-            includeExomeCoverage={hasExomeCoverage(datasetId)}
+            includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
+            includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
           />
         )}
 
@@ -411,16 +577,26 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {datasetId === 'exac' && gene.exac_regional_missense_constraint_regions && (
+        {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
           <RegionalConstraintTrack
             height={15}
             regions={gene.exac_regional_missense_constraint_regions}
           />
         )}
 
+        {isV2(datasetId) && (
+          <RegionalMissenseConstraintTrack
+            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
+            gene={gene}
+          />
+        )}
+
         {/* eslint-disable-next-line no-nested-ternary */}
-        {datasetId.startsWith('gnomad_sv') ? (
+        {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+        ) : // eslint-disable-next-line no-nested-ternary
+        hasCopyNumberVariants(datasetId) ? (
+          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : gene.chrom === 'M' ? (
           <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : (

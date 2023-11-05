@@ -10,12 +10,13 @@ import DocumentTitle from './DocumentTitle'
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
-const FeedbackPage = lazy(() => import('./FeedbackPage'))
+const ContactPage = lazy(() => import('./ContactPage'))
 const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
 const MOUPage = lazy(() => import('./MOUPage'))
+const StatsPage = lazy(() => import('./StatsPage/StatsPage'))
 const PublicationsPage = lazy(() => import('./PublicationsPage'))
 const PoliciesPage = lazy(() => import('./PoliciesPage'))
 
@@ -26,15 +27,15 @@ const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
 const ShortTandemRepeatPage = lazy(() => import('./ShortTandemRepeatPage/ShortTandemRepeatPage'))
 const ShortTandemRepeatsPage = lazy(() => import('./ShortTandemRepeatsPage/ShortTandemRepeatsPage'))
-const VariantCooccurrencePage = lazy(() =>
-  import('./VariantCooccurrencePage/VariantCooccurrencePage')
+const VariantCooccurrencePage = lazy(
+  () => import('./VariantCooccurrencePage/VariantCooccurrencePage')
 )
 
 // Other pages
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
 const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
 
-const defaultDataset = 'gnomad_r2_1'
+const defaultDataset = 'gnomad_r4'
 
 const Routes = () => {
   // ==================================================================================
@@ -161,11 +162,13 @@ const Routes = () => {
 
       <Route exact path="/publications" component={PublicationsPage} />
 
-      <Route exact path="/feedback" component={FeedbackPage} />
+      <Route exact path="/contact" component={ContactPage} />
 
-      <Route exact path="/contact" render={() => <Redirect to="/feedback" />} />
+      <Route exact path="/feedback" render={() => <Redirect to="/contact" />} />
 
       <Route exact path="/mou" component={MOUPage} />
+
+      <Route exact path="/stats" component={StatsPage} />
 
       <Route
         exact
@@ -177,6 +180,13 @@ const Routes = () => {
 
           return <Redirect to={{ pathname: '/help', hash: '#frequently-asked-questions' }} />
         }}
+      />
+
+      {/* Redirect legacy citations page to publications page */}
+      <Route
+        exact
+        path="/help/how-should-i-cite-discoveries-made-using-gnomad-data"
+        render={() => <Redirect to="/publications" />}
       />
 
       <Route

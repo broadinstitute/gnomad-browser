@@ -8,7 +8,7 @@ type Query{
     multiNucleotideVariant(variant_id: String!, dataset: DatasetId!): MultiNucleotideVariantDetails @cost(value: 1)
     structural_variant(variantId: String!, dataset: StructuralVariantDatasetId!): StructuralVariantDetails @cost(value: 1)
     variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
-
+    copy_number_variant(variantId: String!, dataset: CopyNumberVariantDatasetId!): CopyNumberVariantDetails @cost(value: 1)  
     gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
     variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
 

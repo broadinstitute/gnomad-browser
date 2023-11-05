@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { coverageDataset } from '../coverage'
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { referenceGenome, isExac, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -43,7 +42,6 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
   }
 }
 `
-
 type OwnProps = {
   datasetId: string
   geneId: string
@@ -67,8 +65,8 @@ const GeneCoverageTrack = ({
       query={coverageQuery}
       variables={{
         geneId,
-        datasetId: coverageDataset(datasetId),
-        referenceGenome: referenceGenome(coverageDataset(datasetId)),
+        datasetId: coverageDatasetId(datasetId),
+        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
         includeExomeCoverage,
         includeGenomeCoverage,
       }}
@@ -88,10 +86,9 @@ const GeneCoverageTrack = ({
         const exomeCoverage = includeExomeCoverage ? data.gene.coverage.exome : null
         const genomeCoverage = includeGenomeCoverage ? data.gene.coverage.genome : null
 
-        const coverageConfig =
-          datasetId === 'exac'
-            ? coverageConfigClassic(exomeCoverage, genomeCoverage)
-            : coverageConfigNew(exomeCoverage, genomeCoverage)
+        const coverageConfig = isExac(datasetId)
+          ? coverageConfigClassic(exomeCoverage, genomeCoverage)
+          : coverageConfigNew(exomeCoverage, genomeCoverage)
 
         return (
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.
@@ -100,6 +97,7 @@ const GeneCoverageTrack = ({
             datasets={coverageConfig}
             filenameForExport={() => `${geneId}_coverage`}
             height={190}
+            datasetId={datasetId}
           />
         )
       }}

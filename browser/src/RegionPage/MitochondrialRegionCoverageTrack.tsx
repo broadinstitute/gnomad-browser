@@ -1,6 +1,11 @@
 import React from 'react'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  referenceGenome,
+  hasMitochondrialGenomeCoverage,
+} from '@gnomad/dataset-metadata/metadata'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -27,7 +32,7 @@ type Props = {
 }
 
 const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => {
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialGenomeCoverage(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial genome coverage is not available in {labelForDataset(datasetId)}
@@ -43,7 +48,9 @@ const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => 
       loadingMessage="Loading coverage"
       loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"
-      success={(data: any) => data.region && data.region.mitochondrial_coverage}
+      success={(data: any) => {
+        return data.region && data.region.mitochondrial_coverage
+      }}
     >
       {({ data }: any) => {
         const coverage = [
@@ -63,6 +70,7 @@ const MitochondrialRegionCoverageTrack = ({ datasetId, start, stop }: Props) => 
             filenameForExport={() => `M-${start}-${stop}_coverage`}
             height={190}
             maxCoverage={3000}
+            datasetId={datasetId}
           />
         )
       }}

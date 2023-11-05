@@ -17,6 +17,7 @@ from data_pipeline.pipelines.exac_coverage import pipeline as exac_coverage_pipe
 from data_pipeline.pipelines.exac_variants import pipeline as exac_variants_pipeline
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 from data_pipeline.pipelines.gnomad_sv_v2 import pipeline as gnomad_sv_v2_pipeline
+from data_pipeline.pipelines.gnomad_sv_v3 import pipeline as gnomad_sv_v3_pipeline
 from data_pipeline.pipelines.gnomad_v2_coverage import pipeline as gnomad_v2_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v2_lof_curation_results import pipeline as gnomad_v2_lof_curation_results_pipeline
 from data_pipeline.pipelines.gnomad_v2_variants import pipeline as gnomad_v2_variants_pipeline
@@ -35,6 +36,16 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
     pipeline as gnomad_v3_mitochondrial_coverage_pipeline,
 )
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
+from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_variants_pipeline
+from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
+
+from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
+
+from data_pipeline.pipelines.gnomad_v4_cnv_track_percent_callable import pipeline as gnomad_v4_cnv_coverage_pipeline
+
+from data_pipeline.pipelines.gnomad_v4_cnv_del_burden import pipeline as gnomad_v4_cnv_del_burden
+
+from data_pipeline.pipelines.gnomad_v4_cnv_dup_burden import pipeline as gnomad_v4_cnv_dup_burden
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -102,6 +113,87 @@ DATASETS_CONFIG = {
             "index_fields": ["transcript_id"],
             "id_field": "transcript_id",
             "block_size": 1_000,
+        },
+    },
+    ##############################################################################################################
+    # gnomAD v4
+    ##############################################################################################################
+    "gnomad_v4_variants": {
+        "get_table": lambda: subset_table(
+            add_variant_document_id(hl.read_table(gnomad_v4_variants_pipeline.get_output("variants").get_output_path()))
+        ),
+        "args": {
+            "index": "gnomad_v4_variants",
+            "index_fields": [
+                "document_id",
+                "variant_id",
+                "rsids",
+                # "caid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "transcript_consequences.transcript_id",
+            ],
+            "id_field": "document_id",
+            "num_shards": 48,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_exome_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_coverage_pipeline.get_output("exome_coverage").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_exome_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    },
+    # "gnomad_v4_genome_coverage": {
+    #     "get_table": lambda: subset_table(
+    #         hl.read_table(gnomad_v4_coverage_pipeline.get_output("genome_coverage").get_output_path())
+    #     ),
+    #     "args": {"index": "gnomad_v4_genome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
+    # },
+    ##############################################################################################################
+    # gnomAD v4 CNVs
+    ##############################################################################################################
+    "gnomad_v4_cnvs": {
+        "get_table": lambda: hl.read_table(gnomad_v4_cnvs_pipeline.get_output("cnvs").get_output_path()),
+        "args": {
+            "index": "gnomad_v4_cnvs",
+            "index_fields": ["variant_id", "xpos", "xend", "genes"],
+            "id_field": "variant_id",
+            "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_cnv_track_callable": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_coverage_pipeline.get_output("track_percent_callable").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_track_callable",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
+        },
+    },
+    "gnomad_v4_cnv_del_burden": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_del_burden.get_output("del_burden").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_del_burden",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
+        },
+    },
+    "gnomad_v4_cnv_dup_burden": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_cnv_dup_burden.get_output("dup_burden").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_cnv_dup_burden",
+            "id_field": "xpos",
+            "num_shards": 2,
+            "block_size": 10_000,
         },
     },
     ##############################################################################################################
@@ -197,7 +289,7 @@ DATASETS_CONFIG = {
         },
     },
     ##############################################################################################################
-    # gnomAD SV v2
+    # gnomAD SV v2 and v3
     ##############################################################################################################
     "gnomad_structural_variants_v2": {
         "get_table": lambda: hl.read_table(gnomad_sv_v2_pipeline.get_output("structural_variants").get_output_path()),
@@ -205,6 +297,16 @@ DATASETS_CONFIG = {
             "index": "gnomad_structural_variants_v2",
             "index_fields": ["variant_id", "xpos", "xend", "xpos2", "xend2", "genes"],
             "id_field": "variant_id",
+            "num_shards": 2,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_structural_variants_v3": {
+        "get_table": lambda: hl.read_table(gnomad_sv_v3_pipeline.get_output("structural_variants").get_output_path()),
+        "args": {
+            "index": "gnomad_structural_variants_v3",
+            "index_fields": ["variant_id", "xpos", "xend", "xpos2", "xend2", "genes", "variant_id_upper_case"],
+            "id_field": "variant_id_upper_case",
             "num_shards": 2,
             "block_size": 1_000,
         },

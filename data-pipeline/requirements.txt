@@ -1,3 +1,10 @@
-elasticsearch~=6.8
+elasticsearch~=7.17
 hail
 tqdm
+loguru
+attrs
+cattrs
+pytest
+ruff
+black
+pyright

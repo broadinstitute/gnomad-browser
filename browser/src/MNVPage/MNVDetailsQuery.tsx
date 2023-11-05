@@ -66,7 +66,6 @@ type Props = {
 }
 
 const MNVDetailsQuery = ({ children, datasetId, variantId }: Props) => (
-  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
   <BaseQuery operationName={operationName} query={query} variables={{ datasetId, variantId }}>
     {children}
   </BaseQuery>

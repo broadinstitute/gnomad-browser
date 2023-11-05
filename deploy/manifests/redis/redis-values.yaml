@@ -1,0 +1,32 @@
+architecture: replication
+auth:
+  enabled: false
+sentinel:
+  enabled: true
+  masterSet: gnomad
+  resources:
+    requests:
+      cpu: '500m'
+      memory: '1Gi'
+    limits:
+      cpu: 1
+      memory: '2Gi'
+global:
+  storageClass: premium-rwo
+nodeSelector: &nodeselector
+  cloud.google.com/gke-nodepool: redis
+master:
+  persistence: &podpersistence
+    size: 100Gi
+  resources: &podresources
+    requests:
+      cpu: 1
+      memory: '36Gi'
+    limits:
+      cpu: 2
+      memory: '36Gi'
+  nodeSelector: *nodeselector
+replica:
+  persistence: *podpersistence
+  resources: *podresources
+  nodeSelector: *nodeselector

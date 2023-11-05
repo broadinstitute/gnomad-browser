@@ -66,21 +66,20 @@ export default () => (
     <List style={{ marginBottom: '2em' }}>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
-      </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-      <ListItem>
         <Link to="/downloads">Download gnomAD data</Link>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/publications">Read gnomAD publications</Link>
       </ListItem>
+      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+      <ListItem>
+        <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
+      </ListItem>
     </List>
 
     <p>
-      Please note that gnomAD v2.1.1 and v3.1.2 have substantially different but overlapping sample
-      compositions and are on different genome builds. For more information, see{' '}
+      Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see{' '}
       <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">
         &quot;Should I switch to the latest version of gnomAD?&quot;
       </Link>
@@ -105,12 +104,12 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3.1.2 variant:{' '}
+        Variant:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
             pathname: '/variant/1-55051215-G-GA',
-            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
           }}
         >
           1-55051215-G-GA
@@ -118,7 +117,33 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3 mitochondrial variant:{' '}
+        Structural variant region:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/region/19-11078371-11144910',
+            search: queryString.stringify({ dataset: 'gnomad_sv_r4' }),
+          }}
+        >
+          19-11078371-11144910
+        </Link>
+      </ListItem>
+      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
+      <ListItem>
+        Copy number variant region:{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/region/2-49918501-51225575',
+            search: queryString.stringify({ dataset: 'gnomad_cnv_r4' }),
+          }}
+        >
+          19-11078371-11144910
+        </Link>
+      </ListItem>
+      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
+      <ListItem>
+        Mitochondrial variant:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
@@ -131,51 +156,40 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v3{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
-          short tandem repeat
+          Short tandem repeat
         </ExternalLink>{' '}
         locus:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
-            pathname: 'short-tandem-repeat/DMD',
+            pathname: 'short-tandem-repeat/ATXN1',
             search: queryString.stringify({ dataset: 'gnomad_r3' }),
           }}
         >
-          DMD
+          ATXN1
         </Link>
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v2.1.1 variant:{' '}
+        Regional missense constraint (gnomAD v2, GRCh37):{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
-            pathname: '/variant/1-55516888-G-GA',
-            search: queryString.stringify({ dataset: 'gnomad_r2_1' }),
+            pathname: '/gene/ENSG00000183454',
+            search: queryString.stringify({
+              dataset: 'gnomad_r2_1',
+              variant: ['1-55505647-G-T', '1-55523855-G-A'],
+            }),
           }}
         >
-          1-55516888-G-GA
+          GRIN2A
         </Link>
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        gnomAD v2 structural variant:{' '}
-        <Link
-          preserveSelectedDataset={false}
-          to={{
-            pathname: '/variant/DUP_2_5708',
-            search: queryString.stringify({ dataset: 'gnomad_sv_r2_1' }),
-          }}
-        >
-          DUP_2_5708
-        </Link>
-      </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-      <ListItem>
-        Variant co-occurrence:{' '}
+        Variant co-occurrence (gnomAD v2, GRCh37):{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
@@ -200,9 +214,12 @@ export default () => (
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-        <ExternalLink href="https://arxiv.org/abs/2107.11458">
-          <em>Variant interpretation using population databases: lessons from gnomAD.</em> arXiv{' '}
-          2107.11458 [q-bio.GN] (2021).
+        <ExternalLink href="https://onlinelibrary.wiley.com/doi/10.1002/humu.24309">
+          <em>
+            Gudmundsson et al. Variant interpretation using population databases: Lessons from
+            gnomAD.
+          </em>{' '}
+          Hum Mutat. 2022 Aug;43(8):1012-1030.
         </ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -241,16 +258,14 @@ export default () => (
       community.
     </p>
     <p>
-      The v2.1.1 data set (GRCh37/hg19) provided on this website spans 125,748 exome sequences and
-      15,708 whole-genome sequences from unrelated individuals sequenced as part of various
-      disease-specific and population genetic studies. The v3.1.2 data set (GRCh38) spans 76,156
-      genomes{' '}
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="https://gnomad.broadinstitute.org/help/what-populations-are-represented-in-the-gnomad-data">
-        of diverse ancestries
-      </ExternalLink>
-      , selected as in v2. The gnomAD Principal Investigators and groups that have contributed data
-      to the current release are listed{' '}
+      The v4 data set (GRCh38) provided on this website spans 730,947 exome sequences and 76,215
+      whole-genome sequences from unrelated individuals, of{' '}
+      <Link preserveSelectedDataset={false} to="/stats#diversity">
+        diverse ancestries
+      </Link>
+      , sequenced as part of various disease-specific and population genetic studies. The gnomAD
+      Principal Investigators and team can be found <Link to="/team">here</Link>, and the groups
+      that have contributed data to the current release are listed{' '}
       <Link preserveSelectedDataset={false} to="/about">
         here
       </Link>

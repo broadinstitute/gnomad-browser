@@ -2,32 +2,13 @@ import { jest, describe, expect } from '@jest/globals'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { Factory } from 'fishery'
-
-import { Gene, Transcript } from '../types'
-import TranscriptPage from './TranscriptPage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import TranscriptPage from './TranscriptPage'
 import { apiCallsMatching } from '../../../tests/__helpers__/apiCall'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
-import geneFactory from '../__factories__/Gene'
-
-const transcriptFactory = Factory.define<Transcript>(({ params }) => {
-  const { reference_genome = 'GRCh37', strand = '+' } = params
-
-  return {
-    transcript_id: 'dummy_transcript',
-    transcript_version: '12.34.5',
-    chrom: '13',
-    reference_genome,
-    start: 9,
-    stop: 15,
-    strand,
-    exons: [],
-    gene: geneFactory.build({ reference_genome, strand }),
-  }
-})
+import transcriptFactory from '../__factories__/Transcript'
 
 forAllDatasets('TranscriptPage with dataset "%s"', (datasetId) => {
   const fetch = jest.fn(() => {
@@ -77,7 +58,6 @@ describe.each([
     renderer.create(
       withDummyRouter(<TranscriptPage datasetId={datasetId} transcript={transcript} />)
     )
-
     const coverageQueries = apiCallsMatching(fetch, 'query TranscriptCoverage')
     expect(coverageQueries).toHaveLength(1)
     const [coverageQuery] = coverageQueries

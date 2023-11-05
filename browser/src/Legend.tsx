@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 const LegendWrapper = styled.ul`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   padding: 0;
   margin: 0 1em 0 0;
@@ -11,11 +12,7 @@ const LegendWrapper = styled.ul`
 
 const LegendItem = styled.li`
   display: flex;
-  margin-left: 1em;
-
-  &:first-child {
-    margin-left: 0;
-  }
+  margin: 0 1em 0.33em 0;
 `
 
 type LegendSwatchProps = {
@@ -28,12 +25,14 @@ const LegendSwatch = ({ color }: LegendSwatchProps) => (
   </svg>
 )
 
+export type SeriesLegendProps = {
+  color?: string
+  label: string
+  swatch?: React.ReactNode
+}
+
 type LegendProps = {
-  series: {
-    color?: string
-    label: string
-    swatch?: React.ReactNode
-  }[]
+  series: SeriesLegendProps[]
 }
 
 const Legend = ({ series }: LegendProps) => (

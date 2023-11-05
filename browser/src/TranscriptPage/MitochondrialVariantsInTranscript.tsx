@@ -1,8 +1,13 @@
 import React from 'react'
-
+import { Transcript } from './TranscriptPage'
+import {
+  referenceGenome,
+  labelForDataset,
+  DatasetId,
+  hasMitochondrialVariants,
+} from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { referenceGenome, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -67,28 +72,22 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
 }
 `
 
-type OwnProps = {
-  datasetId: string
-  transcript: {
-    transcript_id: string
-  }
+type Props = {
+  datasetId: DatasetId
+  transcript: Transcript
   zoomRegion?: {
     start: number
     stop: number
-  }
+  } | null
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof MitochondrialVariantsInTranscript.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'MitochondrialVariantsInTranscript' implicitly has... Remove this comment to see the full error message
 const MitochondrialVariantsInTranscript = ({
   datasetId,
   transcript,
-  zoomRegion,
+  zoomRegion = null,
   ...rest
 }: Props) => {
-  if (datasetId === 'exac' || datasetId.startsWith('gnomad_r2')) {
+  if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
         Mitochondrial variants are not available in {labelForDataset(datasetId)}
@@ -163,7 +162,6 @@ const MitochondrialVariantsInTranscript = ({
               {...rest}
               clinvarReleaseDate={data.meta.clinvar_release_date}
               context={transcript}
-              datasetId={datasetId}
               exportFileName={`gnomad_mitochondrial_variants_${transcript.transcript_id}`}
               variants={filterVariantsInZoomRegion(
                 annotateVariantsWithClinvar(
@@ -182,6 +180,6 @@ const MitochondrialVariantsInTranscript = ({
 
 MitochondrialVariantsInTranscript.defaultProps = {
   zoomRegion: null,
-}
+} as Partial<Props>
 
 export default MitochondrialVariantsInTranscript

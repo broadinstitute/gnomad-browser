@@ -9,7 +9,7 @@ import {
   svConsequenceCategories,
   svConsequenceLabels,
 } from '../StructuralVariantList/structuralVariantConsequences'
-import StructuralVariantDetailPropType from './StructuralVariantDetailPropType'
+import { StructuralVariant } from './StructuralVariantPage'
 
 const Wrapper = styled.ol`
   display: flex;
@@ -29,7 +29,7 @@ const ConsequenceListItem = styled.li`
 `
 
 type Props = {
-  variant: StructuralVariantDetailPropType
+  variant: StructuralVariant
 }
 
 type State = any

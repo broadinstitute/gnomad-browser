@@ -79,7 +79,7 @@ type TranscriptConsequence {
   refseq_version: String
   sift_prediction: String
   transcript_id: String!
-  transcript_version: String!
+  transcript_version: String
 
   # Deprecated - replaced by is_canonical
   canonical: Boolean
@@ -126,7 +126,6 @@ type NonCodingConstraintRegion {
   expected: Float!
   oe: Float!
   z: Float!
-  coding_prop: Float!
 }
 
 type Variant {
@@ -244,6 +243,8 @@ type VariantDetails {
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
+  faf95_joint: VariantFilteringAlleleFrequency
+  faf99_joint: VariantFilteringAlleleFrequency
 
   non_coding_constraint: NonCodingConstraintRegion
 

@@ -6,21 +6,21 @@ import {
   isRsId,
 } from '@gnomad/identifiers'
 
-import { referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
-export const fetchSearchResults = (dataset: any, query: any) => {
-  if (dataset.startsWith('gnomad_sv')) {
+export const fetchSearchResults = (datasetId: DatasetId, query: string) => {
+  if (datasetId.startsWith('gnomad_sv')) {
     // ==============================================================================================
     // Structural Variants
     // ==============================================================================================
 
-    if (isStructuralVariantId(query)) {
+    if (isStructuralVariantId(query, datasetId)) {
       const structuralVariantId = query.toUpperCase()
       return Promise.resolve([
         {
           label: structuralVariantId,
-          value: `/variant/${structuralVariantId}?dataset=${dataset}`,
+          value: `/variant/${structuralVariantId}?dataset=${datasetId}`,
         },
       ])
     }
@@ -34,7 +34,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       return Promise.resolve([
         {
           label: variantId,
-          value: `/variant/${variantId}?dataset=${dataset}`,
+          value: `/variant/${variantId}?dataset=${datasetId}`,
         },
       ])
     }
@@ -44,7 +44,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       return Promise.resolve([
         {
           label: rsId,
-          value: `/variant/${rsId}?dataset=${dataset}`,
+          value: `/variant/${rsId}?dataset=${datasetId}`,
         },
       ])
     }
@@ -54,7 +54,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       return Promise.resolve([
         {
           label: caid,
-          value: `/variant/${caid}?dataset=${dataset}`,
+          value: `/variant/${caid}?dataset=${datasetId}`,
         },
       ])
     }
@@ -64,7 +64,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       return Promise.resolve([
         {
           label: clinvarVariationId,
-          value: `/variant/${clinvarVariationId}?dataset=${dataset}`,
+          value: `/variant/${clinvarVariationId}?dataset=${datasetId}`,
         },
       ])
     }
@@ -80,7 +80,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
     const results = [
       {
         label: regionId,
-        value: `/region/${regionId}?dataset=${dataset}`,
+        value: `/region/${regionId}?dataset=${datasetId}`,
       },
     ]
 
@@ -90,7 +90,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       const windowRegionId = `${chrom}-${Math.max(1, start - 20)}-${stop + 20}`
       results.unshift({
         label: windowRegionId,
-        value: `/region/${windowRegionId}?dataset=${dataset}`,
+        value: `/region/${windowRegionId}?dataset=${datasetId}`,
       })
     }
 
@@ -108,7 +108,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
     return Promise.resolve([
       {
         label: geneId,
-        value: `/gene/${geneId}?dataset=${dataset}`,
+        value: `/gene/${geneId}?dataset=${datasetId}`,
       },
     ])
   }
@@ -122,7 +122,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
     return Promise.resolve([
       {
         label: transcriptId,
-        value: `/transcript/${transcriptId}?dataset=${dataset}`,
+        value: `/transcript/${transcriptId}?dataset=${datasetId}`,
       },
     ])
   }
@@ -142,7 +142,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
             }
           }
         `,
-        variables: { query, referenceGenome: referenceGenome(dataset) },
+        variables: { query, referenceGenome: referenceGenome(datasetId) },
       }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -153,26 +153,39 @@ export const fetchSearchResults = (dataset: any, query: any) => {
           throw new Error('Unable to retrieve search results')
         }
 
-        const genes = response.data.gene_search
+        const genes = response.data.gene_search as { ensembl_id: string; symbol: string }[]
 
-        const geneSymbolCounts = {}
-        genes.forEach((gene: any) => {
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        const geneSymbolCounts: Record<string, number> = {}
+        genes.forEach((gene) => {
           if (geneSymbolCounts[gene.symbol] === undefined) {
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             geneSymbolCounts[gene.symbol] = 0
           }
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           geneSymbolCounts[gene.symbol] += 1
         })
 
-        return genes.map((gene: any) => ({
-          label:
-            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
+        return genes
+          .sort((gene1, gene2) => {
+            const symbolPrefix = query.toUpperCase()
+            const symbol1 = gene1.symbol.toUpperCase()
+            const symbol2 = gene2.symbol.toUpperCase()
 
-          value: `/gene/${gene.ensembl_id}?dataset=${dataset}`,
-        }))
+            if (symbol1.startsWith(symbolPrefix) && !symbol2.startsWith(symbolPrefix)) {
+              return -1
+            }
+
+            if (!symbol1.startsWith(symbolPrefix) && symbol2.startsWith(symbolPrefix)) {
+              return 1
+            }
+            return symbol1.localeCompare(symbol2)
+          })
+          .map((gene) => ({
+            label:
+              geneSymbolCounts[gene.symbol] > 1
+                ? `${gene.symbol} (${gene.ensembl_id})`
+                : gene.symbol,
+
+            value: `/gene/${gene.ensembl_id}?dataset=${datasetId}`,
+          }))
       })
   }
 
@@ -187,7 +200,7 @@ export const fetchSearchResults = (dataset: any, query: any) => {
       return Promise.resolve([
         {
           label: `${variantOneId} and ${variantTwoId} co-occurrence`,
-          value: `/variant-cooccurrence?dataset=${dataset}&variant=${variantOneId}&variant=${variantTwoId}`,
+          value: `/variant-cooccurrence?dataset=${datasetId}&variant=${variantOneId}&variant=${variantTwoId}`,
         },
       ])
     }

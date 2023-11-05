@@ -8,8 +8,7 @@ import Link from '../Link'
 import { NonCodingConstraint } from '../VariantPage/VariantPage'
 import { renderRoundedNumber } from './constraintMetrics'
 
-import { regionColor } from '../RegionalGenomicConstraintTrack'
-import { Legend } from '../RegionalGenomicConstraintTrack'
+import { regionColor, Legend } from '../RegionalGenomicConstraintTrack'
 
 const Table = styled(BaseTable)`
   width: 100%;
@@ -54,11 +53,7 @@ const GnomadNonCodingConstraintTableVariant = ({
       <div>
         <p>{`Genomic constraint values displayed are for the region: ${chrom}-${nonCodingConstraint.start}-${nonCodingConstraint.stop}`}</p>
         <p>
-          <a
-            href={
-              'https://gnomad.broadinstitute.org/news/2022-10-the-addition-of-a-genomic-constraint-metric-to-gnomad/'
-            }
-          >
+          <a href="https://gnomad.broadinstitute.org/news/2022-10-the-addition-of-a-genomic-constraint-metric-to-gnomad/">
             Read more
           </a>{' '}
           about this constraint.
@@ -112,9 +107,7 @@ const GnomadNonCodingConstraintTableVariant = ({
           {`View the genomic constraint values for the ${
             (regionBuffer * 2) / 1000
           }kb region surrounding this variant: `}
-          <Link
-            to={{ pathname: `/region/${surroundingLocation}`, search: `variant=${variantId}`}}
-          >
+          <Link to={{ pathname: `/region/${surroundingLocation}`, search: `variant=${variantId}` }}>
             {surroundingLocation}
           </Link>
         </p>

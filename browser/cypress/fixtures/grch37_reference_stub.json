@@ -1341,7 +1341,1393 @@
         ],
         "flags": []
       },
-      "exac_regional_missense_constraint_regions": null
+      "exac_regional_missense_constraint_regions": null,
+      "gnomad_v2_regional_missense_constraint_regions": null,
+      "heterozygous_variant_cooccurrence_counts": [
+        {
+          "csq": "lof_lof",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_lof",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_lof",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_lof",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_lof",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "lof_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "lof_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "lof_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 18
+          }
+        },
+        {
+          "csq": "lof_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 18
+          }
+        },
+        {
+          "csq": "lof_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "lof_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "lof_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "lof_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "lof_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "lof_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "lof_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 15,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 16
+          }
+        },
+        {
+          "csq": "lof_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 17
+          }
+        },
+        {
+          "csq": "lof_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 17
+          }
+        },
+        {
+          "csq": "lof_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 24,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 26
+          }
+        },
+        {
+          "csq": "lof_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 26,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 28
+          }
+        },
+        {
+          "csq": "missense_missense",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 29,
+            "in_trans": 0,
+            "unphased": 0,
+            "two_het_total": 29
+          }
+        },
+        {
+          "csq": "missense_missense",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 41,
+            "in_trans": 0,
+            "unphased": 0,
+            "two_het_total": 41
+          }
+        },
+        {
+          "csq": "missense_missense",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 49,
+            "in_trans": 0,
+            "unphased": 0,
+            "two_het_total": 49
+          }
+        },
+        {
+          "csq": "missense_missense",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 87,
+            "in_trans": 1,
+            "unphased": 11,
+            "two_het_total": 99
+          }
+        },
+        {
+          "csq": "missense_missense",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 87,
+            "in_trans": 1,
+            "unphased": 11,
+            "two_het_total": 99
+          }
+        },
+        {
+          "csq": "missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 42,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 43
+          }
+        },
+        {
+          "csq": "missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 54,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 55
+          }
+        },
+        {
+          "csq": "missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 62,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 63
+          }
+        },
+        {
+          "csq": "missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 103,
+            "in_trans": 1,
+            "unphased": 13,
+            "two_het_total": 117
+          }
+        },
+        {
+          "csq": "missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 103,
+            "in_trans": 1,
+            "unphased": 13,
+            "two_het_total": 117
+          }
+        },
+        {
+          "csq": "missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 96,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 97
+          }
+        },
+        {
+          "csq": "missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 158,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 160
+          }
+        },
+        {
+          "csq": "missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 183,
+            "in_trans": 5,
+            "unphased": 11,
+            "two_het_total": 199
+          }
+        },
+        {
+          "csq": "missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 308,
+            "in_trans": 41,
+            "unphased": 52,
+            "two_het_total": 401
+          }
+        },
+        {
+          "csq": "missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 347,
+            "in_trans": 44,
+            "unphased": 55,
+            "two_het_total": 446
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 14,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 15
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 14,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 15
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 17,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 19
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 17,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 19
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 19,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 20
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 21,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 22
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 22,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 24
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 32,
+            "in_trans": 0,
+            "unphased": 3,
+            "two_het_total": 35
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 36,
+            "in_trans": 0,
+            "unphased": 3,
+            "two_het_total": 39
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 13,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 14
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 18
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 18
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 2,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 3
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 15,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 16
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 16,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 17
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 17,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 18
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 25,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 27
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 28,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 30
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 20,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 21
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 23,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 24
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 25,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 26
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 30,
+            "in_trans": 0,
+            "unphased": 3,
+            "two_het_total": 33
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 30,
+            "in_trans": 0,
+            "unphased": 3,
+            "two_het_total": 33
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 5,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 6
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 28,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 29
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 71,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 72
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 72,
+            "in_trans": 0,
+            "unphased": 4,
+            "two_het_total": 76
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 92,
+            "in_trans": 0,
+            "unphased": 7,
+            "two_het_total": 99
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 99,
+            "in_trans": 0,
+            "unphased": 7,
+            "two_het_total": 106
+          }
+        },
+        {
+          "csq": "synonymous_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 129,
+            "in_trans": 0,
+            "unphased": 1,
+            "two_het_total": 130
+          }
+        },
+        {
+          "csq": "synonymous_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 203,
+            "in_trans": 0,
+            "unphased": 2,
+            "two_het_total": 205
+          }
+        },
+        {
+          "csq": "synonymous_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 233,
+            "in_trans": 8,
+            "unphased": 17,
+            "two_het_total": 258
+          }
+        },
+        {
+          "csq": "synonymous_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 393,
+            "in_trans": 65,
+            "unphased": 95,
+            "two_het_total": 553
+          }
+        },
+        {
+          "csq": "synonymous_or_worse_synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 453,
+            "in_trans": 72,
+            "unphased": 102,
+            "two_het_total": 627
+          }
+        },
+        {
+          "csq": "synonymous_synonymous",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "in_cis": 34,
+            "in_trans": 0,
+            "unphased": 0,
+            "two_het_total": 34
+          }
+        },
+        {
+          "csq": "synonymous_synonymous",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "in_cis": 48,
+            "in_trans": 0,
+            "unphased": 0,
+            "two_het_total": 48
+          }
+        },
+        {
+          "csq": "synonymous_synonymous",
+          "af_cutoff": "af_cutoff_0_015",
+          "data": {
+            "in_cis": 53,
+            "in_trans": 3,
+            "unphased": 6,
+            "two_het_total": 62
+          }
+        },
+        {
+          "csq": "synonymous_synonymous",
+          "af_cutoff": "af_cutoff_0_02",
+          "data": {
+            "in_cis": 90,
+            "in_trans": 24,
+            "unphased": 44,
+            "two_het_total": 158
+          }
+        },
+        {
+          "csq": "synonymous_synonymous",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "in_cis": 111,
+            "in_trans": 28,
+            "unphased": 48,
+            "two_het_total": 187
+          }
+        }
+      ],
+      "homozygous_variant_cooccurrence_counts": [
+        {
+          "csq": "lof",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "lof",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "lof",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "missense",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 6
+          }
+        },
+        {
+          "csq": "missense",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 7
+          }
+        },
+        {
+          "csq": "missense",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 37
+          }
+        },
+        {
+          "csq": "missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 6
+          }
+        },
+        {
+          "csq": "missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 7
+          }
+        },
+        {
+          "csq": "missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 37
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "moderate_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "moderate_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "moderate_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "moderate_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "strong_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_revel_missense_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "supporting_to_strong_revel_missense",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 0
+          }
+        },
+        {
+          "csq": "synonymous",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 3
+          }
+        },
+        {
+          "csq": "synonymous",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 3
+          }
+        },
+        {
+          "csq": "synonymous",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 44
+          }
+        },
+        {
+          "csq": "synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_005",
+          "data": {
+            "hom_total": 9
+          }
+        },
+        {
+          "csq": "synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_01",
+          "data": {
+            "hom_total": 10
+          }
+        },
+        {
+          "csq": "synonymous_or_worse",
+          "af_cutoff": "af_cutoff_0_05",
+          "data": {
+            "hom_total": 80
+          }
+        }
+      ]
     }
   }
 }

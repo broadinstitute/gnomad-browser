@@ -3,10 +3,10 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import AttributeList from '../AttributeList'
-import MitochondrialVariantDetailPropType from './MitochondrialVariantDetailPropType'
+import { MitochondrialVariant } from './MitochondrialVariantPage'
 
 type Props = {
-  variant: MitochondrialVariantDetailPropType
+  variant: MitochondrialVariant
 }
 
 const MitochondrialVariantAttributeList = ({ variant }: Props) => (
@@ -16,8 +16,8 @@ const MitochondrialVariantAttributeList = ({ variant }: Props) => (
       label="Filters"
       tooltip="Quality control filters that this variant failed (if any)"
     >
-      {(variant as any).filters.length ? (
-        (variant as any).filters.map((f: any) => (
+      {variant.filters && variant.filters.length ? (
+        variant.filters.map((f: any) => (
           <Badge key={f} level="warning">
             {f}
           </Badge>
@@ -61,18 +61,19 @@ const MitochondrialVariantAttributeList = ({ variant }: Props) => (
     >
       {variant.an === 0 ? 0 : (variant.ac_het / variant.an).toPrecision(4)}
     </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item
-      label="Max Observed Heteroplasmy"
-      tooltip="Maximum heteroplasmy level observed across all individuals (range 0.10 - 1.00)."
-    >
-      {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-      {variant.max_heteroplasmy.toPrecision(4)}
-    </AttributeList.Item>
+    {variant.max_heteroplasmy && (
+      /* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */
+      <AttributeList.Item
+        label="Max Observed Heteroplasmy"
+        tooltip="Maximum heteroplasmy level observed across all individuals (range 0.10 - 1.00)."
+      >
+        {variant.max_heteroplasmy.toPrecision(4)}
+      </AttributeList.Item>
+    )}
     {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
     <AttributeList.Item
       label="Excluded Allele Count"
-      tooltip="Number of individuals with a variant (heteroplasmy 0.10 - 1.00) filtered out due to likely sequencing error, potential NUMT misalignment, or potential sample contamination."
+      tooltip="Number of individuals with a variant filtered out due to failing one of the genotype-level filters (heteroplasmy below 10%, base quality, position, strand bias, weak evidence, and/or contamination)."
     >
       {variant.excluded_ac}
     </AttributeList.Item>
