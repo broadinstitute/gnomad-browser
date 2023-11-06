@@ -257,6 +257,20 @@ export type Coverage = {
   over_100: number | null
 }
 
+type Liftover = {
+  liftover: {
+    variant_id: string
+  }
+  datasets: string[]
+}
+
+type LiftoverSource = {
+  source: {
+    variant_id: string
+  }
+  datasets: string[]
+}
+
 export type Variant = {
   variant_id: string
   reference_genome: ReferenceGenome
@@ -273,8 +287,8 @@ export type Variant = {
   lof_curations: LofCuration[] | null
   in_silico_predictors: InSilicoPredictor[] | null
   transcript_consequences: TranscriptConsequence[] | null
-  liftover: any[] | null
-  liftover_sources: any[] | null
+  liftover: Liftover[] | null
+  liftover_sources: LiftoverSource[] | null
   multi_nucleotide_variants?: any[]
   caid: string | null
   rsids: string[] | null

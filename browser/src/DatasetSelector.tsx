@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
+  DatasetId,
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
@@ -444,7 +445,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeCopyNumberVariants = true,
   } = datasetOptions
 
-  const datasetLink = (datasetId: any) => ({
+  const datasetLink = (datasetId: DatasetId) => ({
     ...history.location,
     search: queryString.stringify({ dataset: datasetId }),
   })
