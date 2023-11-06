@@ -6,7 +6,7 @@ import queryString from 'query-string'
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-
+import { isV2 } from '@gnomad/dataset-metadata/metadata'
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
@@ -457,14 +457,14 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
         childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset),
         label: 'More datasets',
         children: [] as ChildDataset[],
       },
@@ -482,6 +482,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       })
     }
 
+
     if (includeGnomad3) {
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r3',
@@ -491,6 +492,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         childReferenceGenome: referenceGenome('gnomad_r3'),
       })
     }
+
+
 
     if (includeGnomad3 && includeGnomad3Subsets) {
       shortVariantDatasets[1].children.push(
@@ -589,7 +592,9 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   if (includeStructuralVariants || includeCopyNumberVariants) {
-    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
+    const topLevelStructuralVariantDataset = isV2(selectedDataset)
+      ? 'gnomad_sv_r2_1'
+      : hasStructuralVariants(selectedDataset)
       ? selectedDataset
       : 'gnomad_sv_r4'
 
