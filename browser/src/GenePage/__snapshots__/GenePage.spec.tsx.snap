@@ -10621,12 +10621,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -12209,12 +12209,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -13797,12 +13797,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -15385,12 +15385,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -16973,12 +16973,12 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li

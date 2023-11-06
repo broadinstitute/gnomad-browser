@@ -3143,12 +3143,12 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -4550,12 +4550,12 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -5957,12 +5957,12 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -7364,12 +7364,12 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
@@ -8771,12 +8771,12 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_sv_dataset"
-              href="/?dataset=gnomad_sv_r4"
+              href="/?dataset=gnomad_sv_r2_1"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD SVs v4.0
+              gnomAD SVs v2.1
             </a>
           </li>
           <li
