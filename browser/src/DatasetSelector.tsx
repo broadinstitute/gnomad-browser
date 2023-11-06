@@ -6,7 +6,6 @@ import queryString from 'query-string'
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
@@ -16,6 +15,7 @@ import {
   referenceGenome,
   hasCopyNumberVariants,
   shortVariantDatasetId,
+  isV2,
 } from '@gnomad/dataset-metadata/metadata'
 
 const NavigationMenuWrapper = styled.ul`
@@ -457,14 +457,14 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     const shortVariantDatasets = [
       {
         id: 'current_short_variant',
-        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
         url: datasetLink(topLevelShortVariantDataset),
         childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
         id: 'other_short_variant',
-        isActive: hasShortVariants(selectedDataset) && !hasCopyNumberVariants(selectedDataset),
+        isActive: hasShortVariants(selectedDataset),
         label: 'More datasets',
         children: [] as ChildDataset[],
       },
@@ -589,17 +589,25 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   if (includeStructuralVariants || includeCopyNumberVariants) {
-    const topLevelStructuralVariantDataset = hasStructuralVariants(selectedDataset)
-      ? selectedDataset
-      : 'gnomad_sv_r2_1'
+    const topLevelStructuralVariantDataset: any = (() => {
+      if (isV2(selectedDataset)) {
+        return 'gnomad_sv_r2_1'
+      }
+
+      if (hasStructuralVariants(selectedDataset)) {
+        return selectedDataset
+      }
+
+      return 'gnomad_sv_r4'
+    })()
 
     const topLevelCopyNumberVariantDataset = hasCopyNumberVariants(selectedDataset)
       ? selectedDataset
       : 'gnomad_cnv_r4'
 
-    const currentDataset = hasStructuralVariants(selectedDataset)
-      ? topLevelStructuralVariantDataset
-      : topLevelCopyNumberVariantDataset
+    const currentDataset = hasCopyNumberVariants(selectedDataset)
+      ? topLevelCopyNumberVariantDataset
+      : topLevelStructuralVariantDataset
 
     datasets.push(
       {
