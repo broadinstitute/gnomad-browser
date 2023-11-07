@@ -133,8 +133,8 @@ pipeline.add_task(
     get_canonical_transcripts,
     f"/{genes_subdir}/canonical_transcripts_grch38.ht",
     {
-        "exomes": "gs://gnomad-matt-data-pipeline/exomes-2023-10-27/gnomad.exomes.v4.0.sites.ht",
-        "genomes": "gs://gnomad-matt-data-pipeline/genomes-2023-10-27/gnomad.genomes.v4.0.sites.ht",
+        "exomes": "gs://gcp-public-data--gnomad/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht",
+        "genomes": "gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht",
     },
 )
 
@@ -209,7 +209,7 @@ pipeline.add_task(
     "prepare_gnomad_v4_constraint",
     prepare_gnomad_v4_constraint,
     f"/{constraint_subdir}/gnomad_v4_constraint.ht",
-    {"path": "gs://gnomad-matt-data-pipeline/constraint_inputs/2023-10-27/gnomad.v4.0.constraint_metrics.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"},
 )
 
 pipeline.add_task(
@@ -228,8 +228,7 @@ pipeline.add_task(
     "prepare_gnomad_v2_regional_missense_constraint",
     prepare_gnomad_v2_regional_missense_constraint,
     f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint.ht",
-    # TODO: before merging - update to a more permanent location for this data
-    {"path": "gs://gnomad-matt-data-pipeline/constraint_inputs/2023-10-27/20230926_rmc_demo.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"},
 )
 
 ###############################################
