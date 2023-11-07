@@ -31,10 +31,9 @@ from data_pipeline.data_types.gene import reject_par_y_genes
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import prepare_gnomad_v4_constraint
 
 pipeline = Pipeline()
-# use_new_timestamp = True
 
-external_sources_subdir = "external_sources_20231029T172613"
-genes_subdir = "genes_new"
+external_sources_subdir = "external_sources"
+genes_subdir = "genes"
 constraint_subdir = "constraint"
 
 
