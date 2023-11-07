@@ -211,15 +211,15 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    "prepare_heterozygous_variant_cooccurrence_counts",
+    "prepare_grch37_heterozygous_variant_cooccurrence_counts",
     prepare_heterozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/heterozygous_variant_cooccurrence_counts.ht",
+    f"/{genes_subdir}/genes_grch37_heterozygous_variant_cooccurrence_counts.ht",
 )
 
 pipeline.add_task(
-    "prepare_homozygous_variant_cooccurrence_counts",
+    "prepare_grch37_homozygous_variant_cooccurrence_counts",
     prepare_homozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/homozygous_variant_cooccurrence_counts.ht",
+    f"/{genes_subdir}/genes_grch37_homozygous_variant_cooccurrence_counts.ht",
 )
 
 pipeline.add_task(
@@ -300,10 +300,10 @@ pipeline.add_task(
     {
         "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
         "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
+            "prepare_grch37_heterozygous_variant_cooccurrence_counts"
         ),
         "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
+            "prepare_grch37_homozygous_variant_cooccurrence_counts"
         ),
     },
 )
@@ -355,25 +355,10 @@ pipeline.add_task(
 
 pipeline.add_task(
     "annotate_grch38_genes_step_5",
-    annotate_table_with_variant_cooccurrence_counts,
+    reject_par_y_genes,
     f"/{genes_subdir}/genes_grch38_annotated_5.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
-        "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
-        ),
-        "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
-        ),
-    },
-)
-
-pipeline.add_task(
-    "annotate_grch38_genes_step_6",
-    reject_par_y_genes,
-    f"/{genes_subdir}/genes_grch38_annotated_6.ht",
-    {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
     },
 )
 
@@ -427,7 +412,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_6",
+        "genes_grch38": "annotate_grch38_genes_step_5",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
