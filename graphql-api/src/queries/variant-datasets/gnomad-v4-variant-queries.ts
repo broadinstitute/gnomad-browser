@@ -536,7 +536,7 @@ const fetchMatchingVariants = async (
     index: GNOMAD_V4_VARIANT_INDEX,
     type: '_doc',
     size: 100,
-    _source: [`value.genome.freq.${subset}`, 'value.variant_id'],
+    _source: [`value.genome.freq.${subset}`, `value.exome.freq.${subset}`, 'value.variant_id'],
     body: {
       query: {
         bool: {
