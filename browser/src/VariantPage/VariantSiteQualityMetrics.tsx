@@ -31,6 +31,8 @@ const qualityMetricDescriptions = {
   FS: "Phred-scaled p-value of Fisher's exact test for strand bias.",
   InbreedingCoeff:
     'Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation.',
+  inbreeding_coeff:
+    'Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation.',
   MQ: 'Root mean square of the mapping quality of reads across all samples.',
   MQRankSum:
     'Z-score from Wilcoxon rank sum test of alternate vs. reference read mapping qualities.',
@@ -150,6 +152,15 @@ const getMetricDataForSequencingType = ({
         }.`
       // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_${afBin.key}`
+    }
+  } else if (metric === 'inbreeding_coeff') {
+    const af = an === 0 ? 0 : ac / an
+    if (af < 0.0005) {
+      key = `inbreeding_coeff-under_0.0005`
+      description = 'inbreeding_coeff for all variants with AF < 0.0005.'
+    } else {
+      key = 'inbreeding_coeff-over_0.0005'
+      description = 'inbreeding_coeff for all variants with AF >= 0.0005.'
     }
   } else if (metric === 'InbreedingCoeff') {
     const af = an === 0 ? 0 : ac / an
