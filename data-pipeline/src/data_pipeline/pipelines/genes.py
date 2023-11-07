@@ -203,7 +203,6 @@ pipeline.add_task(
     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
 )
 
-
 pipeline.add_task(
     "prepare_gnomad_v4_constraint",
     prepare_gnomad_v4_constraint,
@@ -253,7 +252,7 @@ pipeline.add_task(
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
         # This table can no longer be generated with current versions of Hail
         # "gtex_tissue_expression_path": pipeline.get_task("prepare_gtex_v7_expression_data"),
-        "gtex_tissue_expression_path": "gs://gnomad-matt-data-pipeline/2023-10-19/outputs/gtex/gtex_v7_tissue_expression.ht",
+        "gtex_tissue_expression_path": "gs://gnomad-v4-data-pipeline/output/gtex/gtex_v7_tissue_expression.ht",
     },
 )
 
