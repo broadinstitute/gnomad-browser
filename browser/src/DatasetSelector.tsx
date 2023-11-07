@@ -4,8 +4,10 @@ import { darken, transparentize } from 'polished'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
+import { History, Location } from 'history'
+
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
@@ -144,12 +146,12 @@ const GroupedNav = styled.div`
 type ChildDataset = {
   id: string
   label: string
-  url: string
+  url: Location
   description: string
   childReferenceGenome?: string
 }
 
-type Props = {
+type NavigationMenuProps = {
   items: {
     id: string
     isActive?: boolean
@@ -161,14 +163,14 @@ type Props = {
 
 type State = any
 
-class NavigationMenu extends Component<Props, State> {
+class NavigationMenu extends Component<NavigationMenuProps, State> {
   container: any
 
   state = {
     expandedItem: null,
   }
 
-  constructor(props: Props) {
+  constructor(props: NavigationMenuProps) {
     super(props)
 
     this.container = React.createRef()
@@ -432,7 +434,32 @@ class NavigationMenu extends Component<Props, State> {
   }
 }
 
-const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }: any) => {
+type DatasetOptions = {
+  includeShortVariants?: boolean
+  includeStructuralVariants?: boolean
+  includeExac?: boolean
+  includeGnomad2?: boolean
+  includeGnomad2Subsets?: boolean
+  includeGnomad3?: boolean
+  includeGnomad3Subsets?: boolean
+  includeGnomad4?: boolean
+  includeCopyNumberVariants?: boolean
+}
+
+type URLBuilder = (targetDatasetId: DatasetId) => Location
+
+type DatasetSelectorProps = {
+  datasetOptions: DatasetOptions
+  selectedDataset: DatasetId
+  history: History
+  urlBuilder?: URLBuilder
+}
+
+const UnwrappedDatasetSelector = ({
+  datasetOptions,
+  history,
+  selectedDataset,
+}: DatasetSelectorProps) => {
   const {
     includeShortVariants = true,
     includeStructuralVariants = true,
@@ -445,7 +472,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeCopyNumberVariants = true,
   } = datasetOptions
 
-  const datasetLink = (datasetId: DatasetId) => ({
+  const datasetLink: URLBuilder = (datasetId: DatasetId): Location => ({
     ...history.location,
     search: queryString.stringify({ dataset: datasetId }),
   })
@@ -663,32 +690,11 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   return <NavigationMenu items={datasets} />
-})
-
-DatasetSelector.propTypes = {
-  datasetOptions: PropTypes.shape({
-    includeShortVariants: PropTypes.bool,
-    includeStructuralVariants: PropTypes.bool,
-    includeCopyNumberVariants: PropTypes.bool,
-    includeExac: PropTypes.bool,
-    includeGnomad2Subsets: PropTypes.bool,
-    includeGnomad3: PropTypes.bool,
-    includeGnomad3Subsets: PropTypes.bool,
-  }),
-  selectedDataset: PropTypes.string.isRequired,
 }
 
-DatasetSelector.defaultProps = {
-  datasetOptions: {
-    includeShortVariants: true,
-    includeStructuralVariants: true,
-    includeCopyNumberVariants: true,
-    includeExac: true,
-    includeGnomad2: true,
-    includeGnomad2Subsets: true,
-    includeGnomad3: true,
-    includeGnomad3Subsets: true,
-  },
-}
+const DatasetSelector = withRouter<
+  RouteComponentProps & DatasetSelectorProps,
+  typeof UnwrappedDatasetSelector
+>(UnwrappedDatasetSelector)
 
 export default DatasetSelector

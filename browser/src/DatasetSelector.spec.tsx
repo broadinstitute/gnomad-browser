@@ -30,6 +30,7 @@ forAllDatasets('DataSelector with "%s" dataset selected', (datasetId) => {
             includeGnomad3: true,
             includeGnomad3Subsets: true,
             includeCopyNumberVariants: true,
+            includeGnomad4: true,
           }}
         />
       )
