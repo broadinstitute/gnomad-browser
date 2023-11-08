@@ -180,6 +180,25 @@ exports[`Team Page has no unexpected changes 1`] = `
   }
 }
 
+@media screen and (max-width:992px) {
+  .c7 {
+    display: block;
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .c8 {
+    margin-bottom: 1em;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .c10 {
+    padding-left: 0;
+  }
+}
+
 <div
   className="c0"
 >
