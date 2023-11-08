@@ -2580,7 +2580,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                46.86 GiB
+                46.85 GiB
                 , MD5: 
                 9b0a289a7dc7910f1a79586b8aa62593
               </span>
@@ -3129,7 +3129,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                24.64 GiB
+                24.63 GiB
                 , MD5: 
                 3e04c33c6a03f91b1b071dc8c3224f77
               </span>
@@ -3617,7 +3617,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                890.03 GiB
+                37.05 GiB
                 , MD5: 
                 b77d8f0219fa9a033a6f747d5fef12d9
               </span>
@@ -3663,6 +3663,67 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   aria-label="Download TBI file for chrX sites VCF from Amazon"
                   className="c10"
                   href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrX.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chrY sites VCF
+              </span>
+              <br />
+              <span>
+                890.03 MiB
+                , MD5: 
+                b39443d98eeb5f6735aa57e37d378edf
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chrY sites VCF from Google"
+                  className="c10"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chrY sites VCF from Amazon"
+                  className="c10"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download TBI from
+                 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Google"
+                  className="c10"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Amazon"
+                  className="c10"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
