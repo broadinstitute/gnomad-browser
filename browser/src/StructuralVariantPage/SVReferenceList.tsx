@@ -3,15 +3,19 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
 import { StructuralVariant } from './StructuralVariantPage'
+import { DatasetId, usesGrch37 } from '@gnomad/dataset-metadata/metadata'
 
-const ucscUrl = (chrom: any, pos: any, end: any) =>
-  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${chrom}%3A${pos}-${end}`
 
 type SVUCSCLinksProps = {
   variant: StructuralVariant
+  datasetId: DatasetId
 }
 
-const SVUCSCLinks = ({ variant }: SVUCSCLinksProps) => {
+const SVUCSCLinks = ({ variant, datasetId }: SVUCSCLinksProps) => {
+  const ucscReferenceGenomeId = usesGrch37(datasetId) ? 'hg19' : 'hg38'
+  const ucscUrl = (chrom: string, pos: number, end: number, ) =>
+  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&position=chr${chrom}%3A${pos}-${end}`
+
   if (variant.type === 'INS') {
     return (
       // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
@@ -50,14 +54,15 @@ const SVUCSCLinks = ({ variant }: SVUCSCLinksProps) => {
 
 type SVReferenceListProps = {
   variant: StructuralVariant
+  datasetId: DatasetId
 }
 
-const SVReferenceList = ({ variant }: SVReferenceListProps) => (
+export const SVReferenceList = ({ variant, datasetId }: SVReferenceListProps) => (
   // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
   <List>
     {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
     <ListItem>
-      <SVUCSCLinks variant={variant} />
+      <SVUCSCLinks variant={variant} datasetId={datasetId} />
     </ListItem>
   </List>
 )
