@@ -139,10 +139,19 @@ const TeamHeadshotAndDescription = styled.div`
 
 const Row = styled.div`
   display: flex;
+
+  @media screen and (max-width: 992px) {
+    display: block;
+    margin-bottom: 2em;
+  }
 `
 
 const ImageColumn = styled.div`
   padding-right: 0.5rem;
+
+  @media screen and (max-width: 992px) {
+    margin-bottom: 1em;
+  }
 `
 
 const Headshot = styled.img`
@@ -153,6 +162,10 @@ const TextColumn = styled.div`
   padding-left: 2rem;
   line-height: 1.5;
   text-align: start;
+
+  @media screen and (max-width: 992px) {
+    padding-left: 0;
+  }
 `
 
 const TextTitle = styled.span`

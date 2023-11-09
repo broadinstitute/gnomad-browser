@@ -180,6 +180,25 @@ exports[`Team Page has no unexpected changes 1`] = `
   }
 }
 
+@media screen and (max-width:992px) {
+  .c7 {
+    display: block;
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .c8 {
+    margin-bottom: 1em;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .c10 {
+    padding-left: 0;
+  }
+}
+
 <div
   className="c0"
 >
@@ -1247,6 +1266,37 @@ exports[`Team Page has no unexpected changes 1`] = `
               >
                  
                 is technical lead for the production of gnomAD v3.1 and v4 releases.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c6"
+        >
+          <div
+            className="c7"
+          >
+            <div
+              className="c8"
+            >
+              <img
+                alt="Headshot of Daniel Marten, MS,"
+                className="c9"
+              />
+            </div>
+            <div
+              className="c10"
+            >
+              <span
+                className="c11"
+              >
+                Daniel Marten, MS,
+              </span>
+              <span
+                className="c12"
+              >
+                 
+                is an Associate Computational Scientist working jointly between the gnomAD methods team and Dr. O’Donnell-Luria’s Lab.  His current research projects include investigating unannotated genes - genes with proteins which are translated in tissue yet are not included in large protein databases - and the relationship between gene length, age, and constraint.
               </span>
             </div>
           </div>
