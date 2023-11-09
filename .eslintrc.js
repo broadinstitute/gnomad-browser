@@ -61,6 +61,8 @@ module.exports = {
     'no-use-before-define': 'off',
     'react/destructuring-assignment': 'off',
     'prefer-destructuring': 'off',
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   },
   overrides: [
     {
