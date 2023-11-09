@@ -118,6 +118,8 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     maxCoverage: 100,
   }
 
+  plotElement: any
+
   constructor(props: CoverageTrackProps) {
     super(props)
     if (this.props.metric) {
@@ -128,8 +130,6 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
       this.state = { selectedMetric: MetricOptions.mean }
     }
   }
-
-  plotElement: any
 
   plotRef = (el: any) => {
     this.plotElement = el
