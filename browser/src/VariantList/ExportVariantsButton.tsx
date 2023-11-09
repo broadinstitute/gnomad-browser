@@ -122,22 +122,25 @@ const exportVariantsToCsv = (variants: Variant[], datasetId: any, baseFileName: 
     populationColumns = populationColumns.concat([
       {
         label: `Allele Count ${popName}`,
-        getValue: (variant: any) => JSON.stringify(variant.populations[popIndex].ac),
+        getValue: (variant: any) =>
+          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].ac) : '',
       },
       {
         label: `Allele Number ${popName}`,
-        getValue: (variant: any) => JSON.stringify(variant.populations[popIndex].an),
+        getValue: (variant: any) =>
+          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].an) : '',
       },
       {
         label: `Homozygote Count ${popName}`,
-        getValue: (variant: any) => JSON.stringify(variant.populations[popIndex].ac_hom),
+        getValue: (variant: any) =>
+          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].ac_hom) : '',
       },
       {
         label: `Hemizygote Count ${popName}`,
         getValue: (variant: any) =>
-          variant.populations[popIndex].ac_hemi === null
-            ? ''
-            : JSON.stringify(variant.populations[popIndex].ac_hemi),
+          variant.populations[popIndex]
+            ? JSON.stringify(variant.populations[popIndex].ac_hemi)
+            : '',
       },
     ])
   })
