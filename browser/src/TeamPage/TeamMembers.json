@@ -163,6 +163,11 @@
       "alsoOnCommittee": true
     },
     {
+      "name": "Daniel Marten, MS,",
+      "bio": "is an Associate Computational Scientist working jointly between the gnomAD methods team and Dr. O’Donnell-Luria’s Lab.  His current research projects include investigating unannotated genes - genes with proteins which are translated in tissue yet are not included in large protein databases - and the relationship between gene length, age, and constraint.",
+      "headshotSource": "daniel_marten.jpg"
+    },
+    {
       "name": "Qin He, Ph.D.,",
       "bio": "is a Computational Scientist at the Broad Institute. She works on designing and implementing the highest quality computational methods for handling the Genome Aggregation Database (gnomAD).",
       "headshotSource": "qin_he.jpg"
