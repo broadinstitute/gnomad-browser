@@ -6,7 +6,7 @@ import {
   referenceGenome,
   hasMitochondrialGenomeCoverage,
 } from '@gnomad/dataset-metadata/metadata'
-import CoverageTrack from '../CoverageTrack'
+import CoverageTrack, { MetricOptions } from '../CoverageTrack'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 
@@ -60,7 +60,6 @@ const MitochondrialTranscriptCoverageTrack = ({ datasetId, transcriptId }: Props
         ]
 
         return (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <CoverageTrack
             coverageOverThresholds={[100, 1000]}
             datasets={coverage}
@@ -68,6 +67,7 @@ const MitochondrialTranscriptCoverageTrack = ({ datasetId, transcriptId }: Props
             height={190}
             maxCoverage={3000}
             datasetId={datasetId}
+            metric={MetricOptions.mean}
           />
         )
       }}
