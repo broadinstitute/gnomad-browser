@@ -1,0 +1,5797 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SVReferenceList with dataset exac selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset exac selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type CPX has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type DEL has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type DUP has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type INS has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A0-5123"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type INV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type MCNV has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
+
+exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type OTH has no unexpected changes 1`] = `
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c0 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
+}
+
+.c1 {
+  margin-bottom: 0.5em;
+}
+
+<ul
+  className="c0"
+>
+  <li
+    className="c1"
+  >
+    <a
+      className="c2"
+      href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      UCSC
+    </a>
+  </li>
+</ul>
+`;
