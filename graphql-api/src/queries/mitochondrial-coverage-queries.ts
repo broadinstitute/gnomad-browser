@@ -7,6 +7,7 @@ import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpe
 import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpers'
 
 const COVERAGE_INDICES = {
+  gnomad_r4: 'gnomad_v3_mitochondrial_coverage',
   gnomad_r3: 'gnomad_v3_mitochondrial_coverage',
 }
 
