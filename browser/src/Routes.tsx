@@ -6,6 +6,7 @@ import { isRegionId, normalizeRegionId } from '@gnomad/identifiers'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 // Content pages
 const AboutPage = lazy(() => import('./AboutPage'))
@@ -30,6 +31,7 @@ const ShortTandemRepeatsPage = lazy(() => import('./ShortTandemRepeatsPage/Short
 const VariantCooccurrencePage = lazy(
   () => import('./VariantCooccurrencePage/VariantCooccurrencePage')
 )
+const LiftoverDisambiguationPage = lazy(() => import('./VariantPage/LiftoverDisambiguationPage'))
 
 // Other pages
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
@@ -106,6 +108,24 @@ const Routes = () => {
         }}
       />
 
+      <Route
+        exact
+        path="/variant/liftover/:fromVariantId/:fromDatasetId/:toDatasetId"
+        render={({ match }) => {
+          const { fromVariantId, fromDatasetId, toDatasetId } = match.params as {
+            fromVariantId: string
+            fromDatasetId: DatasetId
+            toDatasetId: DatasetId
+          }
+          return (
+            <LiftoverDisambiguationPage
+              fromVariantId={fromVariantId}
+              fromDatasetId={fromDatasetId}
+              toDatasetId={toDatasetId}
+            />
+          )
+        }}
+      />
       <Route
         exact
         path="/variant/:variantId"
