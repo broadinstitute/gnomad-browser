@@ -95,7 +95,7 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
       </ResponsiveSection>
       <ResponsiveSection>
         <h2>External Resources</h2>
-        <SVReferenceList variant={variant} />
+        <SVReferenceList variant={variant} datasetId={datasetId} />
         <h2>Feedback</h2>
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
