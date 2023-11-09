@@ -232,7 +232,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
     datasetId === 'gnomad_sv_r4',
   isV2: datasetId.startsWith('gnomad_r2'),
   isV3: datasetId.startsWith('gnomad_r3'),
-  isV4: datasetId.startsWith('gnomad_r4'),
+  isV4: datasetId.includes('r4'),
   isSVs: datasetId.startsWith('gnomad_sv'),
   isCNVs: datasetId.startsWith('gnomad_cnv'),
   isV4CNVs: datasetId === 'gnomad_cnv_r4',
