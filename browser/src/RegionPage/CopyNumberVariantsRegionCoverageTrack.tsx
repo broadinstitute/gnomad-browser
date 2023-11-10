@@ -61,7 +61,6 @@ const CopyNumberVariantsRegionCoverageTrack = ({ datasetId, chrom, start, stop }
         ]
 
         return (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <CoverageTrack
             coverageOverThresholds={[100, 1000]}
             datasets={coverage}
