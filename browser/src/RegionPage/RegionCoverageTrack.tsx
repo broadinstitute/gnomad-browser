@@ -99,7 +99,6 @@ const RegionCoverageTrack = ({
             : coverageConfigNew(exomeCoverage, genomeCoverage)
 
         return (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <CoverageTrack
             coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}

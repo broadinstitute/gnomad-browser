@@ -6,6 +6,14 @@ import { assertDatasetAndReferenceGenomeMatch } from './helpers/validation-helpe
 import gnomadV3MitochondrialVariantQueries from './mitochondrial-variant-datasets/gnomad-v3-mitochondrial-variant-queries'
 
 const datasetQueries = {
+  gnomad_r4: {
+    fetchMitochondrialVariantById:
+      gnomadV3MitochondrialVariantQueries.fetchMitochondrialVariantById,
+    _fetchMitochondrialVariantsByGene:
+      gnomadV3MitochondrialVariantQueries.fetchMitochondrialVariantsByGene,
+    fetchMitochondrialVariantsByRegion:
+      gnomadV3MitochondrialVariantQueries.fetchMitochondrialVariantsByRegion,
+  },
   gnomad_r3: {
     fetchMitochondrialVariantById:
       gnomadV3MitochondrialVariantQueries.fetchMitochondrialVariantById,
