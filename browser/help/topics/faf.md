@@ -7,7 +7,7 @@ This annotation can be used for filtering variants by allele frequency against a
 
 This calculation only includes non-bottlenecked genetic ancestry groups: we did not calculate this metric on the Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining Individuals (`rmi`) groups.
 
-On the browser, this annotation is directly available on the variant page. In the VCF and Hail Tables, this annotation is computed globally and for each genetic ancestry group. Genetic ancestry group specific filtering allele frequencies (FAFs) are listed separately with 95% and 99% CIs.
+On the browser, this annotation is directly available on the variant page. In the VCF and Hail Tables, this annotation is computed globally and for each genetic ancestry group. Filtering allele frequencies (FAFs) for each genetic ancestry group specific are listed separately with 95% and 99% CIs.
 
 ### <a name="grpmax"></a>Group maximum filtering allele frequency
 
