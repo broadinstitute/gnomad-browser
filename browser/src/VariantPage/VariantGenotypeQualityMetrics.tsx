@@ -11,9 +11,10 @@ import {
   hasAlleleBalance,
 } from '@gnomad/dataset-metadata/metadata'
 import Legend, { StripedSwatch } from '../Legend'
+import Link from '../Link'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
-import { Variant } from './VariantPage'
+import { Variant, VariantQualityMetrics } from './VariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -70,11 +71,13 @@ type VariantGenotypeQualityMetricsProps = {
   variant: Variant
 }
 
+type QualityMetricKey = keyof Omit<VariantQualityMetrics, 'site_quality_metrics'>
+
 const VariantGenotypeQualityMetrics = ({
   datasetId,
   variant,
 }: VariantGenotypeQualityMetricsProps) => {
-  const [selectedMetric, setSelectedMetric] = useState('genotype_quality') // 'genotype_quality', 'genotype_depth', or 'allele_balance'
+  const [selectedMetric, setSelectedMetric] = useState<QualityMetricKey>('genotype_quality')
 
   const [showAllIndividuals, setShowAllIndividuals] = useState(true)
 
@@ -85,7 +88,32 @@ const VariantGenotypeQualityMetrics = ({
   const includeExomes = selectedSequencingType.includes('e')
   const includeGenomes = selectedSequencingType.includes('g')
 
-  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
+  const hasQualityMetric =
+    (variant.exome &&
+      variant.exome.quality_metrics &&
+      variant.exome.quality_metrics[selectedMetric] &&
+      variant.exome.quality_metrics[selectedMetric].alt) ||
+    (variant.genome &&
+      variant.genome.quality_metrics &&
+      variant.genome.quality_metrics[selectedMetric] &&
+      variant.genome.quality_metrics[selectedMetric].alt)
+
+  if (!hasQualityMetric) {
+    return (
+      <>
+        Genotype quality metrics not available for this variant. Variants added due to{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to="/news/2023-11-gnomad-v4-0/#hgdp1kg-genetic-ancestry-group-updates--subset-frequencies"
+        >
+          updates to the HGDP and 1KG subset
+        </Link>{' '}
+        do not have quality metrics available.
+      </>
+    )
+  }
+
+  // @ts-ignore
   const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
 
   const tabs = [
@@ -293,7 +321,7 @@ const VariantGenotypeQualityMetrics = ({
 
   return (
     <div>
-      <Tabs activeTabId={selectedMetric} tabs={tabs} onChange={setSelectedMetric} />
+      <Tabs activeTabId={selectedMetric} tabs={tabs} onChange={setSelectedMetric as any} />
 
       <ControlSection>
         <Checkbox
