@@ -146,6 +146,14 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
     showAllIndividualsInAgeDistributionByDefault(datasetId)
   )
 
+  const hasAgeDistribution =
+    (variant.exome && variant.exome.age_distribution && variant.exome.age_distribution.het) ||
+    (variant.genome && variant.genome.age_distribution && variant.genome.age_distribution.het)
+
+  if (!hasAgeDistribution) {
+    return <>Age distribution not available for this variant.</>
+  }
+
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const binEdges = (variant.exome || variant.genome).age_distribution.het.bin_edges
   const bins = [
