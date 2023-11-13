@@ -52,31 +52,31 @@ const prepareVariantData = ({
     [
       exomeData
         ? (includeHeterozygotes && exomeData.het ? exomeData.het.n_smaller : 0) +
-        (includeHomozygotes && exomeData.hom ? exomeData.hom.n_smaller : 0)
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.n_smaller : 0)
         : 0,
       genomeData
         ? (includeHeterozygotes && genomeData.het ? genomeData.het.n_smaller : 0) +
-        (includeHomozygotes && genomeData.hom ? genomeData.hom.n_smaller : 0)
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.n_smaller : 0)
         : 0,
     ],
     ...[...Array(nBins)].map((_, i) => [
       exomeData
         ? (includeHeterozygotes && exomeData.het ? exomeData.het.bin_freq[i] : 0) +
-        (includeHomozygotes && exomeData.hom ? exomeData.hom.bin_freq[i] : 0)
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.bin_freq[i] : 0)
         : 0,
       genomeData
         ? (includeHeterozygotes && genomeData.het ? genomeData.het.bin_freq[i] : 0) +
-        (includeHomozygotes && genomeData.hom ? genomeData.hom.bin_freq[i] : 0)
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.bin_freq[i] : 0)
         : 0,
     ]),
     [
       exomeData
         ? (includeHeterozygotes && exomeData.het ? exomeData.het.n_larger : 0) +
-        (includeHomozygotes && exomeData.hom ? exomeData.hom.n_larger : 0)
+          (includeHomozygotes && exomeData.hom ? exomeData.hom.n_larger : 0)
         : 0,
       genomeData
         ? (includeHeterozygotes && genomeData.het ? genomeData.het.n_larger : 0) +
-        (includeHomozygotes && genomeData.hom ? genomeData.hom.n_larger : 0)
+          (includeHomozygotes && genomeData.hom ? genomeData.hom.n_larger : 0)
         : 0,
     ],
   ]
@@ -146,12 +146,9 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
     showAllIndividualsInAgeDistributionByDefault(datasetId)
   )
 
-  const hasAgeDistribution = (variant.exome &&
-    variant.exome.age_distribution &&
-    variant.exome.age_distribution.het) ||
-    (variant.genome &&
-      variant.genome.age_distribution &&
-      variant.genome.age_distribution.het)
+  const hasAgeDistribution =
+    (variant.exome && variant.exome.age_distribution && variant.exome.age_distribution.het) ||
+    (variant.genome && variant.genome.age_distribution && variant.genome.age_distribution.het)
 
   if (!hasAgeDistribution) {
     return <>Age distribution not available for this variant.</>
@@ -227,8 +224,9 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
               carriersDescription = 'homozygous '
             }
 
-            tooltipText = `${nVariantCarriers.toLocaleString()} ${carriersDescription}variant carrier${nVariantCarriers !== 1 ? 's' : ''
-              }`
+            tooltipText = `${nVariantCarriers.toLocaleString()} ${carriersDescription}variant carrier${
+              nVariantCarriers !== 1 ? 's' : ''
+            }`
           }
 
           const nTotalIndividuals =
@@ -238,14 +236,16 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
               tooltipText += ' and '
             }
 
-            tooltipText += `${nTotalIndividuals.toLocaleString()} total individual${nTotalIndividuals ? 's' : ''
-              }`
+            tooltipText += `${nTotalIndividuals.toLocaleString()} total individual${
+              nTotalIndividuals ? 's' : ''
+            }`
           }
 
-          tooltipText += ` ${showVariantCarriers !== showAllIndividuals && nVariantCarriers + nTotalIndividuals === 1
-            ? 'is'
-            : 'are'
-            } in the ${bin} age range`
+          tooltipText += ` ${
+            showVariantCarriers !== showAllIndividuals && nVariantCarriers + nTotalIndividuals === 1
+              ? 'is'
+              : 'are'
+          } in the ${bin} age range`
           return tooltipText
         }}
       />

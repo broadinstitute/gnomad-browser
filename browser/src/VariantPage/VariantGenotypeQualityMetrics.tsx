@@ -71,7 +71,7 @@ type VariantGenotypeQualityMetricsProps = {
   variant: Variant
 }
 
-type QualityMetricKey = keyof Omit<VariantQualityMetrics, "site_quality_metrics">
+type QualityMetricKey = keyof Omit<VariantQualityMetrics, 'site_quality_metrics'>
 
 const VariantGenotypeQualityMetrics = ({
   datasetId,
@@ -88,18 +88,29 @@ const VariantGenotypeQualityMetrics = ({
   const includeExomes = selectedSequencingType.includes('e')
   const includeGenomes = selectedSequencingType.includes('g')
 
-
-  const hasQualityMetric = (variant.exome &&
-    variant.exome.quality_metrics &&
-    variant.exome.quality_metrics[selectedMetric] &&
-    variant.exome.quality_metrics[selectedMetric].alt) ||
+  const hasQualityMetric =
+    (variant.exome &&
+      variant.exome.quality_metrics &&
+      variant.exome.quality_metrics[selectedMetric] &&
+      variant.exome.quality_metrics[selectedMetric].alt) ||
     (variant.genome &&
       variant.genome.quality_metrics &&
       variant.genome.quality_metrics[selectedMetric] &&
       variant.genome.quality_metrics[selectedMetric].alt)
 
   if (!hasQualityMetric) {
-    return <>Genotype quality metrics not available for this variant. Variants added due to <Link preserveSelectedDataset={false} to="/news/2023-11-gnomad-v4-0/#hgdp1kg-genetic-ancestry-group-updates--subset-frequencies">updates to the HGDP and 1KG subset</Link> do not have quality metrics available.</>
+    return (
+      <>
+        Genotype quality metrics not available for this variant. Variants added due to{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to="/news/2023-11-gnomad-v4-0/#hgdp1kg-genetic-ancestry-group-updates--subset-frequencies"
+        >
+          updates to the HGDP and 1KG subset
+        </Link>{' '}
+        do not have quality metrics available.
+      </>
+    )
   }
 
   // @ts-ignore
@@ -149,13 +160,13 @@ const VariantGenotypeQualityMetrics = ({
             secondaryValues={
               showAllIndividuals
                 ? prepareData({
-                  includeExomes,
-                  includeGenomes,
-                  includeLargerBin: true,
-                  samples: 'all',
-                  selectedMetric: 'genotype_quality',
-                  variant,
-                })
+                    includeExomes,
+                    includeGenomes,
+                    includeLargerBin: true,
+                    samples: 'all',
+                    selectedMetric: 'genotype_quality',
+                    variant,
+                  })
                 : null
             }
             xLabel="Genotype quality"
@@ -164,17 +175,20 @@ const VariantGenotypeQualityMetrics = ({
             barColors={['#428bca', '#73ab3d']}
             formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
               const nVariantCarriers = sum(variantCarriersInBin)
-              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${nVariantCarriers !== 1 ? 's' : ''
-                }`
+              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              }`
 
               if (showAllIndividuals) {
                 const nTotalIndividuals = sum(allIndividualsInBin)
-                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${nTotalIndividuals !== 1 ? 's' : ''
-                  }`
+                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                  nTotalIndividuals !== 1 ? 's' : ''
+                }`
               }
 
-              tooltipText += ` ${nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-                } genotype quality in the ${bin} range`
+              tooltipText += ` ${
+                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+              } genotype quality in the ${bin} range`
 
               return tooltipText
             }}
@@ -225,13 +239,13 @@ const VariantGenotypeQualityMetrics = ({
             secondaryValues={
               showAllIndividuals
                 ? prepareData({
-                  includeExomes,
-                  includeGenomes,
-                  includeLargerBin: true,
-                  samples: 'all',
-                  selectedMetric: 'genotype_depth',
-                  variant,
-                })
+                    includeExomes,
+                    includeGenomes,
+                    includeLargerBin: true,
+                    samples: 'all',
+                    selectedMetric: 'genotype_depth',
+                    variant,
+                  })
                 : null
             }
             xLabel="Depth"
@@ -240,17 +254,20 @@ const VariantGenotypeQualityMetrics = ({
             barColors={['#428bca', '#73ab3d']}
             formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
               const nVariantCarriers = sum(variantCarriersInBin)
-              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${nVariantCarriers !== 1 ? 's' : ''
-                }`
+              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              }`
 
               if (showAllIndividuals) {
                 const nTotalIndividuals = sum(allIndividualsInBin)
-                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${nTotalIndividuals !== 1 ? 's' : ''
-                  }`
+                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                  nTotalIndividuals !== 1 ? 's' : ''
+                }`
               }
 
-              tooltipText += ` ${nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-                } depth in the ${bin} range`
+              tooltipText += ` ${
+                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+              } depth in the ${bin} range`
 
               return tooltipText
             }}
@@ -292,8 +309,9 @@ const VariantGenotypeQualityMetrics = ({
             barColors={['#428bca', '#73ab3d']}
             formatTooltip={(bin: any, variantCarriersInBin: any) => {
               const nVariantCarriers = sum(variantCarriersInBin)
-              return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${nVariantCarriers !== 1 ? 's have' : ' has'
-                } an allele balance in the ${bin} range`
+              return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
+                nVariantCarriers !== 1 ? 's have' : ' has'
+              } an allele balance in the ${bin} range`
             }}
           />
         </>
