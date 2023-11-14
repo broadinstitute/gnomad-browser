@@ -4,6 +4,7 @@ import { Redis } from 'ioredis'
 
 import config from './config'
 import logger from './logger'
+import { JsonCache } from './queries/helpers/json-cache'
 
 let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
@@ -67,10 +68,22 @@ if (config.REDIS_HOST) {
 
 export const withCache = (fn: any, keyFn: any, options = {}) => {
   // @ts-expect-error TS(2339) FIXME: Property 'expiration' does not exist on type '{}'.
-  const { expiration = 3600 } = options
+  //
+  const { expiration = 3600, jsonCache = config.JSON_CACHE_ENABLE_ALL } = options
 
   return async (...args: any[]) => {
     const cacheKey = keyFn(...args)
+
+    if (jsonCache) {
+      const json_cache = new JsonCache()
+      if (await json_cache.exists(cacheKey)) {
+        return await json_cache.get(cacheKey)
+      }
+
+      const result = await fn(...args)
+
+      json_cache.set(cacheKey, result)
+    }
 
     let cachedResult = null
     try {
@@ -81,7 +94,7 @@ export const withCache = (fn: any, keyFn: any, options = {}) => {
     }
     if (cachedResult) {
       // @ts-expect-error TS(2554) FIXME: Expected 0 arguments, but got 1.
-      setCacheExpiration([cacheKey, expiration]).catch(() => {})
+      setCacheExpiration([cacheKey, expiration]).catch(() => { })
       return JSON.parse(cachedResult)
     }
 

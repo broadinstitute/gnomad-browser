@@ -1,4 +1,8 @@
 import { promises as fs } from 'fs';
+import path from 'path'
+
+import config from '../../config'
+
 
 export async function writeJsonToFile(obj: any, path: string): Promise<void> {
   try {
@@ -28,22 +32,23 @@ async function fileExists(path: string): Promise<boolean> {
     return false;
   }
 }
-
-export const CACHE_PATH = process.env.JSON_CACHE_PATH
-
-export const cacheVariantsByGeneFilePath = (gene_id: string) => `${CACHE_PATH}/variants_${gene_id}.json`
-
 export class JsonCache<T> {
+
+  filePathFromCacheKey(key: string): string {
+    const fileName = key.replace(/:/g, "-") + ".json"
+    return path.join(config.JSON_CACHE_PATH, fileName)
+  }
+
   async set(key: string, value: T): Promise<void> {
-    await writeJsonToFile(value, cacheVariantsByGeneFilePath(key))
+    await writeJsonToFile(value, this.filePathFromCacheKey(key))
   }
 
   async get(key: string): Promise<T | undefined> {
-    return await readJsonFromFile(cacheVariantsByGeneFilePath(key))
+    return await readJsonFromFile(this.filePathFromCacheKey(key))
   }
 
   async exists(key: string): Promise<boolean> {
-    return await fileExists(cacheVariantsByGeneFilePath(key))
+    return await fileExists(this.filePathFromCacheKey(key))
   }
 }
 
