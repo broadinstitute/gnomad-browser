@@ -5,7 +5,7 @@ title: 'Filtering allele frequency'
 
 This annotation can be used for filtering variants by allele frequency against a disease-specific threshold that can be set for each disease (e.g. BA1 in the 2015 ACMG/AMP guidelines). In this case the filtering allele frequency (FAF) is the maximum credible genetic ancestry group AF (e.g. the lower bound of the 95% confidence interval (CI)). If the FAF is above the disease-specific threshold, then the observed AC is not compatible with pathogenicity. See http://cardiodb.org/allelefrequencyapp/ and [Whiffin _et al._ 2017](https://www.nature.com/articles/gim201726) for additional information.
 
-Note that this annotation contains filtering allele frequency information from the genetic ancestry group with the highest **FAF**, not the filtering allele frequency information calculated on the genetic ancestry group with the highest **AF**.
+Note that this annotation contains filtering allele frequency information from the genetic ancestry group with the highest **FAF**, not the filtering allele frequency information calculated on the genetic ancestry group with the highest **AF**. This means that the annotation displayed on the variant pages is the GroupMax FAF.
 
 The filtering allele frequency calculation only includes non-bottlenecked genetic ancestry groups: we did not calculate this metric on the Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining Individuals" (`rmi`) groups.
 
