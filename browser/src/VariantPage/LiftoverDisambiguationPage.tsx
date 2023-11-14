@@ -117,7 +117,10 @@ query ${operationName}($source_variant_id: String, $liftover_variant_id: String,
                         const datasetToLink = baseDatasetForReferenceGenome(toReferenceGenome)
                         return (
                           <li key={variantId}>
-                            <Link to={`/variant/${variantId}?dataset=${datasetToLink}`}>
+                            <Link
+                              to={`/variant/${variantId}?dataset=${datasetToLink}`}
+                              preserveSelectedDataset={false}
+                            >
                               {variantId}
                             </Link>
                           </li>
