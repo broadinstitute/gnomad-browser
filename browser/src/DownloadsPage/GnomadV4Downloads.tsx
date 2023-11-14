@@ -48,7 +48,7 @@ const genomeChromosomeVcfs = [
   { chrom: '3', size: '56.96 GiB', md5: 'b0c8955adcd44e8757d9bfdb01a2e180' },
   { chrom: '4', size: '53.19 GiB', md5: '9fba0d34f3074100681b74fc489f620b' },
   { chrom: '5', size: '48.64 GiB', md5: '007112b5d72df612dcfb3dc45606dc25' },
-  { chrom: '6', size: '46.86 GiB', md5: '9b0a289a7dc7910f1a79586b8aa62593' },
+  { chrom: '6', size: '46.85 GiB', md5: '9b0a289a7dc7910f1a79586b8aa62593' },
   { chrom: '7', size: '45.95 GiB', md5: '0929e74108e1d7faab3f7e90e8af9410' },
   { chrom: '8', size: '43.03 GiB', md5: '4c6bc15f9d1232f83e89f5305cc1fbab' },
   { chrom: '9', size: '36.36 GiB', md5: '83c85e0d39b0bab7b8223642c8d2dab0' },
@@ -57,7 +57,7 @@ const genomeChromosomeVcfs = [
   { chrom: '12', size: '37.86 GiB', md5: '19d5b3abacf1c6be990b3aa8f6ca2786' },
   { chrom: '13', size: '25.65 GiB', md5: '94c6da5e72d87bf0a714d6b5c1c09272' },
   { chrom: '14', size: '26.02 GiB', md5: '145c7f1710a6b3a90044f3d14912ce4b' },
-  { chrom: '15', size: '24.64 GiB', md5: '3e04c33c6a03f91b1b071dc8c3224f77' },
+  { chrom: '15', size: '24.63 GiB', md5: '3e04c33c6a03f91b1b071dc8c3224f77' },
   { chrom: '16', size: '27.57 GiB', md5: '572a343a3d8629e0579dbd424f5147ad' },
   { chrom: '17', size: '25.17 GiB', md5: 'ac0003ebe2297dd4377c5045bb439c5c' },
   { chrom: '18', size: '21.12 GiB', md5: '4e1b5b41b0bc70c23d43904dd9ff3bb1' },
@@ -65,7 +65,8 @@ const genomeChromosomeVcfs = [
   { chrom: '20', size: '17.49 GiB', md5: 'd3ab3ed3c79c53a4fe15ced300b07ef5' },
   { chrom: '21', size: '11.47 GiB', md5: '4d2e808cbaafcd2ddc7692be0a45a924' },
   { chrom: '22', size: '12.77 GiB', md5: 'd6ba3b18b07423e3a1af56e8405a26c2' },
-  { chrom: 'X', size: '890.03 GiB', md5: 'b77d8f0219fa9a033a6f747d5fef12d9' },
+  { chrom: 'X', size: '37.05 GiB', md5: 'b77d8f0219fa9a033a6f747d5fef12d9' },
+  { chrom: 'Y', size: '890.03 MiB', md5: 'b39443d98eeb5f6735aa57e37d378edf' },
 ]
 
 const svChromosomeVcfs = [

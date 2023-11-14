@@ -32,10 +32,7 @@ RUN = True
 
 pipeline_name = "gnomad_v4_variants"
 
-
 output_sub_dir = "gnomad_v4"
-# output_sub_dir = "gnomad_v4_20231027T135454"
-# output_sub_dir = "gnomad_v4_20231027T203139"
 
 config = PipelineConfig(
     name=pipeline_name,
@@ -51,8 +48,8 @@ pipeline.add_task(
     task_function=prepare_gnomad_v4_variants,
     output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
     inputs={
-        "exome_variants_path": "gs://gnomad-matt-data-pipeline/gnomad-variant-release-2023-10-31/gnomad.exomes.v4.0.sites.ht",
-        "genome_variants_path": "gs://gnomad-matt-data-pipeline/gnomad-variant-release-2023-10-31/gnomad.genomes.v4.0.sites.ht",
+        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht",
+        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/",
     },
 )
 
@@ -63,8 +60,8 @@ pipeline.add_task(
     inputs=(
         {
             "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
-            "exome_coverage_path": "gs://gnomad-matt-data-pipeline/gnomad_v4_coverage_test_2023-10-12-1142/gnomad_v4_exome_coverage.ht",
-            "genome_coverage_path": "gs://gnomad-browser-data-pipeline/output/gnomad_v3/gnomad_v3_genome_coverage.ht",
+            "exome_coverage_path": "gs://gcp-public-data--gnomad/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht",
+            "genome_coverage_path": "gs://gcp-public-data--gnomad/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.ht",
             # "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
         }
     ),
@@ -104,7 +101,7 @@ if __name__ == "__main__":
                 "annotate_gnomad_v4_transcript_consequences",
             ],
         )
-        # copy locally using
+        # copy locally using:
         # gcloud compute scp dp-m:~/schemas . --tunnel-through-iap --recurse
 
     logger.info("Validating pipeline IO formats")

@@ -31,10 +31,9 @@ from data_pipeline.data_types.gene import reject_par_y_genes
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import prepare_gnomad_v4_constraint
 
 pipeline = Pipeline()
-# use_new_timestamp = True
 
-external_sources_subdir = "external_sources_20231029T172613"
-genes_subdir = "genes_new"
+external_sources_subdir = "external_sources"
+genes_subdir = "genes"
 constraint_subdir = "constraint"
 
 
@@ -133,8 +132,8 @@ pipeline.add_task(
     get_canonical_transcripts,
     f"/{genes_subdir}/canonical_transcripts_grch38.ht",
     {
-        "exomes": "gs://gnomad-matt-data-pipeline/exomes-2023-10-27/gnomad.exomes.v4.0.sites.ht",
-        "genomes": "gs://gnomad-matt-data-pipeline/genomes-2023-10-27/gnomad.genomes.v4.0.sites.ht",
+        "exomes": "gs://gcp-public-data--gnomad/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht",
+        "genomes": "gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht",
     },
 )
 
@@ -204,32 +203,30 @@ pipeline.add_task(
     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
 )
 
-
 pipeline.add_task(
     "prepare_gnomad_v4_constraint",
     prepare_gnomad_v4_constraint,
     f"/{constraint_subdir}/gnomad_v4_constraint.ht",
-    {"path": "gs://gnomad-matt-data-pipeline/constraint_inputs/2023-10-27/gnomad.v4.0.constraint_metrics.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"},
 )
 
 pipeline.add_task(
-    "prepare_heterozygous_variant_cooccurrence_counts",
+    "prepare_grch37_heterozygous_variant_cooccurrence_counts",
     prepare_heterozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/heterozygous_variant_cooccurrence_counts.ht",
+    f"/{genes_subdir}/genes_grch37_heterozygous_variant_cooccurrence_counts.ht",
 )
 
 pipeline.add_task(
-    "prepare_homozygous_variant_cooccurrence_counts",
+    "prepare_grch37_homozygous_variant_cooccurrence_counts",
     prepare_homozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/homozygous_variant_cooccurrence_counts.ht",
+    f"/{genes_subdir}/genes_grch37_homozygous_variant_cooccurrence_counts.ht",
 )
 
 pipeline.add_task(
     "prepare_gnomad_v2_regional_missense_constraint",
     prepare_gnomad_v2_regional_missense_constraint,
     f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint.ht",
-    # TODO: before merging - update to a more permanent location for this data
-    {"path": "gs://gnomad-matt-data-pipeline/constraint_inputs/2023-10-27/20230926_rmc_demo.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"},
 )
 
 ###############################################
@@ -255,7 +252,7 @@ pipeline.add_task(
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
         # This table can no longer be generated with current versions of Hail
         # "gtex_tissue_expression_path": pipeline.get_task("prepare_gtex_v7_expression_data"),
-        "gtex_tissue_expression_path": "gs://gnomad-matt-data-pipeline/2023-10-19/outputs/gtex/gtex_v7_tissue_expression.ht",
+        "gtex_tissue_expression_path": "gs://gnomad-v4-data-pipeline/output/gtex/gtex_v7_tissue_expression.ht",
     },
 )
 
@@ -303,10 +300,10 @@ pipeline.add_task(
     {
         "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
         "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
+            "prepare_grch37_heterozygous_variant_cooccurrence_counts"
         ),
         "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
+            "prepare_grch37_homozygous_variant_cooccurrence_counts"
         ),
     },
 )
@@ -358,25 +355,10 @@ pipeline.add_task(
 
 pipeline.add_task(
     "annotate_grch38_genes_step_5",
-    annotate_table_with_variant_cooccurrence_counts,
+    reject_par_y_genes,
     f"/{genes_subdir}/genes_grch38_annotated_5.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
-        "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_heterozygous_variant_cooccurrence_counts"
-        ),
-        "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_homozygous_variant_cooccurrence_counts"
-        ),
-    },
-)
-
-pipeline.add_task(
-    "annotate_grch38_genes_step_6",
-    reject_par_y_genes,
-    f"/{genes_subdir}/genes_grch38_annotated_6.ht",
-    {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
     },
 )
 
@@ -430,7 +412,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_6",
+        "genes_grch38": "annotate_grch38_genes_step_5",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",

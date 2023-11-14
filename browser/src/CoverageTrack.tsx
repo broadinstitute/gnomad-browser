@@ -74,6 +74,20 @@ const TitlePanel = styled.div`
   padding-right: 40px;
 `
 
+export enum MetricOptions {
+  mean = "mean",
+  median = "median",
+  over_1 = "over_1",
+  over_5 = "over_5",
+  over_10 = "over_10",
+  over_15 = "over_15",
+  over_20 = "over_20",
+  over_25 = "over_25",
+  over_30 = "over_30",
+  over_50 = "over_50",
+  over_100 = "over_100",
+}
+
 type OwnCoverageTrackProps = {
   datasets: {
     buckets: {
@@ -90,15 +104,15 @@ type OwnCoverageTrackProps = {
   height?: number
   maxCoverage?: number
   datasetId: DatasetId
+  metric?: MetricOptions
 }
 
-type CoverageTrackState = any
+type CoverageTrackState = { selectedMetric: MetricOptions }
 
 type CoverageTrackProps = OwnCoverageTrackProps & typeof CoverageTrack.defaultProps
 
 class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   static defaultProps = {
-    coverageOverThresholds: [],
     filenameForExport: () => 'coverage',
     height: 190,
     maxCoverage: 100,
@@ -106,8 +120,15 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
 
   plotElement: any
 
-  state = {
-    selectedMetric: isV4(this.props.datasetId) ? 'over_20' : 'mean',
+  constructor(props: CoverageTrackProps) {
+    super(props)
+    if (this.props.metric) {
+      this.state = { selectedMetric: this.props.metric }
+    } else if (isV4(this.props.datasetId)) {
+      this.state = { selectedMetric: MetricOptions.over_20 }
+    } else {
+      this.state = { selectedMetric: MetricOptions.mean }
+    }
   }
 
   plotRef = (el: any) => {
@@ -200,19 +221,19 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     )
     return totalBases < 100
       ? this.renderBars({
-          isPositionDefined,
-          scaleCoverageMetric,
-          scalePosition,
-          totalBases,
-          width,
-        })
+        isPositionDefined,
+        scaleCoverageMetric,
+        scalePosition,
+        totalBases,
+        width,
+      })
       : this.renderArea({
-          isPositionDefined,
-          scaleCoverageMetric,
-          scalePosition,
-          totalBases,
-          width,
-        })
+        isPositionDefined,
+        scaleCoverageMetric,
+        scalePosition,
+        totalBases,
+        width,
+      })
   }
 
   render() {
@@ -244,7 +265,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                   <option value="mean">Mean</option>
                   <option value="median">Median</option>
                 </optgroup>
-                {coverageOverThresholds.length > 0 && (
+                {coverageOverThresholds && (
                   <optgroup label="Fraction of individuals with coverage over X">
                     {coverageOverThresholds.map((threshold) => (
                       <option key={`${threshold}`} value={`over_${threshold}`}>

@@ -148,7 +148,7 @@ export default () => (
           preserveSelectedDataset={false}
           to={{
             pathname: '/variant/M-8602-T-C',
-            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
           }}
         >
           M-8602-T-C
