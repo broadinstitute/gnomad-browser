@@ -433,9 +433,9 @@ class NavigationMenu extends Component<NavigationMenuProps, State> {
   }
 }
 
-type URLBuilder = (currentLocation: Location, targetDatasetId: DatasetId) => Location
+export type URLBuilder = (currentLocation: Location, targetDatasetId: DatasetId) => Location
 
-type DatasetOptions = {
+export type DatasetOptions = {
   includeShortVariants?: boolean
   includeStructuralVariants?: boolean
   includeExac?: boolean

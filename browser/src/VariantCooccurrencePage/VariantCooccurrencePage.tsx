@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Badge, ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -430,7 +431,7 @@ const VariantCoocurrenceContainer = ({
 }
 
 type VariantCoocurrencePageProps = {
-  datasetId: string
+  datasetId: DatasetId
 }
 
 const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
