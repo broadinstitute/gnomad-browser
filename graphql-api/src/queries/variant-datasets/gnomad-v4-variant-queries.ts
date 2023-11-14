@@ -10,6 +10,8 @@ import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
+import { JsonCache } from '../helpers/json-cache'
+import largeGenes from '../helpers/large-genes'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
 
@@ -311,8 +313,16 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
   const exomeSubset = 'all'
   const genomeSubset = 'all'
 
-  if (gene.symbol === "TTN") {
-    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
+  const isLargeGene = largeGenes.includes(gene.gene_id)
+
+  const pageSize = isLargeGene ? 500 : 10000
+
+  const json_cache = new JsonCache()
+
+  if (isLargeGene) {
+    if (await json_cache.exists(gene.gene_id)) {
+      return await json_cache.get(gene.gene_id)
+    }
   }
 
   try {
@@ -341,7 +351,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
     const hits = await fetchAllSearchResults(esClient, {
       index: GNOMAD_V4_VARIANT_INDEX,
       type: '_doc',
-      size: 10000,
+      size: pageSize,
       _source: [
         `value.exome.freq.${exomeSubset}`,
         `value.genome.freq.${genomeSubset}`,
@@ -372,6 +382,10 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
           variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
+
+    if (isLargeGene) {
+      await json_cache.set(gene.gene_id, shapedHits)
+    }
 
     return shapedHits
   } catch (error) {
