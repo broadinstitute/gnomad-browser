@@ -317,14 +317,6 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
 
   const pageSize = isLargeGene ? 500 : 10000
 
-  const json_cache = new JsonCache()
-
-  if (isLargeGene) {
-    if (await json_cache.exists(gene.gene_id)) {
-      return await json_cache.get(gene.gene_id)
-    }
-  }
-
   try {
     const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
     const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
@@ -382,10 +374,6 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
           variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
-
-    if (isLargeGene) {
-      await json_cache.set(gene.gene_id, shapedHits)
-    }
 
     return shapedHits
   } catch (error) {
