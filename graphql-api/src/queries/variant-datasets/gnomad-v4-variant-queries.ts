@@ -379,10 +379,6 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
-    if (isLargeGene) {
-      await json_cache.set(gene.gene_id, shapedHits)
-    }
-
     return shapedHits
   } catch (error) {
     throw new Error(`'Error fetching variants by gene:', ${error}`)
