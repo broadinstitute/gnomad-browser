@@ -6,6 +6,7 @@ import logger from '../logger'
 import { fetchAllSearchResults, fetchIndexMetadata } from './helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { getConsequenceForContext } from './variant-datasets/shared/transcriptConsequence'
+import largeGenes from './helpers/large-genes'
 
 const CLINVAR_VARIANT_INDICES = {
   GRCh37: 'clinvar_grch37_variants',
@@ -185,11 +186,15 @@ const _fetchClinvarVariantsByGene = async (esClient: any, referenceGenome: any, 
     },
   }))
 
+  const isLargeGene = largeGenes.includes(gene.gene_id)
+
+  const pageSize = isLargeGene ? 500 : 10000
+
   const hits = await fetchAllSearchResults(esClient, {
     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     index: CLINVAR_VARIANT_INDICES[referenceGenome],
     type: '_doc',
-    size: 10000,
+    size: pageSize,
     _source: SUMMARY_QUERY_FIELDS,
     body: {
       query: {
