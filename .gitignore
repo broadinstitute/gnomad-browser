@@ -36,3 +36,28 @@ browser/cypress/videos
 browser/cypress/logs
 browser/cypress/fixtures/profile.json
 browser/cypress/fixtures/users.json
+
+# Terraform configuration
+**/*.tfvars
+**/*.tfvars.json
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+**/backend.hcl
+
+## Ignore Terraform CLI configuration files
+**/.terraform
+**/.terraform.d
+**/.terraformrc
+**/terraform.rc
+
+## Local .terraform directories
+**/.terraform/*
+
+## Terraform .tfstate files
+**/*.tfstate
+**/*.tfstate.*
+
+## Terraform crash log files
+**/crash.log
+**/crash.*.log
+
