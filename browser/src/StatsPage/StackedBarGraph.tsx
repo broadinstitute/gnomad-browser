@@ -242,6 +242,7 @@ const StackedBarGraph = withSize()(
 )
 
 const StackedBarGraphWithLegend = ({
+  id,
   barColors,
   barValues,
   formatTooltip,
@@ -250,6 +251,7 @@ const StackedBarGraphWithLegend = ({
   yLabel,
   displayNumbers,
 }: {
+  id: string
   barColors: { [x: string]: string }
   barValues: DataRow[]
   formatTooltip: (row: DataRow) => string | ReactNode
@@ -269,7 +271,7 @@ const StackedBarGraphWithLegend = ({
   })
 
   return (
-    <TwoColumns>
+    <TwoColumns id={id}>
       <GraphSide>
         <StackedBarGraph
           barColors={barColors}

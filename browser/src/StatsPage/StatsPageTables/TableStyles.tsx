@@ -1,7 +1,7 @@
 import html2canvas from 'html2canvas'
 import styled from 'styled-components'
 
-export const downloadTableAsPNG = (elementID: string) => {
+export const downloadElementAsPNG = (elementID: string) => {
   const table = document.getElementById(elementID)
 
   if (table) {

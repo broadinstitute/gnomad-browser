@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import gnomadV4AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v4/ageDistribution.json'
-import { ExternalLink, PageHeading } from '@gnomad/ui'
+import { Button, ExternalLink, PageHeading } from '@gnomad/ui'
 
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import BrowserPageviews from '../../about/stats/browser_pageviews.png'
@@ -27,6 +27,7 @@ import StackedBarGraph from './StackedBarGraph'
 import GeneticAncestryGroupsByVersionTable from './StatsPageTables/GeneticAncestryGroupsByVersionTable'
 import V4GeneticAncestryTable from './StatsPageTables/V4GeneticAncestryTable'
 import StudyDiseasesInGnomadTable from './StatsPageTables/StudyDiseasesInGnomadTable'
+import { downloadElementAsPNG } from './StatsPageTables/TableStyles'
 
 const TwoColumnLayout = styled.div`
   display: flex;
@@ -199,6 +200,7 @@ const StatsPage = () => {
             <ResponsiveHalfWidthColumn>
               <div style={{ marginTop: '4em', marginBottom: '7em' }}>
                 <StackedBarGraph
+                  id="gnomad_v4_exome_and_genome_counts_graph"
                   barColors={gnomadExomeGenomeCountsByVersion.colors}
                   barValues={gnomadExomeGenomeCountsByVersion.data}
                   height={400}
@@ -207,6 +209,13 @@ const StatsPage = () => {
                   yLabel=""
                   displayNumbers
                 />
+                <div>
+                  <Button
+                    onClick={() => downloadElementAsPNG('gnomad_v4_exome_and_genome_counts_graph')}
+                  >
+                    Download Graph
+                  </Button>
+                </div>
               </div>
               <CenteredContainer>
                 <img
@@ -341,9 +350,10 @@ const StatsPage = () => {
             <GeneticAncestryGroupsByVersionTable />
           </ResponsiveTable>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '1em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '1em' }}>
               <StackedBarGraph
+                id="gnomad_v4_genetic_ancestry_counts"
                 barColors={gnomadV4GeneticAncestryCounts.colors}
                 barValues={gnomadV4GeneticAncestryCounts.data}
                 height={400}
@@ -354,8 +364,13 @@ const StatsPage = () => {
               />
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
+          <div style={{ marginLeft: '9em', marginBottom: '2.5em' }}>
+            <Button onClick={() => downloadElementAsPNG('gnomad_v4_genetic_ancestry_counts')}>
+              Download Graph
+            </Button>
+          </div>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '6em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '0' }}>
               <div
                 style={{
@@ -372,6 +387,7 @@ const StatsPage = () => {
                 </b>
               </div>
               <StackedBarGraph
+                id="gnomad_v4_non_synonymous_coding_variants_with_AF_GT_0_1"
                 barColors={gnomadV4GeneticDiversityCounts.colors}
                 barValues={gnomadV4GeneticDiversityCounts.data}
                 height={400}
@@ -382,6 +398,15 @@ const StatsPage = () => {
               />
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
+          <div style={{ marginLeft: '9em', marginBottom: '5.5em' }}>
+            <Button
+              onClick={() =>
+                downloadElementAsPNG('gnomad_v4_non_synonymous_coding_variants_with_AF_GT_0_1')
+              }
+            >
+              Download Graph
+            </Button>
+          </div>
         </StatsSection>
 
         <StatsSection>

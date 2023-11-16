@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from '@gnomad/ui'
 
 import {
-  downloadTableAsPNG,
+  downloadElementAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -245,7 +245,7 @@ const V4GeneticAncestryTable = () => {
         </StatsTableCaption>
       </StatsTable>
       <div>
-        <Button onClick={() => downloadTableAsPNG(elementID)}>Download Table</Button>
+        <Button onClick={() => downloadElementAsPNG(elementID)}>Download Table</Button>
       </div>
     </div>
   )

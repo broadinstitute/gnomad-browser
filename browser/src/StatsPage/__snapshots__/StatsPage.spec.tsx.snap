@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stats Page has no unexpected changes 1`] = `
-.c40 {
+.c18 {
   box-sizing: border-box;
   height: calc(2em + 2px);
   padding: 0.375em 0.75em;
@@ -20,40 +20,40 @@ exports[`Stats Page has no unexpected changes 1`] = `
   user-select: none;
 }
 
-.c40:active,
-.c40:hover {
+.c18:active,
+.c18:hover {
   background-color: #cbd3da;
 }
 
-.c40:disabled {
+.c18:disabled {
   background-color: rgba(248,249,250,0.5);
   cursor: not-allowed;
 }
 
-.c40:focus {
+.c18:focus {
   box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
 }
 
-.c40 svg {
+.c18 svg {
   position: relative;
   top: 0.11em;
   width: 0.9em;
   height: 0.9em;
 }
 
-.c32 {
+.c33 {
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c32:visited,
-.c32:active {
+.c33:visited,
+.c33:active {
   color: #1173bb;
 }
 
-.c32:focus,
-.c32:hover {
+.c33:focus,
+.c33:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -80,23 +80,23 @@ exports[`Stats Page has no unexpected changes 1`] = `
   margin: 0;
 }
 
-.c23 {
+.c24 {
   overflow: hidden;
   width: 100%;
   height: 100%;
   margin-bottom: 1em;
 }
 
-.c24 {
+.c25 {
   pointer-events: visible;
   fill: none;
 }
 
-.c24:hover {
+.c25:hover {
   fill: rgba(0,0,0,0.05);
 }
 
-.c21 {
+.c22 {
   position: absolute;
   -webkit-transform: translate(-15px,calc(50% - 0.5em));
   -ms-transform: translate(-15px,calc(50% - 0.5em));
@@ -115,27 +115,27 @@ exports[`Stats Page has no unexpected changes 1`] = `
   vertical-align: middle;
 }
 
-.c19 {
+.c20 {
   position: relative;
 }
 
-.c19:hover .c20 {
+.c20:hover .c21 {
   visibility: visible;
 }
 
-.c26 {
+.c27 {
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c26:visited,
-.c26:active {
+.c27:visited,
+.c27:active {
   color: #1173bb;
 }
 
-.c26:focus,
-.c26:hover {
+.c27:focus,
+.c27:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -239,7 +239,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   fill: rgba(0,0,0,0.05);
 }
 
-.c34 {
+.c35 {
   border-collapse: collapse;
   min-width: 400px;
   font-size: 0.9em;
@@ -249,49 +249,49 @@ exports[`Stats Page has no unexpected changes 1`] = `
   letter-spacing: 0.01px;
 }
 
-.c34 th,
-.c34 td {
+.c35 th,
+.c35 td {
   padding: 12px 15px;
   text-align: center;
 }
 
-.c35 {
+.c36 {
   background-color: #0e6fbf;
   color: #fafafa;
 }
 
-.c35 th {
+.c36 th {
   font-weight: bold;
 }
 
-.c36 {
+.c37 {
   background-color: #41a2f1;
   color: #fafafa;
 }
 
-.c36 th {
+.c37 th {
   font-weight: normal;
 }
 
-.c38 tr {
+.c39 tr {
   background-color: #508a14;
   color: #fafafa;
 }
 
-.c38 td {
+.c39 td {
   font-weight: bold;
 }
 
-.c37 tr {
+.c38 tr {
   border-bottom: 1px solid #ddd;
   text-align: center;
 }
 
-.c37 tr:nth-of-type(even) {
+.c38 tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 
-.c39 {
+.c40 {
   caption-side: bottom;
   text-align: left;
 }
@@ -311,7 +311,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   width: 50%;
 }
 
-.c22 {
+.c23 {
   width: 70%;
 }
 
@@ -330,11 +330,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
   width: 70%;
 }
 
-.c25 {
+.c26 {
   width: 30%;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -345,7 +345,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c33 {
+.c34 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -360,7 +360,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   margin-bottom: 5em;
 }
 
-.c27 {
+.c28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -382,7 +382,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-align: center;
 }
 
-.c30 {
+.c31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -404,17 +404,17 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-align: center;
 }
 
-.c28 {
+.c29 {
   margin: 0;
   font-size: 3.75em;
 }
 
-.c29 {
+.c30 {
   margin: 0;
   font-size: 1.25em;
 }
 
-.c31 {
+.c32 {
   color: #508a14;
   font-weight: bold;
 }
@@ -488,7 +488,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c22 {
+  .c23 {
     width: 100%;
   }
 }
@@ -508,13 +508,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c25 {
+  .c26 {
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c33 {
+  .c34 {
     display: block;
   }
 }
@@ -726,6 +726,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <div
               className="c10"
+              id="gnomad_v4_exome_and_genome_counts_graph"
             >
               <div
                 className="c11"
@@ -1590,9 +1591,18 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </div>
               </div>
             </div>
+            <div>
+              <button
+                className="c18"
+                onClick={[Function]}
+                type="button"
+              >
+                Download Graph
+              </button>
+            </div>
           </div>
           <div
-            className="c18"
+            className="c19"
           >
             <img
               alt="2.9x increase in non-European individuals"
@@ -1608,14 +1618,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#age-and-sex-distribution"
             id="age-and-sex-distribution"
           >
@@ -1634,7 +1644,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         className="c4"
       >
         <div
-          className="c22"
+          className="c23"
         >
           <h3>
             Age
@@ -1649,7 +1659,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 Exomes
               </p>
               <div
-                className="c23"
+                className="c24"
               >
                 <svg
                   height={250}
@@ -2739,7 +2749,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={170.2124439358423}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2756,7 +2766,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={174.45670831872127}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2773,7 +2783,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={173.67762417172705}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2790,7 +2800,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={102.9653555805755}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2807,7 +2817,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={78.89846619538936}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2824,7 +2834,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={62.019417117333276}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2841,7 +2851,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={42.07718857860057}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2858,7 +2868,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2875,7 +2885,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={41.57717934993262}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2892,7 +2902,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={169.54797984458924}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2909,7 +2919,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={175.32549511803467}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2926,7 +2936,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={176.7607375551413}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2945,7 +2955,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 Genomes
               </p>
               <div
-                className="c23"
+                className="c24"
               >
                 <svg
                   height={250}
@@ -3949,7 +3959,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={21.979920616390384}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -3966,7 +3976,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={124.02054634601916}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -3983,7 +3993,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={121.12070978286248}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4000,7 +4010,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={110.99229512024282}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4017,7 +4027,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={56.06350688769553}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4034,7 +4044,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4051,7 +4061,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={28.66215269670792}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4068,7 +4078,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={42.06864347420032}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4085,7 +4095,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={57.744571561989254}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4102,7 +4112,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={97.83796404389446}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4119,7 +4129,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={129.48400653747373}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4136,7 +4146,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={161.59234181648375}
                     />
                     <rect
-                      className="c24"
+                      className="c25"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4151,7 +4161,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
         </div>
         <div
-          className="c25"
+          className="c26"
         >
           <h3>
             Sex
@@ -4176,7 +4186,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         To learn more about how we calculate the sex and age distribution please see our
          
         <a
-          className="-Link c26"
+          className="-Link c27"
           href="/help"
           onClick={[Function]}
         >
@@ -4188,14 +4198,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#samples"
             id="samples"
           >
@@ -4221,32 +4231,32 @@ exports[`Stats Page has no unexpected changes 1`] = `
           className="c4"
         >
           <div
-            className="c27"
+            className="c28"
           >
             <div>
               <h1
-                className="c28"
+                className="c29"
               >
                 308
               </h1>
               <p
-                className="c29"
+                className="c30"
               >
                 Data Contributors
               </p>
             </div>
           </div>
           <div
-            className="c30"
+            className="c31"
           >
             <div>
               <h1
-                className="c28"
+                className="c29"
               >
                 &gt;100
               </h1>
               <p
-                className="c29"
+                className="c30"
               >
                 Studies from around the world
               </p>
@@ -4262,7 +4272,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         Version 4 of gnomAD contains samples with IRBs based in at least 25 different countries, including:
          
         <span
-          className="c31"
+          className="c32"
         >
           Australia, Bangladesh, Belgium, Canada, China, England, Finland, France, Germany, Israel, Italy, Japan, Kenya, Korea, Lithuania, Mexico, Netherlands, Pakistan, Scotland, Singapore, Spain, Sweden, United Arab Emirates, United States, Wales.
         </span>
@@ -4271,7 +4281,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         To see a list of studies included in gnomAD and data contributors please visit our
          
         <a
-          className="-Link c26"
+          className="-Link c27"
           href="/about"
           onClick={[Function]}
         >
@@ -4284,14 +4294,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#diversity"
             id="diversity"
           >
@@ -4338,7 +4348,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
             To learn more about how we determine genetic ancestry groups please see our
              
             <a
-              className="-Link c26"
+              className="-Link c27"
               href="help/ancestry"
               onClick={[Function]}
             >
@@ -4347,7 +4357,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
              and
              
             <a
-              className="c32"
+              className="c33"
               href="https://gnomad.broadinstitute.org/news/2023-11-genetic-ancestry"
               rel="noopener noreferrer"
               target="_blank"
@@ -4360,7 +4370,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="c33"
+        className="c34"
         style={
           {
             "marginBottom": "3em",
@@ -4369,7 +4379,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c34"
+            className="c35"
             id="gnomad-genetic-ancestry-group-size-by-version-table"
             style={
               {
@@ -4379,7 +4389,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c35"
+                className="c36"
               >
                 <th>
                    
@@ -4400,7 +4410,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c36"
+                className="c37"
               >
                 <th>
                    
@@ -4426,7 +4436,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c37"
+              className="c38"
             >
               <tr>
                 <td>
@@ -4614,7 +4624,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c38"
+              className="c39"
             >
               <tr>
                 <td>
@@ -4641,7 +4651,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c39"
+              className="c40"
             >
               <div>
                 *v4 includes all v3 samples.
@@ -4653,7 +4663,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c40"
+              className="c18"
               onClick={[Function]}
               type="button"
             >
@@ -4666,7 +4676,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         className="c41"
         style={
           {
-            "marginBottom": "1em",
+            "marginBottom": "0.5em",
           }
         }
       >
@@ -4681,6 +4691,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         >
           <div
             className="c10"
+            id="gnomad_v4_genetic_ancestry_counts"
           >
             <div
               className="c11"
@@ -6068,10 +6079,26 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
+        style={
+          {
+            "marginBottom": "2.5em",
+            "marginLeft": "9em",
+          }
+        }
+      >
+        <button
+          className="c18"
+          onClick={[Function]}
+          type="button"
+        >
+          Download Graph
+        </button>
+      </div>
+      <div
         className="c41"
         style={
           {
-            "marginBottom": "6em",
+            "marginBottom": "0.5em",
           }
         }
       >
@@ -6106,6 +6133,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
           <div
             className="c10"
+            id="gnomad_v4_non_synonymous_coding_variants_with_AF_GT_0_1"
           >
             <div
               className="c11"
@@ -7349,19 +7377,35 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
         </div>
       </div>
+      <div
+        style={
+          {
+            "marginBottom": "5.5em",
+            "marginLeft": "9em",
+          }
+        }
+      >
+        <button
+          className="c18"
+          onClick={[Function]}
+          type="button"
+        >
+          Download Graph
+        </button>
+      </div>
     </div>
     <div
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#study-provided-labels"
             id="study-provided-labels"
           >
@@ -7379,7 +7423,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <p>
         The following table is provided in order to present how our inferred genetic ancestry groups correspond to descriptors provided by each contributing
         <a
-          className="-Link c26"
+          className="-Link c27"
           href="/about"
           onClick={[Function]}
         >
@@ -7392,11 +7436,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
         It is of note that imputed ancestry groups are genetically derived, while the study-provided labels are either self-reported or researcher assigned. As such, these values have no equivalency.
       </p>
       <div
-        className="c33"
+        className="c34"
       >
         <div>
           <table
-            className="c34"
+            className="c35"
             id="gnomad-v4-genetic-ancestry-group-size-table"
             style={
               {
@@ -7406,7 +7450,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c35"
+                className="c36"
               >
                 <th
                   style={
@@ -7458,7 +7502,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c36"
+                className="c37"
               >
                 <th>
                   <i>
@@ -7483,7 +7527,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c37"
+              className="c38"
             >
               <tr>
                 <td>
@@ -7785,7 +7829,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <caption
-              className="c39"
+              className="c40"
             >
               <div>
                 *Study-provided labels are the descriptions given to the gnomAD team in the accompanying metadata. These labels can sometime be assigned at the study-level, others are provided at the individual level.
@@ -7798,7 +7842,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c40"
+              className="c18"
               onClick={[Function]}
               type="button"
             >
@@ -7812,14 +7856,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#study-diseases"
             id="study-diseases"
           >
@@ -7850,7 +7894,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
          
       </p>
       <div
-        className="c33"
+        className="c34"
         style={
           {
             "marginBottom": "3em",
@@ -7859,7 +7903,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c34"
+            className="c35"
             id="study-diseases-in-gnomad-table"
             style={
               {
@@ -7869,7 +7913,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           >
             <thead>
               <tr
-                className="c35"
+                className="c36"
               >
                 <th>
                   Phenotypes
@@ -7892,7 +7936,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c37"
+              className="c38"
             >
               <tr>
                 <td>
@@ -8136,7 +8180,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c38"
+              className="c39"
             >
               <tr>
                 <td>
@@ -8160,7 +8204,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c39"
+              className="c40"
             >
               <div>
                 * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as the FinnGen and MGB biobank samples when no phenotype was specified
@@ -8177,7 +8221,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </table>
           <div>
             <button
-              className="c40"
+              className="c18"
               onClick={[Function]}
               type="button"
             >
@@ -8191,14 +8235,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c19"
+        className="c20"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c20 c21"
+            className="c21 c22"
             href="#browser"
             id="browser"
           >
