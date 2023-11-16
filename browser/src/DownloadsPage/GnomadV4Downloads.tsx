@@ -39,7 +39,7 @@ const exomeChromosomeVcfs = [
   { chrom: '21', size: '3.27 GiB', md5: '206afe8d9dbe544697e1b67eee6d2f7f' },
   { chrom: '22', size: '7.31 GiB', md5: '3084349c03194e8cf5063a1e46473248' },
   { chrom: 'X', size: '7.96 GiB', md5: '6d33a288735eda242c473905ccb6743b' },
-  { chrom: 'Y', size: '860.03 MiB', md5: '8c231b75745b6670555915847c9999e8' },
+  { chrom: 'Y', size: '163.66 MiB', md5: 'c8414744cf75fa498e2497a9391eb1ad' },
 ]
 
 const genomeChromosomeVcfs = [
@@ -66,7 +66,7 @@ const genomeChromosomeVcfs = [
   { chrom: '21', size: '11.47 GiB', md5: '4d2e808cbaafcd2ddc7692be0a45a924' },
   { chrom: '22', size: '12.77 GiB', md5: 'd6ba3b18b07423e3a1af56e8405a26c2' },
   { chrom: 'X', size: '37.05 GiB', md5: 'b77d8f0219fa9a033a6f747d5fef12d9' },
-  { chrom: 'Y', size: '890.03 MiB', md5: 'b39443d98eeb5f6735aa57e37d378edf' },
+  { chrom: 'Y', size: '890.03 MiB', md5: '8c231b75745b6670555915847c9999e8' },
 ]
 
 const svChromosomeVcfs = [
