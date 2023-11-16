@@ -712,17 +712,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           rel="noopener noreferrer"
           target="_blank"
         >
-          v4 blog post
-        </a>
-        , and the
-         
-        <a
-          className="c10"
-          href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/README.txt"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          gnomAD v4.0.0 README
+          gnomAD v4.0.0 blog post
         </a>
         .
       </p>
