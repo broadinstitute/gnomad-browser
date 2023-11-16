@@ -75,7 +75,7 @@ export const withCache = (fn: any, keyFn: any, options = {}) => {
     const cacheKey = keyFn(...args)
 
     if (jsonCache) {
-      const json_cache = new JsonCache(config.JSON_CACHE_PATH)
+      const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
       if (await json_cache.exists(cacheKey)) {
         return json_cache.get(cacheKey)
       }
