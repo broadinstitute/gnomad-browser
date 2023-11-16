@@ -691,6 +691,15 @@ exports[`Help Page has no unexpected changes 1`] = `
       <li>
         <a
           className="-Link c3"
+          href="/help/grpmax"
+          onClick={[Function]}
+        >
+          grpmax
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
           href="/help/constraint"
           onClick={[Function]}
         >
@@ -941,6 +950,17 @@ exports[`Help Page has no unexpected changes 1`] = `
               onClick={[Function]}
             >
               faf
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/grpmax"
+              onClick={[Function]}
+            >
+              grpmax
             </a>
           </li>
           <li
