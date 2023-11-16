@@ -44,7 +44,8 @@ const config: Record<string, any> = {
 
   // JSON caching
   JSON_CACHE_PATH: env.JSON_CACHE_PATH,
-  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === "true" || false
+  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === "true" || false,
+  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === "true" || false
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']

@@ -1,24 +1,52 @@
 import { promises as fs } from 'fs';
-import { join } from 'path'
+import { join, dirname } from 'path'
+import { gzip, gunzip } from 'zlib';
+import { promisify } from 'util';
 
 import { Storage, Bucket } from '@google-cloud/storage'
 
 import config from '../../config'
 
-export async function writeJsonToFile(obj: any, path: string): Promise<void> {
+const gzipAsync = promisify(gzip);
+const gunzipAsync = promisify(gunzip);
+
+async function createDirectoryIfNotExists(path: string): Promise<void> {
   try {
+    await fs.mkdir(path, { recursive: true });
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException
+    if (err.code !== 'EEXIST') {
+      throw error;
+    }
+  }
+}
+
+export async function writeJsonToFile(obj: any, path: string, useCompression: boolean = false): Promise<void> {
+  try {
+    createDirectoryIfNotExists(dirname(path))
     const jsonString = JSON.stringify(obj);
-    await fs.writeFile(path, jsonString, 'utf8');
-    console.log('JSON written to file successfully.');
+
+    if (useCompression) {
+      const compressedData = await gzipAsync(jsonString)
+      await fs.writeFile(path, compressedData)
+    } else {
+      await fs.writeFile(path, jsonString, 'utf8');
+    }
   } catch (err) {
     console.error('Error writing JSON to file:', err);
   }
 }
 
-export async function readJsonFromFile<T>(path: string): Promise<T> {
+export async function readJsonFromFile<T>(path: string, useCompression: boolean = false): Promise<T> {
   try {
-    const data = await fs.readFile(path, 'utf8');
-    return JSON.parse(data) as T;
+    if (useCompression) {
+      const data = await fs.readFile(path);
+      const decompressedContents = await gunzipAsync(data);
+      return JSON.parse(decompressedContents.toString('utf8')) as T
+    } else {
+      const data = await fs.readFile(path, "utf8");
+      return JSON.parse(data) as T;
+    }
   } catch (err) {
     console.error('Error reading JSON from file:', err);
     throw err;
@@ -32,6 +60,38 @@ async function fileExists(path: string): Promise<boolean> {
   } catch (err) {
     return false;
   }
+}
+
+
+export async function writeJsonToFileGcs(obj: any, bucket: Bucket, path: string, useCompression: boolean = false): Promise<void> {
+
+  const file = bucket.file(path)
+  const data = JSON.stringify(obj)
+
+  if (useCompression) {
+    const compressedData = await gzipAsync(data);
+    await file.save(compressedData)
+  } else {
+    await file.save(data)
+  }
+}
+
+export async function readJsonFromFileGcs<T>(path: string, bucket: Bucket, useCompression: boolean = false): Promise<T> {
+  try {
+    const file = bucket.file(path)
+    const [compressedContents] = await file.download()
+    const contents = await gunzipAsync(compressedContents);
+    return JSON.parse(contents.toString('utf-8'))
+  } catch (error) {
+    throw error
+  }
+}
+
+async function fileExistsGcs(path: string, bucket: Bucket): Promise<boolean> {
+  const file = bucket.file(path)
+  const [exists] = await file.exists()
+  console.log(`Key ${path} exists in cache`)
+  return exists
 }
 
 function extractBucketName(gcsPath: string): string | null {
@@ -58,16 +118,20 @@ export class JsonCache<T> {
   private json_cache_path: string
   private bucketName: string | null
   private bucket?: Bucket
+  private useCompression: boolean = false
 
   filePathFromCacheKey(key: string): string {
-    const fileName = `${key.replace(/:/g, "-")}.json`
+    const gzipExt = this.useCompression ? ".gz" : ""
+    const fileName = `${key.replace(/:/g, "-")}.json${gzipExt}`
     return join(this.json_cache_path, fileName)
   }
 
-  constructor(json_cache_path: string) {
+  constructor(json_cache_path: string, compression: boolean = false) {
     this.json_cache_path = json_cache_path
 
     this.bucketName = extractBucketName(json_cache_path)
+
+    this.useCompression = compression
 
     if (this.bucketName) {
       const storage = new Storage();
@@ -85,45 +149,37 @@ export class JsonCache<T> {
         this.bucket = bucket
       }
     }
-
-    console.log(`Storage bucket: ${this.bucketName}`)
   }
 
   async set(key: string, value: T): Promise<void> {
+    console.log(`Cache insert ${key}`)
     const filePath = this.filePathFromCacheKey(key)
 
     if (this.bucket) {
-      const file = this.bucket.file(filePath)
-      await file.save(JSON.stringify(value))
+      await writeJsonToFileGcs(value, this.bucket, filePath, this.useCompression)
+
     } else {
-      await writeJsonToFile(value, filePath)
+      await writeJsonToFile(value, filePath, this.useCompression)
     }
   }
 
   async get(key: string): Promise<T | undefined> {
-    console.log(`Getting ${key} from cache`)
+    console.log(`Cache hit ${key}`)
     const filePath = this.filePathFromCacheKey(key)
     if (this.bucket) {
-      try {
-        const file = this.bucket.file(filePath)
-        const [contents] = await file.download()
-        return JSON.parse(contents.toString('utf-8'))
-      } catch (error) {
-        throw error
-      }
+      return await readJsonFromFileGcs(filePath, this.bucket, this.useCompression)
 
     } else {
-      return await readJsonFromFile(filePath)
+      return await readJsonFromFile(filePath, this.useCompression)
     }
   }
 
   async exists(key: string): Promise<boolean> {
+
     const filePath = this.filePathFromCacheKey(key)
 
     if (this.bucket) {
-      const file = this.bucket.file(filePath)
-      const [exists] = await file.exists()
-      return exists
+      return await fileExistsGcs(filePath, this.bucket)
     } else {
       return await fileExists(filePath)
     }
