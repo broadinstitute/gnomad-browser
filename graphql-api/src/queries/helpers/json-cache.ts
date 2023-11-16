@@ -1,8 +1,9 @@
 import { promises as fs } from 'fs';
-import path from 'path'
+import { join } from 'path'
+
+import { Storage, Bucket } from '@google-cloud/storage'
 
 import config from '../../config'
-
 
 export async function writeJsonToFile(obj: any, path: string): Promise<void> {
   try {
@@ -32,23 +33,100 @@ async function fileExists(path: string): Promise<boolean> {
     return false;
   }
 }
+
+function extractBucketName(gcsPath: string): string | null {
+  const regex = /^gs:\/\/([^\/]+)\/?.*$/;
+  const match = gcsPath.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+  return null
+}
+
+function extractGcsPath(gcsUrl: string): string | null {
+  const regex = /^gs:\/\/[^\/]+\/(.+)$/;
+  const match = gcsUrl.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+  return null
+}
+
 export class JsonCache<T> {
+  private json_cache_path: string
+  private bucketName: string | null
+  private bucket?: Bucket
 
   filePathFromCacheKey(key: string): string {
-    const fileName = key.replace(/:/g, "-") + ".json"
-    return path.join(config.JSON_CACHE_PATH, fileName)
+    const fileName = `${key.replace(/:/g, "-")}.json`
+    return join(this.json_cache_path, fileName)
+  }
+
+  constructor(json_cache_path: string) {
+    this.json_cache_path = json_cache_path
+
+    this.bucketName = extractBucketName(json_cache_path)
+
+    if (this.bucketName) {
+      const storage = new Storage();
+      const bucket = storage.bucket(this.bucketName)
+
+      const gcsPath = extractGcsPath(json_cache_path)
+
+      if (!gcsPath) {
+        throw new Error("Could not determine gcs path even though using bucket")
+      } else {
+        this.json_cache_path = gcsPath
+      }
+
+      if (bucket) {
+        this.bucket = bucket
+      }
+    }
+
+    console.log(`Storage bucket: ${this.bucketName}`)
   }
 
   async set(key: string, value: T): Promise<void> {
-    await writeJsonToFile(value, this.filePathFromCacheKey(key))
+    const filePath = this.filePathFromCacheKey(key)
+
+    if (this.bucket) {
+      const file = this.bucket.file(filePath)
+      await file.save(JSON.stringify(value))
+    } else {
+      await writeJsonToFile(value, filePath)
+    }
   }
 
   async get(key: string): Promise<T | undefined> {
-    return await readJsonFromFile(this.filePathFromCacheKey(key))
+    console.log(`Getting ${key} from cache`)
+    const filePath = this.filePathFromCacheKey(key)
+    if (this.bucket) {
+      try {
+        const file = this.bucket.file(filePath)
+        const [contents] = await file.download()
+        return JSON.parse(contents.toString('utf-8'))
+      } catch (error) {
+        throw error
+      }
+
+    } else {
+      return await readJsonFromFile(filePath)
+    }
   }
 
   async exists(key: string): Promise<boolean> {
-    return await fileExists(this.filePathFromCacheKey(key))
+    const filePath = this.filePathFromCacheKey(key)
+
+    if (this.bucket) {
+      const file = this.bucket.file(filePath)
+      const [exists] = await file.exists()
+      return exists
+    } else {
+      return await fileExists(filePath)
+    }
   }
 }
 
