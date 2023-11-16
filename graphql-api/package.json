@@ -6,6 +6,7 @@
     "@elastic/elasticsearch": "6",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "^2.3.2",
+    "@google-cloud/storage": "^7.6.0",
     "@graphql-tools/load-files": "^6.0.12",
     "@graphql-tools/merge": "^6.0.12",
     "@graphql-tools/schema": "^6.0.12",
