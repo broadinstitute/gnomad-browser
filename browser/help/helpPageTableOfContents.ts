@@ -11,6 +11,7 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     'relatedness-filtering',
     'vep',
     'faf',
+    'grpmax',
     'constraint',
     'pext',
     'regional-constraint',
