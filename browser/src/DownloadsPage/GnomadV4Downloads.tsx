@@ -120,12 +120,7 @@ const GnomadV4Downloads = () => {
           For more information, read the{' '}
           {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
-            v4 blog post
-          </ExternalLink>
-          , and the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-          <ExternalLink href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/README.txt">
-            gnomAD v4.0.0 README
+            gnomAD v4.0.0 blog post
           </ExternalLink>
           .
         </p>
