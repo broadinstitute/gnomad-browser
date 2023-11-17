@@ -772,7 +772,7 @@ exports[`RegionPageContainer with dataset gnomad_r4 queries API with correct par
   variables={
     {
       "chrom": "12",
-      "includeShortTandemRepeats": false,
+      "includeShortTandemRepeats": true,
       "referenceGenome": "GRCh38",
       "shortTandemRepeatDatasetId": "gnomad_r3",
       "start": 345,
