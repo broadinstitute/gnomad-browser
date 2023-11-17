@@ -26,9 +26,10 @@ const ShortTandemRepeatReadImage = styled.img`
 
   &.zoomedIn {
     position: absolute;
-    left: 10px;
+    left: 0;
     display: block;
     cursor: zoom-out;
+    padding: 10px;
   }
 `
 
