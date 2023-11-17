@@ -2,7 +2,7 @@ import React from 'react'
 
 import { BaseTable, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, hasShortTandemRepeats, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -133,7 +133,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
       >
         Pathogenic Short Tandem Repeats
       </GnomadPageHeading>
-      {datasetId === 'gnomad_r3' ? (
+      {hasShortTandemRepeats(datasetId) ? (
         <Query
           operationName={operationName}
           query={query}
