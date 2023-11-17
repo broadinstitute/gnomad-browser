@@ -133,7 +133,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht"
-                  includeAzure={false}
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -144,7 +143,6 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAzure={false}
                   />
                 </ListItem>
               ))}
@@ -159,7 +157,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/"
-                  includeAzure={false}
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -170,7 +167,6 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAzure={false}
                   />
                 </ListItem>
               ))}
@@ -187,7 +183,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome coverage Hail Table"
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -197,7 +192,6 @@ const GnomadV4Downloads = () => {
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.summary.tsv.bgz"
               size="3.77 GiB"
               md5="a6955332c9cccae7efb9c95581282a73"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -218,8 +212,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Constraint metrics Hail Table"
               path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -227,8 +219,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Constraint metrics TSV"
               path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -249,7 +239,6 @@ const GnomadV4Downloads = () => {
                 path={`/release/4.0/genome_sv/gnomad.v4.0.sv.chr${chrom}.vcf.gz`}
                 size={size}
                 crc32={crc32}
-                includeAzure={false}
               />
             </ListItem>
           ))}
@@ -268,7 +257,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.all.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -276,7 +264,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV non neuro VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -284,7 +271,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome CNV non-neuro controls VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro_controls.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -298,7 +284,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome sex ploidy cutoffs TSV"
               path="/release/4.0/sex_inference/gnomad.exomes.v4.0.sample_qc.sex_inference.ploidy_cutoffs.tsv"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -306,7 +291,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome calling intervals Hail Table"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.interval_list.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -314,7 +298,6 @@ const GnomadV4Downloads = () => {
             <GenericDownloadLinks
               label="Exome calling intervals flat file"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
