@@ -444,19 +444,18 @@ exports[`Home Page has no unexpected changes 1`] = `
       className="c7"
     >
       <a
-        className="c9"
-        href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3"
-        rel="noopener noreferrer"
-        target="_blank"
+        className="-Link c8"
+        href="/short-tandem-repeats?dataset=gnomad_r4"
+        onClick={[Function]}
       >
         Short tandem repeat
+         
       </a>
-       
       locus:
        
       <a
         className="-Link c8"
-        href="short-tandem-repeat/ATXN1?dataset=gnomad_r3"
+        href="short-tandem-repeat/ATXN1?dataset=gnomad_r4"
         onClick={[Function]}
       >
         ATXN1
