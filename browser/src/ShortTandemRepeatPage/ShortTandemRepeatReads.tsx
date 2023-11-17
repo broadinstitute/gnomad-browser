@@ -51,7 +51,7 @@ type ShortTandemRepeatReadProps = {
 }
 
 const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
-  const [readZoom, setReadZoom] = useState('zoomedOut')
+  const [readImageZoom, setReadImageZoom] = useState('zoomedOut')
 
   return (
     <div>
@@ -94,8 +94,8 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
         <ShortTandemRepeatReadImage
           alt="REViewer read visualization"
           src={read.path}
-          className={readZoom}
-          onClick={() => setReadZoom(readZoom === 'zoomedOut' ? 'zoomedIn' : 'zoomedOut')}
+          className={readImageZoom}
+          onClick={() => setReadImageZoom(readImageZoom === 'zoomedOut' ? 'zoomedIn' : 'zoomedOut')}
         />
       </ShortTandemRepeatReadImageWrapper>
     </div>
