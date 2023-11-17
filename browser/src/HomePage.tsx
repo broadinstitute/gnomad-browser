@@ -156,16 +156,21 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r3">
-          Short tandem repeat
-        </ExternalLink>{' '}
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/short-tandem-repeats',
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
+          }}
+        >
+          Short tandem repeat{' '}
+        </Link>
         locus:{' '}
         <Link
           preserveSelectedDataset={false}
           to={{
             pathname: 'short-tandem-repeat/ATXN1',
-            search: queryString.stringify({ dataset: 'gnomad_r3' }),
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
           }}
         >
           ATXN1
