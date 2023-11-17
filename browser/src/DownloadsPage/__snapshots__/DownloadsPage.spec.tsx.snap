@@ -754,6 +754,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               >
                 Amazon
               </button>
+               / 
+              <button
+                aria-label="Show Microsoft URL for Sites Hail Table"
+                className="c21"
+                onClick={[Function]}
+                type="button"
+              >
+                Microsoft
+              </button>
             </li>
             <li
               className="c20"
@@ -790,6 +799,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr1 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr1.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -813,6 +832,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr1 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr1.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -851,6 +880,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr2 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr2.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -874,6 +913,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr2 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr2.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -912,6 +961,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr3 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr3.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -935,6 +994,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr3 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr3.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -973,6 +1042,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr4 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr4.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -996,6 +1075,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr4 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr4.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1034,6 +1123,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr5 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr5.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1057,6 +1156,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr5 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr5.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1095,6 +1204,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr6 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr6.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1118,6 +1237,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr6 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr6.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1156,6 +1285,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr7 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr7.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1179,6 +1318,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr7 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr7.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1217,6 +1366,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr8 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr8.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1240,6 +1399,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr8 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr8.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1278,6 +1447,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr9 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr9.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1301,6 +1480,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr9 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr9.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1339,6 +1528,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr10 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr10.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1362,6 +1561,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr10 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr10.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1400,6 +1609,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr11 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr11.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1423,6 +1642,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr11 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr11.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1461,6 +1690,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr12 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr12.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1484,6 +1723,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr12 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr12.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1522,6 +1771,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr13 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr13.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1545,6 +1804,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr13 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr13.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1583,6 +1852,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr14 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr14.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1606,6 +1885,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr14 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr14.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1644,6 +1933,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr15 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr15.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1667,6 +1966,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr15 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr15.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1705,6 +2014,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr16 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr16.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1728,6 +2047,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr16 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr16.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1766,6 +2095,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr17 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr17.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1789,6 +2128,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr17 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr17.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1827,6 +2176,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr18 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr18.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1850,6 +2209,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr18 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr18.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1888,6 +2257,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr19 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr19.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1911,6 +2290,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr19 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr19.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -1949,6 +2338,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr20 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr20.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -1972,6 +2371,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr20 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr20.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2010,6 +2419,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr21 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr21.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2033,6 +2452,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr21 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr21.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2071,6 +2500,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr22 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr22.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2094,6 +2533,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr22 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr22.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2132,6 +2581,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chrX sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrX.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2155,6 +2614,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrX sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrX.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2193,6 +2662,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chrY sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrY.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2216,6 +2695,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrY.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2256,6 +2745,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               >
                 Amazon
               </button>
+               / 
+              <button
+                aria-label="Show Microsoft URL for Sites Hail Table"
+                className="c21"
+                onClick={[Function]}
+                type="button"
+              >
+                Microsoft
+              </button>
             </li>
             <li
               className="c20"
@@ -2292,6 +2790,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr1 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr1.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2315,6 +2823,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr1 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr1.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2353,6 +2871,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr2 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr2.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2376,6 +2904,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr2 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr2.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2414,6 +2952,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr3 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr3.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2437,6 +2985,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr3 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr3.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2475,6 +3033,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr4 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr4.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2498,6 +3066,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr4 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr4.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2536,6 +3114,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr5 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr5.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2559,6 +3147,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr5 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr5.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2597,6 +3195,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr6 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr6.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2620,6 +3228,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr6 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr6.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2658,6 +3276,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr7 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr7.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2681,6 +3309,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr7 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr7.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2719,6 +3357,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr8 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr8.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2742,6 +3390,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr8 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr8.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2780,6 +3438,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr9 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr9.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2803,6 +3471,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr9 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr9.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2841,6 +3519,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr10 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr10.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2864,6 +3552,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr10 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr10.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2902,6 +3600,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr11 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr11.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2925,6 +3633,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr11 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr11.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -2963,6 +3681,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr12 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr12.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -2986,6 +3714,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr12 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr12.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3024,6 +3762,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr13 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr13.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3047,6 +3795,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr13 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr13.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3085,6 +3843,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr14 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr14.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3108,6 +3876,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr14 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr14.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3146,6 +3924,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr15 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr15.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3169,6 +3957,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr15 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr15.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3207,6 +4005,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr16 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr16.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3230,6 +4038,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr16 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr16.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3268,6 +4086,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr17 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr17.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3291,6 +4119,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr17 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr17.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3329,6 +4167,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr18 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr18.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3352,6 +4200,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr18 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr18.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3390,6 +4248,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr19 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr19.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3413,6 +4281,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr19 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr19.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3451,6 +4329,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr20 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr20.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3474,6 +4362,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr20 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr20.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3512,6 +4410,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr21 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr21.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3535,6 +4443,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr21 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr21.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3573,6 +4491,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chr22 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr22.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3596,6 +4524,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr22 sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr22.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3634,6 +4572,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chrX sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrX.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3657,6 +4605,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrX sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrX.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3695,6 +4653,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                 >
                   Amazon
                 </a>
+                 / 
+                <a
+                  aria-label="Download chrY sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
+                </a>
               </span>
               <br />
               <span>
@@ -3718,6 +4686,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
                   target="_blank"
                 >
                   Amazon
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Microsoft"
+                  className="c10"
+                  href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Microsoft
                 </a>
               </span>
             </li>
@@ -3780,6 +4758,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           >
             Amazon
           </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Exome coverage Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -3815,6 +4802,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Exome coverage summary TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.summary.tsv.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -3917,6 +4914,24 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           >
             Google
           </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Constraint metrics Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Constraint metrics Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -3936,6 +4951,26 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download Constraint metrics TSV from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Constraint metrics TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4016,6 +5051,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr1 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr1.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4039,6 +5084,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr1 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr1.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4077,6 +5132,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr2 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr2.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4100,6 +5165,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr2 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr2.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4138,6 +5213,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr3 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr3.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4161,6 +5246,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr3 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr3.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4199,6 +5294,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr4 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr4.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4222,6 +5327,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr4 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr4.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4260,6 +5375,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr5 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr5.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4283,6 +5408,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr5 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr5.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4321,6 +5456,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr6 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr6.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4344,6 +5489,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr6 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr6.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4382,6 +5537,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr7 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr7.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4405,6 +5570,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr7 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr7.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4443,6 +5618,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr8 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr8.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4466,6 +5651,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr8 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr8.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4504,6 +5699,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr9 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr9.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4527,6 +5732,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr9 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr9.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4565,6 +5780,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr10 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr10.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4588,6 +5813,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr10 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr10.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4626,6 +5861,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr11 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr11.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4649,6 +5894,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr11 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr11.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4687,6 +5942,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr12 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr12.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4710,6 +5975,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr12 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr12.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4748,6 +6023,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr13 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr13.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4771,6 +6056,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr13 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr13.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4809,6 +6104,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr14 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr14.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4832,6 +6137,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr14 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr14.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4870,6 +6185,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr15 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr15.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4893,6 +6218,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr15 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr15.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4931,6 +6266,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr16 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr16.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -4954,6 +6299,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr16 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr16.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -4992,6 +6347,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr17 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr17.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5015,6 +6380,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr17 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr17.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5053,6 +6428,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr18 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr18.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5076,6 +6461,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr18 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr18.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5114,6 +6509,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr19 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr19.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5137,6 +6542,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr19 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr19.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5175,6 +6590,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr20 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr20.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5198,6 +6623,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr20 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr20.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5236,6 +6671,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr21 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr21.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5259,6 +6704,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr21 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr21.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5297,6 +6752,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chr22 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr22.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5320,6 +6785,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr22 VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chr22.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5358,6 +6833,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chrX VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chrX.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5381,6 +6866,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrX VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chrX.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5419,6 +6914,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download chrY VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chrY.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
           <br />
           <span>
@@ -5442,6 +6947,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrY VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/genome_sv/gnomad.v4.0.sv.chrY.vcf.gz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5516,6 +7031,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download Exome CNV VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/exome_cnv/gnomad.v4.0.cnv.all.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
         </li>
         <li
@@ -5547,6 +7072,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download Exome CNV non neuro VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
         </li>
         <li
@@ -5577,6 +7112,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Exome CNV non-neuro controls VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro_controls.vcf.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -5640,6 +7185,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download Exome sex ploidy cutoffs TSV from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/sex_inference/gnomad.exomes.v4.0.sample_qc.sex_inference.ploidy_cutoffs.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
         </li>
         <li
@@ -5667,6 +7222,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Exome calling intervals Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
         <li
@@ -5697,6 +7261,16 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Exome calling intervals flat file from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
