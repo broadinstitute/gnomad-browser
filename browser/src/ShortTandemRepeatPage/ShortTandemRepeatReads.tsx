@@ -25,10 +25,10 @@ const ShortTandemRepeatReadImage = styled.img`
   }
 
   &.zoomedIn {
-    display: block;
-    cursor: zoom-out;
     position: absolute;
     left: 10px;
+    display: block;
+    cursor: zoom-out;
   }
 `
 
