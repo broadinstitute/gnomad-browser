@@ -14,12 +14,22 @@ import ControlSection from '../VariantPage/ControlSection'
 import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
-  overflow-x: auto;
   width: 100%;
 `
 
 const ShortTandemRepeatReadImage = styled.img`
-  display: block;
+  &.zoomedOut {
+    display: block;
+    max-width: 100%;
+    cursor: zoom-in;
+  }
+
+  &.zoomedIn {
+    display: block;
+    cursor: zoom-out;
+    position: absolute;
+    left: 10px;
+  }
 `
 
 type ShortTandemRepeatReadProps = {
@@ -41,6 +51,8 @@ type ShortTandemRepeatReadProps = {
 }
 
 const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
+  const [readZoom, setReadZoom] = useState('zoomedOut')
+
   return (
     <div>
       <AttributeList style={{ marginBottom: '1em' }}>
@@ -79,9 +91,12 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
         </AttributeList.Item>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
-        <a href={read.path} target="_blank" rel="noopener noreferrer">
-          <ShortTandemRepeatReadImage alt="Reads for short tandem repeat" src={read.path} />
-        </a>
+        <ShortTandemRepeatReadImage
+          alt="Reads for short tandem repeat"
+          src={read.path}
+          className={readZoom}
+          onClick={() => setReadZoom(readZoom === 'zoomedOut' ? 'zoomedIn' : 'zoomedOut')}
+        />
       </ShortTandemRepeatReadImageWrapper>
     </div>
   )
@@ -209,7 +224,7 @@ const ShortTandemRepeatReads = ({
       fetchReadsTimer.current = setTimeout(() => {
         fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }).then(
           resolve,
-          reject
+          reject,
         )
       }, 300)
     })
@@ -251,7 +266,7 @@ const ShortTandemRepeatReads = ({
                 const read = i < fetchedReads.length ? fetchedReads[i] : null
                 readsStore.current.set(readIndexToFetch + i, read)
                 return read
-              })
+              }),
             )
           })
 
@@ -372,8 +387,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newRepeatUnit = e.target.value
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
-                  )
+                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v,
+                  ),
                 )
               }}
             >
@@ -399,8 +414,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
-                  )
+                    i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v,
+                  ),
                 )
               }}
             />
@@ -417,8 +432,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
-                  )
+                    i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v,
+                  ),
                 )
               }}
             />
