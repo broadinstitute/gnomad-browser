@@ -92,7 +92,7 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
         <ShortTandemRepeatReadImage
-          alt="Reads for short tandem repeat"
+          alt="REViewer read visualization"
           src={read.path}
           className={readZoom}
           onClick={() => setReadZoom(readZoom === 'zoomedOut' ? 'zoomedIn' : 'zoomedOut')}
