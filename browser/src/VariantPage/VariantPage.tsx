@@ -14,7 +14,6 @@ import {
   isLiftoverSource,
   isLiftoverTarget,
   usesGrch37,
-  usesGrch38,
   isV3,
   isV3Subset,
   isV4,
@@ -868,8 +867,8 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                   // Include ExAC for GRCh37 datasets
                   includeExac: usesGrch37(datasetId),
                   // Include gnomAD versions based on the same reference genome as the current dataset
-                  includeGnomad2: usesGrch37(datasetId),
-                  includeGnomad3: usesGrch38(datasetId),
+                  includeGnomad2: true,
+                  includeGnomad3: true,
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
                   includeCopyNumberVariants: false,
