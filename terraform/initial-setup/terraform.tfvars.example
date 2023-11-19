@@ -1,0 +1,7 @@
+project_id = "gnomad-dev"
+
+region = "us-east1"
+
+zone = "us-east1-c"
+
+tf_state_bucket_name = "gnomad-tf-remote-state"
