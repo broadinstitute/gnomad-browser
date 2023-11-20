@@ -377,7 +377,7 @@ pipeline.add_task(
     "extract_grch38_transcripts",
     extract_transcripts,
     f"/{genes_subdir}/transcripts_grch38_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_6")},
+    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_5")},
 )
 
 ###############################################
