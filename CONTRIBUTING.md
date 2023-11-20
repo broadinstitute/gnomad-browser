@@ -27,6 +27,7 @@ This should be enough to use the Docker Compose development environment. However
   ```
   pip install -r data-pipeline/requirements.txt
   pip install -r requirements-dev.txt
+  pip install -r deploy/deployctl/requirements.txt
   ```
 
 ## Browser
