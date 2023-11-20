@@ -105,6 +105,20 @@ export default () => (
         {/* @ts-expect-error */}
         <ListItem>
           <Citation>
+            Guo, M. H.†, Francioli, L. C.†, Stenton, S. L., Goodrich, J. K., Watts, N. A.,
+            Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD
+            Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J.,
+            O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound
+            heterozygosity from large-scale exome sequencing data.{' '}
+            <em>Cold Spring Harbor Laboratory</em>. {/* @ts-expect-error */}
+            <ExternalLink href="https://doi.org/10.1101/2023.03.19.533370">
+              https://doi.org/10.1101/2023.03.19.533370
+            </ExternalLink>
+          </Citation>
+        </ListItem>
+        {/* @ts-expect-error */}
+        <ListItem>
+          <Citation>
             Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson,
             M., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G.,
             O’Donnell-Luria, A. Variant interpretation using population databases: Lessons from
