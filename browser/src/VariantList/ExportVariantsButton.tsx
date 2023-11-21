@@ -1,10 +1,80 @@
 import React from 'react'
 
 import { Button } from '@gnomad/ui'
+import { Population } from '../VariantPage/VariantPage'
 
-import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  GNOMAD_POPULATION_NAMES,
+  PopulationId,
+  populationsInDataset,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
+import { DatasetId, isExac, isV2, isV3, isV4 } from '@gnomad/dataset-metadata/metadata'
 
-const exportVariantsToCsv = (variants: Variant[], datasetId: any, baseFileName: any) => {
+type Column = {
+  label: string
+  getValue: (variant: VariantTableVariant) => string
+}
+
+type Property = 'ac' | 'an' | 'ac_hemi' | 'ac_hom'
+
+const getValueGivenProperty = (
+  popId: PopulationId,
+  variant: VariantTableVariant,
+  property: Property
+) => {
+  return variant.populations.filter((v) => v.id === popId)[0]
+    ? JSON.stringify(variant.populations.filter((v) => v.id === popId)[0][property])
+    : ''
+}
+
+export const createPopulationColumns = (datasetId: DatasetId) => {
+  /* eslint-disable no-nested-ternary */
+  const topLevelDataset = isV4(datasetId)
+    ? 'v4'
+    : isV3(datasetId)
+    ? 'v3'
+    : isV2(datasetId)
+    ? 'v2'
+    : isExac(datasetId)
+    ? 'ExAC'
+    : 'default'
+  /* eslint-enable no-nested-ternary */
+
+  const datasetPopulations: PopulationId[] = populationsInDataset[topLevelDataset]
+
+  let populationColumns: Column[] = []
+  datasetPopulations.forEach((popId: PopulationId) => {
+    const popName = GNOMAD_POPULATION_NAMES[popId]
+
+    populationColumns = populationColumns.concat([
+      {
+        label: `Allele Count ${popName}`,
+        getValue: (variant: VariantTableVariant) => getValueGivenProperty(popId, variant, 'ac'),
+      },
+      {
+        label: `Allele Number ${popName}`,
+        getValue: (variant: VariantTableVariant) => getValueGivenProperty(popId, variant, 'an'),
+      },
+      {
+        label: `Homozygote Count ${popName}`,
+        getValue: (variant: VariantTableVariant) => getValueGivenProperty(popId, variant, 'ac_hom'),
+      },
+      {
+        label: `Hemizygote Count ${popName}`,
+        getValue: (variant: VariantTableVariant) =>
+          getValueGivenProperty(popId, variant, 'ac_hemi'),
+      },
+    ])
+  })
+
+  return populationColumns
+}
+
+const exportVariantsToCsv = (
+  variants: VariantTableVariant[],
+  datasetId: any,
+  baseFileName: any
+) => {
   const DEFAULT_COLUMNS = [
     {
       label: 'Chromosome',
@@ -115,35 +185,7 @@ const exportVariantsToCsv = (variants: Variant[], datasetId: any, baseFileName: 
     },
   ]
 
-  const datasetPopulations = variants[0].populations.map((pop: any) => pop.id)
-  let populationColumns: any = []
-  datasetPopulations.forEach((popId: PopulationId, popIndex: number) => {
-    const popName = GNOMAD_POPULATION_NAMES[popId]
-    populationColumns = populationColumns.concat([
-      {
-        label: `Allele Count ${popName}`,
-        getValue: (variant: any) =>
-          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].ac) : '',
-      },
-      {
-        label: `Allele Number ${popName}`,
-        getValue: (variant: any) =>
-          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].an) : '',
-      },
-      {
-        label: `Homozygote Count ${popName}`,
-        getValue: (variant: any) =>
-          variant.populations[popIndex] ? JSON.stringify(variant.populations[popIndex].ac_hom) : '',
-      },
-      {
-        label: `Hemizygote Count ${popName}`,
-        getValue: (variant: any) =>
-          variant.populations[popIndex]
-            ? JSON.stringify(variant.populations[popIndex].ac_hemi)
-            : '',
-      },
-    ])
-  })
+  const populationColumns = createPopulationColumns(datasetId)
 
   const columns = DEFAULT_COLUMNS.concat(populationColumns)
 
@@ -187,7 +229,7 @@ const exportVariantsToCsv = (variants: Variant[], datasetId: any, baseFileName: 
   link.click()
 }
 
-type Variant = {
+export type VariantTableVariant = {
   ac: number
   ac_hemi: number
   ac_hom: number
@@ -198,13 +240,7 @@ type Variant = {
   hgvs?: string
   hgvsc?: string
   hgvsp?: string
-  populations: {
-    id: PopulationId
-    ac: number
-    an: number
-    ac_hemi?: number
-    ac_hom: number
-  }[]
+  populations: Population[]
   pos: number
   rsids?: string[]
   variant_id: string
@@ -219,7 +255,7 @@ type Variant = {
 type Props = {
   datasetId: string
   exportFileName: string
-  variants: Variant[]
+  variants: VariantTableVariant[]
 }
 
 const ExportVariantsButton = ({ datasetId, exportFileName, variants, ...rest }: Props) => (
