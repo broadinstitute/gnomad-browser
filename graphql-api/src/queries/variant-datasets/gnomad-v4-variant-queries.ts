@@ -49,6 +49,9 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: any) =
 // ================================================================================================
 
 const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any) => {
+  const exomeSubset = subset
+  const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
+
   const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
@@ -81,14 +84,14 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
-  const filters = variant.genome.filters || []
+  const exomeFilters = variant.exome.filters || []
+  const genomeFilters = variant.genome.filters || []
 
-  if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-    filters.push('AC0')
+  if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
+    exomeFilters.push('AC0')
   }
-
-  if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-    filters.push('AC0')
+  if (variant.genome.freq[genomeSubset].ac === 0 && !genomeFilters.includes('AC0')) {
+    genomeFilters.push('AC0')
   }
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
@@ -166,13 +169,13 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     exome: hasExomeVariant && {
       ...variant.exome,
       ...variant.exome.freq[subset],
-      filters,
+      filters: exomeFilters,
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
-        popmax_population: variant.exome.faf95.grpmax_gen_anc,
-        popmax: variant.exome.faf95.grpmax,
-      },
+          popmax_population: variant.exome.faf95.grpmax_gen_anc,
+          popmax: variant.exome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -197,13 +200,13 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     genome: hasGenomeVariant && {
       ...variant.genome,
       ...variant.genome.freq[subset],
-      filters,
+      filters: genomeFilters,
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
-        popmax_population: variant.genome.faf95.grpmax_gen_anc,
-        popmax: variant.genome.faf95.grpmax,
-      },
+          popmax_population: variant.genome.faf95.grpmax_gen_anc,
+          popmax: variant.genome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -270,23 +273,23 @@ const shapeVariantSummary = (subset: any, context: any) => {
       alt: variant.alleles[1],
       exome: hasExomeVariant
         ? {
-          ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-          ...variant.exome.freq[subset],
-          populations: variant.exome.freq[subset].ancestry_groups.filter(
-            (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-          ),
-          filters,
-        }
+            ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.exome.freq[subset],
+            populations: variant.exome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters,
+          }
         : null,
       genome: hasGenomeVariant
         ? {
-          ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-          ...variant.genome.freq[subset],
-          populations: variant.genome.freq[subset].ancestry_groups.filter(
-            (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-          ),
-          filters,
-        }
+            ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.genome.freq[subset],
+            populations: variant.genome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters,
+          }
         : null,
       flags,
       transcript_consequence: transcriptConsequence,
@@ -311,8 +314,10 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
   const exomeSubset = 'all'
   const genomeSubset = 'all'
 
-  if (gene.symbol === "TTN") {
-    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
+  if (gene.symbol === 'TTN') {
+    throw new UserVisibleError(
+      'Due to the size of TTN the variant table is temporarily unavailable in the browser or API'
+    )
   }
 
   try {
@@ -443,9 +448,10 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
   const exomeSubset = 'all'
   const genomeSubset = 'all'
 
-
-  if (transcript.gene.symbol === "TTN") {
-    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
+  if (transcript.gene.symbol === 'TTN') {
+    throw new UserVisibleError(
+      'Due to the size of TTN the variant table is temporarily unavailable in the browser or API'
+    )
   }
 
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
