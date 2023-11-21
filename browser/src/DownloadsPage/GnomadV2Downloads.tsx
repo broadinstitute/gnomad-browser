@@ -403,32 +403,23 @@ const GnomadV2Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <GetUrlButtons
               label="Regional missense constraint Hail Table"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
               label="Regional missense constraint TSV (transcripts with RMC)"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
               label="Regional missense constraint TSV (transcripts without RMC)"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         </FileList>

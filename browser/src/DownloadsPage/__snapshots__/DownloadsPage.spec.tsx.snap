@@ -23212,19 +23212,34 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             Regional missense constraint Hail Table
           </span>
           <br />
-          <span>
-            Download from
-             
-            <a
-              aria-label="Download Regional missense constraint Hail Table from Google"
-              className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Google
-            </a>
-          </span>
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Regional missense constraint Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Regional missense constraint Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Regional missense constraint Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -23244,6 +23259,26 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download Regional missense constraint TSV (transcripts with RMC) from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Regional missense constraint TSV (transcripts with RMC) from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -23265,6 +23300,26 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Google
+            </a>
+             / 
+            <a
+              aria-label="Download Regional missense constraint TSV (transcripts without RMC) from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Regional missense constraint TSV (transcripts without RMC) from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
