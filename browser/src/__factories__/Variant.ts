@@ -124,15 +124,7 @@ export const variantFactory = Factory.define<Variant>(({ params, associations })
 })
 
 export const populationFactory = Factory.define<Population>(({ params }) => {
-  const {
-    id = 'afr',
-    ac = 1,
-    an = 1,
-    ac_hemi = 1,
-    ac_hom = 1,
-    homozygote_count = 1,
-    hemizygote_count = 1,
-  } = params
+  const { id = 'afr', ac = 1, an = 1, ac_hemi = 1, ac_hom = 1 } = params
 
   return {
     id,
@@ -140,8 +132,6 @@ export const populationFactory = Factory.define<Population>(({ params }) => {
     an,
     ac_hemi,
     ac_hom,
-    homozygote_count,
-    hemizygote_count,
   }
 })
 

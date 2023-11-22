@@ -1,5 +1,47 @@
+import { Population, SequencingType } from '../VariantPage/VariantPage'
+
 // safe math on possibly null values
 const add = (n1: any, n2: any) => (n1 || 0) + (n2 || 0)
+
+export const mergeExomeAndGenomePopulationData = (
+  exome: SequencingType,
+  genome: SequencingType
+) => {
+  const populations: { [key: string]: Population } = {}
+
+  exome.populations.forEach((exomePopulation: Population) => {
+    populations[exomePopulation.id] = {
+      id: exomePopulation.id,
+      ac: exomePopulation.ac,
+      an: exomePopulation.an,
+      ac_hemi: exomePopulation.ac_hemi,
+      ac_hom: exomePopulation.ac_hom,
+    }
+  })
+
+  genome.populations.forEach((genomePopulation: Population) => {
+    if (genomePopulation.id in populations) {
+      const entry = populations[genomePopulation.id]
+      populations[genomePopulation.id] = {
+        id: genomePopulation.id,
+        ac: add(entry.ac, genomePopulation.ac),
+        an: add(entry.an, genomePopulation.an),
+        ac_hemi: add(entry.ac_hemi, genomePopulation.ac_hemi),
+        ac_hom: add(entry.ac_hom, genomePopulation.ac_hom),
+      }
+    } else {
+      populations[genomePopulation.id] = {
+        id: genomePopulation.id,
+        ac: genomePopulation.ac,
+        an: genomePopulation.an,
+        ac_hemi: genomePopulation.ac_hemi,
+        ac_hom: genomePopulation.ac_hom,
+      }
+    }
+  })
+
+  return Object.values(populations)
+}
 
 const mergeExomeAndGenomeData = (variants: any) =>
   variants.map((variant: any) => {
@@ -32,14 +74,7 @@ const mergeExomeAndGenomeData = (variants: any) =>
       ac_hemi: add(exome.ac_hemi, genome.ac_hemi),
       ac_hom: add(exome.ac_hom, genome.ac_hom),
       filters: exome.filters.concat(genome.filters),
-      // @ts-expect-error TS(7006) FIXME: Parameter '_' implicitly has an 'any' type.
-      populations: exome.populations.map((_, i) => ({
-        id: exome.populations[i].id,
-        ac: exome.populations[i].ac + genome.populations[i].ac,
-        an: exome.populations[i].an + genome.populations[i].an,
-        ac_hemi: exome.populations[i].ac_hemi + genome.populations[i].ac_hemi,
-        ac_hom: exome.populations[i].ac_hom + genome.populations[i].ac_hom,
-      })),
+      populations: mergeExomeAndGenomePopulationData(exome!, genome!),
     }
   })
 
