@@ -23477,6 +23477,78 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             </a>
           </span>
         </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Browser pipeline GTEx Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Browser pipeline GTEx Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Browser pipeline GTEx Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Browser pipeline GTEx Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Browser pipeline pext Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Browser pipeline pext Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Browser pipeline pext Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Browser pipeline pext Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
       </ul>
     </section>
     <span
