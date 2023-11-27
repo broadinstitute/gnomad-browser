@@ -449,6 +449,20 @@ const GnomadV2Downloads = () => {
               path="/papers/2019-flagship-lof/v1.0/gnomad.v2.1.1.all_lofs.txt.bgz"
             />
           </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser pipeline GTEx Hail Table"
+              path="/resources/grch37/gtex/gtex_v7_tissue_expression.ht"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser pipeline pext Hail Table"
+              path="/resources/grch37/pext/pext_grch37.ht"
+            />
+          </ListItem>
         </FileList>
       </DownloadsSection>
 
