@@ -1,0 +1,10 @@
+# We need to keep the names of ServiceAccounts stable for Workload Identity
+# This list tells kustomize to only apply dynamic suffixes to resources
+# that can have dynamic names, such as Deployments and Services
+nameSuffix:
+  - path: metadata/name
+    apiVersion: v1
+    kind: Deployment
+  - path: metadata/name
+    apiVersion: v1
+    kind: Service

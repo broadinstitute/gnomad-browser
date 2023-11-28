@@ -25,6 +25,14 @@ images:
   - name: gnomad-browser
     newName: {browser_image_repository}
     newTag: '{browser_tag}'
+patches:
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/iam.gke.io~1gcp-service-account
+        value: '{service_account}@{project}.iam.gserviceaccount.com'
+    target:
+      kind: ServiceAccount
+      labelSelector: "component=gnomad-api"
 """
 
 
@@ -89,6 +97,8 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             browser_tag=browser_tag,
             api_image_repository=config.api_image_repository,
             api_tag=api_tag,
+            project=config.project,
+            service_account=f"{config.gke_cluster_name}-api",
         )
 
         kustomization_file.write(kustomization)
