@@ -198,6 +198,44 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-genetic-ancestry-group-classification">
+          Genetic ancestry group classification
+        </SectionTitle>
+        <p>
+          For more information about these files, see our blog post on{' '}
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
+            using the gnomAD genetic ancestry group principal components analysis loadings and
+            random forest classifier on your dataset
+          </ExternalLink>
+          .
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Principal component analysis (PCA) variant loadings"
+              path="/release/4.0/gnomad.v4.0.pca_loadings.ht"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Random forest (RF) .pkl model"
+              path="/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GenericDownloadLinks
+              label="Random forest (RF) .onnx model"
+              path="/release/4.0/pca/gnomad.v4.0.RF_fit.onnx"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-constraint">Constraint</SectionTitle>
         <p>
           For information on constraint, see our <Link to="/help/constraint">help text</Link>

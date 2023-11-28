@@ -4829,6 +4829,168 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c8 c9"
+            href="#v4-genetic-ancestry-group-classification"
+            id="v4-genetic-ancestry-group-classification"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Genetic ancestry group classification
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see our blog post on
+         
+        <a
+          className="c10"
+          href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          using the gnomAD genetic ancestry group principal components analysis loadings and random forest classifier on your dataset
+        </a>
+        .
+      </p>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Principal component analysis (PCA) variant loadings
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Principal component analysis (PCA) variant loadings"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Principal component analysis (PCA) variant loadings"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Principal component analysis (PCA) variant loadings"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Random forest (RF) .pkl model
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Random forest (RF) .pkl model from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) .pkl model from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) .pkl model from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Random forest (RF) .onnx model
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Random forest (RF) .onnx model from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/pca/gnomad.v4.0.RF_fit.onnx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) .onnx model from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/pca/gnomad.v4.0.RF_fit.onnx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Random forest (RF) .onnx model from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/pca/gnomad.v4.0.RF_fit.onnx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
             href="#v4-constraint"
             id="v4-constraint"
           >
@@ -11934,7 +12096,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               width={12}
             />
           </a>
-          Ancestry classification
+          Genetic ancestry group classification
         </h2>
       </span>
       <p>
@@ -11946,7 +12108,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           rel="noopener noreferrer"
           target="_blank"
         >
-          using the gnomAD ancestry principal components analysis loadings and random forest classifier on your dataset
+          using the gnomAD genetic ancestry group principal components analysis loadings and random forest classifier on your dataset
         </a>
         .
       </p>
