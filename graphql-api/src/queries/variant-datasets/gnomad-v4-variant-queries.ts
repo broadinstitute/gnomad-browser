@@ -249,17 +249,18 @@ const shapeVariantSummary = (subset: any, context: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
     const flags = getFlags(variant)
 
-    const filters = variant.genome.filters || []
+    const exomeFilters = variant.exome.filters || []
+    const genomeFilters = variant.genome.filters || []
 
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = variant.genome.freq[subset].ac_raw
 
-    if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-      filters.push('AC0')
+    if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
+      exomeFilters.push('AC0')
     }
 
-    if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-      filters.push('AC0')
+    if (variant.genome.freq[subset].ac === 0 && !genomeFilters.includes('AC0')) {
+      genomeFilters.push('AC0')
     }
 
     const hasJointFafData = variant.faf95_joint && variant.faf99_joint
@@ -278,7 +279,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
             populations: variant.exome.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
-            filters,
+            filters: exomeFilters,
           }
         : null,
       genome: hasGenomeVariant
@@ -288,7 +289,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
             populations: variant.genome.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
-            filters,
+            filters: genomeFilters,
           }
         : null,
       flags,
