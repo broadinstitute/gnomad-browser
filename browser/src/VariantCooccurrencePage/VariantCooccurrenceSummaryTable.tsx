@@ -5,7 +5,7 @@ import { BaseTable, TextButton } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import CooccurrenceDataPropType from './CooccurrenceDataPropType'
+import { CooccurrenceData } from './VariantCooccurrencePage'
 
 const getCooccurrencePattern = (cooccurrenceData: any) => {
   if (cooccurrenceData.p_compound_heterozygous === null) {
@@ -50,7 +50,7 @@ const Table = styled(BaseTable)`
 `
 
 type VariantCooccurrenceSummaryTableProps = {
-  cooccurrenceData: CooccurrenceDataPropType
+  cooccurrenceData: CooccurrenceData
   selectedPopulation: string
   onSelectPopulation: (...args: any[]) => any
 }

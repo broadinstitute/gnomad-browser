@@ -15,11 +15,23 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TranscriptConsequenceList } from '../VariantPage/TranscriptConsequenceList'
 
-import CooccurrenceDataPropType from './CooccurrenceDataPropType'
 import VariantCooccurrenceDetailsTable from './VariantCooccurrenceDetailsTable'
 import VariantCooccurrenceHaplotypeCountsTable from './VariantCooccurrenceHaplotypeCountsTable'
 import VariantCooccurrenceSummaryTable from './VariantCooccurrenceSummaryTable'
 import VariantCooccurrenceVariantIdsForm from './VariantCooccurrenceVariantIdsForm'
+
+export type CooccurrenceData = {
+  variant_ids: string[]
+  genotype_counts: number[]
+  haplotype_counts: number[]
+  p_compound_heterozygous: number | null
+  populations: {
+    id: string
+    genotype_counts: number[]
+    haplotype_counts: number[]
+    p_compound_heterozygous: number
+  }[]
+}
 
 const Section = styled.section`
   width: 100%;
@@ -106,7 +118,7 @@ const getCooccurrenceDescription = (
 }
 
 type VariantCoocurrenceProps = {
-  cooccurrenceData: CooccurrenceDataPropType
+  cooccurrenceData: CooccurrenceData
 }
 
 const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
