@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       name: gnomad-api
+  serviceAccountName: gnomad-api
   template:
     metadata:
       labels:

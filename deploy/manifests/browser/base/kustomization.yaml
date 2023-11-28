@@ -3,7 +3,10 @@ kind: Kustomization
 resources:
   - ./api.deployment.yaml
   - ./api.service.yaml
+  - ./api.serviceaccount.yaml
   - ./browser.deployment.yaml
+configurations:
+  - ./add-suffix.yaml
 vars:
   - name: API_SERVICE
     objref:
