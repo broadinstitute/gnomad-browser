@@ -10,12 +10,12 @@ spec:
   selector:
     matchLabels:
       name: gnomad-api
-  serviceAccountName: gnomad-api
   template:
     metadata:
       labels:
         name: gnomad-api
     spec:
+      serviceAccountName: gnomad-api
       containers:
         - name: app
           image: gnomad-api
