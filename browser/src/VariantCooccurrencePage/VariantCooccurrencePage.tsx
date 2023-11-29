@@ -20,17 +20,42 @@ import VariantCooccurrenceHaplotypeCountsTable from './VariantCooccurrenceHaplot
 import VariantCooccurrenceSummaryTable from './VariantCooccurrenceSummaryTable'
 import VariantCooccurrenceVariantIdsForm from './VariantCooccurrenceVariantIdsForm'
 
+export type GenotypeCounts = {
+  ref_ref: number
+  ref_het: number
+  ref_hom: number
+  het_ref: number
+  het_het: number
+  het_hom: number
+  hom_ref: number
+  hom_het: number
+  hom_hom: number
+}
+
+export type HaplotypeCounts = {
+  ref_ref: number
+  hom_ref: number
+  ref_hom: number
+  hom_hom: number
+}
+
 export type CooccurrenceData = {
   variant_ids: string[]
-  genotype_counts: number[]
-  haplotype_counts: number[]
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
   p_compound_heterozygous: number | null
   populations: {
     id: string
-    genotype_counts: number[]
-    haplotype_counts: number[]
-    p_compound_heterozygous: number
+    genotype_counts: GenotypeCounts
+    haplotype_counts: HaplotypeCounts
+    p_compound_heterozygous: number | null
   }[]
+}
+
+interface CooccurrenceForPopulation {
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
+  p_compound_heterozygous: number | null
 }
 
 const Section = styled.section`
@@ -70,22 +95,29 @@ const renderProbabilityCompoundHeterozygous = (p: any) => {
 }
 
 const getCooccurrenceDescription = (
-  cooccurrenceInSelectedPopulation: any,
+  cooccurrenceInSelectedPopulation: CooccurrenceForPopulation,
   selectedPopulation = 'All'
 ) => {
   let cooccurrenceDescription = null
   if (cooccurrenceInSelectedPopulation.p_compound_heterozygous === null) {
-    const variantAOccurs =
-      [3, 4, 5, 6, 7, 8].reduce(
-        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
-        0
-      ) > 0
+    const { genotype_counts } = cooccurrenceInSelectedPopulation
+    const variantASum =
+      genotype_counts.het_ref +
+      genotype_counts.het_het +
+      genotype_counts.het_hom +
+      genotype_counts.hom_ref +
+      genotype_counts.hom_het +
+      genotype_counts.hom_hom
+    const variantAOccurs = variantASum > 0
 
-    const variantBOccurs =
-      [1, 2, 4, 5, 7, 8].reduce(
-        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
-        0
-      ) > 0
+    const variantBSum =
+      genotype_counts.ref_het +
+      genotype_counts.ref_hom +
+      genotype_counts.het_het +
+      genotype_counts.het_hom +
+      genotype_counts.hom_het +
+      genotype_counts.hom_hom
+    const variantBOccurs = variantBSum > 0
 
     if (!variantAOccurs || !variantBOccurs) {
       if (variantAOccurs || variantBOccurs) {
@@ -127,8 +159,7 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const cooccurrenceInSelectedPopulation =
     selectedPopulation === 'All'
       ? cooccurrenceData
-      : // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-        cooccurrenceData.populations.find((pop: any) => pop.id === selectedPopulation)
+      : cooccurrenceData.populations!.find((pop: any) => pop.id === selectedPopulation)!
 
   const cooccurrenceDescription = getCooccurrenceDescription(
     cooccurrenceInSelectedPopulation,
@@ -137,10 +168,10 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
 
   // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
   const sharedCarrierExists =
-    cooccurrenceData.genotype_counts[4] +
-      cooccurrenceData.genotype_counts[5] +
-      cooccurrenceData.genotype_counts[7] +
-      cooccurrenceData.genotype_counts[8] >
+    cooccurrenceData.genotype_counts.het_het +
+      cooccurrenceData.genotype_counts.het_hom +
+      cooccurrenceData.genotype_counts.hom_het +
+      cooccurrenceData.genotype_counts.hom_hom >
     0
 
   return (
@@ -160,7 +191,6 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           </p>
         )}
 
-        {/* @ts-expect-error TS(2461) FIXME: Type '{ id: string; genotype_counts: number[]; hap... Remove this comment to see the full error message */}
         {[cooccurrenceData, ...cooccurrenceData.populations].some(
           (c) => c.p_compound_heterozygous === null
         ) && (
@@ -186,7 +216,6 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           <h3>Genotype Counts</h3>
           <VariantCooccurrenceDetailsTable
             variantIds={cooccurrenceData.variant_ids}
-            // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
             genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
           />
           {cooccurrenceDescription && <p>{cooccurrenceDescription}</p>}
@@ -207,22 +236,18 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
 
         <ResponsiveSection>
           <h3>
-            {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-            {cooccurrenceInSelectedPopulation.genotype_counts[4] > 0 && <>Estimated </>}Haplotype
-            Counts
+            {cooccurrenceInSelectedPopulation.genotype_counts.het_het > 0 && <>Estimated </>}
+            Haplotype Counts
           </h3>
           <VariantCooccurrenceHaplotypeCountsTable
             variantIds={cooccurrenceData.variant_ids}
-            // @ts-expect-error TS(2322) FIXME: Type 'number[] | undefined' is not assignable to t... Remove this comment to see the full error message
             haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
           />
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
           {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
             <>
               <p>
                 The estimated probability that these variants occur in different haplotypes is{' '}
                 {renderProbabilityCompoundHeterozygous(
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
                   cooccurrenceInSelectedPopulation.p_compound_heterozygous
                 )}
                 .
@@ -334,6 +359,52 @@ type VariantCoocurrenceContainerProps = {
   variantIds: string[]
 }
 
+interface ArrayCountPopulation {
+  genotype_counts: number[]
+  haplotype_counts: number[]
+}
+
+interface ObjectCountPopulation {
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
+}
+
+const structureCounts = (population: ArrayCountPopulation): ObjectCountPopulation => {
+  const { genotype_counts, haplotype_counts } = population
+  const structuredGenotypeCounts: GenotypeCounts = {
+    ref_ref: genotype_counts[0],
+    ref_het: genotype_counts[1],
+    ref_hom: genotype_counts[2],
+    het_ref: genotype_counts[3],
+    het_het: genotype_counts[4],
+    het_hom: genotype_counts[5],
+    hom_ref: genotype_counts[6],
+    hom_het: genotype_counts[7],
+    hom_hom: genotype_counts[8],
+  }
+  const structuredHaplotypeCounts: HaplotypeCounts = {
+    ref_ref: haplotype_counts[0],
+    hom_ref: haplotype_counts[1],
+    ref_hom: haplotype_counts[2],
+    hom_hom: haplotype_counts[3],
+  }
+
+  return {
+    ...population,
+    genotype_counts: structuredGenotypeCounts,
+    haplotype_counts: structuredHaplotypeCounts,
+  }
+}
+
+const normalizeCooccurrenceData = (cooccurrenceData: any): CooccurrenceData => {
+  const populations = cooccurrenceData.populations
+    ? cooccurrenceData.populations.map(structureCounts)
+    : cooccurrenceData.populations
+
+  const topLevel = structureCounts(cooccurrenceData)
+  return { ...topLevel, populations } as CooccurrenceData
+}
+
 const VariantCoocurrenceContainer = ({
   datasetId,
   variantIds,
@@ -353,6 +424,8 @@ const VariantCoocurrenceContainer = ({
       success={(data: any) => data.variant_cooccurrence}
     >
       {({ data }: any) => {
+        const variant_cooccurrence = normalizeCooccurrenceData(data.variant_cooccurrence)
+
         const genesInCommon = [data.variant1, data.variant2]
           .map((v) => new Set(v.transcript_consequences.map((csq: any) => csq.gene_id)))
           .reduce((acc, genes) => new Set([...acc].filter((geneId) => genes.has(geneId))))
@@ -393,7 +466,7 @@ const VariantCoocurrenceContainer = ({
               </Section>
             )}
 
-            <VariantCoocurrence cooccurrenceData={data.variant_cooccurrence} />
+            <VariantCoocurrence cooccurrenceData={variant_cooccurrence} />
 
             <Section>
               <h2>VEP Annotations</h2>
