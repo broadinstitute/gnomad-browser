@@ -259,13 +259,15 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-ancestry-classification">Ancestry classification</SectionTitle>
+      <SectionTitle id="v3-ancestry-classification">
+        Genetic ancestry group classification
+      </SectionTitle>
       <p>
         For more information about these files, see our blog post on{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
-          using the gnomAD ancestry principal components analysis loadings and random forest
-          classifier on your dataset
+          using the gnomAD genetic ancestry group principal components analysis loadings and random
+          forest classifier on your dataset
         </ExternalLink>
         .
       </p>
