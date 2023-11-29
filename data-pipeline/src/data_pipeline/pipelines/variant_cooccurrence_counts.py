@@ -1,6 +1,6 @@
 import hail as hl
 
-TWO_HET_DATA_PATH = "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/variant-cooccurrence/2023-02-24/chet_unphased_same_hap_per_gene.tsv"
+TWO_HET_DATA_PATH = "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/variant-cooccurrence/2023-11-29/chet_unphased_same_hap_per_gene.tsv"
 HOMOZYGOUS_DATA_PATH = (
     "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/variant-cooccurrence/2023-02-24/het_hom_per_gene.tsv"
 )
