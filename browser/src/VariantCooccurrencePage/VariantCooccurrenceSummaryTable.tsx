@@ -74,7 +74,6 @@ const VariantCooccurrenceSummaryTable = ({
         </tr>
       </thead>
       <tbody>
-        {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
         {cooccurrenceData.populations.map((pop) => (
           <tr
             key={pop.id}
@@ -92,20 +91,20 @@ const VariantCooccurrenceSummaryTable = ({
             </th>
             <td>
               {(
-                pop.genotype_counts[1] +
-                pop.genotype_counts[2] +
-                pop.genotype_counts[3] +
-                pop.genotype_counts[6]
+                pop.genotype_counts.ref_het +
+                pop.genotype_counts.ref_hom +
+                pop.genotype_counts.het_ref +
+                pop.genotype_counts.hom_ref
               ).toLocaleString()}
             </td>
             <td>
               {(
-                pop.genotype_counts[5] +
-                pop.genotype_counts[7] +
-                pop.genotype_counts[8]
+                pop.genotype_counts.het_hom +
+                pop.genotype_counts.hom_het +
+                pop.genotype_counts.hom_hom
               ).toLocaleString()}
             </td>
-            <td>{pop.genotype_counts[4].toLocaleString()}</td>
+            <td>{pop.genotype_counts.het_het.toLocaleString()}</td>
             <td>{getCooccurrencePattern(pop)}</td>
           </tr>
         ))}
@@ -124,21 +123,21 @@ const VariantCooccurrenceSummaryTable = ({
           </th>
           <td style={{ borderTop: '2px solid #aaa' }}>
             {(
-              cooccurrenceData.genotype_counts[1] +
-              cooccurrenceData.genotype_counts[2] +
-              cooccurrenceData.genotype_counts[3] +
-              cooccurrenceData.genotype_counts[6]
+              cooccurrenceData.genotype_counts.ref_het +
+              cooccurrenceData.genotype_counts.ref_hom +
+              cooccurrenceData.genotype_counts.het_ref +
+              cooccurrenceData.genotype_counts.hom_ref
             ).toLocaleString()}
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
             {(
-              cooccurrenceData.genotype_counts[5] +
-              cooccurrenceData.genotype_counts[7] +
-              cooccurrenceData.genotype_counts[8]
+              cooccurrenceData.genotype_counts.het_hom +
+              cooccurrenceData.genotype_counts.hom_het +
+              cooccurrenceData.genotype_counts.hom_hom
             ).toLocaleString()}
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
-            {cooccurrenceData.genotype_counts[4].toLocaleString()}
+            {cooccurrenceData.genotype_counts.het_het.toLocaleString()}
           </td>
           <td style={{ borderTop: '2px solid #aaa' }}>
             {getCooccurrencePattern(cooccurrenceData)}
