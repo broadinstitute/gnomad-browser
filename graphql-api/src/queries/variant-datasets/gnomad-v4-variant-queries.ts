@@ -10,7 +10,6 @@ import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
-import { JsonCache } from '../helpers/json-cache'
 import largeGenes from '../helpers/large-genes'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
