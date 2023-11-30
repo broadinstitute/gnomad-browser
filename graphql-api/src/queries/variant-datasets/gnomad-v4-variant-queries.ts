@@ -450,7 +450,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
 
   if (transcript.gene.symbol === 'TTN') {
     throw new UserVisibleError(
-      'Due to the size of TTN the variant table is temporarily unavailable in the browser or API'
+      'Due to the size of TTN, the variant table is temporarily unavailable in the browser or API for transcripts'
     )
   }
 
