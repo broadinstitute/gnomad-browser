@@ -18,7 +18,7 @@ type State = any
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { error: null }
+    this.state = { error: null, bugDescription: 'foobar' }
   }
 
   static getDerivedStateFromError(error: any) {
@@ -28,20 +28,22 @@ class ErrorBoundary extends React.Component<Props, State> {
   render() {
     // @ts-expect-error TS(2339) FIXME: Property 'children' does not exist on type 'Readon... Remove this comment to see the full error message
     const { children, location } = this.props
-    const { error } = this.state
+    const { error, bugDescription } = this.state
 
     if (error) {
       const issueBody = `
+**Description**: ${bugDescription}
 
-Stack trace:
+**Error message**: ${error.message}
+
+**Stack trace**:
 \`\`\`
 ${error.stack}
 \`\`\`
 
-Route: ${location.pathname}${location.search}
+**Route**: ${location.pathname}${location.search}
 
-Browser: ${navigator.userAgent}
-
+**Browser**: ${navigator.userAgent}
 `
 
       const issueURL = `https://github.com/broadinstitute/gnomad-browser/issues/new?title=${encodeURIComponent(
@@ -57,8 +59,23 @@ Browser: ${navigator.userAgent}
           <DocumentTitle title="Error" />
           <PageHeading>Something Went Wrong</PageHeading>
           <p>An error prevented this page from being displayed.</p>
+          <p>This is a bug.</p>
           <p>
-            This is a bug. Please{' '}
+            Please describe what you were trying to do at the time the page crashed
+            <div>
+              <textarea
+                id="bug-description"
+                name="bug-description"
+                value={bugDescription}
+                onChange={(e) => this.setState({ bugDescription: e.target.value })}
+                rows={4}
+                cols={50}
+              />
+            </div>
+          </p>
+
+          <p>
+            And{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href={issueURL}>file an issue on GitHub</ExternalLink> or{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
