@@ -53,6 +53,12 @@ spec:
               value: '25'
             - name: MAX_QUERY_COST_PER_MINUTE
               value: '300'
+            - name: JSON_CACHE_PATH
+              value: 'gs://gnomadev-test-gene-cache/2023-11-30'
+            - name: JSON_CACHE_LARGE_GENES
+              value: 'true'
+            - name: JSON_CACHE_COMPRESSION 
+              value: 'true'
           ports:
             - name: http
               containerPort: 8000
