@@ -61,6 +61,33 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 Run kubectl apply -k . in the deploy/manifests/redis folder
 
+## Json Cache
+
+The gnomAD API has an optional JSON cache for elasticsearch lookups. The cache client can write to local directories or Google Cloud Storage and files can be gzipped or not.
+
+### Environment variables:
+
+`JSON_CACHE_PATH`
+    Description: Specifies the directory path where JSON files should be written.
+    Usage: If this path includes gs://, the system will utilize Google Cloud Storage (GCS) for storing the JSON files. Otherwise, it defaults to using local file storage.
+    Example Value: /path/to/cache or gs://bucket_name/path/to/cache
+
+`JSON_CACHE_ENABLE_ALL`
+    Description: Determines whether caching is enabled for all Elasticsearch lookups using the withCache function.
+    Usage: Set to true to enable caching for all lookups; otherwise, caching is disabled.
+    Example Value: true or false
+
+`JSON_CACHE_LARGE_GENES`
+    Description: Controls the caching behavior specifically for large genes.
+    Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
+    Example Value: true or false
+
+`JSON_CACHE_COMPRESSION`
+    Description: Specifies whether to use compression for the stored JSON files.
+    Usage: Set to true to enable compression, which can save storage space but may increase CPU usage for compression and decompression processes.
+    Example Value: true or false
+
+
 ## Before creating a deployment
 
 Before deploying a new version of the browser, either a demo, or to production:
