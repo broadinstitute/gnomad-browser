@@ -69,8 +69,8 @@ const baseApiResponse = {
   },
 }
 
-const cisThreshold = 0.164
-const transThreshold = 0.505
+const cisThreshold = 0.02
+const transThreshold = 0.55
 const epsilon = 0.0000001
 
 describe('VariantCoocurrencePage', () => {
