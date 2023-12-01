@@ -44,13 +44,6 @@ replacements:
       version: v1
 patches:
   - patch: |-
-      - op: add
-        path: /metadata/annotations/iam.gke.io~1gcp-service-account
-        value: '{cluster_name}-api@{project}.iam.gserviceaccount.com'
-    target:
-      kind: ServiceAccount
-      labelSelector: "component=gnomad-api"
-  - patch: |-
       apiVersion: apps/v1
       kind: Deployment
       metadata:
