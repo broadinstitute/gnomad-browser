@@ -52,7 +52,7 @@ export type CooccurrenceData = {
   }[]
 }
 
-interface CooccurrenceForPopulation {
+export interface CooccurrenceForPopulation {
   genotype_counts: GenotypeCounts
   haplotype_counts: HaplotypeCounts
   p_compound_heterozygous: number | null
@@ -156,6 +156,24 @@ type VariantCoocurrenceProps = {
   cooccurrenceData: CooccurrenceData
 }
 
+const isCisSingleton = (genotype_counts: GenotypeCounts): boolean => {
+  const cisSum =
+    genotype_counts.ref_het +
+    genotype_counts.ref_hom +
+    genotype_counts.het_ref +
+    genotype_counts.hom_ref
+
+  const totalSum = Object.values(genotype_counts).reduce((a, b) => a + b)
+
+  return cisSum === 1 && totalSum === 1
+}
+
+export const noPredictionPossible = ({
+  genotype_counts,
+  p_compound_heterozygous,
+}: CooccurrenceForPopulation): boolean =>
+  p_compound_heterozygous === null || isCisSingleton(genotype_counts)
+
 const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const [selectedPopulation, setSelectedPopulation] = useState('All')
 
@@ -176,6 +194,10 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
       cooccurrenceData.genotype_counts.hom_hom >
     0
 
+  const anyPopulationWithoutPrediction = [cooccurrenceData, ...cooccurrenceData.populations].some(
+    noPredictionPossible
+  )
+
   return (
     <>
       <Section style={{ marginBottom: '2em' }}>
@@ -193,12 +215,11 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           </p>
         )}
 
-        {[cooccurrenceData, ...cooccurrenceData.populations].some(
-          (c) => c.p_compound_heterozygous === null
-        ) && (
+        {anyPopulationWithoutPrediction && (
           <p>
             * A likely co-occurrence pattern cannot be calculated in some cases, such as when only
-            one of the variants is observed in a genetic ancestry group.
+            one of the variants is observed in a genetic ancestry group, or when both variants are
+            singletons and were seen in the same individual.
           </p>
         )}
       </Section>

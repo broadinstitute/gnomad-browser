@@ -5,20 +5,26 @@ import { BaseTable, TextButton } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import { CooccurrenceData, cisThreshold, transThreshold } from './VariantCooccurrencePage'
+import {
+  CooccurrenceData,
+  cisThreshold,
+  transThreshold,
+  CooccurrenceForPopulation,
+  noPredictionPossible,
+} from './VariantCooccurrencePage'
 
-const getCooccurrencePattern = (cooccurrenceData: any) => {
-  if (cooccurrenceData.p_compound_heterozygous === null) {
+const getCooccurrencePattern = (cooccurrenceData: CooccurrenceForPopulation) => {
+  if (noPredictionPossible(cooccurrenceData)) {
     return (
       <>
         No prediction<sup>*</sup>
       </>
     )
   }
-  if (cooccurrenceData.p_compound_heterozygous > transThreshold) {
+  if (cooccurrenceData.p_compound_heterozygous! > transThreshold) {
     return 'Different haplotypes'
   }
-  if (cooccurrenceData.p_compound_heterozygous < cisThreshold) {
+  if (cooccurrenceData.p_compound_heterozygous! < cisThreshold) {
     return 'Same haplotype'
   }
   return 'Uncertain'
