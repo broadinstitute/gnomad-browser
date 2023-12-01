@@ -165,7 +165,6 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
     cooccurrenceInSelectedPopulation,
     selectedPopulation
   )
-
   // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
   const sharedCarrierExists =
     cooccurrenceData.genotype_counts.het_het +
