@@ -166,6 +166,15 @@ describe('VariantCoocurrencePage', () => {
       },
     }
 
+    const cisSingletonResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        genotype_counts: [0, 1, 0, 0, 0, 0, 0, 0, 0],
+        p_compound_heterozygous: cisThreshold - epsilon,
+      },
+    }
+
     const cisGenotypeCountsText = /these variants are likely found on the same haplotype/
     const ambiguousGenotypeCountsText =
       /The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment/
@@ -212,6 +221,7 @@ describe('VariantCoocurrencePage', () => {
         missingBothVariantsGenotypeCountsText,
         noCalculationTableDescription,
       ],
+      ['a cis singleton', cisSingletonResponse, null, noCalculationTableDescription],
     ]
 
     cases.forEach(([description, response, genotypeCountsText, tableDescription]) => {
