@@ -504,7 +504,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
               }
             }
           >
-            Same haplotype
+            Uncertain
           </td>
         </tr>
       </tfoot>
@@ -738,7 +738,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
         </p>
       </div>
       <p>
-        Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most individuals in gnomAD.
+        The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in individuals in gnomAD.
       </p>
       <p>
         <span
@@ -1667,7 +1667,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
             <p>
               The estimated probability that these variants occur in different haplotypes is
                
-              16%
+              2%
               .
             </p>
             <p>
@@ -2471,7 +2471,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
           <p>
             The estimated probability that these variants occur in different haplotypes is
              
-            16%
+            2%
             .
           </p>
           <p>
@@ -3332,7 +3332,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
             <p>
               The estimated probability that these variants occur in different haplotypes is
                
-              51%
+              55%
               .
             </p>
             <p>
@@ -4136,7 +4136,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
           <p>
             The estimated probability that these variants occur in different haplotypes is
              
-            51%
+            55%
             .
           </p>
           <p>
@@ -4997,7 +4997,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
             <p>
               The estimated probability that these variants occur in different haplotypes is
                
-              16%
+              2%
               .
             </p>
             <p>
@@ -5801,7 +5801,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
           <p>
             The estimated probability that these variants occur in different haplotypes is
              
-            16%
+            2%
             .
           </p>
           <p>
@@ -11489,7 +11489,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
             <p>
               The estimated probability that these variants occur in different haplotypes is
                
-              51%
+              55%
               .
             </p>
             <p>
@@ -12293,7 +12293,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
           <p>
             The estimated probability that these variants occur in different haplotypes is
              
-            51%
+            55%
             .
           </p>
           <p>

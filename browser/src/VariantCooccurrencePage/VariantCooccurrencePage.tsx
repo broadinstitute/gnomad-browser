@@ -58,6 +58,9 @@ interface CooccurrenceForPopulation {
   p_compound_heterozygous: number | null
 }
 
+export const cisThreshold = 0.02
+export const transThreshold = 0.55
+
 const Section = styled.section`
   width: 100%;
 `
@@ -126,10 +129,10 @@ const getCooccurrenceDescription = (
         cooccurrenceDescription = 'These variants are not observed'
       }
     }
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > 0.505) {
+  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > transThreshold) {
     cooccurrenceDescription =
       'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most'
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous < 0.164) {
+  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous < cisThreshold) {
     cooccurrenceDescription =
       'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most'
   } else {
