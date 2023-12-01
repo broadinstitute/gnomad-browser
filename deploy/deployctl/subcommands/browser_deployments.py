@@ -29,10 +29,24 @@ patches:
   - patch: |-
       - op: add
         path: /metadata/annotations/iam.gke.io~1gcp-service-account
-        value: '{service_account}@{project}.iam.gserviceaccount.com'
+        value: '{cluster_name}-api@{project}.iam.gserviceaccount.com'
     target:
       kind: ServiceAccount
       labelSelector: "component=gnomad-api"
+patchesStrategicMerge:
+  - |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: gnomad-api
+    spec:
+      template:
+        spec:
+          containers:
+            - name: app
+              env:
+                - name: JSON_CACHE_PATH
+                  value: 'gs://{cluster_name}-gene-cache/2023-12-01'
 """
 
 
@@ -98,7 +112,7 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             api_image_repository=config.api_image_repository,
             api_tag=api_tag,
             project=config.project,
-            service_account=f"{config.gke_cluster_name}-api",
+            cluster_name=config.gke_cluster_name,
         )
 
         kustomization_file.write(kustomization)
