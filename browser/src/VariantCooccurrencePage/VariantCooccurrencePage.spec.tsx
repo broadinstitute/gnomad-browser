@@ -3,6 +3,7 @@ import { describe, test, expect } from '@jest/globals'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 import renderer from 'react-test-renderer'
+import { render } from '@testing-library/react'
 import { forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
 import { withDummyRouter } from '../../../tests/__helpers__/router'
 
@@ -22,6 +23,55 @@ jest.mock('../Query', () => {
 
 const { resetMockApiCalls, resetMockApiResponses, simulateApiResponse, setMockApiResponses } =
   mockQueries()
+
+const variantId1 = '1-234-A-C'
+const variantId2 = '1-987-C-A'
+const baseApiResponse = {
+  variant_cooccurrence: {
+    variant_ids: [variantId1, variantId2],
+    genotype_counts: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    haplotype_counts: [10, 11, 12, 13],
+    p_compound_heterozygous: 0.123, // TK calculate in real value
+
+    populations: [],
+  },
+  variant1: {
+    exome: { ac: 999, an: 101010 },
+    genome: { ac: 555, an: 5555 },
+    multi_nucleotide_variants: null,
+    transcript_consequences: [
+      {
+        gene_id: 'ENSG00000169174',
+        gene_version: '9',
+        gene_symbol: 'PCSK9',
+        hgvs: 'p.Arg46Leu',
+        hgvsc: 'c.137G>T',
+        hgvsp: 'p.Arg46Leu',
+        is_canonical: true,
+        is_mane_select: null,
+        is_mane_select_version: null,
+        lof: null,
+        lof_flags: null,
+        lof_filter: null,
+        major_consequence: 'missense_variant',
+        polyphen_prediction: 'benign',
+        sift_prediction: 'tolerated',
+        transcript_id: 'ENST00000302118',
+        transcript_version: '5',
+      },
+    ],
+  },
+  variant2: {
+    exome: { ac: 456, an: 654 },
+    genome: { ac: 678, an: 876 },
+    multi_nucleotide_variants: null,
+    transcript_consequences: [],
+  },
+}
+
+const cisThreshold = 0.164
+const transThreshold = 0.505
+const epsilon = 0.0000001
 
 describe('VariantCoocurrencePage', () => {
   describe('for gnomad_r2_1', () => {
@@ -44,66 +94,8 @@ describe('VariantCoocurrencePage', () => {
     })
 
     test('has no unexpected changes', () => {
-      const variantId1 = '1-234-A-C'
-      const variantId2 = '1-987-C-A'
-      const apiResponse = {
-        variant_cooccurrence: {
-          variant_ids: [variantId1, variantId2],
-          genotype_counts: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-          haplotype_counts: [10, 11, 12, 13],
-          p_compound_heterozygous: 0.123, // TK calculate in real value
-
-          populations: [
-            {
-              id: 'afr',
-              genotype_counts: [14, 15, 16, 17, 18, 19, 20, 21, 22],
-              haplotype_counts: [23, 24, 25, 26],
-              p_compound_heterozygous: 0.123, // TK calc
-            },
-            {
-              id: 'amr',
-              genotype_counts: [27, 28, 29, 30, 31, 32, 33, 34, 35],
-              haplotype_counts: [36, 37, 38, 39],
-              p_compound_heterozygous: 0.123, // TK calc
-            },
-          ],
-        },
-        variant1: {
-          exome: { ac: 999, an: 101010 },
-          genome: { ac: 555, an: 5555 },
-          multi_nucleotide_variants: null,
-          transcript_consequences: [
-            {
-              gene_id: 'ENSG00000169174',
-              gene_version: '9',
-              gene_symbol: 'PCSK9',
-              hgvs: 'p.Arg46Leu',
-              hgvsc: 'c.137G>T',
-              hgvsp: 'p.Arg46Leu',
-              is_canonical: true,
-              is_mane_select: null,
-              is_mane_select_version: null,
-              lof: null,
-              lof_flags: null,
-              lof_filter: null,
-              major_consequence: 'missense_variant',
-              polyphen_prediction: 'benign',
-              sift_prediction: 'tolerated',
-              transcript_id: 'ENST00000302118',
-              transcript_version: '5',
-            },
-          ],
-        },
-        variant2: {
-          exome: { ac: 456, an: 654 },
-          genome: { ac: 678, an: 876 },
-          multi_nucleotide_variants: null,
-          transcript_consequences: [],
-        },
-      }
-
       setMockApiResponses({
-        VariantCooccurrence: () => apiResponse,
+        VariantCooccurrence: () => baseApiResponse,
       })
 
       const history = createBrowserHistory()
@@ -113,6 +105,134 @@ describe('VariantCoocurrencePage', () => {
         withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
       )
       expect(tree).toMatchSnapshot()
+    })
+
+    const cisResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        p_compound_heterozygous: cisThreshold - epsilon,
+      },
+    }
+
+    const lowAmbiguousResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        p_compound_heterozygous: cisThreshold,
+      },
+    }
+
+    const highAmbiguousResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        p_compound_heterozygous: transThreshold,
+      },
+    }
+
+    const transResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        p_compound_heterozygous: transThreshold + epsilon,
+      },
+    }
+
+    const missingFirstVariantResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        genotype_counts: [1, 2, 3, 0, 0, 0, 0, 0, 0],
+        p_compound_heterozygous: null,
+      },
+    }
+
+    const missingSecondVariantResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        genotype_counts: [1, 0, 0, 2, 0, 0, 3, 0, 0],
+        p_compound_heterozygous: null,
+      },
+    }
+
+    const missingBothVariantsResponse = {
+      ...baseApiResponse,
+      variant_cooccurrence: {
+        ...baseApiResponse.variant_cooccurrence,
+        genotype_counts: [10000, 0, 0, 0, 0, 0, 0, 0, 0],
+        p_compound_heterozygous: null,
+      },
+    }
+
+    const cisGenotypeCountsText = /these variants are likely found on the same haplotype/
+    const ambiguousGenotypeCountsText =
+      /The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment/
+    const transGenotypeCountsText =
+      /these variants are likely found on different haplotypes in most/
+    const missingOneVariantGenotypeCountsText = /One of these variants is not observed/
+    const missingBothVariantsGenotypeCountsText = /These variants are not observed/
+
+    const cisTableDescription = 'Same haplotype'
+    const ambiguousTableDescription = 'Uncertain'
+    const transTableDescription = 'Different haplotypes'
+    const noCalculationTableDescription = 'No prediction'
+
+    const cases: [string, object, RegExp | null, string][] = [
+      ['cis p_chet', cisResponse, cisGenotypeCountsText, cisTableDescription],
+      [
+        'low borderline p_chet',
+        lowAmbiguousResponse,
+        ambiguousGenotypeCountsText,
+        ambiguousTableDescription,
+      ],
+      [
+        'high borderline p_chet',
+        highAmbiguousResponse,
+        ambiguousGenotypeCountsText,
+        ambiguousTableDescription,
+      ],
+      ['trans p_chet', transResponse, transGenotypeCountsText, transTableDescription],
+      [
+        'only the first of the two variants',
+        missingFirstVariantResponse,
+        missingOneVariantGenotypeCountsText,
+        noCalculationTableDescription,
+      ],
+      [
+        'only the second of the two variants',
+        missingSecondVariantResponse,
+        missingOneVariantGenotypeCountsText,
+        noCalculationTableDescription,
+      ],
+      [
+        'neither variant',
+        missingBothVariantsResponse,
+        missingBothVariantsGenotypeCountsText,
+        noCalculationTableDescription,
+      ],
+    ]
+
+    cases.forEach(([description, response, genotypeCountsText, tableDescription]) => {
+      describe(`when the main population has ${description}`, () => {
+        test('has an appropriate description in the summary table and under the genotype counts', async () => {
+          const history = createBrowserHistory()
+          history.location.search = `?variant=${variantId1}&variant=${variantId2}`
+
+          setMockApiResponses({
+            VariantCooccurrence: () => response,
+          })
+          const tree = render(
+            withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+          )
+          expect(tree).toMatchSnapshot()
+          if (genotypeCountsText) {
+            await tree.findByText(genotypeCountsText)
+          }
+          await tree.findByText(tableDescription)
+        })
+      })
     })
   })
 
