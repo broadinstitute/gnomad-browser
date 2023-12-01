@@ -259,6 +259,27 @@ describe('VariantCoocurrencePage', () => {
       const tables = tree.queryAllByText(/Haplotype Counts/)
       expect(tables).toEqual([])
     })
+
+    test('has an accuracy warning for variants in cis with a large distance between them', async () => {
+      const distantCisResponse = {
+        ...cisResponse,
+        variant_cooccurrence: {
+          ...cisResponse.variant_cooccurrence,
+          variant_ids: ['1-1-A-C', '1-50002-A-C'],
+        },
+      }
+      const history = createBrowserHistory()
+      history.location.search = '?variant=$1-1-A-C&variant=1-50002-A-C'
+
+      setMockApiResponses({
+        VariantCooccurrence: () => distantCisResponse,
+      })
+      const tree = render(
+        withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+      )
+      expect(tree).toMatchSnapshot()
+      await tree.findByText(/Accuracy is lower .+ away from each other./)
+    })
   })
 
   forDatasetsNotMatching(/r2_1$/, 'for non-2.1 dataset %s', (datasetId) => {

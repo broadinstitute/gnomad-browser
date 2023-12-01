@@ -60,6 +60,7 @@ export interface CooccurrenceForPopulation {
 
 export const cisThreshold = 0.02
 export const transThreshold = 0.55
+const distantCisThreshold = 50000
 
 const Section = styled.section`
   width: 100%;
@@ -97,13 +98,24 @@ const renderProbabilityCompoundHeterozygous = (p: any) => {
   return `${(p * 100).toFixed(0)}%`
 }
 
-const getCooccurrenceDescription = (
-  cooccurrenceInSelectedPopulation: CooccurrenceForPopulation,
-  selectedPopulation = 'All'
-) => {
-  let cooccurrenceDescription = null
-  if (cooccurrenceInSelectedPopulation.p_compound_heterozygous === null) {
-    const { genotype_counts } = cooccurrenceInSelectedPopulation
+type Prediction = 'neither_present' | 'one_not_present' | 'in_cis' | 'in_trans' | 'no_prediction'
+
+const cooccurrenceDescriptions: Record<Prediction, string> = {
+  one_not_present: 'One of these variants is not observed in',
+  neither_present: 'These variants are not observed',
+  in_cis:
+    'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most',
+  in_trans:
+    'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most',
+  no_prediction:
+    'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in',
+} as const
+
+const makePrediction = ({
+  p_compound_heterozygous,
+  genotype_counts,
+}: CooccurrenceForPopulation): Prediction => {
+  if (p_compound_heterozygous === null) {
     const variantASum =
       genotype_counts.het_ref +
       genotype_counts.het_het +
@@ -124,32 +136,31 @@ const getCooccurrenceDescription = (
 
     if (!variantAOccurs || !variantBOccurs) {
       if (variantAOccurs || variantBOccurs) {
-        cooccurrenceDescription = 'One of these variants is not observed in'
-      } else {
-        cooccurrenceDescription = 'These variants are not observed'
+        return 'one_not_present'
       }
-    }
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > transThreshold) {
-    cooccurrenceDescription =
-      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most'
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous < cisThreshold) {
-    cooccurrenceDescription =
-      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most'
-  } else {
-    cooccurrenceDescription =
-      'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
-  }
-
-  if (cooccurrenceDescription) {
-    if (selectedPopulation === 'All') {
-      cooccurrenceDescription = `${cooccurrenceDescription} individuals in gnomAD.`
-    } else {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      cooccurrenceDescription = `${cooccurrenceDescription} individuals in the ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population in gnomAD.`
+      return 'neither_present'
     }
   }
 
-  return cooccurrenceDescription
+  if (p_compound_heterozygous! > transThreshold) {
+    return 'in_trans'
+  }
+
+  if (p_compound_heterozygous! < cisThreshold) {
+    return 'in_cis'
+  }
+
+  return 'no_prediction'
+}
+
+const getCooccurrenceDescription = (prediction: Prediction, selectedPopulation = 'All') => {
+  const baseDescription = cooccurrenceDescriptions[prediction]
+
+  return selectedPopulation === 'All'
+    ? `${baseDescription} individuals in gnomAD.`
+    : `${baseDescription} individuals in the ${
+        GNOMAD_POPULATION_NAMES[selectedPopulation as keyof typeof GNOMAD_POPULATION_NAMES]
+      } population in gnomAD.`
 }
 
 type VariantCoocurrenceProps = {
@@ -168,6 +179,14 @@ export const noPredictionPossible = ({
 }: CooccurrenceForPopulation): boolean =>
   p_compound_heterozygous === null || isCisSingleton(genotype_counts)
 
+const variantDistance = ({ variant_ids: [variantId1, variantId2] }: CooccurrenceData): number => {
+  const [_chrom1, pos1String] = variantId1.split('-')
+  const [_chrom2, pos2String] = variantId2.split('-')
+  const pos1 = Number.parseInt(pos1String, 10)
+  const pos2 = Number.parseInt(pos2String, 10)
+  return Math.abs(pos1 - pos2)
+}
+
 const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const [selectedPopulation, setSelectedPopulation] = useState('All')
 
@@ -176,10 +195,9 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
       ? cooccurrenceData
       : cooccurrenceData.populations!.find((pop: any) => pop.id === selectedPopulation)!
 
-  const cooccurrenceDescription = getCooccurrenceDescription(
-    cooccurrenceInSelectedPopulation,
-    selectedPopulation
-  )
+  const prediction = makePrediction(cooccurrenceInSelectedPopulation)
+
+  const cooccurrenceDescription = getCooccurrenceDescription(prediction, selectedPopulation)
   // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
   const sharedCarrierExists =
     cooccurrenceData.genotype_counts.het_het +
@@ -191,6 +209,9 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const anyPopulationWithoutPrediction = [cooccurrenceData, ...cooccurrenceData.populations].some(
     noPredictionPossible
   )
+
+  const isDistantCis =
+    prediction === 'in_cis' && variantDistance(cooccurrenceData) > distantCisThreshold
 
   return (
     <>
@@ -214,6 +235,13 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
             * A likely co-occurrence pattern cannot be calculated in some cases, such as when only
             one of the variants is observed in a genetic ancestry group, or when both variants are
             singletons and were seen in the same individual.
+          </p>
+        )}
+
+        {isDistantCis && (
+          <p>
+            Accuracy is lower (&lt; 85%) for variants predicted to be in cis that are &gt; 10
+            <sup>5</sup> bp away from each other.
           </p>
         )}
       </Section>
