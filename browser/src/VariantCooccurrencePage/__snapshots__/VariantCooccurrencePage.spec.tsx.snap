@@ -1335,17 +1335,17 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                 <td
                   style="border-top: 2px solid #aaa;"
                 >
+                  0
+                </td>
+                <td
+                  style="border-top: 2px solid #aaa;"
+                >
+                  0
+                </td>
+                <td
+                  style="border-top: 2px solid #aaa;"
+                >
                   1
-                </td>
-                <td
-                  style="border-top: 2px solid #aaa;"
-                >
-                  0
-                </td>
-                <td
-                  style="border-top: 2px solid #aaa;"
-                >
-                  0
                 </td>
                 <td
                   style="border-top: 2px solid #aaa;"
@@ -1358,6 +1358,14 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
               </tr>
             </tfoot>
           </table>
+          <p>
+            <span
+              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            >
+              Note
+            </span>
+             Only samples covered at both variant sites are included in this table.
+          </p>
           <p>
             * A likely co-occurrence pattern cannot be calculated in some cases, such as when only one of the variants is observed in a genetic ancestry group, or when both variants are singletons and were seen in the same individual.
           </p>
@@ -1464,12 +1472,12 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                       A
                     </th>
                     <td>
-                      0
+                      1,000
                     </td>
                     <td
                       style="background: rgb(255, 119, 114);"
                     >
-                      1
+                      0
                     </td>
                     <td
                       style="background: rgb(255, 119, 114);"
@@ -1493,7 +1501,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                     <td
                       style="background: rgb(191, 117, 240);"
                     >
-                      0
+                      1
                     </td>
                     <td
                       style="background: rgb(0, 202, 235);"
@@ -1556,135 +1564,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
               >
                 Note
               </span>
-               Because no individual in gnomAD carries both variants, this table was computed based on the separate variant information and does not account for the possibility that some samples may not be covered at both variant sites.
-            </p>
-          </section>
-          <section
-            class="VariantCooccurrencePage__Section-sc-1xak74u-0 VariantCooccurrencePage__ResponsiveSection-sc-1xak74u-1 eIljXs"
-          >
-            <h3>
-              Haplotype Counts
-            </h3>
-            <div>
-              <table
-                class="VariantCooccurrenceHaplotypeCountsTable__Table-sc-6p61cc-0 izmUgX"
-              >
-                <colgroup
-                  span="2"
-                />
-                <colgroup
-                  span="2"
-                />
-                <thead>
-                  <tr>
-                    <td
-                      colspan="2"
-                    />
-                    <th
-                      colspan="2"
-                      scope="colgroup"
-                    >
-                      <a
-                        class="Link-sc-14lgydv-0-Link jBvaYQ"
-                        href="/variant/1-987-C-A"
-                      >
-                        1
-                        -
-                        987
-                        -
-                        C
-                        -
-                        A
-                      </a>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td
-                      colspan="2"
-                    />
-                    <th
-                      scope="col"
-                    >
-                      C
-                    </th>
-                    <th
-                      scope="col"
-                    >
-                      A
-                    </th>
-                  </tr>
-                  <tr>
-                    <th
-                      rowspan="2"
-                      scope="rowgroup"
-                    >
-                      <a
-                        class="Link-sc-14lgydv-0-Link jBvaYQ"
-                        href="/variant/1-234-A-C"
-                      >
-                        1
-                        -
-                        234
-                        -
-                        A
-                        -
-                        C
-                      </a>
-                    </th>
-                    <th
-                      scope="row"
-                    >
-                      A
-                    </th>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      11
-                    </td>
-                  </tr>
-                  <tr>
-                    <th
-                      scope="row"
-                    >
-                      C
-                    </th>
-                    <td>
-                      12
-                    </td>
-                    <td>
-                      13
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p>
-              The estimated probability that these variants occur in different haplotypes is
-               
-              2%
-              .
-            </p>
-            <p>
-              <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
-              >
-                Note
-              </span>
-               Probability values are not well calibrated, particularly where both variants are extremely rare. Interpret with caution. Please see
-               
-              <a
-                class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                our blog post on variant co-occurrence
-              </a>
-               
-              for accuracy estimates and additional detail.
+               Only samples covered at both variant sites are included in this table.
             </p>
           </section>
         </div>
@@ -2136,17 +2016,17 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
               <td
                 style="border-top: 2px solid #aaa;"
               >
+                0
+              </td>
+              <td
+                style="border-top: 2px solid #aaa;"
+              >
+                0
+              </td>
+              <td
+                style="border-top: 2px solid #aaa;"
+              >
                 1
-              </td>
-              <td
-                style="border-top: 2px solid #aaa;"
-              >
-                0
-              </td>
-              <td
-                style="border-top: 2px solid #aaa;"
-              >
-                0
               </td>
               <td
                 style="border-top: 2px solid #aaa;"
@@ -2159,6 +2039,14 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
             </tr>
           </tfoot>
         </table>
+        <p>
+          <span
+            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+          >
+            Note
+          </span>
+           Only samples covered at both variant sites are included in this table.
+        </p>
         <p>
           * A likely co-occurrence pattern cannot be calculated in some cases, such as when only one of the variants is observed in a genetic ancestry group, or when both variants are singletons and were seen in the same individual.
         </p>
@@ -2265,12 +2153,12 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                     A
                   </th>
                   <td>
-                    0
+                    1,000
                   </td>
                   <td
                     style="background: rgb(255, 119, 114);"
                   >
-                    1
+                    0
                   </td>
                   <td
                     style="background: rgb(255, 119, 114);"
@@ -2294,7 +2182,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                   <td
                     style="background: rgb(191, 117, 240);"
                   >
-                    0
+                    1
                   </td>
                   <td
                     style="background: rgb(0, 202, 235);"
@@ -2357,135 +2245,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
             >
               Note
             </span>
-             Because no individual in gnomAD carries both variants, this table was computed based on the separate variant information and does not account for the possibility that some samples may not be covered at both variant sites.
-          </p>
-        </section>
-        <section
-          class="VariantCooccurrencePage__Section-sc-1xak74u-0 VariantCooccurrencePage__ResponsiveSection-sc-1xak74u-1 eIljXs"
-        >
-          <h3>
-            Haplotype Counts
-          </h3>
-          <div>
-            <table
-              class="VariantCooccurrenceHaplotypeCountsTable__Table-sc-6p61cc-0 izmUgX"
-            >
-              <colgroup
-                span="2"
-              />
-              <colgroup
-                span="2"
-              />
-              <thead>
-                <tr>
-                  <td
-                    colspan="2"
-                  />
-                  <th
-                    colspan="2"
-                    scope="colgroup"
-                  >
-                    <a
-                      class="Link-sc-14lgydv-0-Link jBvaYQ"
-                      href="/variant/1-987-C-A"
-                    >
-                      1
-                      -
-                      987
-                      -
-                      C
-                      -
-                      A
-                    </a>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td
-                    colspan="2"
-                  />
-                  <th
-                    scope="col"
-                  >
-                    C
-                  </th>
-                  <th
-                    scope="col"
-                  >
-                    A
-                  </th>
-                </tr>
-                <tr>
-                  <th
-                    rowspan="2"
-                    scope="rowgroup"
-                  >
-                    <a
-                      class="Link-sc-14lgydv-0-Link jBvaYQ"
-                      href="/variant/1-234-A-C"
-                    >
-                      1
-                      -
-                      234
-                      -
-                      A
-                      -
-                      C
-                    </a>
-                  </th>
-                  <th
-                    scope="row"
-                  >
-                    A
-                  </th>
-                  <td>
-                    10
-                  </td>
-                  <td>
-                    11
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="row"
-                  >
-                    C
-                  </th>
-                  <td>
-                    12
-                  </td>
-                  <td>
-                    13
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p>
-            The estimated probability that these variants occur in different haplotypes is
-             
-            2%
-            .
-          </p>
-          <p>
-            <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
-            >
-              Note
-            </span>
-             Probability values are not well calibrated, particularly where both variants are extremely rare. Interpret with caution. Please see
-             
-            <a
-              class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-              href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              our blog post on variant co-occurrence
-            </a>
-             
-            for accuracy estimates and additional detail.
+             Only samples covered at both variant sites are included in this table.
           </p>
         </section>
       </div>

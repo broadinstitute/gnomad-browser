@@ -170,7 +170,7 @@ describe('VariantCoocurrencePage', () => {
       ...baseApiResponse,
       variant_cooccurrence: {
         ...baseApiResponse.variant_cooccurrence,
-        genotype_counts: [0, 1, 0, 0, 0, 0, 0, 0, 0],
+        genotype_counts: [1000, 0, 0, 0, 1, 0, 0, 0, 0],
         p_compound_heterozygous: cisThreshold - epsilon,
       },
     }
@@ -243,6 +243,21 @@ describe('VariantCoocurrencePage', () => {
           await tree.findByText(tableDescription)
         })
       })
+    })
+
+    test('omits haplotype table for cis singleton', async () => {
+      const history = createBrowserHistory()
+      history.location.search = `?variant=${variantId1}&variant=${variantId2}`
+
+      setMockApiResponses({
+        VariantCooccurrence: () => cisSingletonResponse,
+      })
+      const tree = render(
+        withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+      )
+
+      const tables = tree.queryAllByText(/Haplotype Counts/)
+      expect(tables).toEqual([])
     })
   })
 

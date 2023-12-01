@@ -157,15 +157,9 @@ type VariantCoocurrenceProps = {
 }
 
 const isCisSingleton = (genotype_counts: GenotypeCounts): boolean => {
-  const cisSum =
-    genotype_counts.ref_het +
-    genotype_counts.ref_hom +
-    genotype_counts.het_ref +
-    genotype_counts.hom_ref
+  const totalSum = Object.values(genotype_counts).reduce((a, b) => a + b) - genotype_counts.ref_ref
 
-  const totalSum = Object.values(genotype_counts).reduce((a, b) => a + b)
-
-  return cisSum === 1 && totalSum === 1
+  return genotype_counts.het_het === 1 && totalSum === 1
 }
 
 export const noPredictionPossible = ({
@@ -257,37 +251,39 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           )}
         </ResponsiveSection>
 
-        <ResponsiveSection>
-          <h3>
-            {cooccurrenceInSelectedPopulation.genotype_counts.het_het > 0 && <>Estimated </>}
-            Haplotype Counts
-          </h3>
-          <VariantCooccurrenceHaplotypeCountsTable
-            variantIds={cooccurrenceData.variant_ids}
-            haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
-          />
-          {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
-            <>
-              <p>
-                The estimated probability that these variants occur in different haplotypes is{' '}
-                {renderProbabilityCompoundHeterozygous(
-                  cooccurrenceInSelectedPopulation.p_compound_heterozygous
-                )}
-                .
-              </p>
-              <p>
-                <Badge level="warning">Note</Badge> Probability values are not well calibrated,
-                particularly where both variants are extremely rare. Interpret with caution. Please
-                see{' '}
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
-                  our blog post on variant co-occurrence
-                </ExternalLink>{' '}
-                for accuracy estimates and additional detail.
-              </p>
-            </>
-          )}
-        </ResponsiveSection>
+        {!isCisSingleton(cooccurrenceData.genotype_counts) && (
+          <ResponsiveSection>
+            <h3>
+              {cooccurrenceInSelectedPopulation.genotype_counts.het_het > 0 && <>Estimated </>}
+              Haplotype Counts
+            </h3>
+            <VariantCooccurrenceHaplotypeCountsTable
+              variantIds={cooccurrenceData.variant_ids}
+              haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
+            />
+            {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
+              <>
+                <p>
+                  The estimated probability that these variants occur in different haplotypes is{' '}
+                  {renderProbabilityCompoundHeterozygous(
+                    cooccurrenceInSelectedPopulation.p_compound_heterozygous
+                  )}
+                  .
+                </p>
+                <p>
+                  <Badge level="warning">Note</Badge> Probability values are not well calibrated,
+                  particularly where both variants are extremely rare. Interpret with caution.
+                  Please see{' '}
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
+                    our blog post on variant co-occurrence
+                  </ExternalLink>{' '}
+                  for accuracy estimates and additional detail.
+                </p>
+              </>
+            )}
+          </ResponsiveSection>
+        )}
       </Wrapper>
     </>
   )
