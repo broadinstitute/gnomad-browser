@@ -114,6 +114,7 @@ function extractGcsPath(gcsUrl: string): string | null {
 }
 
 export class JsonCache<T> {
+  // If gs:// in the path, will use GCS. If not, use local directory.
   private json_cache_path: string
 
   private bucketName: string | null
