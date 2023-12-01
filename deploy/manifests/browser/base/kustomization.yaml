@@ -7,11 +7,3 @@ resources:
   - ./browser.deployment.yaml
 configurations:
   - ./add-suffix.yaml
-vars:
-  - name: API_SERVICE
-    objref:
-      kind: Service
-      name: gnomad-api
-      apiVersion: v1
-    fieldref:
-      fieldpath: metadata.name
