@@ -29,13 +29,7 @@ def prepare_gnomad_v2_regional_missense_constraint(path):
 
     ds_with_rmc = ds_with_rmc.group_by("transcript_id").aggregate(regions_array=hl.agg.collect(ds_with_rmc.row_value))
     ds_with_rmc = ds_with_rmc.annotate(has_no_rmc_evidence=hl.bool(False))
-    ds_with_rmc = ds_with_rmc.annotate(
-        passed_qc=hl.if_else(
-            hl.set(ds_with_rmc.globals.rmc_transcripts_qc).contains(ds_with_rmc.transcript_id),
-            hl.bool(True),
-            hl.bool(False),
-        )
-    )
+    ds_with_rmc = ds_with_rmc.annotate(passed_qc=hl.bool(True))
     ds_with_rmc = ds_with_rmc.select(
         has_no_rmc_evidence=ds_with_rmc.has_no_rmc_evidence,
         passed_qc=ds_with_rmc.passed_qc,
@@ -46,7 +40,7 @@ def prepare_gnomad_v2_regional_missense_constraint(path):
     #   the browser needs to be able to distinguish between transcripts that were
     #   searched and had no RMC evidence, vs those that were not searched, for display
     #   purposes
-    no_rmc_set = ds.globals.transcripts_no_rmc_all
+    no_rmc_set = ds.globals.transcripts_no_rmc
     no_rmc_list = list(no_rmc_set.collect()[0])
     ds_no_rmc = hl.utils.range_table(1)
     ds_no_rmc = ds_no_rmc.annotate(
