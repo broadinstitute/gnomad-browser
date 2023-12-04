@@ -18,7 +18,7 @@ type State = any
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { error: null, bugDescription: 'foobar' }
+    this.state = { error: null, bugDescription: '' }
   }
 
   static getDerivedStateFromError(error: any) {
@@ -50,6 +50,10 @@ ${error.stack}
         error.message
       )}&body=${encodeURIComponent(issueBody)}&labels=Type%3A%20Bug`
 
+      const forumURL = `https://discuss.gnomad.broadinstitute.org/new-topic?title=topic%20${encodeURIComponent(
+        error.message
+      )}&body=${encodeURIComponent(issueBody)}&category=Browser&tags=bug`
+
       const emailURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
         'Browser bug report'
       )}&body=${encodeURIComponent(issueBody.replace(/```\n/g, ''))}`
@@ -75,13 +79,29 @@ ${error.stack}
           </p>
 
           <p>
-            And{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            <ExternalLink href={issueURL}>file an issue on GitHub</ExternalLink> or{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            <ExternalLink href={emailURL}>email us</ExternalLink> and{' '}
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            And submit this bug report as{' '}
+            <ul>
+              <li>
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href={issueURL}>an issue on GitHub</ExternalLink> or{' '}
+              </li>
+              <li>
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
+              </li>
+            </ul>
+            Then {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <StyledLink href="/">reload the browser</StyledLink>.
+            <br />
+            <br />
+            <br />
+            <p>
+              Alternately, you can{' '}
+              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+              <ExternalLink href={emailURL}>email us</ExternalLink>. Please note that we prioritize
+              answering issues on Github and topics on the Forum, so if you choose to email it may
+              take us longer to respond.
+            </p>
           </p>
         </InfoPage>
       )
