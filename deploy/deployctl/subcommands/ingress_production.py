@@ -99,6 +99,7 @@ def apply_ingress(browser_deployment: str = None, reads_deployment: str = None, 
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.backendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.frontendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.ingress.yaml")])
+        kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.managedcertificate.yaml")])
 
 
 def main(argv: typing.List[str]) -> None:
