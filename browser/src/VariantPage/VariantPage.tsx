@@ -397,7 +397,6 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         {variant.in_silico_predictors && variant.in_silico_predictors.length && (
           <ResponsiveSection>
             <h2>In Silico Predictors</h2>
-            {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
             <VariantInSilicoPredictors variant={variant} datasetId={datasetId} />
           </ResponsiveSection>
         )}

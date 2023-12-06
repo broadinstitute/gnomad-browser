@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { Badge, List, ListItem } from '@gnomad/ui'
 import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
+import { Variant } from './VariantPage'
 
 const PREDICTORS = {
   cadd: { label: 'CADD', warningThreshold: 10, dangerThreshold: 20 },
@@ -56,13 +57,7 @@ const Marker = styled.span`
 `
 
 type Props = {
-  variant: {
-    in_silico_predictors: {
-      id: string
-      value: string
-      flags: string[]
-    }[]
-  }
+  variant: Variant
   datasetId: DatasetId
 }
 
