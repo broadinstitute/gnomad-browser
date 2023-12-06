@@ -8,7 +8,7 @@
 
 Creating the base GCP resources (GKE cluster, GCS buckets, VPC networks, service accounts) is done via the [gnomad-vpc](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-vpc) and [gnomad-browser-infra](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-browser-infra) terraform modules.
 
-If you are simply deploying a new browser app instance, and don't need to provision infrastructure, you can skip this step.
+If you are simply deploying a new browser app instance/demo in an existing environment (such as production) where GKE, Elasticsearch, Redis, etc already exist, you can skip to: [Before Creating a Deployment](#before-creating-a-deployment), or [Prepare Data](#prepare-data) if you are loading a new dataset.
 
 Example configurations for those two modules are as follows. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
 
@@ -23,6 +23,8 @@ module "gnomad-browser-infra" {
   infra_prefix                          = "gnomad-mybrowser"
   vpc_network_name                      = "gnomad-mynetwork"
   vpc_subnet_name                       = "gnomad-mynetwork-gke"
+  # For authorized networks, use a list of IPs that is restricted to networks that makes sense for you. This example opens traffic to the Internet.
+  gke_control_plane_authorized_networks = ["0.0.0.0/0"] 
   project_id                            = "my-gcp-project"
   gke_pods_range_slice                  = "10.164.0.0/14"
   gke_services_range_slice              = "10.168.0.0/20"
@@ -30,10 +32,6 @@ module "gnomad-browser-infra" {
 ```
 
 Then, run `terraform init` and `terraform apply`.
-
-## Prepare data
-
-See [data-pipeline/README.md](../../data-pipeline/README.md) for information on running data preparation pipelines.
 
 # Deploy on GKE
 
@@ -99,6 +97,10 @@ E.g change `JSON_CACHE_PATH` from `gs://my_json_cache_bucket/release` to `gs://m
 Cached files can also be copied between buckets as needed.
 
 Or, specific files to be invalidated can be deleted using a glob pattern.
+
+## Prepare data
+
+See [data-pipeline/README.md](../../data-pipeline/README.md) for information on running data preparation pipelines.
 
 ## Before creating a deployment
 
@@ -271,7 +273,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
    ./deployctl deployments apply <DEPLOYMENT_NAME>
    ```
 
-8. Apply an ingress, allowing access to the pods via an IP address that gets assigned:
+8. (Optional) Apply a demo ingress, allowing access to the pods via an IP address that gets assigned. Do this if you want to double-check your deployment before updating the production ingress.
 
    ```
    ./deployctl demo apply-ingress <DEPLOYMENT_NAME>
@@ -285,7 +287,11 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
      It typically takes ~5 minutes for the IP to resolve to the new deployment
 
-   - Optionally, double check the blue/green deployment via this ingress before swapping production over
+   - Clean up the ingress when you no longer need it with:
+    
+     ```
+     kubectl delete ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
+     ```
 
 9. Update the production deployment
 
