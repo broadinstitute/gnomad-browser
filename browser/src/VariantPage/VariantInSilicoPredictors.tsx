@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Badge, List, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, List, ListItem } from '@gnomad/ui'
 import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
 import { Variant } from './VariantPage'
 
@@ -140,6 +140,17 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
               )
             })}
       </List>
+      {isV4(datasetId) && (
+        <>
+          <Badge level="info">Note</Badge> For more detailed and up to date SpliceAI and Pangolin
+          predictions, please visit our {/* @ts-expect-error */}
+          <ExternalLink
+            href={`https://spliceailookup.broadinstitute.org/#variant=chr${variant.variant_id}&hg=38&distance=500&mask=0&ra=0}`}
+          >
+            SpliceAI Lookup browser
+          </ExternalLink>
+        </>
+      )}
     </div>
   )
 }
