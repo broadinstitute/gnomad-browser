@@ -25220,34 +25220,39 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             Variant co-occurrence by gene (homozygous rare variants)
           </span>
           <br />
-          Show URL for
-           
-          <button
-            aria-label="Show Google URL for Variant co-occurrence by gene (homozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Google
-          </button>
-           / 
-          <button
-            aria-label="Show Amazon URL for Variant co-occurrence by gene (homozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Amazon
-          </button>
-           / 
-          <button
-            aria-label="Show Microsoft URL for Variant co-occurrence by gene (homozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Microsoft
-          </button>
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Variant co-occurrence by gene (homozygous rare variants) from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Variant co-occurrence by gene (homozygous rare variants) from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Variant co-occurrence by gene (homozygous rare variants) from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
         </li>
         <li
           className="c20"
@@ -25256,34 +25261,39 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             Variant co-occurrence by gene (two heterozygous rare variants)
           </span>
           <br />
-          Show URL for
-           
-          <button
-            aria-label="Show Google URL for Variant co-occurrence by gene (two heterozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Google
-          </button>
-           / 
-          <button
-            aria-label="Show Amazon URL for Variant co-occurrence by gene (two heterozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Amazon
-          </button>
-           / 
-          <button
-            aria-label="Show Microsoft URL for Variant co-occurrence by gene (two heterozygous rare variants)"
-            className="c21"
-            onClick={[Function]}
-            type="button"
-          >
-            Microsoft
-          </button>
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Variant co-occurrence by gene (two heterozygous rare variants) from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Variant co-occurrence by gene (two heterozygous rare variants) from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Variant co-occurrence by gene (two heterozygous rare variants) from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
         </li>
       </ul>
     </section>

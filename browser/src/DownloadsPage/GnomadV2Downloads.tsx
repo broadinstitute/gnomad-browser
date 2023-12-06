@@ -641,14 +641,14 @@ const GnomadV2Downloads = () => {
           </ListItem>
           {/* @ts-expect-error */}
           <ListItem>
-            <GetUrlButtons
+            <GenericDownloadLinks
               label="Variant co-occurrence by gene (homozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
             />
           </ListItem>
           {/* @ts-expect-error */}
           <ListItem>
-            <GetUrlButtons
+            <GenericDownloadLinks
               label="Variant co-occurrence by gene (two heterozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
             />
