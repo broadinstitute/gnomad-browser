@@ -20,13 +20,43 @@ const FLAG_DESCRIPTIONS = {
 }
 
 const PREDICTORS_V4 = {
-  revel_max: { label: 'REVEL', warningThreshold: 0.644, dangerThreshold: 0.773 },
-  spliceai_ds_max: { label: 'SpliceAI', warningThreshold: 0.2, dangerThreshold: 0.5 },
-  pangolin_largest_ds: { label: 'Pangolin', warningThreshold: 0.2, dangerThreshold: 0.5 },
-  phylop: { label: 'phyloP', warningThreshold: 7.367, dangerThreshold: 9.741 },
-  sift_max: { label: 'SIFT (max)', warningThreshold: 0.001, dangerThreshold: 0 },
-  polyphen_max: { label: 'PolyPhen (max)', warningThreshold: 0.978, dangerThreshold: 0.999 },
-  cadd: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1 },
+  revel_max: {
+    label: 'REVEL',
+    warningThreshold: 0.644,
+    dangerThreshold: 0.773,
+    absoluteValue: false,
+  },
+  spliceai_ds_max: {
+    label: 'SpliceAI',
+    warningThreshold: 0.2,
+    dangerThreshold: 0.5,
+    absoluteValue: false,
+  },
+  pangolin_largest_ds: {
+    label: 'Pangolin',
+    warningThreshold: 0.2,
+    dangerThreshold: 0.5,
+    absoluteValue: true,
+  },
+  phylop: {
+    label: 'phyloP',
+    warningThreshold: 7.367,
+    dangerThreshold: 9.741,
+    absoluteValue: false,
+  },
+  sift_max: {
+    label: 'SIFT (max)',
+    warningThreshold: 0.001,
+    dangerThreshold: 0,
+    absoluteValue: false,
+  },
+  polyphen_max: {
+    label: 'PolyPhen (max)',
+    warningThreshold: 0.978,
+    dangerThreshold: 0.999,
+    absoluteValue: false,
+  },
+  cadd: { label: 'CADD', warningThreshold: 25.3, dangerThreshold: 28.1, absoluteValue: false },
 }
 
 const EXCLUDED_v4_PREDICTORS = ['sift_max']
@@ -88,7 +118,9 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
               const predictor = predictors[id]
 
               let color = null
-              const parsedValue = parseFloat(value)
+              const parsedValue = predictor.absoluteValue
+                ? Math.abs(parseFloat(value))
+                : parseFloat(value)
               if (!Number.isNaN(parsedValue)) {
                 if (!predictor.dangerThreshold || !predictor.warningThreshold) {
                   color = 'grey'
