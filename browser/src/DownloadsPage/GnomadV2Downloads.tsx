@@ -403,32 +403,23 @@ const GnomadV2Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <GetUrlButtons
               label="Regional missense constraint Hail Table"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
               label="Regional missense constraint TSV (transcripts with RMC)"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
               label="Regional missense constraint TSV (transcripts without RMC)"
-              // TODO: check after sync
               path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
-              includeAWS={false}
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -456,6 +447,20 @@ const GnomadV2Downloads = () => {
             <GenericDownloadLinks
               label="All pLoF variants"
               path="/papers/2019-flagship-lof/v1.0/gnomad.v2.1.1.all_lofs.txt.bgz"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser pipeline GTEx Hail Table"
+              path="/resources/grch37/gtex/gtex_v7_tissue_expression.ht"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser pipeline pext Hail Table"
+              path="/resources/grch37/pext/pext_grch37.ht"
             />
           </ListItem>
         </FileList>
@@ -636,14 +641,14 @@ const GnomadV2Downloads = () => {
           </ListItem>
           {/* @ts-expect-error */}
           <ListItem>
-            <GetUrlButtons
+            <GenericDownloadLinks
               label="Variant co-occurrence by gene (homozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
             />
           </ListItem>
           {/* @ts-expect-error */}
           <ListItem>
-            <GetUrlButtons
+            <GenericDownloadLinks
               label="Variant co-occurrence by gene (two heterozygous rare variants)"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
             />

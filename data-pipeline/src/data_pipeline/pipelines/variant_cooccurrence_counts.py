@@ -1,9 +1,7 @@
 import hail as hl
 
-TWO_HET_DATA_PATH = "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/variant-cooccurrence/2023-02-24/chet_unphased_same_hap_per_gene.tsv"
-HOMOZYGOUS_DATA_PATH = (
-    "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/variant-cooccurrence/2023-02-24/het_hom_per_gene.tsv"
-)
+TWO_HET_DATA_PATH = "gs://gcp-public-data--gnomad/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_two_heterozygous_rare_variants_table_for_download.tsv"
+HOMOZYGOUS_DATA_PATH = "gs://gcp-public-data--gnomad/release/2.1.1/secondary_analyses/variant_cooccurrence/gnomAD_v2_homozygous_rare_variants_table_for_download.tsv"
 
 AF_CUTOFF_MAPPING = hl.literal(
     {
@@ -27,7 +25,7 @@ HOMOZYGOUS_AF_CUTOFFS_TO_EXPORT = hl.literal(["af_cutoff_0_05", "af_cutoff_0_01"
 
 
 def prepare_variant_cooccurrence_counts(tsv_path, field_name_map):
-    key_field_types = {"gene_id": hl.tstr, "csq": hl.tstr, "af_cutoff": hl.tstr}
+    key_field_types = {"gene_id": hl.tstr, "csq": hl.tstr, "af_threshold": hl.tstr}
     input_field_types = dict(map(lambda field_name: (field_name, hl.tint), field_name_map.values()))
 
     result = hl.import_table(
@@ -36,7 +34,7 @@ def prepare_variant_cooccurrence_counts(tsv_path, field_name_map):
         key=["gene_id"],
         min_partitions=100,
     )
-    result = result.transmute(af_cutoff=AF_CUTOFF_MAPPING[result.af_cutoff])
+    result = result.transmute(af_cutoff=AF_CUTOFF_MAPPING[result.af_threshold])
     result = result.key_by("gene_id", "csq", "af_cutoff")
     struct_schema = {
         processed_field_name: result[result.gene_id, result.csq, result.af_cutoff][raw_field_name]

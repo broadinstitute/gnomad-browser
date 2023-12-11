@@ -5,6 +5,8 @@ import { parseVariantId } from '@gnomad/identifiers'
 
 import Link from '../Link'
 
+import { GenotypeCounts } from './VariantCooccurrencePage'
+
 const Table = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
@@ -42,7 +44,7 @@ const INDETERMINATE_HIGHLIGHT_COLOR = 'rgb(191, 117, 240)'
 
 type VariantCooccurrenceDetailsTableProps = {
   variantIds: string[]
-  genotypeCounts: number[]
+  genotypeCounts: GenotypeCounts
 }
 
 const VariantCooccurrenceDetailsTable = ({
@@ -52,7 +54,6 @@ const VariantCooccurrenceDetailsTable = ({
   const variant1 = parseVariantId(variantIds[0])
   const variant2 = parseVariantId(variantIds[1])
 
-  // genotypeCounts: ref_ref ref_het ref_hom het_ref het_het het_hom hom_ref hom_het hom_hom
   return (
     <div>
       <Table>
@@ -92,20 +93,20 @@ const VariantCooccurrenceDetailsTable = ({
             <th scope="row">
               {truncate(variant1.ref)}/{truncate(variant1.ref)}
             </th>
-            <td>{genotypeCounts[0].toLocaleString()}</td>
+            <td>{genotypeCounts.ref_ref.toLocaleString()}</td>
             <td
               style={{
                 background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[1].toLocaleString()}
+              {genotypeCounts.ref_het.toLocaleString()}
             </td>
             <td
               style={{
                 background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[2].toLocaleString()}
+              {genotypeCounts.ref_hom.toLocaleString()}
             </td>
           </tr>
           <tr>
@@ -117,17 +118,17 @@ const VariantCooccurrenceDetailsTable = ({
                 background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[3].toLocaleString()}
+              {genotypeCounts.het_ref.toLocaleString()}
             </td>
             <td
               style={{
                 background: INDETERMINATE_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[4].toLocaleString()}
+              {genotypeCounts.het_het.toLocaleString()}
             </td>
             <td style={{ background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR }}>
-              {genotypeCounts[5].toLocaleString()}
+              {genotypeCounts.het_hom.toLocaleString()}
             </td>
           </tr>
           <tr>
@@ -139,17 +140,17 @@ const VariantCooccurrenceDetailsTable = ({
                 background: DIFFERENT_HAPLOTYPES_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[6].toLocaleString()}
+              {genotypeCounts.hom_ref.toLocaleString()}
             </td>
             <td style={{ background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR }}>
-              {genotypeCounts[7].toLocaleString()}
+              {genotypeCounts.hom_het.toLocaleString()}
             </td>
             <td
               style={{
                 background: SAME_HAPLOTYPE_HIGHLIGHT_COLOR,
               }}
             >
-              {genotypeCounts[8].toLocaleString()}
+              {genotypeCounts.hom_hom.toLocaleString()}
             </td>
           </tr>
         </tbody>

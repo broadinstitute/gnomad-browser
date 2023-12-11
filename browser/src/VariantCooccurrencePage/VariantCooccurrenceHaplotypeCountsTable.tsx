@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { parseVariantId } from '@gnomad/identifiers'
+import { HaplotypeCounts } from './VariantCooccurrencePage'
 
 import Link from '../Link'
 
@@ -28,7 +29,7 @@ const truncate = (str: any, maxLength = 5) => {
 
 type VariantCooccurrenceHaplotypeCountsTableProps = {
   variantIds: string[]
-  haplotypeCounts: number[]
+  haplotypeCounts: HaplotypeCounts
 }
 
 const VariantCooccurrenceHaplotypeCountsTable = ({
@@ -69,13 +70,13 @@ const VariantCooccurrenceHaplotypeCountsTable = ({
               </Link>
             </th>
             <th scope="row">{truncate(variant1.ref)}</th>
-            <td>{Number(haplotypeCounts[0].toFixed(1)).toLocaleString()}</td>
-            <td>{Number(haplotypeCounts[1].toFixed(1)).toLocaleString()}</td>
+            <td>{Number(haplotypeCounts.ref_ref.toFixed(1)).toLocaleString()}</td>
+            <td>{Number(haplotypeCounts.hom_ref.toFixed(1)).toLocaleString()}</td>
           </tr>
           <tr>
             <th scope="row">{truncate(variant1.alt)}</th>
-            <td>{Number(haplotypeCounts[2].toFixed(1)).toLocaleString()}</td>
-            <td>{Number(haplotypeCounts[3].toFixed(1)).toLocaleString()}</td>
+            <td>{Number(haplotypeCounts.ref_hom.toFixed(1)).toLocaleString()}</td>
+            <td>{Number(haplotypeCounts.hom_hom.toFixed(1)).toLocaleString()}</td>
           </tr>
         </tbody>
       </Table>

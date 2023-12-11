@@ -61,6 +61,45 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 Run kubectl apply -k . in the deploy/manifests/redis folder
 
+## Json Cache
+
+The gnomAD API has an optional JSON cache for elasticsearch lookups. The cache client can write to local directories or Google Cloud Storage and files can be gzipped or not.
+
+### Environment variables:
+
+Should be set when running the API server.
+
+`JSON_CACHE_PATH`
+
++ Description: Specifies the directory path where JSON files should be written.
++ Usage: If this path includes gs://, the system will utilize Google Cloud Storage (GCS) for storing the JSON files. Otherwise, it defaults to using local file storage.
++ Example Value: /path/to/cache or gs://bucket_name/path/to/cache
+
+`JSON_CACHE_ENABLE_ALL`
++ Description: Determines whether caching is enabled for all Elasticsearch lookups using the withCache function.
++ Usage: Set to true to enable caching for all lookups; otherwise, caching is disabled.
++ Example Value: true or false
+
+`JSON_CACHE_LARGE_GENES`
++ Description: Controls the caching behavior specifically for large genes.
++ Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
++ Example Value: true or false
+
+`JSON_CACHE_COMPRESSION`
++ Description: Specifies whether to use compression for the stored JSON files.
++ Usage: Set to true to enable compression, which can save storage space but may increase CPU usage for compression and decompression processes.
++ Example Value: true or false
+
+### Cache invalidation
+
+When data changes, the JSON cache path must be manually invalidated. This can be done by updating the cache path to a new directory.
+
+E.g change `JSON_CACHE_PATH` from `gs://my_json_cache_bucket/release` to `gs://my_json_cache_bucket/release2`.
+
+Cached files can also be copied between buckets as needed.
+
+Or, specific files to be invalidated can be deleted using a glob pattern.
+
 ## Before creating a deployment
 
 Before deploying a new version of the browser, either a demo, or to production:

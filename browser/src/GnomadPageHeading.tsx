@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import DatasetSelector from './DatasetSelector'
+import DatasetSelector, { DatasetOptions } from './DatasetSelector'
 import InfoButton from './help/InfoButton'
+
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 const PageHeadingWrapper = styled.div`
   display: flex;
@@ -78,19 +80,13 @@ const Label = styled.span`
   margin-right: 0.5em;
 `
 
-/*
-(ts-migrate) TODO: Migrate the remaining prop types
-...DatasetSelector.propTypes
-*/
-type OwnProps = {
+type Props = {
   children: React.ReactNode
   extra?: React.ReactNode
+  datasetOptions: DatasetOptions
+  selectedDataset: DatasetId
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof GnomadPageHeading.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GnomadPageHeading' implicitly has type 'any' beca... Remove this comment to see the full error message
 const GnomadPageHeading = ({ children, extra, datasetOptions, selectedDataset }: Props) => (
   <PageHeadingWrapper>
     <PageHeadingInnerWrapper>

@@ -101,7 +101,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3"
+            href="/variant/13-123-A-C?dataset=gnomad_r3"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -147,7 +147,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -164,7 +164,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -181,7 +181,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -198,7 +198,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -215,7 +215,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -232,7 +232,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -249,7 +249,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -259,6 +259,98 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -8930,7 +9022,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3_controls_and_biobanks"
+            href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -8976,7 +9068,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -8993,7 +9085,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9010,7 +9102,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9027,7 +9119,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9044,7 +9136,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9061,7 +9153,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9078,7 +9170,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -9088,6 +9180,98 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -17762,7 +17946,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3_non_cancer"
+            href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -17808,7 +17992,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17825,7 +18009,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17842,7 +18026,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17859,7 +18043,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17876,7 +18060,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17893,7 +18077,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17910,7 +18094,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -17920,6 +18104,98 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -26594,7 +26870,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3_non_neuro"
+            href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -26640,7 +26916,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26657,7 +26933,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26674,7 +26950,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26691,7 +26967,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26708,7 +26984,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26725,7 +27001,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26742,7 +27018,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -26752,6 +27028,98 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -35426,7 +35794,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3_non_topmed"
+            href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -35472,7 +35840,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35489,7 +35857,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35506,7 +35874,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35523,7 +35891,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35540,7 +35908,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35557,7 +35925,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35574,7 +35942,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -35584,6 +35952,98 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -44258,7 +44718,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r3_non_v2"
+            href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -44304,7 +44764,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44321,7 +44781,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3"
-                  href="/?dataset=gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44338,7 +44798,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_cancer"
-                  href="/?dataset=gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44355,7 +44815,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_neuro"
-                  href="/?dataset=gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44372,7 +44832,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_v2"
-                  href="/?dataset=gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44389,7 +44849,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_non_topmed"
-                  href="/?dataset=gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44406,7 +44866,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r3_controls_and_biobanks"
-                  href="/?dataset=gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -44416,6 +44876,98 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     16,465 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    135,743 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    134,187 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    114,704 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    60,146 samples
                   </div>
                 </a>
               </li>
@@ -53090,7 +53642,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=exac"
+            href="/variant/13-123-A-C?dataset=exac"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -53136,7 +53688,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53146,6 +53698,108 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -53160,7 +53814,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53177,7 +53831,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53194,7 +53848,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53211,7 +53865,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53228,7 +53882,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -53245,7 +53899,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60228,7 +60882,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r2_1"
+            href="/variant/13-123-A-C?dataset=gnomad_r2_1"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -60274,7 +60928,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/liftover/13-123-A-C/gnomad_r2_1/gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60284,6 +60938,108 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -60298,7 +61054,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60315,7 +61071,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60332,7 +61088,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60349,7 +61105,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60366,7 +61122,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -60383,7 +61139,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69252,7 +70008,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r2_1_controls"
+            href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -69298,7 +70054,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/liftover/13-123-A-C/gnomad_r2_1_controls/gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69308,6 +70064,108 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -69322,7 +70180,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69339,7 +70197,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69356,7 +70214,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69373,7 +70231,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69390,7 +70248,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -69407,7 +70265,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78276,7 +79134,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r2_1_non_cancer"
+            href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -78322,7 +79180,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/liftover/13-123-A-C/gnomad_r2_1_non_cancer/gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78332,6 +79190,108 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -78346,7 +79306,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78363,7 +79323,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78380,7 +79340,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78397,7 +79357,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78414,7 +79374,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -78431,7 +79391,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87300,7 +88260,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r2_1_non_neuro"
+            href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -87346,7 +88306,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/liftover/13-123-A-C/gnomad_r2_1_non_neuro/gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87356,6 +88316,108 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -87370,7 +88432,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87387,7 +88449,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87404,7 +88466,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87421,7 +88483,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87438,7 +88500,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -87455,7 +88517,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96324,7 +97386,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           <a
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="current_short_variant"
-            href="/?dataset=gnomad_r2_1_non_topmed"
+            href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -96370,7 +97432,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r4"
-                  href="/?dataset=gnomad_r4"
+                  href="/variant/liftover/13-123-A-C/gnomad_r2_1_non_topmed/gnomad_r4"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96380,6 +97442,108 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    76,156 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_cancer"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-cancer)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    74,023 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    67,442 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_v2"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_v2"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-v2)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    57,344 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_non_topmed"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (non-TOPMed)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    40,433 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r3_controls_and_biobanks"
+                  href="/variant/13-123-A-C?dataset=gnomad_r3_controls_and_biobanks"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v3.1.2 (controls/biobanks)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    16,465 samples
                   </div>
                 </a>
               </li>
@@ -96394,7 +97558,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1"
-                  href="/?dataset=gnomad_r2_1"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96411,7 +97575,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_topmed"
-                  href="/?dataset=gnomad_r2_1_non_topmed"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_topmed"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96428,7 +97592,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_cancer"
-                  href="/?dataset=gnomad_r2_1_non_cancer"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_cancer"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96445,7 +97609,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_non_neuro"
-                  href="/?dataset=gnomad_r2_1_non_neuro"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_non_neuro"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96462,7 +97626,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="gnomad_r2_1_controls"
-                  href="/?dataset=gnomad_r2_1_controls"
+                  href="/variant/13-123-A-C?dataset=gnomad_r2_1_controls"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -96479,7 +97643,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                   data-item="exac"
-                  href="/?dataset=exac"
+                  href="/variant/13-123-A-C?dataset=exac"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}

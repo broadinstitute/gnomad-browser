@@ -25,6 +25,37 @@ images:
   - name: gnomad-browser
     newName: {browser_image_repository}
     newTag: '{browser_tag}'
+replacements:
+- source:
+    fieldPath: metadata.name
+    kind: Service
+    name: gnomad-api
+    version: v1
+  targets:
+  - fieldPaths:
+    - spec.template.spec.containers.0.env.0.value
+    options:
+      delimiter: /
+      index: 2
+    select:
+      group: apps
+      kind: Deployment
+      name: gnomad-browser
+      version: v1
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: JSON_CACHE_PATH
+                    value: 'gs://{cluster_name}-gene-cache/2023-12-01'
 """
 
 
@@ -89,6 +120,8 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             browser_tag=browser_tag,
             api_image_repository=config.api_image_repository,
             api_tag=api_tag,
+            project=config.project,
+            cluster_name=config.gke_cluster_name,
         )
 
         kustomization_file.write(kustomization)

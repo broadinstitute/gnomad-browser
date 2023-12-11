@@ -4,6 +4,8 @@ import { Redis } from 'ioredis'
 
 import config from './config'
 import logger from './logger'
+import { JsonCache } from './queries/helpers/json-cache'
+import largeGenes from './queries/helpers/large-genes'
 
 let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
@@ -67,10 +69,42 @@ if (config.REDIS_HOST) {
 
 export const withCache = (fn: any, keyFn: any, options = {}) => {
   // @ts-expect-error TS(2339) FIXME: Property 'expiration' does not exist on type '{}'.
-  const { expiration = 3600 } = options
+  //
+  const { expiration = 3600, jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL, jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES } = options
 
   return async (...args: any[]) => {
     const cacheKey = keyFn(...args)
+
+    if (jsonCacheEnableAll) {
+      const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
+      if (await json_cache.exists(cacheKey)) {
+        return json_cache.get(cacheKey)
+      }
+
+      const result = await fn(...args)
+
+      json_cache.set(cacheKey, result)
+
+      return result
+    }
+
+
+    if (jsonCacheLargeGenes) {
+      const isLargeGene = largeGenes.some(g => cacheKey.includes(g))
+
+      if (isLargeGene) {
+        const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
+        if (await json_cache.exists(cacheKey)) {
+          return json_cache.get(cacheKey)
+        }
+
+        const result = await fn(...args)
+
+        json_cache.set(cacheKey, result)
+
+        return result
+      }
+    }
 
     let cachedResult = null
     try {
@@ -81,7 +115,7 @@ export const withCache = (fn: any, keyFn: any, options = {}) => {
     }
     if (cachedResult) {
       // @ts-expect-error TS(2554) FIXME: Expected 0 arguments, but got 1.
-      setCacheExpiration([cacheKey, expiration]).catch(() => {})
+      setCacheExpiration([cacheKey, expiration]).catch(() => { })
       return JSON.parse(cachedResult)
     }
 

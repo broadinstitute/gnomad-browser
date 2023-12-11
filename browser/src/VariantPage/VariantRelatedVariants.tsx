@@ -105,7 +105,6 @@ const VariantRelatedVariants = ({ datasetId, variant }: VariantRelatedVariantsPr
       {(variant.liftover || variant.liftover_sources || []).length > 0 && (
         <Item>
           <h3>Liftover</h3>
-          {/* @ts-expect-error TS(2741) FIXME: Property 'reference_genome' is missing in type '{ ... Remove this comment to see the full error message */}
           <VariantLiftover variant={variant} />
         </Item>
       )}

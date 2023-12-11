@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Badge, ExternalLink, List, ListItem, Page } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -14,11 +15,52 @@ import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import { TranscriptConsequenceList } from '../VariantPage/TranscriptConsequenceList'
 
-import CooccurrenceDataPropType from './CooccurrenceDataPropType'
 import VariantCooccurrenceDetailsTable from './VariantCooccurrenceDetailsTable'
 import VariantCooccurrenceHaplotypeCountsTable from './VariantCooccurrenceHaplotypeCountsTable'
 import VariantCooccurrenceSummaryTable from './VariantCooccurrenceSummaryTable'
 import VariantCooccurrenceVariantIdsForm from './VariantCooccurrenceVariantIdsForm'
+
+export type GenotypeCounts = {
+  ref_ref: number
+  ref_het: number
+  ref_hom: number
+  het_ref: number
+  het_het: number
+  het_hom: number
+  hom_ref: number
+  hom_het: number
+  hom_hom: number
+}
+
+export type HaplotypeCounts = {
+  ref_ref: number
+  hom_ref: number
+  ref_hom: number
+  hom_hom: number
+}
+
+export type CooccurrenceData = {
+  variant_ids: string[]
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
+  p_compound_heterozygous: number | null
+  populations: {
+    id: string
+    genotype_counts: GenotypeCounts
+    haplotype_counts: HaplotypeCounts
+    p_compound_heterozygous: number | null
+  }[]
+}
+
+export interface CooccurrenceForPopulation {
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
+  p_compound_heterozygous: number | null
+}
+
+export const cisThreshold = 0.02
+export const transThreshold = 0.55
+const distantCisThreshold = 50000
 
 const Section = styled.section`
   width: 100%;
@@ -56,56 +98,93 @@ const renderProbabilityCompoundHeterozygous = (p: any) => {
   return `${(p * 100).toFixed(0)}%`
 }
 
-const getCooccurrenceDescription = (
-  cooccurrenceInSelectedPopulation: any,
-  selectedPopulation = 'All'
-) => {
-  let cooccurrenceDescription = null
-  if (cooccurrenceInSelectedPopulation.p_compound_heterozygous === null) {
-    const variantAOccurs =
-      [3, 4, 5, 6, 7, 8].reduce(
-        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
-        0
-      ) > 0
+type Prediction = 'neither_present' | 'one_not_present' | 'in_cis' | 'in_trans' | 'no_prediction'
 
-    const variantBOccurs =
-      [1, 2, 4, 5, 7, 8].reduce(
-        (acc, i) => acc + cooccurrenceInSelectedPopulation.genotype_counts[i],
-        0
-      ) > 0
+const cooccurrenceDescriptions: Record<Prediction, string> = {
+  one_not_present: 'One of these variants is not observed in',
+  neither_present: 'These variants are not observed',
+  in_cis:
+    'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most',
+  in_trans:
+    'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most',
+  no_prediction:
+    'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in',
+} as const
+
+const makePrediction = ({
+  p_compound_heterozygous,
+  genotype_counts,
+}: CooccurrenceForPopulation): Prediction => {
+  if (p_compound_heterozygous === null) {
+    const variantASum =
+      genotype_counts.het_ref +
+      genotype_counts.het_het +
+      genotype_counts.het_hom +
+      genotype_counts.hom_ref +
+      genotype_counts.hom_het +
+      genotype_counts.hom_hom
+    const variantAOccurs = variantASum > 0
+
+    const variantBSum =
+      genotype_counts.ref_het +
+      genotype_counts.ref_hom +
+      genotype_counts.het_het +
+      genotype_counts.het_hom +
+      genotype_counts.hom_het +
+      genotype_counts.hom_hom
+    const variantBOccurs = variantBSum > 0
 
     if (!variantAOccurs || !variantBOccurs) {
       if (variantAOccurs || variantBOccurs) {
-        cooccurrenceDescription = 'One of these variants is not observed in'
-      } else {
-        cooccurrenceDescription = 'These variants are not observed'
+        return 'one_not_present'
       }
-    }
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous > 0.505) {
-    cooccurrenceDescription =
-      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on different haplotypes in most'
-  } else if (cooccurrenceInSelectedPopulation.p_compound_heterozygous < 0.164) {
-    cooccurrenceDescription =
-      'Based on their co-occurrence pattern in gnomAD, these variants are likely found on the same haplotype in most'
-  } else {
-    cooccurrenceDescription =
-      'The co-occurrence pattern for these variants doesn’t allow us to give a robust assessment of whether these variants are on the same haplotype or not in'
-  }
-
-  if (cooccurrenceDescription) {
-    if (selectedPopulation === 'All') {
-      cooccurrenceDescription = `${cooccurrenceDescription} individuals in gnomAD.`
-    } else {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      cooccurrenceDescription = `${cooccurrenceDescription} individuals in the ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population in gnomAD.`
+      return 'neither_present'
     }
   }
 
-  return cooccurrenceDescription
+  if (p_compound_heterozygous! > transThreshold) {
+    return 'in_trans'
+  }
+
+  if (p_compound_heterozygous! < cisThreshold) {
+    return 'in_cis'
+  }
+
+  return 'no_prediction'
+}
+
+const getCooccurrenceDescription = (prediction: Prediction, selectedPopulation = 'All') => {
+  const baseDescription = cooccurrenceDescriptions[prediction]
+
+  return selectedPopulation === 'All'
+    ? `${baseDescription} individuals in gnomAD.`
+    : `${baseDescription} individuals in the ${
+        GNOMAD_POPULATION_NAMES[selectedPopulation as keyof typeof GNOMAD_POPULATION_NAMES]
+      } population in gnomAD.`
 }
 
 type VariantCoocurrenceProps = {
-  cooccurrenceData: CooccurrenceDataPropType
+  cooccurrenceData: CooccurrenceData
+}
+
+const isCisSingleton = (genotype_counts: GenotypeCounts): boolean => {
+  const totalSum = Object.values(genotype_counts).reduce((a, b) => a + b) - genotype_counts.ref_ref
+
+  return genotype_counts.het_het === 1 && totalSum === 1
+}
+
+export const noPredictionPossible = ({
+  genotype_counts,
+  p_compound_heterozygous,
+}: CooccurrenceForPopulation): boolean =>
+  p_compound_heterozygous === null || isCisSingleton(genotype_counts)
+
+const variantDistance = ({ variant_ids: [variantId1, variantId2] }: CooccurrenceData): number => {
+  const [_chrom1, pos1String] = variantId1.split('-')
+  const [_chrom2, pos2String] = variantId2.split('-')
+  const pos1 = Number.parseInt(pos1String, 10)
+  const pos2 = Number.parseInt(pos2String, 10)
+  return Math.abs(pos1 - pos2)
 }
 
 const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
@@ -114,21 +193,25 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const cooccurrenceInSelectedPopulation =
     selectedPopulation === 'All'
       ? cooccurrenceData
-      : // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-        cooccurrenceData.populations.find((pop: any) => pop.id === selectedPopulation)
+      : cooccurrenceData.populations!.find((pop: any) => pop.id === selectedPopulation)!
 
-  const cooccurrenceDescription = getCooccurrenceDescription(
-    cooccurrenceInSelectedPopulation,
-    selectedPopulation
-  )
+  const prediction = makePrediction(cooccurrenceInSelectedPopulation)
 
+  const cooccurrenceDescription = getCooccurrenceDescription(prediction, selectedPopulation)
   // If no individual carries both variants, the co-occurrence tables are generated from the public variant data.
   const sharedCarrierExists =
-    cooccurrenceData.genotype_counts[4] +
-      cooccurrenceData.genotype_counts[5] +
-      cooccurrenceData.genotype_counts[7] +
-      cooccurrenceData.genotype_counts[8] >
+    cooccurrenceData.genotype_counts.het_het +
+      cooccurrenceData.genotype_counts.het_hom +
+      cooccurrenceData.genotype_counts.hom_het +
+      cooccurrenceData.genotype_counts.hom_hom >
     0
+
+  const anyPopulationWithoutPrediction = [cooccurrenceData, ...cooccurrenceData.populations].some(
+    noPredictionPossible
+  )
+
+  const isDistantCis =
+    prediction === 'in_cis' && variantDistance(cooccurrenceData) > distantCisThreshold
 
   return (
     <>
@@ -147,13 +230,18 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           </p>
         )}
 
-        {/* @ts-expect-error TS(2461) FIXME: Type '{ id: string; genotype_counts: number[]; hap... Remove this comment to see the full error message */}
-        {[cooccurrenceData, ...cooccurrenceData.populations].some(
-          (c) => c.p_compound_heterozygous === null
-        ) && (
+        {anyPopulationWithoutPrediction && (
           <p>
             * A likely co-occurrence pattern cannot be calculated in some cases, such as when only
-            one of the variants is observed in a genetic ancestry group.
+            one of the variants is observed in a genetic ancestry group, or when both variants are
+            singletons and were seen in the same individual.
+          </p>
+        )}
+
+        {isDistantCis && (
+          <p>
+            Accuracy is lower (&lt; 85%) for variants predicted to be in cis that are &gt; 10
+            <sup>5</sup> bp away from each other.
           </p>
         )}
       </Section>
@@ -173,7 +261,6 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           <h3>Genotype Counts</h3>
           <VariantCooccurrenceDetailsTable
             variantIds={cooccurrenceData.variant_ids}
-            // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
             genotypeCounts={cooccurrenceInSelectedPopulation.genotype_counts}
           />
           {cooccurrenceDescription && <p>{cooccurrenceDescription}</p>}
@@ -192,41 +279,39 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
           )}
         </ResponsiveSection>
 
-        <ResponsiveSection>
-          <h3>
-            {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-            {cooccurrenceInSelectedPopulation.genotype_counts[4] > 0 && <>Estimated </>}Haplotype
-            Counts
-          </h3>
-          <VariantCooccurrenceHaplotypeCountsTable
-            variantIds={cooccurrenceData.variant_ids}
-            // @ts-expect-error TS(2322) FIXME: Type 'number[] | undefined' is not assignable to t... Remove this comment to see the full error message
-            haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
-          />
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
-          {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
-            <>
-              <p>
-                The estimated probability that these variants occur in different haplotypes is{' '}
-                {renderProbabilityCompoundHeterozygous(
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                  cooccurrenceInSelectedPopulation.p_compound_heterozygous
-                )}
-                .
-              </p>
-              <p>
-                <Badge level="warning">Note</Badge> Probability values are not well calibrated,
-                particularly where both variants are extremely rare. Interpret with caution. Please
-                see{' '}
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
-                  our blog post on variant co-occurrence
-                </ExternalLink>{' '}
-                for accuracy estimates and additional detail.
-              </p>
-            </>
-          )}
-        </ResponsiveSection>
+        {!isCisSingleton(cooccurrenceData.genotype_counts) && (
+          <ResponsiveSection>
+            <h3>
+              {cooccurrenceInSelectedPopulation.genotype_counts.het_het > 0 && <>Estimated </>}
+              Haplotype Counts
+            </h3>
+            <VariantCooccurrenceHaplotypeCountsTable
+              variantIds={cooccurrenceData.variant_ids}
+              haplotypeCounts={cooccurrenceInSelectedPopulation.haplotype_counts}
+            />
+            {cooccurrenceInSelectedPopulation.p_compound_heterozygous !== null && (
+              <>
+                <p>
+                  The estimated probability that these variants occur in different haplotypes is{' '}
+                  {renderProbabilityCompoundHeterozygous(
+                    cooccurrenceInSelectedPopulation.p_compound_heterozygous
+                  )}
+                  .
+                </p>
+                <p>
+                  <Badge level="warning">Note</Badge> Probability values are not well calibrated,
+                  particularly where both variants are extremely rare. Interpret with caution.
+                  Please see{' '}
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
+                    our blog post on variant co-occurrence
+                  </ExternalLink>{' '}
+                  for accuracy estimates and additional detail.
+                </p>
+              </>
+            )}
+          </ResponsiveSection>
+        )}
       </Wrapper>
     </>
   )
@@ -321,6 +406,52 @@ type VariantCoocurrenceContainerProps = {
   variantIds: string[]
 }
 
+interface ArrayCountPopulation {
+  genotype_counts: number[]
+  haplotype_counts: number[]
+}
+
+interface ObjectCountPopulation {
+  genotype_counts: GenotypeCounts
+  haplotype_counts: HaplotypeCounts
+}
+
+const structureCounts = (population: ArrayCountPopulation): ObjectCountPopulation => {
+  const { genotype_counts, haplotype_counts } = population
+  const structuredGenotypeCounts: GenotypeCounts = {
+    ref_ref: genotype_counts[0],
+    ref_het: genotype_counts[1],
+    ref_hom: genotype_counts[2],
+    het_ref: genotype_counts[3],
+    het_het: genotype_counts[4],
+    het_hom: genotype_counts[5],
+    hom_ref: genotype_counts[6],
+    hom_het: genotype_counts[7],
+    hom_hom: genotype_counts[8],
+  }
+  const structuredHaplotypeCounts: HaplotypeCounts = {
+    ref_ref: haplotype_counts[0],
+    hom_ref: haplotype_counts[1],
+    ref_hom: haplotype_counts[2],
+    hom_hom: haplotype_counts[3],
+  }
+
+  return {
+    ...population,
+    genotype_counts: structuredGenotypeCounts,
+    haplotype_counts: structuredHaplotypeCounts,
+  }
+}
+
+const normalizeCooccurrenceData = (cooccurrenceData: any): CooccurrenceData => {
+  const populations = cooccurrenceData.populations
+    ? cooccurrenceData.populations.map(structureCounts)
+    : cooccurrenceData.populations
+
+  const topLevel = structureCounts(cooccurrenceData)
+  return { ...topLevel, populations } as CooccurrenceData
+}
+
 const VariantCoocurrenceContainer = ({
   datasetId,
   variantIds,
@@ -340,6 +471,8 @@ const VariantCoocurrenceContainer = ({
       success={(data: any) => data.variant_cooccurrence}
     >
       {({ data }: any) => {
+        const variant_cooccurrence = normalizeCooccurrenceData(data.variant_cooccurrence)
+
         const genesInCommon = [data.variant1, data.variant2]
           .map((v) => new Set(v.transcript_consequences.map((csq: any) => csq.gene_id)))
           .reduce((acc, genes) => new Set([...acc].filter((geneId) => genes.has(geneId))))
@@ -380,7 +513,7 @@ const VariantCoocurrenceContainer = ({
               </Section>
             )}
 
-            <VariantCoocurrence cooccurrenceData={data.variant_cooccurrence} />
+            <VariantCoocurrence cooccurrenceData={variant_cooccurrence} />
 
             <Section>
               <h2>VEP Annotations</h2>
@@ -430,7 +563,7 @@ const VariantCoocurrenceContainer = ({
 }
 
 type VariantCoocurrencePageProps = {
-  datasetId: string
+  datasetId: DatasetId
 }
 
 const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {

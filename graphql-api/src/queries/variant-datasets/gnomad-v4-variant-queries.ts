@@ -10,6 +10,7 @@ import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
+import largeGenes from '../helpers/large-genes'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
 
@@ -49,6 +50,9 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: any) =
 // ================================================================================================
 
 const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any) => {
+  const exomeSubset = subset
+  const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
+
   const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
@@ -81,14 +85,14 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
-  const filters = variant.genome.filters || []
+  const exomeFilters = variant.exome.filters || []
+  const genomeFilters = variant.genome.filters || []
 
-  if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-    filters.push('AC0')
+  if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
+    exomeFilters.push('AC0')
   }
-
-  if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-    filters.push('AC0')
+  if (variant.genome.freq[genomeSubset].ac === 0 && !genomeFilters.includes('AC0')) {
+    genomeFilters.push('AC0')
   }
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
@@ -166,7 +170,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     exome: hasExomeVariant && {
       ...variant.exome,
       ...variant.exome.freq[subset],
-      filters,
+      filters: exomeFilters,
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
@@ -197,7 +201,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     genome: hasGenomeVariant && {
       ...variant.genome,
       ...variant.genome.freq[subset],
-      filters,
+      filters: genomeFilters,
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
@@ -246,17 +250,18 @@ const shapeVariantSummary = (subset: any, context: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
     const flags = getFlags(variant)
 
-    const filters = variant.genome.filters || []
+    const exomeFilters = variant.exome.filters || []
+    const genomeFilters = variant.genome.filters || []
 
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = variant.genome.freq[subset].ac_raw
 
-    if (variant.genome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-      filters.push('AC0')
+    if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
+      exomeFilters.push('AC0')
     }
 
-    if (variant.exome.freq[subset].ac === 0 && !filters.includes('AC0')) {
-      filters.push('AC0')
+    if (variant.genome.freq[subset].ac === 0 && !genomeFilters.includes('AC0')) {
+      genomeFilters.push('AC0')
     }
 
     const hasJointFafData = variant.faf95_joint && variant.faf99_joint
@@ -275,7 +280,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
           populations: variant.exome.freq[subset].ancestry_groups.filter(
             (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
           ),
-          filters,
+          filters: exomeFilters,
         }
         : null,
       genome: hasGenomeVariant
@@ -285,7 +290,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
           populations: variant.genome.freq[subset].ancestry_groups.filter(
             (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
           ),
-          filters,
+          filters: genomeFilters,
         }
         : null,
       flags,
@@ -311,9 +316,9 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
   const exomeSubset = 'all'
   const genomeSubset = 'all'
 
-  if (gene.symbol === "TTN") {
-    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
-  }
+  const isLargeGene = largeGenes.includes(gene.gene_id)
+
+  const pageSize = isLargeGene ? 500 : 10000
 
   try {
     const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
@@ -341,7 +346,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
     const hits = await fetchAllSearchResults(esClient, {
       index: GNOMAD_V4_VARIANT_INDEX,
       type: '_doc',
-      size: 10000,
+      size: pageSize,
       _source: [
         `value.exome.freq.${exomeSubset}`,
         `value.genome.freq.${genomeSubset}`,
@@ -443,9 +448,10 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
   const exomeSubset = 'all'
   const genomeSubset = 'all'
 
-
-  if (transcript.gene.symbol === "TTN") {
-    throw new UserVisibleError("Due to the size of TTN the variant table is temporarily unavailable in the browser or API")
+  if (transcript.gene.symbol === 'TTN') {
+    throw new UserVisibleError(
+      'Due to the size of TTN, the variant table is temporarily unavailable in the browser or API for transcripts'
+    )
   }
 
   const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')

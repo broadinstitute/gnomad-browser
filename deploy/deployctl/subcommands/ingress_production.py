@@ -14,6 +14,8 @@ metadata:
   name: gnomad-browser
   labels:
     tier: production
+  annotations:
+    cloud.google.com/backend-config: '{{"ports": {{"80":"gnomad-backend-config"}}}}'
 spec:
   type: NodePort
   selector:
@@ -94,6 +96,7 @@ def apply_ingress(browser_deployment: str = None, reads_deployment: str = None, 
     apply_services(browser_deployment, reads_deployment)
 
     if quiet or input("Apply changes to production ingress (y/n) ").lower() == "y":
+        kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.backendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.frontendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.ingress.yaml")])
 
