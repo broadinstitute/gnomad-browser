@@ -70,6 +70,112 @@ type VariantGenotypeQualityMetricsProps = {
   variant: Variant
 }
 
+interface Tab {
+  id: string;
+  label: string;
+  render: () => JSX.Element;
+}
+
+const createTab = (
+  showAllIndividuals: Boolean,
+  binEdges: any,
+  includeExomes: Boolean,
+  includeGenomes: Boolean,
+  variant: Variant,
+  id: string,
+  label: string,
+  xLabel: string,
+  yLabel: string,
+  secondaryYLabel?: string,
+  legendSwatchId?: string,
+): Tab => {
+  return {
+    id,
+    label,
+    render: () => (
+      <>
+        <LegendWrapper>
+          <Legend
+            series={[
+              { label: 'Exome', color: '#428bca' },
+              { label: 'Genome', color: '#73ab3d' },
+            ]}
+          />
+          {showAllIndividuals && (
+            <Legend
+              series={[
+                { label: 'Variant carriers', color: '#999' },
+                {
+                  label: 'All individuals',
+                  swatch: <StripedSwatch id={legendSwatchId} color="#999" />,
+                },
+              ]}
+            />
+          )}
+        </LegendWrapper>
+
+        <StackedHistogram
+          id={`variant-${id}-plot`}
+          bins={[
+            ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
+            `> ${binEdges[binEdges.length - 1]}`,
+          ]}
+          values={prepareData({
+            includeExomes,
+            includeGenomes,
+            includeLargerBin: true,
+            samples: 'alt',
+            selectedMetric: id,
+            variant,
+          })}
+          secondaryValues={
+            showAllIndividuals && id != 'allele_balance'
+              ? prepareData({
+                  includeExomes,
+                  includeGenomes,
+                  includeLargerBin: true,
+                  samples: 'all',
+                  selectedMetric: id,
+                  variant,
+                })
+              : null
+          }
+          xLabel={xLabel}
+          yLabel={yLabel}
+          secondaryYLabel={secondaryYLabel}
+          barColors={['#428bca', '#73ab3d']}
+          formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
+            const nVariantCarriers = sum(variantCarriersInBin);
+
+            if (id == 'allele_balance') {
+              return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
+                nVariantCarriers !== 1 ? 's have' : ' has'
+              } an allele balance in the ${bin} range`
+            } else {
+              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+                nVariantCarriers !== 1 ? 's' : ''
+              }`;
+
+              if (showAllIndividuals) {
+                const nTotalIndividuals = sum(allIndividualsInBin);
+                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                  nTotalIndividuals !== 1 ? 's' : ''
+                }`;
+              }
+  
+              tooltipText += ` ${
+                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+              } ${xLabel.toLowerCase()} in the ${bin} range`;
+  
+              return tooltipText;
+            }}
+          }
+        />
+      </>
+    ),
+  };
+};
+
 const VariantGenotypeQualityMetrics = ({
   datasetId,
   variant,
@@ -88,208 +194,50 @@ const VariantGenotypeQualityMetrics = ({
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
   const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
 
-  const tabs = [
-    {
-      id: 'genotype_quality',
-      label: 'Genotype quality',
-      render: () => (
-        <>
-          <LegendWrapper>
-            <Legend
-              series={[
-                { label: 'Exome', color: '#428bca' },
-                { label: 'Genome', color: '#73ab3d' },
-              ]}
-            />
-            {showAllIndividuals && (
-              <Legend
-                series={[
-                  { label: 'Variant carriers', color: '#999' },
-                  {
-                    label: 'All individuals',
-                    swatch: <StripedSwatch id="genotype-quality-legend-swatch" color="#999" />,
-                  },
-                ]}
-              />
-            )}
-          </LegendWrapper>
-
-          <StackedHistogram
-            // @ts-expect-error TS(2322) FIXME: Type '{ id: string; bins: string[]; values: any[][... Remove this comment to see the full error message
-            id="variant-genotype-quality-plot"
-            bins={[
-              ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
-              `> ${binEdges[binEdges.length - 1]}`,
-            ]}
-            values={prepareData({
-              includeExomes,
-              includeGenomes,
-              includeLargerBin: true,
-              samples: 'alt',
-              selectedMetric: 'genotype_quality',
-              variant,
-            })}
-            secondaryValues={
-              showAllIndividuals
-                ? prepareData({
-                    includeExomes,
-                    includeGenomes,
-                    includeLargerBin: true,
-                    samples: 'all',
-                    selectedMetric: 'genotype_quality',
-                    variant,
-                  })
-                : null
-            }
-            xLabel="Genotype quality"
-            yLabel="Variant carriers"
-            secondaryYLabel="All individuals"
-            barColors={['#428bca', '#73ab3d']}
-            formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
-              const nVariantCarriers = sum(variantCarriersInBin)
-              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
-                nVariantCarriers !== 1 ? 's' : ''
-              }`
-
-              if (showAllIndividuals) {
-                const nTotalIndividuals = sum(allIndividualsInBin)
-                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
-                  nTotalIndividuals !== 1 ? 's' : ''
-                }`
-              }
-
-              tooltipText += ` ${
-                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-              } genotype quality in the ${bin} range`
-
-              return tooltipText
-            }}
-          />
-        </>
-      ),
-    },
-    {
-      id: 'genotype_depth',
-      label: 'Depth',
-      render: () => (
-        <>
-          <LegendWrapper style={{ marginTop: '1em' }}>
-            <Legend
-              series={[
-                { label: 'Exome', color: '#428bca' },
-                { label: 'Genome', color: '#73ab3d' },
-              ]}
-            />
-            {showAllIndividuals && (
-              <Legend
-                series={[
-                  { label: 'Variant carriers', color: '#999' },
-                  {
-                    label: 'All individuals',
-                    swatch: <StripedSwatch id="depth-legend-swatch" color="#999" />,
-                  },
-                ]}
-              />
-            )}
-          </LegendWrapper>
-
-          <StackedHistogram
-            // @ts-expect-error TS(2322) FIXME: Type '{ id: string; bins: string[]; values: any[][... Remove this comment to see the full error message
-            id="variant-depth-plot"
-            bins={[
-              ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
-              `> ${binEdges[binEdges.length - 1]}`,
-            ]}
-            values={prepareData({
-              includeExomes,
-              includeGenomes,
-              includeLargerBin: true,
-              samples: 'alt',
-              selectedMetric: 'genotype_depth',
-              variant,
-            })}
-            secondaryValues={
-              showAllIndividuals
-                ? prepareData({
-                    includeExomes,
-                    includeGenomes,
-                    includeLargerBin: true,
-                    samples: 'all',
-                    selectedMetric: 'genotype_depth',
-                    variant,
-                  })
-                : null
-            }
-            xLabel="Depth"
-            yLabel="Variant carriers"
-            secondaryYLabel="All individuals"
-            barColors={['#428bca', '#73ab3d']}
-            formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
-              const nVariantCarriers = sum(variantCarriersInBin)
-              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
-                nVariantCarriers !== 1 ? 's' : ''
-              }`
-
-              if (showAllIndividuals) {
-                const nTotalIndividuals = sum(allIndividualsInBin)
-                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
-                  nTotalIndividuals !== 1 ? 's' : ''
-                }`
-              }
-
-              tooltipText += ` ${
-                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-              } depth in the ${bin} range`
-
-              return tooltipText
-            }}
-          />
-        </>
-      ),
-    },
-  ]
+  const tabs: Tab[] = [
+    createTab(
+      showAllIndividuals,
+      binEdges,
+      includeExomes,
+      includeGenomes,
+      variant,
+      'genotype_quality',
+      'Genotype quality',
+      'Genotype quality',
+      'Variant carriers',
+      'All individuals',
+      'genotype-quality-legend-swatch',
+    ),
+    createTab(
+      showAllIndividuals,
+      binEdges,
+      includeExomes,
+      includeGenomes,
+      variant,
+      'genotype_depth',
+      'Depth',
+      'Depth',
+      'Variant carriers',
+      'All individuals',
+      'depth-legend-swatch',
+    )
+  ];
 
   if (hasAlleleBalance(datasetId)) {
-    tabs.push({
-      id: 'allele_balance',
-      label: 'Allele balance for heterozygotes',
-      render: () => (
-        <>
-          <LegendWrapper style={{ marginTop: '1em' }}>
-            <Legend
-              series={[
-                { label: 'Exome', color: '#428bca' },
-                { label: 'Genome', color: '#73ab3d' },
-              ]}
-            />
-          </LegendWrapper>
-          <StackedHistogram
-            // @ts-expect-error TS(2322) FIXME: Type '{ id: string; bins: string[]; values: any[][... Remove this comment to see the full error message
-            id="variant-allele-balance-plot"
-            bins={[...Array(binEdges.length - 1)].map(
-              (_, i) => `${binEdges[i]}-${binEdges[i + 1]}`
-            )}
-            values={prepareData({
-              includeExomes,
-              includeGenomes,
-              samples: 'alt',
-              selectedMetric: 'allele_balance',
-              variant,
-            })}
-            xLabel="Allele balance"
-            yLabel="Heterozygous variant carriers"
-            barColors={['#428bca', '#73ab3d']}
-            formatTooltip={(bin: any, variantCarriersInBin: any) => {
-              const nVariantCarriers = sum(variantCarriersInBin)
-              return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
-                nVariantCarriers !== 1 ? 's have' : ' has'
-              } an allele balance in the ${bin} range`
-            }}
-          />
-        </>
-      ),
-    })
-  }
+    tabs.push(
+      createTab(
+        showAllIndividuals,
+        binEdges,
+        includeExomes,
+        includeGenomes,
+        variant,
+        'allele_balance',
+        'Allele balance for heterozygotes',
+        'Allele balance',
+        'Heterozygous variant carriers',
+      ) // No secondaryYLabel or legendSwatchId
+    )
+  };
 
   return (
     <div>
