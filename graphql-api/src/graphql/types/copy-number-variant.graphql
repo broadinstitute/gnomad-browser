@@ -48,4 +48,16 @@ type CopyNumberVariantDetails {
 type CNVTrackCallableCoverageBin {
   xpos: Float!
   percent_callable: Float
+  position: Float
+  contig: String
+}
+
+type CNVDelBurdenCoverageBin{
+    xpos: Float!
+    burden_del: Float
+}
+
+type CNVDupBurdenCoverageBin{
+    xpos: Float!
+    burden_dup: Float
 }
