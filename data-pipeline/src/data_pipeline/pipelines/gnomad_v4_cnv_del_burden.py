@@ -9,7 +9,7 @@ pipeline.add_task(
     "prepare_gnomad_v4_cnv_del_burden",
     prepare_cnv_del_burden,
     "/gnomad_v4/gnomad_v4_cnvs/cnv_tracks/del_burden.ht",
-    {"burden_path": "gs://gnomad-v4-cnvs/2023-10-24jfu/burden_del_1.0.txt.gz"},
+    {"burden_path": "gs://gnomad-v4-cnvs/2023-10-24-jfu/burden_del_1.0.txt.gz"},
 )
 
 ###############################################

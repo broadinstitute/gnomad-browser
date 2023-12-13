@@ -9,7 +9,7 @@ pipeline.add_task(
     "prepare_gnomad_v4_cnvs_track_percent_callable",
     prepare_cnv_track_callable,
     "/gnomad_v4/gnomad_v4_cnvs/cnv_tracks/track_percent_callable.ht",
-    {"coverage_path": "gs://gnomad-v4-cnvs/2023-10-24jfu/track_percent_callable.tsv.gz"},
+    {"coverage_path": "gs://gnomad-v4-cnvs/2023-10-24-jfu/track_percent_callable.tsv.gz"},
 )
 
 ###############################################
