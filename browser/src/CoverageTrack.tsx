@@ -16,7 +16,7 @@ const TopPanel = styled.div`
   width: 100%;
 `
 
-const LegendWrapper = styled.ul`
+export const LegendWrapper = styled.ul`
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -24,12 +24,12 @@ const LegendWrapper = styled.ul`
   list-style-type: none;
 `
 
-const LegendItem = styled.li`
+export const LegendItem = styled.li`
   display: flex;
   margin-left: 1em;
 `
 
-const LegendSwatch = styled.span`
+export const LegendSwatch = styled.span`
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -46,7 +46,7 @@ const LegendSwatch = styled.span`
   }
 `
 
-type LegendProps = {
+export type LegendProps = {
   datasets: {
     color: string
     name: string
