@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CopyNumberVariantsGenePercentCallableTrack with dataset gnomad_cnv_r4 queries with appropriate params 1`] = `
+<mockConstructor
+  errorMessage="Unable to load coverage"
+  loadingMessage="Loading coverage"
+  loadingPlaceholderHeight={220}
+  operationName="CopyNumberVariantsGenePercentCallableTrack"
+  query="
+  query CopyNumberVariantsGenePercentCallableTrack($geneId: String!, $datasetId: CopyNumberVariantDatasetId!, $referenceGenome: ReferenceGenomeId!) {
+    gene(gene_id: $geneId, reference_genome: $referenceGenome) {
+            cnv_track_callable_coverage(dataset: $datasetId) {
+                xpos
+                percent_callable
+                position
+                contig
+            }
+            start
+            stop
+            chrom
+        }
+    }
+"
+  success={[Function]}
+  variables={
+    {
+      "datasetId": "gnomad_cnv_r4",
+      "geneId": "dummy_gene-1",
+      "referenceGenome": "GRCh38",
+    }
+  }
+>
+  [Function]
+</mockConstructor>
+`;
