@@ -32,11 +32,14 @@ type Region {
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
   mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)
   copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]! @cost(value: 10)
+  cnv_del_burden_coverage(dataset: CopyNumberVariantDatasetId!): [CNVDelBurdenCoverageBin!] @cost(value: 5)
+  cnv_dup_burden_coverage(dataset: CopyNumberVariantDatasetId!): [CNVDupBurdenCoverageBin!] @cost(value: 5)
 
   clinvar_variants: [ClinVarVariant!] @cost(value: 10)
 
   coverage(dataset: DatasetId!): RegionCoverage!
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
+  cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallableCoverageBin!] @cost(value: 5)
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
 }
