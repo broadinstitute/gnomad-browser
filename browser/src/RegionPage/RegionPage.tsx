@@ -30,6 +30,7 @@ import RegionInfo from './RegionInfo'
 import RegularVariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
 import CopyNumberVariantsInRegion from './CopyNumberVariantsInRegion'
+import CopyNumberVariantsRegionTrackCallable from './CopyNumberVariantsRegionPercentCallableTrack'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
@@ -188,6 +189,12 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           </>
         )}
         {variantsInRegion(datasetId, region)}
+        <CopyNumberVariantsRegionTrackCallable
+          datasetId={datasetId}
+          chrom={chrom}
+          start={start}
+          stop={stop}
+        />
       </RegionViewer>
     </TrackPage>
   )
