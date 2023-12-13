@@ -62,6 +62,7 @@ import {
   CopyNumberVariant,
 } from '../VariantPage/VariantPage'
 import CopyNumberVariantsInGene from './CopyNumberVariantsInGene'
+import CopyNumberVariantsGenePercentCallableTrack from './CopyNumberVariantsGenePercentCallableTrack'
 
 export type Strand = '+' | '-'
 
@@ -608,6 +609,10 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             includeUTRs={includeUTRs}
             zoomRegion={zoomRegion}
           />
+        )}
+
+        {hasCopyNumberVariants(datasetId) && (
+          <CopyNumberVariantsGenePercentCallableTrack datasetId={datasetId} geneId={gene.gene_id} />
         )}
       </RegionViewer>
     </TrackPage>

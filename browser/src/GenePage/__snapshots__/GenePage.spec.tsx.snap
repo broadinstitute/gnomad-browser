@@ -1465,6 +1465,518 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
       >
         No variants found
       </div>
+      <div
+        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+      >
+        <div
+          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          style={
+            {
+              "marginLeft": 115,
+              "marginRight": 80,
+              "width": 799,
+            }
+          }
+        >
+          <div
+            className="DiscreteBarPlot__TopPanel-sc-17om98z-0 hFvXzT"
+          >
+            <ul
+              className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jZEPop"
+            >
+              <li
+                className="CoverageTrack__LegendItem-sc-1kumbsx-2 ecktLg"
+              >
+                <span
+                  className="CoverageTrack__LegendSwatch-sc-1kumbsx-3 efYvLv"
+                  color="rgb(70, 130, 180)"
+                  opacity={0.7}
+                />
+                percent callable
+              </li>
+            </ul>
+            <button
+              className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+              onClick={[Function]}
+              style={
+                {
+                  "marginLeft": "1em",
+                }
+              }
+              type="button"
+            >
+              Save plot
+            </button>
+          </div>
+        </div>
+        <div
+          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+        >
+          <div
+            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="DiscreteBarPlot__TitlePanel-sc-17om98z-1 krSYkc"
+            >
+               Percent Callable 
+            </div>
+          </div>
+          <div
+            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              style={
+                {
+                  "marginLeft": -60,
+                }
+              }
+            >
+              <svg
+                height={207}
+                width={859}
+              >
+                <g
+                  className="vx-group vx-axis vx-axis-left"
+                  transform="translate(60, 0)"
+                >
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={187}
+                      y2={187}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={187}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.1
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={167.00000000000003}
+                      y2={167.00000000000003}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={167.00000000000003}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.2
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={146.99999999999997}
+                      y2={146.99999999999997}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={146.99999999999997}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.3
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={126.99999999999999}
+                      y2={126.99999999999999}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={126.99999999999999}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.4
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={107}
+                      y2={107}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={107}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.5
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={87.00000000000001}
+                      y2={87.00000000000001}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={87.00000000000001}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.6
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={67.00000000000001}
+                      y2={67.00000000000001}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={67.00000000000001}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.7
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={46.99999999999999}
+                      y2={46.99999999999999}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={46.99999999999999}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.8
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={26.999999999999996}
+                      y2={26.999999999999996}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={26.999999999999996}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.9
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={7}
+                      y2={7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          1.0
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <line
+                    className="vx-line vx-axis-line"
+                    fill="transparent"
+                    stroke="#333"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={0}
+                    y1={207.5}
+                    y2={7.5}
+                  />
+                  
+                </g>
+                <g
+                  transform="translate(60,0)"
+                >
+                  <line
+                    stroke="#333"
+                    x1={0}
+                    x2={799}
+                    y1={207}
+                    y2={207}
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -10263,6 +10775,518 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         className="StatusMessage-sc-neg7mh-0 hJFlwG"
       >
         No variants found
+      </div>
+      <div
+        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+      >
+        <div
+          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          style={
+            {
+              "marginLeft": 115,
+              "marginRight": 80,
+              "width": 799,
+            }
+          }
+        >
+          <div
+            className="DiscreteBarPlot__TopPanel-sc-17om98z-0 hFvXzT"
+          >
+            <ul
+              className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jZEPop"
+            >
+              <li
+                className="CoverageTrack__LegendItem-sc-1kumbsx-2 ecktLg"
+              >
+                <span
+                  className="CoverageTrack__LegendSwatch-sc-1kumbsx-3 efYvLv"
+                  color="rgb(70, 130, 180)"
+                  opacity={0.7}
+                />
+                percent callable
+              </li>
+            </ul>
+            <button
+              className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+              onClick={[Function]}
+              style={
+                {
+                  "marginLeft": "1em",
+                }
+              }
+              type="button"
+            >
+              Save plot
+            </button>
+          </div>
+        </div>
+        <div
+          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+        >
+          <div
+            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="DiscreteBarPlot__TitlePanel-sc-17om98z-1 krSYkc"
+            >
+               Percent Callable 
+            </div>
+          </div>
+          <div
+            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              style={
+                {
+                  "marginLeft": -60,
+                }
+              }
+            >
+              <svg
+                height={207}
+                width={859}
+              >
+                <g
+                  className="vx-group vx-axis vx-axis-left"
+                  transform="translate(60, 0)"
+                >
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={187}
+                      y2={187}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={187}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.1
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={167.00000000000003}
+                      y2={167.00000000000003}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={167.00000000000003}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.2
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={146.99999999999997}
+                      y2={146.99999999999997}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={146.99999999999997}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.3
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={126.99999999999999}
+                      y2={126.99999999999999}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={126.99999999999999}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.4
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={107}
+                      y2={107}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={107}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.5
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={87.00000000000001}
+                      y2={87.00000000000001}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={87.00000000000001}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.6
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={67.00000000000001}
+                      y2={67.00000000000001}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={67.00000000000001}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.7
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={46.99999999999999}
+                      y2={46.99999999999999}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={46.99999999999999}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.8
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={26.999999999999996}
+                      y2={26.999999999999996}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={26.999999999999996}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          0.9
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <g
+                    className="vx-group vx-axis-tick"
+                    transform="translate(0, 0)"
+                  >
+                    <line
+                      className="vx-line"
+                      fill="transparent"
+                      stroke="#222"
+                      strokeLinecap="square"
+                      x1={0}
+                      x2={-8}
+                      y1={7}
+                      y2={7}
+                    />
+                    <svg
+                      fontSize={10}
+                      style={
+                        {
+                          "overflow": "visible",
+                        }
+                      }
+                      x="-0.25em"
+                      y="0.25em"
+                    >
+                      <text
+                        fill="#000"
+                        fontSize={10}
+                        textAnchor="end"
+                        x={-8}
+                        y={7}
+                      >
+                        <tspan
+                          dy="0em"
+                          x={-8}
+                        >
+                          1.0
+                        </tspan>
+                      </text>
+                    </svg>
+                  </g>
+                  <line
+                    className="vx-line vx-axis-line"
+                    fill="transparent"
+                    stroke="#333"
+                    strokeWidth={1}
+                    x1={0}
+                    x2={0}
+                    y1={207.5}
+                    y2={7.5}
+                  />
+                  
+                </g>
+                <g
+                  transform="translate(60,0)"
+                >
+                  <line
+                    stroke="#333"
+                    x1={0}
+                    x2={799}
+                    y1={207}
+                    y2={207}
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

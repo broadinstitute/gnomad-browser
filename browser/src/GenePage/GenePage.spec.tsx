@@ -74,6 +74,9 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
       CopyNumberVariantsInGene: () => ({
         gene: { copy_number_variants: [] },
       }),
+      CopyNumberVariantsGenePercentCallableTrack: () => ({
+        gene: { cnv_track_callable_coverage: [] },
+      }),
     })
   )
 
@@ -146,6 +149,9 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
           coverage: {},
         },
       }),
+      CopyNumberVariantsGenePercentCallableTrack: () => ({
+        gene: { cnv_track_callable_coverage: [] },
+      }),
     })
     const tree = renderer.create(
       withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
@@ -163,6 +169,9 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
         gene: {
           coverage: {},
         },
+      }),
+      CopyNumberVariantsGenePercentCallableTrack: () => ({
+        gene: { cnv_track_callable_coverage: [] },
       }),
     })
     renderer.create(
@@ -207,6 +216,9 @@ describe.each([
       }),
       CopyNumberVariantsInGene: () => ({
         gene: { copy_number_variants: [] },
+      }),
+      CopyNumberVariantsGenePercentCallableTrack: () => ({
+        gene: { cnv_track_callable_coverage: [] },
       }),
     })
     renderer.create(
