@@ -14,7 +14,7 @@ const resolveShortTandemRepeat = async (_obj: any, args: any, ctx: any) => {
   const shortTandemRepeat = await fetchShortTandemRepeatById(ctx.esClient, args.dataset, args.id)
 
   if (!shortTandemRepeat) {
-    throw new UserVisibleError('Short tandem repeat not found')
+    throw new UserVisibleError('Tandem repeat not found')
   }
 
   return shortTandemRepeat

@@ -23,7 +23,7 @@ const _fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`,
     )
   }
 
@@ -47,19 +47,19 @@ const _fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
 export const fetchAllShortTandemRepeats = withCache(
   _fetchAllShortTandemRepeats,
   (_: any, datasetId: any) => `short_tandem_repeats:${datasetId}`,
-  { expiration: 86400 }
+  { expiration: 86400 },
 )
 
 export const fetchShortTandemRepeatById = async (
   esClient: any,
   datasetId: any,
-  shortTandemRepeatId: any
+  shortTandemRepeatId: any,
 ) => {
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`,
     )
   }
 
@@ -85,13 +85,13 @@ export const fetchShortTandemRepeatById = async (
 export const fetchShortTandemRepeatsByGene = async (
   esClient: any,
   datasetId: any,
-  ensemblGeneId: any
+  ensemblGeneId: any,
 ) => {
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`,
     )
   }
 
@@ -121,13 +121,13 @@ export const fetchShortTandemRepeatsByGene = async (
 export const fetchShortTandemRepeatsByRegion = async (
   esClient: any,
   datasetId: any,
-  region: any
+  region: any,
 ) => {
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`,
     )
   }
 
