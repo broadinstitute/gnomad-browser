@@ -138,8 +138,8 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
           operationName={operationName}
           query={query}
           variables={{ datasetId }}
-          loadingMessage="Loading short tandem repeats"
-          errorMessage="Unable to load short tandem repeats"
+          loadingMessage="Loading tandem repeats"
+          errorMessage="Unable to load tandem repeats"
           success={(data: any) => data.short_tandem_repeats}
         >
           {({ data }: any) => {
@@ -154,11 +154,11 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
         </Query>
       ) : (
         <StatusMessage>
-          Short tandem repeats are not available in {labelForDataset(datasetId)}
+          Tandem repeats are not available in {labelForDataset(datasetId)}
           <br />
           <br />
           <Link to="/short-tandem-repeats?dataset=gnomad_r3" preserveSelectedDataset={false}>
-            View short tandem repeats in gnomAD v3.1
+            View tandem repeats in gnomAD v3.1
           </Link>
         </StatusMessage>
       )}
