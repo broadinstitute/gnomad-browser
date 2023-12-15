@@ -119,7 +119,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
-      <DocumentTitle title={`Pathogenic Short Tandem Repeats | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`Tandem Repeats | ${labelForDataset(datasetId)}`} />
       <GnomadPageHeading
         datasetOptions={{
           includeShortVariants: true,
@@ -131,7 +131,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
         }}
         selectedDataset={datasetId}
       >
-        Pathogenic Short Tandem Repeats
+        Tandem Repeats
       </GnomadPageHeading>
       {hasShortTandemRepeats(datasetId) ? (
         <Query
