@@ -30,11 +30,13 @@ if (config.REDIS_HOST) {
   } else {
     readCacheDb = new Redis({
       host: config.REDIS_HOST,
+      port: config.REDIS_PORT,
       db: 1,
     })
 
     writeCacheDb = new Redis({
       host: config.REDIS_HOST,
+      port: config.REDIS_PORT,
       db: 1,
     })
   }
@@ -70,7 +72,11 @@ if (config.REDIS_HOST) {
 export const withCache = (fn: any, keyFn: any, options = {}) => {
   // @ts-expect-error TS(2339) FIXME: Property 'expiration' does not exist on type '{}'.
   //
-  const { expiration = 3600, jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL, jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES } = options
+  const {
+    expiration = 3600,
+    jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
+    jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES,
+  } = options
 
   return async (...args: any[]) => {
     const cacheKey = keyFn(...args)
@@ -88,9 +94,8 @@ export const withCache = (fn: any, keyFn: any, options = {}) => {
       return result
     }
 
-
     if (jsonCacheLargeGenes) {
-      const isLargeGene = largeGenes.some(g => cacheKey.includes(g))
+      const isLargeGene = largeGenes.some((g) => cacheKey.includes(g))
 
       if (isLargeGene) {
         const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
@@ -115,7 +120,7 @@ export const withCache = (fn: any, keyFn: any, options = {}) => {
     }
     if (cachedResult) {
       // @ts-expect-error TS(2554) FIXME: Expected 0 arguments, but got 1.
-      setCacheExpiration([cacheKey, expiration]).catch(() => { })
+      setCacheExpiration([cacheKey, expiration]).catch(() => {})
       return JSON.parse(cachedResult)
     }
 
