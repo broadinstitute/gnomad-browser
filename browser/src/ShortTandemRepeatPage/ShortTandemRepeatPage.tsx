@@ -167,7 +167,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             </List>
             <h2>Related Loci</h2>
             <p>
-              <Link to="/short-tandem-repeats">All pathogenic short tandem repeats in gnomAD</Link>
+              <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
             </p>
           </ResponsiveSection>
         )}
