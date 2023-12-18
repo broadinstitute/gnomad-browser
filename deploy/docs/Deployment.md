@@ -24,7 +24,7 @@ module "gnomad-browser-infra" {
   vpc_network_name                      = "gnomad-mynetwork"
   vpc_subnet_name                       = "gnomad-mynetwork-gke"
   # For authorized networks, use a list of IPs that is restricted to networks that makes sense for you. This example opens traffic to the Internet.
-  gke_control_plane_authorized_networks = ["0.0.0.0/0"] 
+  gke_control_plane_authorized_networks = ["0.0.0.0/0"]
   project_id                            = "my-gcp-project"
   gke_pods_range_slice                  = "10.164.0.0/14"
   gke_services_range_slice              = "10.168.0.0/20"
@@ -69,24 +69,27 @@ Should be set when running the API server.
 
 `JSON_CACHE_PATH`
 
-+ Description: Specifies the directory path where JSON files should be written.
-+ Usage: If this path includes gs://, the system will utilize Google Cloud Storage (GCS) for storing the JSON files. Otherwise, it defaults to using local file storage.
-+ Example Value: /path/to/cache or gs://bucket_name/path/to/cache
+- Description: Specifies the directory path where JSON files should be written.
+- Usage: If this path includes gs://, the system will utilize Google Cloud Storage (GCS) for storing the JSON files. Otherwise, it defaults to using local file storage.
+- Example Value: /path/to/cache or gs://bucket_name/path/to/cache
 
 `JSON_CACHE_ENABLE_ALL`
-+ Description: Determines whether caching is enabled for all Elasticsearch lookups using the withCache function.
-+ Usage: Set to true to enable caching for all lookups; otherwise, caching is disabled.
-+ Example Value: true or false
+
+- Description: Determines whether caching is enabled for all Elasticsearch lookups using the withCache function.
+- Usage: Set to true to enable caching for all lookups; otherwise, caching is disabled.
+- Example Value: true or false
 
 `JSON_CACHE_LARGE_GENES`
-+ Description: Controls the caching behavior specifically for large genes.
-+ Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
-+ Example Value: true or false
+
+- Description: Controls the caching behavior specifically for large genes.
+- Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
+- Example Value: true or false
 
 `JSON_CACHE_COMPRESSION`
-+ Description: Specifies whether to use compression for the stored JSON files.
-+ Usage: Set to true to enable compression, which can save storage space but may increase CPU usage for compression and decompression processes.
-+ Example Value: true or false
+
+- Description: Specifies whether to use compression for the stored JSON files.
+- Usage: Set to true to enable compression, which can save storage space but may increase CPU usage for compression and decompression processes.
+- Example Value: true or false
 
 ### Cache invalidation
 
@@ -288,7 +291,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
      It typically takes ~5 minutes for the IP to resolve to the new deployment
 
    - Clean up the ingress when you no longer need it with:
-    
+
      ```
      kubectl delete ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
      ```
