@@ -119,7 +119,7 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
-      <DocumentTitle title={`Pathogenic Short Tandem Repeats | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`Tandem Repeats | ${labelForDataset(datasetId)}`} />
       <GnomadPageHeading
         datasetOptions={{
           includeShortVariants: true,
@@ -131,15 +131,15 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
         }}
         selectedDataset={datasetId}
       >
-        Pathogenic Short Tandem Repeats
+        Tandem Repeats
       </GnomadPageHeading>
       {hasShortTandemRepeats(datasetId) ? (
         <Query
           operationName={operationName}
           query={query}
           variables={{ datasetId }}
-          loadingMessage="Loading short tandem repeats"
-          errorMessage="Unable to load short tandem repeats"
+          loadingMessage="Loading tandem repeats"
+          errorMessage="Unable to load tandem repeats"
           success={(data: any) => data.short_tandem_repeats}
         >
           {({ data }: any) => {
@@ -154,11 +154,11 @@ const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageCo
         </Query>
       ) : (
         <StatusMessage>
-          Short tandem repeats are not available in {labelForDataset(datasetId)}
+          Tandem repeats are not available in {labelForDataset(datasetId)}
           <br />
           <br />
           <Link to="/short-tandem-repeats?dataset=gnomad_r3" preserveSelectedDataset={false}>
-            View short tandem repeats in gnomAD v3.1
+            View tandem repeats in gnomAD v3.1
           </Link>
         </StatusMessage>
       )}
