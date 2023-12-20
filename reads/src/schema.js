@@ -20,7 +20,7 @@ const {
 } = require('./resolveShortTandemRepeatReads')
 
 const allDatasetIds = Array.from(
-  new Set([...Object.keys(variantDatasets), ...Object.keys(shortTandemRepeatDatasets)]),
+  new Set([...Object.keys(variantDatasets), ...Object.keys(shortTandemRepeatDatasets)])
 )
 
 const DatasetArgumentType = new GraphQLEnumType({
@@ -218,7 +218,7 @@ const RootType = new GraphQLObjectType({
         const { dataset } = args
         if (!shortTandemRepeatDatasets[dataset]) {
           throw new UserVisibleError(
-            `Tandem repeat read visualizations are not available for "${dataset}" dataset`,
+            `Tandem repeat read visualizations are not available for "${dataset}" dataset`
           )
         }
 

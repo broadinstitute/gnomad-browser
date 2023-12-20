@@ -237,7 +237,7 @@ const BaseTableSelector = styled.div<TableSelectorProps>
 const TableSelector = BaseTableSelector.attrs(
   ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
     onClick: () => setSelectedTableName(ownTableName),
-  }),
+  })
 )`
   border: 1px solid black;
   border-radius: 0.5em;
@@ -323,7 +323,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const hasCodingExons = cdsCompositeExons.length > 0
   const hasUTRs = gene.exons.some((exon) => exon.feature_type === 'UTR')
   const hasNonCodingTranscripts = gene.transcripts.some(
-    (tx) => !tx.exons.some((exon) => exon.feature_type === 'CDS'),
+    (tx) => !tx.exons.some((exon) => exon.feature_type === 'CDS')
   )
 
   const regionViewerRegions = !hasExons(datasetId)
@@ -338,7 +338,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           (exon) =>
             exon.feature_type === 'CDS' ||
             (exon.feature_type === 'UTR' && includeUTRs) ||
-            (exon.feature_type === 'exon' && includeNonCodingTranscripts),
+            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
         )
         .map((exon) => ({
           start: Math.max(1, exon.start - 75),
