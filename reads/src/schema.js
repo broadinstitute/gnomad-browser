@@ -218,7 +218,7 @@ const RootType = new GraphQLObjectType({
         const { dataset } = args
         if (!shortTandemRepeatDatasets[dataset]) {
           throw new UserVisibleError(
-            `Short tandem repeat reads are not available for "${dataset}" dataset`
+            `Tandem repeat read visualizations are not available for "${dataset}" dataset`
           )
         }
 
