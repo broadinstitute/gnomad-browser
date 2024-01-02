@@ -3,10 +3,11 @@ import React, { ReactNode } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
-
 import { TooltipAnchor } from '@gnomad/ui'
 
 import Legend from '../Legend'
+
+import { DownloadElementAsPNGButton } from './DownloadFigure'
 
 const GraphWrapper = styled.div`
   overflow: hidden;
@@ -54,6 +55,21 @@ const BinHoverTarget = styled.rect`
   &:hover {
     fill: rgba(0, 0, 0, 0.05);
   }
+`
+
+const TitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const Title = styled.span`
+  width: 70%;
+  margin: 14px auto 14px auto;
+  font-weight: bold;
+
+  /* non-zero letter spacing fixes html2canvas rendering errors */
+  letter-spacing: 0.01px;
+  text-align: center;
 `
 
 const yTickFormat = (n: any) => {
@@ -242,7 +258,7 @@ const StackedBarGraph = withSize()(
 )
 
 const StackedBarGraphWithLegend = ({
-  id,
+  title,
   barColors,
   barValues,
   formatTooltip,
@@ -251,7 +267,7 @@ const StackedBarGraphWithLegend = ({
   yLabel,
   displayNumbers,
 }: {
-  id: string
+  title: string
   barColors: { [x: string]: string }
   barValues: DataRow[]
   formatTooltip: (row: DataRow) => string | ReactNode
@@ -260,6 +276,12 @@ const StackedBarGraphWithLegend = ({
   yLabel: string
   displayNumbers: boolean
 }) => {
+  const sluggedTitle = title
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '')
+    .concat('test')
+
   const dataCategories = getDataCategories(barValues[0])
 
   const seriesLegend: { label: string; color: string }[] = []
@@ -271,27 +293,33 @@ const StackedBarGraphWithLegend = ({
   })
 
   return (
-    <TwoColumns id={id}>
-      <GraphSide>
-        <StackedBarGraph
-          barColors={barColors}
-          barValues={barValues}
-          formatTooltip={formatTooltip}
-          // size={size}
-          height={height}
-          xLabel={xLabel}
-          yLabel={yLabel}
-          displayNumbers={displayNumbers}
-        />
-      </GraphSide>
-      <LegendSide>
-        <LegendWrapper>
-          <Legend series={seriesLegend} />
-        </LegendWrapper>
-      </LegendSide>
-    </TwoColumns>
+    <div id={sluggedTitle}>
+      <TitleRow>
+        <Title>
+          {title}
+          <DownloadElementAsPNGButton elementId={sluggedTitle} />
+        </Title>
+      </TitleRow>
+      <TwoColumns>
+        <GraphSide>
+          <StackedBarGraph
+            barColors={barColors}
+            barValues={barValues}
+            formatTooltip={formatTooltip}
+            height={height}
+            xLabel={xLabel}
+            yLabel={yLabel}
+            displayNumbers={displayNumbers}
+          />
+        </GraphSide>
+        <LegendSide>
+          <LegendWrapper>
+            <Legend series={seriesLegend} />
+          </LegendWrapper>
+        </LegendSide>
+      </TwoColumns>
+    </div>
   )
 }
 
 export default StackedBarGraphWithLegend
-// export default StackedBarGraph
