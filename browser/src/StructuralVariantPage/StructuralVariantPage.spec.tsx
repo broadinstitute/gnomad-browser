@@ -6,7 +6,7 @@ import Query, { BaseQuery } from '../Query'
 import { forDatasetsMatching } from '../../../tests/__helpers__/datasets'
 import StructuralVariantPage from './StructuralVariantPage'
 import svFactory from '../__factories__/StructuralVariant'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -52,9 +52,9 @@ forDatasetsMatching(/gnomad_sv_r2/, 'StructuralVariantPage with dataset %s', (da
           }),
         })
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <StructuralVariantPage datasetId={datasetId} variantId={variant.variant_id} />
-          )
+          </BrowserRouter>
         )
         expect(tree).toMatchSnapshot()
       })
@@ -76,9 +76,9 @@ forDatasetsMatching(/gnomad_sv_r2/, 'StructuralVariantPage with dataset %s', (da
           }),
         })
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <StructuralVariantPage datasetId={datasetId} variantId={variant.variant_id} />
-          )
+          </BrowserRouter>
         )
         expect(tree).toMatchSnapshot()
       })
@@ -97,9 +97,9 @@ forDatasetsMatching(/gnomad_sv_r2/, 'StructuralVariantPage with dataset %s', (da
         }),
       })
       const tree = renderer.create(
-        withDummyRouter(
+        <BrowserRouter>
           <StructuralVariantPage datasetId={datasetId} variantId={variant.variant_id} />
-        )
+        </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })

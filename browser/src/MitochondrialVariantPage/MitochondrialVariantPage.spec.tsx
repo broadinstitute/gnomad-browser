@@ -5,7 +5,7 @@ import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 import mitochondrialVariantFactory from '../__factories__/MitochondrialVariant'
 
 import MitochondrialVariantPage from './MitochondrialVariantPage'
@@ -55,9 +55,9 @@ forAllDatasets('MitochondrialVariantPage with dataset %s', (datasetId) => {
       MitochondrialVariant: () => apiResponse,
     })
     const tree = renderer.create(
-      withDummyRouter(
+      <BrowserRouter>
         <MitochondrialVariantPage variantId={variant.variant_id} datasetId={datasetId} />
-      )
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })

@@ -2,10 +2,8 @@ import React from 'react'
 import { jest, describe, expect, test, beforeEach, afterEach } from '@jest/globals'
 import renderer from 'react-test-renderer'
 import { mockQueries } from '../../../tests/__helpers__/queries'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
 import Query, { BaseQuery } from '../Query'
 import LiftoverDisambiguationPage from './LiftoverDisambiguationPage'
-import { createMemoryHistory } from 'history'
 
 import {
   DatasetId,
@@ -13,6 +11,7 @@ import {
   isLiftoverSource,
   isLiftoverTarget,
 } from '@gnomad/dataset-metadata/metadata'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -64,13 +63,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r4"
             />
-          )
+          </BrowserRouter>
         )
 
         const queries = mockApiCalls()
@@ -88,13 +87,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r4"
             />
-          )
+          </BrowserRouter>
         )
         expect(tree).toMatchSnapshot()
       })
@@ -106,18 +105,17 @@ describe('LiftoverDisambiguationPage', () => {
           }),
         })
 
-        const history = createMemoryHistory()
-
-        const router = withDummyRouter(
-          <LiftoverDisambiguationPage
-            fromVariantId="fakevariant"
-            fromDatasetId={fromDatasetId}
-            toDatasetId="gnomad_r4"
-          />,
-          history
+        const router = (
+          <BrowserRouter>
+            <LiftoverDisambiguationPage
+              fromVariantId="fakevariant"
+              fromDatasetId={fromDatasetId}
+              toDatasetId="gnomad_r4"
+            />
+          </BrowserRouter>
         )
         renderer.create(router)
-        const { location } = history
+        const { location } = window
         expect(location.pathname).toEqual('/variant/source1')
         expect(location.search).toEqual('?dataset=gnomad_r4')
       })
@@ -133,13 +131,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r4"
             />
-          )
+          </BrowserRouter>
         )
 
         expect(tree).toMatchSnapshot()
@@ -156,13 +154,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r2_1"
             />
-          )
+          </BrowserRouter>
         )
 
         const queries = mockApiCalls()
@@ -181,13 +179,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r2_1"
             />
-          )
+          </BrowserRouter>
         )
         expect(tree).toMatchSnapshot()
       })
@@ -199,18 +197,17 @@ describe('LiftoverDisambiguationPage', () => {
           }),
         })
 
-        const history = createMemoryHistory()
-
-        const router = withDummyRouter(
-          <LiftoverDisambiguationPage
-            fromVariantId="fakevariant"
-            fromDatasetId={fromDatasetId}
-            toDatasetId="gnomad_r2_1"
-          />,
-          history
+        const router = (
+          <BrowserRouter>
+            <LiftoverDisambiguationPage
+              fromVariantId="fakevariant"
+              fromDatasetId={fromDatasetId}
+              toDatasetId="gnomad_r2_1"
+            />
+          </BrowserRouter>
         )
         renderer.create(router)
-        const { location } = history
+        const { location } = window
         expect(location.pathname).toEqual('/variant/source1')
         expect(location.search).toEqual('?dataset=gnomad_r2_1')
       })
@@ -226,13 +223,13 @@ describe('LiftoverDisambiguationPage', () => {
         })
 
         const tree = renderer.create(
-          withDummyRouter(
+          <BrowserRouter>
             <LiftoverDisambiguationPage
               fromVariantId="fakevariant"
               fromDatasetId={fromDatasetId}
               toDatasetId="gnomad_r2_1"
             />
-          )
+          </BrowserRouter>
         )
 
         expect(tree).toMatchSnapshot()

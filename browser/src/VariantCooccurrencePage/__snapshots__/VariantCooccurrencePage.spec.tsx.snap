@@ -51,7 +51,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -131,7 +131,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -870,7 +870,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -950,7 +950,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -1745,7 +1745,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
             aria-label="More datasets"
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="other_short_variant"
-            href="/"
+            href="/variant-cooccurrence"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -1837,7 +1837,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
             aria-label="More datasets"
             className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
             data-item="other_structural_variant"
-            href="/"
+            href="/variant-cooccurrence"
             onBlur={[Function]}
             onClick={[Function]}
             onKeyDown={[Function]}
@@ -2684,7 +2684,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -2764,7 +2764,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -3365,7 +3365,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -3445,7 +3445,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -4103,7 +4103,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -4183,7 +4183,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -4907,7 +4907,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -4987,7 +4987,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -5768,7 +5768,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -5848,7 +5848,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -6572,7 +6572,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -6652,7 +6652,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -7433,7 +7433,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -7513,7 +7513,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -8237,7 +8237,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -8317,7 +8317,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -9098,7 +9098,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -9178,7 +9178,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -9874,7 +9874,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -9954,7 +9954,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -10707,7 +10707,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -10787,7 +10787,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -11483,7 +11483,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -11563,7 +11563,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -12316,7 +12316,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -12396,7 +12396,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -13092,7 +13092,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -13172,7 +13172,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -13925,7 +13925,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_short_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -14005,7 +14005,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
                   aria-label="More datasets"
                   class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                   data-item="other_structural_variant"
-                  href="/"
+                  href="/variant-cooccurrence"
                   role="button"
                 >
                   <span
@@ -14729,7 +14729,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_short_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span
@@ -14809,7 +14809,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
                 aria-label="More datasets"
                 class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
                 data-item="other_structural_variant"
-                href="/"
+                href="/variant-cooccurrence"
                 role="button"
               >
                 <span

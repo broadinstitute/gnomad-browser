@@ -5,10 +5,13 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 import ContactPage from './ContactPage'
-
-import { withDummyRouter } from '../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('Contact Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<ContactPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <ContactPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })

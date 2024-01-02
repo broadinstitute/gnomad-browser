@@ -5,10 +5,9 @@ import Query, { BaseQuery } from '../Query'
 import renderer from 'react-test-renderer'
 import { render } from '@testing-library/react'
 import { forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
 
 import VariantCoocurrencePage from './VariantCooccurrencePage'
-import { createBrowserHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -73,6 +72,8 @@ const cisThreshold = 0.02
 const transThreshold = 0.55
 const epsilon = 0.0000001
 
+const routerInitialEntries = [`/variant-cooccurrence?variant=${variantId1}&variant=${variantId2}`]
+
 describe('VariantCoocurrencePage', () => {
   describe('for gnomad_r2_1', () => {
     beforeEach(() => {
@@ -98,11 +99,10 @@ describe('VariantCoocurrencePage', () => {
         VariantCooccurrence: () => baseApiResponse,
       })
 
-      const history = createBrowserHistory()
-      history.location.search = `?variant=${variantId1}&variant=${variantId2}`
-
       const tree = renderer.create(
-        withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+        <MemoryRouter initialEntries={routerInitialEntries}>
+          <VariantCoocurrencePage datasetId="gnomad_r2_1" />
+        </MemoryRouter>
       )
       expect(tree).toMatchSnapshot()
     })
@@ -227,14 +227,13 @@ describe('VariantCoocurrencePage', () => {
     cases.forEach(([description, response, genotypeCountsText, tableDescription]) => {
       describe(`when the main population has ${description}`, () => {
         test('has an appropriate description in the summary table and under the genotype counts', async () => {
-          const history = createBrowserHistory()
-          history.location.search = `?variant=${variantId1}&variant=${variantId2}`
-
           setMockApiResponses({
             VariantCooccurrence: () => response,
           })
           const tree = render(
-            withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+            <MemoryRouter initialEntries={routerInitialEntries}>
+              <VariantCoocurrencePage datasetId="gnomad_r2_1" />
+            </MemoryRouter>
           )
           expect(tree).toMatchSnapshot()
           if (genotypeCountsText) {
@@ -246,14 +245,13 @@ describe('VariantCoocurrencePage', () => {
     })
 
     test('omits haplotype table for cis singleton', async () => {
-      const history = createBrowserHistory()
-      history.location.search = `?variant=${variantId1}&variant=${variantId2}`
-
       setMockApiResponses({
         VariantCooccurrence: () => cisSingletonResponse,
       })
       const tree = render(
-        withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+        <MemoryRouter initialEntries={routerInitialEntries}>
+          <VariantCoocurrencePage datasetId="gnomad_r2_1" />
+        </MemoryRouter>
       )
 
       const tables = tree.queryAllByText(/Haplotype Counts/)
@@ -268,14 +266,16 @@ describe('VariantCoocurrencePage', () => {
           variant_ids: ['1-1-A-C', '1-50002-A-C'],
         },
       }
-      const history = createBrowserHistory()
-      history.location.search = '?variant=$1-1-A-C&variant=1-50002-A-C'
 
       setMockApiResponses({
         VariantCooccurrence: () => distantCisResponse,
       })
       const tree = render(
-        withDummyRouter(<VariantCoocurrencePage datasetId="gnomad_r2_1" />, history)
+        <MemoryRouter
+          initialEntries={['/variant-cooccurrence?variant=$1-1-A-C&variant=1-50002-A-C']}
+        >
+          <VariantCoocurrencePage datasetId="gnomad_r2_1" />
+        </MemoryRouter>
       )
       expect(tree).toMatchSnapshot()
       await tree.findByText(/Accuracy is lower .+ away from each other./)
@@ -285,8 +285,11 @@ describe('VariantCoocurrencePage', () => {
   forDatasetsNotMatching(/r2_1$/, 'for non-2.1 dataset %s', (datasetId) => {
     test('has no unexpected changes', () => {
       const tree = renderer.create(
-        withDummyRouter(<VariantCoocurrencePage datasetId={datasetId} />)
+        <MemoryRouter>
+          <VariantCoocurrencePage datasetId={datasetId} />
+        </MemoryRouter>
       )
+
       expect(tree).toMatchSnapshot()
     })
   })
