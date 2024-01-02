@@ -59,6 +59,22 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 Run kubectl apply -k . in the deploy/manifests/redis folder
 
+## Http Cache
+
+Http responses are cached and served to users. Caches are associated with deployed pods, so creating a new deployment effectively removes any cached data from the previous deployment.
+
+To manually clear the http cache:
+
+Exec into the browser pod. Get pod name if needed with `kubectl get pods`
+
+`kubectl exec -it gnomad-browser-<POD_NAME> -- sh`
+
+Cache data prefix folders are named with a single character, e.g. `0`, `1`, `a`, `d`
+
+Remove cache directories manually
+
+`rm -rf <CACHE_DIR>`
+
 ## Json Cache
 
 The gnomAD API has an optional JSON cache for elasticsearch lookups. The cache client can write to local directories or Google Cloud Storage and files can be gzipped or not.
