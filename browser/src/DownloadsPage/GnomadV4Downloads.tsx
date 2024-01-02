@@ -215,7 +215,7 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <GetUrlButtons
               label="Principal component analysis (PCA) variant loadings"
-              path="/release/4.0/gnomad.v4.0.pca_loadings.ht"
+              path="/release/4.0/pca/gnomad.v4.0.pca_loadings.ht"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -243,20 +243,20 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks label="README" path="/release/v4.0/constraint/README.txt" />
+            <GenericDownloadLinks label="README" path="/release/4.0/constraint/README.txt" />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
-              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
+              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GenericDownloadLinks
               label="Constraint metrics TSV"
-              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
             />
           </ListItem>
         </FileList>
