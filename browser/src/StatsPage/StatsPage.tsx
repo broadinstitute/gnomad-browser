@@ -205,7 +205,7 @@ const StatsPage = () => {
                   height={400}
                   formatTooltip={barGraphTooltip}
                   xLabel=""
-                  yLabel=""
+                  yLabel="Number of samples"
                   displayNumbers
                 />
               </div>
@@ -345,13 +345,13 @@ const StatsPage = () => {
           <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '1em' }}>
               <StackedBarGraph
-                title="Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.1"
+                title="Per genetic ancestry group count of samples in gnomAD releases"
                 barColors={gnomadV4GeneticAncestryCounts.colors}
                 barValues={gnomadV4GeneticAncestryCounts.data}
                 height={400}
                 formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
-                yLabel=""
+                yLabel="Number of samples"
                 displayNumbers={false}
               />
             </DiversityBarGraph>
@@ -366,7 +366,7 @@ const StatsPage = () => {
                 height={400}
                 formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
-                yLabel=""
+                yLabel="Number of samples"
                 displayNumbers={false}
               />
             </DiversityBarGraph>

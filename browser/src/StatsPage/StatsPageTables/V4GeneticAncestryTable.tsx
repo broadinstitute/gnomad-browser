@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { Button } from '@gnomad/ui'
+import { DownloadElementAsPNGButton } from '../DownloadFigure'
 
 import {
-  downloadElementAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -12,11 +11,11 @@ import {
 } from './TableStyles'
 
 const V4GeneticAncestryTable = () => {
-  const elementID = 'gnomad-v4-genetic-ancestry-group-size-table'
+  const elementId = 'v4-genetic-ancestry-group-size-table'
 
   return (
     <div>
-      <StatsTable id={elementID} style={{ marginBottom: '3em' }}>
+      <StatsTable id={elementId}>
         <thead>
           <StatsTableHeaderRow>
             <th style={{ width: '15%' }}>Imputed Genetic Ancestry Group for v4</th>
@@ -245,7 +244,7 @@ const V4GeneticAncestryTable = () => {
         </StatsTableCaption>
       </StatsTable>
       <div>
-        <Button onClick={() => downloadElementAsPNG(elementID)}>Download Table</Button>
+        <DownloadElementAsPNGButton elementId={elementId} />
       </div>
     </div>
   )
