@@ -1,7 +1,7 @@
 import React from 'react'
 import { describe, test, expect } from '@jest/globals'
 import { forAllDatasets } from '../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 import renderer from 'react-test-renderer'
 import { createBrowserHistory } from 'history'
 
@@ -10,7 +10,11 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 describe('Searchbox', () => {
   test('has no unexpected changes when no dataset specified', () => {
-    const tree = renderer.create(withDummyRouter(<Searchbox />))
+    const tree = renderer.create(
+      <BrowserRouter>
+        <Searchbox />
+      </BrowserRouter>
+    )
     expect(tree).toMatchSnapshot()
   })
 
@@ -18,7 +22,11 @@ describe('Searchbox', () => {
     test('has no unexpected changes', () => {
       const history = createBrowserHistory()
       history.push(`/?dataset=${datasetId}`)
-      const tree = renderer.create(withDummyRouter(<Searchbox history={history} />))
+      const tree = renderer.create(
+        <BrowserRouter>
+          <Searchbox history={history} />
+        </BrowserRouter>
+      )
       expect(tree).toMatchSnapshot()
     })
 
@@ -47,7 +55,11 @@ describe('Searchbox', () => {
       const expectedDefaultDataset = expectedDefaultDatasets[datasetId]
       const history = createBrowserHistory()
       history.push(`/?dataset=${datasetId}`)
-      const tree = renderer.create(withDummyRouter(<Searchbox history={history} />))
+      const tree = renderer.create(
+        <BrowserRouter>
+          <Searchbox history={history} />
+        </BrowserRouter>
+      )
       const datasetSelect = tree.root.findByType('select')
       const defaultDataset = datasetSelect.props.value
       expect(defaultDataset).toEqual(expectedDefaultDataset)
