@@ -10,6 +10,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      typescript:
+        specifier: ^5.0.4
+        version: 5.2.2
     devDependencies:
       '@babel/core':
         specifier: ^7.10.4
@@ -146,9 +150,6 @@ importers:
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.7.0)(typescript@5.2.2)
-      typescript:
-        specifier: ^5.0.4
-        version: 5.2.2
 
   browser:
     dependencies:
