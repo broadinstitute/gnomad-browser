@@ -39,13 +39,12 @@ export default () => (
             Tibbetts, K., gnomAD Project Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C.,
             Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†,
             MacArthur, D. G.† & Karczewski, K. J. A genome-wide mutational constraint map quantified
-            from variation in 76,156 human genomes. <em>bioRxiv</em> 2022.03.20.485034 (2022).{' '}
-            {/* @ts-expect-error */}
-            <ExternalLink href="https://doi.org/10.1101/2022.03.20.485034">
-              https://doi.org/10.1101/2022.03.20.485034
+            from variation in 76,156 human genomes. <em>Nature</em> (2023). {/* @ts-expect-error */}
+            <ExternalLink href="https://doi.org/10.1038/s41586-023-06045-0">
+              https://doi.org/10.1038/s41586-023-06045-0
             </ExternalLink>{' '}
             {/* @ts-expect-error */}
-            <ExternalLink href="https://www.biorxiv.org/highwire/citation/2787225/endnote-tagged">
+            <ExternalLink href="https://citation-needed.springer.com/v2/references/10.1038/s41586-023-06045-0?format=refman&flavour=citation">
               Download citation
             </ExternalLink>
           </Citation>
@@ -109,10 +108,10 @@ export default () => (
             Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD
             Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J.,
             O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound
-            heterozygosity from large-scale exome sequencing data.{' '}
-            <em>Cold Spring Harbor Laboratory</em>. {/* @ts-expect-error */}
-            <ExternalLink href="https://doi.org/10.1101/2023.03.19.533370">
-              https://doi.org/10.1101/2023.03.19.533370
+            heterozygosity from large-scale exome sequencing data. <em>Nature Genetics</em> (2023).{' '}
+            {/* @ts-expect-error */}
+            <ExternalLink href="https://doi.org/10.1038/s41588-023-01608-3">
+              https://doi.org/10.1038/s41588-023-01608-3
             </ExternalLink>
           </Citation>
         </ListItem>
