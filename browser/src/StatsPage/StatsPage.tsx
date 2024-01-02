@@ -166,6 +166,14 @@ const StatsHighlightBlock = ({
 const gnomadBlue = '#0E6FBF'
 const gnomadGreen = '#508A14'
 
+const barGraphTooltip = (row: any) => (
+  <>
+    <b>{row.label}</b>
+    <div>{row.Exomes.toLocaleString()} exomes</div>
+    <div>{row.Genomes.toLocaleString()} genomes</div>
+  </>
+)
+
 const StatsPage = () => {
   return (
     <InfoPage>
@@ -194,13 +202,7 @@ const StatsPage = () => {
                   barColors={gnomadExomeGenomeCountsByVersion.colors}
                   barValues={gnomadExomeGenomeCountsByVersion.data}
                   height={400}
-                  formatTooltip={(row: any) => (
-                    <>
-                      <b>{row.label}</b>
-                      <div>{row.Exomes.toLocaleString()} exomes</div>
-                      <div>{row.Genomes.toLocaleString()} genomes</div>
-                    </>
-                  )}
+                  formatTooltip={barGraphTooltip}
                   xLabel=""
                   yLabel=""
                   displayNumbers
