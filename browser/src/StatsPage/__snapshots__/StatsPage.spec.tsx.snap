@@ -1,59 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stats Page has no unexpected changes 1`] = `
-.c18 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c18:active,
-.c18:hover {
-  background-color: #cbd3da;
-}
-
-.c18:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c18:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c18 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c33 {
+.c35 {
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c33:visited,
-.c33:active {
+.c35:visited,
+.c35:active {
   color: #1173bb;
 }
 
-.c33:focus,
-.c33:hover {
+.c35:focus,
+.c35:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -80,23 +40,23 @@ exports[`Stats Page has no unexpected changes 1`] = `
   margin: 0;
 }
 
-.c24 {
+.c26 {
   overflow: hidden;
   width: 100%;
   height: 100%;
   margin-bottom: 1em;
 }
 
-.c25 {
+.c27 {
   pointer-events: visible;
   fill: none;
 }
 
-.c25:hover {
+.c27:hover {
   fill: rgba(0,0,0,0.05);
 }
 
-.c22 {
+.c24 {
   position: absolute;
   -webkit-transform: translate(-15px,calc(50% - 0.5em));
   -ms-transform: translate(-15px,calc(50% - 0.5em));
@@ -115,27 +75,27 @@ exports[`Stats Page has no unexpected changes 1`] = `
   vertical-align: middle;
 }
 
-.c20 {
+.c22 {
   position: relative;
 }
 
-.c20:hover .c21 {
+.c22:hover .c23 {
   visibility: visible;
 }
 
-.c27 {
+.c29 {
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c27:visited,
-.c27:active {
+.c29:visited,
+.c29:active {
   color: #1173bb;
 }
 
-.c27:focus,
-.c27:hover {
+.c29:focus,
+.c29:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -176,7 +136,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   margin-bottom: 0.5em;
 }
 
-.c16 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -192,7 +152,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   list-style-type: none;
 }
 
-.c17 {
+.c20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -201,13 +161,40 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 .c12 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  outline: none;
+  padding-left: 7px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.c12 img {
+  position: relative;
+  top: 0.13em;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.c12:focus img {
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c15 {
   overflow: hidden;
   width: 100%;
   height: 100%;
   margin-bottom: 1em;
 }
 
-.c10 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -218,28 +205,50 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c11 {
+.c14 {
   width: 75%;
 }
 
-.c14 {
+.c17 {
   width: 25%;
 }
 
-.c15 {
+.c18 {
   margin-top: 3em;
 }
 
-.c13 {
+.c16 {
   pointer-events: visible;
   fill: none;
 }
 
-.c13:hover {
+.c16:hover {
   fill: rgba(0,0,0,0.05);
 }
 
-.c35 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c11 {
+  width: 70%;
+  margin: 14px auto 14px auto;
+  font-weight: bold;
+  -webkit-letter-spacing: 0.01px;
+  -moz-letter-spacing: 0.01px;
+  -ms-letter-spacing: 0.01px;
+  letter-spacing: 0.01px;
+  text-align: center;
+}
+
+.c37 {
   border-collapse: collapse;
   min-width: 400px;
   font-size: 0.9em;
@@ -249,49 +258,49 @@ exports[`Stats Page has no unexpected changes 1`] = `
   letter-spacing: 0.01px;
 }
 
-.c35 th,
-.c35 td {
+.c37 th,
+.c37 td {
   padding: 12px 15px;
   text-align: center;
 }
 
-.c36 {
+.c38 {
   background-color: #0e6fbf;
   color: #fafafa;
 }
 
-.c36 th {
+.c38 th {
   font-weight: bold;
 }
 
-.c37 {
+.c39 {
   background-color: #41a2f1;
   color: #fafafa;
 }
 
-.c37 th {
+.c39 th {
   font-weight: normal;
 }
 
-.c39 tr {
+.c41 tr {
   background-color: #508a14;
   color: #fafafa;
 }
 
-.c39 td {
+.c41 td {
   font-weight: bold;
 }
 
-.c38 tr {
+.c40 tr {
   border-bottom: 1px solid #ddd;
   text-align: center;
 }
 
-.c38 tr:nth-of-type(even) {
+.c40 tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 
-.c40 {
+.c42 {
   caption-side: bottom;
   text-align: left;
 }
@@ -311,11 +320,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
   width: 50%;
 }
 
-.c23 {
+.c25 {
   width: 70%;
 }
 
-.c41 {
+.c43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -326,15 +335,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c42 {
+.c44 {
   width: 70%;
 }
 
-.c26 {
+.c28 {
   width: 30%;
 }
 
-.c19 {
+.c21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -345,7 +354,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   justify-content: space-around;
 }
 
-.c34 {
+.c36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -360,7 +369,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   margin-bottom: 5em;
 }
 
-.c28 {
+.c30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -382,7 +391,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-align: center;
 }
 
-.c31 {
+.c33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -404,17 +413,17 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-align: center;
 }
 
-.c29 {
+.c31 {
   margin: 0;
   font-size: 3.75em;
 }
 
-.c30 {
+.c32 {
   margin: 0;
   font-size: 1.25em;
 }
 
-.c32 {
+.c34 {
   color: #508a14;
   font-weight: bold;
 }
@@ -452,14 +461,8 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c10 {
+  .c13 {
     display: block;
-  }
-}
-
-@media (max-width:992px) {
-  .c11 {
-    width: 100%;
   }
 }
 
@@ -470,7 +473,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c15 {
+  .c17 {
+    width: 100%;
+  }
+}
+
+@media (max-width:992px) {
+  .c18 {
     margin-top: 0;
   }
 }
@@ -488,33 +497,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c23 {
+  .c25 {
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c41 {
+  .c43 {
     display: block;
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c42 {
+  .c44 {
     display: block;
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c26 {
+  .c28 {
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c34 {
+  .c36 {
     display: block;
   }
 }
@@ -725,14 +734,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
             }
           >
             <div
-              className="c10"
-              id="gnomad_v4_exome_and_genome_counts_graph"
+              id="sample-size-across-major-exacgnomad-releasestest"
             >
               <div
-                className="c11"
+                className="c10"
               >
-                <div
-                  className="c12"
+                <span
+                  className="c11"
                 >
                   <svg
                     height={400}
@@ -1527,82 +1535,859 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </div>
               </div>
               <div
-                className="c14"
+                className="c13"
               >
                 <div
-                  className="c15"
+                  className="c14"
                 >
-                  <ul
-                    className="c16"
+                  <div
+                    className="c15"
                   >
-                    <li
-                      className="c17"
+                    <svg
+                      height={400}
+                      width={-50}
                     >
-                      <svg
-                        height={16}
-                        width={16}
+                      <g
+                        className="vx-group vx-axis vx-axis-bottom"
+                        transform="translate(60, 370)"
                       >
-                        <rect
-                          fill="#508a14"
-                          height={16}
-                          stroke="#000"
-                          width={16}
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={-15}
+                            x2={-15}
+                            y1={0}
+                            y2={3}
+                          />
+                          <svg
+                            fontSize={12}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={12}
+                              textAnchor="middle"
+                              x={-15}
+                              y={15}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-15}
+                              >
+                                ExAC
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={-45}
+                            x2={-45}
+                            y1={0}
+                            y2={3}
+                          />
+                          <svg
+                            fontSize={12}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={12}
+                              textAnchor="middle"
+                              x={-45}
+                              y={15}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-45}
+                              >
+                                gnomAD v2
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={-75}
+                            x2={-75}
+                            y1={0}
+                            y2={3}
+                          />
+                          <svg
+                            fontSize={12}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={12}
+                              textAnchor="middle"
+                              x={-75}
+                              y={15}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-75}
+                              >
+                                gnomAD v3
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={-105}
+                            x2={-105}
+                            y1={0}
+                            y2={3}
+                          />
+                          <svg
+                            fontSize={12}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={12}
+                              textAnchor="middle"
+                              x={-105}
+                              y={15}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-105}
+                              >
+                                gnomAD v4
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <line
+                          className="vx-line vx-axis-line"
+                          fill="transparent"
+                          stroke="#333"
+                          strokeWidth={1}
+                          x1={0.5}
+                          x2={-119.5}
+                          y1={0}
+                          y2={0}
+                        />
+                        
+                      </g>
+                      <g
+                        className="vx-group vx-axis vx-axis-left"
+                        transform="translate(60, 10)"
+                      >
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={360}
+                            y2={360}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={360}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                0
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={315.3992878752964}
+                            y2={315.3992878752964}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={315.3992878752964}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                100K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={270.7985757505928}
+                            y2={270.7985757505928}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={270.7985757505928}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                200K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={226.1978636258892}
+                            y2={226.1978636258892}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={226.1978636258892}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                300K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={181.59715150118564}
+                            y2={181.59715150118564}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={181.59715150118564}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                400K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={136.99643937648204}
+                            y2={136.99643937648204}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={136.99643937648204}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                500K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={92.39572725177847}
+                            y2={92.39572725177847}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={92.39572725177847}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                600K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={47.795015127074876}
+                            y2={47.795015127074876}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={47.795015127074876}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                700K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <g
+                          className="vx-group vx-axis-tick"
+                          transform="translate(0, 0)"
+                        >
+                          <line
+                            className="vx-line"
+                            fill="transparent"
+                            stroke="#222"
+                            strokeLinecap="square"
+                            x1={0}
+                            x2={-8}
+                            y1={3.194303002371255}
+                            y2={3.194303002371255}
+                          />
+                          <svg
+                            fontSize={10}
+                            style={
+                              {
+                                "overflow": "visible",
+                              }
+                            }
+                            x="-0.25em"
+                            y="0.25em"
+                          >
+                            <text
+                              fill="#000"
+                              fontSize={10}
+                              textAnchor="end"
+                              x={-8}
+                              y={3.194303002371255}
+                            >
+                              <tspan
+                                dy="0em"
+                                x={-8}
+                              >
+                                800K
+                              </tspan>
+                            </text>
+                          </svg>
+                        </g>
+                        <line
+                          className="vx-line vx-axis-line"
+                          fill="transparent"
+                          stroke="#333"
+                          strokeWidth={1}
+                          x1={0}
+                          x2={0}
+                          y1={360.5}
+                          y2={0.5}
+                        />
+                        <svg
+                          fontSize={14}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
                           x={0}
                           y={0}
-                        />
-                      </svg>
-                      <span
-                        style={
-                          {
-                            "marginLeft": "0.25em",
-                          }
-                        }
-                      >
-                        Genomes
-                      </span>
-                    </li>
-                    <li
-                      className="c17"
-                    >
-                      <svg
-                        height={16}
-                        width={16}
+                        >
+                          <text
+                            className="vx-axis-label"
+                            fontSize={14}
+                            textAnchor="middle"
+                            transform="rotate(-90)"
+                            x={-180}
+                            y={-44}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-180}
+                            >
+                              Number of samples
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      Exomes
+                      Genomes
+                      <g
+                        transform="translate(60,10)"
                       >
                         <rect
                           fill="#0e6fbf"
-                          height={16}
-                          stroke="#000"
-                          width={16}
-                          x={0}
+                          height={27.07530830242257}
+                          stroke="#333"
+                          width={39.6}
+                          x={-34.8}
+                          y={332.92469169757743}
+                        />
+                        <text
+                          dy={4}
+                          fill="white"
+                          fontSize={12}
+                          textAnchor="middle"
+                          x={-15}
+                          y={346.4623458487887}
+                        >
+                          60,706
+                        </text>
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-34.8}
                           y={0}
                         />
-                      </svg>
-                      <span
-                        style={
-                          {
-                            "marginLeft": "0.25em",
-                          }
-                        }
+                        <rect
+                          fill="#508a14"
+                          height={0}
+                          stroke="#333"
+                          width={39.6}
+                          x={-34.8}
+                          y={332.92469169757743}
+                        />
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-34.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#0e6fbf"
+                          height={56.088963553784765}
+                          stroke="#333"
+                          width={39.6}
+                          x={-64.8}
+                          y={303.91103644621523}
+                        />
+                        <text
+                          dy={4}
+                          fill="white"
+                          fontSize={12}
+                          textAnchor="middle"
+                          x={-45}
+                          y={331.9555182231076}
+                        >
+                          125,758
+                        </text>
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-64.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#508a14"
+                          height={7.0058798605484185}
+                          stroke="#333"
+                          width={39.6}
+                          x={-64.8}
+                          y={296.9051565856668}
+                        />
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-64.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#0e6fbf"
+                          height={0}
+                          stroke="#333"
+                          width={39.6}
+                          x={-94.8}
+                          y={360}
+                        />
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-94.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#508a14"
+                          height={33.96611832568925}
+                          stroke="#333"
+                          width={39.6}
+                          x={-94.8}
+                          y={326.03388167431075}
+                        />
+                        <text
+                          dy={4}
+                          fill="white"
+                          fontSize={12}
+                          textAnchor="middle"
+                          x={-75}
+                          y={343.0169408371554}
+                        >
+                          76,156
+                        </text>
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-94.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#0e6fbf"
+                          height={326.00756725415715}
+                          stroke="#333"
+                          width={39.6}
+                          x={-124.8}
+                          y={33.99243274584283}
+                        />
+                        <text
+                          dy={4}
+                          fill="white"
+                          fontSize={12}
+                          textAnchor="middle"
+                          x={-105}
+                          y={196.9962163729214}
+                        >
+                          730,947
+                        </text>
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-124.8}
+                          y={0}
+                        />
+                        <rect
+                          fill="#508a14"
+                          height={33.99243274584285}
+                          stroke="#333"
+                          width={39.6}
+                          x={-124.8}
+                          y={0}
+                        />
+                        <text
+                          dy={4}
+                          fill="white"
+                          fontSize={12}
+                          textAnchor="middle"
+                          x={-105}
+                          y={16.996216372921424}
+                        >
+                          76,215
+                        </text>
+                        <rect
+                          className="c16"
+                          height={360}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
+                          width={39.6}
+                          x={-124.8}
+                          y={0}
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                  >
+                    <ul
+                      className="c19"
+                    >
+                      <li
+                        className="c20"
                       >
-                        Exomes
-                      </span>
-                    </li>
-                  </ul>
+                        <svg
+                          height={16}
+                          width={16}
+                        >
+                          <rect
+                            fill="#508a14"
+                            height={16}
+                            stroke="#000"
+                            width={16}
+                            x={0}
+                            y={0}
+                          />
+                        </svg>
+                        <span
+                          style={
+                            {
+                              "marginLeft": "0.25em",
+                            }
+                          }
+                        >
+                          Genomes
+                        </span>
+                      </li>
+                      <li
+                        className="c20"
+                      >
+                        <svg
+                          height={16}
+                          width={16}
+                        >
+                          <rect
+                            fill="#0e6fbf"
+                            height={16}
+                            stroke="#000"
+                            width={16}
+                            x={0}
+                            y={0}
+                          />
+                        </svg>
+                        <span
+                          style={
+                            {
+                              "marginLeft": "0.25em",
+                            }
+                          }
+                        >
+                          Exomes
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-            <div>
-              <button
-                className="c18"
-                onClick={[Function]}
-                type="button"
-              >
-                Download Graph
-              </button>
-            </div>
           </div>
           <div
-            className="c19"
+            className="c21"
           >
             <img
               alt="2.9x increase in non-European individuals"
@@ -1618,14 +2403,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#age-and-sex-distribution"
             id="age-and-sex-distribution"
           >
@@ -1644,7 +2429,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         className="c4"
       >
         <div
-          className="c23"
+          className="c25"
         >
           <h3>
             Age
@@ -1659,7 +2444,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 Exomes
               </p>
               <div
-                className="c24"
+                className="c26"
               >
                 <svg
                   height={250}
@@ -2749,7 +3534,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={170.2124439358423}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2766,7 +3551,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={174.45670831872127}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2783,7 +3568,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={173.67762417172705}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2800,7 +3585,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={102.9653555805755}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2817,7 +3602,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={78.89846619538936}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2834,7 +3619,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={62.019417117333276}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2851,7 +3636,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={42.07718857860057}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2868,7 +3653,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2885,7 +3670,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={41.57717934993262}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2902,7 +3687,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={169.54797984458924}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2919,7 +3704,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={175.32549511803467}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2936,7 +3721,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={176.7607375551413}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -2955,7 +3740,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 Genomes
               </p>
               <div
-                className="c24"
+                className="c26"
               >
                 <svg
                   height={250}
@@ -3959,7 +4744,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={21.979920616390384}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -3976,7 +4761,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={124.02054634601916}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -3993,7 +4778,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={121.12070978286248}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4010,7 +4795,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={110.99229512024282}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4027,7 +4812,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={56.06350688769553}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4044,7 +4829,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4061,7 +4846,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={28.66215269670792}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4078,7 +4863,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={42.06864347420032}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4095,7 +4880,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={57.744571561989254}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4112,7 +4897,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={97.83796404389446}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4129,7 +4914,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={129.48400653747373}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4146,7 +4931,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={161.59234181648375}
                     />
                     <rect
-                      className="c25"
+                      className="c27"
                       height={180}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
@@ -4161,7 +4946,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
         </div>
         <div
-          className="c26"
+          className="c28"
         >
           <h3>
             Sex
@@ -4186,7 +4971,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         To learn more about how we calculate the sex and age distribution please see our
          
         <a
-          className="-Link c27"
+          className="-Link c29"
           href="/help"
           onClick={[Function]}
         >
@@ -4198,14 +4983,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#samples"
             id="samples"
           >
@@ -4231,32 +5016,32 @@ exports[`Stats Page has no unexpected changes 1`] = `
           className="c4"
         >
           <div
-            className="c28"
+            className="c30"
           >
             <div>
               <h1
-                className="c29"
+                className="c31"
               >
                 308
               </h1>
               <p
-                className="c30"
+                className="c32"
               >
                 Data Contributors
               </p>
             </div>
           </div>
           <div
-            className="c31"
+            className="c33"
           >
             <div>
               <h1
-                className="c29"
+                className="c31"
               >
                 &gt;100
               </h1>
               <p
-                className="c30"
+                className="c32"
               >
                 Studies from around the world
               </p>
@@ -4272,7 +5057,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         Version 4 of gnomAD contains samples with IRBs based in at least 25 different countries, including:
          
         <span
-          className="c32"
+          className="c34"
         >
           Australia, Bangladesh, Belgium, Canada, China, England, Finland, France, Germany, Israel, Italy, Japan, Kenya, Korea, Lithuania, Mexico, Netherlands, Pakistan, Scotland, Singapore, Spain, Sweden, United Arab Emirates, United States, Wales.
         </span>
@@ -4281,7 +5066,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         To see a list of studies included in gnomAD and data contributors please visit our
          
         <a
-          className="-Link c27"
+          className="-Link c29"
           href="/about"
           onClick={[Function]}
         >
@@ -4294,14 +5079,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#diversity"
             id="diversity"
           >
@@ -4348,7 +5133,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
             To learn more about how we determine genetic ancestry groups please see our
              
             <a
-              className="-Link c27"
+              className="-Link c29"
               href="help/ancestry"
               onClick={[Function]}
             >
@@ -4357,7 +5142,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
              and
              
             <a
-              className="c33"
+              className="c35"
               href="https://gnomad.broadinstitute.org/news/2023-11-genetic-ancestry"
               rel="noopener noreferrer"
               target="_blank"
@@ -4370,7 +5155,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="c34"
+        className="c36"
         style={
           {
             "marginBottom": "3em",
@@ -4379,17 +5164,12 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c35"
-            id="gnomad-genetic-ancestry-group-size-by-version-table"
-            style={
-              {
-                "marginBottom": "3em",
-              }
-            }
+            className="c37"
+            id="genetic-ancestry-group-size-by-version-table"
           >
             <thead>
               <tr
-                className="c36"
+                className="c38"
               >
                 <th>
                    
@@ -4410,7 +5190,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c37"
+                className="c39"
               >
                 <th>
                    
@@ -4436,7 +5216,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c38"
+              className="c40"
             >
               <tr>
                 <td>
@@ -4624,7 +5404,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c39"
+              className="c41"
             >
               <tr>
                 <td>
@@ -4651,7 +5431,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c40"
+              className="c42"
             >
               <div>
                 *v4 includes all v3 samples.
@@ -4662,18 +5442,25 @@ exports[`Stats Page has no unexpected changes 1`] = `
             </caption>
           </table>
           <div>
-            <button
-              className="c18"
-              onClick={[Function]}
-              type="button"
-            >
-              Download Table
-            </button>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
           </div>
         </div>
       </div>
       <div
-        className="c41"
+        className="c43"
         style={
           {
             "marginBottom": "0.5em",
@@ -4681,7 +5468,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c42"
+          className="c44"
           style={
             {
               "marginBottom": "1em",
@@ -4690,14 +5477,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         >
           <div
-            className="c10"
-            id="gnomad_v4_genetic_ancestry_counts"
+            id="per-genetic-ancestry-group-count-of-samples-in-gnomad-releasestest"
           >
             <div
-              className="c11"
+              className="c10"
             >
-              <div
-                className="c12"
+              <span
+                className="c11"
               >
                 <svg
                   height={400}
@@ -5856,246 +6642,1380 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </div>
             </div>
             <div
-              className="c14"
+              className="c13"
             >
               <div
-                className="c15"
+                className="c14"
               >
-                <ul
-                  className="c16"
+                <div
+                  className="c15"
                 >
-                  <li
-                    className="c17"
+                  <svg
+                    height={400}
+                    width={-50}
                   >
-                    <svg
-                      height={16}
-                      width={16}
+                    <g
+                      className="vx-group vx-axis vx-axis-bottom"
+                      transform="translate(60, 370)"
                     >
-                      <rect
-                        fill="#6aa5ce"
-                        height={16}
-                        stroke="#000"
-                        width={16}
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-15}
+                          x2={-15}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-15}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-15}
+                            >
+                              ExAC
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-45}
+                          x2={-45}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-45}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-45}
+                            >
+                              gnomAD v2
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-75}
+                          x2={-75}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-75}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-75}
+                            >
+                              gnomAD v3
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-105}
+                          x2={-105}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-105}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-105}
+                            >
+                              gnomAD v4
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <line
+                        className="vx-line vx-axis-line"
+                        fill="transparent"
+                        stroke="#333"
+                        strokeWidth={1}
+                        x1={0.5}
+                        x2={-119.5}
+                        y1={0}
+                        y2={0}
+                      />
+                      
+                    </g>
+                    <g
+                      className="vx-group vx-axis vx-axis-left"
+                      transform="translate(60, 10)"
+                    >
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={360}
+                          y2={360}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={360}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              0
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={315.3992878752964}
+                          y2={315.3992878752964}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={315.3992878752964}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              100K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={270.7985757505928}
+                          y2={270.7985757505928}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={270.7985757505928}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              200K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={226.1978636258892}
+                          y2={226.1978636258892}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={226.1978636258892}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              300K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={181.59715150118564}
+                          y2={181.59715150118564}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={181.59715150118564}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              400K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={136.99643937648204}
+                          y2={136.99643937648204}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={136.99643937648204}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              500K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={92.39572725177847}
+                          y2={92.39572725177847}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={92.39572725177847}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              600K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={47.795015127074876}
+                          y2={47.795015127074876}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={47.795015127074876}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              700K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={3.194303002371255}
+                          y2={3.194303002371255}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={3.194303002371255}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              800K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <line
+                        className="vx-line vx-axis-line"
+                        fill="transparent"
+                        stroke="#333"
+                        strokeWidth={1}
+                        x1={0}
+                        x2={0}
+                        y1={360.5}
+                        y2={0.5}
+                      />
+                      <svg
+                        fontSize={14}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
                         x={0}
                         y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      European
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#acb8b9"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Remaining
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#edc800"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Ashkenazi Jewish
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#ed1e23"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Admixed American
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#931193"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      African
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#050080"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Middle Eastern
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#ff9a10"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      South Asian
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
+                      >
+                        <text
+                          className="vx-axis-label"
+                          fontSize={14}
+                          textAnchor="middle"
+                          transform="rotate(-90)"
+                          x={-180}
+                          y={-44}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-180}
+                          >
+                            Number of samples
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
+                    East Asian
+                    South Asian
+                    Middle Eastern
+                    African
+                    Admixed American
+                    Ashkenazi Jewish
+                    Remaining
+                    European
+                    <g
+                      transform="translate(60,10)"
                     >
                       <rect
                         fill="#0e8b45"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
+                        height={1.9298728136359387}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={358.07012718636406}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
                         y={0}
                       />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
+                      <rect
+                        fill="#ff9a10"
+                        height={3.682234793015539}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={354.3878923933485}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={0}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={354.3878923933485}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={2.320575051848323}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={352.0673173415002}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={2.581935224899098}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={349.4853821166011}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={0}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={349.4853821166011}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={0.20248723304615623}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={349.28289488355495}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={16.358203185977516}
+                        stroke="#333"
+                        width={39.6}
+                        x={-34.8}
+                        y={332.92469169757743}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-34.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#0e8b45"
+                        height={4.449813048681676}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={355.5501869513183}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ff9a10"
+                        height={6.827477012049599}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={348.7227099392687}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={0}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={348.7227099392687}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={5.569290923011749}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={343.153419016257}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={7.903246188497462}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={335.2501728277595}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={2.3125469236658773}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={332.93762590409364}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={1.6118697361868044}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={331.32575616790683}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={34.41613951102755}
+                        stroke="#333"
+                        width={39.6}
+                        x={-64.8}
+                        y={296.9096166568793}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#0e8b45"
+                        height={1.161402543727263}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={358.83859745627274}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ff9a10"
+                        height={1.078891226296605}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={357.75970622997613}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={0.07046912515704662}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={357.6892371048191}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={9.251971723148529}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={348.43726538167056}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={3.4106164561761148}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={345.02664892549444}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={0.774268362484861}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={344.2523805630096}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={0.6703487032342537}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={343.5820318597753}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={17.548150185464635}
+                        stroke="#333"
+                        width={39.6}
+                        x={-94.8}
+                        y={326.0338816743107}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-94.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#0e8b45"
+                        height={10.011967857753461}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={349.98803214224654}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ff9a10"
+                        height={20.313840344317498}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={329.67419179792904}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={1.351847584499751}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={328.3223442134293}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={16.745337367219975}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={311.5770068462093}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={13.388687772714775}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={298.18831907349454}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={6.6026894229411255}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={291.5856296505534}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={14.143777828986003}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={277.4418518215674}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={277.4418518215674}
+                        stroke="#333"
+                        width={39.6}
+                        x={-124.8}
+                        y={-1.4210854715202004e-14}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={39.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="c17"
+              >
+                <div
+                  className="c18"
+                >
+                  <ul
+                    className="c19"
+                  >
+                    <li
+                      className="c20"
                     >
-                      East Asian
-                    </span>
-                  </li>
-                </ul>
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#6aa5ce"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        European
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#acb8b9"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Remaining
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#edc800"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Ashkenazi Jewish
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#ed1e23"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Admixed American
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#931193"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        African
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#050080"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Middle Eastern
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#ff9a10"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        South Asian
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#0e8b45"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        East Asian
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div
-        style={
-          {
-            "marginBottom": "2.5em",
-            "marginLeft": "9em",
-          }
-        }
-      >
-        <button
-          className="c18"
-          onClick={[Function]}
-          type="button"
-        >
-          Download Graph
-        </button>
-      </div>
-      <div
-        className="c41"
+        className="c43"
         style={
           {
             "marginBottom": "0.5em",
@@ -6103,7 +8023,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         }
       >
         <div
-          className="c42"
+          className="c44"
           style={
             {
               "marginBottom": "0",
@@ -6112,34 +8032,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         >
           <div
-            style={
-              {
-                "display": "flex",
-                "justifyContent": "space-around",
-                "marginBottom": "1em",
-                "width": "100%",
-              }
-            }
-          >
-            <b
-              style={
-                {
-                  "width": "80%",
-                }
-              }
-            >
-              Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF &gt;0.1
-            </b>
-          </div>
-          <div
-            className="c10"
-            id="gnomad_v4_non_synonymous_coding_variants_with_AF_GT_0_1"
+            id="per-genetic-ancestry-group-count-of-non-synonymous-coding-variants-in-canonical-transcripts-with-a-overall-gnomad-within-version-af-01test"
           >
             <div
-              className="c11"
+              className="c10"
             >
-              <div
-                className="c12"
+              <span
+                className="c11"
               >
                 <svg
                   height={400}
@@ -7155,257 +9054,1239 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </div>
             </div>
             <div
-              className="c14"
+              className="c13"
             >
               <div
-                className="c15"
+                className="c14"
               >
-                <ul
-                  className="c16"
+                <div
+                  className="c15"
                 >
-                  <li
-                    className="c17"
+                  <svg
+                    height={400}
+                    width={-50}
                   >
-                    <svg
-                      height={16}
-                      width={16}
+                    <g
+                      className="vx-group vx-axis vx-axis-bottom"
+                      transform="translate(60, 370)"
                     >
-                      <rect
-                        fill="#6aa5ce"
-                        height={16}
-                        stroke="#000"
-                        width={16}
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-30}
+                          x2={-30}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-30}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-30}
+                            >
+                              gnomAD v2
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={-90}
+                          x2={-90}
+                          y1={0}
+                          y2={3}
+                        />
+                        <svg
+                          fontSize={12}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                            x={-90}
+                            y={15}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-90}
+                            >
+                              gnomAD v4
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <line
+                        className="vx-line vx-axis-line"
+                        fill="transparent"
+                        stroke="#333"
+                        strokeWidth={1}
+                        x1={0.5}
+                        x2={-119.5}
+                        y1={0}
+                        y2={0}
+                      />
+                      
+                    </g>
+                    <g
+                      className="vx-group vx-axis vx-axis-left"
+                      transform="translate(60, 10)"
+                    >
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={360}
+                          y2={360}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={360}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              0
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={333.57747744177135}
+                          y2={333.57747744177135}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={333.57747744177135}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              50.0K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={307.1549548835427}
+                          y2={307.1549548835427}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={307.1549548835427}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              100K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={280.7324323253141}
+                          y2={280.7324323253141}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={280.7324323253141}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              150K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={254.30990976708546}
+                          y2={254.30990976708546}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={254.30990976708546}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              200K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={227.88738720885684}
+                          y2={227.88738720885684}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={227.88738720885684}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              250K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={201.46486465062821}
+                          y2={201.46486465062821}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={201.46486465062821}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              300K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={175.0423420923996}
+                          y2={175.0423420923996}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={175.0423420923996}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              350K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={148.61981953417094}
+                          y2={148.61981953417094}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={148.61981953417094}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              400K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={122.1972969759423}
+                          y2={122.1972969759423}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={122.1972969759423}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              450K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={95.77477441771366}
+                          y2={95.77477441771366}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={95.77477441771366}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              500K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={69.35225185948501}
+                          y2={69.35225185948501}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={69.35225185948501}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              550K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={42.92972930125641}
+                          y2={42.92972930125641}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={42.92972930125641}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              600K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <g
+                        className="vx-group vx-axis-tick"
+                        transform="translate(0, 0)"
+                      >
+                        <line
+                          className="vx-line"
+                          fill="transparent"
+                          stroke="#222"
+                          strokeLinecap="square"
+                          x1={0}
+                          x2={-8}
+                          y1={16.507206743027766}
+                          y2={16.507206743027766}
+                        />
+                        <svg
+                          fontSize={10}
+                          style={
+                            {
+                              "overflow": "visible",
+                            }
+                          }
+                          x="-0.25em"
+                          y="0.25em"
+                        >
+                          <text
+                            fill="#000"
+                            fontSize={10}
+                            textAnchor="end"
+                            x={-8}
+                            y={16.507206743027766}
+                          >
+                            <tspan
+                              dy="0em"
+                              x={-8}
+                            >
+                              650K
+                            </tspan>
+                          </text>
+                        </svg>
+                      </g>
+                      <line
+                        className="vx-line vx-axis-line"
+                        fill="transparent"
+                        stroke="#333"
+                        strokeWidth={1}
+                        x1={0}
+                        x2={0}
+                        y1={360.5}
+                        y2={0.5}
+                      />
+                      <svg
+                        fontSize={14}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
                         x={0}
                         y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      European
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#acb8b9"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Remaining
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#edc800"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Ashkenazi Jewish
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#ed1e23"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Admixed American
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#931193"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      African
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#050080"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      Middle Eastern
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
-                    >
-                      <rect
-                        fill="#ff9a10"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
-                        y={0}
-                      />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
-                    >
-                      South Asian
-                    </span>
-                  </li>
-                  <li
-                    className="c17"
-                  >
-                    <svg
-                      height={16}
-                      width={16}
+                      >
+                        <text
+                          className="vx-axis-label"
+                          fontSize={14}
+                          textAnchor="middle"
+                          transform="rotate(-90)"
+                          x={-180}
+                          y={-44}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-180}
+                          >
+                            Number of samples
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
+                    East Asian
+                    South Asian
+                    Middle Eastern
+                    African
+                    Admixed American
+                    Ashkenazi Jewish
+                    Remaining
+                    European
+                    <g
+                      transform="translate(60,10)"
                     >
                       <rect
                         fill="#0e8b45"
-                        height={16}
-                        stroke="#000"
-                        width={16}
-                        x={0}
+                        height={31.903082187256416}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={328.0969178127436}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
                         y={0}
                       />
-                    </svg>
-                    <span
-                      style={
-                        {
-                          "marginLeft": "0.25em",
-                        }
-                      }
+                      <rect
+                        fill="#ff9a10"
+                        height={37.567014122838316}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={290.52990368990527}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={0}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={290.52990368990527}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={55.32453463332149}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={235.20536905658378}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={37.499900915540366}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={197.7054681410434}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={35.20061300252337}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={162.50485513852004}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={40.07028391000489}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={122.43457122851515}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={30.83402692455047}
+                        stroke="#333"
+                        width={69.6}
+                        x={-64.8}
+                        y={91.60054430396468}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-64.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#0e8b45"
+                        height={34.466595325855735}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={325.53340467414426}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ff9a10"
+                        height={42.74054403973946}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={282.7928606344048}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#050080"
+                        height={49.438125057799255}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={233.35473557660555}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#931193"
+                        height={62.62137846300186}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={170.7333571136037}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#ed1e23"
+                        height={47.925699866566276}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={122.80765724703741}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#edc800"
+                        height={40.114673747902714}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={82.6929834991347}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#acb8b9"
+                        height={48.53658858811252}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={34.156394911022176}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                      <rect
+                        fill="#6aa5ce"
+                        height={34.15639491102212}
+                        stroke="#333"
+                        width={69.6}
+                        x={-124.8}
+                        y={5.684341886080802e-14}
+                      />
+                      <rect
+                        className="c16"
+                        height={360}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={69.6}
+                        x={-124.8}
+                        y={0}
+                      />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="c17"
+              >
+                <div
+                  className="c18"
+                >
+                  <ul
+                    className="c19"
+                  >
+                    <li
+                      className="c20"
                     >
-                      East Asian
-                    </span>
-                  </li>
-                </ul>
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#6aa5ce"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        European
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#acb8b9"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Remaining
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#edc800"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Ashkenazi Jewish
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#ed1e23"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Admixed American
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#931193"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        African
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#050080"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        Middle Eastern
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#ff9a10"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        South Asian
+                      </span>
+                    </li>
+                    <li
+                      className="c20"
+                    >
+                      <svg
+                        height={16}
+                        width={16}
+                      >
+                        <rect
+                          fill="#0e8b45"
+                          height={16}
+                          stroke="#000"
+                          width={16}
+                          x={0}
+                          y={0}
+                        />
+                      </svg>
+                      <span
+                        style={
+                          {
+                            "marginLeft": "0.25em",
+                          }
+                        }
+                      >
+                        East Asian
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        style={
-          {
-            "marginBottom": "5.5em",
-            "marginLeft": "9em",
-          }
-        }
-      >
-        <button
-          className="c18"
-          onClick={[Function]}
-          type="button"
-        >
-          Download Graph
-        </button>
       </div>
     </div>
     <div
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#study-provided-labels"
             id="study-provided-labels"
           >
@@ -7423,7 +10304,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <p>
         The following table is provided in order to present how our inferred genetic ancestry groups correspond to descriptors provided by each contributing
         <a
-          className="-Link c27"
+          className="-Link c29"
           href="/about"
           onClick={[Function]}
         >
@@ -7436,21 +10317,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
         It is of note that imputed ancestry groups are genetically derived, while the study-provided labels are either self-reported or researcher assigned. As such, these values have no equivalency.
       </p>
       <div
-        className="c34"
+        className="c36"
       >
         <div>
           <table
-            className="c35"
-            id="gnomad-v4-genetic-ancestry-group-size-table"
-            style={
-              {
-                "marginBottom": "3em",
-              }
-            }
+            className="c37"
+            id="v4-genetic-ancestry-group-size-table"
           >
             <thead>
               <tr
-                className="c36"
+                className="c38"
               >
                 <th
                   style={
@@ -7502,7 +10378,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </th>
               </tr>
               <tr
-                className="c37"
+                className="c39"
               >
                 <th>
                   <i>
@@ -7527,7 +10403,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c38"
+              className="c40"
             >
               <tr>
                 <td>
@@ -7829,7 +10705,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <caption
-              className="c40"
+              className="c42"
             >
               <div>
                 *Study-provided labels are the descriptions given to the gnomAD team in the accompanying metadata. These labels can sometime be assigned at the study-level, others are provided at the individual level.
@@ -7841,13 +10717,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
             </caption>
           </table>
           <div>
-            <button
-              className="c18"
-              onClick={[Function]}
-              type="button"
-            >
-              Download Table
-            </button>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -7856,14 +10739,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#study-diseases"
             id="study-diseases"
           >
@@ -7894,7 +10777,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
          
       </p>
       <div
-        className="c34"
+        className="c36"
         style={
           {
             "marginBottom": "3em",
@@ -7903,17 +10786,12 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         <div>
           <table
-            className="c35"
+            className="c37"
             id="study-diseases-in-gnomad-table"
-            style={
-              {
-                "marginBottom": "3em",
-              }
-            }
           >
             <thead>
               <tr
-                className="c36"
+                className="c38"
               >
                 <th>
                   Phenotypes
@@ -7936,7 +10814,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </thead>
             <tbody
-              className="c38"
+              className="c40"
             >
               <tr>
                 <td>
@@ -8180,7 +11058,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tbody>
             <tfoot
-              className="c39"
+              className="c41"
             >
               <tr>
                 <td>
@@ -8204,7 +11082,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
             </tfoot>
             <caption
-              className="c40"
+              className="c42"
             >
               <div>
                 * This category includes: GTEx, 1KG, UKBB, and the Qatar Genome Project, as well as the FinnGen and MGB biobank samples when no phenotype was specified
@@ -8220,13 +11098,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
             </caption>
           </table>
           <div>
-            <button
-              className="c18"
-              onClick={[Function]}
-              type="button"
-            >
-              Download Table
-            </button>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -8235,14 +11120,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
       className="c3"
     >
       <span
-        className="c20"
+        className="c22"
       >
         <h2
           className=""
         >
           <a
             aria-hidden="true"
-            className="c21 c22"
+            className="c23 c24"
             href="#browser"
             id="browser"
           >
