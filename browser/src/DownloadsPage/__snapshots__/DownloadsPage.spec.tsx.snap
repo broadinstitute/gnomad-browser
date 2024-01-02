@@ -5031,7 +5031,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/v4.0/constraint/README.txt"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/constraint/README.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -5041,7 +5041,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/v4.0/constraint/README.txt"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/constraint/README.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -5051,7 +5051,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/v4.0/constraint/README.txt"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/constraint/README.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -5108,7 +5108,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -5118,7 +5118,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -5128,7 +5128,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
