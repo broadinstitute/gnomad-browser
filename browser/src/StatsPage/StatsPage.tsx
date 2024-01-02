@@ -197,7 +197,7 @@ const StatsPage = () => {
               <NumberOfVariantsInGnomadList />
             </div>
             <ResponsiveHalfWidthColumn>
-              <div style={{ marginTop: '4em', marginBottom: '7em' }}>
+              <div style={{ marginTop: '4em', marginBottom: '7em', minWidth: '550px' }}>
                 <StackedBarGraph
                   title="Sample size across major ExAC/gnomAD releases"
                   barColors={gnomadExomeGenomeCountsByVersion.colors}
@@ -342,7 +342,7 @@ const StatsPage = () => {
             <GeneticAncestryGroupsByVersionTable />
           </ResponsiveTable>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '0.5em', width: '100%' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '1em' }}>
               <StackedBarGraph
                 title="Per genetic ancestry group count of samples in gnomAD releases"

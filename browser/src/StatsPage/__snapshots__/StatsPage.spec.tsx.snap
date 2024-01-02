@@ -730,6 +730,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               {
                 "marginBottom": "7em",
                 "marginTop": "4em",
+                "minWidth": "550px",
               }
             }
           >
@@ -5464,6 +5465,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         style={
           {
             "marginBottom": "0.5em",
+            "width": "100%",
           }
         }
       >
