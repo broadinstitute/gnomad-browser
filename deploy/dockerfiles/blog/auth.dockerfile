@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.12-alpine
 
 # Create app user and group
 RUN addgroup -S app && adduser -S app -G app
@@ -9,7 +9,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Install dependencies
-RUN pip install --no-cache-dir gunicorn==20.0.4
 COPY deploy/dockerfiles/blog/auth-requirements.txt .
 RUN pip install --no-cache-dir -r auth-requirements.txt
 
