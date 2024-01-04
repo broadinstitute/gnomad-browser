@@ -71,17 +71,17 @@ type VariantGenotypeQualityMetricsProps = {
   variant: Variant
 }
 
-interface Tab {
-  id: string;
-  label: string;
-  render: () => JSX.Element;
+type Tab = {
+  id: string
+  label: string
+  render: () => JSX.Element
 }
 
 const createTab = (
-  showAllIndividuals: Boolean,
+  showAllIndividuals: boolean,
   binEdges: any,
-  includeExomes: Boolean,
-  includeGenomes: Boolean,
+  includeExomes: boolean,
+  includeGenomes: boolean,
   variant: Variant,
   id: string,
   label: string,
@@ -130,7 +130,7 @@ const createTab = (
             variant,
           })}
           secondaryValues={
-            showAllIndividuals && id != 'allele_balance'
+            showAllIndividuals && id !== 'allele_balance'
               ? prepareData({
                   includeExomes,
                   includeGenomes,
@@ -148,28 +148,29 @@ const createTab = (
           formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
             const nVariantCarriers = sum(variantCarriersInBin);
 
-            if (id == 'allele_balance') {
+            if (id === 'allele_balance') {
               return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
                 nVariantCarriers !== 1 ? 's have' : ' has'
               } an allele balance in the ${bin} range`
-            } else {
-              let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
-                nVariantCarriers !== 1 ? 's' : ''
-              }`;
+            }
 
-              if (showAllIndividuals) {
-                const nTotalIndividuals = sum(allIndividualsInBin);
-                tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
-                  nTotalIndividuals !== 1 ? 's' : ''
-                }`;
-              }
+            let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
+              nVariantCarriers !== 1 ? 's' : ''
+            }`;
+
+            if (showAllIndividuals) {
+              const nTotalIndividuals = sum(allIndividualsInBin);
+              tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
+                nTotalIndividuals !== 1 ? 's' : ''
+              }`;
+            }
   
-              tooltipText += ` ${
-                nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-              } ${xLabel.toLowerCase()} in the ${bin} range`;
+            tooltipText += ` ${
+              nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
+            } ${xLabel.toLowerCase()} in the ${bin} range`;
   
-              return tooltipText;
-            }}
+            return tooltipText;
+            }
           }
         />
       </>

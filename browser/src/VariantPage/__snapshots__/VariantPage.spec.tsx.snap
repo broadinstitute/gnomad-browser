@@ -2982,7 +2982,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -4031,7 +4031,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -4044,10 +4044,10 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -4102,7 +4102,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -4118,7 +4118,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -4168,11 +4168,6 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -4327,7 +4322,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -5376,7 +5371,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -5389,10 +5384,10 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -5447,7 +5442,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -5463,7 +5458,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -5513,11 +5508,6 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -5575,19 +5565,151 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -6108,7 +6230,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -6121,10 +6243,10 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -6134,7 +6256,59 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -11906,7 +12080,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -12955,7 +13129,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -12968,10 +13142,10 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -13026,7 +13200,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -13042,7 +13216,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -13092,11 +13266,6 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -13251,7 +13420,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -14300,7 +14469,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -14313,10 +14482,10 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -14371,7 +14540,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -14387,7 +14556,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -14437,11 +14606,6 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -14499,19 +14663,151 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -15032,7 +15328,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -15045,10 +15341,10 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -15058,7 +15354,59 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -20830,7 +21178,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -21879,7 +22227,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -21892,10 +22240,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -21950,7 +22298,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -21966,7 +22314,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -22016,11 +22364,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -22175,7 +22518,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -23224,7 +23567,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -23237,10 +23580,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -23295,7 +23638,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -23311,7 +23654,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -23361,11 +23704,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -23423,19 +23761,151 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -23956,7 +24426,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -23969,10 +24439,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -23982,7 +24452,59 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -29754,7 +30276,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -30803,7 +31325,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -30816,10 +31338,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -30874,7 +31396,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -30890,7 +31412,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -30940,11 +31462,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -31099,7 +31616,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -32148,7 +32665,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -32161,10 +32678,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -32219,7 +32736,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -32235,7 +32752,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -32285,11 +32802,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -32347,19 +32859,151 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -32880,7 +33524,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -32893,10 +33537,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -32906,7 +33550,59 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -38678,7 +39374,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -39727,7 +40423,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -39740,10 +40436,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -39798,7 +40494,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -39814,7 +40510,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -39864,11 +40560,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -40023,7 +40714,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -41072,7 +41763,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -41085,10 +41776,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -41143,7 +41834,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -41159,7 +41850,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -41209,11 +41900,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -41271,19 +41957,151 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -41804,7 +42622,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -41817,10 +42635,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -41830,7 +42648,59 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -47602,7 +48472,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -48651,7 +49521,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -48664,10 +49534,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -48722,7 +49592,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -48738,7 +49608,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -48788,11 +49658,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -48947,7 +49812,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -49996,7 +50861,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -50009,10 +50874,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -50067,7 +50932,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <rect
                         fill="#428bca"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={175}
@@ -50083,7 +50948,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <rect
                         fill="#73ab3d"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -50133,11 +50998,6 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -50195,19 +51055,151 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -50728,7 +51720,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -50741,10 +51733,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -50754,7 +51746,59 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={175}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -55687,7 +56731,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -56736,7 +57780,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -56749,10 +57793,10 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -56807,7 +57851,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -56823,7 +57867,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -56873,11 +57917,6 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -57032,7 +58071,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -58081,7 +59120,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -58094,10 +59133,10 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -58152,7 +59191,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -58168,7 +59207,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -63794,7 +64833,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -64843,7 +65882,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -64856,10 +65895,10 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -64914,7 +65953,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -64930,7 +65969,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -64980,11 +66019,6 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -65139,7 +66173,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -66188,7 +67222,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -66201,10 +67235,10 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -66259,7 +67293,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -66275,7 +67309,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -66325,11 +67359,6 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -66387,19 +67416,151 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -66920,7 +68081,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -66933,10 +68094,10 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -66946,7 +68107,59 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={0}
+                        y2={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -72920,7 +74133,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -73969,7 +75182,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -73982,10 +75195,10 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -74040,7 +75253,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -74056,7 +75269,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -74106,11 +75319,6 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -74265,7 +75473,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -75314,7 +76522,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -75327,10 +76535,10 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -75385,7 +76593,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -75401,7 +76609,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -75451,11 +76659,6 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -75513,19 +76716,151 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -76046,7 +77381,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -76059,10 +77394,10 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -76072,7 +77407,59 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={0}
+                        y2={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -82046,7 +83433,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -83095,7 +84482,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -83108,10 +84495,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -83166,7 +84553,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -83182,7 +84569,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -83232,11 +84619,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -83391,7 +84773,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -84440,7 +85822,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -84453,10 +85835,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -84511,7 +85893,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -84527,7 +85909,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -84577,11 +85959,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -84639,19 +86016,151 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -85172,7 +86681,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -85185,10 +86694,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -85198,7 +86707,59 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={0}
+                        y2={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -91172,7 +92733,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -92221,7 +93782,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -92234,10 +93795,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -92292,7 +93853,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -92308,7 +93869,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -92358,11 +93919,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -92517,7 +94073,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -93566,7 +95122,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -93579,10 +95135,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -93637,7 +95193,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -93653,7 +95209,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -93703,11 +95259,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -93765,19 +95316,151 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -94298,7 +95981,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -94311,10 +95994,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -94324,7 +96007,59 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={0}
+                        y2={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
@@ -100298,7 +102033,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-genotype-quality-plot"
+                  id="variant-genotype_quality-plot"
                   width={null}
                 >
                   <g
@@ -101347,7 +103082,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-genotype-quality-plot-stripes"
+                      id="variant-genotype_quality-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -101360,10 +103095,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-genotype-quality-plot-mask"
+                      id="variant-genotype_quality-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-genotype-quality-plot-stripes)"
+                        fill="url(#variant-genotype_quality-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -101418,7 +103153,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -101434,7 +103169,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-genotype-quality-plot-mask)"
+                        mask="url(#variant-genotype_quality-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -101484,11 +103219,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -101643,7 +103373,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
               >
                 <svg
                   height={250}
-                  id="variant-depth-plot"
+                  id="variant-genotype_depth-plot"
                   width={null}
                 >
                   <g
@@ -102692,7 +104422,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-depth-plot-stripes"
+                      id="variant-genotype_depth-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -102705,10 +104435,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-depth-plot-mask"
+                      id="variant-genotype_depth-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-depth-plot-stripes)"
+                        fill="url(#variant-genotype_depth-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -102763,7 +104493,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <rect
                         fill="#428bca"
                         height={175}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -102779,7 +104509,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <rect
                         fill="#73ab3d"
                         height={0}
-                        mask="url(#variant-depth-plot-mask)"
+                        mask="url(#variant-genotype_depth-plot-mask)"
                         width={45}
                         x={60}
                         y={0}
@@ -102829,11 +104559,6 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             >
               <div
                 className="VariantGenotypeQualityMetrics__LegendWrapper-sc-tgmwmq-0 ihxxGK"
-                style={
-                  {
-                    "marginTop": "1em",
-                  }
-                }
               >
                 <ul
                   className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
@@ -102891,19 +104616,151 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                     </span>
                   </li>
                 </ul>
+                <ul
+                  className="Legend__LegendWrapper-sc-14kdszv-0 buPDrf"
+                >
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <rect
+                        fill="#999"
+                        height={16}
+                        stroke="#000"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      Variant carriers
+                    </span>
+                  </li>
+                  <li
+                    className="Legend__LegendItem-sc-14kdszv-1 ckqBpQ"
+                  >
+                    <svg
+                      height={16}
+                      width={16}
+                    >
+                      <defs>
+                        <pattern
+                          height={4}
+                          id="undefined-stripes"
+                          patternTransform="rotate(45)"
+                          patternUnits="userSpaceOnUse"
+                          width={4}
+                        >
+                          <rect
+                            fill="#fff"
+                            height={4}
+                            transform="translate(0,0)"
+                            width={3}
+                          />
+                        </pattern>
+                        <mask
+                          id="undefined-mask"
+                        >
+                          <rect
+                            fill="url(#undefined-stripes)"
+                            height="100%"
+                            width="100%"
+                            x={0}
+                            y={0}
+                          />
+                        </mask>
+                      </defs>
+                      <rect
+                        fill="#999"
+                        height={16}
+                        mask="url(#undefined-mask)"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={16}
+                        stroke="#333"
+                        width={16}
+                        x={0}
+                        y={0}
+                      />
+                    </svg>
+                    <span
+                      style={
+                        {
+                          "marginLeft": "0.25em",
+                        }
+                      }
+                    >
+                      All individuals
+                    </span>
+                  </li>
+                </ul>
               </div>
               <div
                 className="StackedHistogram__GraphWrapper-sc-tsw0et-1 eLndPf"
               >
                 <svg
                   height={250}
-                  id="variant-allele-balance-plot"
+                  id="variant-allele_balance-plot"
                   width={null}
                 >
                   <g
                     className="vx-group vx-axis vx-axis-bottom"
                     transform="translate(60, 190)"
                   >
+                    <g
+                      className="vx-group vx-axis-tick"
+                      transform="translate(0, 0)"
+                    >
+                      <line
+                        className="vx-line"
+                        fill="transparent"
+                        stroke="#222"
+                        strokeLinecap="square"
+                        x1={-35}
+                        x2={-35}
+                        y1={0}
+                        y2={3}
+                      />
+                      <svg
+                        fontSize={10}
+                        style={
+                          {
+                            "overflow": "visible",
+                          }
+                        }
+                        x="-0.25em"
+                        y="0.25em"
+                      >
+                        <text
+                          fill="#000"
+                          fontSize={10}
+                          textAnchor="end"
+                          transform="translate(0, 0), rotate(-40 -35, 0)"
+                          x={-35}
+                          y={13}
+                        >
+                          <tspan
+                            dy="0em"
+                            x={-35}
+                          >
+                            &gt; 0.5
+                          </tspan>
+                        </text>
+                      </svg>
+                    </g>
                     <line
                       className="vx-line vx-axis-line"
                       fill="transparent"
@@ -103424,7 +105281,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   <defs>
                     <pattern
                       height={4}
-                      id="variant-allele-balance-plot-stripes"
+                      id="variant-allele_balance-plot-stripes"
                       patternTransform="rotate(45)"
                       patternUnits="userSpaceOnUse"
                       width={4}
@@ -103437,10 +105294,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       />
                     </pattern>
                     <mask
-                      id="variant-allele-balance-plot-mask"
+                      id="variant-allele_balance-plot-mask"
                     >
                       <rect
-                        fill="url(#variant-allele-balance-plot-stripes)"
+                        fill="url(#variant-allele_balance-plot-stripes)"
                         height="100%"
                         width="100%"
                         x={0}
@@ -103450,7 +105307,59 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   </defs>
                   <g
                     transform="translate(60,15)"
-                  />
+                  >
+                    <g
+                      transform="translate(-70, 0)"
+                    >
+                      <rect
+                        fill="#428bca"
+                        height={175}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={175}
+                        y2={175}
+                      />
+                      <rect
+                        fill="#73ab3d"
+                        height={0}
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <line
+                        stroke="#666"
+                        strokeWidth={0.5}
+                        x1={8.75}
+                        x2={61.25}
+                        y1={0}
+                        y2={0}
+                      />
+                      <rect
+                        fill="none"
+                        height={175}
+                        stroke="#333"
+                        width={52.5}
+                        x={8.75}
+                        y={0}
+                      />
+                      <rect
+                        className="StackedHistogram__BinHoverTarget-sc-tsw0et-0 jmhdOi"
+                        height={175}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        width={70}
+                        x={0}
+                        y={0}
+                      />
+                    </g>
+                  </g>
                 </svg>
               </div>
             </div>
