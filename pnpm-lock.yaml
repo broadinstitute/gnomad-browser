@@ -160,29 +160,29 @@ importers:
         specifier: '*'
         version: link:../dataset-metadata
       '@gnomad/identifiers':
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: 3.0.0-rc1
+        version: 3.0.0-rc1
       '@gnomad/markdown-loader':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: 2.0.0-rc1
+        version: 2.0.0-rc1
       '@gnomad/region-viewer':
-        specifier: ^3.0.0
-        version: 3.0.0(react@16.14.0)(styled-components@4.4.1)
+        specifier: 4.0.0-rc1
+        version: 4.0.0-rc1
       '@gnomad/track-genes':
-        specifier: ^2.0.2
-        version: 2.0.2(react@16.14.0)(styled-components@4.4.1)
+        specifier: 3.0.0-rc1
+        version: 3.0.0-rc1(react@16.14.0)(styled-components@4.4.1)
       '@gnomad/track-regions':
-        specifier: ^1.0.2
-        version: 1.0.2(react@16.14.0)(styled-components@4.4.1)
+        specifier: 2.0.0-rc1
+        version: 2.0.0-rc1(react@16.14.0)(styled-components@4.4.1)
       '@gnomad/track-transcripts':
-        specifier: ^2.0.1
-        version: 2.0.1(react@16.14.0)(styled-components@4.4.1)
+        specifier: 3.0.0-rc1
+        version: 3.0.0-rc1(react@16.14.0)(styled-components@4.4.1)
       '@gnomad/track-variants':
-        specifier: ^1.0.2
-        version: 1.0.2(react@16.14.0)(styled-components@4.4.1)
+        specifier: 2.0.0-rc1
+        version: 2.0.0-rc1(react@16.14.0)(styled-components@4.4.1)
       '@gnomad/ui':
-        specifier: ^1.2.0
-        version: 1.2.0(react-dom@16.14.0)(react@16.14.0)(styled-components@4.4.1)
+        specifier: 2.0.0-rc1
+        version: 2.0.0-rc1(react-dom@16.14.0)(react@16.14.0)
       '@hot-loader/react-dom':
         specifier: ^16.13.0
         version: 16.14.0(react@16.14.0)
@@ -370,8 +370,8 @@ importers:
         specifier: '*'
         version: link:../dataset-metadata
       '@gnomad/identifiers':
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: 3.0.0-rc1
+        version: 3.0.0-rc1
       '@google-cloud/storage':
         specifier: ^7.6.0
         version: 7.7.0
@@ -2128,20 +2128,20 @@ packages:
     dev: false
     optional: true
 
-  /@gnomad/identifiers@2.3.2:
-    resolution: {integrity: sha512-nYBBaBWDRhzGtLDe5/FR0lnEJnXoPPqxfjtS8B/ze5k6scwimmhGqpFk14XAnwFgM+qLR4Lih/T7PvoBkNW5cA==}
+  /@gnomad/identifiers@3.0.0-rc1:
+    resolution: {integrity: sha512-jkSNwJFWepVgunm3GAOxaSFoFYBOhN5iTuoxbDgfImZIRrbsA9jXYU98LpcJYAqidT8CX9Rwo+8bZD5IsxZaLw==}
     dev: false
 
-  /@gnomad/markdown-loader@1.1.0:
-    resolution: {integrity: sha512-CK7YqyT6bvaxCYLgtj7vL9/sjmjxBSPblmnXGT44zbwFz1yrSoOytndOqk8/StDI58zC/QnDMqMyvuopsfMeYg==}
+  /@gnomad/markdown-loader@2.0.0-rc1:
+    resolution: {integrity: sha512-mEYdJaEzCMHSzU5BKbAbZDtd4x+zw1etD+UieYQzKfTZIuynweCapoLiWW1eP+pRnZKYDSgaY3b42bbnOd4m6Q==}
     dependencies:
-      loader-utils: 2.0.4
+      loader-utils: 3.2.1
       remark: 10.0.1
       remark-extract-frontmatter: 2.0.3
       remark-frontmatter: 1.3.3
       remark-html: 9.0.1
       unist-util-visit: 1.4.1
-      yaml: 1.10.2
+      yaml: 2.3.4
     dev: false
 
   /@gnomad/region-viewer@3.0.0(react@16.14.0)(styled-components@4.4.1):
@@ -2155,16 +2155,20 @@ packages:
       styled-components: 4.4.1(react-dom@16.14.0)(react@16.14.0)
     dev: false
 
-  /@gnomad/track-genes@2.0.2(react@16.14.0)(styled-components@4.4.1):
-    resolution: {integrity: sha512-JU9k2IzCWx/h2tT3cxz+o0hFjlmZefBHZF/W9omYRo/YJijC3meJhAJByEMgOLBRIBhvZfpUV3d0C/EhazxnvA==}
-    peerDependencies:
-      react: ^16.9.0
-      styled-components: ^4.2.0
+  /@gnomad/region-viewer@4.0.0-rc1:
+    resolution: {integrity: sha512-BNcaG+zYBo6obba4P5D5NFwMdBOI6eqBx4qvwEDfSPwGW/zTllLVBeibefvAPjMSC2SFZS4AOE/f/Ck2adTPBQ==}
+    dependencies:
+      prop-types: 15.8.1
+    dev: false
+
+  /@gnomad/track-genes@3.0.0-rc1(react@16.14.0)(styled-components@4.4.1):
+    resolution: {integrity: sha512-sfhljFJXR9mPCCyJyad/LBgi81WXq16nFzHHKMEJpmwLp98VLRuxF6H9GNJRBof7zNqAFAAtKomw2UYX+4mwRA==}
     dependencies:
       '@gnomad/region-viewer': 3.0.0(react@16.14.0)(styled-components@4.4.1)
       prop-types: 15.8.1
-      react: 16.14.0
-      styled-components: 4.4.1(react-dom@16.14.0)(react@16.14.0)
+    transitivePeerDependencies:
+      - react
+      - styled-components
     dev: false
 
   /@gnomad/track-regions@1.0.2(react@16.14.0)(styled-components@4.4.1):
@@ -2179,53 +2183,55 @@ packages:
       - styled-components
     dev: false
 
-  /@gnomad/track-transcripts@2.0.1(react@16.14.0)(styled-components@4.4.1):
-    resolution: {integrity: sha512-sAKF7EPclCg9cPsTCIf2nJxzGlPKkHimYMv5UIRrg2/gbjR8EI9Dv89KrF/D6W5rMmeriupRz126CDNXoRBWMQ==}
-    peerDependencies:
-      react: ^16.9.0
-      styled-components: ^4.2.0
+  /@gnomad/track-regions@2.0.0-rc1(react@16.14.0)(styled-components@4.4.1):
+    resolution: {integrity: sha512-rtqWDnrAGkQXMUC3LXUe5Ipa/vQplQ9APeFNJHgPtunNnXkOEQwSSZSF98HKLyPpDC2sC0Hanrfuqk9Nkjp/zw==}
+    dependencies:
+      '@gnomad/region-viewer': 3.0.0(react@16.14.0)(styled-components@4.4.1)
+      prop-types: 15.8.1
+    transitivePeerDependencies:
+      - react
+      - styled-components
+    dev: false
+
+  /@gnomad/track-transcripts@3.0.0-rc1(react@16.14.0)(styled-components@4.4.1):
+    resolution: {integrity: sha512-1vks8uBTL9GKnfEXvnqVZ9vbIqm1diHeh02Y9ToKK1BLnFyB8rPC5heTTE1khzpbiyQT2yYWGGv4nyRgqdGtNQ==}
     dependencies:
       '@gnomad/region-viewer': 3.0.0(react@16.14.0)(styled-components@4.4.1)
       '@gnomad/track-regions': 1.0.2(react@16.14.0)(styled-components@4.4.1)
       prop-types: 15.8.1
-      react: 16.14.0
-      styled-components: 4.4.1(react-dom@16.14.0)(react@16.14.0)
+    transitivePeerDependencies:
+      - react
+      - styled-components
     dev: false
 
-  /@gnomad/track-variants@1.0.2(react@16.14.0)(styled-components@4.4.1):
-    resolution: {integrity: sha512-5++GPmFaAxw73b5fuJR4UJJWhCXgEdabRwYFhLgwvhH0/1flJgwVXUxsoyTFsOiBtDoVWj90/bf7NCCXghV9Rg==}
-    peerDependencies:
-      react: ^16.9.0
+  /@gnomad/track-variants@2.0.0-rc1(react@16.14.0)(styled-components@4.4.1):
+    resolution: {integrity: sha512-LvBqMdcve+qhx1qiePbk+5TYWGq2tvdigNKBjfgduhMvCAstCaZApdT2TTrSEeUHMGhzO4heZ/ivq28Q2FX3dg==}
     dependencies:
       '@gnomad/region-viewer': 3.0.0(react@16.14.0)(styled-components@4.4.1)
       d3-scale: 2.2.2
       prop-types: 15.8.1
-      react: 16.14.0
     transitivePeerDependencies:
+      - react
       - styled-components
     dev: false
 
-  /@gnomad/ui@1.2.0(react-dom@16.14.0)(react@16.14.0)(styled-components@4.4.1):
-    resolution: {integrity: sha512-PRLiyhEl1L7f5hWL7RDigIFsldkEmUQdoaDkjZcJ/us0vfUvRgU0ppr5u0AqTVRE+Ef6C5tUvHkpZjub67eSUQ==}
-    peerDependencies:
-      react: ^16.9.0
-      react-dom: ^16.9.0
-      styled-components: ^4.2.0
+  /@gnomad/ui@2.0.0-rc1(react-dom@16.14.0)(react@16.14.0):
+    resolution: {integrity: sha512-DpxWMSwPQmAttlJ4xxVJSuc+aQ+o5kM1/By6Q29AHdaVXIPKaFWqVHR4zCAvZY33+OjRZgREEbig9p7iRrTR8w==}
     dependencies:
       '@fortawesome/fontawesome-free': 5.15.4
       lodash.debounce: 4.0.8
       mousetrap: 1.6.5
       polished: 3.7.2
       prop-types: 15.8.1
-      react: 16.14.0
       react-aria-modal: 4.0.2(prop-types@15.8.1)(react-dom@16.14.0)(react@16.14.0)
       react-aria-tabpanel: 4.4.0(react-dom@16.14.0)(react@16.14.0)
       react-autocomplete: 1.8.1(react-dom@16.14.0)(react@16.14.0)
-      react-dom: 16.14.0(react@16.14.0)
       react-popper: 1.3.11(react@16.14.0)
-      react-sizeme: 2.6.12(react-dom@16.14.0)(react@16.14.0)
+      react-sizeme: 3.0.2
       react-window: 1.8.9(react-dom@16.14.0)(react@16.14.0)
-      styled-components: 4.4.1(react-dom@16.14.0)(react@16.14.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
   /@google-cloud/paginator@5.0.0:
@@ -3332,7 +3338,7 @@ packages:
     resolution: {integrity: sha512-b3nLFGaGkJ9rzOcuXRfHkZMdjsawuDD0ENL9fzTophtBg8FJHSGbH7daXkEpcwy3v7Xol3pAvsmlYyFhR4pqJw==}
     dependencies:
       '@types/node': 20.7.0
-      '@types/unist': 2.0.8
+      '@types/unist': 3.0.0
       '@types/vfile-message': 2.0.0
     dev: false
 
@@ -9129,6 +9135,11 @@ packages:
       emojis-list: 3.0.0
       json5: 2.2.3
 
+  /loader-utils@3.2.1:
+    resolution: {integrity: sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==}
+    engines: {node: '>= 12.13.0'}
+    dev: false
+
   /locate-path@3.0.0:
     resolution: {integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==}
     engines: {node: '>=6'}
@@ -10964,6 +10975,15 @@ packages:
       throttle-debounce: 2.3.0
     dev: false
 
+  /react-sizeme@3.0.2:
+    resolution: {integrity: sha512-xOIAOqqSSmKlKFJLO3inBQBdymzDuXx4iuwkNcJmC96jeiOg5ojByvL+g3MW9LPEsojLbC6pf68zOfobK8IPlw==}
+    dependencies:
+      element-resize-detector: 1.2.4
+      invariant: 2.2.4
+      shallowequal: 1.1.0
+      throttle-debounce: 3.0.1
+    dev: false
+
   /react-slider@1.3.2(prop-types@15.8.1)(react@16.14.0):
     resolution: {integrity: sha512-F8iqi+HtdSWnn1M0CCFgojz0o+SE1nSa6Uo1MFoasTuBHTfFQ8NaIr/coAkmCIqmWwpkv9e3I9oGZfhKQAlBfw==}
     peerDependencies:
@@ -12546,6 +12566,11 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /throttle-debounce@3.0.1:
+    resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
+    engines: {node: '>=10'}
+    dev: false
+
   /throttleit@1.0.0:
     resolution: {integrity: sha512-rkTVqu6IjfQ/6+uNuuc3sZek4CEYxTJom3IktzgdSxcZqdARuebbA/f4QmAxMQIxqq9ZLEUkSYqvuk1I6VKq4g==}
     dev: true
@@ -13740,6 +13765,12 @@ packages:
   /yaml@1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /yaml@2.3.4:
+    resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /yargs-parser@13.1.2:
     resolution: {integrity: sha512-3lbsNRf/j+A4QuSZfDRA7HRSfWrzO0YjqTJd5kjAq37Zep1CEgaYmrH9Q3GwPiB9cHyd1Y1UwggGhJGoxipbzg==}
