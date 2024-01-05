@@ -1,7 +1,7 @@
 import { max, mean, median } from 'd3-array'
 import { scaleBand, scaleLinear, scaleOrdinal } from 'd3-scale'
 import React from 'react'
-import { AxisBottom, AxisLeft } from '@vx/axis'
+import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
