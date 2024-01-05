@@ -2,7 +2,7 @@
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -25,7 +25,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -63,7 +63,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_controls has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -86,7 +86,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_controls renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -124,7 +124,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_cancer has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -147,7 +147,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_cancer renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -185,7 +185,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_neuro has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -208,7 +208,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_neuro renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -246,7 +246,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_topmed has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -269,7 +269,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_topmed renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -307,7 +307,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
@@ -330,7 +330,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
 >
   <div
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
