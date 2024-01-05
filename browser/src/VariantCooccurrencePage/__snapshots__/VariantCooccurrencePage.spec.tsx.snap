@@ -6,7 +6,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -427,7 +427,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -631,7 +631,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -749,7 +749,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
               >
                 Note
               </span>
@@ -825,7 +825,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -1246,7 +1246,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -1450,7 +1450,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -1568,7 +1568,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Note
             </span>
@@ -1697,7 +1697,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has an accuracy warning for vari
 
 exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -2206,7 +2206,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
     </table>
     <p>
       <span
-        className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+        className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
       >
         Note
       </span>
@@ -2437,7 +2437,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
       </p>
       <p>
         <span
-          className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+          className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
         >
           Note
         </span>
@@ -2557,7 +2557,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 has no unexpected changes 1`] = 
       </p>
       <p>
         <span
-          className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+          className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
         >
           Note
         </span>
@@ -2639,7 +2639,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -3055,7 +3055,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -3255,7 +3255,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -3320,7 +3320,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -3736,7 +3736,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -3936,7 +3936,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has a c
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -4058,7 +4058,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -4471,7 +4471,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -4668,7 +4668,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -4786,7 +4786,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
               >
                 Note
               </span>
@@ -4862,7 +4862,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -5275,7 +5275,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -5472,7 +5472,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -5590,7 +5590,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has cis
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Note
             </span>
@@ -5723,7 +5723,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -6136,7 +6136,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -6333,7 +6333,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -6451,7 +6451,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
               >
                 Note
               </span>
@@ -6527,7 +6527,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -6940,7 +6940,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -7137,7 +7137,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -7255,7 +7255,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has hig
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Note
             </span>
@@ -7388,7 +7388,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -7801,7 +7801,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -7998,7 +7998,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -8116,7 +8116,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
               >
                 Note
               </span>
@@ -8192,7 +8192,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -8605,7 +8605,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -8802,7 +8802,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -8920,7 +8920,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has low
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Note
             </span>
@@ -9053,7 +9053,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -9661,7 +9661,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -9829,7 +9829,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -10437,7 +10437,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has nei
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -10662,7 +10662,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -11270,7 +11270,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -11438,7 +11438,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -12046,7 +12046,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -12271,7 +12271,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -12879,7 +12879,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -13047,7 +13047,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -13655,7 +13655,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has onl
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -13880,7 +13880,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
   "baseElement": <body>
     <div>
       <div
-        class="Page-w7h773-0 dRYfBS"
+        class="Page-sc-w7h773-0 kodnkv"
       >
         <div
           class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -14293,7 +14293,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
           </table>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -14490,7 +14490,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
               >
                 Note
               </span>
@@ -14608,7 +14608,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
             </p>
             <p>
               <span
-                class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+                class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
               >
                 Note
               </span>
@@ -14684,7 +14684,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
   </body>,
   "container": <div>
     <div
-      class="Page-w7h773-0 dRYfBS"
+      class="Page-sc-w7h773-0 kodnkv"
     >
       <div
         class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -15097,7 +15097,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
         </table>
         <p>
           <span
-            class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -15294,7 +15294,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
             >
               Note
             </span>
@@ -15412,7 +15412,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
           </p>
           <p>
             <span
-              class="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              class="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Note
             </span>
@@ -15541,7 +15541,7 @@ exports[`VariantCoocurrencePage for gnomad_r2_1 when the main population has tra
 
 exports[`VariantCoocurrencePage for non-2.1 dataset exac has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -15853,7 +15853,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset exac has no unexpected chang
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -16165,7 +16165,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_cnv_r4 has no unexpec
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -16477,7 +16477,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_controls has no 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -16789,7 +16789,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_cancer has n
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -17101,7 +17101,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_neuro has no
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -17413,7 +17413,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r2_1_non_topmed has n
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -17725,7 +17725,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3 has no unexpected 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_controls_and_biobanks has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -18037,7 +18037,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_controls_and_bioba
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -18349,7 +18349,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_cancer has no 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -18661,7 +18661,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_neuro has no u
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -18973,7 +18973,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_topmed has no 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -19285,7 +19285,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r3_non_v2 has no unex
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -19597,7 +19597,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r4 has no unexpected 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -19909,7 +19909,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r2_1_controls has 
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -20221,7 +20221,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r2_1_non_neuro has
 
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"

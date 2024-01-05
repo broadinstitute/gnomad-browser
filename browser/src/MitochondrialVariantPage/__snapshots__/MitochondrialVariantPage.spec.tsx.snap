@@ -20,7 +20,7 @@ exports[`MitochondrialVariantPage with dataset exac has no unexpected changes 1`
 
 exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -339,7 +339,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -848,12 +848,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -3720,12 +3720,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -3734,12 +3734,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -3748,12 +3748,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -3795,20 +3795,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -3818,14 +3818,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -3837,7 +3837,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -5089,12 +5089,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -5107,7 +5107,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -5736,20 +5736,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -5759,14 +5759,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -5778,7 +5778,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -8175,7 +8175,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -8331,7 +8331,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r2_1_non_topmed has no une
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -8650,7 +8650,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -9159,12 +9159,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -12031,12 +12031,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -12045,12 +12045,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -12059,12 +12059,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -12106,20 +12106,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -12129,14 +12129,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -12148,7 +12148,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -13400,12 +13400,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -13418,7 +13418,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -14047,20 +14047,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -14070,14 +14070,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -14089,7 +14089,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -16486,7 +16486,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -16552,7 +16552,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -16871,7 +16871,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -17380,12 +17380,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -20252,12 +20252,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -20266,12 +20266,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -20280,12 +20280,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -20327,20 +20327,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -20350,14 +20350,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -20369,7 +20369,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -21621,12 +21621,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -21639,7 +21639,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -22268,20 +22268,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -22291,14 +22291,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -22310,7 +22310,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -24707,7 +24707,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -24773,7 +24773,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -25092,7 +25092,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -25601,12 +25601,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -28473,12 +28473,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -28487,12 +28487,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -28501,12 +28501,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -28548,20 +28548,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -28571,14 +28571,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -28590,7 +28590,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -29842,12 +29842,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -29860,7 +29860,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -30489,20 +30489,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -30512,14 +30512,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -30531,7 +30531,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -32928,7 +32928,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -32994,7 +32994,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -33313,7 +33313,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -33822,12 +33822,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -36694,12 +36694,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -36708,12 +36708,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -36722,12 +36722,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -36769,20 +36769,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -36792,14 +36792,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -36811,7 +36811,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -38063,12 +38063,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -38081,7 +38081,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -38710,20 +38710,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -38733,14 +38733,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -38752,7 +38752,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -41149,7 +41149,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -41215,7 +41215,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -41534,7 +41534,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -42043,12 +42043,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -44915,12 +44915,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -44929,12 +44929,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -44943,12 +44943,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -44990,20 +44990,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -45013,14 +45013,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -45032,7 +45032,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46284,12 +46284,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -46302,7 +46302,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46931,20 +46931,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -46954,14 +46954,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -46973,7 +46973,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -49370,7 +49370,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -49436,7 +49436,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
 
 exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -49755,7 +49755,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -50264,12 +50264,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -53136,12 +53136,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -53150,12 +53150,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -53164,12 +53164,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -53211,20 +53211,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -53234,14 +53234,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -53253,7 +53253,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -54505,12 +54505,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -54523,7 +54523,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -55152,20 +55152,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -55175,14 +55175,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -55194,7 +55194,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -57591,7 +57591,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -57657,7 +57657,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
 
 exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -57976,7 +57976,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -58485,12 +58485,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -61357,12 +61357,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -61371,12 +61371,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -61385,12 +61385,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -61432,20 +61432,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -61455,14 +61455,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -61474,7 +61474,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -62726,12 +62726,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -62744,7 +62744,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -63373,20 +63373,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -63396,14 +63396,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -63415,7 +63415,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -65812,7 +65812,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -65878,7 +65878,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
 
 exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -66197,7 +66197,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -66706,12 +66706,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -69578,12 +69578,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -69592,12 +69592,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -69606,12 +69606,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -69653,20 +69653,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -69676,14 +69676,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -69695,7 +69695,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -70947,12 +70947,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -70965,7 +70965,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -71594,20 +71594,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -71617,14 +71617,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -71636,7 +71636,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -74033,7 +74033,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -74099,7 +74099,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
 
 exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -74418,7 +74418,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -74927,12 +74927,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -77799,12 +77799,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -77813,12 +77813,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -77827,12 +77827,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -77874,20 +77874,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -77897,14 +77897,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -77916,7 +77916,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -79168,12 +79168,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -79186,7 +79186,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -79815,20 +79815,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -79838,14 +79838,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -79857,7 +79857,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -82254,7 +82254,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -82320,7 +82320,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
 
 exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -82639,7 +82639,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -83148,12 +83148,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -86020,12 +86020,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -86034,12 +86034,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -86048,12 +86048,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -86095,20 +86095,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -86118,14 +86118,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -86137,7 +86137,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -87389,12 +87389,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -87407,7 +87407,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -88036,20 +88036,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -88059,14 +88059,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -88078,7 +88078,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -90475,7 +90475,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -90541,7 +90541,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
 
 exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -90860,7 +90860,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -91369,12 +91369,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           </tfoot>
         </table>
         <label
-          className="Checkbox__Label-hrpa6b-0 gtTKXr"
+          className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
           htmlFor="haplogroups-toggle-ac0"
         >
           <input
             checked={false}
-            className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+            className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
             disabled={false}
             id="haplogroups-toggle-ac0"
             onChange={[Function]}
@@ -94241,12 +94241,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
               className="MitochondrialVariantAgeDistribution__CheckboxWrapper-sc-h2p9a2-1 fpArhx"
             >
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-heteroplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-heteroplasmic"
                   onChange={[Function]}
@@ -94255,12 +94255,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 Include heteroplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-include-homoplasmic"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-include-homoplasmic"
                   onChange={[Function]}
@@ -94269,12 +94269,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                 Include homoplasmic variant carriers
               </label>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="age-distribution-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="age-distribution-show-all-individuals"
                   onChange={[Function]}
@@ -94316,20 +94316,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="depth-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="depth"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Depth
                 </div>
@@ -94339,14 +94339,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
               <div
                 aria-controls="filters-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="filters"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Filters
                 </div>
@@ -94358,7 +94358,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           <div
             aria-describedby="depth"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="depth-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -95610,12 +95610,12 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
             </div>
             <div>
               <label
-                className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                 htmlFor="mt-variant-depth-show-all-individuals"
               >
                 <input
                   checked={true}
-                  className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                  className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                   disabled={false}
                   id="mt-variant-depth-show-all-individuals"
                   onChange={[Function]}
@@ -95628,7 +95628,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           <div
             aria-describedby="filters"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="filters-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -96257,20 +96257,20 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -96280,14 +96280,14 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -96299,7 +96299,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -98696,7 +98696,7 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"

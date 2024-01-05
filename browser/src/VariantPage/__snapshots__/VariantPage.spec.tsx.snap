@@ -2,7 +2,7 @@
 
 exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -426,7 +426,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -574,7 +574,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -673,20 +673,20 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -696,14 +696,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -713,14 +713,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -730,14 +730,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -749,7 +749,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -895,12 +895,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -909,12 +909,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -928,7 +928,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -945,7 +945,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -962,7 +962,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -1026,7 +1026,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -2670,12 +2670,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -2684,12 +2684,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -2698,12 +2698,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -2761,20 +2761,20 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -2784,14 +2784,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -2801,14 +2801,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -2820,7 +2820,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -4156,7 +4156,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -5496,7 +5496,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -6321,12 +6321,12 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -6381,20 +6381,20 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -6404,14 +6404,14 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -6423,7 +6423,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -8854,7 +8854,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -9097,7 +9097,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
 
 exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -9521,7 +9521,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -9669,7 +9669,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -9768,20 +9768,20 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -9791,14 +9791,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -9808,14 +9808,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -9825,14 +9825,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -9844,7 +9844,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -9990,12 +9990,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -10004,12 +10004,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -10023,7 +10023,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -10040,7 +10040,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -10057,7 +10057,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -10121,7 +10121,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -11768,12 +11768,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -11782,12 +11782,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -11796,12 +11796,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -11859,20 +11859,20 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -11882,14 +11882,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -11899,14 +11899,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -11918,7 +11918,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -13254,7 +13254,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -14594,7 +14594,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -15419,12 +15419,12 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -15479,20 +15479,20 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -15502,14 +15502,14 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -15521,7 +15521,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -17952,7 +17952,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -18195,7 +18195,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
 
 exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -18619,7 +18619,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -18767,7 +18767,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -18866,20 +18866,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -18889,14 +18889,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -18906,14 +18906,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -18923,14 +18923,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -18942,7 +18942,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -19088,12 +19088,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -19102,12 +19102,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -19121,7 +19121,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -19138,7 +19138,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -19155,7 +19155,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -19219,7 +19219,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -20866,12 +20866,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -20880,12 +20880,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -20894,12 +20894,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -20957,20 +20957,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -20980,14 +20980,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -20997,14 +20997,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -21016,7 +21016,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -22352,7 +22352,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -23692,7 +23692,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -24517,12 +24517,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -24577,20 +24577,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -24600,14 +24600,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -24619,7 +24619,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -27050,7 +27050,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -27293,7 +27293,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
 
 exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -27717,7 +27717,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -27865,7 +27865,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -27964,20 +27964,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -27987,14 +27987,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -28004,14 +28004,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -28021,14 +28021,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -28040,7 +28040,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -28186,12 +28186,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -28200,12 +28200,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -28219,7 +28219,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -28236,7 +28236,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -28253,7 +28253,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -28317,7 +28317,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -29964,12 +29964,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -29978,12 +29978,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -29992,12 +29992,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -30055,20 +30055,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -30078,14 +30078,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -30095,14 +30095,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -30114,7 +30114,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -31450,7 +31450,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -32790,7 +32790,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -33615,12 +33615,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -33675,20 +33675,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -33698,14 +33698,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -33717,7 +33717,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -36148,7 +36148,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -36391,7 +36391,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
 
 exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -36815,7 +36815,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -36963,7 +36963,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -37062,20 +37062,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -37085,14 +37085,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -37102,14 +37102,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -37119,14 +37119,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -37138,7 +37138,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -37284,12 +37284,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -37298,12 +37298,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -37317,7 +37317,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -37334,7 +37334,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -37351,7 +37351,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -37415,7 +37415,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -39062,12 +39062,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -39076,12 +39076,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -39090,12 +39090,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -39153,20 +39153,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -39176,14 +39176,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -39193,14 +39193,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -39212,7 +39212,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -40548,7 +40548,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -41888,7 +41888,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -42713,12 +42713,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -42773,20 +42773,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -42796,14 +42796,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -42815,7 +42815,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -45246,7 +45246,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -45489,7 +45489,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
 
 exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -45913,7 +45913,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -46061,7 +46061,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
             >
               Warning
             </span>
@@ -46160,20 +46160,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="gnomAD-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="gnomAD"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   gnomAD
                 </div>
@@ -46183,14 +46183,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               <div
                 aria-controls="HGDP-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="HGDP"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   HGDP
                 </div>
@@ -46200,14 +46200,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               <div
                 aria-controls="1KG-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="1KG"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   1KG
                 </div>
@@ -46217,14 +46217,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               <div
                 aria-controls="local-ancestry-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="local-ancestry"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   Local Ancestry
                 </div>
@@ -46236,7 +46236,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="gnomAD"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="gnomAD-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46382,12 +46382,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               >
                 Include:
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeExomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeExomePopulations"
                     onChange={[Function]}
@@ -46396,12 +46396,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   Exomes
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="includeGenomePopulations"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="includeGenomePopulations"
                     onChange={[Function]}
@@ -46415,7 +46415,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="HGDP"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="HGDP-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46432,7 +46432,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="1KG"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="1KG-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46449,7 +46449,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="local-ancestry"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="local-ancestry-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -46513,7 +46513,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -48160,12 +48160,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -48174,12 +48174,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -48188,12 +48188,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -48251,20 +48251,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -48274,14 +48274,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -48291,14 +48291,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -48310,7 +48310,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -49646,7 +49646,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -50986,7 +50986,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -51811,12 +51811,12 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -51871,20 +51871,20 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -51894,14 +51894,14 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -51913,7 +51913,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -54344,7 +54344,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -54587,7 +54587,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
 
 exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -55028,7 +55028,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
@@ -55119,7 +55119,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -55336,12 +55336,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -55350,12 +55350,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -55413,7 +55413,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -56436,12 +56436,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -56450,12 +56450,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -56464,12 +56464,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={false}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={true}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -56527,20 +56527,20 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -56550,14 +56550,14 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -56569,7 +56569,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -57905,7 +57905,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -59251,12 +59251,12 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -59314,20 +59314,20 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -59337,14 +59337,14 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -59356,7 +59356,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -61581,7 +61581,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -61808,7 +61808,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -61822,7 +61822,7 @@ exports[`VariantPage with dataset exac has no unexpected changes 1`] = `
 
 exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -62273,14 +62273,14 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
                 </td>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
                   >
                     No variant
                   </span>
@@ -62467,7 +62467,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -62689,12 +62689,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -62703,12 +62703,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -62766,7 +62766,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -64521,12 +64521,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -64535,12 +64535,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -64549,12 +64549,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -64612,20 +64612,20 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -64635,14 +64635,14 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -64652,14 +64652,14 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -64671,7 +64671,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -66007,7 +66007,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -67347,7 +67347,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -68172,12 +68172,12 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -68235,20 +68235,20 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -68258,14 +68258,14 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -68277,7 +68277,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -70833,7 +70833,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -71108,7 +71108,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -71122,7 +71122,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 
 exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -71573,14 +71573,14 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
                 </td>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
                   >
                     No variant
                   </span>
@@ -71767,7 +71767,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -71989,12 +71989,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -72003,12 +72003,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -72066,7 +72066,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -73821,12 +73821,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -73835,12 +73835,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -73849,12 +73849,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -73912,20 +73912,20 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -73935,14 +73935,14 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -73952,14 +73952,14 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -73971,7 +73971,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -75307,7 +75307,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -76647,7 +76647,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -77472,12 +77472,12 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -77535,20 +77535,20 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -77558,14 +77558,14 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -77577,7 +77577,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -80133,7 +80133,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -80408,7 +80408,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -80422,7 +80422,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
 
 exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -80873,14 +80873,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
                 </td>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
                   >
                     No variant
                   </span>
@@ -81067,7 +81067,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -81289,12 +81289,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -81303,12 +81303,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -81366,7 +81366,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -83121,12 +83121,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -83135,12 +83135,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -83149,12 +83149,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -83212,20 +83212,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -83235,14 +83235,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -83252,14 +83252,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -83271,7 +83271,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -84607,7 +84607,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -85947,7 +85947,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -86772,12 +86772,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -86835,20 +86835,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -86858,14 +86858,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -86877,7 +86877,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -89433,7 +89433,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -89708,7 +89708,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -89722,7 +89722,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
 
 exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -90173,14 +90173,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
                 </td>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
                   >
                     No variant
                   </span>
@@ -90367,7 +90367,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -90589,12 +90589,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -90603,12 +90603,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -90666,7 +90666,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -92421,12 +92421,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -92435,12 +92435,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -92449,12 +92449,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -92512,20 +92512,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -92535,14 +92535,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -92552,14 +92552,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -92571,7 +92571,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -93907,7 +93907,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -95247,7 +95247,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -96072,12 +96072,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -96135,20 +96135,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -96158,14 +96158,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -96177,7 +96177,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -98733,7 +98733,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -99008,7 +99008,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -99022,7 +99022,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
 
 exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -99473,14 +99473,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 </th>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
                   >
                     Pass
                   </span>
                 </td>
                 <td>
                   <span
-                    className="Badge__BadgeWrapper-j4izdp-1 bbjxGL"
+                    className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
                   >
                     No variant
                   </span>
@@ -99667,7 +99667,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           </table>
           <p>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 dyHZPQ"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
             >
               Warning
             </span>
@@ -99889,12 +99889,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
         >
           Include:
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeExomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeExomePopulations"
               onChange={[Function]}
@@ -99903,12 +99903,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             Exomes
           </label>
           <label
-            className="Checkbox__Label-hrpa6b-0 gtTKXr"
+            className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
             htmlFor="includeGenomePopulations"
           >
             <input
               checked={false}
-              className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
               disabled={true}
               id="includeGenomePopulations"
               onChange={[Function]}
@@ -99966,7 +99966,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>
@@ -101721,12 +101721,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 className="GnomadAgeDistribution__CheckboxWrapper-sc-ty24oq-1 fatvfk"
               >
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-heterozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-heterozygotes"
                     onChange={[Function]}
@@ -101735,12 +101735,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   Include heterozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-include-homozygotes"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-include-homozygotes"
                     onChange={[Function]}
@@ -101749,12 +101749,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                   Include homozygous variant carriers
                 </label>
                 <label
-                  className="Checkbox__Label-hrpa6b-0 gtTKXr"
+                  className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
                   htmlFor="age-distribution-show-all-individuals"
                 >
                   <input
                     checked={true}
-                    className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                    className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                     disabled={false}
                     id="age-distribution-show-all-individuals"
                     onChange={[Function]}
@@ -101812,20 +101812,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             role="tablist"
           >
             <ul
-              className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+              className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
             >
               <li>
                 <div
                   aria-controls="genotype_quality-panel"
                   aria-selected={true}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_quality"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={0}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                    className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                   >
                     Genotype quality
                   </div>
@@ -101835,14 +101835,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <div
                   aria-controls="genotype_depth-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="genotype_depth"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Depth
                   </div>
@@ -101852,14 +101852,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                 <div
                   aria-controls="allele_balance-panel"
                   aria-selected={false}
-                  className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                  className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                   id="allele_balance"
                   onFocus={[Function]}
                   role="tab"
                   tabIndex={-1}
                 >
                   <div
-                    className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                    className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                   >
                     Allele balance for heterozygotes
                   </div>
@@ -101871,7 +101871,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             <div
               aria-describedby="genotype_quality"
               aria-hidden={false}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_quality-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -103207,7 +103207,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             <div
               aria-describedby="genotype_depth"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="genotype_depth-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -104547,7 +104547,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             <div
               aria-describedby="allele_balance"
               aria-hidden={true}
-              className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+              className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
               id="allele_balance-panel"
               onKeyDown={[Function]}
               role="tabpanel"
@@ -105372,12 +105372,12 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
             className="ControlSection__ControlWrapper-sc-rro5al-0 gxhpge"
           >
             <label
-              className="Checkbox__Label-hrpa6b-0 gtTKXr"
+              className="Checkbox__Label-sc-hrpa6b-0 kJEDjB"
               htmlFor="genotype-quality-metrics-show-all-individuals"
             >
               <input
                 checked={true}
-                className="Checkbox__CheckboxInput-hrpa6b-1 hkusMN"
+                className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
                 disabled={false}
                 id="genotype-quality-metrics-show-all-individuals"
                 onChange={[Function]}
@@ -105435,20 +105435,20 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           role="tablist"
         >
           <ul
-            className="Tabs__TabListWrapper-jzgyty-0 gUVxKq"
+            className="Tabs__TabListWrapper-sc-jzgyty-0 eBXsvV"
           >
             <li>
               <div
                 aria-controls="distribution-panel"
                 aria-selected={true}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="distribution"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={0}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 dcUyBp"
+                  className="Tabs__TabLabel-sc-jzgyty-2 bGSlsL"
                 >
                   Metric distribution
                 </div>
@@ -105458,14 +105458,14 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
               <div
                 aria-controls="values-panel"
                 aria-selected={false}
-                className="Tabs__StyledTab-jzgyty-1 hwAiRa"
+                className="Tabs__StyledTab-sc-jzgyty-1 eTqfyA"
                 id="values"
                 onFocus={[Function]}
                 role="tab"
                 tabIndex={-1}
               >
                 <div
-                  className="Tabs__TabLabel-jzgyty-2 hQplSX"
+                  className="Tabs__TabLabel-sc-jzgyty-2 wgAtA"
                 >
                   All metric values
                 </div>
@@ -105477,7 +105477,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           <div
             aria-describedby="distribution"
             aria-hidden={false}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="distribution-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -108033,7 +108033,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
           <div
             aria-describedby="values"
             aria-hidden={true}
-            className="Tabs__StyledTabPanel-jzgyty-3 IifIF"
+            className="Tabs__StyledTabPanel-sc-jzgyty-3 jkoPas"
             id="values-panel"
             onKeyDown={[Function]}
             role="tabpanel"
@@ -108308,7 +108308,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
         </p>
         <p>
           <span
-            className="Badge__BadgeWrapper-j4izdp-1 cJObdY"
+            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
           >
             Note
           </span>

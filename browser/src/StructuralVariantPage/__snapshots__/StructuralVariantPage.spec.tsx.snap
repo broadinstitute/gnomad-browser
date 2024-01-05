@@ -2,7 +2,7 @@
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex variant has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -224,7 +224,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -613,7 +613,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -835,7 +835,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -1222,7 +1222,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal variant of type CTX has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -1444,7 +1444,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -1831,7 +1831,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type DEL has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -2053,7 +2053,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -2422,7 +2422,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type DUP has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -2644,7 +2644,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -3013,7 +3013,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type INS has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -3235,7 +3235,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -3602,7 +3602,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type INV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -3824,7 +3824,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -4193,7 +4193,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromosomal variant of type MCNV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -4415,7 +4415,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -5316,7 +5316,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a complex variant has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -5538,7 +5538,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -5927,7 +5927,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -6149,7 +6149,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -6536,7 +6536,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interchromosomal variant of type CTX has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -6758,7 +6758,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -7145,7 +7145,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type DEL has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -7367,7 +7367,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -7736,7 +7736,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type DUP has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -7958,7 +7958,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -8327,7 +8327,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type INS has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -8549,7 +8549,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -8916,7 +8916,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type INV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -9138,7 +9138,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -9507,7 +9507,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-interchromosomal variant of type MCNV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -9729,7 +9729,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -10630,7 +10630,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a complex variant has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -10852,7 +10852,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -11241,7 +11241,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interchromosomal variant of type BND has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -11463,7 +11463,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -11850,7 +11850,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interchromosomal variant of type CTX has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -12072,7 +12072,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -12459,7 +12459,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type DEL has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -12681,7 +12681,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -13050,7 +13050,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type DUP has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -13272,7 +13272,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -13641,7 +13641,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type INS has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -13863,7 +13863,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -14230,7 +14230,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type INV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -14452,7 +14452,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
@@ -14821,7 +14821,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
 
 exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-interchromosomal variant of type MCNV has no unexpected changes 1`] = `
 <div
-  className="Page-w7h773-0 dRYfBS"
+  className="Page-sc-w7h773-0 kodnkv"
 >
   <div
     className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
@@ -15043,7 +15043,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <span
-              className="Badge__BadgeWrapper-j4izdp-1 bhuqae"
+              className="Badge__BadgeWrapper-sc-j4izdp-1 biZYYa"
             >
               Pass
             </span>
