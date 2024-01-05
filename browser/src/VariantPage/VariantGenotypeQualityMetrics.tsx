@@ -87,8 +87,8 @@ const createTab = (
   label: string,
   xLabel: string,
   yLabel: string,
-  secondaryYLabel?: string,
-  legendSwatchId?: string,
+  secondaryYLabel: string,
+  legendSwatchId: string,
 ): Tab => {
   return {
     id,
@@ -116,6 +116,7 @@ const createTab = (
         </LegendWrapper>
 
         <StackedHistogram
+          // @ts-expect-error TS(2322) FIXME: Type '{ id: string; bins: string[]; values: any[][... Remove this comment to see the full error message
           id={`variant-${id}-plot`}
           bins={[
             ...[...Array(binEdges.length - 1)].map((_, i) => `${binEdges[i]}-${binEdges[i + 1]}`),
@@ -264,7 +265,9 @@ const VariantGenotypeQualityMetrics = ({
         'Allele balance for heterozygotes',
         'Allele balance',
         'Heterozygous variant carriers',
-      ) // No secondaryYLabel or legendSwatchId
+        '', // No secondaryYLabel
+        '', // No legendSwatchId
+      )
     )
   };
 

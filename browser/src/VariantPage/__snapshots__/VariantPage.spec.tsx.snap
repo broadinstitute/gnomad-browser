@@ -5604,7 +5604,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -5617,10 +5617,10 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -5631,7 +5631,7 @@ exports[`VariantPage with dataset "gnomad_r3" has no unexpected changes 1`] = `
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -14702,7 +14702,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -14715,10 +14715,10 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -14729,7 +14729,7 @@ exports[`VariantPage with dataset "gnomad_r3_controls_and_biobanks" has no unexp
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -23800,7 +23800,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -23813,10 +23813,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -23827,7 +23827,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_cancer" has no unexpected chang
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -32898,7 +32898,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -32911,10 +32911,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -32925,7 +32925,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_neuro" has no unexpected change
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -41996,7 +41996,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -42009,10 +42009,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -42023,7 +42023,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_topmed" has no unexpected chang
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -51094,7 +51094,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -51107,10 +51107,10 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -51121,7 +51121,7 @@ exports[`VariantPage with dataset "gnomad_r3_non_v2" has no unexpected changes 1
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -67455,7 +67455,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -67468,10 +67468,10 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -67482,7 +67482,7 @@ exports[`VariantPage with dataset gnomad_r2_1 has no unexpected changes 1`] = `
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -76755,7 +76755,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -76768,10 +76768,10 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -76782,7 +76782,7 @@ exports[`VariantPage with dataset gnomad_r2_1_controls has no unexpected changes
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -86055,7 +86055,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -86068,10 +86068,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -86082,7 +86082,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_cancer has no unexpected chang
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -95355,7 +95355,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -95368,10 +95368,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -95382,7 +95382,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_neuro has no unexpected change
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
@@ -104655,7 +104655,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <defs>
                         <pattern
                           height={4}
-                          id="undefined-stripes"
+                          id="-stripes"
                           patternTransform="rotate(45)"
                           patternUnits="userSpaceOnUse"
                           width={4}
@@ -104668,10 +104668,10 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                           />
                         </pattern>
                         <mask
-                          id="undefined-mask"
+                          id="-mask"
                         >
                           <rect
-                            fill="url(#undefined-stripes)"
+                            fill="url(#-stripes)"
                             height="100%"
                             width="100%"
                             x={0}
@@ -104682,7 +104682,7 @@ exports[`VariantPage with dataset gnomad_r2_1_non_topmed has no unexpected chang
                       <rect
                         fill="#999"
                         height={16}
-                        mask="url(#undefined-mask)"
+                        mask="url(#-mask)"
                         width={16}
                         x={0}
                         y={0}
