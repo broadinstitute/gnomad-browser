@@ -2,7 +2,7 @@ import { scaleLinear } from 'd3-scale'
 import { area } from 'd3-shape'
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { AxisLeft } from '@vx/axis'
+import { AxisLeft } from '@visx/axis'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
@@ -75,17 +75,17 @@ const TitlePanel = styled.div`
 `
 
 export enum MetricOptions {
-  mean = "mean",
-  median = "median",
-  over_1 = "over_1",
-  over_5 = "over_5",
-  over_10 = "over_10",
-  over_15 = "over_15",
-  over_20 = "over_20",
-  over_25 = "over_25",
-  over_30 = "over_30",
-  over_50 = "over_50",
-  over_100 = "over_100",
+  mean = 'mean',
+  median = 'median',
+  over_1 = 'over_1',
+  over_5 = 'over_5',
+  over_10 = 'over_10',
+  over_15 = 'over_15',
+  over_20 = 'over_20',
+  over_25 = 'over_25',
+  over_30 = 'over_30',
+  over_50 = 'over_50',
+  over_100 = 'over_100',
 }
 
 type OwnCoverageTrackProps = {
@@ -221,19 +221,19 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     )
     return totalBases < 100
       ? this.renderBars({
-        isPositionDefined,
-        scaleCoverageMetric,
-        scalePosition,
-        totalBases,
-        width,
-      })
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
       : this.renderArea({
-        isPositionDefined,
-        scaleCoverageMetric,
-        scalePosition,
-        totalBases,
-        width,
-      })
+          isPositionDefined,
+          scaleCoverageMetric,
+          scalePosition,
+          totalBases,
+          width,
+        })
   }
 
   render() {

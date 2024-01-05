@@ -72,7 +72,7 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -160,7 +160,7 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -248,7 +248,7 @@ exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -336,7 +336,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -424,7 +424,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -512,7 +512,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -600,7 +600,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -688,7 +688,7 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -776,7 +776,7 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -864,7 +864,7 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -952,7 +952,7 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1040,7 +1040,7 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1128,7 +1128,7 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1216,7 +1216,7 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1304,7 +1304,7 @@ exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`]
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1392,7 +1392,7 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1480,7 +1480,7 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1568,7 +1568,7 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}
@@ -1656,7 +1656,7 @@ exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-is1dz3-0 Searchbox__SearchboxInput-kp6w3x-0 iGzWys"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
         data-testid="searchbox-input"
         onBlur={[Function]}
         onChange={[Function]}

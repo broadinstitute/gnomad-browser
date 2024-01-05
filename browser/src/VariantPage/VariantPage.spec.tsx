@@ -44,7 +44,7 @@ afterEach(() => {
   resetMockApiResponses()
 })
 
-forDatasetsMatching(/gnomad_r3/, 'VariantPage with dataset "%s"', (datasetId) => {
+forDatasetsMatching(/gnomad_r3/, 'VariantPage with the dataset "%s"', (datasetId) => {
   test('has no unexpected changes', () => {
     const variant = v3VariantFactory.build()
 
@@ -63,7 +63,7 @@ forDatasetsMatching(/gnomad_r3/, 'VariantPage with dataset "%s"', (datasetId) =>
   })
 })
 
-forDatasetsMatching(/gnomad_r2/, 'VariantPage with dataset %s', (datasetId) => {
+forDatasetsMatching(/gnomad_r2/, 'VariantPage with the dataset %s', (datasetId) => {
   test('has no unexpected changes', () => {
     const variant = v2VariantFactory.build()
 
@@ -82,7 +82,7 @@ forDatasetsMatching(/gnomad_r2/, 'VariantPage with dataset %s', (datasetId) => {
   })
 })
 
-describe('VariantPage with dataset exac', () => {
+describe('VariantPage with the dataset exac', () => {
   test('has no unexpected changes', () => {
     const variant = v2VariantFactory.build()
 
