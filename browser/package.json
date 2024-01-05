@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0-rc1",
-    "@gnomad/markdown-loader": "2.0.0-rc1",
+    "@gnomad/markdown-loader": "2.0.0-rc2",
     "@gnomad/region-viewer": "4.0.0-rc1",
     "@gnomad/track-genes": "3.0.0-rc1",
     "@gnomad/track-regions": "2.0.0-rc1",
