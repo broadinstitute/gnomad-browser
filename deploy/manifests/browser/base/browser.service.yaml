@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-browser
+  annotations:
+  labels:
+    # TODO: kustomize this
+    # tier: production
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-browser
+    # TODO: kustomize this
+    # deployment: 'placeholder'
+  ports:
+    - port: 80
+      targetPort: 80

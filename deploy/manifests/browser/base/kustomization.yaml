@@ -4,3 +4,11 @@ resources:
   - ./api.deployment.yaml
   - ./api.service.yaml
   - ./browser.deployment.yaml
+  - ./browser.service.yaml
+configMapGenerator:
+  - name: browser-conf
+    envs:
+      - browser.env
+  - name: api-conf
+    envs:
+      - api.env

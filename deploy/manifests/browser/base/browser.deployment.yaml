@@ -23,14 +23,9 @@ spec:
         - name: web
           image: gnomad-browser
           imagePullPolicy: Always
-          env:
-            - name: API_URL
-              value: http://API_SERVICE_PLACEHOLDER
-            - name: PROXY_IPS
-              valueFrom:
-                configMapKeyRef:
-                  name: proxy-ips
-                  key: ips
+          envFrom:
+            - configMapRef:
+                name: browser-conf
           volumeMounts:
             - mountPath: '/var/cache/nginx'
               name: nginx-cache
