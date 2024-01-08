@@ -805,18 +805,20 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -836,6 +838,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -849,14 +852,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -876,6 +881,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -889,14 +895,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -916,6 +924,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -929,14 +938,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -956,6 +967,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -969,14 +981,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -996,6 +1010,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -1009,14 +1024,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -1036,6 +1053,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -1049,14 +1067,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -1076,6 +1096,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -1089,14 +1110,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -1116,6 +1139,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -1129,14 +1153,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -1156,6 +1182,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -1169,14 +1196,16 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -1196,6 +1225,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -1209,8 +1239,9 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -2212,18 +2243,20 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -2243,6 +2276,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -2256,14 +2290,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -2283,6 +2319,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -2296,14 +2333,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -2323,6 +2362,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -2336,14 +2376,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -2363,6 +2405,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -2376,14 +2419,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -2403,6 +2448,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -2416,14 +2462,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -2443,6 +2491,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -2456,14 +2505,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -2483,6 +2534,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -2496,14 +2548,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -2523,6 +2577,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -2536,14 +2591,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -2563,6 +2620,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -2576,14 +2634,16 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -2603,6 +2663,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -2616,8 +2677,9 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -3619,18 +3681,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -3650,6 +3714,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -3663,14 +3728,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -3690,6 +3757,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -3703,14 +3771,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -3730,6 +3800,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -3743,14 +3814,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -3770,6 +3843,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -3783,14 +3857,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -3810,6 +3886,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -3823,14 +3900,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -3850,6 +3929,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -3863,14 +3943,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -3890,6 +3972,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -3903,14 +3986,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -3930,6 +4015,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -3943,14 +4029,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -3970,6 +4058,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -3983,14 +4072,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -4010,6 +4101,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -4023,8 +4115,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -5026,18 +5119,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -5057,6 +5152,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -5070,14 +5166,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -5097,6 +5195,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -5110,14 +5209,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -5137,6 +5238,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -5150,14 +5252,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -5177,6 +5281,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -5190,14 +5295,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -5217,6 +5324,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -5230,14 +5338,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -5257,6 +5367,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -5270,14 +5381,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -5297,6 +5410,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -5310,14 +5424,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -5337,6 +5453,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -5350,14 +5467,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -5377,6 +5496,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -5390,14 +5510,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -5417,6 +5539,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -5430,8 +5553,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -6433,18 +6557,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -6464,6 +6590,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -6477,14 +6604,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -6504,6 +6633,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -6517,14 +6647,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -6544,6 +6676,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -6557,14 +6690,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -6584,6 +6719,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -6597,14 +6733,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -6624,6 +6762,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -6637,14 +6776,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -6664,6 +6805,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -6677,14 +6819,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -6704,6 +6848,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -6717,14 +6862,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -6744,6 +6891,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -6757,14 +6905,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -6784,6 +6934,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -6797,14 +6948,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -6824,6 +6977,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -6837,8 +6991,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -7840,18 +7995,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -7871,6 +8028,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -7884,14 +8042,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -7911,6 +8071,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -7924,14 +8085,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -7951,6 +8114,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -7964,14 +8128,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -7991,6 +8157,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -8004,14 +8171,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -8031,6 +8200,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -8044,14 +8214,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -8071,6 +8243,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -8084,14 +8257,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -8111,6 +8286,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -8124,14 +8300,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -8151,6 +8329,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -8164,14 +8343,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -8191,6 +8372,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -8204,14 +8386,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -8231,6 +8415,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -8244,8 +8429,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -9247,18 +9433,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -9278,6 +9466,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -9291,14 +9480,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -9318,6 +9509,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -9331,14 +9523,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -9358,6 +9552,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -9371,14 +9566,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -9398,6 +9595,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -9411,14 +9609,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -9438,6 +9638,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -9451,14 +9652,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -9478,6 +9681,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -9491,14 +9695,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -9518,6 +9724,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -9531,14 +9738,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -9558,6 +9767,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -9571,14 +9781,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -9598,6 +9810,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -9611,14 +9824,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -9638,6 +9853,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -9651,8 +9867,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -10655,18 +10872,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -10686,6 +10905,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -10699,14 +10919,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -10726,6 +10948,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -10739,14 +10962,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -10766,6 +10991,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -10779,14 +11005,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -10806,6 +11034,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -10819,14 +11048,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -10846,6 +11077,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -10859,14 +11091,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -10886,6 +11120,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -10899,14 +11134,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -10926,6 +11163,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -10939,14 +11177,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -10966,6 +11206,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -10979,14 +11220,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -11006,6 +11249,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -11019,14 +11263,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -11046,6 +11292,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -11059,8 +11306,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -12063,18 +12311,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -12094,6 +12344,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -12107,14 +12358,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -12134,6 +12387,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -12147,14 +12401,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -12174,6 +12430,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -12187,14 +12444,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -12214,6 +12473,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -12227,14 +12487,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -12254,6 +12516,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -12267,14 +12530,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -12294,6 +12559,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -12307,14 +12573,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -12334,6 +12602,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -12347,14 +12616,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -12374,6 +12645,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -12387,14 +12659,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -12414,6 +12688,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -12427,14 +12702,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -12454,6 +12731,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -12467,8 +12745,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -13471,18 +13750,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -13502,6 +13783,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -13515,14 +13797,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -13542,6 +13826,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -13555,14 +13840,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -13582,6 +13869,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -13595,14 +13883,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -13622,6 +13912,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -13635,14 +13926,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -13662,6 +13955,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -13675,14 +13969,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -13702,6 +13998,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -13715,14 +14012,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -13742,6 +14041,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -13755,14 +14055,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -13782,6 +14084,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -13795,14 +14098,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -13822,6 +14127,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -13835,14 +14141,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -13862,6 +14170,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -13875,8 +14184,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -14879,18 +15189,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -14910,6 +15222,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -14923,14 +15236,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -14950,6 +15265,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -14963,14 +15279,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -14990,6 +15308,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -15003,14 +15322,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -15030,6 +15351,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -15043,14 +15365,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -15070,6 +15394,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -15083,14 +15408,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -15110,6 +15437,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -15123,14 +15451,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -15150,6 +15480,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -15163,14 +15494,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -15190,6 +15523,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -15203,14 +15537,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -15230,6 +15566,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -15243,14 +15580,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -15270,6 +15609,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -15283,8 +15623,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -16287,18 +16628,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -16318,6 +16661,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -16331,14 +16675,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -16358,6 +16704,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -16371,14 +16718,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -16398,6 +16747,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -16411,14 +16761,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -16438,6 +16790,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -16451,14 +16804,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -16478,6 +16833,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -16491,14 +16847,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -16518,6 +16876,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -16531,14 +16890,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -16558,6 +16919,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -16571,14 +16933,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -16598,6 +16962,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -16611,14 +16976,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -16638,6 +17005,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -16651,14 +17019,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -16678,6 +17048,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -16691,8 +17062,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -17695,18 +18067,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -17726,6 +18100,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -17739,14 +18114,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -17766,6 +18143,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -17779,14 +18157,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -17806,6 +18186,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -17819,14 +18200,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -17846,6 +18229,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -17859,14 +18243,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -17886,6 +18272,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -17899,14 +18286,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -17926,6 +18315,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -17939,14 +18329,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -17966,6 +18358,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -17979,14 +18372,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -18006,6 +18401,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -18019,14 +18415,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -18046,6 +18444,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -18059,14 +18458,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -18086,6 +18487,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -18099,8 +18501,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}
@@ -19102,18 +19505,20 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                 width={859}
               >
                 <g
-                  className="vx-group vx-axis vx-axis-left"
+                  className="visx-group visx-axis visx-axis-left"
                   transform="translate(60, 0)"
                 >
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={171.7}
@@ -19133,6 +19538,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={171.7}
                       >
@@ -19146,14 +19552,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={153.4}
@@ -19173,6 +19581,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={153.4}
                       >
@@ -19186,14 +19595,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={135.1}
@@ -19213,6 +19624,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={135.1}
                       >
@@ -19226,14 +19638,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={116.8}
@@ -19253,6 +19667,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={116.8}
                       >
@@ -19266,14 +19681,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={98.5}
@@ -19293,6 +19710,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={98.5}
                       >
@@ -19306,14 +19724,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={80.2}
@@ -19333,6 +19753,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={80.2}
                       >
@@ -19346,14 +19767,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={61.900000000000006}
@@ -19373,6 +19796,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={61.900000000000006}
                       >
@@ -19386,14 +19810,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={43.599999999999994}
@@ -19413,6 +19839,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={43.599999999999994}
                       >
@@ -19426,14 +19853,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={25.299999999999997}
@@ -19453,6 +19882,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={25.299999999999997}
                       >
@@ -19466,14 +19896,16 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis-tick"
+                    className="visx-group visx-axis-tick"
                     transform="translate(0, 0)"
                   >
                     <line
-                      className="vx-line"
+                      className="visx-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#222"
                       strokeLinecap="square"
+                      strokeWidth={1}
                       x1={0}
                       x2={-8}
                       y1={7}
@@ -19493,6 +19925,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                         fill="#000"
                         fontSize={10}
                         textAnchor="end"
+                        transform=""
                         x={-8}
                         y={7}
                       >
@@ -19506,8 +19939,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     </svg>
                   </g>
                   <line
-                    className="vx-line vx-axis-line"
+                    className="visx-line visx-axis-line"
                     fill="transparent"
+                    shapeRendering="crispEdges"
                     stroke="#333"
                     strokeWidth={1}
                     x1={0}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
-import { AxisBottom, AxisLeft } from '@vx/axis'
+import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
