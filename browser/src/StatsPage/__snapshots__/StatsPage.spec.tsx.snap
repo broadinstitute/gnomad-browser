@@ -738,18 +738,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     width={-50}
                   >
                     <g
-                      className="vx-group vx-axis vx-axis-bottom"
+                      className="visx-group visx-axis visx-axis-bottom"
                       transform="translate(60, 370)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-15}
                           x2={-15}
                           y1={0}
@@ -769,6 +771,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-15}
                             y={15}
                           >
@@ -782,14 +785,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-45}
                           x2={-45}
                           y1={0}
@@ -809,6 +814,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-45}
                             y={15}
                           >
@@ -822,14 +828,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-75}
                           x2={-75}
                           y1={0}
@@ -849,6 +857,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-75}
                             y={15}
                           >
@@ -862,14 +871,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-105}
                           x2={-105}
                           y1={0}
@@ -889,6 +900,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-105}
                             y={15}
                           >
@@ -902,8 +914,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0.5}
@@ -914,18 +927,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       
                     </g>
                     <g
-                      className="vx-group vx-axis vx-axis-left"
+                      className="visx-group visx-axis visx-axis-left"
                       transform="translate(60, 10)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={360}
@@ -945,6 +960,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={360}
                           >
@@ -958,14 +974,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={315.3992878752964}
@@ -985,6 +1003,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={315.3992878752964}
                           >
@@ -998,14 +1017,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={270.7985757505928}
@@ -1025,6 +1046,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={270.7985757505928}
                           >
@@ -1038,14 +1060,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={226.1978636258892}
@@ -1065,6 +1089,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={226.1978636258892}
                           >
@@ -1078,14 +1103,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={181.59715150118564}
@@ -1105,6 +1132,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={181.59715150118564}
                           >
@@ -1118,14 +1146,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={136.99643937648204}
@@ -1145,6 +1175,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={136.99643937648204}
                           >
@@ -1158,14 +1189,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={92.39572725177847}
@@ -1185,6 +1218,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={92.39572725177847}
                           >
@@ -1198,14 +1232,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={47.795015127074876}
@@ -1225,6 +1261,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={47.795015127074876}
                           >
@@ -1238,14 +1275,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={3.194303002371255}
@@ -1265,6 +1304,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={3.194303002371255}
                           >
@@ -1278,8 +1318,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0}
@@ -1615,18 +1656,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   width={null}
                 >
                   <g
-                    className="vx-group vx-axis vx-axis-bottom"
+                    className="visx-group visx-axis visx-axis-bottom"
                     transform="translate(60, 190)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-2.9166666666666763}
                         x2={-2.9166666666666763}
                         y1={0}
@@ -1660,14 +1703,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-8.750000000000005}
                         x2={-8.750000000000005}
                         y1={0}
@@ -1701,14 +1746,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-14.583333333333334}
                         x2={-14.583333333333334}
                         y1={0}
@@ -1742,14 +1789,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-20.416666666666668}
                         x2={-20.416666666666668}
                         y1={0}
@@ -1783,14 +1832,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-26.250000000000004}
                         x2={-26.250000000000004}
                         y1={0}
@@ -1824,14 +1875,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-32.083333333333336}
                         x2={-32.083333333333336}
                         y1={0}
@@ -1865,14 +1918,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-37.91666666666667}
                         x2={-37.91666666666667}
                         y1={0}
@@ -1906,14 +1961,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-43.75000000000001}
                         x2={-43.75000000000001}
                         y1={0}
@@ -1947,14 +2004,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-49.583333333333336}
                         x2={-49.583333333333336}
                         y1={0}
@@ -1988,14 +2047,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-55.41666666666667}
                         x2={-55.41666666666667}
                         y1={0}
@@ -2029,14 +2090,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-61.25000000000001}
                         x2={-61.25000000000001}
                         y1={0}
@@ -2070,14 +2133,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-67.08333333333333}
                         x2={-67.08333333333333}
                         y1={0}
@@ -2111,8 +2176,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0.5}
@@ -2131,7 +2197,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     >
                       <text
-                        className="vx-axis-label"
+                        className="visx-axis-label"
                         fontSize={14}
                         textAnchor="middle"
                         x={-35}
@@ -2147,18 +2213,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis vx-axis-left"
+                    className="visx-group visx-axis visx-axis-left"
                     transform="translate(60, 10)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={180}
@@ -2178,6 +2246,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={180}
                         >
@@ -2191,14 +2260,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={163.38839771867327}
@@ -2218,6 +2289,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={163.38839771867327}
                         >
@@ -2231,14 +2303,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={146.77679543734658}
@@ -2258,6 +2332,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={146.77679543734658}
                         >
@@ -2271,14 +2346,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={130.16519315601985}
@@ -2298,6 +2375,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={130.16519315601985}
                         >
@@ -2311,14 +2389,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={113.55359087469316}
@@ -2338,6 +2418,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={113.55359087469316}
                         >
@@ -2351,14 +2432,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={96.94198859336643}
@@ -2378,6 +2461,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={96.94198859336643}
                         >
@@ -2391,14 +2475,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={80.33038631203972}
@@ -2418,6 +2504,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={80.33038631203972}
                         >
@@ -2431,14 +2518,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={63.71878403071302}
@@ -2458,6 +2547,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={63.71878403071302}
                         >
@@ -2471,14 +2561,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={47.10718174938629}
@@ -2498,6 +2590,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={47.10718174938629}
                         >
@@ -2511,14 +2604,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={30.495579468059574}
@@ -2538,6 +2633,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={30.495579468059574}
                         >
@@ -2551,14 +2647,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={13.883977186732874}
@@ -2578,6 +2676,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={13.883977186732874}
                         >
@@ -2591,8 +2690,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0}
@@ -2611,7 +2711,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     >
                       <text
-                        className="vx-axis-label"
+                        className="visx-axis-label"
                         fontSize={14}
                         textAnchor="middle"
                         transform="rotate(-90)"
@@ -2852,18 +2952,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   width={null}
                 >
                   <g
-                    className="vx-group vx-axis vx-axis-bottom"
+                    className="visx-group visx-axis visx-axis-bottom"
                     transform="translate(60, 190)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-2.9166666666666763}
                         x2={-2.9166666666666763}
                         y1={0}
@@ -2897,14 +2999,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-8.750000000000005}
                         x2={-8.750000000000005}
                         y1={0}
@@ -2938,14 +3042,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-14.583333333333334}
                         x2={-14.583333333333334}
                         y1={0}
@@ -2979,14 +3085,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-20.416666666666668}
                         x2={-20.416666666666668}
                         y1={0}
@@ -3020,14 +3128,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-26.250000000000004}
                         x2={-26.250000000000004}
                         y1={0}
@@ -3061,14 +3171,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-32.083333333333336}
                         x2={-32.083333333333336}
                         y1={0}
@@ -3102,14 +3214,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-37.91666666666667}
                         x2={-37.91666666666667}
                         y1={0}
@@ -3143,14 +3257,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-43.75000000000001}
                         x2={-43.75000000000001}
                         y1={0}
@@ -3184,14 +3300,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-49.583333333333336}
                         x2={-49.583333333333336}
                         y1={0}
@@ -3225,14 +3343,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-55.41666666666667}
                         x2={-55.41666666666667}
                         y1={0}
@@ -3266,14 +3386,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-61.25000000000001}
                         x2={-61.25000000000001}
                         y1={0}
@@ -3307,14 +3429,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-67.08333333333333}
                         x2={-67.08333333333333}
                         y1={0}
@@ -3348,8 +3472,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0.5}
@@ -3368,7 +3493,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     >
                       <text
-                        className="vx-axis-label"
+                        className="visx-axis-label"
                         fontSize={14}
                         textAnchor="middle"
                         x={-35}
@@ -3384,18 +3509,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     </svg>
                   </g>
                   <g
-                    className="vx-group vx-axis vx-axis-left"
+                    className="visx-group visx-axis visx-axis-left"
                     transform="translate(60, 10)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={180}
@@ -3415,6 +3542,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={180}
                         >
@@ -3428,14 +3556,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={158.9866915713285}
@@ -3455,6 +3585,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={158.9866915713285}
                         >
@@ -3468,14 +3599,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={137.973383142657}
@@ -3495,6 +3628,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={137.973383142657}
                         >
@@ -3508,14 +3642,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={116.96007471398552}
@@ -3535,6 +3671,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={116.96007471398552}
                         >
@@ -3548,14 +3685,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={95.94676628531403}
@@ -3575,6 +3714,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={95.94676628531403}
                         >
@@ -3588,14 +3728,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={74.93345785664253}
@@ -3615,6 +3757,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={74.93345785664253}
                         >
@@ -3628,14 +3771,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={53.92014942797104}
@@ -3655,6 +3800,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={53.92014942797104}
                         >
@@ -3668,14 +3814,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={32.90684099929955}
@@ -3695,6 +3843,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={32.90684099929955}
                         >
@@ -3708,14 +3857,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={11.893532570628073}
@@ -3735,6 +3886,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={11.893532570628073}
                         >
@@ -3748,8 +3900,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0}
@@ -3768,7 +3921,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       y={0}
                     >
                       <text
-                        className="vx-axis-label"
+                        className="visx-axis-label"
                         fontSize={14}
                         textAnchor="middle"
                         transform="rotate(-90)"
@@ -4540,18 +4693,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   width={-50}
                 >
                   <g
-                    className="vx-group vx-axis vx-axis-bottom"
+                    className="visx-group visx-axis visx-axis-bottom"
                     transform="translate(60, 370)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-15}
                         x2={-15}
                         y1={0}
@@ -4571,6 +4726,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-15}
                           y={15}
                         >
@@ -4584,14 +4740,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-45}
                         x2={-45}
                         y1={0}
@@ -4611,6 +4769,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-45}
                           y={15}
                         >
@@ -4624,14 +4783,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-75}
                         x2={-75}
                         y1={0}
@@ -4651,6 +4812,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-75}
                           y={15}
                         >
@@ -4664,14 +4826,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-105}
                         x2={-105}
                         y1={0}
@@ -4691,6 +4855,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-105}
                           y={15}
                         >
@@ -4704,8 +4869,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0.5}
@@ -4716,18 +4882,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     
                   </g>
                   <g
-                    className="vx-group vx-axis vx-axis-left"
+                    className="visx-group visx-axis visx-axis-left"
                     transform="translate(60, 10)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={360}
@@ -4747,6 +4915,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={360}
                         >
@@ -4760,14 +4929,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={315.3992878752964}
@@ -4787,6 +4958,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={315.3992878752964}
                         >
@@ -4800,14 +4972,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={270.7985757505928}
@@ -4827,6 +5001,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={270.7985757505928}
                         >
@@ -4840,14 +5015,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={226.1978636258892}
@@ -4867,6 +5044,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={226.1978636258892}
                         >
@@ -4880,14 +5058,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={181.59715150118564}
@@ -4907,6 +5087,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={181.59715150118564}
                         >
@@ -4920,14 +5101,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={136.99643937648204}
@@ -4947,6 +5130,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={136.99643937648204}
                         >
@@ -4960,14 +5144,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={92.39572725177847}
@@ -4987,6 +5173,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={92.39572725177847}
                         >
@@ -5000,14 +5187,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={47.795015127074876}
@@ -5027,6 +5216,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={47.795015127074876}
                         >
@@ -5040,14 +5230,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={3.194303002371255}
@@ -5067,6 +5259,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={3.194303002371255}
                         >
@@ -5080,8 +5273,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0}
@@ -5924,18 +6118,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   width={-50}
                 >
                   <g
-                    className="vx-group vx-axis vx-axis-bottom"
+                    className="visx-group visx-axis visx-axis-bottom"
                     transform="translate(60, 370)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-30}
                         x2={-30}
                         y1={0}
@@ -5955,6 +6151,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-30}
                           y={15}
                         >
@@ -5968,14 +6165,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={-90}
                         x2={-90}
                         y1={0}
@@ -5995,6 +6194,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={12}
                           textAnchor="middle"
+                          transform=""
                           x={-90}
                           y={15}
                         >
@@ -6008,8 +6208,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0.5}
@@ -6020,18 +6221,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     
                   </g>
                   <g
-                    className="vx-group vx-axis vx-axis-left"
+                    className="visx-group visx-axis visx-axis-left"
                     transform="translate(60, 10)"
                   >
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={360}
@@ -6051,6 +6254,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={360}
                         >
@@ -6064,14 +6268,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={333.57747744177135}
@@ -6091,6 +6297,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={333.57747744177135}
                         >
@@ -6104,14 +6311,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={307.1549548835427}
@@ -6131,6 +6340,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={307.1549548835427}
                         >
@@ -6144,14 +6354,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={280.7324323253141}
@@ -6171,6 +6383,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={280.7324323253141}
                         >
@@ -6184,14 +6397,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={254.30990976708546}
@@ -6211,6 +6426,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={254.30990976708546}
                         >
@@ -6224,14 +6440,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={227.88738720885684}
@@ -6251,6 +6469,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={227.88738720885684}
                         >
@@ -6264,14 +6483,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={201.46486465062821}
@@ -6291,6 +6512,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={201.46486465062821}
                         >
@@ -6304,14 +6526,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={175.0423420923996}
@@ -6331,6 +6555,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={175.0423420923996}
                         >
@@ -6344,14 +6569,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={148.61981953417094}
@@ -6371,6 +6598,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={148.61981953417094}
                         >
@@ -6384,14 +6612,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={122.1972969759423}
@@ -6411,6 +6641,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={122.1972969759423}
                         >
@@ -6424,14 +6655,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={95.77477441771366}
@@ -6451,6 +6684,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={95.77477441771366}
                         >
@@ -6464,14 +6698,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={69.35225185948501}
@@ -6491,6 +6727,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={69.35225185948501}
                         >
@@ -6504,14 +6741,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={42.92972930125641}
@@ -6531,6 +6770,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={42.92972930125641}
                         >
@@ -6544,14 +6784,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <g
-                      className="vx-group vx-axis-tick"
+                      className="visx-group visx-axis-tick"
                       transform="translate(0, 0)"
                     >
                       <line
-                        className="vx-line"
+                        className="visx-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#222"
                         strokeLinecap="square"
+                        strokeWidth={1}
                         x1={0}
                         x2={-8}
                         y1={16.507206743027766}
@@ -6571,6 +6813,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fill="#000"
                           fontSize={10}
                           textAnchor="end"
+                          transform=""
                           x={-8}
                           y={16.507206743027766}
                         >
@@ -6584,8 +6827,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       </svg>
                     </g>
                     <line
-                      className="vx-line vx-axis-line"
+                      className="visx-line visx-axis-line"
                       fill="transparent"
+                      shapeRendering="crispEdges"
                       stroke="#333"
                       strokeWidth={1}
                       x1={0}
