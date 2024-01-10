@@ -3,7 +3,7 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 import React, { useState } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
-import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis'
+import { AxisBottom, AxisLeft, AxisRight } from '@vx/axis'
 
 import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 

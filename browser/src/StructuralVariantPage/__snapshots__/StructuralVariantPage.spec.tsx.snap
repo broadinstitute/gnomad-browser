@@ -4700,13 +4700,12 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           width={null}
         >
           <g
-            className="visx-group visx-axis visx-axis-bottom"
+            className="vx-group vx-axis vx-axis-bottom"
             transform="translate(60, 200)"
           >
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0.5}
@@ -4725,7 +4724,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 x={-35}
@@ -4741,20 +4740,18 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
             </svg>
           </g>
           <g
-            className="visx-group visx-axis visx-axis-left"
+            className="vx-group vx-axis vx-axis-left"
             transform="translate(60, 10)"
           >
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={190}
@@ -4775,7 +4772,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={190}
                 >
@@ -4789,16 +4785,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={172}
@@ -4819,7 +4813,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={172}
                 >
@@ -4833,16 +4826,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={154}
@@ -4863,7 +4854,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={154}
                 >
@@ -4877,16 +4867,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={136}
@@ -4907,7 +4895,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={136}
                 >
@@ -4921,16 +4908,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={118}
@@ -4951,7 +4936,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={118}
                 >
@@ -4965,16 +4949,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={100}
@@ -4995,7 +4977,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={100}
                 >
@@ -5009,16 +4990,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={82}
@@ -5039,7 +5018,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={82}
                 >
@@ -5053,16 +5031,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={64}
@@ -5083,7 +5059,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={64}
                 >
@@ -5097,16 +5072,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={45.99999999999999}
@@ -5127,7 +5100,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={45.99999999999999}
                 >
@@ -5141,16 +5113,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={27.999999999999996}
@@ -5171,7 +5141,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={27.999999999999996}
                 >
@@ -5185,16 +5154,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={10}
@@ -5215,7 +5182,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={10}
                 >
@@ -5229,9 +5195,8 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               </svg>
             </g>
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0}
@@ -5250,7 +5215,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 transform="rotate(-90)"
@@ -10049,13 +10014,12 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           width={null}
         >
           <g
-            className="visx-group visx-axis visx-axis-bottom"
+            className="vx-group vx-axis vx-axis-bottom"
             transform="translate(60, 200)"
           >
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0.5}
@@ -10074,7 +10038,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 x={-35}
@@ -10090,20 +10054,18 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
             </svg>
           </g>
           <g
-            className="visx-group visx-axis visx-axis-left"
+            className="vx-group vx-axis vx-axis-left"
             transform="translate(60, 10)"
           >
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={190}
@@ -10124,7 +10086,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={190}
                 >
@@ -10138,16 +10099,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={172}
@@ -10168,7 +10127,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={172}
                 >
@@ -10182,16 +10140,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={154}
@@ -10212,7 +10168,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={154}
                 >
@@ -10226,16 +10181,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={136}
@@ -10256,7 +10209,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={136}
                 >
@@ -10270,16 +10222,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={118}
@@ -10300,7 +10250,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={118}
                 >
@@ -10314,16 +10263,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={100}
@@ -10344,7 +10291,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={100}
                 >
@@ -10358,16 +10304,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={82}
@@ -10388,7 +10332,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={82}
                 >
@@ -10402,16 +10345,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={64}
@@ -10432,7 +10373,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={64}
                 >
@@ -10446,16 +10386,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={45.99999999999999}
@@ -10476,7 +10414,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={45.99999999999999}
                 >
@@ -10490,16 +10427,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={27.999999999999996}
@@ -10520,7 +10455,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={27.999999999999996}
                 >
@@ -10534,16 +10468,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={10}
@@ -10564,7 +10496,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={10}
                 >
@@ -10578,9 +10509,8 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               </svg>
             </g>
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0}
@@ -10599,7 +10529,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 transform="rotate(-90)"
@@ -15398,13 +15328,12 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           width={null}
         >
           <g
-            className="visx-group visx-axis visx-axis-bottom"
+            className="vx-group vx-axis vx-axis-bottom"
             transform="translate(60, 200)"
           >
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0.5}
@@ -15423,7 +15352,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 x={-35}
@@ -15439,20 +15368,18 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
             </svg>
           </g>
           <g
-            className="visx-group visx-axis visx-axis-left"
+            className="vx-group vx-axis vx-axis-left"
             transform="translate(60, 10)"
           >
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={190}
@@ -15473,7 +15400,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={190}
                 >
@@ -15487,16 +15413,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={172}
@@ -15517,7 +15441,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={172}
                 >
@@ -15531,16 +15454,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={154}
@@ -15561,7 +15482,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={154}
                 >
@@ -15575,16 +15495,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={136}
@@ -15605,7 +15523,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={136}
                 >
@@ -15619,16 +15536,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={118}
@@ -15649,7 +15564,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={118}
                 >
@@ -15663,16 +15577,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={100}
@@ -15693,7 +15605,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={100}
                 >
@@ -15707,16 +15618,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={82}
@@ -15737,7 +15646,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={82}
                 >
@@ -15751,16 +15659,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={64}
@@ -15781,7 +15687,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={64}
                 >
@@ -15795,16 +15700,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={45.99999999999999}
@@ -15825,7 +15728,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={45.99999999999999}
                 >
@@ -15839,16 +15741,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={27.999999999999996}
@@ -15869,7 +15769,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={27.999999999999996}
                 >
@@ -15883,16 +15782,14 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <g
-              className="visx-group visx-axis-tick"
+              className="vx-group vx-axis-tick"
               transform="translate(0, 0)"
             >
               <line
-                className="visx-line"
+                className="vx-line"
                 fill="transparent"
-                shapeRendering="crispEdges"
                 stroke="#222"
                 strokeLinecap="square"
-                strokeWidth={1}
                 x1={0}
                 x2={-8}
                 y1={10}
@@ -15913,7 +15810,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
                   fontFamily="Arial"
                   fontSize={10}
                   textAnchor="end"
-                  transform=""
                   x={-8}
                   y={10}
                 >
@@ -15927,9 +15823,8 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               </svg>
             </g>
             <line
-              className="visx-line visx-axis-line"
+              className="vx-line vx-axis-line"
               fill="transparent"
-              shapeRendering="crispEdges"
               stroke="#333"
               strokeWidth={1}
               x1={0}
@@ -15948,7 +15843,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
               y={0}
             >
               <text
-                className="visx-axis-label"
+                className="vx-axis-label"
                 fontSize={14}
                 textAnchor="middle"
                 transform="rotate(-90)"

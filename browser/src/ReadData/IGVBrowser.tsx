@@ -1,4 +1,5 @@
-import igv from 'igv/dist/igv.esm'
+// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module 'igv/... Remove this comment to see the full error message
+import igv from 'igv/dist/igv'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
