@@ -12,8 +12,7 @@
     "lint:js": "eslint .",
     "test:jest": "jest",
     "test:jest:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "test:cypress:headless": "cd browser && cypress run",
-    "test:full": "pnpm test:jest && pnpm test:cypress:headless",
+    "test:full": "pnpm test:jest",
     "typecheck": "pnpm tsc --noEmit",
     "typecheck:watch": "pnpm tsc -w --noEmit"
   },
@@ -46,7 +45,6 @@
     "@typescript-eslint/parser": "^5.59.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^29.7.0",
-    "cypress": "^13.3.0",
     "eslint": "^8.0.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^6.11.0",
