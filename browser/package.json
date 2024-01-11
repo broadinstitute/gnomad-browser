@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "./build.sh",
-    "start": "./start.sh",
-    "cypress:open": "cypress open"
+    "start": "./start.sh"
   },
   "files": [
     "dist"

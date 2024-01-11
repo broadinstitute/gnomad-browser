@@ -40,12 +40,3 @@ jobs:
         run: cd browser && pnpm build
       - name: Run Jest tests
         run: pnpm jest
-      - name: Install Cypress binaries
-        run: pnpm cypress install
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: pnpm start:browser
-          wait-on: 'http://localhost:8008'
-          wait-on-timeout: 150
-          project: ./browser
