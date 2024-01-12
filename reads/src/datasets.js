@@ -44,6 +44,10 @@ const shortTandemRepeatDatasets = {
     dbPath: '/readviz/datasets/gnomad_r3_short_tandem_repeats/str_reads.db',
     publicPath: '/reads/gnomad_r3/short_tandem_repeats',
   },
+  gnomad_r4: {
+    dbPath: '/readviz/datasets/gnomad_r3_short_tandem_repeats/str_reads.db',
+    publicPath: '/reads/gnomad_r3/short_tandem_repeats',
+  },
 }
 
 module.exports = { variantDatasets, shortTandemRepeatDatasets }
