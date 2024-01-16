@@ -69,7 +69,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     shortTandemRepeat.allele_size_distribution.repeat_units.length === 1
       ? shortTandemRepeat.allele_size_distribution.repeat_units[0].repeat_unit
-      : '',
+      : ''
   )
 
   const [selectedPopulationId, setSelectedPopulationId] = useState('')
@@ -79,11 +79,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     useState(
       shortTandemRepeat.genotype_distribution.repeat_units.length === 1
         ? shortTandemRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
-        : '',
+        : ''
     )
 
   const [selectedDisease, setSelectedDisease] = useState(
-    shortTandemRepeat.associated_diseases[0].name,
+    shortTandemRepeat.associated_diseases[0].name
   )
 
   const [showAdjacentRepeats, setShowAdjacentRepeats] = useState(false)
@@ -105,8 +105,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   // shortTandemRepeat.repeat_units may include repeat units that do not appear in gnomAD.
   const repeatUnitsFoundInGnomad = new Set(
     shortTandemRepeat.allele_size_distribution.repeat_units.map(
-      (repeatUnit) => repeatUnit.repeat_unit,
-    ),
+      (repeatUnit) => repeatUnit.repeat_unit
+    )
   )
 
   const repeatUnitsFoundInGnomadByClassification = {}
@@ -118,13 +118,13 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   })
 
   const allRepeatUnitsFoundInGnomadArePathogenic = Object.keys(
-    repeatUnitsFoundInGnomadByClassification,
+    repeatUnitsFoundInGnomadByClassification
   )
     .filter((classification) => classification !== 'pathogenic')
     .every(
       (classification) =>
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        (repeatUnitsFoundInGnomadByClassification[classification] || []).length === 0,
+        (repeatUnitsFoundInGnomadByClassification[classification] || []).length === 0
     )
 
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
@@ -152,25 +152,27 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             </p>
           )}
         </ResponsiveSection>
-        {shortTandemRepeat.stripy_id && (
-          <ResponsiveSection>
-            <h2>External Resources</h2>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <List>
+        <ResponsiveSection>
+          {shortTandemRepeat.stripy_id && (
+            <>
+              <h2>External Resources</h2>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-              <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
-                  STRipy
-                </ExternalLink>
-              </ListItem>
-            </List>
-            <h2>Related Loci</h2>
-            <p>
-              <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
-            </p>
-          </ResponsiveSection>
-        )}
+              <List>
+                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+                <ListItem>
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
+                    STRipy
+                  </ExternalLink>
+                </ListItem>
+              </List>
+            </>
+          )}
+          <h2>Related Loci</h2>
+          <p>
+            <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
+          </p>
+        </ResponsiveSection>
       </FlexWrapper>
       <section style={{ marginBottom: '3em' }}>
         <h2>
@@ -205,7 +207,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             (selectedRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
             selectedRepeatUnit === 'classification/pathogenic' ||
             ((repeatUnitsFoundInGnomadByClassification as any).pathogenic || []).includes(
-              selectedRepeatUnit,
+              selectedRepeatUnit
             )
               ? plotRanges
               : []
@@ -267,13 +269,13 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                     .filter(
                       (classification) =>
                         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                        (allRepeatUnitsByClassification[classification] || []).length > 0,
+                        (allRepeatUnitsByClassification[classification] || []).length > 0
                     )
                     .map((classification) => (
                       <optgroup
                         key={classification}
                         label={`${classification.charAt(0).toUpperCase()}${classification.slice(
-                          1,
+                          1
                         )}`}
                       >
                         {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
@@ -365,10 +367,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           })}
           maxRepeats={[
             max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              max(d.slice(0, 2)),
+              max(d.slice(0, 2))
             ),
             max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              min(d.slice(0, 2)),
+              min(d.slice(0, 2))
             ),
           ]}
           genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
@@ -379,7 +381,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             (selectedGenotypeDistributionRepeatUnits === '' &&
               allRepeatUnitsFoundInGnomadArePathogenic) ||
             ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits.split(' / ')[0],
+              selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
             )
               ? plotRanges
               : []
@@ -388,7 +390,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             (selectedGenotypeDistributionRepeatUnits === '' &&
               allRepeatUnitsFoundInGnomadArePathogenic) ||
             ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits.split(' / ')[1],
+              selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
             )
               ? plotRanges
               : []
@@ -444,7 +446,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           !selectedGenotypeDistributionRepeatUnits
             .split(' / ')
             .every((repeatUnit) =>
-              ((allRepeatUnitsByClassification as any).pathogenic || []).includes(repeatUnit),
+              ((allRepeatUnitsByClassification as any).pathogenic || []).includes(repeatUnit)
             )) && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
