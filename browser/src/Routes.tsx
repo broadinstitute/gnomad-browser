@@ -26,7 +26,9 @@ const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
-const ShortTandemRepeatPage = lazy(() => import('./ShortTandemRepeatPage/ShortTandemRepeatPage'))
+const ShortTandemRepeatPageContainer = lazy(
+  () => import('./ShortTandemRepeatPage/ShortTandemRepeatPageContainer')
+)
 const ShortTandemRepeatsPage = lazy(() => import('./ShortTandemRepeatsPage/ShortTandemRepeatsPage'))
 const VariantCooccurrencePage = lazy(
   () => import('./VariantCooccurrencePage/VariantCooccurrencePage')
@@ -166,7 +168,7 @@ const Routes = () => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
           // @ts-expect-error TS(2322) FIXME: Type 'string | (string | null)[]' is not assignabl... Remove this comment to see the full error message
-          return <ShortTandemRepeatPage datasetId={datasetId} strId={match.params.strId} />
+          return <ShortTandemRepeatPageContainer datasetId={datasetId} strId={match.params.strId} />
         }}
       />
 
