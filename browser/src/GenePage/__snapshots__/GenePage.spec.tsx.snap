@@ -631,7 +631,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -1317,23 +1317,23 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -1341,22 +1341,22 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -1364,22 +1364,22 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -1387,7 +1387,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -1396,7 +1396,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -1413,7 +1413,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -1440,7 +1440,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -2101,7 +2101,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -2776,23 +2776,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -2800,22 +2800,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -2823,22 +2823,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -2846,7 +2846,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -2855,7 +2855,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -2872,7 +2872,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -2899,7 +2899,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -3560,7 +3560,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -4235,23 +4235,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -4259,22 +4259,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -4282,22 +4282,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -4305,7 +4305,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -4314,7 +4314,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -4331,7 +4331,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -4358,7 +4358,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -5019,7 +5019,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -5694,23 +5694,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -5718,22 +5718,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -5741,22 +5741,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -5764,7 +5764,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -5773,7 +5773,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -5790,7 +5790,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -5817,7 +5817,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -6478,7 +6478,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -7153,23 +7153,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -7177,22 +7177,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -7200,22 +7200,22 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -7223,7 +7223,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -7232,7 +7232,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -7249,7 +7249,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -7276,7 +7276,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -7937,7 +7937,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -8623,23 +8623,23 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -8647,22 +8647,22 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -8670,22 +8670,22 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -8693,7 +8693,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -8702,7 +8702,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -8719,7 +8719,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -8746,7 +8746,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -9430,7 +9430,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -10116,23 +10116,23 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -10140,22 +10140,22 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -10163,22 +10163,22 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -10186,7 +10186,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -10195,7 +10195,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -10212,7 +10212,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -10239,7 +10239,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -10900,7 +10900,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -11586,23 +11586,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -11610,22 +11610,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -11633,22 +11633,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -11656,7 +11656,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -11665,7 +11665,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -11682,7 +11682,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -11709,7 +11709,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -12488,7 +12488,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -13174,23 +13174,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -13198,22 +13198,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -13221,22 +13221,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -13244,7 +13244,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -13253,7 +13253,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -13270,7 +13270,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -13297,7 +13297,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -14076,7 +14076,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -14762,23 +14762,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -14786,22 +14786,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -14809,22 +14809,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -14832,7 +14832,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -14841,7 +14841,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -14858,7 +14858,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -14885,7 +14885,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -15664,7 +15664,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -16350,23 +16350,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -16374,22 +16374,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -16397,22 +16397,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -16420,7 +16420,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -16429,7 +16429,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -16446,7 +16446,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -16473,7 +16473,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -17252,7 +17252,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -17938,23 +17938,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -17962,22 +17962,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -17985,22 +17985,22 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -18008,7 +18008,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -18017,7 +18017,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -18034,7 +18034,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -18061,7 +18061,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -18840,7 +18840,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -19527,23 +19527,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -19551,22 +19551,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -19574,22 +19574,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -19597,7 +19597,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -19606,7 +19606,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -19623,7 +19623,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -19650,7 +19650,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -20334,7 +20334,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -21021,23 +21021,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -21045,22 +21045,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -21068,22 +21068,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -21091,7 +21091,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -21100,7 +21100,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -21117,7 +21117,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -21144,7 +21144,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -21828,7 +21828,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -22515,23 +22515,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -22539,22 +22539,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -22562,22 +22562,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -22585,7 +22585,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -22594,7 +22594,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -22611,7 +22611,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -22638,7 +22638,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -23322,7 +23322,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -24009,23 +24009,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -24033,22 +24033,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -24056,22 +24056,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -24079,7 +24079,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -24088,7 +24088,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -24105,7 +24105,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -24132,7 +24132,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -24816,7 +24816,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -25503,23 +25503,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -25527,22 +25527,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -25550,22 +25550,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -25573,7 +25573,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -25582,7 +25582,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -25599,7 +25599,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -25626,7 +25626,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -26310,7 +26310,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -26997,23 +26997,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -27021,22 +27021,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -27044,22 +27044,22 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -27067,7 +27067,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -27076,7 +27076,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -27093,7 +27093,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -27120,7 +27120,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
@@ -27804,7 +27804,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 sHWJd"
       >
         <div
-          className="GenePage__TableSelectorWrapper-sc-rcxzgc-10 eFuLrR"
+          className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
             className="sc-bdVaJa dDlceV"
@@ -28490,23 +28490,23 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         </div>
       </div>
       <div
-        className="GenePage__ControlPanel-sc-rcxzgc-4 hMLYBm"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="GenePage__Legend-sc-rcxzgc-5 jsPFfF"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -28514,22 +28514,22 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               />
               Coding regions (CDS)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kVyAuC"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -28537,22 +28537,22 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               />
               Untranslated regions (UTRs)
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 gUeepi"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="GenePage__LegendItemWrapper-sc-rcxzgc-6 bjByza"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="GenePage__Label-sc-rcxzgc-7 kDKwQo"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-transcripts"
             >
               <input
                 checked={true}
-                className="GenePage__CheckboxInput-sc-rcxzgc-8 eimxFO"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-transcripts"
                 onChange={[Function]}
@@ -28560,7 +28560,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               />
               Non-coding transcripts
               <span
-                className="GenePage__LegendSwatch-sc-rcxzgc-9 kDzbaQ"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -28569,7 +28569,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-11 bOhTDW"
+        className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
           className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -28586,7 +28586,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-12 gOGyWK"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
               >
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
@@ -28613,7 +28613,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-13 fAeljc"
+                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 hiaYli"
               >
                 <svg
                   height={20}
