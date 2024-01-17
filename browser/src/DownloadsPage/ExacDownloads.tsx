@@ -5,9 +5,8 @@ import { ListItem } from '@gnomad/ui'
 import {
   DownloadsSection,
   FileList,
-  GenericDownloadLinks,
+  DownloadLinks,
   GetUrlButtons,
-  IndexedFileDownloadLinks,
   SectionTitle,
   StyledParagraph,
 } from './downloadsPageStyles'
@@ -62,11 +61,12 @@ const ExacDownloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <IndexedFileDownloadLinks
+          <DownloadLinks
             label="All chromosomes VCF"
             path="/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"
             size="4.56 GiB"
             md5="f2b57a6f0660a00e7550f62da2654948"
+            includeTBI
           />
         </ListItem>
       </FileList>
@@ -78,7 +78,7 @@ const ExacDownloads = () => (
         {coverageFiles.map(({ chrom, md5, size }) => (
           // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={chrom}>
-            <GenericDownloadLinks
+            <DownloadLinks
               label={`chr${chrom} exome coverage summary TSV`}
               path={`/legacy/exac_browser/coverage/Panel.chr${chrom}.coverage.txt.gz`}
               size={size}
@@ -94,7 +94,7 @@ const ExacDownloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <GenericDownloadLinks
+          <DownloadLinks
             label="Gene constraint scores TSV"
             path="/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"
           />
@@ -109,7 +109,7 @@ const ExacDownloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <GenericDownloadLinks
+          <DownloadLinks
             label="Regional missense constraint TSV"
             path="/legacy/exac_browser/regional_missense_constraint.tsv"
           />
@@ -122,7 +122,7 @@ const ExacDownloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <GenericDownloadLinks
+          <DownloadLinks
             label="Exome calling regions"
             path="/intervals/exome_calling_regions.v1.interval_list"
           />

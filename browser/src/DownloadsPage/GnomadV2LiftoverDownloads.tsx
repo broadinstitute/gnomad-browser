@@ -5,10 +5,10 @@ import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
 import {
   Column,
   ColumnsWrapper,
+  DownloadLinks,
   DownloadsSection,
   FileList,
   GetUrlButtons,
-  IndexedFileDownloadLinks,
   SectionTitle,
   StyledParagraph,
 } from './downloadsPageStyles'
@@ -104,21 +104,23 @@ const Gnomadv2LiftoverDownloads = () => {
 
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
-                <IndexedFileDownloadLinks
+                <DownloadLinks
                   label="All chromosomes VCF"
                   path="/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
                   size="85.31 GiB"
                   md5="cff8d0cfed50adc9211d1feaed2d4ca7"
+                  includeTBI
                 />
               </ListItem>
               {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
-                  <IndexedFileDownloadLinks
+                  <DownloadLinks
                     label={`chr${chrom} sites VCF`}
                     path={`/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
                     size={size}
                     md5={md5}
+                    includeTBI
                   />
                 </ListItem>
               ))}
@@ -137,21 +139,23 @@ const Gnomadv2LiftoverDownloads = () => {
               </ListItem>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
-                <IndexedFileDownloadLinks
+                <DownloadLinks
                   label="All chromosomes VCF"
                   path="/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
                   size="743.06 GiB"
                   md5="83de3d5b52669f714e810d4fcf047c18"
+                  includeTBI
                 />
               </ListItem>
               {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
-                  <IndexedFileDownloadLinks
+                  <DownloadLinks
                     label={`chr${chrom} sites VCF`}
                     path={`/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
                     size={size}
                     md5={md5}
+                    includeTBI
                   />
                 </ListItem>
               ))}
