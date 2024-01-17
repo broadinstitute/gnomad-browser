@@ -14,7 +14,7 @@ attrs = "^23.1.0"
 cattrs = "^23.1.2"
 
 [tool.poetry.group.dev.dependencies]
-hail = "^0.2.122"
+hail = "^0.2.127"
 pytest = "^7.4.2"
 ipython = "^8.15.0"
 ruff = "^0.0.290"
