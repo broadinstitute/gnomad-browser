@@ -5,9 +5,13 @@ on:
       - main
     paths:
       - 'graphql-api/**'
+      - 'package.json'
+      - 'yarn.lock'
   pull_request:
     paths:
       - 'graphql-api/**'
+      - 'package.json'
+      - 'yarn.lock'
 jobs:
   checks:
     name: Checks
