@@ -7,6 +7,12 @@ import logger from './logger'
 import { JsonCache } from './queries/helpers/json-cache'
 import largeGenes from './queries/helpers/large-genes'
 
+type WithCacheOptions = {
+  expiration?: number
+  jsonCacheEnableAll?: boolean
+  jsonCacheLargeGenes?: boolean
+}
+
 let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
 let setCacheExpiration = () => Promise.resolve()
@@ -69,9 +75,7 @@ if (config.REDIS_HOST) {
   logger.warn('No cache configured')
 }
 
-export const withCache = (fn: any, keyFn: any, options = {}) => {
-  // @ts-expect-error TS(2339) FIXME: Property 'expiration' does not exist on type '{}'.
-  //
+export const withCache = (fn: any, keyFn: any, options: WithCacheOptions = {}) => {
   const {
     expiration = 3600,
     jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
