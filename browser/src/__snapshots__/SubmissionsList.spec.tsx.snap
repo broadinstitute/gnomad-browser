@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubmissionsList has no unexpected changes 1`] = `
+<List>
+  <List__ListItem>
+    <AttributeList>
+      <AttributeListItem
+        label="Submitter"
+      >
+        Cardiovascular Research Group, Instituto Nacional de Saude Doutor Ricardo Jorge
+      </AttributeListItem>
+      <AttributeListItem
+        label="Conditions"
+      >
+        <Link__ExternalLink
+          href="https://www.ncbi.nlm.nih.gov/medgen/C0020445/"
+        >
+          Familial hypercholesterolemia
+        </Link__ExternalLink>
+      </AttributeListItem>
+      <AttributeListItem
+        label="Clinical significance"
+      >
+        Benign
+      </AttributeListItem>
+      <AttributeListItem
+        label="Review status"
+      >
+        criteria provided, single submitter
+      </AttributeListItem>
+      <AttributeListItem
+        label="Last evaluated"
+      >
+        March 1, 2016
+      </AttributeListItem>
+    </AttributeList>
+  </List__ListItem>
+  <List__ListItem>
+    <AttributeList>
+      <AttributeListItem
+        label="Submitter"
+      >
+        Illumina Laboratory Services, Illumina
+      </AttributeListItem>
+      <AttributeListItem
+        label="Conditions"
+      >
+        <Link__ExternalLink
+          href="https://www.ncbi.nlm.nih.gov/medgen/C0020597/"
+        >
+          Hypobetalipoproteinemia
+        </Link__ExternalLink>
+      </AttributeListItem>
+      <AttributeListItem
+        label="Clinical significance"
+      >
+        Benign
+      </AttributeListItem>
+      <AttributeListItem
+        label="Review status"
+      >
+        criteria provided, single submitter
+      </AttributeListItem>
+      <AttributeListItem
+        label="Last evaluated"
+      >
+        January 13, 2018
+      </AttributeListItem>
+    </AttributeList>
+  </List__ListItem>
+</List>
+`;
