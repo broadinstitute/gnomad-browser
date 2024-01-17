@@ -7,6 +7,10 @@ import logger from './logger'
 import { JsonCache } from './queries/helpers/json-cache'
 import largeGenes from './queries/helpers/large-genes'
 
+type AsyncCacheFunction = (...args: any[]) => Promise<any>
+
+type keyFunction = (...args: any[]) => string
+
 type WithCacheOptions = {
   expiration?: number
   jsonCacheEnableAll?: boolean
@@ -75,7 +79,11 @@ if (config.REDIS_HOST) {
   logger.warn('No cache configured')
 }
 
-export const withCache = (fn: any, keyFn: any, options: WithCacheOptions = {}) => {
+export const withCache = (
+  fn: AsyncCacheFunction,
+  keyFn: keyFunction,
+  options: WithCacheOptions = {}
+) => {
   const {
     expiration = 3600,
     jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
