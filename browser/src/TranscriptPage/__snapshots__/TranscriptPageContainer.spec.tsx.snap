@@ -1237,23 +1237,23 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -1261,22 +1261,22 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -1284,22 +1284,22 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -1307,7 +1307,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -2644,23 +2644,23 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -2668,22 +2668,22 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -2691,22 +2691,22 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -2714,7 +2714,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -4051,23 +4051,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -4075,22 +4075,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -4098,22 +4098,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -4121,7 +4121,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -5458,23 +5458,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -5482,22 +5482,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -5505,22 +5505,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -5528,7 +5528,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -6865,23 +6865,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -6889,22 +6889,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -6912,22 +6912,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -6935,7 +6935,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -8272,23 +8272,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -8296,22 +8296,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -8319,22 +8319,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -8342,7 +8342,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -9679,23 +9679,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -9703,22 +9703,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -9726,22 +9726,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -9749,7 +9749,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -11087,23 +11087,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -11111,22 +11111,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -11134,22 +11134,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -11157,7 +11157,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -12495,23 +12495,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -12519,22 +12519,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -12542,22 +12542,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -12565,7 +12565,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -13903,23 +13903,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -13927,22 +13927,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -13950,22 +13950,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -13973,7 +13973,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -15311,23 +15311,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -15335,22 +15335,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -15358,22 +15358,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -15381,7 +15381,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -16719,23 +16719,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -16743,22 +16743,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -16766,22 +16766,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -16789,7 +16789,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -18127,23 +18127,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -18151,22 +18151,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -18174,22 +18174,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -18197,7 +18197,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
@@ -19534,23 +19534,23 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
         </div>
       </div>
       <div
-        className="TranscriptPage__ControlPanel-sc-1i4bfgh-1 litgDe"
+        className="ChartStyles__ControlPanel-sc-atxio9-0 iLJjwA"
         width={814}
       >
         Include:
         <ul
-          className="TranscriptPage__Legend-sc-1i4bfgh-2 cTBIfH"
+          className="ChartStyles__Legend-sc-atxio9-1 mfEDY"
         >
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-cds-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-cds-regions"
                 onChange={[Function]}
@@ -19558,22 +19558,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
               />
               Coding regions (CDS)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 hPtBuL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 dWcYqk"
                 color="#424242"
                 height={10}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-utr-regions"
             >
               <input
                 checked={false}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-utr-regions"
                 onChange={[Function]}
@@ -19581,22 +19581,22 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
               />
               Untranslated regions (UTRs)
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 cEzNst"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 lhFEQi"
                 color="#424242"
                 height={4}
               />
             </label>
           </li>
           <li
-            className="TranscriptPage__LegendItemWrapper-sc-1i4bfgh-3 cXlOox"
+            className="ChartStyles__LegendItemWrapper-sc-atxio9-2 fBsdzH"
           >
             <label
-              className="TranscriptPage__Label-sc-1i4bfgh-4 dUJxeL"
+              className="ChartStyles__Label-sc-atxio9-3 fwkrzD"
               htmlFor="include-nc-regions"
             >
               <input
                 checked={true}
-                className="TranscriptPage__CheckboxInput-sc-1i4bfgh-5 leeEsn"
+                className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
                 disabled={true}
                 id="include-nc-regions"
                 onChange={[Function]}
@@ -19604,7 +19604,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
               />
               Non-coding regions
               <span
-                className="TranscriptPage__LegendSwatch-sc-1i4bfgh-6 dqkCL"
+                className="ChartStyles__LegendSwatch-sc-atxio9-5 fDzopB"
                 color="#bdbdbd"
                 height={4}
               />
