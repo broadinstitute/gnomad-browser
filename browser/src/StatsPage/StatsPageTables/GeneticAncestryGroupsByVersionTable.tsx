@@ -96,7 +96,7 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <td>454</td>
             <td>3,614</td>
             <td>1,503</td>
-            <td>31,172</td>
+            <td>31,712</td>
             <td>3.93%</td>
             <td>8.8x</td>
           </tr>
