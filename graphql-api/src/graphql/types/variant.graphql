@@ -141,6 +141,8 @@ type Variant {
   flags: [String!]
   lof_curation: LoFCurationInGene
   transcript_consequence: TranscriptConsequence
+  faf95_joint: VariantFilteringAlleleFrequency
+  faf99_joint: VariantFilteringAlleleFrequency
 
   # Deprecated - use rsids
   rsid: String
