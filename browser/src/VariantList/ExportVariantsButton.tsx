@@ -77,6 +77,10 @@ const exportVariantsToCsv = (
 ) => {
   const DEFAULT_COLUMNS = [
     {
+      label: 'gnomAD ID',
+      getValue: (variant: any) => variant.variant_id,
+    },
+    {
       label: 'Chromosome',
       getValue: (variant: any) => variant.variant_id.split('-')[0],
     },
