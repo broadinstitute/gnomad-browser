@@ -180,6 +180,14 @@ const exportVariantsToCsv = (
       getValue: (variant: any) => JSON.stringify(variant.af),
     },
     {
+      label: 'Groupmax FAF group',
+      getValue: (variant: any) => JSON.stringify(variant.faf95_joint.popmax_population),
+    },
+    {
+      label: 'Groupmax FAF frequency',
+      getValue: (variant: any) => JSON.stringify(variant.faf95_joint.popmax),
+    },
+    {
       label: 'Homozygote Count',
       getValue: (variant: any) => JSON.stringify(variant.ac_hom),
     },

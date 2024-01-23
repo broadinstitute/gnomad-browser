@@ -218,6 +218,14 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
       transcript_id
       transcript_version
       variant_id
+      faf95_joint {
+        popmax
+        popmax_population
+      }
+      faf99_joint {
+        popmax
+        popmax_population
+      }
       exome {
         ac
         ac_hemi
