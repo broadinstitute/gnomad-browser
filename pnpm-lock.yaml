@@ -154,29 +154,29 @@ importers:
         specifier: '*'
         version: link:../dataset-metadata
       '@gnomad/identifiers':
-        specifier: 3.0.0-rc1
-        version: 3.0.0-rc1
+        specifier: 3.0.0
+        version: 3.0.0
       '@gnomad/markdown-loader':
-        specifier: 2.0.0-rc2
-        version: 2.0.0-rc2
+        specifier: 2.0.0
+        version: 2.0.0
       '@gnomad/region-viewer':
-        specifier: 4.0.0-rc1
-        version: 4.0.0-rc1
+        specifier: 4.0.0
+        version: 4.0.0
       '@gnomad/track-genes':
-        specifier: 3.0.0-rc2
-        version: 3.0.0-rc2
+        specifier: 3.0.0
+        version: 3.0.0
       '@gnomad/track-regions':
-        specifier: 2.0.0-rc2
-        version: 2.0.0-rc2
+        specifier: 2.0.0
+        version: 2.0.0
       '@gnomad/track-transcripts':
-        specifier: 3.0.0-rc2
-        version: 3.0.0-rc2
+        specifier: 3.0.0
+        version: 3.0.0
       '@gnomad/track-variants':
-        specifier: 2.0.0-rc2
-        version: 2.0.0-rc2
+        specifier: 2.0.0
+        version: 2.0.0
       '@gnomad/ui':
-        specifier: 2.0.0-rc2
-        version: 2.0.0-rc2(react-dom@17.0.2)(react@17.0.2)
+        specifier: 2.0.0
+        version: 2.0.0(react-dom@17.0.2)(react@17.0.2)
       '@hot-loader/react-dom':
         specifier: ^17.0.0
         version: 17.0.2(react@17.0.2)
@@ -367,8 +367,8 @@ importers:
         specifier: '*'
         version: link:../dataset-metadata
       '@gnomad/identifiers':
-        specifier: 3.0.0-rc1
-        version: 3.0.0-rc1
+        specifier: 3.0.0
+        version: 3.0.0
       '@google-cloud/storage':
         specifier: ^7.6.0
         version: 7.7.0
@@ -3046,12 +3046,12 @@ packages:
     dev: false
     optional: true
 
-  /@gnomad/identifiers@3.0.0-rc1:
-    resolution: {integrity: sha512-jkSNwJFWepVgunm3GAOxaSFoFYBOhN5iTuoxbDgfImZIRrbsA9jXYU98LpcJYAqidT8CX9Rwo+8bZD5IsxZaLw==}
+  /@gnomad/identifiers@3.0.0:
+    resolution: {integrity: sha512-nVGgKUFhtd79gCIGlQjh5Co+Mn7bqV4JBSZpp415zQMPN0Qz0BVnpC9xobYiz12aznScPyb6GhDrL/hxjR+rfg==}
     dev: false
 
-  /@gnomad/markdown-loader@2.0.0-rc2:
-    resolution: {integrity: sha512-0omu7tezm+zDaxI0eOuLqWA1ertf4RKD+viXlDC2+/NRyk0SO3k9UiPiO52KeFfuBPQC094MeOTWnZjuhWuEXw==}
+  /@gnomad/markdown-loader@2.0.0:
+    resolution: {integrity: sha512-TJRyHw2kCyw4cE9PWaf2fnI8h4/s69HDAKs+RICMJd9LaRVy2XlIi0m1C+FnKOUWGz3LgZnajNJzp6Uj9XnVBw==}
     dependencies:
       loader-utils: 2.0.4
       remark: 10.0.1
@@ -3062,44 +3062,44 @@ packages:
       yaml: 2.3.4
     dev: false
 
-  /@gnomad/region-viewer@4.0.0-rc1:
-    resolution: {integrity: sha512-BNcaG+zYBo6obba4P5D5NFwMdBOI6eqBx4qvwEDfSPwGW/zTllLVBeibefvAPjMSC2SFZS4AOE/f/Ck2adTPBQ==}
+  /@gnomad/region-viewer@4.0.0:
+    resolution: {integrity: sha512-O3gPturO4xM+9KRoCmZXxZ/PjZMStbHrPZ5aZ6z8KGy3OaoYWEZ6tsy4mW1y1/lzUqOOoBM0vXBpXRk1Vzf7Ug==}
     dependencies:
       prop-types: 15.8.1
     dev: false
 
-  /@gnomad/track-genes@3.0.0-rc2:
-    resolution: {integrity: sha512-dfnlWQ/rAsJrcKNG9V4aABYvhIZNaX1ECip4rD6vY7EgCDtCxjem7l8jT5msUu0Gl65q4woiCCCc3G5v2VVTWw==}
+  /@gnomad/track-genes@3.0.0:
+    resolution: {integrity: sha512-J6e43FdIEZK9MnDqdk3x8fEz7zRD05ygdde7Dig1r4tEyad2IAHz+nq1LqkaBwYt/v32crzqjcZhsHDOgFqqmA==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0-rc1
+      '@gnomad/region-viewer': 4.0.0
       prop-types: 15.8.1
     dev: false
 
-  /@gnomad/track-regions@2.0.0-rc2:
-    resolution: {integrity: sha512-0MyMPpPLPlEqfJtZtuJo+YjzjgA9Iwu8jqBeGmz5KPhUAy9F/AWoBp3Z6JlRzK16fjDmhK7PzoPgWwCeGKCWVg==}
+  /@gnomad/track-regions@2.0.0:
+    resolution: {integrity: sha512-v5UXW5VMiGUtjkbkjVf1zHMhNrH1sOAZIIttPde4+tlzSv/BgP4xz1sFJeNQsQIbb71ST1flve907bkGYwQDqQ==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0-rc1
+      '@gnomad/region-viewer': 4.0.0
       prop-types: 15.8.1
     dev: false
 
-  /@gnomad/track-transcripts@3.0.0-rc2:
-    resolution: {integrity: sha512-AWcz3bC+HFMJdDBsmoiITMM+GwO1o4oZw11hBltYT/rVgylEcWc9TZLYH4eLBtDfXqbMB9ZrSVzEHwigxIcU0w==}
+  /@gnomad/track-transcripts@3.0.0:
+    resolution: {integrity: sha512-z8uvWsj2mCbIb9aDVqEzpZRhpiRbCTedQMl8rqKbT+ZiqlrWQqktboiCDp/cxOLiTAKtQXFyy9ulVlhPAyFeIA==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0-rc1
-      '@gnomad/track-regions': 2.0.0-rc2
+      '@gnomad/region-viewer': 4.0.0
+      '@gnomad/track-regions': 2.0.0
       prop-types: 15.8.1
     dev: false
 
-  /@gnomad/track-variants@2.0.0-rc2:
-    resolution: {integrity: sha512-FJPPPYajN+ZlwmAjLNcFQstGUZ8jJjiIjU/OvePgkj9nLc0POLtiYddnHsdCBCnYDKdY49Knb1wu4lPFc1A+Wg==}
+  /@gnomad/track-variants@2.0.0:
+    resolution: {integrity: sha512-aEovnIcqdhSqHD8plc9neFrjy/k8d7Osaq0eOKqLvH83kjBxklnKIWtpm2rruLlNl3NFZzIRQWSR4IIoiz43kg==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0-rc1
+      '@gnomad/region-viewer': 4.0.0
       d3-scale: 2.2.2
       prop-types: 15.8.1
     dev: false
 
-  /@gnomad/ui@2.0.0-rc2(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-A4dK9SaAseLGAQFs1Kb1h1iX1dTQyHYcGcRqIgA3mDpsFTCKf+NI/g/riKPczVcncx00Ng/DbR6jyRrvVcEBzw==}
+  /@gnomad/ui@2.0.0(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-4+5YggAD4ltzoAhl3Su58ck00xD2TE1bQhO0ppoX/6UC9SO8NqW7Di8DAb8PsnXSFy3dEDkNHFJzpR13qwbavQ==}
     dependencies:
       '@fortawesome/fontawesome-free': 5.15.4
       lodash.debounce: 4.0.8
