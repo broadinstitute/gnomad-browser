@@ -1,5 +1,4 @@
 *
-!yarn.lock
 !dataset-metadata
 !graphql-api/package.json
 !graphql-api/src

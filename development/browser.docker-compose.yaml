@@ -7,7 +7,7 @@ services:
     command:
       - sh
       - -c
-      - yarn run ts-node ./browser/build/buildHelp.ts && yarn workspace '@gnomad/browser' run webpack serve --host '0.0.0.0'
+      - pnpm run ts-node ./browser/build/buildHelp.ts && pnpm workspace '@gnomad/browser' run webpack serve --host '0.0.0.0'
     environment:
       - NODE_ENV=development
       - GNOMAD_API_URL

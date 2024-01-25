@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: deploy/dockerfiles/browser/api.dockerfile
-    command: yarn run node /build/app.js
+    command: pnpm run node /build/app.js
     environment:
       - NODE_ENV=development
       - PORT=8000

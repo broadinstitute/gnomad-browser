@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 node:14.15.2-alpine
+FROM --platform=linux/amd64 node:18.17-alpine
+RUN npm install -g pnpm@^8.14.3
 
 RUN mkdir /app && chown node:node /app
 
@@ -9,8 +10,7 @@ ENV NODE_ENV=production
 
 # Install dependencies
 COPY --chown=node:node reads/package.json .
-COPY --chown=node:node yarn.lock .
-RUN yarn install --production --frozen-lockfile && yarn cache clean
+RUN pnpm install --production
 
 # Copy source
 COPY --chown=node:node reads/src /app/src
