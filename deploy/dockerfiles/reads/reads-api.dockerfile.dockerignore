@@ -1,4 +1,4 @@
 *
-!yarn.lock
 !reads/package.json
 !reads/src
+!pnpm-lock.yaml

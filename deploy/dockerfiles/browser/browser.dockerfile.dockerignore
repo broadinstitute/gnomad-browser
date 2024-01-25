@@ -3,7 +3,6 @@
 !tsconfig.json
 !tsconfig.build.json
 !package.json
-!yarn.lock
 !browser/.browserslistrc
 !browser/about
 !browser/build
