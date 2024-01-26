@@ -1,0 +1,54 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+labels:
+  - pairs:
+      tier: production
+    includeSelectors: true
+    includeTemplates: true
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'main-pool'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: REDIS_HOST
+                    value: 'redis'
+                  # Global rate limiting
+                  - name: MAX_CONCURRENT_ES_REQUESTS
+                    value: '10'
+                  - name: MAX_QUEUED_ES_REQUESTS
+                    value: '100'
+                  # Individual rate limiting
+                  - name: MAX_REQUESTS_PER_MINUTE
+                    value: '30'
+                  - name: MAX_QUERY_COST
+                    value: '25'
+                  - name: MAX_QUERY_COST_PER_MINUTE
+                    value: '300'
+                  - name: JSON_CACHE_PATH
+                    value: 'gs://gnomad-v4-gene-cache/2023-12-01'
+                  - name: JSON_CACHE_LARGE_GENES
+                    value: 'true'
+                  - name: JSON_CACHE_COMPRESSION
+                    value: 'true'
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'main-pool'

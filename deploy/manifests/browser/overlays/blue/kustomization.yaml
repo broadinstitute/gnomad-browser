@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../prod
+nameSuffix: -blue
+images:
+  - name: gcr.io/exac-gnomad/gnomad-api
+    newTag: '85dc023a'
+  - name: gcr.io/exac-gnomad/gnomad-browser
+    newTag: '85dc023a'
+labels:
+  - pairs:
+      deployment: blue
+    includeSelectors: true
+    includeTemplates: true
+replacements:
+  - source:
+      fieldPath: metadata.name
+      kind: Service
+      name: gnomad-api
+      version: v1
+    targets:
+      - fieldPaths:
+          - spec.template.spec.containers.[name=web].env.[name=API_URL].value
+        options:
+          delimiter: /
+          index: 2
+        select:
+          group: apps
+          kind: Deployment
+          name: gnomad-browser
+          version: v1
