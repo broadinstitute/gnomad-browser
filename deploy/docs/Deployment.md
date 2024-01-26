@@ -18,7 +18,18 @@ module "gnomad-browser-vpc" {
   network_name_prefix = "gnomad-mynetwork"
 }
 
+data "google_client_config" "tf_sa" {}
+
+provider "kubernetes" {
+  host  = "https://${module.gnomad-browser-infra.gke_cluster_api_endpoint}"
+  token = data.google_client_config.tf_sa.access_token
+  cluster_ca_certificate = base64decode(
+    module.gnomad-browser-infra.gke_cluster_ca_cert,
+  )
+}
+
 module "gnomad-browser-infra" {
+  depends_on                            = [ module.gnomad-browser-vpc ]
   source                                = "github.com/broadinstitute/tgg-terraform-modules//gnomad-browser-infra?ref=main"
   infra_prefix                          = "gnomad-mybrowser"
   vpc_network_name                      = "gnomad-mynetwork"
