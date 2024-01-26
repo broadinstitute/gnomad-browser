@@ -21,7 +21,7 @@ spec:
             sizeLimit: 20Gi
       containers:
         - name: web
-          image: gnomad-browser
+          image: gcr.io/exac-gnomad/gnomad-browser
           imagePullPolicy: Always
           env:
             - name: API_URL
@@ -50,5 +50,3 @@ spec:
               port: http
             initialDelaySeconds: 5
             periodSeconds: 30
-      nodeSelector:
-        cloud.google.com/gke-nodepool: 'main-pool'
