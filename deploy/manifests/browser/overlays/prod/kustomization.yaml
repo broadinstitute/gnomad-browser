@@ -10,15 +10,14 @@ labels:
     includeTemplates: true
 patches:
   - patch: |-
-      apiVersion: apps/v1
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          cloud.google.com/gke-nodepool: 'main-pool'
+    target:
+      group: apps
+      version: v1
       kind: Deployment
-      metadata:
-        name: gnomad-browser
-      spec:
-        template:
-          spec:
-            nodeSelector:
-              cloud.google.com/gke-nodepool: 'main-pool'
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
@@ -50,5 +49,3 @@ patches:
                     value: 'true'
                   - name: JSON_CACHE_COMPRESSION
                     value: 'true'
-            nodeSelector:
-              cloud.google.com/gke-nodepool: 'main-pool'
