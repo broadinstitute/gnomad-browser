@@ -10,7 +10,7 @@ Creating the base GCP resources (GKE cluster, GCS buckets, VPC networks, service
 
 If you are simply deploying a new browser app instance/demo in an existing environment (such as production) where GKE, Elasticsearch, Redis, etc already exist, you can skip to: [Before Creating a Deployment](#before-creating-a-deployment), or [Prepare Data](#prepare-data) if you are loading a new dataset.
 
-Example configurations for those two modules are as follows. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
+Example configurations for those two modules are as follows. These utilize the default settings for GKE node sizing and numbers, which will result in quite a large cluster. If you need something smaller, adjust the `gke_node_pools` variable on the browser infra module. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
 
 ```hcl
 module "gnomad-browser-vpc" {
@@ -40,14 +40,6 @@ Then, run `terraform init` and `terraform apply`.
 First install the operator with the steps as documented: [Elastic Cloud on Kubernetes (ECK)](https://www.elastic.co/guide/en/cloud-on-k8s/2.9/k8s-overview.html).
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
-
-Create a kubernetes service account to use for elasticsearch snapshotting, run: `kubectl create serviceaccount es-snaps`
-
-Annotate that service account to associate it with the GCP Service Account that can write to your snapthot storage:
-
-```
-  kubectl annotate sa es-snaps iam.gke.io/gcp-service-account=your-service-acct@your-project.iam.gserviceaccount.com
-```
 
 If you are using a custom cluster (e.g. `gnomad-myname`) ensure `environment_tag` in `deployctl_config.json` is set to `myname`.
 
