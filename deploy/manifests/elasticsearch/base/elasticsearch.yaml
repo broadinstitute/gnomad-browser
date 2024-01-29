@@ -1,0 +1,37 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: gnomad
+spec:
+  version: 7.17.10
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+    - name: default
+      count: 1
+      config: # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
+        ingest.geoip.downloader.enabled: false
+      podTemplate:
+        metadata:
+          labels:
+            role: master
+        spec:
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+            - name: install-plugins
+              command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: standard
+            resources:
+              requests:
+                storage: 50Gi

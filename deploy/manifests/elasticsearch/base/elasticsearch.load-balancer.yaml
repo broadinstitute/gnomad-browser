@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ cluster_name }}-elasticsearch-lb
+  name: gnomad-elasticsearch-lb
   annotations:
     cloud.google.com/load-balancer-type: 'Internal'
 spec:
@@ -14,5 +14,5 @@ spec:
       protocol: TCP
   selector:
     # https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-traffic-splitting.html
-    elasticsearch.k8s.elastic.co/cluster-name: '{{ cluster_name }}' # Matches cluster name in elasticsearch.yaml
+    elasticsearch.k8s.elastic.co/cluster-name: 'gnomad' # Matches cluster name in elasticsearch.yaml
     elasticsearch.k8s.elastic.co/node-master: 'false'
