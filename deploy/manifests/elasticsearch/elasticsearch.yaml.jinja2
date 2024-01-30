@@ -93,7 +93,7 @@ spec:
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
     - name: data-blue
-      count: 4
+      count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.roles: ["data"]
         cluster.routing.allocation.disk.watermark.low: '100gb'
