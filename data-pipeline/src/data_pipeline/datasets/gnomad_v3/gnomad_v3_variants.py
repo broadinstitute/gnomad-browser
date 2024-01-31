@@ -102,12 +102,14 @@ def prepare_gnomad_v3_variants(path):
                                 id="_".join(filter(bool, [pop, sex])),
                                 ac=hl.or_else(freq(ds, subset=subset, pop=pop, sex=sex).AC, 0),
                                 an=hl.or_else(freq(ds, subset=subset, pop=pop, sex=sex).AN, 0),
-                                hemizygote_count=0
-                                if sex == "XX"
-                                else hl.if_else(
-                                    ds.in_autosome_or_par,
-                                    0,
-                                    hl.or_else(freq(ds, subset=subset, pop=pop, sex="XY").AC, 0),
+                                hemizygote_count=(
+                                    0
+                                    if sex == "XX"
+                                    else hl.if_else(
+                                        ds.in_autosome_or_par,
+                                        0,
+                                        hl.or_else(freq(ds, subset=subset, pop=pop, sex="XY").AC, 0),
+                                    )
                                 ),
                                 homozygote_count=hl.or_else(
                                     freq(ds, subset=subset, pop=pop, sex=sex).homozygote_count, 0

@@ -443,9 +443,11 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                         "repeat_unit": repeat_unit,
                         # Loci with only one repeat unit do not have a RepeatUnitClassification field.
                         # In those cases, the repeat unit is pathogenic.
-                        "classification": locus["RepeatUnitClassification"].get(repeat_unit, "unknown").lower()
-                        if "RepeatUnitClassification" in locus
-                        else "pathogenic",
+                        "classification": (
+                            locus["RepeatUnitClassification"].get(repeat_unit, "unknown").lower()
+                            if "RepeatUnitClassification" in locus
+                            else "pathogenic"
+                        ),
                     }
                     for repeat_unit in (
                         set(k.split("/")[2] for k in locus["AlleleCountHistogram"].keys())
