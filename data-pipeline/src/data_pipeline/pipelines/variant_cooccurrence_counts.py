@@ -47,10 +47,10 @@ def prepare_variant_cooccurrence_counts(tsv_path, field_name_map):
 
 def prepare_heterozygous_variant_cooccurrence_counts():
     field_name_map = {
-        "in_cis": "n_same_hap_without_chet_or_unphased",
-        "in_trans": "n_chet",
-        "unphased": "n_unphased_without_chet",
-        "two_het_total": "n_any_het_het",
+        "in_cis": "n_in_cis_without_in_trans_and_unphased",
+        "in_trans": "n_in_trans",
+        "unphased": "n_unphased_without_in_trans",
+        "two_het_total": "n_two_het",
     }
     return prepare_variant_cooccurrence_counts(TWO_HET_DATA_PATH, field_name_map)
 
