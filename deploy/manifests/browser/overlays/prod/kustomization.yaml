@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  - name: gnomad-api
+    newName: gcr.io/exac-gnomad/gnomad-api
+  - name: gnomad-browser
+    newName: gcr.io/exac-gnomad/gnomad-browser
+labels:
+  - pairs:
+      tier: 'production'
+replicas:
+  - name: gnomad-api
+    count: 2
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: JSON_CACHE_LARGE_GENES
+                    value: 'true'
+                  - name: JSON_CACHE_COMPRESSION
+                    value: 'true'
+                  - name: JSON_CACHE_PATH
+                    value: 'gs://gnomad-v4-gene-cache/2023-12-01'
