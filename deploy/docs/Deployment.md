@@ -245,7 +245,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 2. Check all current deployments (both `cluster` pods running and `local` manifests) with:
 
    ```
-   ./deployctl production describe
+   ./deployctl deployments list
    ```
 
 3. Check the name (blue/green) of the production deployment currently serving traffic `<DEPLOYMENT_NAME>`
