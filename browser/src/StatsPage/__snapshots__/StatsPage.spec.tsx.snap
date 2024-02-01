@@ -743,797 +743,22 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <span
                   className="c11"
                 >
-                  <svg
-                    height={400}
-                    width={-50}
-                  >
-                    <g
-                      className="visx-group visx-axis visx-axis-bottom"
-                      transform="translate(60, 370)"
+                  Sample size across major ExAC/gnomAD releases
+                  <span>
+                    <button
+                      className="c12"
+                      onClick={[Function]}
+                      type="button"
                     >
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={-15}
-                          x2={-15}
-                          y1={0}
-                          y2={3}
-                        />
-                        <svg
-                          fontSize={12}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={12}
-                            textAnchor="middle"
-                            transform=""
-                            x={-15}
-                            y={15}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-15}
-                            >
-                              ExAC
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={-45}
-                          x2={-45}
-                          y1={0}
-                          y2={3}
-                        />
-                        <svg
-                          fontSize={12}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={12}
-                            textAnchor="middle"
-                            transform=""
-                            x={-45}
-                            y={15}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-45}
-                            >
-                              gnomAD v2
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={-75}
-                          x2={-75}
-                          y1={0}
-                          y2={3}
-                        />
-                        <svg
-                          fontSize={12}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={12}
-                            textAnchor="middle"
-                            transform=""
-                            x={-75}
-                            y={15}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-75}
-                            >
-                              gnomAD v3
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={-105}
-                          x2={-105}
-                          y1={0}
-                          y2={3}
-                        />
-                        <svg
-                          fontSize={12}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={12}
-                            textAnchor="middle"
-                            transform=""
-                            x={-105}
-                            y={15}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-105}
-                            >
-                              gnomAD v4
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <line
-                        className="visx-line visx-axis-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#333"
-                        strokeWidth={1}
-                        x1={0.5}
-                        x2={-119.5}
-                        y1={0}
-                        y2={0}
+                      <img
+                        alt="Download figure"
+                        height={15}
+                        src="test-file-stub"
+                        width={15}
                       />
-                      
-                    </g>
-                    <g
-                      className="visx-group visx-axis visx-axis-left"
-                      transform="translate(60, 10)"
-                    >
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={360}
-                          y2={360}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={360}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              0
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={315.3992878752964}
-                          y2={315.3992878752964}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={315.3992878752964}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              100K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={270.7985757505928}
-                          y2={270.7985757505928}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={270.7985757505928}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              200K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={226.1978636258892}
-                          y2={226.1978636258892}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={226.1978636258892}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              300K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={181.59715150118564}
-                          y2={181.59715150118564}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={181.59715150118564}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              400K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={136.99643937648204}
-                          y2={136.99643937648204}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={136.99643937648204}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              500K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={92.39572725177847}
-                          y2={92.39572725177847}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={92.39572725177847}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              600K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={47.795015127074876}
-                          y2={47.795015127074876}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={47.795015127074876}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              700K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <g
-                        className="visx-group visx-axis-tick"
-                        transform="translate(0, 0)"
-                      >
-                        <line
-                          className="visx-line"
-                          fill="transparent"
-                          shapeRendering="crispEdges"
-                          stroke="#222"
-                          strokeLinecap="square"
-                          strokeWidth={1}
-                          x1={0}
-                          x2={-8}
-                          y1={3.194303002371255}
-                          y2={3.194303002371255}
-                        />
-                        <svg
-                          fontSize={10}
-                          style={
-                            {
-                              "overflow": "visible",
-                            }
-                          }
-                          x="-0.25em"
-                          y="0.25em"
-                        >
-                          <text
-                            fill="#000"
-                            fontSize={10}
-                            textAnchor="end"
-                            transform=""
-                            x={-8}
-                            y={3.194303002371255}
-                          >
-                            <tspan
-                              dy="0em"
-                              x={-8}
-                            >
-                              800K
-                            </tspan>
-                          </text>
-                        </svg>
-                      </g>
-                      <line
-                        className="visx-line visx-axis-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#333"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={0}
-                        y1={360.5}
-                        y2={0.5}
-                      />
-                      
-                    </g>
-                    Exomes
-                    Genomes
-                    <g
-                      transform="translate(60,10)"
-                    >
-                      <rect
-                        fill="#0e6fbf"
-                        height={27.07530830242257}
-                        stroke="#333"
-                        width={39.6}
-                        x={-34.8}
-                        y={332.92469169757743}
-                      />
-                      <text
-                        dy={4}
-                        fill="white"
-                        fontSize={12}
-                        textAnchor="middle"
-                        x={-15}
-                        y={346.4623458487887}
-                      >
-                        60,706
-                      </text>
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-34.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#508a14"
-                        height={0}
-                        stroke="#333"
-                        width={39.6}
-                        x={-34.8}
-                        y={332.92469169757743}
-                      />
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-34.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#0e6fbf"
-                        height={56.088963553784765}
-                        stroke="#333"
-                        width={39.6}
-                        x={-64.8}
-                        y={303.91103644621523}
-                      />
-                      <text
-                        dy={4}
-                        fill="white"
-                        fontSize={12}
-                        textAnchor="middle"
-                        x={-45}
-                        y={331.9555182231076}
-                      >
-                        125,758
-                      </text>
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-64.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#508a14"
-                        height={7.0058798605484185}
-                        stroke="#333"
-                        width={39.6}
-                        x={-64.8}
-                        y={296.9051565856668}
-                      />
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-64.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#0e6fbf"
-                        height={0}
-                        stroke="#333"
-                        width={39.6}
-                        x={-94.8}
-                        y={360}
-                      />
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-94.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#508a14"
-                        height={33.96611832568925}
-                        stroke="#333"
-                        width={39.6}
-                        x={-94.8}
-                        y={326.03388167431075}
-                      />
-                      <text
-                        dy={4}
-                        fill="white"
-                        fontSize={12}
-                        textAnchor="middle"
-                        x={-75}
-                        y={343.0169408371554}
-                      >
-                        76,156
-                      </text>
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-94.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#0e6fbf"
-                        height={326.00756725415715}
-                        stroke="#333"
-                        width={39.6}
-                        x={-124.8}
-                        y={33.99243274584283}
-                      />
-                      <text
-                        dy={4}
-                        fill="white"
-                        fontSize={12}
-                        textAnchor="middle"
-                        x={-105}
-                        y={196.9962163729214}
-                      >
-                        730,947
-                      </text>
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-124.8}
-                        y={0}
-                      />
-                      <rect
-                        fill="#508a14"
-                        height={33.99243274584285}
-                        stroke="#333"
-                        width={39.6}
-                        x={-124.8}
-                        y={0}
-                      />
-                      <text
-                        dy={4}
-                        fill="white"
-                        fontSize={12}
-                        textAnchor="middle"
-                        x={-105}
-                        y={16.996216372921424}
-                      >
-                        76,215
-                      </text>
-                      <rect
-                        className="c13"
-                        height={360}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        width={39.6}
-                        x={-124.8}
-                        y={0}
-                      />
-                    </g>
-                  </svg>
-                </div>
+                    </button>
+                  </span>
+                </span>
               </div>
               <div
                 className="c13"
@@ -1549,18 +774,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       width={-50}
                     >
                       <g
-                        className="vx-group vx-axis vx-axis-bottom"
+                        className="visx-group visx-axis visx-axis-bottom"
                         transform="translate(60, 370)"
                       >
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={-15}
                             x2={-15}
                             y1={0}
@@ -1580,6 +807,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={12}
                               textAnchor="middle"
+                              transform=""
                               x={-15}
                               y={15}
                             >
@@ -1593,14 +821,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={-45}
                             x2={-45}
                             y1={0}
@@ -1620,6 +850,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={12}
                               textAnchor="middle"
+                              transform=""
                               x={-45}
                               y={15}
                             >
@@ -1633,14 +864,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={-75}
                             x2={-75}
                             y1={0}
@@ -1660,6 +893,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={12}
                               textAnchor="middle"
+                              transform=""
                               x={-75}
                               y={15}
                             >
@@ -1673,14 +907,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={-105}
                             x2={-105}
                             y1={0}
@@ -1700,6 +936,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={12}
                               textAnchor="middle"
+                              transform=""
                               x={-105}
                               y={15}
                             >
@@ -1713,8 +950,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <line
-                          className="vx-line vx-axis-line"
+                          className="visx-line visx-axis-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#333"
                           strokeWidth={1}
                           x1={0.5}
@@ -1725,18 +963,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         
                       </g>
                       <g
-                        className="vx-group vx-axis vx-axis-left"
+                        className="visx-group visx-axis visx-axis-left"
                         transform="translate(60, 10)"
                       >
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={360}
@@ -1756,6 +996,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={360}
                             >
@@ -1769,14 +1010,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={315.3992878752964}
@@ -1796,6 +1039,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={315.3992878752964}
                             >
@@ -1809,14 +1053,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={270.7985757505928}
@@ -1836,6 +1082,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={270.7985757505928}
                             >
@@ -1849,14 +1096,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={226.1978636258892}
@@ -1876,6 +1125,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={226.1978636258892}
                             >
@@ -1889,14 +1139,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={181.59715150118564}
@@ -1916,6 +1168,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={181.59715150118564}
                             >
@@ -1929,14 +1182,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={136.99643937648204}
@@ -1956,6 +1211,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={136.99643937648204}
                             >
@@ -1969,14 +1225,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={92.39572725177847}
@@ -1996,6 +1254,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={92.39572725177847}
                             >
@@ -2009,14 +1268,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={47.795015127074876}
@@ -2036,6 +1297,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={47.795015127074876}
                             >
@@ -2049,14 +1311,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <g
-                          className="vx-group vx-axis-tick"
+                          className="visx-group visx-axis-tick"
                           transform="translate(0, 0)"
                         >
                           <line
-                            className="vx-line"
+                            className="visx-line"
                             fill="transparent"
+                            shapeRendering="crispEdges"
                             stroke="#222"
                             strokeLinecap="square"
+                            strokeWidth={1}
                             x1={0}
                             x2={-8}
                             y1={3.194303002371255}
@@ -2076,6 +1340,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                               fill="#000"
                               fontSize={10}
                               textAnchor="end"
+                              transform=""
                               x={-8}
                               y={3.194303002371255}
                             >
@@ -2089,8 +1354,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           </svg>
                         </g>
                         <line
-                          className="vx-line vx-axis-line"
+                          className="visx-line visx-axis-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#333"
                           strokeWidth={1}
                           x1={0}
@@ -2109,7 +1375,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           y={0}
                         >
                           <text
-                            className="vx-axis-label"
+                            className="visx-axis-label"
                             fontSize={14}
                             textAnchor="middle"
                             transform="rotate(-90)"
@@ -5487,1161 +4753,22 @@ exports[`Stats Page has no unexpected changes 1`] = `
               <span
                 className="c11"
               >
-                <svg
-                  height={400}
-                  width={-50}
-                >
-                  <g
-                    className="visx-group visx-axis visx-axis-bottom"
-                    transform="translate(60, 370)"
+                Per genetic ancestry group count of samples in gnomAD releases
+                <span>
+                  <button
+                    className="c12"
+                    onClick={[Function]}
+                    type="button"
                   >
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-15}
-                        x2={-15}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-15}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-15}
-                          >
-                            ExAC
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-45}
-                        x2={-45}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-45}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-45}
-                          >
-                            gnomAD v2
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-75}
-                        x2={-75}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-75}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-75}
-                          >
-                            gnomAD v3
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-105}
-                        x2={-105}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-105}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-105}
-                          >
-                            gnomAD v4
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <line
-                      className="visx-line visx-axis-line"
-                      fill="transparent"
-                      shapeRendering="crispEdges"
-                      stroke="#333"
-                      strokeWidth={1}
-                      x1={0.5}
-                      x2={-119.5}
-                      y1={0}
-                      y2={0}
-                    />
-                    
-                  </g>
-                  <g
-                    className="visx-group visx-axis visx-axis-left"
-                    transform="translate(60, 10)"
-                  >
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={360}
-                        y2={360}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={360}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            0
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={315.3992878752964}
-                        y2={315.3992878752964}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={315.3992878752964}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            100K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={270.7985757505928}
-                        y2={270.7985757505928}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={270.7985757505928}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            200K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={226.1978636258892}
-                        y2={226.1978636258892}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={226.1978636258892}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            300K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={181.59715150118564}
-                        y2={181.59715150118564}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={181.59715150118564}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            400K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={136.99643937648204}
-                        y2={136.99643937648204}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={136.99643937648204}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            500K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={92.39572725177847}
-                        y2={92.39572725177847}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={92.39572725177847}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            600K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={47.795015127074876}
-                        y2={47.795015127074876}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={47.795015127074876}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            700K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={3.194303002371255}
-                        y2={3.194303002371255}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={3.194303002371255}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            800K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <line
-                      className="visx-line visx-axis-line"
-                      fill="transparent"
-                      shapeRendering="crispEdges"
-                      stroke="#333"
-                      strokeWidth={1}
-                      x1={0}
-                      x2={0}
-                      y1={360.5}
-                      y2={0.5}
-                    />
-                    
-                  </g>
-                  East Asian
-                  South Asian
-                  Middle Eastern
-                  African
-                  Admixed American
-                  Ashkenazi Jewish
-                  Remaining
-                  European
-                  <g
-                    transform="translate(60,10)"
-                  >
-                    <rect
-                      fill="#0e8b45"
-                      height={1.9298728136359387}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={358.07012718636406}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={3.682234793015539}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={354.3878923933485}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={0}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={354.3878923933485}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={2.320575051848323}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={352.0673173415002}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={2.581935224899098}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={349.4853821166011}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={0}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={349.4853821166011}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={0.20248723304615623}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={349.28289488355495}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={16.358203185977516}
-                      stroke="#333"
-                      width={39.6}
-                      x={-34.8}
-                      y={332.92469169757743}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-34.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#0e8b45"
-                      height={4.449813048681676}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={355.5501869513183}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={6.827477012049599}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={348.7227099392687}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={0}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={348.7227099392687}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={5.569290923011749}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={343.153419016257}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={7.903246188497462}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={335.2501728277595}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={2.3125469236658773}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={332.93762590409364}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={1.6118697361868044}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={331.32575616790683}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={34.41613951102755}
-                      stroke="#333"
-                      width={39.6}
-                      x={-64.8}
-                      y={296.9096166568793}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#0e8b45"
-                      height={1.161402543727263}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={358.83859745627274}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={1.078891226296605}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={357.75970622997613}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={0.07046912515704662}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={357.6892371048191}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={9.251971723148529}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={348.43726538167056}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={3.4106164561761148}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={345.02664892549444}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={0.774268362484861}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={344.2523805630096}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={0.6703487032342537}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={343.5820318597753}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={17.548150185464635}
-                      stroke="#333"
-                      width={39.6}
-                      x={-94.8}
-                      y={326.0338816743107}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-94.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#0e8b45"
-                      height={10.011967857753461}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={349.98803214224654}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={20.313840344317498}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={329.67419179792904}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={1.351847584499751}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={328.3223442134293}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={16.745337367219975}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={311.5770068462093}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={13.388687772714775}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={298.18831907349454}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={6.6026894229411255}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={291.5856296505534}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={14.143777828986003}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={277.4418518215674}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={277.4418518215674}
-                      stroke="#333"
-                      width={39.6}
-                      x={-124.8}
-                      y={-1.4210854715202004e-14}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={39.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                  </g>
-                </svg>
-              </div>
+                    <img
+                      alt="Download figure"
+                      height={15}
+                      src="test-file-stub"
+                      width={15}
+                    />
+                  </button>
+                </span>
+              </span>
             </div>
             <div
               className="c13"
@@ -6657,18 +4784,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     width={-50}
                   >
                     <g
-                      className="vx-group vx-axis vx-axis-bottom"
+                      className="visx-group visx-axis visx-axis-bottom"
                       transform="translate(60, 370)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-15}
                           x2={-15}
                           y1={0}
@@ -6688,6 +4817,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-15}
                             y={15}
                           >
@@ -6701,14 +4831,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-45}
                           x2={-45}
                           y1={0}
@@ -6728,6 +4860,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-45}
                             y={15}
                           >
@@ -6741,14 +4874,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-75}
                           x2={-75}
                           y1={0}
@@ -6768,6 +4903,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-75}
                             y={15}
                           >
@@ -6781,14 +4917,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-105}
                           x2={-105}
                           y1={0}
@@ -6808,6 +4946,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-105}
                             y={15}
                           >
@@ -6821,8 +4960,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0.5}
@@ -6833,18 +4973,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       
                     </g>
                     <g
-                      className="vx-group vx-axis vx-axis-left"
+                      className="visx-group visx-axis visx-axis-left"
                       transform="translate(60, 10)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={360}
@@ -6864,6 +5006,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={360}
                           >
@@ -6877,14 +5020,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={315.3992878752964}
@@ -6904,6 +5049,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={315.3992878752964}
                           >
@@ -6917,14 +5063,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={270.7985757505928}
@@ -6944,6 +5092,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={270.7985757505928}
                           >
@@ -6957,14 +5106,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={226.1978636258892}
@@ -6984,6 +5135,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={226.1978636258892}
                           >
@@ -6997,14 +5149,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={181.59715150118564}
@@ -7024,6 +5178,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={181.59715150118564}
                           >
@@ -7037,14 +5192,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={136.99643937648204}
@@ -7064,6 +5221,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={136.99643937648204}
                           >
@@ -7077,14 +5235,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={92.39572725177847}
@@ -7104,6 +5264,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={92.39572725177847}
                           >
@@ -7117,14 +5278,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={47.795015127074876}
@@ -7144,6 +5307,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={47.795015127074876}
                           >
@@ -7157,14 +5321,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={3.194303002371255}
@@ -7184,6 +5350,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={3.194303002371255}
                           >
@@ -7197,8 +5364,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0}
@@ -7217,7 +5385,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y={0}
                       >
                         <text
-                          className="vx-axis-label"
+                          className="visx-axis-label"
                           fontSize={14}
                           textAnchor="middle"
                           transform="rotate(-90)"
@@ -8042,1018 +6210,22 @@ exports[`Stats Page has no unexpected changes 1`] = `
               <span
                 className="c11"
               >
-                <svg
-                  height={400}
-                  width={-50}
-                >
-                  <g
-                    className="visx-group visx-axis visx-axis-bottom"
-                    transform="translate(60, 370)"
+                Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF &gt;0.1
+                <span>
+                  <button
+                    className="c12"
+                    onClick={[Function]}
+                    type="button"
                   >
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-30}
-                        x2={-30}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-30}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-30}
-                          >
-                            gnomAD v2
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={-90}
-                        x2={-90}
-                        y1={0}
-                        y2={3}
-                      />
-                      <svg
-                        fontSize={12}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={12}
-                          textAnchor="middle"
-                          transform=""
-                          x={-90}
-                          y={15}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-90}
-                          >
-                            gnomAD v4
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <line
-                      className="visx-line visx-axis-line"
-                      fill="transparent"
-                      shapeRendering="crispEdges"
-                      stroke="#333"
-                      strokeWidth={1}
-                      x1={0.5}
-                      x2={-119.5}
-                      y1={0}
-                      y2={0}
+                    <img
+                      alt="Download figure"
+                      height={15}
+                      src="test-file-stub"
+                      width={15}
                     />
-                    
-                  </g>
-                  <g
-                    className="visx-group visx-axis visx-axis-left"
-                    transform="translate(60, 10)"
-                  >
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={360}
-                        y2={360}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={360}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            0
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={333.57747744177135}
-                        y2={333.57747744177135}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={333.57747744177135}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            50.0K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={307.1549548835427}
-                        y2={307.1549548835427}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={307.1549548835427}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            100K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={280.7324323253141}
-                        y2={280.7324323253141}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={280.7324323253141}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            150K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={254.30990976708546}
-                        y2={254.30990976708546}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={254.30990976708546}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            200K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={227.88738720885684}
-                        y2={227.88738720885684}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={227.88738720885684}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            250K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={201.46486465062821}
-                        y2={201.46486465062821}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={201.46486465062821}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            300K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={175.0423420923996}
-                        y2={175.0423420923996}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={175.0423420923996}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            350K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={148.61981953417094}
-                        y2={148.61981953417094}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={148.61981953417094}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            400K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={122.1972969759423}
-                        y2={122.1972969759423}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={122.1972969759423}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            450K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={95.77477441771366}
-                        y2={95.77477441771366}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={95.77477441771366}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            500K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={69.35225185948501}
-                        y2={69.35225185948501}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={69.35225185948501}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            550K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={42.92972930125641}
-                        y2={42.92972930125641}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={42.92972930125641}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            600K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <g
-                      className="visx-group visx-axis-tick"
-                      transform="translate(0, 0)"
-                    >
-                      <line
-                        className="visx-line"
-                        fill="transparent"
-                        shapeRendering="crispEdges"
-                        stroke="#222"
-                        strokeLinecap="square"
-                        strokeWidth={1}
-                        x1={0}
-                        x2={-8}
-                        y1={16.507206743027766}
-                        y2={16.507206743027766}
-                      />
-                      <svg
-                        fontSize={10}
-                        style={
-                          {
-                            "overflow": "visible",
-                          }
-                        }
-                        x="-0.25em"
-                        y="0.25em"
-                      >
-                        <text
-                          fill="#000"
-                          fontSize={10}
-                          textAnchor="end"
-                          transform=""
-                          x={-8}
-                          y={16.507206743027766}
-                        >
-                          <tspan
-                            dy="0em"
-                            x={-8}
-                          >
-                            650K
-                          </tspan>
-                        </text>
-                      </svg>
-                    </g>
-                    <line
-                      className="visx-line visx-axis-line"
-                      fill="transparent"
-                      shapeRendering="crispEdges"
-                      stroke="#333"
-                      strokeWidth={1}
-                      x1={0}
-                      x2={0}
-                      y1={360.5}
-                      y2={0.5}
-                    />
-                    
-                  </g>
-                  East Asian
-                  South Asian
-                  Middle Eastern
-                  African
-                  Admixed American
-                  Ashkenazi Jewish
-                  Remaining
-                  European
-                  <g
-                    transform="translate(60,10)"
-                  >
-                    <rect
-                      fill="#0e8b45"
-                      height={31.903082187256416}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={328.0969178127436}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={37.567014122838316}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={290.52990368990527}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={0}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={290.52990368990527}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={55.32453463332149}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={235.20536905658378}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={37.499900915540366}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={197.7054681410434}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={35.20061300252337}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={162.50485513852004}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={40.07028391000489}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={122.43457122851515}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={30.83402692455047}
-                      stroke="#333"
-                      width={69.6}
-                      x={-64.8}
-                      y={91.60054430396468}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-64.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#0e8b45"
-                      height={34.466595325855735}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={325.53340467414426}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ff9a10"
-                      height={42.74054403973946}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={282.7928606344048}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#050080"
-                      height={49.438125057799255}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={233.35473557660555}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#931193"
-                      height={62.62137846300186}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={170.7333571136037}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#ed1e23"
-                      height={47.925699866566276}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={122.80765724703741}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#edc800"
-                      height={40.114673747902714}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={82.6929834991347}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#acb8b9"
-                      height={48.53658858811252}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={34.156394911022176}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                    <rect
-                      fill="#6aa5ce"
-                      height={34.15639491102212}
-                      stroke="#333"
-                      width={69.6}
-                      x={-124.8}
-                      y={5.684341886080802e-14}
-                    />
-                    <rect
-                      className="c13"
-                      height={360}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      width={69.6}
-                      x={-124.8}
-                      y={0}
-                    />
-                  </g>
-                </svg>
-              </div>
+                  </button>
+                </span>
+              </span>
             </div>
             <div
               className="c13"
@@ -9069,18 +6241,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                     width={-50}
                   >
                     <g
-                      className="vx-group vx-axis vx-axis-bottom"
+                      className="visx-group visx-axis visx-axis-bottom"
                       transform="translate(60, 370)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-30}
                           x2={-30}
                           y1={0}
@@ -9100,6 +6274,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-30}
                             y={15}
                           >
@@ -9113,14 +6288,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={-90}
                           x2={-90}
                           y1={0}
@@ -9140,6 +6317,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={12}
                             textAnchor="middle"
+                            transform=""
                             x={-90}
                             y={15}
                           >
@@ -9153,8 +6331,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0.5}
@@ -9165,18 +6344,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       
                     </g>
                     <g
-                      className="vx-group vx-axis vx-axis-left"
+                      className="visx-group visx-axis visx-axis-left"
                       transform="translate(60, 10)"
                     >
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={360}
@@ -9196,6 +6377,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={360}
                           >
@@ -9209,14 +6391,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={333.57747744177135}
@@ -9236,6 +6420,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={333.57747744177135}
                           >
@@ -9249,14 +6434,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={307.1549548835427}
@@ -9276,6 +6463,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={307.1549548835427}
                           >
@@ -9289,14 +6477,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={280.7324323253141}
@@ -9316,6 +6506,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={280.7324323253141}
                           >
@@ -9329,14 +6520,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={254.30990976708546}
@@ -9356,6 +6549,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={254.30990976708546}
                           >
@@ -9369,14 +6563,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={227.88738720885684}
@@ -9396,6 +6592,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={227.88738720885684}
                           >
@@ -9409,14 +6606,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={201.46486465062821}
@@ -9436,6 +6635,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={201.46486465062821}
                           >
@@ -9449,14 +6649,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={175.0423420923996}
@@ -9476,6 +6678,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={175.0423420923996}
                           >
@@ -9489,14 +6692,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={148.61981953417094}
@@ -9516,6 +6721,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={148.61981953417094}
                           >
@@ -9529,14 +6735,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={122.1972969759423}
@@ -9556,6 +6764,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={122.1972969759423}
                           >
@@ -9569,14 +6778,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={95.77477441771366}
@@ -9596,6 +6807,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={95.77477441771366}
                           >
@@ -9609,14 +6821,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={69.35225185948501}
@@ -9636,6 +6850,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={69.35225185948501}
                           >
@@ -9649,14 +6864,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={42.92972930125641}
@@ -9676,6 +6893,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={42.92972930125641}
                           >
@@ -9689,14 +6907,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <g
-                        className="vx-group vx-axis-tick"
+                        className="visx-group visx-axis-tick"
                         transform="translate(0, 0)"
                       >
                         <line
-                          className="vx-line"
+                          className="visx-line"
                           fill="transparent"
+                          shapeRendering="crispEdges"
                           stroke="#222"
                           strokeLinecap="square"
+                          strokeWidth={1}
                           x1={0}
                           x2={-8}
                           y1={16.507206743027766}
@@ -9716,6 +6936,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             fill="#000"
                             fontSize={10}
                             textAnchor="end"
+                            transform=""
                             x={-8}
                             y={16.507206743027766}
                           >
@@ -9729,8 +6950,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         </svg>
                       </g>
                       <line
-                        className="vx-line vx-axis-line"
+                        className="visx-line visx-axis-line"
                         fill="transparent"
+                        shapeRendering="crispEdges"
                         stroke="#333"
                         strokeWidth={1}
                         x1={0}
@@ -9749,7 +6971,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y={0}
                       >
                         <text
-                          className="vx-axis-label"
+                          className="visx-axis-label"
                           fontSize={14}
                           textAnchor="middle"
                           transform="rotate(-90)"
