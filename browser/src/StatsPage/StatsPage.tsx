@@ -197,14 +197,15 @@ const StatsPage = () => {
               <NumberOfVariantsInGnomadList />
             </div>
             <ResponsiveHalfWidthColumn>
-              <div style={{ marginTop: '4em', marginBottom: '7em' }}>
+              <div style={{ marginTop: '4em', marginBottom: '7em', minWidth: '550px' }}>
                 <StackedBarGraph
+                  title="Sample size across major ExAC/gnomAD releases"
                   barColors={gnomadExomeGenomeCountsByVersion.colors}
                   barValues={gnomadExomeGenomeCountsByVersion.data}
                   height={400}
                   formatTooltip={barGraphTooltip}
                   xLabel=""
-                  yLabel=""
+                  yLabel="Number of samples"
                   displayNumbers
                 />
               </div>
@@ -341,43 +342,31 @@ const StatsPage = () => {
             <GeneticAncestryGroupsByVersionTable />
           </ResponsiveTable>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '1em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '0.5em', width: '100%' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '1em' }}>
               <StackedBarGraph
+                title="Per genetic ancestry group count of samples in gnomAD releases"
                 barColors={gnomadV4GeneticAncestryCounts.colors}
                 barValues={gnomadV4GeneticAncestryCounts.data}
                 height={400}
                 formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
-                yLabel=""
+                yLabel="Number of samples"
                 displayNumbers={false}
               />
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '6em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '0' }}>
-              <div
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  marginBottom: '1em',
-                }}
-              >
-                <b style={{ width: '80%' }}>
-                  {
-                    'Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.1'
-                  }
-                </b>
-              </div>
               <StackedBarGraph
+                title="Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.1"
                 barColors={gnomadV4GeneticDiversityCounts.colors}
                 barValues={gnomadV4GeneticDiversityCounts.data}
                 height={400}
                 formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
-                yLabel=""
+                yLabel="Number of samples"
                 displayNumbers={false}
               />
             </DiversityBarGraph>

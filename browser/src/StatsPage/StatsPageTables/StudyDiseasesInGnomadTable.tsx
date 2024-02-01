@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { Button } from '@gnomad/ui'
+import { DownloadElementAsPNGButton } from '../DownloadFigure'
 
 import {
-  downloadTableAsPNG,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableBody,
@@ -12,11 +11,11 @@ import {
 } from './TableStyles'
 
 const StudyDiseasesInGnomadTable = () => {
-  const elementID = 'study-diseases-in-gnomad-table'
+  const elementId = 'study-diseases-in-gnomad-table'
 
   return (
     <div>
-      <StatsTable id={elementID} style={{ marginBottom: '3em' }}>
+      <StatsTable id={elementId}>
         <thead>
           <StatsTableHeaderRow>
             <th>Phenotypes</th>
@@ -153,7 +152,7 @@ const StudyDiseasesInGnomadTable = () => {
         </StatsTableCaption>
       </StatsTable>
       <div>
-        <Button onClick={() => downloadTableAsPNG(elementID)}>Download Table</Button>
+        <DownloadElementAsPNGButton elementId={elementId} />
       </div>
     </div>
   )
