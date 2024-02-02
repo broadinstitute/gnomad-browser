@@ -5,16 +5,16 @@ HOMOZYGOUS_DATA_PATH = "gs://gcp-public-data--gnomad/release/2.1.1/secondary_ana
 
 AF_CUTOFF_MAPPING = hl.literal(
     {
-        "1.0000e-02": "af_cutoff_0_01",
-        "1.0000e-03": "af_cutoff_0_001",
-        "1.0000e-04": "af_cutoff_0_0001",
-        "1.0000e-05": "af_cutoff_0_00001",
-        "1.5000e-02": "af_cutoff_0_015",
-        "2.0000e-02": "af_cutoff_0_02",
-        "5.0000e-02": "af_cutoff_0_05",
-        "5.0000e-03": "af_cutoff_0_005",
-        "5.0000e-04": "af_cutoff_0_0005",
-        "5.0000e-05": "af_cutoff_0_00005",
+        "0.01": "af_cutoff_0_01",
+        "0.001": "af_cutoff_0_001",
+        "0.0001": "af_cutoff_0_0001",
+        "0.00001": "af_cutoff_0_00001",
+        "0.015": "af_cutoff_0_015",
+        "0.02": "af_cutoff_0_02",
+        "0.05": "af_cutoff_0_05",
+        "0.005": "af_cutoff_0_005",
+        "0.0005": "af_cutoff_0_0005",
+        "0.00005": "af_cutoff_0_00005",
     }
 )
 
