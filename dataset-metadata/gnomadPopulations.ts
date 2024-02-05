@@ -34,7 +34,7 @@ export const populationName = (populationId: string) =>
   textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)
 
 const ExACPopulations: PopulationId[] = ['sas', 'afr', 'amr', 'eas', 'fin', 'nfe', 'remaining']
-const v2Populations: PopulationId[] = ['afr', 'nfe', 'afr', 'asj', 'eas', 'fin', 'sas', 'remaining']
+const v2Populations: PopulationId[] = ['amr', 'nfe', 'afr', 'asj', 'eas', 'fin', 'sas', 'remaining']
 const v3Populations: PopulationId[] = [
   'nfe',
   'amr',
