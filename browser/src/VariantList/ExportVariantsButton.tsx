@@ -70,6 +70,29 @@ export const createPopulationColumns = (datasetId: DatasetId) => {
   return populationColumns
 }
 
+export const createVersionSpecificColumns = (datasetId: DatasetId) => {
+  let versionSpecificColumns: Column[] = []
+
+  if (isV4(datasetId)) {
+    versionSpecificColumns = [
+      {
+        label: 'Groupmax FAF group',
+        getValue: (variant: any) =>
+          variant.faf95_joint.popmax_population !== null
+            ? variant.faf95_joint.popmax_population
+            : '',
+      },
+      {
+        label: 'Groupmax FAF frequency',
+        getValue: (variant: any) =>
+          variant.faf95_joint.popmax !== null ? JSON.stringify(variant.faf95_joint.popmax) : '',
+      },
+    ]
+  }
+
+  return versionSpecificColumns
+}
+
 const exportVariantsToCsv = (
   variants: VariantTableVariant[],
   datasetId: any,
@@ -180,14 +203,6 @@ const exportVariantsToCsv = (
       getValue: (variant: any) => JSON.stringify(variant.af),
     },
     {
-      label: 'Groupmax FAF group',
-      getValue: (variant: any) => JSON.stringify(variant.faf95_joint.popmax_population),
-    },
-    {
-      label: 'Groupmax FAF frequency',
-      getValue: (variant: any) => JSON.stringify(variant.faf95_joint.popmax),
-    },
-    {
       label: 'Homozygote Count',
       getValue: (variant: any) => JSON.stringify(variant.ac_hom),
     },
@@ -197,9 +212,11 @@ const exportVariantsToCsv = (
     },
   ]
 
+  const versionSpecificColumns = createVersionSpecificColumns(datasetId)
+
   const populationColumns = createPopulationColumns(datasetId)
 
-  const columns = DEFAULT_COLUMNS.concat(populationColumns)
+  const columns = DEFAULT_COLUMNS.concat(versionSpecificColumns, populationColumns)
 
   const headerRow = columns.map((c) => c.label)
 
