@@ -266,6 +266,33 @@ const shapeVariantSummary = (subset: any, context: any) => {
 
     const hasJointFafData = variant.faf95_joint && variant.faf99_joint
 
+    const inSilicoPredictorIds = [
+      'cadd',
+      'revel_max',
+      'spliceai_ds_max',
+      'pangolin_largest_ds',
+      'phylop',
+      'sift_max',
+      'polyphen_max',
+    ]
+
+    const inSilicoPredictorsList = inSilicoPredictorIds
+      .map((id) => {
+        if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
+          const name: string = id
+          if (id === 'cadd') {
+            return {
+              id: name,
+              value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+              flags: [],
+            }
+          }
+          return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
+        }
+        return null
+      })
+      .filter((item) => item)
+
     return {
       ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
@@ -303,6 +330,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
         popmax_population: variant.faf99_joint.grpmax_gen_anc,
         popmax: variant.faf99_joint.grpmax,
       },
+      in_silico_predictors: inSilicoPredictorsList,
     }
   }
 }
@@ -353,7 +381,6 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
         'value.exome.filters',
         'value.genome.filters',
         'value.alleles',
-        // 'value.caid',
         'value.locus',
         'value.flags',
         'value.rsids',
@@ -361,6 +388,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
         'value.variant_id',
         'value.faf95_joint',
         'value.faf99_joint',
+        'value.in_silico_predictors',
       ],
       body: {
         query: {
