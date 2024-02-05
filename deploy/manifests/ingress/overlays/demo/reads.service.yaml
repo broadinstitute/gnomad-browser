@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-reads
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-reads
+    deployment: '20231031-1717'
+  ports:
+    - port: 80
+      targetPort: 80

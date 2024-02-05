@@ -6,6 +6,8 @@ resources:
 labels:
   - pairs:
       deployment: 'green'
+    includeSelectors: true
+    includeTemplates: true
 nameSuffix: '-green'
 images:
   - name: gcr.io/exac-gnomad/gnomad-api

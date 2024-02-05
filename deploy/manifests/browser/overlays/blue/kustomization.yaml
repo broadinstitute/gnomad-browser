@@ -6,6 +6,8 @@ labels:
   - pairs:
       deployment: blue
       tier: production
+    includeSelectors: true
+    includeTemplates: true
 nameSuffix: -blue
 images:
   - name: gcr.io/exac-gnomad/gnomad-api

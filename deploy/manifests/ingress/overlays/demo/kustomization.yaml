@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+labels:
+  - pairs:
+      deployment: 'demo'
+      tier: 'demo'
+nameSuffix: '-demo'
+resources:
+  - ../../base
+  - browser.service.yaml
+  - reads.service.yaml

@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gnomad-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: gnomad-browser
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+          - backend:
+              service:
+                name: gnomad-reads
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+            path: /reads
+          - backend:
+              service:
+                name: gnomad-reads
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+            path: /reads/*

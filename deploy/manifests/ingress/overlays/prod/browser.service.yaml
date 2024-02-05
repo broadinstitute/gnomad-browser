@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnomad-browser
+  labels:
+    tier: production
+  annotations:
+    cloud.google.com/backend-config: '{{"ports": {{"80":"gnomad-backend-config"}}}}'
+spec:
+  type: NodePort
+  selector:
+    name: gnomad-browser
+    deployment: 'green'
+  ports:
+    - port: 80
+      targetPort: 80
