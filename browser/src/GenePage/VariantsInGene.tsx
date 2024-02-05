@@ -230,6 +230,10 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
         ac
         ac_hemi
         ac_hom
+        faf95 {
+          popmax
+          popmax_population
+        }
         an
         af
         filters
@@ -245,6 +249,10 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
         ac
         ac_hemi
         ac_hom
+        faf95 {
+          popmax
+          popmax_population
+        }
         an
         af
         filters
@@ -255,6 +263,11 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
           ac_hemi
           ac_hom
         }
+      }
+      in_silico_predictors {
+        id
+        value
+        flags
       }
       lof_curation {
         verdict

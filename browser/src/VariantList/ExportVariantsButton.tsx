@@ -71,21 +71,71 @@ export const createPopulationColumns = (datasetId: DatasetId) => {
 }
 
 export const createVersionSpecificColumns = (datasetId: DatasetId) => {
+  const inSilicoPredictorIds = [
+    'cadd',
+    'revel_max',
+    'spliceai_ds_max',
+    'pangolin_largest_ds',
+    'phylop',
+    'sift_max',
+    'polyphen_max',
+  ]
+
   let versionSpecificColumns: Column[] = []
 
   if (isV4(datasetId)) {
     versionSpecificColumns = [
       {
-        label: 'Groupmax FAF group',
+        label: 'GroupMax FAF group',
         getValue: (variant: any) =>
           variant.faf95_joint.popmax_population !== null
             ? variant.faf95_joint.popmax_population
             : '',
       },
       {
-        label: 'Groupmax FAF frequency',
+        label: 'GroupMax FAF frequency',
         getValue: (variant: any) =>
           variant.faf95_joint.popmax !== null ? JSON.stringify(variant.faf95_joint.popmax) : '',
+      },
+    ]
+
+    inSilicoPredictorIds.forEach((id) => {
+      const inSilicoColumn = {
+        label: id,
+        getValue: (variant: any) =>
+          variant.in_silico_predictors.filter((predictor: any) => predictor.id === id).length > 0
+            ? variant.in_silico_predictors.filter((predictor: any) => predictor.id === id)[0].value
+            : '',
+      }
+      versionSpecificColumns = versionSpecificColumns.concat(inSilicoColumn)
+    })
+  }
+
+  if (isV2(datasetId)) {
+    versionSpecificColumns = [
+      {
+        label: 'Exome GroupMax FAF group',
+        getValue: (variant: any) =>
+          variant.exome.faf95.popmax_population !== null
+            ? variant.exome.faf95.popmax_population
+            : '',
+      },
+      {
+        label: 'Exome GroupMax FAF frequency',
+        getValue: (variant: any) =>
+          variant.exome.faf95.popmax !== null ? JSON.stringify(variant.exome.faf95.popmax) : '',
+      },
+      {
+        label: 'Genome GroupMax FAF group',
+        getValue: (variant: any) =>
+          variant.genome.faf95.popmax_population !== null
+            ? variant.genome.faf95.popmax_population
+            : '',
+      },
+      {
+        label: 'Genome GroupMax FAF frequency',
+        getValue: (variant: any) =>
+          variant.genome.faf95.popmax !== null ? JSON.stringify(variant.genome.faf95.popmax) : '',
       },
     ]
   }
