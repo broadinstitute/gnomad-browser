@@ -174,9 +174,9 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
-        popmax_population: variant.exome.faf95.grpmax_gen_anc,
-        popmax: variant.exome.faf95.grpmax,
-      },
+          popmax_population: variant.exome.faf95.grpmax_gen_anc,
+          popmax: variant.exome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -205,9 +205,9 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
-        popmax_population: variant.genome.faf95.grpmax_gen_anc,
-        popmax: variant.genome.faf95.grpmax,
-      },
+          popmax_population: variant.genome.faf95.grpmax_gen_anc,
+          popmax: variant.genome.faf95.grpmax,
+        },
       quality_metrics: {
         // TODO: An older version of the data pipeline stored only adj quality metric histograms.
         // Maintain the same behavior by returning the adj version until the API schema is updated to allow
@@ -266,6 +266,33 @@ const shapeVariantSummary = (subset: any, context: any) => {
 
     const hasJointFafData = variant.faf95_joint && variant.faf99_joint
 
+    const inSilicoPredictorIds = [
+      'cadd',
+      'revel_max',
+      'spliceai_ds_max',
+      'pangolin_largest_ds',
+      'phylop',
+      'sift_max',
+      'polyphen_max',
+    ]
+
+    const inSilicoPredictorsList = inSilicoPredictorIds
+      .map((id) => {
+        if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
+          const name: string = id
+          if (id === 'cadd') {
+            return {
+              id: name,
+              value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+              flags: [],
+            }
+          }
+          return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
+        }
+        return null
+      })
+      .filter((item) => item)
+
     return {
       ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
@@ -275,23 +302,23 @@ const shapeVariantSummary = (subset: any, context: any) => {
       alt: variant.alleles[1],
       exome: hasExomeVariant
         ? {
-          ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-          ...variant.exome.freq[subset],
-          populations: variant.exome.freq[subset].ancestry_groups.filter(
-            (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-          ),
-          filters: exomeFilters,
-        }
+            ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.exome.freq[subset],
+            populations: variant.exome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters: exomeFilters,
+          }
         : null,
       genome: hasGenomeVariant
         ? {
-          ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-          ...variant.genome.freq[subset],
-          populations: variant.genome.freq[subset].ancestry_groups.filter(
-            (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
-          ),
-          filters: genomeFilters,
-        }
+            ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...variant.genome.freq[subset],
+            populations: variant.genome.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters: genomeFilters,
+          }
         : null,
       flags,
       transcript_consequence: transcriptConsequence,
@@ -303,6 +330,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
         popmax_population: variant.faf99_joint.grpmax_gen_anc,
         popmax: variant.faf99_joint.grpmax,
       },
+      in_silico_predictors: inSilicoPredictorsList,
     }
   }
 }
@@ -353,12 +381,14 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
         'value.exome.filters',
         'value.genome.filters',
         'value.alleles',
-        // 'value.caid',
         'value.locus',
         'value.flags',
         'value.rsids',
         'value.transcript_consequences',
         'value.variant_id',
+        'value.faf95_joint',
+        'value.faf99_joint',
+        'value.in_silico_predictors',
       ],
       body: {
         query: {
