@@ -116,26 +116,30 @@ export const createVersionSpecificColumns = (datasetId: DatasetId) => {
       {
         label: 'Exome GroupMax FAF group',
         getValue: (variant: any) =>
-          variant.exome.faf95.popmax_population !== null
+          variant.exome && variant.exome.faf95.popmax_population !== null
             ? variant.exome.faf95.popmax_population
             : '',
       },
       {
         label: 'Exome GroupMax FAF frequency',
         getValue: (variant: any) =>
-          variant.exome.faf95.popmax !== null ? JSON.stringify(variant.exome.faf95.popmax) : '',
+          variant.exome && variant.exome.faf95.popmax !== null
+            ? JSON.stringify(variant.exome.faf95.popmax)
+            : '',
       },
       {
         label: 'Genome GroupMax FAF group',
         getValue: (variant: any) =>
-          variant.genome.faf95.popmax_population !== null
-            ? variant.genome.faf95.popmax_population
+          variant.genome && variant.genome?.faf95.popmax_population !== null
+            ? variant.genome?.faf95.popmax_population
             : '',
       },
       {
         label: 'Genome GroupMax FAF frequency',
         getValue: (variant: any) =>
-          variant.genome.faf95.popmax !== null ? JSON.stringify(variant.genome.faf95.popmax) : '',
+          variant.genome && variant.genome?.faf95.popmax !== null
+            ? JSON.stringify(variant.genome.faf95.popmax)
+            : '',
       },
     ]
   }
