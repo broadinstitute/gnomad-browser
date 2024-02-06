@@ -106,6 +106,7 @@ type VariantSequencingTypeData {
   hemizygote_count: Int
   filters: [String!]
   populations: [VariantPopulation]
+  faf95: VariantFilteringAlleleFrequency
 
   # Deprecated - calculate from AC and AN
   # Preserved for compatibility with existing browser queries
@@ -141,6 +142,9 @@ type Variant {
   flags: [String!]
   lof_curation: LoFCurationInGene
   transcript_consequence: TranscriptConsequence
+  faf95_joint: VariantFilteringAlleleFrequency
+  faf99_joint: VariantFilteringAlleleFrequency
+  in_silico_predictors: [VariantInSilicoPredictor!]
 
   # Deprecated - use rsids
   rsid: String
