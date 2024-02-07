@@ -222,10 +222,6 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
         popmax
         popmax_population
       }
-      faf99_joint {
-        popmax
-        popmax_population
-      }
       exome {
         ac
         ac_hemi
