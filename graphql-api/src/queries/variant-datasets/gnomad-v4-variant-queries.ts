@@ -381,6 +381,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
         'value.exome.filters',
         'value.genome.filters',
         'value.alleles',
+        // 'value.caid',
         'value.locus',
         'value.flags',
         'value.rsids',
@@ -439,6 +440,9 @@ const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) =
       'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
+      'value.faf95_joint',
+      'value.faf99_joint',
+      'value.in_silico_predictors',
     ],
     body: {
       query: {
@@ -523,6 +527,9 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
       'value.rsids',
       'value.transcript_consequences',
       'value.variant_id',
+      'value.faf95_joint',
+      'value.faf99_joint',
+      'value.in_silico_predictors',
     ],
     body: {
       query: {
