@@ -380,6 +380,10 @@ const StatsPage = () => {
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
 
+          <h3 style={{ marginBottom: '2em' }}>
+            Inferred sex in gnomAD v4 per Genetic Ancestry Group
+          </h3>
+
           <ResponsiveTable style={{ marginBottom: '6em' }}>
             <InferredSexAllV4Table />
           </ResponsiveTable>

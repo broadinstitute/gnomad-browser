@@ -186,6 +186,10 @@ export const InferredSexAllV4Table = () => {
             <td>400897</td>
           </tr>
         </StatsTableFooter>
+
+        <StatsTableCaption>
+          <div>Inferred sex counts of gnomAD v4 samples per Genetic Ancestry Group</div>
+        </StatsTableCaption>
       </StatsTable>
       <div>
         <DownloadElementAsPNGButton elementId={elementId} />
@@ -228,12 +232,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>8847</td>
             <td>5143</td>
             <td>3704</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>Admixed American</td>
@@ -241,12 +245,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>21870</td>
             <td>12520</td>
             <td>9350</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>Ashkenazi Jewish</td>
@@ -254,12 +258,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>10492</td>
             <td>4919</td>
             <td>5573</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>East Asian</td>
@@ -267,12 +271,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>18035</td>
             <td>9149</td>
             <td>8886</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>European (Finnish)</td>
@@ -280,12 +284,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>26572</td>
             <td>13699</td>
             <td>12873</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>Middle Eastern</td>
@@ -293,12 +297,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>2074</td>
             <td>958</td>
             <td>1116</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>European (non-Finnish)</td>
@@ -306,12 +310,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>175054</td>
             <td>81110</td>
             <td>93944</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>Remaining</td>
@@ -319,12 +323,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>16549</td>
             <td>8376</td>
             <td>8173</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
             <td>South Asian</td>
@@ -332,12 +336,12 @@ export const InferredSexNonUKBV4Table = () => {
             <td>34899</td>
             <td>7251</td>
             <td>27648</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
         </StatsTableBody>
         <StatsTableFooter>
@@ -347,14 +351,20 @@ export const InferredSexNonUKBV4Table = () => {
             <td>314392</td>
             <td>143125</td>
             <td>171267</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
         </StatsTableFooter>
+        <StatsTableCaption>
+          <div>
+            Inferred sex counts of the gnomAD v4 samples per Genetic Ancestry Group not including UK
+            Bio Bank samples
+          </div>
+        </StatsTableCaption>
       </StatsTable>
       <div>
         <DownloadElementAsPNGButton elementId={elementId} />
