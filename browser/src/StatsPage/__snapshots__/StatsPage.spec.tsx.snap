@@ -6197,7 +6197,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         className="c43"
         style={
           {
-            "marginBottom": "0.5em",
+            "marginBottom": "6em",
           }
         }
       >
@@ -7504,6 +7504,844 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <h3
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        Inferred sex in gnomAD v4 per Genetic Ancestry Group
+      </h3>
+      <div
+        className="c36"
+        style={
+          {
+            "marginBottom": "6em",
+          }
+        }
+      >
+        <div>
+          <table
+            className="c37"
+          >
+            <thead>
+              <tr
+                className="c38"
+              >
+                <th
+                  colSpan={2}
+                >
+                  Genetic Ancestry
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Exomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Genomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  Combined
+                </th>
+              </tr>
+              <tr
+                className="c39"
+              >
+                <th>
+                  Genetic Ancestry
+                </th>
+                <th>
+                  Genetic Ancestry 
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c40"
+            >
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td>
+                  AFR
+                </td>
+                <td>
+                  16740
+                </td>
+                <td>
+                  9663
+                </td>
+                <td>
+                  7077
+                </td>
+                <td>
+                  20805
+                </td>
+                <td>
+                  11094
+                </td>
+                <td>
+                  9711
+                </td>
+                <td>
+                  37545
+                </td>
+                <td>
+                  20757
+                </td>
+                <td>
+                  16788
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Amish
+                </td>
+                <td>
+                  AMI
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td>
+                  221
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td>
+                  221
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Admixed American
+                </td>
+                <td>
+                  AMR
+                </td>
+                <td>
+                  22362
+                </td>
+                <td>
+                  12845
+                </td>
+                <td>
+                  9517
+                </td>
+                <td>
+                  7657
+                </td>
+                <td>
+                  3399
+                </td>
+                <td>
+                  4258
+                </td>
+                <td>
+                  30019
+                </td>
+                <td>
+                  16244
+                </td>
+                <td>
+                  13775
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish
+                </td>
+                <td>
+                  ASJ
+                </td>
+                <td>
+                  13068
+                </td>
+                <td>
+                  6318
+                </td>
+                <td>
+                  6750
+                </td>
+                <td>
+                  1736
+                </td>
+                <td>
+                  934
+                </td>
+                <td>
+                  802
+                </td>
+                <td>
+                  14804
+                </td>
+                <td>
+                  7252
+                </td>
+                <td>
+                  7552
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  East Asian
+                </td>
+                <td>
+                  EAS
+                </td>
+                <td>
+                  19850
+                </td>
+                <td>
+                  10356
+                </td>
+                <td>
+                  9494
+                </td>
+                <td>
+                  2598
+                </td>
+                <td>
+                  1136
+                </td>
+                <td>
+                  1462
+                </td>
+                <td>
+                  22448
+                </td>
+                <td>
+                  11492
+                </td>
+                <td>
+                  10956
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (Finnish)
+                </td>
+                <td>
+                  FIN
+                </td>
+                <td>
+                  26710
+                </td>
+                <td>
+                  13824
+                </td>
+                <td>
+                  12886
+                </td>
+                <td>
+                  5316
+                </td>
+                <td>
+                  1287
+                </td>
+                <td>
+                  4029
+                </td>
+                <td>
+                  32026
+                </td>
+                <td>
+                  15111
+                </td>
+                <td>
+                  16915
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td>
+                  MID
+                </td>
+                <td>
+                  2884
+                </td>
+                <td>
+                  1253
+                </td>
+                <td>
+                  1631
+                </td>
+                <td>
+                  147
+                </td>
+                <td>
+                  72
+                </td>
+                <td>
+                  75
+                </td>
+                <td>
+                  3031
+                </td>
+                <td>
+                  1325
+                </td>
+                <td>
+                  1706
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (non-Finnish)
+                </td>
+                <td>
+                  NFE
+                </td>
+                <td>
+                  556006
+                </td>
+                <td>
+                  286144
+                </td>
+                <td>
+                  269862
+                </td>
+                <td>
+                  34025
+                </td>
+                <td>
+                  19683
+                </td>
+                <td>
+                  14342
+                </td>
+                <td>
+                  590031
+                </td>
+                <td>
+                  305827
+                </td>
+                <td>
+                  284204
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Remaining
+                </td>
+                <td>
+                  Remaining
+                </td>
+                <td>
+                  30198
+                </td>
+                <td>
+                  15900
+                </td>
+                <td>
+                  14298
+                </td>
+                <td>
+                  1058
+                </td>
+                <td>
+                  525
+                </td>
+                <td>
+                  533
+                </td>
+                <td>
+                  31256
+                </td>
+                <td>
+                  16425
+                </td>
+                <td>
+                  14831
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  South Asian
+                </td>
+                <td>
+                  SAS
+                </td>
+                <td>
+                  43129
+                </td>
+                <td>
+                  11020
+                </td>
+                <td>
+                  32109
+                </td>
+                <td>
+                  2417
+                </td>
+                <td>
+                  577
+                </td>
+                <td>
+                  1840
+                </td>
+                <td>
+                  45546
+                </td>
+                <td>
+                  11597
+                </td>
+                <td>
+                  33949
+                </td>
+              </tr>
+            </tbody>
+            <tfoot
+              className="c41"
+            >
+              <tr>
+                <td>
+                  Total
+                </td>
+                <td />
+                <td>
+                  730947
+                </td>
+                <td>
+                  367323
+                </td>
+                <td>
+                  363624
+                </td>
+                <td>
+                  76215
+                </td>
+                <td>
+                  38942
+                </td>
+                <td>
+                  37273
+                </td>
+                <td>
+                  807162
+                </td>
+                <td>
+                  406265
+                </td>
+                <td>
+                  400897
+                </td>
+              </tr>
+            </tfoot>
+            <caption
+              className="c42"
+            >
+              <div>
+                Inferred sex counts of gnomAD v4 samples per Genetic Ancestry Group
+              </div>
+            </caption>
+          </table>
+          <div>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c36"
+        style={
+          {
+            "marginBottom": "3em",
+          }
+        }
+      >
+        <div>
+          <table
+            className="c37"
+          >
+            <thead>
+              <tr
+                className="c38"
+              >
+                <th
+                  colSpan={2}
+                >
+                  Genetic Ancestry
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Exomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Genomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  Combined
+                </th>
+              </tr>
+              <tr
+                className="c39"
+              >
+                <th>
+                  Genetic Ancestry
+                </th>
+                <th>
+                  Genetic Ancestry 
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c40"
+            >
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td>
+                  AFR
+                </td>
+                <td>
+                  8847
+                </td>
+                <td>
+                  5143
+                </td>
+                <td>
+                  3704
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  Admixed American
+                </td>
+                <td>
+                  AMR
+                </td>
+                <td>
+                  21870
+                </td>
+                <td>
+                  12520
+                </td>
+                <td>
+                  9350
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish
+                </td>
+                <td>
+                  ASJ
+                </td>
+                <td>
+                  10492
+                </td>
+                <td>
+                  4919
+                </td>
+                <td>
+                  5573
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  East Asian
+                </td>
+                <td>
+                  EAS
+                </td>
+                <td>
+                  18035
+                </td>
+                <td>
+                  9149
+                </td>
+                <td>
+                  8886
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  European (Finnish)
+                </td>
+                <td>
+                  FIN
+                </td>
+                <td>
+                  26572
+                </td>
+                <td>
+                  13699
+                </td>
+                <td>
+                  12873
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td>
+                  MID
+                </td>
+                <td>
+                  2074
+                </td>
+                <td>
+                  958
+                </td>
+                <td>
+                  1116
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  European (non-Finnish)
+                </td>
+                <td>
+                  NFE
+                </td>
+                <td>
+                  175054
+                </td>
+                <td>
+                  81110
+                </td>
+                <td>
+                  93944
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  Remaining
+                </td>
+                <td>
+                  Remaining
+                </td>
+                <td>
+                  16549
+                </td>
+                <td>
+                  8376
+                </td>
+                <td>
+                  8173
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td>
+                  South Asian
+                </td>
+                <td>
+                  SAS
+                </td>
+                <td>
+                  34899
+                </td>
+                <td>
+                  7251
+                </td>
+                <td>
+                  27648
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+            </tbody>
+            <tfoot
+              className="c41"
+            >
+              <tr>
+                <td>
+                  Total
+                </td>
+                <td />
+                <td>
+                  314392
+                </td>
+                <td>
+                  143125
+                </td>
+                <td>
+                  171267
+                </td>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+            </tfoot>
+            <caption
+              className="c42"
+            >
+              <div>
+                Inferred sex counts of the gnomAD v4 samples per Genetic Ancestry Group not including UK Bio Bank samples
+              </div>
+            </caption>
+          </table>
+          <div>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
           </div>
         </div>
       </div>
