@@ -1442,11 +1442,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         />
                         <rect
                           fill="#0e6fbf"
-                          height={56.088963553784765}
+                          height={56.084503482572245}
                           stroke="#333"
                           width={39.6}
                           x={-64.8}
-                          y={303.91103644621523}
+                          y={303.91549651742775}
                         />
                         <text
                           dy={4}
@@ -1454,9 +1454,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           fontSize={12}
                           textAnchor="middle"
                           x={-45}
-                          y={331.9555182231076}
+                          y={331.9577482587139}
                         >
-                          125,758
+                          125,748
                         </text>
                         <rect
                           className="c16"
@@ -1473,7 +1473,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           stroke="#333"
                           width={39.6}
                           x={-64.8}
-                          y={296.9051565856668}
+                          y={296.90961665687934}
                         />
                         <rect
                           className="c16"

@@ -5,7 +5,7 @@
   },
   "data": [
     { "label": "ExAC", "Exomes": 60706, "Genomes": 0 },
-    { "label": "gnomAD v2", "Exomes": 125758, "Genomes": 15708 },
+    { "label": "gnomAD v2", "Exomes": 125748, "Genomes": 15708 },
     { "label": "gnomAD v3", "Exomes": 0, "Genomes": 76156 },
     { "label": "gnomAD v4", "Exomes": 730947, "Genomes": 76215 }
   ]
