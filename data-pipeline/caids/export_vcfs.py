@@ -5,6 +5,15 @@ import argparse
 import hail as hl
 
 
+def get_gnomad_v4_variants() -> hl.Table:
+    """Get locus/alleles for all gnomAD v4 variants."""
+    ds = hl.read_table("gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht")
+    ds = ds.select_globals()
+    ds = ds.select()
+    ds = ds.repartition(5000, shuffle=True)
+    return ds
+
+
 def get_gnomad_v3_variants() -> hl.Table:
     """Get locus/alleles for all gnomAD v3 variants."""
     ds = hl.read_table("gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht")
@@ -45,6 +54,8 @@ def get_exac_variants() -> hl.Table:
 
 def get_variants(dataset: str) -> hl.Table:
     """Get locus/alleles for all variants in the given dataset."""
+    if dataset == "gnomAD v4.0":
+        return get_gnomad_v4_variants()
     if dataset == "gnomAD v3.1.1":
         return get_gnomad_v3_variants()
     if dataset == "gnomAD v2.1.1":
@@ -76,7 +87,7 @@ def export_vcfs(ds: hl.Table, output_url: str) -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", choices=("ExAC", "gnomAD v2.1.1", "gnomAD v3.1.1"))
+    parser.add_argument("dataset", choices=("ExAC", "gnomAD v2.1.1", "gnomAD v3.1.1", "gnomAD v4.0"))
     parser.add_argument("output_url")
     args = parser.parse_args()
 
