@@ -348,12 +348,12 @@ export type VariantTableVariant = {
   transcript_id: string
   transcript_version: string
   variant_id: string
-  exome?: {
+  exome: {
     filters: string[]
-  }
-  genome?: {
+  } | null
+  genome: {
     filters: string[]
-  }
+  } | null
 }
 
 type FilteredAlleleFrequency = {
@@ -362,10 +362,10 @@ type FilteredAlleleFrequency = {
 }
 
 type V2VariantTableVariant = VariantTableVariant & {
-  exome?: {
+  exome: {
     faf95: FilteredAlleleFrequency
   }
-  genome?: {
+  genome: {
     faf95: FilteredAlleleFrequency
   }
 }
