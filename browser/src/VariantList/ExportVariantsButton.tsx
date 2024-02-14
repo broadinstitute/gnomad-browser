@@ -329,7 +329,7 @@ const exportVariantsToCsv = (
   link.click()
 }
 
-type VariantTableVariant = {
+export type VariantTableVariant = {
   ac: number
   ac_hemi: number
   ac_hom: number
