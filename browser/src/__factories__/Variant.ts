@@ -152,8 +152,11 @@ export const variantTableVariantFactory = Factory.define<VariantTableVariant>(
       pos = 1,
       rsids = [],
       variant_id = '',
+      clinical_significance = 'benign',
+      clinvar_variation_id = '12345',
+      transcript_id = 'ENST00012345',
+      transcript_version = '1',
     } = params
-
     const {
       exome = {
         filters: [],
@@ -180,6 +183,10 @@ export const variantTableVariantFactory = Factory.define<VariantTableVariant>(
       variant_id,
       exome,
       genome,
+      clinical_significance,
+      clinvar_variation_id,
+      transcript_id,
+      transcript_version,
     }
   }
 )
