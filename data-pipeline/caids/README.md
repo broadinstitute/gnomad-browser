@@ -5,6 +5,7 @@
    ```
    hailctl dataproc start my-cluster
 
+   hailctl dataproc submit my-cluster export_vcfs.py "gnomAD v4.0" gs://my-bucket/path/to/gnomad_v4.vcf.gz
    hailctl dataproc submit my-cluster export_vcfs.py "gnomAD v3.1.1" gs://my-bucket/path/to/gnomad_v3.vcf.gz
    hailctl dataproc submit my-cluster export_vcfs.py "gnomAD v2.1.1" gs://my-bucket/path/to/gnomad_v2.vcf.gz
    hailctl dataproc submit my-cluster export_vcfs.py "ExAC" gs://my-bucket/path/to/exac.vcf.gz
@@ -19,7 +20,8 @@
    ```
    gcloud compute instances create my-instance \
       --machine-type=e2-standard-2 \
-      --scopes=default,storage-rw
+      --scopes=default,storage-rw \
+      --subnet=my-subnet
    ```
 
    -  Connect to the instance.
