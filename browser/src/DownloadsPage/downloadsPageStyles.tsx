@@ -242,7 +242,7 @@ type OwnDownloadLinksProps = {
   path: string
   size?: string
   md5?: string
-  crc32?: string
+  crc32c?: string
   gcsBucket?: string
   includeGCP?: boolean
   includeAWS?: boolean
@@ -251,8 +251,7 @@ type OwnDownloadLinksProps = {
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'DownloadLinksProps' circula... Remove this comment to see the full error message
-type DownloadLinksProps = OwnDownloadLinksProps &
-  typeof DownloadLinks.defaultProps
+type DownloadLinksProps = OwnDownloadLinksProps & typeof DownloadLinks.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'DownloadLinks' implicitly has type 'an... Remove this comment to see the full error message
 export const DownloadLinks = ({
@@ -260,7 +259,7 @@ export const DownloadLinks = ({
   path,
   size,
   md5,
-  crc32,
+  crc32c,
   gcsBucket,
   includeGCP,
   includeAWS,
@@ -279,10 +278,10 @@ export const DownloadLinks = ({
           <br />
         </>
       )}
-      {size && crc32 && (
+      {size && crc32c && (
         <>
           <span>
-            {size}, CRC32:&nbsp;{crc32}
+            {size}, CRC32C:&nbsp;{crc32c}
           </span>
           <br />
         </>
@@ -324,42 +323,42 @@ export const DownloadLinks = ({
       </span>
       {includeTBI && (
         <>
-        <br />
-        <span>
-          Download TBI from{' '}
-          {renderDownloadOptions([
-            includeGCP && (
-              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-              <ExternalLink
-                key="gcp"
-                aria-label={`Download TBI file for ${label} from Google`}
-                href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
-              >
-                Google
-              </ExternalLink>
-            ),
-            includeAWS && (
-              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-              <ExternalLink
-                key="aws"
-                aria-label={`Download TBI file for ${label} from Amazon`}
-                href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
-              >
-                Amazon
-              </ExternalLink>
-            ),
-            includeAzure && (
-              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-              <ExternalLink
-                key="azure"
-                aria-label={`Download TBI file for ${label} from Microsoft`}
-                href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.tbi`}
-              >
-                Microsoft
-              </ExternalLink>
-            ),
-          ])}
-        </span>
+          <br />
+          <span>
+            Download TBI from{' '}
+            {renderDownloadOptions([
+              includeGCP && (
+                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
+                <ExternalLink
+                  key="gcp"
+                  aria-label={`Download TBI file for ${label} from Google`}
+                  href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
+                >
+                  Google
+                </ExternalLink>
+              ),
+              includeAWS && (
+                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
+                <ExternalLink
+                  key="aws"
+                  aria-label={`Download TBI file for ${label} from Amazon`}
+                  href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
+                >
+                  Amazon
+                </ExternalLink>
+              ),
+              includeAzure && (
+                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
+                <ExternalLink
+                  key="azure"
+                  aria-label={`Download TBI file for ${label} from Microsoft`}
+                  href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.tbi`}
+                >
+                  Microsoft
+                </ExternalLink>
+              ),
+            ])}
+          </span>
         </>
       )}
     </>
