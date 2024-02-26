@@ -16,11 +16,12 @@ COPY --chown=node:node pnpm-lock.yaml .
 COPY --chown=node:node pnpm-workspace-api-docker.yaml ./pnpm-workspace.yaml
 RUN pnpm install --production --frozen-lockfile
 
-# Copy source
+# Copy source and config files
 COPY --chown=node:node dataset-metadata /app/dataset-metadata
 COPY --chown=node:node graphql-api/src /app/graphql-api/src
 COPY --chown=node:node tsconfig.json /app/graphql-api/tsconfig.json
 COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
+COPY --chown=node:node graphql-api/unversioned_config.json /app/unversioned_config.json
 
 # Build JS from TS source
 RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json

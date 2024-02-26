@@ -2,6 +2,7 @@
 !dataset-metadata
 !graphql-api/package.json
 !graphql-api/src
+!graphql-api/unversioned_config.json
 !tsconfig.json
 !tsconfig.build.json
 !pnpm-lock.yaml
