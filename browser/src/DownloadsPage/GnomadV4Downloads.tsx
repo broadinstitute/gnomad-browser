@@ -69,30 +69,30 @@ const genomeChromosomeVcfs = [
 ]
 
 const svChromosomeVcfs = [
-  { chrom: '1', size: '616.33 MiB', crc32: 'f497d60f' },
-  { chrom: '2', size: '612.83 MiB', crc32: 'bee58761' },
-  { chrom: '3', size: '469.64 MiB', crc32: '00c11e03' },
-  { chrom: '4', size: '446.44 MiB', crc32: '4aa1be45' },
-  { chrom: '5', size: '418.1 MiB', crc32: 'cc78d775' },
-  { chrom: '6', size: '418.37 MiB', crc32: '8ad01764' },
-  { chrom: '7', size: '437.99 MiB', crc32: '0e78bed7' },
-  { chrom: '8', size: '332.91 MiB', crc32: '1a7974d3' },
-  { chrom: '9', size: '289.19 MiB', crc32: '693c4cc1' },
-  { chrom: '10', size: '320.36 MiB', crc32: '63dc92db' },
-  { chrom: '11', size: '312.75 MiB', crc32: 'c0016756' },
-  { chrom: '12', size: '322.33 MiB', crc32: '28396743' },
-  { chrom: '13', size: '208.4 MiB', crc32: '504d3937' },
-  { chrom: '14', size: '218.37 MiB', crc32: '06ccecf9' },
-  { chrom: '15', size: '183.5 MiB', crc32: 'c191b2ca' },
-  { chrom: '16', size: '234 MiB', crc32: '016c8e77' },
-  { chrom: '17', size: '233.1 MiB', crc32: 'f37738a4' },
-  { chrom: '18', size: '157.88 MiB', crc32: '1f802ad6' },
-  { chrom: '19', size: '227.48 MiB', crc32: '16a48cf0' },
-  { chrom: '20', size: '148.62 MiB', crc32: '7e34ac14' },
-  { chrom: '21', size: '109.55 MiB', crc32: '6805d560' },
-  { chrom: '22', size: '112.34 MiB', crc32: '3a0cce90' },
-  { chrom: 'X', size: '335.93 MiB', crc32: '1b49e5a6' },
-  { chrom: 'Y', size: '50.76 MiB', crc32: 'd8a3a636' },
+  { chrom: '1', size: '616.33 MiB', crc32c: 'f497d60f' },
+  { chrom: '2', size: '612.83 MiB', crc32c: 'bee58761' },
+  { chrom: '3', size: '469.64 MiB', crc32c: '00c11e03' },
+  { chrom: '4', size: '446.44 MiB', crc32c: '4aa1be45' },
+  { chrom: '5', size: '418.1 MiB', crc32c: 'cc78d775' },
+  { chrom: '6', size: '418.37 MiB', crc32c: '8ad01764' },
+  { chrom: '7', size: '437.99 MiB', crc32c: '0e78bed7' },
+  { chrom: '8', size: '332.91 MiB', crc32c: '1a7974d3' },
+  { chrom: '9', size: '289.19 MiB', crc32c: '693c4cc1' },
+  { chrom: '10', size: '320.36 MiB', crc32c: '63dc92db' },
+  { chrom: '11', size: '312.75 MiB', crc32c: 'c0016756' },
+  { chrom: '12', size: '322.33 MiB', crc32c: '28396743' },
+  { chrom: '13', size: '208.4 MiB', crc32c: '504d3937' },
+  { chrom: '14', size: '218.37 MiB', crc32c: '06ccecf9' },
+  { chrom: '15', size: '183.5 MiB', crc32c: 'c191b2ca' },
+  { chrom: '16', size: '234 MiB', crc32c: '016c8e77' },
+  { chrom: '17', size: '233.1 MiB', crc32c: 'f37738a4' },
+  { chrom: '18', size: '157.88 MiB', crc32c: '1f802ad6' },
+  { chrom: '19', size: '227.48 MiB', crc32c: '16a48cf0' },
+  { chrom: '20', size: '148.62 MiB', crc32c: '7e34ac14' },
+  { chrom: '21', size: '109.55 MiB', crc32c: '6805d560' },
+  { chrom: '22', size: '112.34 MiB', crc32c: '3a0cce90' },
+  { chrom: 'X', size: '335.93 MiB', crc32c: '1b49e5a6' },
+  { chrom: 'Y', size: '50.76 MiB', crc32c: 'd8a3a636' },
 ]
 
 const GnomadV4Downloads = () => {
@@ -270,14 +270,14 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
-          {svChromosomeVcfs.map(({ chrom, size, crc32 }) => (
+          {svChromosomeVcfs.map(({ chrom, size, crc32c }) => (
             // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             <ListItem key={chrom}>
               <DownloadLinks
                 label={`chr${chrom} VCF`}
                 path={`/release/4.0/genome_sv/gnomad.v4.0.sv.chr${chrom}.vcf.gz`}
                 size={size}
-                crc32={crc32}
+                crc32c={crc32c}
                 includeTBI
               />
             </ListItem>

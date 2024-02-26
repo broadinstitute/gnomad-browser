@@ -5187,7 +5187,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             616.33 MiB
-            , CRC32: 
+            , CRC32C: 
             f497d60f
           </span>
           <br />
@@ -5268,7 +5268,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             612.83 MiB
-            , CRC32: 
+            , CRC32C: 
             bee58761
           </span>
           <br />
@@ -5349,7 +5349,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             469.64 MiB
-            , CRC32: 
+            , CRC32C: 
             00c11e03
           </span>
           <br />
@@ -5430,7 +5430,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             446.44 MiB
-            , CRC32: 
+            , CRC32C: 
             4aa1be45
           </span>
           <br />
@@ -5511,7 +5511,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             418.1 MiB
-            , CRC32: 
+            , CRC32C: 
             cc78d775
           </span>
           <br />
@@ -5592,7 +5592,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             418.37 MiB
-            , CRC32: 
+            , CRC32C: 
             8ad01764
           </span>
           <br />
@@ -5673,7 +5673,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             437.99 MiB
-            , CRC32: 
+            , CRC32C: 
             0e78bed7
           </span>
           <br />
@@ -5754,7 +5754,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             332.91 MiB
-            , CRC32: 
+            , CRC32C: 
             1a7974d3
           </span>
           <br />
@@ -5835,7 +5835,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             289.19 MiB
-            , CRC32: 
+            , CRC32C: 
             693c4cc1
           </span>
           <br />
@@ -5916,7 +5916,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             320.36 MiB
-            , CRC32: 
+            , CRC32C: 
             63dc92db
           </span>
           <br />
@@ -5997,7 +5997,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             312.75 MiB
-            , CRC32: 
+            , CRC32C: 
             c0016756
           </span>
           <br />
@@ -6078,7 +6078,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             322.33 MiB
-            , CRC32: 
+            , CRC32C: 
             28396743
           </span>
           <br />
@@ -6159,7 +6159,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             208.4 MiB
-            , CRC32: 
+            , CRC32C: 
             504d3937
           </span>
           <br />
@@ -6240,7 +6240,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             218.37 MiB
-            , CRC32: 
+            , CRC32C: 
             06ccecf9
           </span>
           <br />
@@ -6321,7 +6321,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             183.5 MiB
-            , CRC32: 
+            , CRC32C: 
             c191b2ca
           </span>
           <br />
@@ -6402,7 +6402,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             234 MiB
-            , CRC32: 
+            , CRC32C: 
             016c8e77
           </span>
           <br />
@@ -6483,7 +6483,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             233.1 MiB
-            , CRC32: 
+            , CRC32C: 
             f37738a4
           </span>
           <br />
@@ -6564,7 +6564,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             157.88 MiB
-            , CRC32: 
+            , CRC32C: 
             1f802ad6
           </span>
           <br />
@@ -6645,7 +6645,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             227.48 MiB
-            , CRC32: 
+            , CRC32C: 
             16a48cf0
           </span>
           <br />
@@ -6726,7 +6726,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             148.62 MiB
-            , CRC32: 
+            , CRC32C: 
             7e34ac14
           </span>
           <br />
@@ -6807,7 +6807,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             109.55 MiB
-            , CRC32: 
+            , CRC32C: 
             6805d560
           </span>
           <br />
@@ -6888,7 +6888,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             112.34 MiB
-            , CRC32: 
+            , CRC32C: 
             3a0cce90
           </span>
           <br />
@@ -6969,7 +6969,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             335.93 MiB
-            , CRC32: 
+            , CRC32C: 
             1b49e5a6
           </span>
           <br />
@@ -7050,7 +7050,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <br />
           <span>
             50.76 MiB
-            , CRC32: 
+            , CRC32C: 
             d8a3a636
           </span>
           <br />
