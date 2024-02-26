@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import Link from '../Link'
 import { cnvTypeLabels } from '../CopyNumberVariantList/copyNumberVariantTypes'
 import { CopyNumberVariant } from './CopyNumberVariantPage'
@@ -28,8 +28,7 @@ type CopyNumberVariantAttributeListProps = {
 
 const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeListProps) => (
   <AttributeList style={{ marginTop: '1.25em' }}>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Filter">
+    <AttributeListItem label="Filter">
       {variant.filters.length > 0 ? (
         variant.filters.map((filter) => (
           <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
@@ -39,31 +38,25 @@ const CopyNumberVariantAttributeList = ({ variant }: CopyNumberVariantAttributeL
       ) : (
         <Badge level="success">Pass</Badge>
       )}
-    </AttributeList.Item>
+    </AttributeListItem>
 
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Site Count">{variant.sc}</AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Site Number">{variant.sn}</AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Site Frequency">
+    <AttributeListItem label="Site Count">{variant.sc}</AttributeListItem>
+    <AttributeListItem label="Site Number">{variant.sn}</AttributeListItem>
+    <AttributeListItem label="Site Frequency">
       {(variant.sn === 0 ? 0 : variant.sc / variant.sn).toPrecision(4)}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Position">
+    </AttributeListItem>
+    <AttributeListItem label="Position">
       <Link to={`/region/${variant.chrom}-${variant.pos}-${variant.end}`}>
         {variant.chrom}:{variant.pos}-{variant.end}
       </Link>
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Size">
+    </AttributeListItem>
+    <AttributeListItem label="Size">
       {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Class">
+    </AttributeListItem>
+    <AttributeListItem label="Class">
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
       {cnvTypeLabels[variant.type]}
-    </AttributeList.Item>
+    </AttributeListItem>
   </AttributeList>
 )
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import { svTypeLabels } from '../StructuralVariantList/structuralVariantTypes'
@@ -156,8 +156,7 @@ type StructuralVariantAttributeListProps = {
 
 const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeListProps) => (
   <AttributeList style={{ marginTop: '1.25em' }}>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Filter">
+    <AttributeListItem label="Filter">
       {variant.filters.length > 0 ? (
         variant.filters.map((filter) => (
           <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
@@ -167,25 +166,20 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
       ) : (
         <Badge level="success">Pass</Badge>
       )}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label={variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}>
+    </AttributeListItem>
+    <AttributeListItem label={variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}>
       {variant.ac}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label={variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}>
+    </AttributeListItem>
+    <AttributeListItem label={variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}>
       {variant.an}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item
+    </AttributeListItem>
+    <AttributeListItem
       label={variant.type === 'MCNV' ? 'Non-diploid CN Frequency' : 'Allele Frequency'}
     >
       {(variant.an === 0 ? 0 : variant.ac / variant.an).toPrecision(4)}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Quality score">{variant.qual}</AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Position">
+    </AttributeListItem>
+    <AttributeListItem label="Quality score">{variant.qual}</AttributeListItem>
+    <AttributeListItem label="Position">
       {variant.type === 'BND' || variant.type === 'CTX' || variant.type === 'INS' ? (
         <PointLink chrom={variant.chrom} pos={variant.pos} />
       ) : (
@@ -193,21 +187,18 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
           {variant.chrom}:{variant.pos}-{variant.end}
         </Link>
       )}
-    </AttributeList.Item>
+    </AttributeListItem>
     {(variant.type === 'BND' || variant.type === 'CTX') && (
-      // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-      <AttributeList.Item label="Second Position">
+      <AttributeListItem label="Second Position">
         <PointLink chrom={variant.chrom2} pos={variant.pos2} />
-      </AttributeList.Item>
+      </AttributeListItem>
     )}
     {variant.type !== 'BND' && variant.type !== 'CTX' && (
-      // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-      <AttributeList.Item label="Size">
+      <AttributeListItem label="Size">
         {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
-      </AttributeList.Item>
+      </AttributeListItem>
     )}
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Class">
+    <AttributeListItem label="Class">
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
       {svTypeLabels[variant.type]}{' '}
       {variant.type === 'INS' &&
@@ -216,29 +207,25 @@ const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeL
           .map((alt) => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
           .join(', ')})`}
       <InfoButton topic={`sv-class_${variant.type}`} />
-    </AttributeList.Item>
+    </AttributeListItem>
     {variant.type === 'CPX' && variant.cpx_type && (
       <React.Fragment>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Complex SV Class">
+        <AttributeListItem label="Complex SV Class">
           {variant.cpx_type} ({complexTypeLabel(variant.cpx_type)}){' '}
           <ComplexTypeHelpButton complexType={variant.cpx_type} />
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Rearranged Segments">
+        </AttributeListItem>
+        <AttributeListItem label="Rearranged Segments">
           {variant.cpx_intervals.join(', ')}
-        </AttributeList.Item>
+        </AttributeListItem>
       </React.Fragment>
     )}
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Evidence">
+    <AttributeListItem label="Evidence">
       {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
       {variant.evidence.map((e) => EVIDENCE_LABELS[e]).join(', ')}
-    </AttributeList.Item>
-    {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-    <AttributeList.Item label="Algorithms">
+    </AttributeListItem>
+    <AttributeListItem label="Algorithms">
       {variant.algorithms.map((a) => algorithmLabel(a)).join(', ')}
-    </AttributeList.Item>
+    </AttributeListItem>
   </AttributeList>
 )
 

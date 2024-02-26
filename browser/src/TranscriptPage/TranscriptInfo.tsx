@@ -3,7 +3,7 @@ import React from 'react'
 import { ExternalLink } from '@gnomad/ui'
 import { GeneMetadata } from '../GenePage/GenePage'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import Link from '../Link'
 import InfoButton from '../help/InfoButton'
 
@@ -65,16 +65,13 @@ const TranscriptInfo = ({ transcript }: TranscriptInfoProps) => {
 
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Genome build">
+      <AttributeListItem label="Genome build">
         {transcript.reference_genome} / {ucscReferenceGenomeId}
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Ensembl ID">
+      </AttributeListItem>
+      <AttributeListItem label="Ensembl ID">
         {transcript.transcript_id}.{transcript.transcript_version}
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Gene">
+      </AttributeListItem>
+      <AttributeListItem label="Gene">
         <Link to={`/gene/${transcript.gene.gene_id}`}>
           {transcript.gene.symbol} ({transcript.gene.gene_id}.{transcript.gene.gene_version})
         </Link>
@@ -96,17 +93,15 @@ const TranscriptInfo = ({ transcript }: TranscriptInfoProps) => {
             for {transcript.gene.symbol} <InfoButton topic="canonical-transcript" />
           </>
         )}
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Region">
+      </AttributeListItem>
+      <AttributeListItem label="Region">
         <Link to={`/region/${transcript.chrom}-${transcript.start}-${transcript.stop}`}>
           {transcript.chrom}:{transcript.start}-{transcript.stop}
         </Link>
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="External resources">
+      </AttributeListItem>
+      <AttributeListItem label="External resources">
         <TranscriptReferences transcript={transcript} />
-      </AttributeList.Item>
+      </AttributeListItem>
     </AttributeList>
   )
 }
