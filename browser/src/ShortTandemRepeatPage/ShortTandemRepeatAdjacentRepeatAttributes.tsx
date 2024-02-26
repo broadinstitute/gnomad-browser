@@ -1,6 +1,6 @@
 import React from 'react'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
@@ -13,17 +13,15 @@ type Props = {
 const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }: Props) => {
   return (
     <AttributeList>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Reference region">
+      <AttributeListItem label="Reference region">
         <Link
           to={`/region/${adjacentRepeat.reference_region.chrom}-${adjacentRepeat.reference_region.start}-${adjacentRepeat.reference_region.stop}`}
         >
           {adjacentRepeat.reference_region.chrom}-{adjacentRepeat.reference_region.start}-
           {adjacentRepeat.reference_region.stop}
         </Link>
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label={`Repeat unit${adjacentRepeat.repeat_units.length > 1 ? 's' : ''}`}>
+      </AttributeListItem>
+      <AttributeListItem label={`Repeat unit${adjacentRepeat.repeat_units.length > 1 ? 's' : ''}`}>
         <InlineList
           items={adjacentRepeat.repeat_units.map((repeatUnit) => (
             <span>
@@ -35,7 +33,7 @@ const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }: Props) =>
           ))}
           label={`Repeat unit${adjacentRepeat.repeat_units.length > 1 ? 's' : ''}`}
         />
-      </AttributeList.Item>
+      </AttributeListItem>
     </AttributeList>
   )
 }
