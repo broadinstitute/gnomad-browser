@@ -1,6 +1,6 @@
 import React from 'react'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import InfoButton from '../help/InfoButton'
 import InlineList from '../InlineList'
 import Link from '../Link'
@@ -87,26 +87,22 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
 
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Genome build">
+      <AttributeListItem label="Genome build">
         {gene.reference_genome} / {ucscReferenceGenomeId}
-      </AttributeList.Item>
+      </AttributeListItem>
 
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Ensembl gene ID">
+      <AttributeListItem label="Ensembl gene ID">
         {gene.gene_id}.{gene.gene_version}
-      </AttributeList.Item>
+      </AttributeListItem>
 
       {gene.symbol !== gene.gencode_symbol && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item label={`Symbol in GENCODE v${gencodeVersion}`}>
+        <AttributeListItem label={`Symbol in GENCODE v${gencodeVersion}`}>
           {gene.gencode_symbol}
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
 
       {gene.reference_genome === 'GRCh38' && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item
+        <AttributeListItem
           label={
             <React.Fragment>
               MANE Select transcript <InfoButton topic="mane-select-transcript" />
@@ -115,11 +111,10 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
         >
           {/* @ts-expect-error TS(2322) FIXME: Type '{ gene_id: string; gene_version: string; sym... Remove this comment to see the full error message */}
           {gene.mane_select_transcript ? <ManeSelectTranscriptId gene={gene} /> : 'Not available'}
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
 
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item
+      <AttributeListItem
         label={
           <React.Fragment>
             Ensembl canonical transcript <InfoButton topic="canonical-transcript" />
@@ -133,11 +128,10 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
         ) : (
           'Not available'
         )}
-      </AttributeList.Item>
+      </AttributeListItem>
 
       {otherTranscripts.length > 0 && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item label="Other transcripts">
+        <AttributeListItem label="Other transcripts">
           <InlineList
             items={otherTranscripts.map((transcript) => (
               <Link to={`/transcript/${transcript.transcript_id}`}>
@@ -146,20 +140,18 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
             ))}
             label="Other transcripts"
           />
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
 
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Region">
+      <AttributeListItem label="Region">
         <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>
           {gene.chrom}:{gene.start}-{gene.stop}
         </Link>
-      </AttributeList.Item>
+      </AttributeListItem>
 
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="External resources">
+      <AttributeListItem label="External resources">
         <GeneReferences gene={gene} />
-      </AttributeList.Item>
+      </AttributeListItem>
     </AttributeList>
   )
 }

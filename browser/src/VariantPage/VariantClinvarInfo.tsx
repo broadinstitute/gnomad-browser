@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { ExternalLink, Modal, TextButton } from '@gnomad/ui'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import SubmissionsList from '../SubmissionsList'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { ClinvarVariant } from './VariantPage'
@@ -27,12 +27,10 @@ const VariantClinvarInfo = ({ clinvar }: VariantClinvarInfoProps) => {
   return (
     <>
       <AttributeList>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="ClinVar Variation ID">
+        <AttributeListItem label="ClinVar Variation ID">
           {clinvar.clinvar_variation_id}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Conditions">
+        </AttributeListItem>
+        <AttributeListItem label="Conditions">
           {Object.values(conditions)
             .map((condition: any) =>
               condition.medgen_id ? (
@@ -51,20 +49,17 @@ const VariantClinvarInfo = ({ clinvar }: VariantClinvarInfoProps) => {
               (acc: any, el: any, i: any) => (i === 0 ? [...acc, el] : [...acc, ', ', el]),
               []
             )}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Clinical significance">
+        </AttributeListItem>
+        <AttributeListItem label="Clinical significance">
           {clinvar.clinical_significance}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Review status">
+        </AttributeListItem>
+        <AttributeListItem label="Review status">
           {clinvar.review_status} ({clinvar.gold_stars}{' '}
           {clinvar.gold_stars === 1 ? 'star' : 'stars'})
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Last evaluated">
+        </AttributeListItem>
+        <AttributeListItem label="Last evaluated">
           {clinvar.last_evaluated ? formatClinvarDate(clinvar.last_evaluated) : '–'}
-        </AttributeList.Item>
+        </AttributeListItem>
       </AttributeList>
 
       <p style={{ marginBottom: 0 }}>

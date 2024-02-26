@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
-import AttributeList from './AttributeList'
+import AttributeList, { AttributeListItem } from './AttributeList'
 import formatClinvarDate from './ClinvarVariantsTrack/formatClinvarDate'
 
 type SubmissionsListProps = {
@@ -25,10 +25,8 @@ const SubmissionsList = ({ submissions }: SubmissionsListProps) => (
       // @ts-expect-error TS(2769) FIXME: No overload matches this call.
       <ListItem key={`${submission.submitter_name}-${submission.last_evaluated}`}>
         <AttributeList>
-          {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-          <AttributeList.Item label="Submitter">{submission.submitter_name}</AttributeList.Item>
-          {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-          <AttributeList.Item label="Conditions">
+          <AttributeListItem label="Submitter">{submission.submitter_name}</AttributeListItem>
+          <AttributeListItem label="Conditions">
             {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
             {submission.conditions
               .map((condition) =>
@@ -46,17 +44,14 @@ const SubmissionsList = ({ submissions }: SubmissionsListProps) => (
               )
               // @ts-expect-error TS(2769) FIXME: No overload matches this call.
               .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ', ', el]), [])}
-          </AttributeList.Item>
-          {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-          <AttributeList.Item label="Clinical significance">
+          </AttributeListItem>
+          <AttributeListItem label="Clinical significance">
             {submission.clinical_significance || '–'}
-          </AttributeList.Item>
-          {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-          <AttributeList.Item label="Review status">{submission.review_status}</AttributeList.Item>
-          {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-          <AttributeList.Item label="Last evaluated">
+          </AttributeListItem>
+          <AttributeListItem label="Review status">{submission.review_status}</AttributeListItem>
+          <AttributeListItem label="Last evaluated">
             {submission.last_evaluated ? formatClinvarDate(submission.last_evaluated) : '–'}
-          </AttributeList.Item>
+          </AttributeListItem>
         </AttributeList>
       </ListItem>
     ))}

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ExternalLink } from '@gnomad/ui'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 
 type Props = {
   region: {
@@ -21,19 +21,16 @@ const RegionInfo = ({ region }: Props) => {
 
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Genome build">
+      <AttributeListItem label="Genome build">
         {referenceGenome} / {ucscReferenceGenomeId}
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Region size">
+      </AttributeListItem>
+      <AttributeListItem label="Region size">
         {(stop - start + 1).toLocaleString()} BP
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="External resources">
+      </AttributeListItem>
+      <AttributeListItem label="External resources">
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
-      </AttributeList.Item>
+      </AttributeListItem>
     </AttributeList>
   )
 }
