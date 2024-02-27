@@ -58,6 +58,7 @@ type Props = {
 
 const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width } }: Props) => {
   const height = 250
+  const copy_numbers = variant.copy_numbers || []
 
   const xScale = scaleBand()
     // @ts-expect-error TS(7031) FIXME: Binding element 'copyNumber' implicitly has an 'an... Remove this comment to see the full error message
@@ -65,7 +66,7 @@ const MultiallelicCopyNumberVariantPlot = withSize()(({ variant, size: { width }
     .range([0, width - (margin.left + margin.right)])
 
   const yScale = scaleLinear()
-    .domain([0, max(variant.copy_numbers, (d: any) => d.ac) || 1])
+    .domain([0, max(copy_numbers, (d) => d.ac) || 1])
     .range([height - (margin.top + margin.bottom), margin.top])
 
   const labelInterval = Math.max(Math.round((variant.copy_numbers || []).length / 100) * 10, 1)
