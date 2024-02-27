@@ -1,8 +1,7 @@
 import React, { forwardRef, memo } from 'react'
 
 import { Grid } from '@gnomad/ui'
-
-import StructuralVariantPropType from './StructuralVariantPropType'
+import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 
 type Props = {
   columns: any[]
@@ -10,7 +9,7 @@ type Props = {
   numRowsRendered: number
   onHoverVariant: (...args: any[]) => any
   rowHeight: number
-  variants: StructuralVariantPropType[]
+  variants: StructuralVariant[]
 }
 
 const StructuralVariantsTable = ({

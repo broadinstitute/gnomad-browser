@@ -8,7 +8,7 @@ type Props = {
   variant: {
     pos: number
     end: number
-    type: string
+    type: string | null
   }
   width: number
 }

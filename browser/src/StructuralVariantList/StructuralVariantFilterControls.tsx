@@ -69,11 +69,9 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }: Props) =
         <InfoButton topic="sv-effect-overview" />
       </CategoryFilterLabel>
       <CategoryFilterControl
-        categories={['lof', 'dup_lof', 'copy_gain', 'other'].map((category) => ({
+        categories={(['lof', 'dup_lof', 'copy_gain', 'other'] as const).map((category) => ({
           id: category,
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           label: svConsequenceCategoryLabels[category],
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           color: colorKey === 'consequence' ? svConsequenceCategoryColors[category] : 'gray',
         }))}
         categorySelections={value.includeConsequenceCategories}
@@ -90,8 +88,7 @@ const StructuralVariantFilterControls = ({ onChange, colorKey, value }: Props) =
         categories={svTypes.map((type) => ({
           id: type,
           label: type,
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-          color: colorKey === 'type' ? svTypeColors[type] : 'gray',
+          color: colorKey === 'type' && svTypeColors[type] ? svTypeColors[type] : 'gray',
         }))}
         categorySelections={value.includeTypes}
         id="sv-type-category-filter"

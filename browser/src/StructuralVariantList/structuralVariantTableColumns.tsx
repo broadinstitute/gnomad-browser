@@ -14,7 +14,7 @@ import {
 import { svTypeColors, svTypeLabels } from './structuralVariantTypes'
 import { Context } from './StructuralVariants'
 
-const renderConsequence = (variant: any, key: any, { colorKey, highlightWords }: any) => {
+const renderConsequence = (variant: any, _key: any, { colorKey, highlightWords }: any) => {
   const { consequence } = variant
   let renderedConsequence = ''
   if (consequence) {
@@ -35,7 +35,7 @@ const renderConsequence = (variant: any, key: any, { colorKey, highlightWords }:
   )
 }
 
-const renderType = (variant: any, key: any, { colorKey, highlightWords }: any) => (
+const renderType = (variant: any, _key: any, { colorKey, highlightWords }: any) => (
   <Cell>
     {colorKey === 'type' && (
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
@@ -44,7 +44,6 @@ const renderType = (variant: any, key: any, { colorKey, highlightWords }: any) =
     <Highlighter
       autoEscape
       searchWords={highlightWords}
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       textToHighlight={svTypeLabels[variant.type] || variant.type}
     />
   </Cell>
@@ -80,7 +79,6 @@ const structuralVariantTableColumns = [
     heading: 'Class',
     minWidth: 130,
     compareFunction: makeStringCompareFunction('type'),
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     getSearchTerms: (variant: any) => [svTypeLabels[variant.type]],
     render: renderType,
   },
@@ -163,7 +161,7 @@ const structuralVariantTableColumns = [
     minWidth: 110,
     compareFunction: makeStringCompareFunction('variant_id'),
     getSearchTerms: (variant: any) => [variant.variant_id],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _key: any, { highlightWords }: any) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
           <Highlighter

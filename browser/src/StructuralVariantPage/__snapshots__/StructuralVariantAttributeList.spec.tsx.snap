@@ -1,0 +1,224 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StructuralVariantAttributeList tolerates certain variant fields being null 1`] = `
+.c1 {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  padding: 0.25em 0.4em 0.2em;
+  border: 1px solid #000;
+  border-radius: 0.3em;
+  background: #2E7D32;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.c0 {
+  margin: 0;
+}
+
+.c0 dt,
+.c0 dd {
+  display: inline-block;
+  line-height: 1.75;
+}
+
+.c0 dt {
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.c0 dd {
+  margin-left: 0.5ch;
+}
+
+.c3 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  outline: none;
+  padding: 0 3px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.c3 img {
+  position: relative;
+  top: 0.13em;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.c3:focus img {
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c2 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+@media (max-width:600px) {
+  .c0 dt,
+  .c0 dd {
+    display: block;
+  }
+
+  .c0 dd {
+    margin-left: 2ch;
+  }
+}
+
+<dl
+  className="c0"
+  style={
+    {
+      "marginTop": "1.25em",
+    }
+  }
+>
+  <div>
+    <dt>
+      Filter
+    </dt>
+    <dd>
+      <span
+        className="c1"
+      >
+        Pass
+      </span>
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Allele Count
+    </dt>
+    <dd>
+      123
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Allele Number
+    </dt>
+    <dd>
+      345
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Allele Frequency
+    </dt>
+    <dd>
+      0.3565
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Quality score
+    </dt>
+    <dd>
+      99
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Position
+    </dt>
+    <dd>
+      <a
+        className="-Link c2"
+        href="/region/21-123-456"
+        onClick={[Function]}
+      >
+        21
+        :
+        123
+        -
+        456
+      </a>
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Size
+    </dt>
+    <dd>
+      333 bp
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Class
+    </dt>
+    <dd>
+      duplication
+       
+      <button
+        className="c3"
+        onClick={[Function]}
+        type="button"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          src="test-file-stub"
+        />
+        <span
+          style={
+            {
+              "border": "0",
+              "clip": "rect(0 0 0 0)",
+              "height": "1px",
+              "margin": "-1px",
+              "overflow": "hidden",
+              "padding": "0",
+              "position": "absolute",
+              "whiteSpace": "nowrap",
+              "width": "1px",
+            }
+          }
+        >
+          More information
+        </span>
+      </button>
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Evidence
+    </dt>
+    <dd>
+      
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Algorithms
+    </dt>
+    <dd>
+      
+    </dd>
+  </div>
+</dl>
+`;
