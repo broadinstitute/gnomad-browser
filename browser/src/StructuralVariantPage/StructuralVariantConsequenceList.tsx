@@ -42,12 +42,15 @@ class StructuralVariantConsequenceList extends Component<Props, State> {
   render() {
     const { variant } = this.props
     const { expandedConsequence } = this.state
-
+    const consequences = variant.consequences || []
     return (
       <React.Fragment>
         <Wrapper>
-          {variant.consequences.map(({ consequence, genes }) => {
-            const category = svConsequenceCategories[consequence]
+          {consequences.map((consequence) => {
+            const consequenceCode = consequence.consequence
+            const genes = consequence.genes || []
+
+            const category = svConsequenceCategories[consequenceCode]
 
             // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             const helpTopic = {
@@ -57,9 +60,9 @@ class StructuralVariantConsequenceList extends Component<Props, State> {
             }[category]
 
             return (
-              <ConsequenceListItem key={consequence}>
+              <ConsequenceListItem key={consequenceCode}>
                 <h3>
-                  {svConsequenceLabels[consequence]}{' '}
+                  {svConsequenceLabels[consequenceCode]}{' '}
                   {!!helpTopic && <InfoButton topic={helpTopic} />}
                 </h3>
                 {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}

@@ -40,7 +40,7 @@ const FILTER_DESCRIPTIONS = {
   HIGH_NCR: 'Variant has excessively high rate of no-call (i.e., missing) genotypes.',
 }
 
-const EVIDENCE_LABELS = {
+const EVIDENCE_LABELS: Record<string, string> = {
   BAF: 'Normalized B-allele frequency',
   PE: 'Anomalous paired-end reads',
   RD: 'Read depth',
@@ -154,79 +154,87 @@ type StructuralVariantAttributeListProps = {
   variant: StructuralVariant
 }
 
-const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeListProps) => (
-  <AttributeList style={{ marginTop: '1.25em' }}>
-    <AttributeListItem label="Filter">
-      {variant.filters.length > 0 ? (
-        variant.filters.map((filter) => (
-          <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
-            {filterLabel(filter)}
-          </Badge>
-        ))
-      ) : (
-        <Badge level="success">Pass</Badge>
-      )}
-    </AttributeListItem>
-    <AttributeListItem label={variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}>
-      {variant.ac}
-    </AttributeListItem>
-    <AttributeListItem label={variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}>
-      {variant.an}
-    </AttributeListItem>
-    <AttributeListItem
-      label={variant.type === 'MCNV' ? 'Non-diploid CN Frequency' : 'Allele Frequency'}
-    >
-      {(variant.an === 0 ? 0 : variant.ac / variant.an).toPrecision(4)}
-    </AttributeListItem>
-    <AttributeListItem label="Quality score">{variant.qual}</AttributeListItem>
-    <AttributeListItem label="Position">
-      {variant.type === 'BND' || variant.type === 'CTX' || variant.type === 'INS' ? (
-        <PointLink chrom={variant.chrom} pos={variant.pos} />
-      ) : (
-        <Link to={`/region/${variant.chrom}-${variant.pos}-${variant.end}`}>
-          {variant.chrom}:{variant.pos}-{variant.end}
-        </Link>
-      )}
-    </AttributeListItem>
-    {(variant.type === 'BND' || variant.type === 'CTX') && (
-      <AttributeListItem label="Second Position">
-        <PointLink chrom={variant.chrom2} pos={variant.pos2} />
+const StructuralVariantAttributeList = ({ variant }: StructuralVariantAttributeListProps) => {
+  const filters = variant.filters || []
+  const algorithms = variant.algorithms || []
+  const length = variant.length || variant.end - variant.pos
+  const evidence = variant.evidence || []
+  const cpx_intervals = variant.cpx_intervals || []
+
+  return (
+    <AttributeList style={{ marginTop: '1.25em' }}>
+      <AttributeListItem label="Filter">
+        {filters.length > 0 ? (
+          filters.map((filter) => (
+            <Badge key={filter} level="warning" tooltip={filterDescription(filter)}>
+              {filterLabel(filter)}
+            </Badge>
+          ))
+        ) : (
+          <Badge level="success">Pass</Badge>
+        )}
       </AttributeListItem>
-    )}
-    {variant.type !== 'BND' && variant.type !== 'CTX' && (
-      <AttributeListItem label="Size">
-        {variant.length === -1 ? '—' : `${variant.length.toLocaleString()} bp`}
+      <AttributeListItem label={variant.type === 'MCNV' ? 'Non-Diploid Samples' : 'Allele Count'}>
+        {variant.ac}
       </AttributeListItem>
-    )}
-    <AttributeListItem label="Class">
-      {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-      {svTypeLabels[variant.type]}{' '}
-      {variant.type === 'INS' &&
-        variant.alts &&
-        `(${variant.alts
-          .map((alt) => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
-          .join(', ')})`}
-      <InfoButton topic={`sv-class_${variant.type}`} />
-    </AttributeListItem>
-    {variant.type === 'CPX' && variant.cpx_type && (
-      <React.Fragment>
-        <AttributeListItem label="Complex SV Class">
-          {variant.cpx_type} ({complexTypeLabel(variant.cpx_type)}){' '}
-          <ComplexTypeHelpButton complexType={variant.cpx_type} />
+      <AttributeListItem label={variant.type === 'MCNV' ? 'Total Samples' : 'Allele Number'}>
+        {variant.an}
+      </AttributeListItem>
+      <AttributeListItem
+        label={variant.type === 'MCNV' ? 'Non-diploid CN Frequency' : 'Allele Frequency'}
+      >
+        {(variant.an === 0 ? 0 : variant.ac / variant.an).toPrecision(4)}
+      </AttributeListItem>
+      <AttributeListItem label="Quality score">{variant.qual}</AttributeListItem>
+      <AttributeListItem label="Position">
+        {variant.type === 'BND' || variant.type === 'CTX' || variant.type === 'INS' ? (
+          <PointLink chrom={variant.chrom} pos={variant.pos} />
+        ) : (
+          <Link to={`/region/${variant.chrom}-${variant.pos}-${variant.end}`}>
+            {variant.chrom}:{variant.pos}-{variant.end}
+          </Link>
+        )}
+      </AttributeListItem>
+      {(variant.type === 'BND' || variant.type === 'CTX') && (
+        <AttributeListItem label="Second Position">
+          <PointLink chrom={variant.chrom2} pos={variant.pos2} />
         </AttributeListItem>
-        <AttributeListItem label="Rearranged Segments">
-          {variant.cpx_intervals.join(', ')}
+      )}
+      {variant.type !== 'BND' && variant.type !== 'CTX' && (
+        <AttributeListItem label="Size">
+          {length === -1 ? '—' : `${length.toLocaleString()} bp`}
         </AttributeListItem>
-      </React.Fragment>
-    )}
-    <AttributeListItem label="Evidence">
-      {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-      {variant.evidence.map((e) => EVIDENCE_LABELS[e]).join(', ')}
-    </AttributeListItem>
-    <AttributeListItem label="Algorithms">
-      {variant.algorithms.map((a) => algorithmLabel(a)).join(', ')}
-    </AttributeListItem>
-  </AttributeList>
-)
+      )}
+      {variant.type && (
+        <AttributeListItem label="Class">
+          {svTypeLabels[variant.type]}{' '}
+          {variant.type === 'INS' &&
+            variant.alts &&
+            `(${variant.alts
+              .map((alt) => alt.replace(/^</, '').replace(/>$/, '').replace(/^INS:/, ''))
+              .join(', ')})`}
+          <InfoButton topic={`sv-class_${variant.type}`} />
+        </AttributeListItem>
+      )}
+      {variant.type === 'CPX' && variant.cpx_type && (
+        <React.Fragment>
+          <AttributeListItem label="Complex SV Class">
+            {variant.cpx_type} ({complexTypeLabel(variant.cpx_type)}){' '}
+            <ComplexTypeHelpButton complexType={variant.cpx_type} />
+          </AttributeListItem>
+          <AttributeListItem label="Rearranged Segments">
+            {cpx_intervals.join(', ')}
+          </AttributeListItem>
+        </React.Fragment>
+      )}
+      <AttributeListItem label="Evidence">
+        {evidence.map((e) => EVIDENCE_LABELS[e]).join(', ')}
+      </AttributeListItem>
+      <AttributeListItem label="Algorithms">
+        {algorithms.map((a) => algorithmLabel(a)).join(', ')}
+      </AttributeListItem>
+    </AttributeList>
+  )
+}
 
 export default StructuralVariantAttributeList
