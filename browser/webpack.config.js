@@ -26,20 +26,23 @@ const config = {
     historyApiFallback: true,
     hot: true,
     port: 8008,
-    publicPath: '/',
-    stats: 'errors-only',
-    proxy: {
-      '/api': {
+    static: {
+      publicPath: '/',
+    },
+    proxy: [
+      {
+        context: '/api',
         target: process.env.GNOMAD_API_URL,
         pathRewrite: { '^/api': '' },
         changeOrigin: true,
       },
-      '/reads': {
+      {
+        context: '/reads',
         target: process.env.READS_API_URL,
         pathRewrite: { '^/reads': '' },
         changeOrigin: true,
       },
-    },
+    ],
   },
   devtool: 'source-map',
   entry: {
