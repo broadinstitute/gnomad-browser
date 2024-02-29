@@ -127,7 +127,7 @@ const Routes = () => {
       />
       <Route
         exact
-        path="/variant/:variantId"
+        path="/variant/:variantId([-A-Za-z0-9_.]+)"
         render={({ location, match }: any) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
