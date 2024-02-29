@@ -23,7 +23,9 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
 
 const config = {
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
     hot: true,
     port: 8008,
     static: {
