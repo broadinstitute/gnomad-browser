@@ -21,11 +21,13 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_validation import (
     validate_step1_output,
     validate_step2_output,
     validate_step3_output,
+    validate_step4_output,
 )
 
 from data_pipeline.data_types.variant import (
     annotate_variants,
     annotate_transcript_consequences,
+    annotate_caids,
 )
 
 RUN = True
@@ -62,7 +64,6 @@ pipeline.add_task(
             "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
             "exome_coverage_path": "gs://gcp-public-data--gnomad/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht",
             "genome_coverage_path": "gs://gcp-public-data--gnomad/release/3.0.1/coverage/genomes/gnomad.genomes.r3.0.1.coverage.ht",
-            # "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
         }
     ),
 )
@@ -78,11 +79,21 @@ pipeline.add_task(
     },
 )
 
+pipeline.add_task(
+    name="annotate_gnomad_v4_caids",
+    task_function=annotate_caids,
+    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_3.ht",
+    inputs={
+        "variants_path": pipeline.get_task("annotate_gnomad_v4_transcript_consequences"),
+        "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
+    },
+)
+
 ###############################################
 # Outputs
 ###############################################
 
-pipeline.set_outputs({"variants": "annotate_gnomad_v4_transcript_consequences"})
+pipeline.set_outputs({"variants": "annotate_gnomad_v4_caids"})
 
 ###############################################
 # Run
@@ -99,6 +110,7 @@ if __name__ == "__main__":
                 "prepare_gnomad_v4_variants",
                 "annotate_gnomad_v4_variants",
                 "annotate_gnomad_v4_transcript_consequences",
+                "annotate_gnomad_v4_caids",
             ],
         )
         # copy locally using:
@@ -113,3 +125,4 @@ if __name__ == "__main__":
     validate_step1_output(pipeline)
     validate_step2_output(pipeline)
     validate_step3_output(pipeline)
+    validate_step4_output(pipeline)
