@@ -17,6 +17,7 @@ from data_pipeline.datasets.gnomad_v4.types.initial_variant import InitialVarian
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step1 import Variant as Step1Variant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step2 import Variant as Step2Variant
 from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step3 import Variant as Step3Variant
+from data_pipeline.datasets.gnomad_v4.types.prepare_variants_step4 import Variant as Step4Variant
 
 c = Converter(forbid_extra_keys=True)
 
@@ -114,3 +115,11 @@ def validate_step3_output(pipeline: Pipeline):
     ht = ht.sample(0.001, 1337)
     validate_rows(ht, Step3Variant)
     logger.info("Validated annotate_gnomad_v4_transcript_consequences (step 3) output")
+
+
+def validate_step4_output(pipeline: Pipeline):
+    output_path = pipeline.get_task("annotate_gnomad_v4_caids").get_output_path()
+    ht = hl.read_table(output_path)
+    ht = ht.sample(0.001, 1337)
+    validate_rows(ht, Step4Variant)
+    logger.info("Validated annotate_gnomad_v4_caids (step 4) output")
