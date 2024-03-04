@@ -319,6 +319,26 @@ Row fields
 - `allele_info`: The v4 exomes Hail Table has an additional field in this struct, 'has_star', that is not present in the struct on the v4 genomes Hail Table
 - `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC
 
+#### gnomAD v4.1 joint frequency Hail Table annotations
+
+The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
+
+Global fields
+
+- `genomes_freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
+- `genomes_faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
+- `exomes_freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
+- `exomes_faf_meta`: Filtering allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
+- `joint_freq_meta`: Joint allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_freq’ array row annotation.
+- `joint_freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘joint_freq’ array row annotation.
+- `joint_faf_meta`: Joint filtering allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_faf’ array row annotation. joint_faf_index_dict: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘joint_faf’) row annotation.
+- `joint_faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘joint_faf’) row annotation.
+- `joint_sample_count`: Number of gnomAD exomes + number of gnomAD genomes.
+
+Row fields
+
+
+
 <br/><br/>
 
 <details>
@@ -412,7 +432,7 @@ The gnomAD v3 Hail Table annotations are defined below:
 **Global fields**:
 
 - **freq_meta**: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
-- **freq_index_dict**: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
+- **freq_index_dict**: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
 - **faf_index_dict**: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
 - **faf_meta**: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
 - **VEP version**: VEP version that was run on the callset.
