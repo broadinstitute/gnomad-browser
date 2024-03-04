@@ -66,7 +66,7 @@ The above example will retrieve the entire frequency struct for each variant. To
 ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['afr_XX_adj']].AC)
 ```
 
-This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`', and to the joint FAF array, '`joint_faf`', by using '`joint_faf_index_dict`'.
+This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
 2. Some downsamplings exceed population counts and thus are not available for those populations. Also, downsamplings are available in the v4 exomes with two stratifications: across the full gnomAD release and across the non-UKB subset only. Note that the genomes Hail Table does not contain downsampling information.
@@ -76,8 +76,6 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 
 #### gnomAD v4.0 exomes Hail Table annotations
 
-Note that joint frequency, including filtering allele frequency, is available on this table. However, for the most up to date version of joint frequencies, please see our [new resource](https://gnomad.broadinstitute/downloads#v4-standalone-joint-faf)
-
 Global fields:
 
 - `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
@@ -85,11 +83,6 @@ Global fields:
 - `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
 - `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
 - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
-- `joint_freq_meta`: Joint allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_freq’ array row annotation.
-- `joint_freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘joint_freq’ array row annotation.
-- `joint_freq_meta_sample_count`: A sample count per sample grouping defined in the 'joint_freq_meta' global annotation.
-- `joint_faf_meta`: Joint filtering allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_faf’ array row annotation.
-  joint_faf_index_dict: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘joint_faf’) row annotation.
 - `age_distribution`: Callset-wide age histogram calculated on release samples.
   - `bin_edges`: Bin edges for the age histogram.
   - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -175,26 +168,6 @@ Row fields:
     - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
     - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
     - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
-- `joint_freq`: Array of combined exomes and genomes allele frequency information (AC, AN, AF, homozygote count) for the full gnomAD release and for each genetic ancestry group. Note that the values in array will correspond to combined or joint value if the variant was present in both data types, otherwise this array will contain frequencies only for the data type associated with the Hail Table (in this case, exomes).
-  - `AC`: Combined (exomes + genomes) alternate allele count in release.
-  - `AF`: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
-  - `AN`: Total number of alleles across exomes and genomes in release.
-  - `homozygote_count`: Count of homozygous alternate individuals across exomes and genomes in release.
-- `joint_grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Other" (oth) groups.
-  - `AC`: Alternate allele count in the group with the maximum allele frequency.
-  - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
-  - `AN`: Total number of alleles in the group with the maximum allele frequency.
-  - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
-  - `gen_anc`: Genetic ancestry group with maximum allele frequency.
-- `joint_faf`: Array of combined exomes and genomes filtering allele frequency information (AC, AN, AF, homozygote count). Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
-  - `faf95`: Combined exomes and genomes filtering allele frequency (using Poisson 95% CI).
-  - `faf99`: Combined exomes and genomes filtering allele frequency (using Poisson 99% CI).
-- `joint_fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency across both exomes and genomes. Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
-  - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI) across both exomes and genomes.
-  - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI) across both exomes and genomes.
-  - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI) across both exomes and genomes.
-  - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI) across both exomes and genomes.
-  - `joint_fafmax_data_type`: Data type associated with joint FAF information. Value will be "both" if variant had a defined FAF in both the exomes and genomes, otherwise will be either "exomes" or "genomes".
 - `a_index`: The original index of this alternate allele in the multiallelic representation (1 is the first alternate allele or the only alternate allele in a biallelic variant).
 - `was_split`: True if this variant was originally multiallelic, otherwise False.
 - `rsid`: dbSNP reference SNP identification (rsID) numbers.
@@ -339,7 +312,6 @@ Global fields
 Row fields
 
 - `fafmax`: This annotation is stratified by subset in the v4 exomes, but the v4 genomes annotation does not have any subset stratification
-- joint `frequency` fields: These annotations will have the joint or combined exome and genome annotations on both release Hail Tables if the variant was present in both data types. If the variant was only present in one data type, then the annotation will contain the frequency information for just that data type (e.g., the 'joint_freq' will contain frequency information for genomes only on the v4 genomes Hail Table if that variant was only seen in the genomes
 - `region_flags`: The v4 exomes Hail Table has the following fields that are not present in the struct on the v4 genomes Hail Table:
   - `fail_interval_qc`
   - `outside_ukb_capture_region`
