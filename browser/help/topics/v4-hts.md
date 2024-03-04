@@ -337,7 +337,59 @@ Global fields
 
 Row fields
 
-
+- `locus`: Variant locus. Contains contig and position information.
+- `alleles`: Variant alleles.
+- `genomes_freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD genomes.
+  - `AC`: Alternate allele count in release.
+  - `AF`: Alternate allele frequency, (AC/AN), in release.
+  - `AN`: Total number of alleles in release.
+  - `homozygote_count`: Count of homozygous alternate individuals in release.
+- `genomes_faf`: Filtering allele frequency in the gnomAD genomes.
+  - `faf95`: Filtering allele frequency (using Poisson 95% CI).
+  - `faf99`: Filtering allele frequency (using Poisson 99% CI).
+- `genomes_grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+  - `AC`: Alternate allele count in the group with the maximum allele frequency.
+  - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+  - `AN`: Total number of alleles in the group with the maximum allele frequency.
+  - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+  - `gen_anc`: Genetic ancestry group with maximum allele frequency
+- `exomes_freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD exomes.
+  - `AC`: Alternate allele count in release.
+  - `AF`: Alternate allele frequency, (AC/AN), in release.
+  - `AN`: Total number of alleles in release.
+  - `homozygote_count`: Count of homozygous alternate individuals in release.
+- `exomes_faf`: Filtering allele frequency in the gnomAD exomes.
+  - `faf95`: Filtering allele frequency (using Poisson 95% CI).
+  - `faf99`: Filtering allele frequency (using Poisson 99% CI).
+- `exomes_grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD exomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+  - `gnomAD`: grpmax information across the full gnomAD exomes release dataset.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+  - `non_ukb`: grpmax information across the non-UKB subset of the gnomAD exomes.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+- `joint_freq`: Array of combined exomes and genomes allele frequency information (AC, AN, AF, homozygote count) across the full gnomAD release and for each genetic ancestry group. Note that the values in array will correspond to combined or joint value if the variant was present in both data types, otherwise this array will contain frequencies only for the data type associated with the Hail Table (in this case, exomes).
+    - AC: Combined (exomes + genomes) alternate allele count in release.
+    - AF: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
+    - AN: Total number of alleles across exomes and genomes in release.
+    - homozygote_count: Count of homozygous alternate individuals across exomes and genomes in release.
+- `joint_faf`: Array of combined exomes and genomes filtering allele frequency information (AC, AN, AF, homozygote count). Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
+    - `faf95`: Combined exomes and genomes filtering allele frequency (using Poisson 95% CI).
+    - `faf99`: Combined exomes and genomes filtering allele frequency (using Poisson 99% CI).
+- `joint_grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), and "Remaining individuals" (remaining) groups.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency.
+- `contingency_table_test`
+- `cochran_mantel_haenszel_test`
 
 <br/><br/>
 
