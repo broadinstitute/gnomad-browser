@@ -53,6 +53,7 @@ const ALGORITHM_LABELS = {
   manta: 'Manta',
   melt: 'MELT',
   wham: 'Wham',
+  depth_manual: 'Manual curation in known genomic disorder region',
 }
 
 const COMPLEX_TYPE_LABELS = {
