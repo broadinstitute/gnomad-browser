@@ -42,12 +42,12 @@ The available v4.0 grouping combinations within the 'freq' array annotation are 
 - group, e.g. “`adj`”, “`raw`”
 - sex-group, e.g. “`XX_adj`”
 - subset-group, e.g. “`non_ukb-raw`”
-- gen-anc3-group, e.g. “`afr_adj`”
+- gen-anc<sup>3</sup>-group, e.g. “`afr_adj`”
 - gen-anc-sex-group, e.g. “`ami_XX_adj`”
-- downsampling2-group-pop, e.g. “`10_adj_eas`”,
+- downsampling<sup>2</sup>-group-pop, e.g. “`10_adj_eas`”,
 - subset-gen-anc-group, e.g. “`_sas_adj`”
 - subset-sex-group, e.g. “`non_ukb_XY_adj`”
-- subset-gen-anc3-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
+- subset-gen-anc<sup>3</sup>-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
 
 To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.0 exomes:
 
@@ -70,7 +70,7 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
 2. Some downsamplings exceed population counts and thus are not available for those populations. Also, downsamplings are available in the v4 exomes with two stratifications: across the full gnomAD release and across the non-UKB subset only. Note that the genomes Hail Table does not contain downsampling information.
-3. For the HGDP and 1KG subsets in the gnomAD v4.0 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP populations are detailed here. The 1KG labels are described here.
+3. For the HGDP and 1KG subsets in the gnomAD v4.0 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP populations are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
 
 ### <a id="annotation-descriptions"></a>gnomAD v4.0 Hail Table annotation descriptions
 
