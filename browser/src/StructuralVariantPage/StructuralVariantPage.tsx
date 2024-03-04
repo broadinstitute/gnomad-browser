@@ -156,7 +156,7 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
           {variant.genotype_quality ? (
             <StructuralVariantGenotypeQualityMetrics variant={variant} />
           ) : (
-            <p>Genotype quality is available for this variant.</p>
+            <p>Genotype quality is unavailable for this variant.</p>
           )}
         </ResponsiveSection>
 
