@@ -141,7 +141,7 @@ Row fields:
   - `AF`: Alternate allele frequency, (AC/AN), in release.
   - `AN`: Total number of alleles in release.
   - `homozygote_count`: Count of homozygous alternate individuals in release.
-- `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Other" (`oth`) groups.
+- `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
   - `gnomAD`: grpmax information across the full gnomAD release dataset.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
