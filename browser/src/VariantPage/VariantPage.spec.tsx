@@ -4,9 +4,9 @@ import renderer from 'react-test-renderer'
 import { mockQueries } from '../../../tests/__helpers__/queries'
 import Query, { BaseQuery } from '../Query'
 import { forDatasetsMatching } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
 import VariantPage from './VariantPage'
 import { v2VariantFactory, v3VariantFactory } from '../__factories__/Variant'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -44,7 +44,7 @@ afterEach(() => {
   resetMockApiResponses()
 })
 
-forDatasetsMatching(/gnomad_r3/, 'VariantPage with dataset "%s"', (datasetId) => {
+forDatasetsMatching(/gnomad_r3/, 'VariantPage with the dataset "%s"', (datasetId) => {
   test('has no unexpected changes', () => {
     const variant = v3VariantFactory.build()
 
@@ -55,13 +55,15 @@ forDatasetsMatching(/gnomad_r3/, 'VariantPage with dataset "%s"', (datasetId) =>
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(<VariantPage datasetId={datasetId} variantId={variant.variant_id} />)
+      <BrowserRouter>
+        <VariantPage datasetId={datasetId} variantId={variant.variant_id} />
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })
 })
 
-forDatasetsMatching(/gnomad_r2/, 'VariantPage with dataset %s', (datasetId) => {
+forDatasetsMatching(/gnomad_r2/, 'VariantPage with the dataset %s', (datasetId) => {
   test('has no unexpected changes', () => {
     const variant = v2VariantFactory.build()
 
@@ -72,13 +74,15 @@ forDatasetsMatching(/gnomad_r2/, 'VariantPage with dataset %s', (datasetId) => {
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(<VariantPage datasetId={datasetId} variantId={variant.variant_id} />)
+      <BrowserRouter>
+        <VariantPage datasetId={datasetId} variantId={variant.variant_id} />
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })
 })
 
-describe('VariantPage with dataset exac', () => {
+describe('VariantPage with the dataset exac', () => {
   test('has no unexpected changes', () => {
     const variant = v2VariantFactory.build()
 
@@ -89,7 +93,9 @@ describe('VariantPage with dataset exac', () => {
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(<VariantPage datasetId="exac" variantId={variant.variant_id} />)
+      <BrowserRouter>
+        <VariantPage datasetId="exac" variantId={variant.variant_id} />
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })

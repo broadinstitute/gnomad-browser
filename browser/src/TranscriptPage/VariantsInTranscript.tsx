@@ -159,10 +159,18 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
       transcript_id
       transcript_version
       variant_id
+      faf95_joint {
+        popmax
+        popmax_population
+      }
       exome {
         ac
         ac_hemi
         ac_hom
+        faf95 {
+          popmax
+          popmax_population
+        }
         an
         af
         filters
@@ -178,6 +186,10 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
         ac
         ac_hemi
         ac_hom
+        faf95 {
+          popmax
+          popmax_population
+        }
         an
         af
         filters
@@ -188,6 +200,15 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
           ac_hemi
           ac_hom
         }
+      }
+      in_silico_predictors {
+        id
+        value
+        flags
+      }
+      lof_curation {
+        verdict
+        flags
       }
     }
   }

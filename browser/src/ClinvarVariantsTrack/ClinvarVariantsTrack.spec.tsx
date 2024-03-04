@@ -7,11 +7,11 @@ import userEvent from '@testing-library/user-event'
 import ClinvarVariantTrack from './ClinvarVariantTrack'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import transcriptFactory from '../__factories__/Transcript'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
 import { render, screen } from '@testing-library/react'
 import renderer from 'react-test-renderer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { RegionViewerContext } from '@gnomad/region-viewer'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('Clinvar Variants Track', () => {
   const mockClinvarVariants: ClinvarVariant[] = [
@@ -54,7 +54,7 @@ describe('Clinvar Variants Track', () => {
   test('Allow user to change to different review status filters', async () => {
     const user = userEvent.setup()
     render(
-      withDummyRouter(
+      <BrowserRouter>
         <RegionViewerContext.Provider value={childProps}>
           <ClinvarVariantTrack
             referenceGenome="GRCh38"
@@ -62,7 +62,7 @@ describe('Clinvar Variants Track', () => {
             variants={mockClinvarVariants}
           />
         </RegionViewerContext.Provider>
-      )
+      </BrowserRouter>
     )
 
     const filterSelect = screen.getByRole('combobox')
@@ -98,7 +98,7 @@ describe('Clinvar Variants Track', () => {
   test('review status selector filters correctly ', async () => {
     const user = userEvent.setup()
     render(
-      withDummyRouter(
+      <BrowserRouter>
         <RegionViewerContext.Provider value={childProps}>
           <ClinvarVariantTrack
             referenceGenome="GRCh38"
@@ -106,7 +106,7 @@ describe('Clinvar Variants Track', () => {
             variants={mockClinvarVariants}
           />
         </RegionViewerContext.Provider>
-      )
+      </BrowserRouter>
     )
     const filterSelect = screen.getByRole('combobox')
 

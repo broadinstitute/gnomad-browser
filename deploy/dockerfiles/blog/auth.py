@@ -16,13 +16,15 @@ TOKEN_URL = "https://github.com/login/oauth/access_token"
 app = Flask(__name__)
 
 app.config.update(
-    SESSION_COOKIE_SECURE=True, SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
 )
 
 app.secret_key = os.urandom(24)
 
 
-@app.route("/", methods=["GET"])
+@app.get("/")
 def auth():
     github = OAuth2Session(CLIENT_ID, scope=SCOPE)
     authorization_url, state = github.authorization_url(AUTHORIZATION_BASE_URL)
@@ -50,7 +52,7 @@ CALLBACK_TEMPLATE = """<!DOCTYPE html>
 """
 
 
-@app.route("/callback", methods=["GET"])
+@app.get("/callback")
 def callback():
     try:
         github = OAuth2Session(CLIENT_ID, state=session["oauth_state"], scope=SCOPE)

@@ -1,18 +1,4 @@
-import html2canvas from 'html2canvas'
 import styled from 'styled-components'
-
-export const downloadTableAsPNG = (elementID: string) => {
-  const table = document.getElementById(elementID)
-
-  if (table) {
-    html2canvas(table).then((canvas) => {
-      const link = document.createElement('a')
-      link.download = `${elementID}.png`
-      link.href = canvas.toDataURL('image/png')
-      link.click()
-    })
-  }
-}
 
 export const StatsTable = styled.table`
   border-collapse: collapse;

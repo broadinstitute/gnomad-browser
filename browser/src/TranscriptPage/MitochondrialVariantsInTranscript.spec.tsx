@@ -8,7 +8,7 @@ import Query, { BaseQuery } from '../Query'
 import MitochondrialVariantsInTranscript from './MitochondrialVariantsInTranscript'
 
 import transcriptFactory from '../__factories__/Transcript'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
 
 jest.mock('../Query', () => {
@@ -57,12 +57,12 @@ forAllDatasets('MitochondrialVariantsInTranscript with dataset %s', (datasetId) 
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(
+      <BrowserRouter>
         <MitochondrialVariantsInTranscript
           datasetId={datasetId}
           transcript={transcriptFactory.build()}
         />
-      )
+      </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })

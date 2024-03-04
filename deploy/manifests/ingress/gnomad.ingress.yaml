@@ -6,7 +6,7 @@ metadata:
     tier: production
   annotations:
     kubernetes.io/ingress.global-static-ip-name: gnomad-prod-global-ip
-    ingress.gcp.kubernetes.io/pre-shared-cert: gnomad-browser-cert
+    networking.gke.io/managed-certificates: gnomad-prod-certificate
     networking.gke.io/v1beta1.FrontendConfig: 'gnomad-frontend-config'
 spec:
   rules:

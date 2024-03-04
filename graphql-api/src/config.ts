@@ -41,6 +41,12 @@ const config: Record<string, any> = {
   MAX_QUERY_COST: JSON.parse(env.MAX_QUERY_COST || '25'),
   MAX_QUERY_COST_PER_MINUTE: JSON.parse(env.MAX_QUERY_COST_PER_MINUTE || '100'),
   MAX_REQUESTS_PER_MINUTE: JSON.parse(env.MAX_REQUESTS_PER_MINUTE || '30'),
+
+  // JSON caching
+  JSON_CACHE_PATH: env.JSON_CACHE_PATH,
+  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === "true" || false,
+  JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === "true" || false,
+  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === "true" || false
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']

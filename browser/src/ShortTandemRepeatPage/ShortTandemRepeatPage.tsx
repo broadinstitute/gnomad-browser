@@ -2,13 +2,10 @@ import { max, min } from 'd3-array'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Badge, Button, ExternalLink, List, ListItem, Modal, Page, Select } from '@gnomad/ui'
+import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
-import DocumentTitle from '../DocumentTitle'
-import GnomadPageHeading from '../GnomadPageHeading'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
-import Query from '../Query'
 import TableWrapper from '../TableWrapper'
 import InfoButton from '../help/InfoButton'
 import ControlSection from '../VariantPage/ControlSection'
@@ -87,7 +84,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   )
 
   const [showAdjacentRepeats, setShowAdjacentRepeats] = useState(false)
-  const [showReadData, setShowReadData] = useState(false)
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map((pop) => pop.id)
 
@@ -153,25 +149,27 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             </p>
           )}
         </ResponsiveSection>
-        {shortTandemRepeat.stripy_id && (
-          <ResponsiveSection>
-            <h2>External Resources</h2>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <List>
+        <ResponsiveSection>
+          {shortTandemRepeat.stripy_id && (
+            <>
+              <h2>External Resources</h2>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-              <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
-                  STRipy
-                </ExternalLink>
-              </ListItem>
-            </List>
-            <h2>Related Loci</h2>
-            <p>
-              <Link to="/short-tandem-repeats">All pathogenic short tandem repeats in gnomAD</Link>
-            </p>
-          </ResponsiveSection>
-        )}
+              <List>
+                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+                <ListItem>
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink href={`https://stripy.org/database/${shortTandemRepeat.stripy_id}`}>
+                    STRipy
+                  </ExternalLink>
+                </ListItem>
+              </List>
+            </>
+          )}
+          <h2>Related Loci</h2>
+          <p>
+            <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
+          </p>
+        </ResponsiveSection>
       </FlexWrapper>
       <section style={{ marginBottom: '3em' }}>
         <h2>
@@ -537,197 +535,24 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             }
           />
         </h2>
-        {showReadData ? (
-          <>
-            <ControlSection style={{ marginBottom: '1em' }}>
-              <ShortTandemRepeatPopulationOptions
-                id={`${shortTandemRepeat.id}-read-data`}
-                populationIds={populationIds}
-                selectedPopulationId={selectedPopulationId}
-                onSelectPopulationId={setSelectedPopulationId}
-              />
-            </ControlSection>
-            <ShortTandemRepeatReads
-              datasetId={datasetId}
-              shortTandemRepeat={shortTandemRepeat}
-              filter={{
-                ...parseCombinedPopulationId(selectedPopulationId),
-              }}
-            />
-          </>
-        ) : (
-          <Button
-            onClick={() => {
-              setShowReadData(true)
-            }}
-          >
-            Show read data
-          </Button>
-        )}
+        <ControlSection style={{ marginBottom: '1em' }}>
+          <ShortTandemRepeatPopulationOptions
+            id={`${shortTandemRepeat.id}-read-data`}
+            populationIds={populationIds}
+            selectedPopulationId={selectedPopulationId}
+            onSelectPopulationId={setSelectedPopulationId}
+          />
+        </ControlSection>
+        <ShortTandemRepeatReads
+          datasetId={datasetId}
+          shortTandemRepeat={shortTandemRepeat}
+          filter={{
+            ...parseCombinedPopulationId(selectedPopulationId),
+          }}
+        />
       </section>
     </>
   )
 }
 
-const operationName = 'ShortTandemRepeat'
-const query = `
-query ${operationName}($strId: String!, $datasetId: DatasetId!) {
-  short_tandem_repeat(id: $strId, dataset: $datasetId) {
-    id
-    gene {
-      ensembl_id
-      symbol
-      region
-    }
-    associated_diseases {
-      name
-      symbol
-      omim_id
-      inheritance_mode
-      repeat_size_classifications {
-        classification
-        min
-        max
-      }
-      notes
-    }
-    reference_region {
-      chrom
-      start
-      stop
-    }
-    reference_repeat_unit
-    repeat_units {
-      repeat_unit
-      classification
-    }
-    allele_size_distribution {
-      distribution
-      populations {
-        id
-        distribution
-      }
-      repeat_units {
-        repeat_unit
-        distribution
-        populations {
-          id
-          distribution
-        }
-      }
-    }
-    genotype_distribution {
-      distribution
-      populations {
-        id
-        distribution
-      }
-      repeat_units {
-        repeat_units
-        distribution
-        populations {
-          id
-          distribution
-        }
-      }
-    }
-    age_distribution {
-      age_range
-      distribution
-    }
-    stripy_id
-    adjacent_repeats {
-      id
-      reference_region {
-        chrom
-        start
-        stop
-      }
-      reference_repeat_unit
-      repeat_units
-      allele_size_distribution {
-        distribution
-        populations {
-          id
-          distribution
-        }
-        repeat_units {
-          repeat_unit
-          distribution
-          populations {
-            id
-            distribution
-          }
-        }
-      }
-      genotype_distribution {
-        distribution
-        populations {
-          id
-          distribution
-        }
-        repeat_units {
-          repeat_units
-          distribution
-          populations {
-            id
-            distribution
-          }
-        }
-      }
-    }
-  }
-}
-`
-
-type ShortTandemRepeatPageContainerProps = {
-  datasetId: DatasetId
-  strId: string
-}
-
-const ShortTandemRepeatPageContainer = ({
-  datasetId,
-  strId,
-}: ShortTandemRepeatPageContainerProps) => {
-  return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
-    <Page>
-      <DocumentTitle title={`${strId} | Short Tandem Repeat | ${labelForDataset(datasetId)}`} />
-      <GnomadPageHeading
-        datasetOptions={{
-          includeShortVariants: true,
-          includeStructuralVariants: false,
-          includeExac: false,
-          includeGnomad2: false,
-          includeGnomad3: true,
-          includeGnomad3Subsets: false,
-        }}
-        selectedDataset={datasetId}
-      >
-        Short Tandem Repeat: <span>{strId}</span>
-      </GnomadPageHeading>
-      <Query
-        operationName={operationName}
-        query={query}
-        variables={{
-          datasetId,
-          strId,
-        }}
-        loadingMessage="Loading short tandem repeat"
-        errorMessage="Unable to load short tandem repeat"
-        success={(data: any) => data.short_tandem_repeat}
-      >
-        {({ data }: any) => {
-          return (
-            <ShortTandemRepeatPage
-              datasetId={datasetId}
-              shortTandemRepeat={data.short_tandem_repeat}
-            />
-          )
-        }}
-      </Query>
-    </Page>
-  )
-}
-
-export default ShortTandemRepeatPageContainer
+export default ShortTandemRepeatPage

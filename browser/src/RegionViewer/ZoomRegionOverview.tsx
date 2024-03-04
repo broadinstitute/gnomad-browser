@@ -151,7 +151,6 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
     )
 
     const onChangeZoomRegion = useCallback(
-      // @ts-expect-error TS(7006) FIXME: Parameter 'newZoomRegion' implicitly has an 'any' ... Remove this comment to see the full error message
       (newZoomRegion) => {
         setZoomRegion(newZoomRegion)
         debouncedOnChangeZoomRegionCallback(newZoomRegion)
@@ -179,7 +178,7 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
                     />
                   ) : (
                     <DraggableZoomRegionOverlay
-                      onDrag={(offset) => {
+                      onDrag={(offset: any) => {
                         onChangeZoomRegion({
                           start: Math.max(
                             regions[0].start,
@@ -191,7 +190,6 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
                           ),
                         })
                       }}
-                      // @ts-expect-error TS(2322) FIXME: Type '{ onDrag: (offset: any) => void; style: { le... Remove this comment to see the full error message
                       style={{
                         left: `${zoomRegionStartX}px`,
                         width: `${zoomRegionStopX - zoomRegionStartX}px`,

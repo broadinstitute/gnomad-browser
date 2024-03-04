@@ -31,21 +31,21 @@ export default () => (
         {/* @ts-expect-error */}
         <ListItem>
           <Citation>
-            Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Wang, Q., Alföldi, J.,
-            Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y.,
-            Phu, W., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S.,
-            Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio,
-            V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R.,
-            Tibbetts, K., gnomAD Project Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C.,
-            Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†,
-            MacArthur, D. G.† & Karczewski, K. J. A genome-wide mutational constraint map quantified
-            from variation in 76,156 human genomes. <em>bioRxiv</em> 2022.03.20.485034 (2022).{' '}
-            {/* @ts-expect-error */}
-            <ExternalLink href="https://doi.org/10.1101/2022.03.20.485034">
-              https://doi.org/10.1101/2022.03.20.485034
+            Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q.,
+            Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W.,
+            Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E.,
+            Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson,
+            L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G.,
+            Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium,
+            O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H.
+            L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J. A
+            genomic mutational constraint map using variation in 76,156 human genomes{' '}
+            <em>Nature</em> 625, 92–100 (2024). {/* @ts-expect-error */}
+            <ExternalLink href="https://doi.org/10.1038/s41586-023-06045-0">
+              https://doi.org/10.1038/s41586-023-06045-0
             </ExternalLink>{' '}
             {/* @ts-expect-error */}
-            <ExternalLink href="https://www.biorxiv.org/highwire/citation/2787225/endnote-tagged">
+            <ExternalLink href="https://citation-needed.springer.com/v2/references/10.1038/s41586-023-06045-0?format=refman&flavour=citation">
               Download citation
             </ExternalLink>
           </Citation>
@@ -102,6 +102,20 @@ export default () => (
     <p>
       Remaining publications:{/* @ts-expect-error */}
       <List>
+        {/* @ts-expect-error */}
+        <ListItem>
+          <Citation>
+            Guo, M. H.†, Francioli, L. C.†, Stenton, S. L., Goodrich, J. K., Watts, N. A.,
+            Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD
+            Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J.,
+            O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound
+            heterozygosity from large-scale exome sequencing data. <em>Nature Genetics</em> (2023).{' '}
+            {/* @ts-expect-error */}
+            <ExternalLink href="https://doi.org/10.1038/s41588-023-01608-3">
+              https://doi.org/10.1038/s41588-023-01608-3
+            </ExternalLink>
+          </Citation>
+        </ListItem>
         {/* @ts-expect-error */}
         <ListItem>
           <Citation>

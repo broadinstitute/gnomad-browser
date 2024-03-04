@@ -11,10 +11,12 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Awaitable, Callable, TypeVar
 
 import aiohttp
-from hailtop.aiotools import LocalAsyncFS, RouterAsyncFS
-from hailtop.aiogoogle import GoogleStorageAsyncFS
-from hailtop.utils import bounded_gather, sleep_and_backoff, tqdm
+from hailtop.aiotools.router_fs import RouterAsyncFS
+from hailtop.utils import bounded_gather, sleep_before_try
+from hailtop.utils.rich_progress_bar import SimpleCopyToolProgressBar
+from rich.console import Console
 
+console = Console()
 
 logger = logging.getLogger("get_caids")
 logger.setLevel(logging.INFO)
@@ -86,19 +88,18 @@ T = TypeVar("T")
 
 
 async def retry_transient_errors(f: Callable[..., Awaitable[T]], max_attempts: int = 3) -> T:
-    delay = 0.1
-    errors = 0
+    tries = 0
     while True:
         try:
             return await f()
         except Exception as e:
             if not is_transient_error(e):
                 raise
-            errors += 1
-            if errors >= max_attempts:
+            tries += 1
+            if tries >= max_attempts:
                 raise
 
-        delay = await sleep_and_backoff(delay)
+        await sleep_before_try(tries)
 
 
 async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int = 4, request_timeout: int = 10,) -> None:
@@ -118,8 +119,9 @@ async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int =
     output_url = output_url.rstrip("/")
 
     with ThreadPoolExecutor() as thread_pool:
+        local_kwargs = {'thread_pool': thread_pool}
         async with RouterAsyncFS(
-            "file", [LocalAsyncFS(thread_pool), GoogleStorageAsyncFS()]
+            local_kwargs=local_kwargs
         ) as fs, aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=request_timeout * 60)) as session:
             # The ClinGen Allele Registry API does not accept VCFs with contigs other than 1-22, X, Y, and M.
             # Remove other contigs from the VCF header.
@@ -158,7 +160,9 @@ async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int =
                 if part_name not in completed_parts:
                     remaining_part_urls.append(part_url)
 
-            with tqdm(total=len(remaining_part_urls)) as progress:
+            logger.warning(f'\n\nParts Counts\nTotal: {len(all_part_urls)}\nCompleted: {len(completed_parts)}\nRemaining: {len(remaining_part_urls)}\n')
+
+            with SimpleCopyToolProgressBar(total=len(remaining_part_urls)) as progress:
 
                 def create_task(part_url):
                     async def task():

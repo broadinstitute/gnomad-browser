@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 node:14.17-alpine
+FROM --platform=linux/amd64 node:18.17-alpine
+RUN npm install -g pnpm@^8.14.3
 
 RUN mkdir /app && chown node:node /app
 
@@ -8,11 +9,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Install dependencies
+COPY --chown=node:node package.json /app/package.json
 COPY --chown=node:node dataset-metadata/package.json /app/dataset-metadata/package.json
 COPY --chown=node:node graphql-api/package.json /app/graphql-api/package.json
-COPY --chown=node:node yarn.lock .
-RUN echo '{"private": true, "workspaces":["graphql-api", "dataset-metadata"]}' > /app/package.json
-RUN yarn install --production --frozen-lockfile && yarn cache clean
+COPY --chown=node:node pnpm-lock.yaml .
+COPY --chown=node:node pnpm-workspace-api-docker.yaml ./pnpm-workspace.yaml
+RUN pnpm install --production --frozen-lockfile
 
 # Copy source
 COPY --chown=node:node dataset-metadata /app/dataset-metadata
@@ -21,5 +23,5 @@ COPY --chown=node:node tsconfig.json /app/graphql-api/tsconfig.json
 COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
 
 # Build JS from TS source
-RUN yarn run tsc -p /app/graphql-api/tsconfig.build.json
+RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
 CMD ["node", "graphql-api/src/app.js"]

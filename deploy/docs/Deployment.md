@@ -8,9 +8,9 @@
 
 Creating the base GCP resources (GKE cluster, GCS buckets, VPC networks, service accounts) is done via the [gnomad-vpc](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-vpc) and [gnomad-browser-infra](https://github.com/broadinstitute/tgg-terraform-modules/tree/main/gnomad-browser-infra) terraform modules.
 
-If you are simply deploying a new browser app instance, and don't need to provision infrastructure, you can skip this step.
+If you are simply deploying a new browser app instance/demo in an existing environment (such as production) where GKE, Elasticsearch, Redis, etc already exist, you can skip to: [Before Creating a Deployment](#before-creating-a-deployment), or [Prepare Data](#prepare-data) if you are loading a new dataset.
 
-Example configurations for those two modules are as follows. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
+Example configurations for those two modules are as follows. These utilize the default settings for GKE node sizing and numbers, which will result in quite a large cluster. If you need something smaller, adjust the `gke_node_pools` variable on the browser infra module. If you are creating a new persistent / production environment at Broad, please follow our conventions in [gnomad-terraform](https://github.com/broadinstitute/gnomad-terraform).
 
 ```hcl
 module "gnomad-browser-vpc" {
@@ -23,6 +23,8 @@ module "gnomad-browser-infra" {
   infra_prefix                          = "gnomad-mybrowser"
   vpc_network_name                      = "gnomad-mynetwork"
   vpc_subnet_name                       = "gnomad-mynetwork-gke"
+  # For authorized networks, use a list of IPs that is restricted to networks that makes sense for you. This example opens traffic to the Internet.
+  gke_control_plane_authorized_networks = ["0.0.0.0/0"]
   project_id                            = "my-gcp-project"
   gke_pods_range_slice                  = "10.164.0.0/14"
   gke_services_range_slice              = "10.168.0.0/20"
@@ -31,10 +33,6 @@ module "gnomad-browser-infra" {
 
 Then, run `terraform init` and `terraform apply`.
 
-## Prepare data
-
-See [data-pipeline/README.md](../../data-pipeline/README.md) for information on running data preparation pipelines.
-
 # Deploy on GKE
 
 ## Create Elasticsearch cluster
@@ -42,14 +40,6 @@ See [data-pipeline/README.md](../../data-pipeline/README.md) for information on 
 First install the operator with the steps as documented: [Elastic Cloud on Kubernetes (ECK)](https://www.elastic.co/guide/en/cloud-on-k8s/2.9/k8s-overview.html).
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
-
-Create a kubernetes service account to use for elasticsearch snapshotting, run: `kubectl create serviceaccount es-snaps`
-
-Annotate that service account to associate it with the GCP Service Account that can write to your snapthot storage:
-
-```
-  kubectl annotate sa es-snaps iam.gke.io/gcp-service-account=your-service-acct@your-project.iam.gserviceaccount.com
-```
 
 If you are using a custom cluster (e.g. `gnomad-myname`) ensure `environment_tag` in `deployctl_config.json` is set to `myname`.
 
@@ -60,6 +50,68 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 ## Deploy Redis
 
 Run kubectl apply -k . in the deploy/manifests/redis folder
+
+## Http Cache
+
+Http responses are cached and served to users. Caches are associated with deployed pods, so creating a new deployment effectively removes any cached data from the previous deployment.
+
+To manually clear the http cache:
+
+Exec into the browser pod. Get pod name if needed with `kubectl get pods`
+
+`kubectl exec -it gnomad-browser-<POD_NAME> -- sh`
+
+Cache data prefix folders are named with a single character, e.g. `0`, `1`, `a`, `d`
+
+Remove cache directories manually
+
+`rm -rf <CACHE_DIR>`
+
+## Json Cache
+
+The gnomAD API has an optional JSON cache for elasticsearch lookups. The cache client can write to local directories or Google Cloud Storage and files can be gzipped or not.
+
+### Environment variables:
+
+Should be set when running the API server.
+
+`JSON_CACHE_PATH`
+
+- Description: Specifies the directory path where JSON files should be written.
+- Usage: If this path includes gs://, the system will utilize Google Cloud Storage (GCS) for storing the JSON files. Otherwise, it defaults to using local file storage.
+- Example Value: /path/to/cache or gs://bucket_name/path/to/cache
+
+`JSON_CACHE_ENABLE_ALL`
+
+- Description: Determines whether caching is enabled for all Elasticsearch lookups using the withCache function.
+- Usage: Set to true to enable caching for all lookups; otherwise, caching is disabled.
+- Example Value: true or false
+
+`JSON_CACHE_LARGE_GENES`
+
+- Description: Controls the caching behavior specifically for large genes.
+- Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
+- Example Value: true or false
+
+`JSON_CACHE_COMPRESSION`
+
+- Description: Specifies whether to use compression for the stored JSON files.
+- Usage: Set to true to enable compression, which can save storage space but may increase CPU usage for compression and decompression processes.
+- Example Value: true or false
+
+### Cache invalidation
+
+When data changes, the JSON cache path must be manually invalidated. This can be done by updating the cache path to a new directory.
+
+E.g change `JSON_CACHE_PATH` from `gs://my_json_cache_bucket/release` to `gs://my_json_cache_bucket/release2`.
+
+Cached files can also be copied between buckets as needed.
+
+Or, specific files to be invalidated can be deleted using a glob pattern.
+
+## Prepare data
+
+See [data-pipeline/README.md](../../data-pipeline/README.md) for information on running data preparation pipelines.
 
 ## Before creating a deployment
 
@@ -193,7 +245,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 2. Check all current deployments (both `cluster` pods running and `local` manifests) with:
 
    ```
-   ./deployctl production describe
+   ./deployctl deployments list
    ```
 
 3. Check the name (blue/green) of the production deployment currently serving traffic `<DEPLOYMENT_NAME>`
@@ -232,7 +284,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
    ./deployctl deployments apply <DEPLOYMENT_NAME>
    ```
 
-8. Apply an ingress, allowing access to the pods via an IP address that gets assigned:
+8. (Optional) Apply a demo ingress, allowing access to the pods via an IP address that gets assigned. Do this if you want to double-check your deployment before updating the production ingress.
 
    ```
    ./deployctl demo apply-ingress <DEPLOYMENT_NAME>
@@ -246,7 +298,11 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
      It typically takes ~5 minutes for the IP to resolve to the new deployment
 
-   - Optionally, double check the blue/green deployment via this ingress before swapping production over
+   - Clean up the ingress when you no longer need it with:
+
+     ```
+     kubectl delete ingress gnomad-ingress-demo-<DEPLOYMENT_NAME>
+     ```
 
 9. Update the production deployment
 

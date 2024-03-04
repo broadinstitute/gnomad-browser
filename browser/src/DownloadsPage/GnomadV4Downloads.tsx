@@ -5,11 +5,10 @@ import { ExternalLink, ListItem } from '@gnomad/ui'
 import {
   Column,
   ColumnsWrapper,
+  DownloadLinks,
   DownloadsSection,
   FileList,
-  GenericDownloadLinks,
   GetUrlButtons,
-  IndexedFileDownloadLinks,
   SectionTitle,
   StyledParagraph,
 } from './downloadsPageStyles'
@@ -39,7 +38,7 @@ const exomeChromosomeVcfs = [
   { chrom: '21', size: '3.27 GiB', md5: '206afe8d9dbe544697e1b67eee6d2f7f' },
   { chrom: '22', size: '7.31 GiB', md5: '3084349c03194e8cf5063a1e46473248' },
   { chrom: 'X', size: '7.96 GiB', md5: '6d33a288735eda242c473905ccb6743b' },
-  { chrom: 'Y', size: '860.03 MiB', md5: '8c231b75745b6670555915847c9999e8' },
+  { chrom: 'Y', size: '163.66 MiB', md5: 'c8414744cf75fa498e2497a9391eb1ad' },
 ]
 
 const genomeChromosomeVcfs = [
@@ -66,34 +65,34 @@ const genomeChromosomeVcfs = [
   { chrom: '21', size: '11.47 GiB', md5: '4d2e808cbaafcd2ddc7692be0a45a924' },
   { chrom: '22', size: '12.77 GiB', md5: 'd6ba3b18b07423e3a1af56e8405a26c2' },
   { chrom: 'X', size: '37.05 GiB', md5: 'b77d8f0219fa9a033a6f747d5fef12d9' },
-  { chrom: 'Y', size: '890.03 MiB', md5: 'b39443d98eeb5f6735aa57e37d378edf' },
+  { chrom: 'Y', size: '890.03 MiB', md5: '8c231b75745b6670555915847c9999e8' },
 ]
 
 const svChromosomeVcfs = [
-  { chrom: '1', size: '616.33 MiB', crc32: 'f497d60f' },
-  { chrom: '2', size: '612.83 MiB', crc32: 'bee58761' },
-  { chrom: '3', size: '469.64 MiB', crc32: '00c11e03' },
-  { chrom: '4', size: '446.44 MiB', crc32: '4aa1be45' },
-  { chrom: '5', size: '418.1 MiB', crc32: 'cc78d775' },
-  { chrom: '6', size: '418.37 MiB', crc32: '8ad01764' },
-  { chrom: '7', size: '437.99 MiB', crc32: '0e78bed7' },
-  { chrom: '8', size: '332.91 MiB', crc32: '1a7974d3' },
-  { chrom: '9', size: '289.19 MiB', crc32: '693c4cc1' },
-  { chrom: '10', size: '320.36 MiB', crc32: '63dc92db' },
-  { chrom: '11', size: '312.75 MiB', crc32: 'c0016756' },
-  { chrom: '12', size: '322.33 MiB', crc32: '28396743' },
-  { chrom: '13', size: '208.4 MiB', crc32: '504d3937' },
-  { chrom: '14', size: '218.37 MiB', crc32: '06ccecf9' },
-  { chrom: '15', size: '183.5 MiB', crc32: 'c191b2ca' },
-  { chrom: '16', size: '234 MiB', crc32: '016c8e77' },
-  { chrom: '17', size: '233.1 MiB', crc32: 'f37738a4' },
-  { chrom: '18', size: '157.88 MiB', crc32: '1f802ad6' },
-  { chrom: '19', size: '227.48 MiB', crc32: '16a48cf0' },
-  { chrom: '20', size: '148.62 MiB', crc32: '7e34ac14' },
-  { chrom: '21', size: '109.55 MiB', crc32: '6805d560' },
-  { chrom: '22', size: '112.34 MiB', crc32: '3a0cce90' },
-  { chrom: 'X', size: '335.93 MiB', crc32: '1b49e5a6' },
-  { chrom: 'Y', size: '50.76 MiB', crc32: 'd8a3a636' },
+  { chrom: '1', size: '616.33 MiB', crc32c: 'f497d60f' },
+  { chrom: '2', size: '612.83 MiB', crc32c: 'bee58761' },
+  { chrom: '3', size: '469.64 MiB', crc32c: '00c11e03' },
+  { chrom: '4', size: '446.44 MiB', crc32c: '4aa1be45' },
+  { chrom: '5', size: '418.1 MiB', crc32c: 'cc78d775' },
+  { chrom: '6', size: '418.37 MiB', crc32c: '8ad01764' },
+  { chrom: '7', size: '437.99 MiB', crc32c: '0e78bed7' },
+  { chrom: '8', size: '332.91 MiB', crc32c: '1a7974d3' },
+  { chrom: '9', size: '289.19 MiB', crc32c: '693c4cc1' },
+  { chrom: '10', size: '320.36 MiB', crc32c: '63dc92db' },
+  { chrom: '11', size: '312.75 MiB', crc32c: 'c0016756' },
+  { chrom: '12', size: '322.33 MiB', crc32c: '28396743' },
+  { chrom: '13', size: '208.4 MiB', crc32c: '504d3937' },
+  { chrom: '14', size: '218.37 MiB', crc32c: '06ccecf9' },
+  { chrom: '15', size: '183.5 MiB', crc32c: 'c191b2ca' },
+  { chrom: '16', size: '234 MiB', crc32c: '016c8e77' },
+  { chrom: '17', size: '233.1 MiB', crc32c: 'f37738a4' },
+  { chrom: '18', size: '157.88 MiB', crc32c: '1f802ad6' },
+  { chrom: '19', size: '227.48 MiB', crc32c: '16a48cf0' },
+  { chrom: '20', size: '148.62 MiB', crc32c: '7e34ac14' },
+  { chrom: '21', size: '109.55 MiB', crc32c: '6805d560' },
+  { chrom: '22', size: '112.34 MiB', crc32c: '3a0cce90' },
+  { chrom: 'X', size: '335.93 MiB', crc32c: '1b49e5a6' },
+  { chrom: 'Y', size: '50.76 MiB', crc32c: 'd8a3a636' },
 ]
 
 const GnomadV4Downloads = () => {
@@ -120,12 +119,7 @@ const GnomadV4Downloads = () => {
           For more information, read the{' '}
           {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
-            v4 blog post
-          </ExternalLink>
-          , and the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-          <ExternalLink href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/README.txt">
-            gnomAD v4.0.0 README
+            gnomAD v4.0.0 blog post
           </ExternalLink>
           .
         </p>
@@ -138,18 +132,17 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht"
-                  includeAzure={false}
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
-                  <IndexedFileDownloadLinks
+                  <DownloadLinks
                     label={`chr${chrom} sites VCF`}
                     path={`/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAzure={false}
+                    includeTBI
                   />
                 </ListItem>
               ))}
@@ -164,18 +157,17 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/"
-                  includeAzure={false}
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
-                  <IndexedFileDownloadLinks
+                  <DownloadLinks
                     label={`chr${chrom} sites VCF`}
                     path={`/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeAzure={false}
+                    includeTBI
                   />
                 </ListItem>
               ))}
@@ -192,17 +184,53 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome coverage Hail Table"
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome coverage summary TSV"
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.summary.tsv.bgz"
               size="3.77 GiB"
               md5="a6955332c9cccae7efb9c95581282a73"
-              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v4-genetic-ancestry-group-classification">
+          Genetic ancestry group classification
+        </SectionTitle>
+        <p>
+          For more information about these files, see our blog post on{' '}
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
+            using the gnomAD genetic ancestry group principal components analysis loadings and
+            random forest classifier on your dataset
+          </ExternalLink>
+          .
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Principal component analysis (PCA) variant loadings"
+              path="/release/4.0/pca/gnomad.v4.0.pca_loadings.ht"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Random forest (RF) .pkl model"
+              path="/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Random forest (RF) .onnx model"
+              path="/release/4.0/pca/gnomad.v4.0.RF_fit.onnx"
             />
           </ListItem>
         </FileList>
@@ -216,24 +244,20 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks label="README" path="/release/v4.0/constraint/README.txt" />
+            <DownloadLinks label="README" path="/release/4.0/constraint/README.txt" />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
-              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
-              includeAWS={false}
-              includeAzure={false}
+              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Constraint metrics TSV"
-              path="/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
-              includeAWS={false}
-              includeAzure={false}
+              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
             />
           </ListItem>
         </FileList>
@@ -246,15 +270,15 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
-          {svChromosomeVcfs.map(({ chrom, size, crc32 }) => (
+          {svChromosomeVcfs.map(({ chrom, size, crc32c }) => (
             // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             <ListItem key={chrom}>
-              <IndexedFileDownloadLinks
+              <DownloadLinks
                 label={`chr${chrom} VCF`}
                 path={`/release/4.0/genome_sv/gnomad.v4.0.sv.chr${chrom}.vcf.gz`}
                 size={size}
-                crc32={crc32}
-                includeAzure={false}
+                crc32c={crc32c}
+                includeTBI
               />
             </ListItem>
           ))}
@@ -270,26 +294,23 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome CNV VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.all.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome CNV non neuro VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome CNV non-neuro controls VCF"
               path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro_controls.vcf.gz"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -300,10 +321,9 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome sex ploidy cutoffs TSV"
               path="/release/4.0/sex_inference/gnomad.exomes.v4.0.sample_qc.sex_inference.ploidy_cutoffs.tsv"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -311,15 +331,13 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome calling intervals Hail Table"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.interval_list.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <GenericDownloadLinks
+            <DownloadLinks
               label="Exome calling intervals flat file"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>

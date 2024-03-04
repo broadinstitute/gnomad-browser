@@ -195,9 +195,11 @@ def import_clinvar_xml(clinvar_xml_path):
                             [
                                 locations["GRCh37"]["locus"] if "GRCh37" in locations else "NA",
                                 json.dumps(locations["GRCh37"]["alleles"]) if "GRCh37" in locations else "NA",
-                                "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
-                                if "GRCh38" in locations
-                                else "NA",
+                                (
+                                    "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
+                                    if "GRCh38" in locations
+                                    else "NA"
+                                ),
                                 json.dumps(locations["GRCh38"]["alleles"]) if "GRCh38" in locations else "NA",
                                 json.dumps(variant),
                             ]

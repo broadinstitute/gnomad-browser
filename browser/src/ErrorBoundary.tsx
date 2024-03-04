@@ -18,7 +18,7 @@ type State = any
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { error: null }
+    this.state = { error: null, bugDescription: '' }
   }
 
   static getDerivedStateFromError(error: any) {
@@ -26,27 +26,32 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   render() {
-    // @ts-expect-error TS(2339) FIXME: Property 'children' does not exist on type 'Readon... Remove this comment to see the full error message
     const { children, location } = this.props
-    const { error } = this.state
+    const { error, bugDescription } = this.state
 
     if (error) {
       const issueBody = `
+**Description**: ${bugDescription}
 
-Stack trace:
+**Error message**: ${error.message}
+
+**Stack trace**:
 \`\`\`
 ${error.stack}
 \`\`\`
 
-Route: ${location.pathname}${location.search}
+**Route**: ${location.pathname}${location.search}
 
-Browser: ${navigator.userAgent}
-
+**Browser**: ${navigator.userAgent}
 `
 
       const issueURL = `https://github.com/broadinstitute/gnomad-browser/issues/new?title=${encodeURIComponent(
         error.message
       )}&body=${encodeURIComponent(issueBody)}&labels=Type%3A%20Bug`
+
+      const forumURL = `https://discuss.gnomad.broadinstitute.org/new-topic?title=topic%20${encodeURIComponent(
+        error.message
+      )}&body=${encodeURIComponent(issueBody)}&category=Browser&tags=bug`
 
       const emailURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
         'Browser bug report'
@@ -57,14 +62,45 @@ Browser: ${navigator.userAgent}
           <DocumentTitle title="Error" />
           <PageHeading>Something Went Wrong</PageHeading>
           <p>An error prevented this page from being displayed.</p>
+          <p>This is a bug.</p>
           <p>
-            This is a bug. Please{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            <ExternalLink href={issueURL}>file an issue on GitHub</ExternalLink> or{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            <ExternalLink href={emailURL}>email us</ExternalLink> and{' '}
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            Please describe what you were trying to do at the time the page crashed
+            <div>
+              <textarea
+                id="bug-description"
+                name="bug-description"
+                value={bugDescription}
+                onChange={(e) => this.setState({ bugDescription: e.target.value })}
+                rows={4}
+                cols={50}
+              />
+            </div>
+          </p>
+
+          <p>
+            And submit this bug report as{' '}
+            <ul>
+              <li>
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href={issueURL}>an issue on GitHub</ExternalLink> or{' '}
+              </li>
+              <li>
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
+              </li>
+            </ul>
+            Then {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <StyledLink href="/">reload the browser</StyledLink>.
+            <br />
+            <br />
+            <br />
+            <p>
+              Alternately, you can{' '}
+              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+              <ExternalLink href={emailURL}>email us</ExternalLink>. Please note that we prioritize
+              answering issues on Github and topics on the Forum, so if you choose to email it may
+              take us longer to respond.
+            </p>
           </p>
         </InfoPage>
       )

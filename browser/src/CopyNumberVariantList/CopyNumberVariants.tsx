@@ -93,7 +93,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   })
   const { sortKey, sortOrder } = sortState
 
-  // @ts-expect-error TS(7006) FIXME: Parameter 'newSortKey' implicitly has an 'any' typ... Remove this comment to see the full error message
   const setSortKey = useCallback((newSortKey) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
@@ -125,14 +124,12 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
   const shouldHighlightTableRow = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
     (variant) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
   )
 
-  // @ts-expect-error TS(7031) FIXME: Binding element 'scrollOffset' implicitly has an '... Remove this comment to see the full error message
   const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
     if (tracks.current && !scrollUpdateWasRequested) {
       ;(tracks.current as any).scrollTo(
@@ -141,7 +138,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
     }
   }, [])
 
-  // @ts-expect-error TS(7031) FIXME: Binding element 'scrollOffset' implicitly has an '... Remove this comment to see the full error message
   const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
     if (table.current && !scrollUpdateWasRequested) {
       ;(table.current as any).scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
@@ -151,7 +147,6 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'variant' implicitly has an 'any' type.
     // eslint-disable-next-line consistent-return
     (variant) => {
       if (colorKey === 'type') {

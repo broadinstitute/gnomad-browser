@@ -16,7 +16,7 @@ import geneFactory from '../__factories__/Gene'
 import GenePage from './GenePage'
 import GenePageContainer from './GenePageContainer'
 import { forDatasetsMatching, forDatasetsNotMatching } from '../../../tests/__helpers__/datasets'
-import { withDummyRouter } from '../../../tests/__helpers__/router'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('../Query', () => {
   const originalModule = jest.requireActual('../Query')
@@ -79,7 +79,9 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
 
   test('has no unexpected changes', () => {
     const tree = renderer.create(
-      withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
     )
     expect(tree).toMatchSnapshot()
   })
@@ -88,7 +90,11 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
     const constraintModeMatcher = /Constraint not (yet )?available/
     const cooccurrenceModeMatcher = /Individuals with/
 
-    render(withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />))
+    render(
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      </MemoryRouter>
+    )
     const constraintButton = screen.getByText('Constraint')
     const cooccurrenceButton = screen.getByText('Variant co-occurrence')
 
@@ -123,7 +129,9 @@ forDatasetsMatching(svRegexp, 'GenePage with SV dataset "%s"', (datasetId) => {
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
     )
     expect(tree).toMatchSnapshot()
   })
@@ -148,7 +156,9 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
       }),
     })
     const tree = renderer.create(
-      withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
     )
     expect(tree).toMatchSnapshot()
   })
@@ -166,7 +176,9 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
       }),
     })
     renderer.create(
-      withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
     )
     const coverageQueries = mockApiCalls().filter(
       ({ operationName }) => operationName === 'GeneCoverage'
@@ -210,7 +222,9 @@ describe.each([
       }),
     })
     renderer.create(
-      withDummyRouter(<GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />)
+      <MemoryRouter>
+        <GenePage datasetId={datasetId} gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
     )
 
     const coverageQueries = mockApiCalls().filter(

@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 node:14.17-alpine as build
+FROM --platform=linux/amd64 node:18.17-alpine as build
+RUN npm install -g pnpm@^8.14.3
 
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -9,10 +10,12 @@ ENV NODE_ENV=production
 
 # Install dependencies
 COPY --chown=node:node package.json .
+COPY --chown=node:node pnpm-lock.yaml .
+COPY --chown=node:node pnpm-workspace.yaml ./pnpm-workspace.yaml
+
 COPY --chown=node:node dataset-metadata/package.json dataset-metadata/package.json
 COPY --chown=node:node browser/package.json browser/package.json
-COPY --chown=node:node yarn.lock .
-RUN yarn install --production false --frozen-lockfile && yarn cache clean
+RUN pnpm install --production false --frozen-lockfile
 
 # Copy source
 COPY --chown=node:node babel.config.js .
@@ -23,7 +26,7 @@ COPY --chown=node:node browser browser
 
 # Build
 COPY --chown=node:node browser/build.env .
-RUN export $(cat build.env | xargs); cd browser && yarn run build
+RUN export $(cat build.env | xargs); cd browser && pnpm build
 
 # Compress static files for use with nginx's gzip_static
 RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)$' \

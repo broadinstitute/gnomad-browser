@@ -1,7 +1,9 @@
 *
-!yarn.lock
 !dataset-metadata
 !graphql-api/package.json
 !graphql-api/src
 !tsconfig.json
 !tsconfig.build.json
+!pnpm-lock.yaml
+!pnpm-workspace-api-docker.yaml
+!package.json

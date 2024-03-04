@@ -32,6 +32,6 @@ repos:
         stages: [prepare-commit-msg]
       - id: prettier
         name: prettier
-        entry: yarn run prettier --write --list-different --ignore-unknown
+        entry: pnpm prettier --write --list-different --ignore-unknown
         language: system
         stages: [commit]

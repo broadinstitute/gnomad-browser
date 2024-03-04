@@ -12,7 +12,6 @@ from data_pipeline.data_types.transcript import (
     annotate_gene_transcripts_with_refseq_id,
     extract_transcripts,
 )
-from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
@@ -141,19 +140,33 @@ pipeline.add_task(
 # Tissue expression
 ###############################################
 
-pipeline.add_download_task(
-    "download_gtex_v7_tpm_data",
-    "https://storage.googleapis.com/gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
-    f"/{external_sources_subdir}/gtex/v7/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
-)
+# Nov 21, 2023
+# ---
+# The tissue expression steps (GTEx and pext) are now being treated as artifacts.
+# These were produced on an older version of hail, and will never change. Rather than
+# invest time into fixing these and re-writing portions of the stack to accomodate
+# a new data format, we have chosen to release these files instead:
+#
+# The files output by "prepare_gtex_v7_expresseion_data" and "prepare_pext" are,
+# respectively, found at
+# - gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/
+# and
+# - gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/
+#
+# ---
 
-pipeline.add_download_task(
-    "download_gtex_v7_sample_attributes",
-    "https://storage.googleapis.com/gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
-    f"/{external_sources_subdir}/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
-)
 
-# This step can no longer be run with current versions of Hail
+# pipeline.add_download_task(
+#     "download_gtex_v7_tpm_data",
+#     "https://storage.googleapis.com/gtex_analysis_v7/rna_seq_data/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+#     f"/{external_sources_subdir}/gtex/v7/GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz",
+# )
+
+# pipeline.add_download_task(
+#     "download_gtex_v7_sample_attributes",
+#     "https://storage.googleapis.com/gtex_analysis_v7/annotations/GTEx_v7_Annotations_SampleAttributesDS.txt",
+#     f"/{external_sources_subdir}/gtex/v7/GTEx_v7_Annotations_SampleAttributesDS.txt",
+# )
 
 # pipeline.add_task(
 #     "prepare_gtex_v7_expression_data",
@@ -166,15 +179,15 @@ pipeline.add_download_task(
 #     {"tmp_path": "/tmp"},
 # )
 
-pipeline.add_task(
-    "prepare_pext",
-    prepare_pext_data,
-    "/pext_grch37.ht",
-    {
-        "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
-        "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
-    },
-)
+# pipeline.add_task(
+#     "prepare_pext",
+#     prepare_pext_data,
+#     "/pext_grch37.ht",
+#     {
+#         "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
+#         "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
+#     },
+# )
 
 ###############################################
 # Constraint
@@ -240,7 +253,7 @@ pipeline.add_task(
     {
         "table_path": pipeline.get_task("prepare_grch37_genes"),
         "canonical_transcript": pipeline.get_task("get_grch37_canonical_transcripts"),
-        "pext": pipeline.get_task("prepare_pext"),
+        "pext": "gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/",
     },
 )
 
@@ -250,9 +263,7 @@ pipeline.add_task(
     f"/{genes_subdir}/genes_grch37_annotated_2.ht",
     {
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
-        # This table can no longer be generated with current versions of Hail
-        # "gtex_tissue_expression_path": pipeline.get_task("prepare_gtex_v7_expression_data"),
-        "gtex_tissue_expression_path": "gs://gnomad-v4-data-pipeline/output/gtex/gtex_v7_tissue_expression.ht",
+        "gtex_tissue_expression_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/",
     },
 )
 
@@ -377,7 +388,7 @@ pipeline.add_task(
     "extract_grch38_transcripts",
     extract_transcripts,
     f"/{genes_subdir}/transcripts_grch38_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_6")},
+    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_5")},
 )
 
 ###############################################

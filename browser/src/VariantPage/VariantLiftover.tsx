@@ -6,32 +6,17 @@ import { parseVariantId } from '@gnomad/identifiers'
 import { labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 
-type Props = {
-  variant: {
-    reference_genome: 'GRCh37' | 'GRCh38'
-    liftover?: {
-      liftover: {
-        variant_id: string
-      }
-      datasets: string[]
-    }[]
-    liftover_sources?: {
-      source: {
-        variant_id: string
-      }
-      datasets: string[]
-    }[]
-  }
-}
+import { Variant } from './VariantPage'
+
+type Props = { variant: Variant }
 
 const VariantLiftover = ({ variant }: Props) => {
-  if ((variant.liftover || []).length > 0) {
+  if (variant.liftover && variant.liftover.length > 0) {
     const liftoverTargetReferenceGenome =
       variant.reference_genome === 'GRCh37' ? 'GRCh38' : 'GRCh37'
     const liftoverTargetDataset =
       variant.reference_genome === 'GRCh37' ? 'gnomad_r4' : 'gnomad_r2_1'
 
-    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     const isPlural = variant.liftover.length > 1
     return (
       <>
@@ -41,7 +26,6 @@ const VariantLiftover = ({ variant }: Props) => {
         </p>
 
         <ul>
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
           {variant.liftover.map((l) => {
             const { chrom, pos } = parseVariantId(l.liftover.variant_id)
             return (
@@ -77,13 +61,12 @@ const VariantLiftover = ({ variant }: Props) => {
     )
   }
 
-  if ((variant.liftover_sources || []).length > 0) {
+  if (variant.liftover_sources && variant.liftover_sources.length > 0) {
     const liftoverSourceReferenceGenome =
       variant.reference_genome === 'GRCh37' ? 'GRCh38' : 'GRCh37'
     const liftoverSourceDataset =
       variant.reference_genome === 'GRCh37' ? 'gnomad_r4' : 'gnomad_r2_1'
 
-    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     const isPlural = variant.liftover_sources.length > 1
     return (
       <>
@@ -93,7 +76,6 @@ const VariantLiftover = ({ variant }: Props) => {
         </p>
 
         <ul>
-          {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
           {variant.liftover_sources.map((l) => {
             const { chrom, pos } = parseVariantId(l.source.variant_id)
             return (

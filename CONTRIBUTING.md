@@ -16,10 +16,10 @@ See [development/docs](./development/docs) for more information.
 
 This should be enough to use the Docker Compose development environment. However, installing dependencies may be required if not using Docker Compose or for some editor integrations.
 
-- For browser/API development, install [Node.js](https://nodejs.org/), [Yarn (v1)](https://classic.yarnpkg.com/), and dependencies.
+- For browser/API development, install [Node.js](https://nodejs.org/), [pnpm](https://pnpm.io/), and dependencies.
 
   ```
-  yarn
+  pnpm install
   ```
 
 - For data pipeline development, install [Python](https://www.python.org/), dependencies, and development tools.
@@ -27,6 +27,7 @@ This should be enough to use the Docker Compose development environment. However
   ```
   pip install -r data-pipeline/requirements.txt
   pip install -r requirements-dev.txt
+  pip install -r deploy/deployctl/requirements.txt
   ```
 
 ## Browser
@@ -94,28 +95,28 @@ See [data-pipeline/README.md](./data-pipeline/README.md).
 
 All code should formatted using either [Prettier](https://prettier.io/) for JavaScript or [Black](https://black.readthedocs.io/) for Python. To run these formatters, use:
 
-- Prettier: `yarn run format`
+- Prettier: `pnpm format`
 - Black: `black .`
 
 If pre-commit hooks are installed, formatters will be automatically run on each commit.
 
 Some other conventions are enforced using [ESLint](https://eslint.org/) for JavaScript, [Stylelint](https://stylelint.io/) for CSS (and styled-components styles), and [Pylint](https://pylint.org/) for Python. To run these linters use:
 
-- ESLint: `yarn run lint:js`
-- Stylelint: `yarn run lint:css`
+- ESLint: `pnpm lint:js`
+- Stylelint: `pnpm lint:css`
 - Pylint: `pylint data-pipeline/src/data_pipeline`
 
 ## Tests
 
 [Jest](https://jestjs.io/) is used for JavaScript unit tests. Jest is configured to look for files named `*.spec.js` in the browser and graphql-api directories.
 
-To run all tests, use:
+To run all Jest tests, use:
 
 ```
-yarn test
+pnpm jest
 ```
 
-To run only tests for one component, use `yarn test --projects browser` or `yarn test --projects graphql-api`.
+To run only tests for one component, use `pnpm jest --projects browser` or `pnpm jest --projects graphql-api`.
 
 ## Updating dependencies
 

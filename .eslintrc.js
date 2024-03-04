@@ -47,6 +47,8 @@ module.exports = {
     'no-restricted-globals': 'off',
     '@typescript-eslint/no-extra-semi': 'off',
     'import/order': 'off',
+    'react/function-component-definition': 'off',
+    'prefer-regex-literals': 'off',
     // Rules disabled below this line are ones that we might want to re-enable
     // someday but that will entail more work, either because lots of distinct
     // LOCs will have to be updated, or because it's not immediately obvious
@@ -61,8 +63,10 @@ module.exports = {
     'no-use-before-define': 'off',
     'react/destructuring-assignment': 'off',
     'prefer-destructuring': 'off',
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    'react/jsx-no-useless-fragment': 'off',
+    'jsx-a11y/control-has-associated-label': 'off',
   },
   overrides: [
     {
@@ -94,4 +98,5 @@ module.exports = {
   parserOptions: {
     ecmaVersion: '2018',
   },
+  settings: { react: { version: '16.14.0' } },
 }

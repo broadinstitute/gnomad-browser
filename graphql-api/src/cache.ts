@@ -4,6 +4,18 @@ import { Redis } from 'ioredis'
 
 import config from './config'
 import logger from './logger'
+import { JsonCache } from './queries/helpers/json-cache'
+import largeGenes from './queries/helpers/large-genes'
+
+type AsyncCacheFunction = (...args: any[]) => Promise<any>
+
+type keyFunction = (...args: any[]) => string
+
+type WithCacheOptions = {
+  expiration?: number
+  jsonCacheEnableAll?: boolean
+  jsonCacheLargeGenes?: boolean
+}
 
 let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
@@ -28,11 +40,13 @@ if (config.REDIS_HOST) {
   } else {
     readCacheDb = new Redis({
       host: config.REDIS_HOST,
+      port: config.REDIS_PORT,
       db: 1,
     })
 
     writeCacheDb = new Redis({
       host: config.REDIS_HOST,
+      port: config.REDIS_PORT,
       db: 1,
     })
   }
@@ -65,12 +79,49 @@ if (config.REDIS_HOST) {
   logger.warn('No cache configured')
 }
 
-export const withCache = (fn: any, keyFn: any, options = {}) => {
-  // @ts-expect-error TS(2339) FIXME: Property 'expiration' does not exist on type '{}'.
-  const { expiration = 3600 } = options
+export const withCache = (
+  fn: AsyncCacheFunction,
+  keyFn: keyFunction,
+  options: WithCacheOptions = {}
+) => {
+  const {
+    expiration = 3600,
+    jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
+    jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES,
+  } = options
 
   return async (...args: any[]) => {
     const cacheKey = keyFn(...args)
+
+    if (jsonCacheEnableAll) {
+      const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
+      if (await json_cache.exists(cacheKey)) {
+        return json_cache.get(cacheKey)
+      }
+
+      const result = await fn(...args)
+
+      json_cache.set(cacheKey, result)
+
+      return result
+    }
+
+    if (jsonCacheLargeGenes) {
+      const isLargeGene = largeGenes.some((g) => cacheKey.includes(g))
+
+      if (isLargeGene) {
+        const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
+        if (await json_cache.exists(cacheKey)) {
+          return json_cache.get(cacheKey)
+        }
+
+        const result = await fn(...args)
+
+        json_cache.set(cacheKey, result)
+
+        return result
+      }
+    }
 
     let cachedResult = null
     try {

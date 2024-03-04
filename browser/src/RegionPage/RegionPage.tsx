@@ -140,11 +140,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             <RegionInfo region={region} />
             {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
               <p>
-                <Badge level="info">Note</Badge> This region contains a pathogenic{' '}
+                <Badge level="info">Note</Badge> Data is available for a{' '}
                 <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
-                  short tandem repeat
-                </Link>
-                .
+                  tandem repeat locus
+                </Link>{' '}
+                within this region.
               </p>
             )}
           </div>

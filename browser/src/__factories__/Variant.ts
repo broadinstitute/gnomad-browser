@@ -1,9 +1,11 @@
 import { Factory } from 'fishery'
+import { VariantTableVariant } from '../VariantList/ExportVariantsButton'
 import {
   Variant,
   SequencingType,
   TranscriptConsequence,
   Histogram,
+  Population,
 } from '../VariantPage/VariantPage'
 
 export const defaultHistogram: Histogram = {
@@ -66,7 +68,7 @@ const transcriptConsequenceFactory = Factory.define<TranscriptConsequence>(({ pa
   }
 })
 
-const variantFactory = Factory.define<Variant>(({ params, associations }) => {
+export const variantFactory = Factory.define<Variant>(({ params, associations }) => {
   const {
     reference_genome = 'GRCh37',
     variant_id = '13-123-A-C',
@@ -120,6 +122,74 @@ const variantFactory = Factory.define<Variant>(({ params, associations }) => {
     liftover_sources,
   }
 })
+
+export const populationFactory = Factory.define<Population>(({ params }) => {
+  const { id = 'afr', ac = 1, an = 1, ac_hemi = 1, ac_hom = 1 } = params
+
+  return {
+    id,
+    ac,
+    an,
+    ac_hemi,
+    ac_hom,
+  }
+})
+
+export const variantTableVariantFactory = Factory.define<VariantTableVariant>(
+  ({ params, associations }) => {
+    const {
+      ac = 1,
+      ac_hemi = 1,
+      ac_hom = 1,
+      an = 1,
+      af = 1,
+      consequence = 'synonymous',
+      flags = [],
+      hgvs = 'string',
+      hgvsc = 'string',
+      hgvsp = 'string',
+      populations = [],
+      pos = 1,
+      rsids = [],
+      variant_id = '',
+      clinical_significance = 'benign',
+      clinvar_variation_id = '12345',
+      transcript_id = 'ENST00012345',
+      transcript_version = '1',
+    } = params
+    const {
+      exome = {
+        filters: [],
+      },
+      genome = {
+        filters: [],
+      },
+    } = associations
+
+    return {
+      ac,
+      ac_hemi,
+      ac_hom,
+      an,
+      af,
+      consequence,
+      flags,
+      hgvs,
+      hgvsc,
+      hgvsp,
+      populations,
+      pos,
+      rsids,
+      variant_id,
+      exome,
+      genome,
+      clinical_significance,
+      clinvar_variation_id,
+      transcript_id,
+      transcript_version,
+    }
+  }
+)
 
 export const sequencingFactory = Factory.define<SequencingType>(({ params, associations }) => {
   const {

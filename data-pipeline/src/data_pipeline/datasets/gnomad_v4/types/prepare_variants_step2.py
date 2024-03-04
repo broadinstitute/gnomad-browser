@@ -27,4 +27,3 @@ class Coverage:
 @attr.define
 class Variant(Step1Variant):
     coverage: Coverage
-    # caids go here too

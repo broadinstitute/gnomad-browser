@@ -6,9 +6,13 @@ import renderer from 'react-test-renderer'
 
 import PoliciesPage from './PoliciesPage'
 
-import { withDummyRouter } from '../../tests/__helpers__/router'
+import { BrowserRouter } from 'react-router-dom'
 
 test('Policies Page has no unexpected changes', () => {
-  const tree = renderer.create(withDummyRouter(<PoliciesPage />))
+  const tree = renderer.create(
+    <BrowserRouter>
+      <PoliciesPage />
+    </BrowserRouter>
+  )
   expect(tree).toMatchSnapshot()
 })

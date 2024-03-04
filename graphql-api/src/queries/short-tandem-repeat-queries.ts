@@ -5,6 +5,7 @@ import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const SHORT_TANDEM_REPEAT_INDICES = {
   gnomad_r3: 'gnomad_v3_short_tandem_repeats',
+  gnomad_r4: 'gnomad_v3_short_tandem_repeats',
 }
 
 const SUMMARY_FIELDS = [
@@ -22,7 +23,7 @@ const _fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
     )
   }
 
@@ -58,7 +59,7 @@ export const fetchShortTandemRepeatById = async (
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
     )
   }
 
@@ -90,7 +91,7 @@ export const fetchShortTandemRepeatsByGene = async (
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
     )
   }
 
@@ -126,7 +127,7 @@ export const fetchShortTandemRepeatsByRegion = async (
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Short tandem repeats are not available for ${DATASET_LABELS[datasetId]}`
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
     )
   }
 

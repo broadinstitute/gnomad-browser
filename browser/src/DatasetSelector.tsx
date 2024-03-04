@@ -1,14 +1,15 @@
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import CaretDown from '@fortawesome/fontawesome-free/svgs/solid/caret-down.svg'
 import { darken, transparentize } from 'polished'
-import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
+
 import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
+  DatasetId,
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
@@ -143,12 +144,12 @@ const GroupedNav = styled.div`
 type ChildDataset = {
   id: string
   label: string
-  url: string
+  url: Location
   description: string
   childReferenceGenome?: string
 }
 
-type Props = {
+type NavigationMenuProps = {
   items: {
     id: string
     isActive?: boolean
@@ -160,14 +161,14 @@ type Props = {
 
 type State = any
 
-class NavigationMenu extends Component<Props, State> {
+class NavigationMenu extends Component<NavigationMenuProps, State> {
   container: any
 
   state = {
     expandedItem: null,
   }
 
-  constructor(props: Props) {
+  constructor(props: NavigationMenuProps) {
     super(props)
 
     this.container = React.createRef()
@@ -431,7 +432,35 @@ class NavigationMenu extends Component<Props, State> {
   }
 }
 
-const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }: any) => {
+export type URLBuilder = (currentLocation: Location, targetDatasetId: DatasetId) => Location
+
+export type DatasetOptions = {
+  includeShortVariants?: boolean
+  includeStructuralVariants?: boolean
+  includeExac?: boolean
+  includeGnomad2?: boolean
+  includeGnomad2Subsets?: boolean
+  includeGnomad3?: boolean
+  includeGnomad3Subsets?: boolean
+  includeGnomad4?: boolean
+  includeCopyNumberVariants?: boolean
+  urlBuilder?: URLBuilder
+}
+
+type DatasetSelectorProps = {
+  datasetOptions: DatasetOptions
+  selectedDataset: DatasetId
+  history: History
+}
+
+const datasetLink: URLBuilder = (currentLocation: Location, datasetId: DatasetId): Location => ({
+  ...currentLocation,
+  search: queryString.stringify({ dataset: datasetId }),
+})
+
+const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
+  const { datasetOptions, selectedDataset } = props
+
   const {
     includeShortVariants = true,
     includeStructuralVariants = true,
@@ -442,12 +471,8 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
     includeGnomad3Subsets = true,
     includeGnomad4 = true,
     includeCopyNumberVariants = true,
+    urlBuilder = datasetLink,
   } = datasetOptions
-
-  const datasetLink = (datasetId: any) => ({
-    ...history.location,
-    search: queryString.stringify({ dataset: datasetId }),
-  })
 
   const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
 
@@ -459,7 +484,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         id: 'current_short_variant',
         isActive: hasShortVariants(selectedDataset),
         label: labelForDataset(topLevelShortVariantDataset),
-        url: datasetLink(topLevelShortVariantDataset),
+        url: urlBuilder(window.location, topLevelShortVariantDataset),
         childReferenceGenome: referenceGenome(topLevelShortVariantDataset),
       },
       {
@@ -476,7 +501,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r4',
         label: labelForDataset('gnomad_r4'),
-        url: datasetLink('gnomad_r4'),
+        url: urlBuilder(window.location, 'gnomad_r4'),
         description: `${sampleCounts.gnomad_r4.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('gnomad_r4'),
       })
@@ -486,7 +511,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r3',
         label: labelForDataset('gnomad_r3'),
-        url: datasetLink('gnomad_r3'),
+        url: urlBuilder(window.location, 'gnomad_r3'),
         description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('gnomad_r3'),
       })
@@ -497,35 +522,35 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         {
           id: 'gnomad_r3_non_cancer',
           label: labelForDataset('gnomad_r3_non_cancer'),
-          url: datasetLink('gnomad_r3_non_cancer'),
+          url: urlBuilder(window.location, 'gnomad_r3_non_cancer'),
           description: `${sampleCounts.gnomad_r3_non_cancer.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r3_non_cancer'),
         },
         {
           id: 'gnomad_r3_non_neuro',
           label: labelForDataset('gnomad_r3_non_neuro'),
-          url: datasetLink('gnomad_r3_non_neuro'),
+          url: urlBuilder(window.location, 'gnomad_r3_non_neuro'),
           description: `${sampleCounts.gnomad_r3_non_neuro.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r3_non_neuro'),
         },
         {
           id: 'gnomad_r3_non_v2',
           label: labelForDataset('gnomad_r3_non_v2'),
-          url: datasetLink('gnomad_r3_non_v2'),
+          url: urlBuilder(window.location, 'gnomad_r3_non_v2'),
           description: `${sampleCounts.gnomad_r3_non_v2.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r3_non_v2'),
         },
         {
           id: 'gnomad_r3_non_topmed',
           label: labelForDataset('gnomad_r3_non_topmed'),
-          url: datasetLink('gnomad_r3_non_topmed'),
+          url: urlBuilder(window.location, 'gnomad_r3_non_topmed'),
           description: `${sampleCounts.gnomad_r3_non_topmed.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r3_non_topmed'),
         },
         {
           id: 'gnomad_r3_controls_and_biobanks',
           label: labelForDataset('gnomad_r3_controls_and_biobanks'),
-          url: datasetLink('gnomad_r3_controls_and_biobanks'),
+          url: urlBuilder(window.location, 'gnomad_r3_controls_and_biobanks'),
           description: `${sampleCounts.gnomad_r3_controls_and_biobanks.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r3_controls_and_biobanks'),
         }
@@ -536,7 +561,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       shortVariantDatasets[1].children.push({
         id: 'gnomad_r2_1',
         label: labelForDataset('gnomad_r2_1'),
-        url: datasetLink('gnomad_r2_1'),
+        url: urlBuilder(window.location, 'gnomad_r2_1'),
         description: `${sampleCounts.gnomad_r2_1.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('gnomad_r2_1'),
       })
@@ -547,28 +572,28 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         {
           id: 'gnomad_r2_1_non_topmed',
           label: labelForDataset('gnomad_r2_1_non_topmed'),
-          url: datasetLink('gnomad_r2_1_non_topmed'),
+          url: urlBuilder(window.location, 'gnomad_r2_1_non_topmed'),
           description: `${sampleCounts.gnomad_r2_1_non_topmed.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r2_1_non_topmed'),
         },
         {
           id: 'gnomad_r2_1_non_cancer',
           label: labelForDataset('gnomad_r2_1_non_cancer'),
-          url: datasetLink('gnomad_r2_1_non_cancer'),
+          url: urlBuilder(window.location, 'gnomad_r2_1_non_cancer'),
           description: `${sampleCounts.gnomad_r2_1_non_cancer.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r2_1_non_cancer'),
         },
         {
           id: 'gnomad_r2_1_non_neuro',
           label: labelForDataset('gnomad_r2_1_non_neuro'),
-          url: datasetLink('gnomad_r2_1_non_neuro'),
+          url: urlBuilder(window.location, 'gnomad_r2_1_non_neuro'),
           description: `${sampleCounts.gnomad_r2_1_non_neuro.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r2_1_non_neuro'),
         },
         {
           id: 'gnomad_r2_1_controls',
           label: labelForDataset('gnomad_r2_1_controls'),
-          url: datasetLink('gnomad_r2_1_controls'),
+          url: urlBuilder(window.location, 'gnomad_r2_1_controls'),
           description: `${sampleCounts.gnomad_r2_1_controls.total.toLocaleString()} samples`,
           childReferenceGenome: referenceGenome('gnomad_r2_1_controls'),
         }
@@ -579,7 +604,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
       shortVariantDatasets[1].children.push({
         id: 'exac',
         label: labelForDataset('exac'),
-        url: datasetLink('exac'),
+        url: urlBuilder(window.location, 'exac'),
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('exac'),
       })
@@ -614,7 +639,7 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
         id: 'current_sv_dataset',
         isActive: hasStructuralVariants(selectedDataset) || hasCopyNumberVariants(selectedDataset),
         label: labelForDataset(currentDataset),
-        url: datasetLink(currentDataset),
+        url: urlBuilder(window.location, currentDataset),
       },
       {
         id: 'other_structural_variant',
@@ -624,35 +649,35 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
           {
             id: 'gnomad_sv_r4',
             label: labelForDataset('gnomad_sv_r4'),
-            url: datasetLink('gnomad_sv_r4'),
+            url: urlBuilder(window.location, 'gnomad_sv_r4'),
             description: `${sampleCounts.gnomad_sv_r4.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r4'),
           },
           {
             id: 'gnomad_sv_r2_1',
             label: labelForDataset('gnomad_sv_r2_1'),
-            url: datasetLink('gnomad_sv_r2_1'),
+            url: urlBuilder(window.location, 'gnomad_sv_r2_1'),
             description: `${sampleCounts.gnomad_sv_r2_1.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1'),
           },
           {
             id: 'gnomad_sv_r2_1_non_neuro',
             label: labelForDataset('gnomad_sv_r2_1_non_neuro'),
-            url: datasetLink('gnomad_sv_r2_1_non_neuro'),
+            url: urlBuilder(window.location, 'gnomad_sv_r2_1_non_neuro'),
             description: `${sampleCounts.gnomad_sv_r2_1_non_neuro.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_non_neuro'),
           },
           {
             id: 'gnomad_sv_r2_1_controls',
             label: labelForDataset('gnomad_sv_r2_1_controls'),
-            url: datasetLink('gnomad_sv_r2_1_controls'),
+            url: urlBuilder(window.location, 'gnomad_sv_r2_1_controls'),
             description: `${sampleCounts.gnomad_sv_r2_1_controls.total.toLocaleString()} samples, genome`,
             childReferenceGenome: referenceGenome('gnomad_sv_r2_1_controls'),
           },
           {
             id: 'gnomad_cnv_r4',
             label: labelForDataset('gnomad_cnv_r4'),
-            url: datasetLink('gnomad_cnv_r4'),
+            url: urlBuilder(window.location, 'gnomad_cnv_r4'),
             description: `${sampleCounts.gnomad_cnv_r4.total.toLocaleString()} samples, exome, rare (<0.01)`,
             childReferenceGenome: referenceGenome('gnomad_cnv_r4'),
           },
@@ -662,32 +687,11 @@ const DatasetSelector = withRouter(({ datasetOptions, history, selectedDataset }
   }
 
   return <NavigationMenu items={datasets} />
-})
-
-DatasetSelector.propTypes = {
-  datasetOptions: PropTypes.shape({
-    includeShortVariants: PropTypes.bool,
-    includeStructuralVariants: PropTypes.bool,
-    includeCopyNumberVariants: PropTypes.bool,
-    includeExac: PropTypes.bool,
-    includeGnomad2Subsets: PropTypes.bool,
-    includeGnomad3: PropTypes.bool,
-    includeGnomad3Subsets: PropTypes.bool,
-  }),
-  selectedDataset: PropTypes.string.isRequired,
 }
 
-DatasetSelector.defaultProps = {
-  datasetOptions: {
-    includeShortVariants: true,
-    includeStructuralVariants: true,
-    includeCopyNumberVariants: true,
-    includeExac: true,
-    includeGnomad2: true,
-    includeGnomad2Subsets: true,
-    includeGnomad3: true,
-    includeGnomad3Subsets: true,
-  },
-}
+const DatasetSelector = withRouter<
+  RouteComponentProps & DatasetSelectorProps,
+  typeof UnwrappedDatasetSelector
+>(UnwrappedDatasetSelector)
 
 export default DatasetSelector

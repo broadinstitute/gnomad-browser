@@ -6,4 +6,4 @@ For each pair of variants, we generated pairwise genotype counts using the gnomA
 
 Using 4,775 trios that were jointly processed with gnomAD, we identified 339,857 unique variant pairs and determined their phase using parental transmission (phasing-by-transmission). We calculated P<sub>trans</sub> values for all variant pairs found in the trios using gnomAD samples from the same genetic ancestry group. We binned variant pairs based on their P<sub>trans</sub> values and calculated the proportion of trio variant pairs that were in _cis_ or in _trans_. We defined P<sub>trans</sub> threshold for being in cis (or trans) based on the maximum Ptrans value at which ≥90% of the variant pairs in that bin were in _cis_ (or _trans_) based on the gold standard phasing-by-transmission data. This resulted in P<sub>trans</sub> values of ≤ 0.02 and ≥ 0.55 as the threshold for variants in _cis_ and _trans_, respectively.
 
-For more information, see our [preprint](https://www.biorxiv.org/content/10.1101/2023.03.19.533370).
+For more information, see our [publication](https://www.nature.com/articles/s41588-023-01608-3).

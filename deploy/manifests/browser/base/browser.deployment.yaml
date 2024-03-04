@@ -25,7 +25,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: API_URL
-              value: http://$(API_SERVICE)
+              value: http://API_SERVICE_PLACEHOLDER
             - name: PROXY_IPS
               valueFrom:
                 configMapKeyRef:
