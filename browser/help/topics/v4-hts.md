@@ -7,7 +7,7 @@ All of gnomAD’s files are stored as Hail tables. In this section we will revie
 
 - [Background on Hail](/help/v4-hts#background)
 - [gnomAD Hail Table frequency annotations](/help/v4-hts#frequency-annotations)
-- [gnomAD v4.0 Hail Table annotation descriptions](/help/v4-hts#annotation-descriptions)
+- [gnomAD v4.1 Hail Table annotation descriptions](/help/v4-hts#annotation-descriptions)
 
 Note that Hail Tables (HT), MatrixTables (MT), and VariantDatasets (VDS) are all **directories** when viewed through a file manager, so you will need to download all of the associated files.
 
@@ -35,9 +35,9 @@ Use the '`freq_index_dict`' global annotation to retrieve frequency information 
 | `gen_anc` (HGDP subset only)<sup>3</sup> | The HGDP's ancestry labels             | N/A                                                                                                                                                                                                                                                                                            | adygei, balochi, bantukenya, bantusafrica, basque, bedouin, biakapygmy, brahui, burusho, cambodian, colombian, dai, daur, druze, french, han, hazara, hezhen, italian, japanese, kalash, karitiana, lahu, makrani, mandenka, maya, mbutipygmy, melanesian, miaozu, mongola, mozabite, naxi, orcadian, oroqen, palestinian, papuan, pathan, pima, russian, san, sardinian, she, sindhi, surui, tu, tujia, tuscan, uygur, xibo, yakut, yizu, yoruba |
 | `downsampling`<sup>2</sup>               | Downsampled sample counts              | gnomAD: 10, 100, 500, 1000, 2000, 2884, 5000, 10000, 13068, 16740, 19850, 20000, 22362, 26710, 30198, 43129, 50000, 100000, 200000, 500000, 556006, non-UKB: 10, 100, 500, 1000, 2000, 2074, 5000, 8847, 10000, 10492, 16549, 18035, 20000, 21870, 26572, 34899, 50000, 100000, 175054, 200000 | The gnomes release Hail Table does not contain downsampling information.                                                                                                                                                                                                                                                                                                                                                                          |
 
-#### Version 4.0 sample grouping combinations and 'freq' array access
+#### Version 4.1 sample grouping combinations and 'freq' array access
 
-The available v4.0 grouping combinations within the 'freq' array annotation are listed below. adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main gnomAD callsets and subsets.
+The available v4.1 grouping combinations within the 'freq' array annotation are listed below. adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main gnomAD callsets and subsets.
 
 - group, e.g. “`adj`”, “`raw`”
 - sex-group, e.g. “`XX_adj`”
@@ -49,10 +49,10 @@ The available v4.0 grouping combinations within the 'freq' array annotation are 
 - subset-sex-group, e.g. “`non_ukb_XY_adj`”
 - subset-gen-anc<sup>3</sup>-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
 
-To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.0 exomes:
+To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.1 exomes:
 
 ```
-# Load the v4.0 exomes public release HT
+# Load the v4.1 exomes public release HT
 from gnomad.resources.grch38.gnomad import public_release
 ht = public_release(“exomes”).ht()
 
@@ -70,11 +70,11 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
 2. Some downsamplings exceed population counts and thus are not available for those populations. Also, downsamplings are available in the v4 exomes with two stratifications: across the full gnomAD release and across the non-UKB subset only. Note that the genomes Hail Table does not contain downsampling information.
-3. For the HGDP and 1KG subsets in the gnomAD v4.0 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP populations are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
+3. For the HGDP and 1KG subsets in the gnomAD v4.1 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP populations are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
 
-### <a id="annotation-descriptions"></a>gnomAD v4.0 Hail Table annotation descriptions
+### <a id="annotation-descriptions"></a>gnomAD v4.1 Hail Table annotation descriptions
 
-#### gnomAD v4.0 exomes Hail Table annotations
+#### gnomAD v4.1 exomes Hail Table annotations
 
 Global fields:
 
@@ -301,7 +301,7 @@ Row fields:
   - `sift_max`: [Score](https://www.nature.com/articles/nprot.2009.86) reflecting the scaled probability of the amino acid substitution being tolerated, ranging from 0 to 1. Scores below 0.05 are predicted to impact protein function. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
   - `polyphen_max`: [Score](https://www.nature.com/articles/nmeth0410-248) that predicts the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious). We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
 
-#### gnomAD v4.0 genomes Hail Table annotations
+#### gnomAD v4.1 genomes Hail Table annotations
 
 The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
 
