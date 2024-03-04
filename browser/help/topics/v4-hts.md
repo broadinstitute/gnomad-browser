@@ -44,7 +44,7 @@ The available v4.1 grouping combinations within the 'freq' array annotation are 
 - subset-group, e.g. “`non_ukb-raw`”
 - gen-anc<sup>3</sup>-group, e.g. “`afr_adj`”
 - gen-anc-sex-group, e.g. “`ami_XX_adj`”
-- downsampling<sup>2</sup>-group-pop, e.g. “`10_adj_eas`”,
+- downsampling<sup>2</sup>-group-gen-anc, e.g. “`10_adj_eas`”,
 - subset-gen-anc-group, e.g. “`_sas_adj`”
 - subset-sex-group, e.g. “`non_ukb_XY_adj`”
 - subset-gen-anc<sup>3</sup>-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
@@ -69,8 +69,8 @@ ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['afr_XX_adj']].AC)
 This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
-2. Some downsamplings exceed population counts and thus are not available for those populations. Also, downsamplings are available in the v4 exomes with two stratifications: across the full gnomAD release and across the non-UKB subset only. Note that the genomes Hail Table does not contain downsampling information.
-3. For the HGDP and 1KG subsets in the gnomAD v4.1 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP populations are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
+2. Some downsamplings exceed genetic ancestry group counts and thus are not available for those groups. Also, downsamplings are available in the v4 exomes with two stratifications: across the full gnomAD release and across the non-UKB subset only. Note that the genomes Hail Table does not contain downsampling information.
+3. For the HGDP and 1KG subsets in the gnomAD v4.1 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP labels are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
 
 ### <a id="annotation-descriptions"></a>gnomAD v4.1 Hail Table annotation descriptions
 
@@ -79,10 +79,10 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 Global fields:
 
 - `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
-- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
+- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
 - `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
 - `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
-- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
+- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
 - `age_distribution`: Callset-wide age histogram calculated on release samples.
   - `bin_edges`: Bin edges for the age histogram.
   - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -147,13 +147,13 @@ Row fields:
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
     - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
-    - `gen_ancpop`: Genetic ancestry group with maximum allele frequency
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
   - `non_ukb`: grpmax information across the non-UKB subset.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
     - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
-    - `gen_ancpop`: Genetic ancestry group with maximum allele frequency
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
 - `faf`: Filtering allele frequency.
   - `faf95`: Filtering allele frequency (using Poisson 95% CI).
   - `faf99`: Filtering allele frequency (using Poisson 99% CI).
