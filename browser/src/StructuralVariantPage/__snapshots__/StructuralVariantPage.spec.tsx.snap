@@ -566,7 +566,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -1175,7 +1175,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -1784,7 +1784,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -2375,7 +2375,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -2966,7 +2966,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -3555,7 +3555,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -4146,7 +4146,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -5304,7 +5304,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -5915,7 +5915,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -6524,7 +6524,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -7133,7 +7133,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -7724,7 +7724,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -8315,7 +8315,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -8904,7 +8904,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -9495,7 +9495,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -10653,7 +10653,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -11264,7 +11264,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -11873,7 +11873,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -12482,7 +12482,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -13073,7 +13073,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -13664,7 +13664,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -14253,7 +14253,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -14844,7 +14844,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
@@ -16002,7 +16002,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Genotype Quality
       </h2>
       <p>
-        Genotype quality is available for this variant.
+        Genotype quality is unavailable for this variant.
       </p>
     </section>
     <section
