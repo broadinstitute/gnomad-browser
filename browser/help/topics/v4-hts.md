@@ -397,6 +397,281 @@ Row fields
 
 <summary>Expand to see details for past versions</summary>
 
+### <a id="annotation-descriptions"></a>gnomAD v4.0 Hail Table annotation descriptions
+
+#### gnomAD v4.0 exomes Hail Table annotations
+
+Note that joint frequency, including filtering allele frequency, is available on this table. However, for the most up to date version of joint frequencies, please see our [new resource](https://gnomad.broadinstitute/downloads#v4-standalone-joint-faf)
+
+Global fields:
+
+- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
+- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
+- `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
+- `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
+- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
+- `joint_freq_meta`: Joint allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_freq’ array row annotation.
+- `joint_freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘joint_freq’ array row annotation.
+- `joint_freq_meta_sample_count`: A sample count per sample grouping defined in the 'joint_freq_meta' global annotation.
+- `joint_faf_meta`: Joint filtering allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_faf’ array row annotation.
+  joint_faf_index_dict: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘joint_faf’) row annotation.
+- `age_distribution`: Callset-wide age histogram calculated on release samples.
+  - `bin_edges`: Bin edges for the age histogram.
+  - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+  - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+  - `n_larger`: Count of age values falling above highest histogram bin edge.
+- `downsamplings`: Dictionary keyed by dataset with values corresponding to available downsampled sample counts.
+- `filtering_model`: The variant filtering model used and its specific cutoffs.
+  - `filter_name`: Variant filtering model name used in the 'filters' row annotation, indicating the variant was filtered by this model during variant QC.
+  - `score_name`: Annotation name of the score used for variant filtering.
+  - `snv_cutoff`: SNV filtering cutoff information.
+    - `bin`: Filtering percentile cutoff for SNVs.
+    - `min_score`: Minimum score at SNV filtering percentile cutoff.
+  - `indel_cutoff`: Indel filtering cutoff information.
+    - `bin`: Filtering percentile cutoff for indels.
+    - `min_score`: Minimum score at indel filtering percentile cutoff.
+  - `snv_training_variables`: Variant annotations used as features in the SNV filtering model.
+  - `indel_training_variables`: Variant annotations used as features in the indel filtering model.
+- `inbreeding_coeff_cutoff`: Inbreeding Coefficient threshold used to hard filter variants.
+- `interval_qc_parameters`: Thresholds used to determine whether an exome calling interval was high coverage and passed interval QC.
+  - `per_platform`: Whether these thresholds were stratified per platform.
+  - `all_platforms`: Whether these thresholds were applied uniformly across platforms, as long as a platform had a sample size above `min_platform_size`.
+  - `high_qual_cutoffs`: Interval QC thresholds per chromosomal region:
+    - `autosome_par`: Contains annotation used to filter high coverage intervals on autosomes and in pseudoautosomal regions and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
+    - `x_non_par`: Contains annotation used to filter high coverage intervals in non-pseudoautosomal regions of chromosome X and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
+    - `y_non_par`: Contains annotation used to filter high coverage intervals in non-pseudoautosomal regions of chromosome Y and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
+  - `min_platform_size`: Sample size required for a platform to be considered.
+- `tool_versions`: Versions of in silico predictors used in the callset.
+  - `cadd_version`: Combined Annotation Dependent Depletion (CADD) version.
+  - `revel_version`: Rare Exome Variant Ensemble Learner (REVEL) version.
+  - `spliceai_version`: spliceAI version.
+  - `pangolin_version`: Pangolin version.
+  - `phylop_version`: phyloP version.
+  - `dbsnp_version`: dbSNP version used in the callset.
+  - `sift_version`: Sorting Intolerant from Tolerant (SIFT) version.
+  - `polyphen_version`: Polymorphism Phenotyping v2 (Polyphen-v2) version.
+- `vrs_versions`: The Variant Representation Specification version that was used to compute IDs on the callset.
+  - `vrs_schema_version`: The [version](https://github.com/ga4gh/vrs/tags) of the VRS schema that is used to represent variants and compute identifiers.
+  - `vrs_python_version`: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
+  - `seqrepo_version`: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
+- `vep_globals`: Information about VEP annotations.
+  - `vep_version`: VEP version that was run on the callset.
+  - `vep_help`: Output from `vep --help`.
+  - `vep_config`: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+  - `gencode_version`: GENCODE version used in VEP.
+  - `mane_select_version`: MANE select version used in VEP.
+- `frequency_README`: Explanation of how to use the 'freq_index_dict' global annotation to extract frequencies from the 'freq' row annotation.
+- `date`: Date Hail Table was created.
+- `version`: gnomAD data version.
+
+Row fields:
+
+- `locus`: Variant locus. Contains contig and position information.
+- `alleles`: Variant alleles.
+- `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD release.
+  - `AC`: Alternate allele count in release.
+  - `AF`: Alternate allele frequency, (AC/AN), in release.
+  - `AN`: Total number of alleles in release.
+  - `homozygote_count`: Count of homozygous alternate individuals in release.
+- `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+  - `gnomAD`: grpmax information across the full gnomAD release dataset.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+  - `non_ukb`: grpmax information across the non-UKB subset.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+- `faf`: Filtering allele frequency.
+  - `faf95`: Filtering allele frequency (using Poisson 95% CI).
+  - `faf99`: Filtering allele frequency (using Poisson 99% CI).
+- `fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency.
+  - `gnomAD`: Information about the genetic ancestry group with the maximum filtering allele frequency across the full gnomAD release dataset.
+    - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI).
+    - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
+    - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
+    - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
+  - `non_ukb`: Information about the genetic ancestry group with the maximum filtering allele frequency in the non-UKB subset.
+    - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI).
+    - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
+    - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
+    - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
+- `joint_freq`: Array of combined exomes and genomes allele frequency information (AC, AN, AF, homozygote count) for the full gnomAD release and for each genetic ancestry group. Note that the values in array will correspond to combined or joint value if the variant was present in both data types, otherwise this array will contain frequencies only for the data type associated with the Hail Table (in this case, exomes).
+  - `AC`: Combined (exomes + genomes) alternate allele count in release.
+  - `AF`: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
+  - `AN`: Total number of alleles across exomes and genomes in release.
+  - `homozygote_count`: Count of homozygous alternate individuals across exomes and genomes in release.
+- `joint_grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Remaining individuals" (remaining) groups.
+  - `AC`: Alternate allele count in the group with the maximum allele frequency.
+  - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+  - `AN`: Total number of alleles in the group with the maximum allele frequency.
+  - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+  - `gen_anc`: Genetic ancestry group with maximum allele frequency.
+- `joint_faf`: Array of combined exomes and genomes filtering allele frequency information (AC, AN, AF, homozygote count). Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
+  - `faf95`: Combined exomes and genomes filtering allele frequency (using Poisson 95% CI).
+  - `faf99`: Combined exomes and genomes filtering allele frequency (using Poisson 99% CI).
+- `joint_fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency across both exomes and genomes. Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
+  - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI) across both exomes and genomes.
+  - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI) across both exomes and genomes.
+  - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI) across both exomes and genomes.
+  - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI) across both exomes and genomes.
+  - `joint_fafmax_data_type`: Data type associated with joint FAF information. Value will be "both" if variant had a defined FAF in both the exomes and genomes, otherwise will be either "exomes" or "genomes".
+- `a_index`: The original index of this alternate allele in the multiallelic representation (1 is the first alternate allele or the only alternate allele in a biallelic variant).
+- `was_split`: True if this variant was originally multiallelic, otherwise False.
+- `rsid`: dbSNP reference SNP identification (rsID) numbers.
+- `filters`: Variant filters; AC0: Allele count is zero after filtering out low-confidence genotypes (GQ < 20; DP < 10; and AB < 0.2 for het calls), AS_VQSR: Failed allele-specific VQSR filtering thresholds of -4.0598 for SNPs and 0.1078 for indels, InbreedingCoeff: GATK InbreedingCoeff < -0.3. An empty set in this field indicates that the variant passed all variant filters.
+- `info`: Struct containing typical GATK allele-specific (AS) info fields and additional variant QC fields.
+  - `FS`: Phred-scaled p-value of Fisher's exact test for strand bias.
+  - `MQ`: Root mean square of the mapping quality of reads across all samples.
+  - `MQRankSum`: Z-score from Wilcoxon rank sum test of alternate vs. reference read mapping qualities.
+  - `QUALapprox`: Sum of PL[0] values; used to approximate the QUAL score.
+  - `QD`: Variant call confidence normalized by depth of sample reads supporting a variant.
+  - `ReadPosRankSum`: Z-score from Wilcoxon rank sum test of alternate vs. reference read position bias.
+  - `SB`: Aggregate counts of strand depth across all non-homozygous-reference calls. The values are the of the depth of reference allele on forward strand, depth of the reference allele on reverse strand, depth of all alternate alleles on forward strand, depth of all alternate alleles on reverse strand.
+  - `SOR`: Strand bias estimated by the symmetric odds ratio test.
+  - `VarDP`: Depth over variant genotypes (does not include depth of reference samples).
+  - `AS_FS`: Allele-specific phred-scaled p-value of Fisher's exact test for strand bias.
+  - `AS_MQ`: Allele-specific root mean square of the mapping quality of reads across all samples.
+  - `AS_MQRankSum`: Allele-specific z-score from Wilcoxon rank sum test of alternate vs. reference read mapping qualities.
+  - `AS_pab_max`: Maximum p-value over callset for binomial test of observed allele balance for a heterozygous genotype, given expectation of 0.5.
+  - `AS_QUALapprox`: Allele-specific sum of PL[0] values; used to approximate the QUAL score.
+  - `AS_QD`: Allele-specific variant call confidence normalized by depth of sample reads supporting a - variant.
+  - `AS_ReadPosRankSum`: Allele-specific z-score from Wilcoxon rank sum test of alternate vs. reference read position bias.
+  - `AS_SB_TABLE`: Allele-specific forward/reverse read counts for strand bias tests.
+  - `AS_SOR`: Allele-specific strand bias estimated by the symmetric odds ratio test.
+  - `AS_VarDP`: Allele-specific depth over variant genotypes (does not include depth of reference samples).
+  - `singleton`: Variant is seen once in the callset.
+  - `transmitted_singleton`: Variant was a callset-wide doubleton that was transmitted within a family from a parent to a child (i.e., a singleton amongst unrelated samples in cohort).
+  - `sibling_singleton`: Variant was a callset-wide doubleton that was present only in two siblings (i.e., a singleton amongst unrelated samples in cohort).
+  - Holder for sib singletons
+  - `omni`: Variant is present on the Omni 2.5 genotyping array and found in 1000 Genomes data.
+  - `mills`: Indel is present in the Mills and Devine data.
+  - `monoallelic`: All samples are homozygous alternate for the variant.
+  - `only_het`: All samples are heterozygous for the variant (no homozygous reference or alternate genotype calls).
+  - `AS_VQSLOD`: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
+  - `inbreedingcoeff`: Inbreeding coefficient, the excess heterozygosity at a variant site, computed as 1 - (the number of heterozygous genotypes) / (the number of heterozygous genotypes expected under Hardy-Weinberg equilibrium).
+  - `vrs`: Struct containing information related to the Global Alliance for Genomic Health (GA4GH) Variant Representation Specification ([VRS](https://vrs.ga4gh.org/en/stable/)) standard.
+    - `VRS_Allele_IDS`: The computed identifiers for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+    - `VRS_Starts`: Interresidue coordinates used as the location starts for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+    - `VRS_Ends`: Interresidue coordinates used as the location ends for the GA4GH VRS Alleles corresponding to the values in the alleles column
+    - `VRS_States`: The literal sequence states used for the GA4GH VRS Alleles corresponding to the values in the alleles column.
+- `vep`: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+- `vqsr_results`: VQSR related variant annotations.
+  - `AS_VQSLOD`: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
+  - `AS_culprit`: Allele-specific worst-performing annotation in the VQSR Gaussian mixture model.
+  - `positive_train_site`: Variant was used to build the positive training set of high-quality variants for VQSR.
+  - `negative_train_site`: Variant was used to build the negative training set of low-quality variants for VQSR.
+- `allele_info`: Allele information.
+  - `variant_type`: Variant type (snv, indel, multi-snv, multi-indel, or mixed).
+  - `n_alt_alleles`: Total number of alternate alleles observed at variant locus.
+  - `has_star`: Variant type included an upstream deletion.
+  - `allele_type`: Allele type (snv, insertion, deletion, or mixed).
+  - `was_mixed`: Variant type was mixed.
+- `region_flags`: Struct containing flags about regions.
+  - `non_par`: Variant falls within a non-pseudoautosomal region.
+  - `lcr`: Variant falls within a low complexity region.
+  - `segdup`: Variant falls within a segmental duplication region.
+  - `fail_interval_qc`: Less than 85% of samples meet 20X coverage if variant is in autosomal or PAR region or 10X coverage for non-PAR regions of chromosomes X and Y.
+  - `outside_ukb_capture_region`: Variant falls outside of UK Biobank exome capture regions.
+  - `outside_broad_capture_region`: Variant falls outside of Broad exome capture regions.
+- `histograms`: Variant information histograms.
+  - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
+    - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the GQ histogram calculated on high quality genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of GQ values falling below the lowest histogram bin edge, calculated on high quality genotypes.
+      - `n_larger`: Count of GQ values falling above the highest histogram bin edge, calculated on high quality genotypes.
+    - `dp_hist_all`: Histogram for DP calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the DP histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the DP histogram calculated on high quality genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of DP values falling below the lowest histogram bin edge, calculated on high quality genotypes.
+      - `n_larger`: Count of DP values falling above the highest histogram bin edge, calculated on high quality genotypes.
+    - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of GQ values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+      - `n_larger`: Count of GQ values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
+    - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of DP values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+      - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on high quality genotypes.
+    - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on high quality genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
+      - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of AB values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+      - `n_larger`: Count of AB values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
+  - `raw_qual_hists`: Genotype quality metric histograms for all genotypes as opposed to high quality genotypes.
+    - `gq_hist_all`: Histogram for GQ calculated on all genotypes.
+      - `bin_edges`: Bin edges for the GQ histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the GQ histogram calculated on all genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of GQ values falling below lowest histogram bin edge, for GQ calculated on all genotypes.
+      - `n_larger`: Count of GQ values falling above highest histogram bin edge, for GQ calculated on all genotypes.
+    - dp_hist_all: Histogram for DP calculated on all genotypes.
+      - bin_edges: Bin edges for the DP histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100
+      - `bin_freq`: Bin frequencies for the DP histogram calculated on all genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of DP values falling below lowest histogram bin edge, for DP calculated on all genotypes.
+      - `n_larger`: Count of DP values falling above highest histogram bin edge, for DP calculated on all genotypes.
+    - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on all genotypes.
+      - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of GQ values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+      - `n_larger`: Count of GQ values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+    - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on all genotypes.
+      - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+      - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of DP values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+      - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+    - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on all genotypes.
+      - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on all genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
+      - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+      - `n_smaller`: Count of AB values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+      - `n_larger`: Count of AB values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+  - `age_hists`: Histograms containing age information for release samples.
+    - `age_hist_het`: Histogram for age in all heterozygous release samples calculated on high quality genotypes.
+      - `bin_edges`: Bin edges for the age histogram.
+      - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+      - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+      - `n_larger`: Count of age values falling above highest histogram bin edge.
+    - `age_hist_hom`: Histogram for age in all homozygous release samples calculated on high quality genotypes. If variant is in the pseudoautosomal regions of chrX or chrY, this histogram also includes age counts of hemizygous samples.
+      - `bin_edges`: Bin edges for the age histogram.
+      - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+      - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+      - `n_larger`: Count of age values falling above highest histogram bin edge.
+- `in_silico_predictors`: Variant prediction annotations. Struct contains prediction scores from multiple in silico predictors for variants that are predicted to be missense, impacting protein function, evolutionarily conserved, or splice-altering. We chose scores for either MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.
+  - `cadd`: [Score](https://academic.oup.com/nar/article/47/D1/D886/5146191) used to predict deleteriousness of SNVs and indels.
+    - `phred`: CADD Phred-like scaled C-scores ranging from 1 to 99 based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values indicate increased predicted deleteriousness.
+    - `raw_score`: Unscaled CADD scores indicating whether a variant is likely to be "observed" (negative values) vs "simulated" (positive values). Larger values indicate increased predicted deleteriousness.
+  - `revel_max`: An ensemble [score](<https://www.cell.com/ajhg/fulltext/S0002-9297(16)30370-6>) for predicting the pathogenicity of missense variants (based on 13 other variant predictors). Score ranges from 0 to 1, and larger values are predicted to be more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
+  - `splice_ai_ds_max`: Maximum delta [score](https://linkinghub.elsevier.) across 4 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant was predicted to fall within multiple genes, score is across all relevant genes. Score ranges from 0 to 1. In the SpliceAI paper, a detailed characterization of the delta scores is provided for 0.2 (high recall), 0.5 (recommended), and 0.8 (high precision) cutoffs.
+  - `pangolin_largest_ds`: Largest delta [score](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02664-4) across 2 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant is predicted to fall within multiple genes, score is across all relevant genes. Note that there is different behavior from spliceAI: splice gain is noted as the increase in splice usage (scores range from 0 to 1) and splice loss as the decrease in splice usage (scores range from 0 to -1). The Pangolin authors proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage.
+  - `phylop`: Base-wise conservation [score](https://pubmed.ncbi.nlm.nih.gov/37104612/) across the 241 placental mammals in the [Zoonomia](https://zoonomiaproject.org/) project. Score ranges from -20 to 9.28, and reflects acceleration (faster evolution than expected under neutral drift, assigned negative scores) as well as conservation (slower than expected evolution, assigned positive scores).
+  - `sift_max`: [Score](https://www.nature.com/articles/nprot.2009.86) reflecting the scaled probability of the amino acid substitution being tolerated, ranging from 0 to 1. Scores below 0.05 are predicted to impact protein function. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
+  - `polyphen_max`: [Score](https://www.nature.com/articles/nmeth0410-248) that predicts the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious). We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
+
+#### gnomAD v4.0 genomes Hail Table annotations
+
+The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
+
+Global fields
+
+- `interval_qc_parameters`: Only the v4 exomes HT has this global annotation
+
+Row fields
+
+- `fafmax`: This annotation is stratified by subset in the v4 exomes, but the v4 genomes annotation does not have any subset stratification
+- joint `frequency` fields: These annotations will have the joint or combined exome and genome annotations on both release Hail Tables if the variant was present in both data types. If the variant was only present in one data type, then the annotation will contain the frequency information for just that data type (e.g., the 'joint_freq' will contain frequency information for genomes only on the v4 genomes Hail Table if that variant was only seen in the genomes
+- `region_flags`: The v4 exomes Hail Table has the following fields that are not present in the struct on the v4 genomes Hail Table:
+  - `fail_interval_qc`
+  - `outside_ukb_capture_region`
+  - `outside_broad_capture_region`
+- `allele_info`: The v4 exomes Hail Table has an additional field in this struct, 'has_star', that is not present in the struct on the v4 genomes Hail Table
+- `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC
+
 | Category                 | Definition                                 | 2.1 Options                                                                                                                                                                              | 3.1 Options                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `group`                  | Genotype's filter                          | raw                                                                                                                                                                                      | adj<sup>1</sup>, raw                                                                                                                                                                                                                                                                                                                                                                                                                              |
