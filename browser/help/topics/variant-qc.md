@@ -3,11 +3,11 @@ id: variant-qc
 title: 'Variant QC'
 ---
 
-### gnomAD v4.0 exomes
+### gnomAD v4.1 exomes
 
 See our [4.0 release blog post](https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0) for more details about the variant QC process.
 
-### gnomAD v4.0 genomes (previously v3.1)
+### gnomAD v4.1 genomes (previously v3.1)
 
 See our [3.1 release blog post](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/) for more details about the variant QC process. Variants from the genomes in v3.1 were brought directly into v4 and are now labeled v4 genomes.
 
