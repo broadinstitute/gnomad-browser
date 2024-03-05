@@ -7,7 +7,7 @@ Relatedness filtering for the v4 release was done using [cuKING](https://github.
 
 After running `cuKING`, we used the [`maximal_independent_set` method in Hail](https://hail.is/docs/0.2/methods/misc.html#hail.methods.maximal_independent_set) to get the largest set of samples with no pair of samples related at the 2nd degree or closer. When we had to select a sample amongst multiple possibilities, we used the same scheme to favor a sample over another:
 
-- Genomes had priority over exomes in gnomAD v4.0
+- Genomes had priority over exomes in gnomAD v4.1
 - Within genomes
   - PCR free had priority over PCR+
   - In a parent/child pair, the parent was kept
