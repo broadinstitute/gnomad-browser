@@ -4,7 +4,7 @@ question: 'Why is this variant linked to the wrong dbSNP rsID?'
 
 First, we do not continuously update the dbSNP rsIDs displayed in the browser, so there will be some differences between the databases and dbSNP depending on versions being used. The dbSNP version used are:
 
-- gnomAD v4.0: dbSNP version 156
+- gnomAD v4.0/4.1: dbSNP version 156
 - gnomAD v3.1: dbSNP version 154
 - gnomAD v3: dbSNP version 151
 - gnomAD v2: dbSNP version 147
