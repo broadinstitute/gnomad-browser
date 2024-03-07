@@ -2,10 +2,10 @@ import React from 'react'
 
 import { BaseTable, ExternalLink } from '@gnomad/ui'
 
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
 type Props = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }: Props) => {

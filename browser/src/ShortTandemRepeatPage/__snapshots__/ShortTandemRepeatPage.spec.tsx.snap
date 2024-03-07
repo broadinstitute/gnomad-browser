@@ -34,7 +34,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -43,7 +43,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -139,7 +139,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -148,7 +148,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -206,7 +206,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -217,7 +217,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -310,7 +310,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -321,7 +321,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -329,7 +329,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -340,7 +340,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -383,7 +383,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -392,7 +392,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -457,7 +457,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -468,7 +468,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -527,7 +527,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -536,7 +536,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -603,7 +603,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -612,7 +612,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -708,7 +708,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -717,7 +717,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -775,7 +775,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -786,7 +786,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -879,7 +879,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -890,7 +890,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -898,7 +898,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -909,7 +909,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -952,7 +952,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -961,7 +961,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1026,7 +1026,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1037,7 +1037,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -1096,7 +1096,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -1105,7 +1105,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -1172,7 +1172,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -1181,7 +1181,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1277,7 +1277,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -1286,7 +1286,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1344,7 +1344,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1355,7 +1355,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -1448,7 +1448,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1459,7 +1459,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -1467,7 +1467,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1478,7 +1478,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -1521,7 +1521,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -1530,7 +1530,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1595,7 +1595,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1606,7 +1606,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -1665,7 +1665,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -1674,7 +1674,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -1741,7 +1741,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -1750,7 +1750,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1846,7 +1846,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -1855,7 +1855,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -1913,7 +1913,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -1924,7 +1924,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2017,7 +2017,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2028,7 +2028,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2036,7 +2036,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2047,7 +2047,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2090,7 +2090,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2099,7 +2099,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -2164,7 +2164,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2175,7 +2175,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2234,7 +2234,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -2243,7 +2243,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -2310,7 +2310,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2319,7 +2319,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -2415,7 +2415,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2424,7 +2424,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -2482,7 +2482,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2493,7 +2493,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2586,7 +2586,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2597,7 +2597,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2605,7 +2605,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2616,7 +2616,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2659,7 +2659,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2668,7 +2668,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -2733,7 +2733,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -2744,7 +2744,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -2803,7 +2803,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -2812,7 +2812,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -2879,7 +2879,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2888,7 +2888,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -2984,7 +2984,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -2993,7 +2993,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -3051,7 +3051,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3062,7 +3062,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3155,7 +3155,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3166,7 +3166,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3174,7 +3174,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3185,7 +3185,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3228,7 +3228,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -3237,7 +3237,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -3302,7 +3302,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3313,7 +3313,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3372,7 +3372,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -3381,7 +3381,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -3448,7 +3448,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -3457,7 +3457,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -3553,7 +3553,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -3562,7 +3562,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -3620,7 +3620,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3631,7 +3631,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3724,7 +3724,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3735,7 +3735,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3743,7 +3743,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3754,7 +3754,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3797,7 +3797,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -3806,7 +3806,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -3871,7 +3871,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -3882,7 +3882,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -3941,7 +3941,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -3950,7 +3950,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -4017,7 +4017,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4026,7 +4026,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -4122,7 +4122,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4131,7 +4131,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -4189,7 +4189,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4200,7 +4200,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4293,7 +4293,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4304,7 +4304,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4312,7 +4312,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4323,7 +4323,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4366,7 +4366,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4375,7 +4375,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -4440,7 +4440,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4451,7 +4451,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4510,7 +4510,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -4519,7 +4519,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -4586,7 +4586,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4595,7 +4595,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -4691,7 +4691,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4700,7 +4700,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -4758,7 +4758,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4769,7 +4769,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4862,7 +4862,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4873,7 +4873,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4881,7 +4881,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -4892,7 +4892,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -4935,7 +4935,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -4944,7 +4944,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5009,7 +5009,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5020,7 +5020,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -5079,7 +5079,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -5088,7 +5088,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -5155,7 +5155,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -5164,7 +5164,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5260,7 +5260,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -5269,7 +5269,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5327,7 +5327,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5338,7 +5338,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -5431,7 +5431,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5442,7 +5442,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -5450,7 +5450,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5461,7 +5461,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -5504,7 +5504,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -5513,7 +5513,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5578,7 +5578,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5589,7 +5589,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -5648,7 +5648,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -5657,7 +5657,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -5724,7 +5724,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -5733,7 +5733,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5829,7 +5829,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -5838,7 +5838,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -5896,7 +5896,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -5907,7 +5907,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6000,7 +6000,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6011,7 +6011,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6019,7 +6019,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6030,7 +6030,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6073,7 +6073,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6082,7 +6082,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -6147,7 +6147,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6158,7 +6158,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6217,7 +6217,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -6226,7 +6226,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -6293,7 +6293,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6302,7 +6302,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -6398,7 +6398,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6407,7 +6407,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -6465,7 +6465,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6476,7 +6476,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6569,7 +6569,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6580,7 +6580,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6588,7 +6588,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6599,7 +6599,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6642,7 +6642,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6651,7 +6651,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -6716,7 +6716,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -6727,7 +6727,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -6786,7 +6786,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -6795,7 +6795,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -6862,7 +6862,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6871,7 +6871,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -6967,7 +6967,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -6976,7 +6976,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -7034,7 +7034,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7045,7 +7045,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7138,7 +7138,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7149,7 +7149,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7157,7 +7157,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7168,7 +7168,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7211,7 +7211,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -7220,7 +7220,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -7285,7 +7285,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7296,7 +7296,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7355,7 +7355,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -7364,7 +7364,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -7431,7 +7431,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -7440,7 +7440,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -7536,7 +7536,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -7545,7 +7545,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -7603,7 +7603,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7614,7 +7614,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7707,7 +7707,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7718,7 +7718,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7726,7 +7726,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7737,7 +7737,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7780,7 +7780,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -7789,7 +7789,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -7854,7 +7854,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -7865,7 +7865,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -7924,7 +7924,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -7933,7 +7933,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -8000,7 +8000,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8009,7 +8009,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8105,7 +8105,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8114,7 +8114,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8172,7 +8172,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8183,7 +8183,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8276,7 +8276,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8287,7 +8287,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8295,7 +8295,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8306,7 +8306,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8349,7 +8349,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8358,7 +8358,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8423,7 +8423,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8434,7 +8434,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8493,7 +8493,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -8502,7 +8502,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -8569,7 +8569,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8578,7 +8578,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8674,7 +8674,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8683,7 +8683,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8741,7 +8741,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8752,7 +8752,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8845,7 +8845,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8856,7 +8856,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8864,7 +8864,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -8875,7 +8875,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -8918,7 +8918,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -8927,7 +8927,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -8992,7 +8992,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9003,7 +9003,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9062,7 +9062,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -9071,7 +9071,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -9138,7 +9138,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -9147,7 +9147,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -9243,7 +9243,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -9252,7 +9252,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -9310,7 +9310,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9321,7 +9321,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9414,7 +9414,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9425,7 +9425,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9433,7 +9433,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9444,7 +9444,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9487,7 +9487,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -9496,7 +9496,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -9561,7 +9561,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9572,7 +9572,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9631,7 +9631,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -9640,7 +9640,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
@@ -9707,7 +9707,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -9716,7 +9716,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -9812,7 +9812,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -9821,7 +9821,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -9879,7 +9879,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9890,7 +9890,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -9983,7 +9983,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -9994,7 +9994,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -10002,7 +10002,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -10013,7 +10013,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -10056,7 +10056,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   {
                     "classification": "Normal",
                     "max": 32,
-                    "min": undefined,
+                    "min": null,
                   },
                   {
                     "classification": "Intermediate",
@@ -10065,7 +10065,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                   },
                   {
                     "classification": "Pathogenic",
-                    "max": undefined,
+                    "max": null,
                     "min": 39,
                   },
                 ],
@@ -10130,7 +10130,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         [
           {
             "label": "Normal",
-            "start": undefined,
+            "start": 0,
             "stop": 33,
           },
           {
@@ -10141,7 +10141,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "label": "Pathogenic",
             "start": 39,
-            "stop": NaN,
+            "stop": Infinity,
           },
         ]
       }
@@ -10200,7 +10200,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                 {
                   "classification": "Normal",
                   "max": 32,
-                  "min": undefined,
+                  "min": null,
                 },
                 {
                   "classification": "Intermediate",
@@ -10209,7 +10209,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
                 },
                 {
                   "classification": "Pathogenic",
-                  "max": undefined,
+                  "max": null,
                   "min": 39,
                 },
               ],
