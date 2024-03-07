@@ -4,10 +4,10 @@ import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
 type ShortTandemRepeatRepeatUnitsProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRepeatUnitsProps) => {
@@ -118,7 +118,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
 }
 
 type ShortTandemRepeatAttributesProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatAttributes = ({ shortTandemRepeat }: ShortTandemRepeatAttributesProps) => {

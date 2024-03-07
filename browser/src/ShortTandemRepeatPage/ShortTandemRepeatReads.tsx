@@ -11,7 +11,7 @@ import StatusMessage from '../StatusMessage'
 import useRequest from '../useRequest'
 import ControlSection from '../VariantPage/ControlSection'
 
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
@@ -193,7 +193,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
 
 type ShortTandemRepeatReadsProps = {
   datasetId: string
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   filter: {
     population?: string
     sex?: string
@@ -349,7 +349,7 @@ const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
 `
 
 type ShortTandemRepeatReadsAllelesFilterControlsProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   value: {
     repeat_unit?: string
     min_repeats?: number
@@ -442,7 +442,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
 
 type ShortTandemRepeatReadsContainerProps = {
   datasetId: string
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   filter: {
     population?: string
     sex?: string
