@@ -2,16 +2,11 @@ import React from 'react'
 
 import { List, ListItem } from '@gnomad/ui'
 
-import {
-  ShortTandemRepeatPropType,
-  ShortTandemRepeatAdjacentRepeatPropType,
-} from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
 
 type Props = {
-  shortTandemRepeatOrAdjacentRepeat:
-    | ShortTandemRepeatPropType
-    | ShortTandemRepeatAdjacentRepeatPropType
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
   selectedPopulationId: string
   selectedRepeatUnits: string
   bin: {

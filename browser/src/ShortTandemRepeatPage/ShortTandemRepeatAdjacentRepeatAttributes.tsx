@@ -4,10 +4,10 @@ import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
-import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
 
 type Props = {
-  adjacentRepeat: ShortTandemRepeatAdjacentRepeatPropType
+  adjacentRepeat: ShortTandemRepeatAdjacentRepeat
 }
 
 const ShortTandemRepeatAdjacentRepeatAttributes = ({ adjacentRepeat }: Props) => {
