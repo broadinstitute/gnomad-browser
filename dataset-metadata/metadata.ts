@@ -201,7 +201,10 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
     datasetId.startsWith('gnomad_r2') ||
     datasetId.startsWith('gnomad_sv_r2') ||
     datasetId === 'exac',
-  hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
+  hasNonCodingConstraints:
+    datasetId.startsWith('gnomad_r3') ||
+    datasetId.startsWith('gnomad_r4') ||
+    datasetId === 'gnomad_sv_r4',
   hasExome: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
