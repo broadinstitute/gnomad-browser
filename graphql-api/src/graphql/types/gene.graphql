@@ -69,6 +69,9 @@ type Gene {
   exac_constraint: ExacConstraint
   exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
 
+  mitochondrial_constraint: MitochondrialGeneConstraint
+  mitochondrial_missense_constraint_regions: [MitochondrialRegionConstraint]
+
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
   mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)
