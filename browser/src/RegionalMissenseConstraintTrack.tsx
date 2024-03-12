@@ -14,6 +14,8 @@ type RegionalMissenseConstraintRegion = {
   chrom: string
   start: number
   stop: number
+  region_start: number
+  region_stop: number
   aa_start: string | null
   aa_stop: string | null
   obs_mis: number | undefined
@@ -55,7 +57,9 @@ const RegionAttributeList = styled.dl`
   }
 `
 
-export const regionIntersections = (regionArrays: { start: number; stop: number }[][]) => {
+export const regionIntersections = (
+  regionArrays: { start: number; stop: number }[][]
+): RegionalMissenseConstraintRegion[] => {
   const sortedRegionsArrays = regionArrays.map((regions) =>
     [...regions].sort((a, b) => a.start - b.start)
   )
@@ -212,7 +216,7 @@ const RegionTooltip = ({ region, isTranscriptWide }: RegionTooltipProps) => {
     <RegionAttributeList>
       <div>
         <dt>Coordinates:</dt>
-        <dd>{`${region.chrom}:${region.start}-${region.stop}`}</dd>
+        <dd>{`${region.chrom}:${region.region_start}-${region.region_stop}`}</dd>
       </div>
       <div>
         <dt>Amino acids:</dt>
@@ -315,6 +319,8 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
           chrom: gene.chrom,
           start: Math.min(gene.start, gene.stop),
           stop: Math.max(gene.start, gene.stop),
+          region_start: Math.min(gene.start, gene.stop),
+          region_stop: Math.max(gene.start, gene.stop),
           obs_mis: gene.gnomad_constraint.obs_mis,
           exp_mis: gene.gnomad_constraint.exp_mis,
           obs_exp: gene.gnomad_constraint.oe_mis,
@@ -329,7 +335,13 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
   }
 
   const constrainedExons = regionIntersections([
-    regionalMissenseConstraint.regions,
+    regionalMissenseConstraint.regions.map((region) => {
+      return {
+        ...region,
+        region_start: region.start,
+        region_stop: region.stop,
+      }
+    }),
     gene.exons.filter((exon) => exon.feature_type === 'CDS'),
   ])
 
