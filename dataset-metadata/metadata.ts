@@ -209,12 +209,7 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   referenceGenome:
-    datasetId.startsWith('gnomad_r3') ||
-    datasetId.startsWith('gnomad_r4') ||
-    datasetId === 'gnomad_sv_r4' ||
-    datasetId === 'gnomad_cnv_r4'
-      ? 'GRCh38'
-      : 'GRCh37',
+    datasetId.startsWith('gnomad_r3') || datasetId.endsWith('r4') ? 'GRCh38' : 'GRCh37',
   genesHaveGenomeCoverage: !datasetId.startsWith('gnomad_cnv'),
   regionsHaveExomeCoverage:
     !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
