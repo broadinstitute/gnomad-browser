@@ -24,4 +24,8 @@ COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
 
 # Build JS from TS source
 RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
+
+# Copy static data into place
+COPY --chown=node:node graphql-api/static_data /app/static_data
+
 CMD ["node", "graphql-api/src/app.js"]
