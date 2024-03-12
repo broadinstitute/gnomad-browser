@@ -1,0 +1,41 @@
+type ProteinMitochondrialGeneConstraint {
+  exp_lof: Float!
+  exp_mis: Float!
+  exp_syn: Float!
+
+  obs_lof: Float!
+  obs_mis: Float!
+  obs_syn: Float!
+
+  oe_lof: Float!
+  oe_lof_lower: Float!
+  oe_lof_upper: Float!
+
+  oe_mis: Float!
+  oe_mis_lower: Float!
+  oe_mis_upper: Float!
+
+  oe_syn: Float!
+  oe_syn_lower: Float!
+  oe_syn_upper: Float!
+}
+
+type RNAMitochondrialGeneConstraint {
+  observed: Float!
+  expected: Float!
+  oe: Float!
+  oe_upper: Float!
+  oe_lower: Float!
+}
+
+union MitochondrialGeneConstraint =
+    ProteinMitochondrialGeneConstraint
+  | RNAMitochondrialGeneConstraint
+
+type MitochondrialRegionConstraint {
+  start: Int!
+  stop: Int!
+  oe: Float!
+  oe_upper: Float!
+  oe_lower: Float!
+}
