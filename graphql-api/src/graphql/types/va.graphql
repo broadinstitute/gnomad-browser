@@ -1,0 +1,128 @@
+type VANumber {
+  type: String!
+  value: Int!
+}
+
+type VADefiniteRange {
+  type: String!
+  min: Float!
+  max: Float!
+}
+
+enum VAComparator {
+  LTE
+  GTE
+}
+
+type VAIndefiniteRange {
+  type: String!
+  value: Float!
+  comparator: VAComparator!
+}
+
+union VANumberlike = VADefiniteRange | VAIndefiniteRange | VANumber
+
+type VASequenceInterval {
+  type: String!
+  start: VANumberlike!
+  end: VANumberlike!
+}
+
+type VACytobandInterval {
+  type: String!
+  start: String!
+  end: String!
+}
+
+type VALiteralSequenceExpression {
+  type: String!
+  sequence: String!
+}
+
+type VASequenceLocation {
+  _id: VACURIE
+  type: String!
+  sequence_id: String!
+  interval: VASequenceInterval!
+}
+
+type VACURIE {
+  value: String!
+}
+
+union VAAlleleLocation = VACURIE | VASequenceLocation
+
+type VAAllele {
+  _id: VACURIE
+  type: String!
+  location: VAAlleleLocation!
+  state: VALiteralSequenceExpression!
+}
+
+type VACohortAlleleFrequencyDerivation {
+  id: String
+  type: String
+  label: String
+  version: String
+}
+
+type VAFocusAlleleURI {
+  value: String!
+}
+
+union VAFocusAllele = VAAllele | VAFocusAlleleURI
+
+type VACohortCharacteristic {
+  name: String!
+  value: String!
+}
+
+type VACohort {
+  id: String!
+  label: String
+  characteristics: [VACohortCharacteristic!]
+}
+
+type VAGrpMaxFAF95 {
+  frequency: Float!
+  confidenceInterval: Float!
+  groupId: String!
+}
+
+type VAAncillaryResults {
+  grpMaxFAF95: VAGrpMaxFAF95
+  jointGrpMaxFAF95: VAGrpMaxFAF95
+  homozygotes: Int
+  hemizygotes: Int
+}
+
+type VAQualityMeasures {
+  meanDepth: Float
+  fractionCoverage20x: Float
+  qcFilters: [String!]
+  monoallelic: Boolean
+  lowComplexityRegion: Boolean
+  lowConfidenceLossOfFunctionError: Boolean
+  lossOfFunctionWarning: Boolean
+  noncodingTranscriptError: Boolean
+  heterozygousSkewedAlleleCount: Int
+}
+
+type VACohortAlleleFrequency {
+  id: String!
+  type: String!
+  label: String
+  derivedFrom: VACohortAlleleFrequencyDerivation
+  focusAllele: VAFocusAllele!
+  focusAlleleCount: Int!
+  locusAlleleCount: Int!
+  alleleFrequency: Float!
+  cohort: VACohort!
+  ancillaryResults: VAAncillaryResults
+  subcohortFrequency: [VACohortAlleleFrequency]
+}
+
+type VA {
+  va: [VACohortAlleleFrequency!]
+  vrs: [VAAllele!]
+}

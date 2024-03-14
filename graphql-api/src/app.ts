@@ -7,6 +7,12 @@ import config from './config'
 import { client as esClient } from './elasticsearch'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
+import { existsSync, readFileSync } from 'fs'
+
+const unversionedConfig = existsSync('./unversioned_config.json')
+  ? JSON.parse(readFileSync('./unversioned_config.json', { encoding: 'utf8' }))
+  : {}
+process.env['VRS_API_URL'] = unversionedConfig['vrs_api_url']
 
 process.on('uncaughtException', (error) => {
   logger.error(error)
