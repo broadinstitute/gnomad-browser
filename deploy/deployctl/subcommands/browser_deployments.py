@@ -58,6 +58,37 @@ patches:
                     value: 'gs://{cluster_name}-gene-cache/2023-12-01'
 """
 
+ALTERNATE_ES_CLUSTER_NAME = """
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: ELASTICSEARCH_URL
+                    value: http://{es_cluster}-es-http:9200
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: ELASTICSEARCH_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: {es_cluster}-es-elastic-user
+"""
+
 
 def deployments_directory() -> str:
     path = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../manifests/browser/deployments"))
@@ -81,7 +112,7 @@ def list_deployments() -> None:
         print(deployment[len("gnomad-browser-") :])
 
 
-def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -> None:
+def create_deployment(name: str, browser_tag: str = None, api_tag: str = None, es_cluster_name: str = None) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
@@ -123,6 +154,11 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             project=config.project,
             cluster_name=config.gke_cluster_name,
         )
+
+        if es_cluster_name:
+            kustomization += ALTERNATE_ES_CLUSTER_NAME.format(
+                es_cluster=es_cluster_name,
+            )
 
         kustomization_file.write(kustomization)
 
@@ -174,6 +210,7 @@ def main(argv: typing.List[str]) -> None:
     create_parser.add_argument("--name")
     create_parser.add_argument("--browser-tag")
     create_parser.add_argument("--api-tag")
+    create_parser.add_argument("--es-cluster-name")
 
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_deployment)
