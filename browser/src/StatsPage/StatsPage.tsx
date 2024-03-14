@@ -28,6 +28,11 @@ import GeneticAncestryGroupsByVersionTable from './StatsPageTables/GeneticAncest
 import V4GeneticAncestryTable from './StatsPageTables/V4GeneticAncestryTable'
 import StudyDiseasesInGnomadTable from './StatsPageTables/StudyDiseasesInGnomadTable'
 
+import {
+  InferredSexAllV4Table,
+  InferredSexNonUKBV4Table,
+} from './StatsPageTables/InferredSexPerGeneticAncestryTables'
+
 const TwoColumnLayout = styled.div`
   display: flex;
   justify-content: space-around;
@@ -357,7 +362,7 @@ const StatsPage = () => {
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
 
-          <DiversityBarGraphContainer style={{ marginBottom: '0.5em' }}>
+          <DiversityBarGraphContainer style={{ marginBottom: '6em' }}>
             <DiversityBarGraph style={{ marginTop: '1em', marginBottom: '0' }}>
               <StackedBarGraph
                 title="Per genetic ancestry group count of non-synonymous coding variants in canonical transcripts with a overall gnomAD (within version) AF >0.1"
@@ -371,6 +376,18 @@ const StatsPage = () => {
               />
             </DiversityBarGraph>
           </DiversityBarGraphContainer>
+
+          <h3 style={{ marginBottom: '2em' }}>
+            Inferred sex in gnomAD v4 per Genetic Ancestry Group
+          </h3>
+
+          <ResponsiveTable style={{ marginBottom: '6em' }}>
+            <InferredSexAllV4Table />
+          </ResponsiveTable>
+
+          <ResponsiveTable style={{ marginBottom: '3em' }}>
+            <InferredSexNonUKBV4Table />
+          </ResponsiveTable>
         </StatsSection>
 
         <StatsSection>
