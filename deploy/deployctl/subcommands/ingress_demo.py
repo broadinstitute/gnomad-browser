@@ -21,6 +21,9 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+"""
+
+READS_SERVICE_MANIFEST_TEMPLATE = """
 ---
 apiVersion: v1
 kind: Service
@@ -50,6 +53,16 @@ spec:
   rules:
     - http:
         paths:
+          - path:
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gnomad-browser-demo-{name}
+                port:
+                  number: 80
+"""
+
+INGRESS_READS_PATHS_ADDON = """
           - path: /reads
             pathType: ImplementationSpecific
             backend:
@@ -62,13 +75,6 @@ spec:
             backend:
               service:
                 name: gnomad-reads-demo-{name}
-                port:
-                  number: 80
-          - path:
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: gnomad-browser-demo-{name}
                 port:
                   number: 80
 """
@@ -110,15 +116,12 @@ def apply_services(name: str, browser_deployment: str = None, reads_deployment: 
     else:
         browser_deployment = get_most_recent_k8s_deployment("component=gnomad-browser")[len("gnomad-browser-") :]
 
+    manifest = SERVICES_MANIFEST_TEMPLATE.format(name=name, browser_deployment=browser_deployment)
+
     if reads_deployment:
         if not k8s_deployment_exists(f"gnomad-reads-{reads_deployment}"):
             raise RuntimeError(f"reads deployment {reads_deployment} not found")
-    else:
-        reads_deployment = get_most_recent_k8s_deployment("component=gnomad-reads")[len("gnomad-reads-") :]
-
-    manifest = SERVICES_MANIFEST_TEMPLATE.format(
-        name=name, browser_deployment=browser_deployment, reads_deployment=reads_deployment
-    )
+        manifest += READS_SERVICE_MANIFEST_TEMPLATE.format(name=name, reads_deployment=reads_deployment)
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
@@ -127,6 +130,9 @@ def apply_ingress(name: str, browser_deployment: str = None, reads_deployment: s
     apply_services(name, browser_deployment, reads_deployment)
 
     manifest = INGRESS_MANIFEST_TEMPLATE.format(name=name)
+
+    if reads_deployment:
+        manifest += INGRESS_READS_PATHS_ADDON.format(name=name)
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
