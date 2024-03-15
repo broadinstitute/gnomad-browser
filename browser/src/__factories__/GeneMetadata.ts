@@ -7,6 +7,7 @@ const geneMetadataFactory = Factory.define<GeneMetadata>(() => ({
   symbol: 'FAKEGENE',
   canonical_transcript_id: 'some-transcript',
   flags: [],
+  mane_select_transcript: null,
 }))
 
 export default geneMetadataFactory
