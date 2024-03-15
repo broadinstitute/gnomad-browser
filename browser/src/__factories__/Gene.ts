@@ -24,7 +24,18 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     structural_variants = [],
     clinvar_variants = [],
     copy_number_variants = [],
+    name = null,
   } = params
+
+  const {
+    mane_select_transcript = null,
+    gnomad_constraint = null,
+    exac_constraint = null,
+    pext = pextFactory.build(),
+    short_tandem_repeats = null,
+    exac_regional_missense_constraint_regions = null,
+    gnomad_v2_regional_missense_constraint = null,
+  } = associations
 
   const heterozygous_variant_cooccurrence_counts =
     associations.heterozygous_variant_cooccurrence_counts ||
@@ -32,7 +43,15 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
   const homozygous_variant_cooccurrence_counts =
     associations.homozygous_variant_cooccurrence_counts ||
     HomozygousVariantCooccurrenceCountsPerSeverityAndAfFactory.build()
-  const metadata: GeneMetadata = { gene_id, gene_version, symbol, canonical_transcript_id, flags }
+
+  const metadata: GeneMetadata = {
+    gene_id,
+    gene_version,
+    symbol,
+    canonical_transcript_id,
+    flags,
+    mane_select_transcript,
+  }
 
   const transcripts: Transcript[] =
     canonical_transcript_id !== null
@@ -50,8 +69,6 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
           ),
         ]
       : []
-
-  const pext = pextFactory.build()
 
   return {
     gene_id,
@@ -72,7 +89,14 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     structural_variants,
     clinvar_variants,
     copy_number_variants,
+    mane_select_transcript,
+    name,
+    gnomad_constraint,
+    exac_constraint,
     pext,
+    short_tandem_repeats,
+    exac_regional_missense_constraint_regions,
+    gnomad_v2_regional_missense_constraint,
   }
 })
 

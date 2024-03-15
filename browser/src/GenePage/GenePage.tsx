@@ -79,12 +79,12 @@ export type GeneMetadata = {
   gene_id: string
   gene_version: string
   symbol: string
-  mane_select_transcript?: {
+  mane_select_transcript: {
     ensembl_id: string
     ensembl_version: string
     refseq_id: string
     refseq_version: string
-  }
+  } | null
   canonical_transcript_id: string | null
   flags: string[]
 }
@@ -115,7 +115,7 @@ export type Pext = {
 
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
-  name?: string
+  name: string | null
   chrom: string
   strand: Strand
   start: number
@@ -127,14 +127,16 @@ export type Gene = GeneMetadata & {
   }[]
   transcripts: GeneTranscript[]
   flags: string[]
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
-  pext?: Pext
-  short_tandem_repeats?: {
-    id: string
-  }[]
-  exac_regional_missense_constraint_regions?: any
-  gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
+  gnomad_constraint: GnomadConstraint | null
+  exac_constraint: ExacConstraint | null
+  pext: Pext | null
+  short_tandem_repeats:
+    | {
+        id: string
+      }[]
+    | null
+  exac_regional_missense_constraint_regions: any | null
+  gnomad_v2_regional_missense_constraint: RegionalMissenseConstraint | null
   variants: Variant[]
   structural_variants: StructuralVariant[]
   copy_number_variants: CopyNumberVariant[]
