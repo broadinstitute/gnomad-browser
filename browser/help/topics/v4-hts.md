@@ -328,7 +328,7 @@ Global fields
 - `versions`: Struct containing the exomes and genomes versions.
 - `genomes_globals`: Global fields from the gnomAD genomes.
     - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘genomes.freq’ array row annotation.
-    - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes ‘genomes.freq’ global annotation.
+    - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes ‘genomes.freq_meta’ global annotation.
     - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘genomes.faf’ array row annotation.
     - `age_distribution`: Callset-wide age histogram calculated on the gnomAD genomes.
       - `bin_edges`: Bin edges for the age histogram.
