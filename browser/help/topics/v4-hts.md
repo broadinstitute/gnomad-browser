@@ -303,7 +303,7 @@ Row fields:
 
 #### gnomAD v4.1 genomes Hail Table annotations
 
-The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
+The v4.1 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
 
 Global fields
 
