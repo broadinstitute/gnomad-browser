@@ -259,7 +259,7 @@ export type RegionalMissenseConstraint = {
 }
 
 type Props = {
-  regionalMissenseConstraint?: RegionalMissenseConstraint
+  regionalMissenseConstraint: RegionalMissenseConstraint | null
   gene: Gene
 }
 
