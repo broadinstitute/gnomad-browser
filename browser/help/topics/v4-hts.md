@@ -384,7 +384,7 @@ Row fields
     - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
     - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
     - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
-  - `histograms`: Variant information histograms.
+  - `histograms`: Variant information histograms from the gnomAD genomes.
     - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
       - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
         - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
@@ -468,7 +468,7 @@ Row fields
     - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
     - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
     - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
-  - `histograms`: Variant information histograms.
+  - `histograms`: Variant information histograms from the gnomAD exomes.
     - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
       - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
         - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
@@ -547,7 +547,7 @@ Row fields
   - `faf`: Array of combined exomes and genomes filtering allele frequency information (AC, AN, AF, homozygote count). Note that the values in array will correspond to the joint or combined value if the variant had a defined filtering allele frequency in both data types, otherwise this array will contain filtering allele frequencies only for the data type associated with the Hail Table (in this case, exomes).
     - `faf95`: Combined exomes and genomes filtering allele frequency (using Poisson 95% CI).
     - `faf99`: Combined exomes and genomes filtering allele frequency (using Poisson 99% CI).
-  - `histograms`: Variant information histograms.
+  - `histograms`: Variant information histograms of the combined (joint) gnomAD exomes and genomes.
     - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
       - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
         - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
