@@ -360,6 +360,14 @@ Row fields
 
 - `locus`: Variant locus. Contains contig and position information.
 - `alleles`: Variant alleles.
+- `region_flags`: Struct containing flags about regions.
+  - `fail_interval_qc`: Less than 85% of samples meet 20X coverage if variant is in autosomal or PAR region or 10X coverage for non-PAR regions of chromosomes X and Y.
+  - `outside_ukb_capture_region`: Variant falls outside of UK Biobank exome capture regions.
+  - `outside_broad_capture_region`: Variant falls outside of Broad exome capture regions.
+  - `outside_ukb_calling_region`: Variant falls outside of UK Biobank exome capture regions plus 150 bp padding.
+  - `outside_broad_calling_region`: Variant falls outside of Broad exome capture regions plus 150 bp padding.
+  - `not_called_in_exomes`: Variant was not called in the gnomAD exomes.
+  - `not_called_in_genomes`: Variant was not called in the gnomAD genomes.
 - `genomes`: Struct of allele frequency information from the gnomAD genomes.
   - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD genomes.
     - `AC`: Alternate allele count in release.
