@@ -54,7 +54,7 @@ To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve
 ```
 # Load the v4.1 exomes public release HT
 from gnomad.resources.grch38.gnomad import public_release
-ht = public_release(“exomes”).ht()
+ht = public_release("exomes").ht()
 
 # Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
 ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr_XX_adj']])
