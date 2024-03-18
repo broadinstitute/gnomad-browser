@@ -40,6 +40,8 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     short_tandem_repeats = null,
     exac_regional_missense_constraint_regions = null,
     gnomad_v2_regional_missense_constraint = null,
+    mitochondrial_constraint = null,
+    mitochondrial_missense_constraint_regions = null,
   } = associations
 
   const heterozygous_variant_cooccurrence_counts =
@@ -102,6 +104,8 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     short_tandem_repeats,
     exac_regional_missense_constraint_regions,
     gnomad_v2_regional_missense_constraint,
+    mitochondrial_constraint,
+    mitochondrial_missense_constraint_regions,
   }
 })
 

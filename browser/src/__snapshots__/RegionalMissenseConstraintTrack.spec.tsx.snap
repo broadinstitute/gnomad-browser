@@ -66,7 +66,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
           className="ConstraintTrack__TopPanel-sc-113yvfg-3 imJcbb"
         >
           <div
-            className="RegionalMissenseConstraintTrack__LegendWrapper-sc-1lzrnv-1 glMGEq"
+            className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
           >
             <span>
               Missense observed/expected
@@ -81,7 +81,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={30}
                 x={10}
-                y={0}
+                y={1}
               />
               <rect
                 fill="#de351b"
@@ -89,7 +89,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={30}
                 x={40}
-                y={0}
+                y={1}
               />
               <rect
                 fill="#fd8d3c"
@@ -97,7 +97,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={30}
                 x={70}
-                y={0}
+                y={1}
               />
               <rect
                 fill="#fecc5c"
@@ -105,7 +105,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={30}
                 x={100}
-                y={0}
+                y={1}
               />
               <rect
                 fill="#ffffb2"
@@ -113,7 +113,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={30}
                 x={130}
-                y={0}
+                y={1}
               />
               <text
                 dy="1.2em"
@@ -180,14 +180,14 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="#000"
                 width={20}
                 x={10}
-                y={0}
+                y={1}
               />
               <text
                 dy="1em"
                 fontSize="10"
                 textAnchor="start"
                 x={35}
-                y={0}
+                y={1}
               >
                 Not significant (p &gt; 1e-3)
               </text>
@@ -211,7 +211,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="black"
                 width={56}
                 x={124}
-                y={0}
+                y={1}
               />
             </g>
             <g
@@ -224,7 +224,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 stroke="black"
                 width={54}
                 x={346}
-                y={0}
+                y={1}
               />
             </g>
             <g
