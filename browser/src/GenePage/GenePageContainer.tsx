@@ -260,6 +260,51 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
 	hom_total
       }
     }
+    mitochondrial_constraint {
+      ...on ProteinMitochondrialGeneConstraint {
+        exp_lof
+        exp_mis
+        exp_syn
+        obs_lof
+        obs_mis
+        obs_syn
+        oe_lof
+        oe_lof_lower
+        oe_lof_upper
+        oe_mis
+        oe_mis_lower
+        oe_mis_upper
+        oe_syn
+        oe_syn_lower
+        oe_syn_upper
+      }
+
+      ...on RNAMitochondrialGeneConstraint {
+        observed
+        expected
+        oe
+        oe_upper
+        oe_lower
+      }
+    }
+
+    mitochondrial_missense_constraint_regions{
+      ...on ProteinMitochondrialRegionConstraint{
+        protein_residue_start
+        protein_residue_end
+        oe
+        oe_upper
+        oe_lower
+      }
+
+      ...on RNAMitochondrialRegionConstraint{
+        mt_dna_start
+        mt_dna_end
+        oe
+        oe_upper
+        oe_lower
+      }
+    }
   }
 }
 `
