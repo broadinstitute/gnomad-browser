@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
@@ -12,6 +11,7 @@ import ConstraintTrack, {
   SidePanel,
   PlotWrapper,
   regionsInExons,
+  RegionAttributeList,
   RegionWithUnclamped,
 } from './ConstraintTrack'
 
@@ -28,24 +28,6 @@ export type RegionalMissenseConstraintRegion = {
   p_value: number
   z_score: number | undefined
 }
-
-const RegionAttributeList = styled.dl`
-  margin: 0;
-
-  div {
-    margin-bottom: 0.25em;
-  }
-
-  dt {
-    display: inline;
-    font-weight: bold;
-  }
-
-  dd {
-    display: inline;
-    margin-left: 0.5em;
-  }
-`
 
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
 const colorScale = {
@@ -78,25 +60,16 @@ function regionColor(region: RegionalMissenseConstraintRegion) {
   return region.p_value > 0.001 ? colorScale.not_significant : color
 }
 
-const LegendWrapper = styled.div`
-  display: flex;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: center;
-  }
-`
-
 const Legend = () => {
   return (
-    <LegendWrapper>
+    <>
       <span>Missense observed/expected</span>
       <svg width={170} height={25}>
-        <rect x={10} y={0} width={30} height={10} stroke="#000" fill={colorScale.least} />
-        <rect x={40} y={0} width={30} height={10} stroke="#000" fill={colorScale.less} />
-        <rect x={70} y={0} width={30} height={10} stroke="#000" fill={colorScale.middle} />
-        <rect x={100} y={0} width={30} height={10} stroke="#000" fill={colorScale.greater} />
-        <rect x={130} y={0} width={30} height={10} stroke="#000" fill={colorScale.greatest} />
+        <rect x={10} y={1} width={30} height={10} stroke="#000" fill={colorScale.least} />
+        <rect x={40} y={1} width={30} height={10} stroke="#000" fill={colorScale.less} />
+        <rect x={70} y={1} width={30} height={10} stroke="#000" fill={colorScale.middle} />
+        <rect x={100} y={1} width={30} height={10} stroke="#000" fill={colorScale.greater} />
+        <rect x={130} y={1} width={30} height={10} stroke="#000" fill={colorScale.greatest} />
         <text x={10} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
           0.0
         </text>
@@ -117,12 +90,12 @@ const Legend = () => {
         </text>
       </svg>
       <svg width={170} height={25}>
-        <rect x={10} y={0} width={20} height={10} stroke="#000" fill={colorScale.not_significant} />
-        <text x={35} y={0} fontSize="10" dy="1em" textAnchor="start">
+        <rect x={10} y={1} width={20} height={10} stroke="#000" fill={colorScale.not_significant} />
+        <text x={35} y={1} fontSize="10" dy="1em" textAnchor="start">
           Not significant (p &gt; 1e-3)
         </text>
       </svg>
-    </LegendWrapper>
+    </>
   )
 }
 
@@ -280,7 +253,7 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
       legend={<Legend />}
       tooltipComponent={RegionTooltip}
       valueFn={formattedOE}
-    ></ConstraintTrack>
+    />
   )
 }
 

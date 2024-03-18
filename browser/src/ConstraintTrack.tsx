@@ -37,6 +37,33 @@ const TopPanel = styled.div`
   margin-bottom: 5px;
 `
 
+const LegendWrapper = styled.div`
+  display: flex;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`
+
+export const RegionAttributeList = styled.dl`
+  margin: 0;
+
+  div {
+    margin-bottom: 0.25em;
+  }
+
+  dt {
+    display: inline;
+    font-weight: bold;
+  }
+
+  dd {
+    display: inline;
+    margin-left: 0.5em;
+  }
+`
+
 export interface GenericRegion {
   start: number
   stop: number
@@ -55,7 +82,7 @@ type Props<R extends GenericRegion> = {
   constrainedRegions: RegionWithUnclamped<R>[]
   infobuttonTopic: string
   legend: ReactNode
-  tooltipComponent: any // TK any
+  tooltipComponent: React.ElementType
   colorFn: (region: R) => string
   valueFn: (region: R) => string
 }
@@ -120,9 +147,12 @@ const ConstraintTrack = <R extends GenericRegion>({
     >
       {({ scalePosition, width }: TrackProps) => (
         <>
-          <TopPanel>{legend}</TopPanel>
+          <TopPanel>
+            <LegendWrapper>{legend}</LegendWrapper>
+          </TopPanel>
           <PlotWrapper>
             <svg height={55} width={width}>
+              {!allRegions && <rect x={0} y={7.5} width={width} height={1} />}
               {constrainedRegions.map((region: RegionWithUnclamped<R>) => {
                 const startX = scalePosition(region.start)
                 const stopX = scalePosition(region.stop)
@@ -139,7 +169,7 @@ const ConstraintTrack = <R extends GenericRegion>({
                     <g>
                       <rect
                         x={startX}
-                        y={0}
+                        y={1}
                         width={regionWidth}
                         height={15}
                         fill={colorFn(region)}
@@ -149,9 +179,9 @@ const ConstraintTrack = <R extends GenericRegion>({
                   </TooltipAnchor>
                 )
               })}
-              <g transform="translate(0,20)">
-                {allRegions &&
-                  allRegions.map((region: R, index: number) => {
+              {allRegions && (
+                <g transform="translate(0,20)">
+                  {allRegions.map((region: R, index: number) => {
                     const startX = scalePosition(region.start)
                     const stopX = scalePosition(region.stop)
                     const regionWidth = stopX - startX
@@ -198,7 +228,8 @@ const ConstraintTrack = <R extends GenericRegion>({
                       </g>
                     )
                   })}
-              </g>
+                </g>
+              )}
             </svg>
           </PlotWrapper>
         </>
