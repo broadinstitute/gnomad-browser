@@ -54,7 +54,7 @@ To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve
 ```
 # Load the v4.1 exomes public release HT
 from gnomad.resources.grch38.gnomad import public_release
-ht = public_release(“exomes”).ht()
+ht = public_release("exomes").ht()
 
 # Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
 ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr_XX_adj']])
@@ -259,9 +259,8 @@ Row fields:
       - `bin_freq`: Bin frequencies for the GQ histogram calculated on all genotypes. The number of records found in each bin.
       - `n_smaller`: Count of GQ values falling below lowest histogram bin edge, for GQ calculated on all genotypes.
       - `n_larger`: Count of GQ values falling above highest histogram bin edge, for GQ calculated on all genotypes.
-    - dp_hist_all: Histogram for DP calculated on all genotypes.
-      - bin_edges: Bin edges for the DP histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100
-      - `bin_freq`: Bin frequencies for the DP histogram calculated on all genotypes. The number of records found in each bin.
+    - `dp_hist_all`: Histogram for DP calculated on all genotypes.
+      - `bin_edges`: Bin edges for the DP histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
       - `n_smaller`: Count of DP values falling below lowest histogram bin edge, for DP calculated on all genotypes.
       - `n_larger`: Count of DP values falling above highest histogram bin edge, for DP calculated on all genotypes.
     - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on all genotypes.
@@ -320,9 +319,6 @@ Row fields
 - `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC
 
 #### gnomAD v4.1 joint frequency Hail Table annotations
-
-The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
-
 Global fields
 
 - `versions`: Struct containing the exomes and genomes versions.
