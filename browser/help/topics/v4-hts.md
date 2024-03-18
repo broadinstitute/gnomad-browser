@@ -374,15 +374,20 @@ Row fields
     - `AF`: Alternate allele frequency, (AC/AN), in release.
     - `AN`: Total number of alleles in release.
     - `homozygote_count`: Count of homozygous alternate individuals in release.
+  - `faf`: Filtering allele frequency in the gnomAD genomes.
+    - `faf95`: Filtering allele frequency (using Poisson 95% CI).
+    - `faf99`: Filtering allele frequency (using Poisson 99% CI).
   - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
     - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
     - `gen_anc`: Genetic ancestry group with maximum allele frequency
-  - `faf`: Filtering allele frequency in the gnomAD genomes.
-    - `faf95`: Filtering allele frequency (using Poisson 95% CI).
-    - `faf99`: Filtering allele frequency (using Poisson 99% CI).
+  - `fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency.
+    - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI).
+    - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
+    - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
+    - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
   - `histograms`: Variant information histograms.
   - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
     - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
