@@ -10,6 +10,9 @@ import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
+import MitochondrialRegionConstraintTrack, {
+  MitochondrialConstraintRegion,
+} from './MitochondrialRegionConstraintTrack'
 
 import {
   DatasetId,
@@ -72,6 +75,40 @@ import {
 } from '../ChartStyles'
 import { logButtonClick } from '../analytics'
 import { GtexTissueExpression } from './TranscriptsTissueExpression'
+
+type ProteinMitochondrialGeneConstraint = {
+  exp_lof: number
+  exp_mis: number
+  exp_syn: number
+
+  obs_lof: number
+  obs_mis: number
+  obs_syn: number
+
+  oe_lof: number
+  oe_lof_lower: number
+  oe_lof_upper: number
+
+  oe_mis: number
+  oe_mis_lower: number
+  oe_mis_upper: number
+
+  oe_syn: number
+  oe_syn_lower: number
+  oe_syn_upper: number
+}
+
+type RNAMitochondrialGeneConstraint = {
+  observed: number
+  expected: number
+  oe: number
+  oe_upper: number
+  oe_lower: number
+}
+
+type MitochondrialGeneConstraint =
+  | ProteinMitochondrialGeneConstraint
+  | RNAMitochondrialGeneConstraint
 
 export type Strand = '+' | '-'
 
@@ -143,6 +180,8 @@ export type Gene = GeneMetadata & {
   clinvar_variants: ClinvarVariant[]
   homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
   heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  mitochondrial_constraint: MitochondrialGeneConstraint | null
+  mitochondrial_missense_constraint_regions: MitochondrialConstraintRegion[] | null
 }
 
 const GeneName = styled.span`
@@ -534,6 +573,14 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               preferredTranscriptDescription={preferredTranscriptDescription}
             />
           </TrackWrapper>
+        )}
+
+        {gene.chrom.startsWith('M') && (
+          <MitochondrialRegionConstraintTrack
+            constraintRegions={gene.mitochondrial_missense_constraint_regions}
+            exons={gene.exons}
+            geneSymbol={gene.symbol}
+          />
         )}
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
