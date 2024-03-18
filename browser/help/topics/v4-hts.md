@@ -319,9 +319,6 @@ Row fields
 - `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC
 
 #### gnomAD v4.1 joint frequency Hail Table annotations
-
-The v4 genomes Hail Table annotation schema is the same as the exomes schema, with only a few minor differences:
-
 Global fields
 
 - `versions`: Struct containing the exomes and genomes versions.
