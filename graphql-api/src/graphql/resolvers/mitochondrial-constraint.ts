@@ -142,21 +142,23 @@ const parseMitochondrialGeneConstraintTSV = (
           oe_lower: Number(lowerCI),
         }
         return { ...result, [geneSymbol]: rnaConstraint }
-      } else {
-        const previousConstraint: ProteinMitochondrialGeneConstraint = result[geneSymbol]
-          ? (result[geneSymbol] as ProteinMitochondrialGeneConstraint)
-          : emptyConstraint
-        const newConstraint = updateProteinMitochondrialGeneConstraint(
-          previousConstraint,
-          consequence,
-          observed,
-          expected,
-          oe,
-          lowerCI,
-          upperCI
-        )
-        return { ...result, [geneSymbol]: newConstraint }
       }
+
+      const previousConstraint: ProteinMitochondrialGeneConstraint = result[geneSymbol]
+        ? (result[geneSymbol] as ProteinMitochondrialGeneConstraint)
+        : emptyConstraint
+
+      const newConstraint = updateProteinMitochondrialGeneConstraint(
+        previousConstraint,
+        consequence,
+        observed,
+        expected,
+        oe,
+        lowerCI,
+        upperCI
+      )
+
+      return { ...result, [geneSymbol]: newConstraint }
     }, {} as Record<string, MitochondrialGeneConstraint>)
 
 const parseMitochondrialRegionConstraintTSV = (
@@ -185,7 +187,9 @@ const parseMitochondrialRegionConstraintTSV = (
         lowerCI,
         upperCI,
       ] = rowText.split('\t')
+
       const previousConstraints = result[geneSymbol] || []
+
       if (proteinResidueStart === 'NA') {
         const rnaConstraint: RNAMitochondrialRegionConstraint = {
           mt_dna_start: Number(startPosition),
@@ -195,16 +199,17 @@ const parseMitochondrialRegionConstraintTSV = (
           oe_lower: Number(lowerCI),
         }
         return { ...result, [geneSymbol]: [...previousConstraints, rnaConstraint] }
-      } else {
-        const proteinConstraint: ProteinMitochondrialRegionConstraint = {
-          protein_residue_start: Number(proteinResidueStart),
-          protein_residue_end: Number(proteinResidueEnd),
-          oe: Number(oe),
-          oe_upper: Number(upperCI),
-          oe_lower: Number(lowerCI),
-        }
-        return { ...result, [geneSymbol]: [...previousConstraints, proteinConstraint] }
       }
+
+      const proteinConstraint: ProteinMitochondrialRegionConstraint = {
+        protein_residue_start: Number(proteinResidueStart),
+        protein_residue_end: Number(proteinResidueEnd),
+        oe: Number(oe),
+        oe_upper: Number(upperCI),
+        oe_lower: Number(lowerCI),
+      }
+
+      return { ...result, [geneSymbol]: [...previousConstraints, proteinConstraint] }
     }, seed)
 }
 
@@ -221,7 +226,7 @@ const regionConstraint = parseMitochondrialRegionConstraintTSV(
   allGeneSymbols
 )
 export const resolveMitochondialGeneConstraintType = (constraint: any): string =>
-  constraint.hasOwnProperty('exp_lof')
+  Object.prototype.hasOwnProperty.call(constraint, 'exp_lof')
     ? 'ProteinMitochondrialGeneConstraint'
     : 'RNAMitochondrialGeneConstraint'
 
@@ -230,7 +235,7 @@ export const resolveMitochondrialGeneConstraint = (gene: any) => {
 }
 
 export const resolveMitochondrialRegionConstraintType = (constraint: any): string =>
-  constraint.hasOwnProperty('protein_residue_start')
+  Object.prototype.hasOwnProperty.call(constraint, 'protein_residue_start')
     ? 'ProteinMitochondrialRegionConstraint'
     : 'RNAMitochondrialRegionConstraint'
 
