@@ -8,6 +8,7 @@ import Link from '../Link'
 
 import ExacConstraintTable from './ExacConstraintTable'
 import GnomadConstraintTable from './GnomadConstraintTable'
+import MitochondrialConstraintTable from './MitochondrialConstraintTable'
 
 type Props = {
   datasetId: DatasetId
@@ -65,17 +66,15 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   const { transcriptId, transcriptVersion, transcriptDescription } =
     transcriptDetails(geneOrTranscript)
 
+  if (geneOrTranscript.chrom === 'M') {
+    if (isGene(geneOrTranscript)) {
+      return <MitochondrialConstraintTable constraint={geneOrTranscript.mitochondrial_constraint} />
+    }
+    return <p>Constraint is not available for mitochondrial transcripts</p>
+  }
+
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
   const exacConstraint = geneOrTranscript.exac_constraint
-
-  if (geneOrTranscript.chrom === 'M') {
-    return (
-      <p>
-        Constraint is not available for mitochondrial{' '}
-        {isGene(geneOrTranscript) ? 'genes' : 'transcripts'}
-      </p>
-    )
-  }
 
   if (datasetId === 'exac') {
     if (!exacConstraint) {
