@@ -74,7 +74,7 @@ import {
   LegendSwatch,
 } from '../ChartStyles'
 
-type ProteinMitochondrialGeneConstraint = {
+export type ProteinMitochondrialGeneConstraint = {
   exp_lof: number
   exp_mis: number
   exp_syn: number
@@ -96,7 +96,7 @@ type ProteinMitochondrialGeneConstraint = {
   oe_syn_upper: number
 }
 
-type RNAMitochondrialGeneConstraint = {
+export type RNAMitochondrialGeneConstraint = {
   observed: number
   expected: number
   oe: number
@@ -104,7 +104,7 @@ type RNAMitochondrialGeneConstraint = {
   oe_lower: number
 }
 
-type MitochondrialGeneConstraint =
+export type MitochondrialGeneConstraint =
   | ProteinMitochondrialGeneConstraint
   | RNAMitochondrialGeneConstraint
 
