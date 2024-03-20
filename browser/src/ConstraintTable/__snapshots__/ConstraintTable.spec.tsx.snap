@@ -1,5 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` 1`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 2`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 3`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 4`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 5`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 6`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 7`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2
+  .
+</p>
+`;
+
+exports[` 8`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (controls/biobanks)
+  .
+</p>
+`;
+
+exports[` 9`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-cancer)
+  .
+</p>
+`;
+
+exports[` 10`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-neuro)
+  .
+</p>
+`;
+
+exports[` 11`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-TOPMed)
+  .
+</p>
+`;
+
+exports[` 12`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-v2)
+  .
+</p>
+`;
+
+exports[` 13`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 14`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 15`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 16`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 17`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 18`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
+exports[` 19`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
 exports[`ConstraintTable with "exac" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
   Constraint not available for this 
@@ -14,19 +140,187 @@ exports[`ConstraintTable with "exac" dataset selected with a minimal transcript 
 </p>
 `;
 
-exports[`ConstraintTable with "exac" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -791,19 +1085,187 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal tr
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -1568,19 +2030,187 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal tran
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -2353,19 +2983,187 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a min
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -3138,19 +3936,187 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -3923,19 +4889,187 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -4708,19 +5842,187 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -4756,7 +6058,15 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal transc
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
@@ -4804,7 +6114,15 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (controls/biobanks)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
@@ -4852,7 +6170,15 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a min
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-cancer)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
@@ -4900,7 +6226,15 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mini
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-neuro)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
@@ -4948,7 +6282,15 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a min
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-TOPMed)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
@@ -4996,7 +6338,15 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-v2)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
@@ -5773,19 +7123,187 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal transc
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -6550,19 +8068,187 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a minima
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -7327,19 +9013,187 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal t
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -8112,19 +9966,187 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -8897,19 +10919,187 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
@@ -9674,19 +11864,187 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal tra
 </p>
 `;
 
-exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial gene has no unexpected changes 1`] = `
-<p>
-  Constraint is not available for mitochondrial
+exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
    
-  genes
-</p>
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        0.35
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial
-   
-  transcripts
+  Constraint is not available for mitochondrial transcripts
 </p>
 `;
 
