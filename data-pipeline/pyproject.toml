@@ -18,7 +18,7 @@ hail = "^0.2.122"
 pytest = "^7.4.2"
 ipython = "^8.15.0"
 ruff = "^0.0.290"
-black = "^23.9.1"
+black = "^24.3.0"
 pyright = "^1.1.327"
 
 [build-system]
