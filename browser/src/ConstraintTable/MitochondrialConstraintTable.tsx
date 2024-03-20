@@ -8,7 +8,8 @@ import { BaseTable } from '@gnomad/ui'
 
 const isProteinMitochondrialGeneConstraint = (
   constraint: MitochondrialGeneConstraint
-): constraint is ProteinMitochondrialGeneConstraint => constraint.hasOwnProperty('exp_lof')
+): constraint is ProteinMitochondrialGeneConstraint =>
+  Object.prototype.hasOwnProperty.call(constraint, 'exp_lof')
 
 const ConstraintRow = ({
   category,
