@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { jest, expect, test } from '@jest/globals'
+import { expect, test } from '@jest/globals'
 import MitochondrialRegionConstraintTrack, {
   ProteinMitochondrialRegionConstraint,
   RNAMitochondrialRegionConstraint,
