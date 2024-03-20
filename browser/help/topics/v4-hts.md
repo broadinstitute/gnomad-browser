@@ -534,10 +534,10 @@ Row fields
         - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `joint`: Struct of combined (joint) exomes and genomes allele frequency information.
   - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) across the combined (joint) gnomAD exomes and genomes and for each genetic ancestry group.
-    - AC: Combined (exomes + genomes) alternate allele count in release.
-    - AF: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
-    - AN: Total number of alleles across exomes and genomes in release.
-    - homozygote_count: Count of homozygous alternate individuals across exomes and genomes in release.
+    - `AC`: Combined (exomes + genomes) alternate allele count in release.
+    - `AF`: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
+    - `AN`: Total number of alleles across exomes and genomes in release.
+    - `homozygote_count`: Count of homozygous alternate individuals across exomes and genomes in release.
   - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), and "Remaining individuals" (remaining) groups.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
