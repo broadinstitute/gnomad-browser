@@ -611,7 +611,7 @@ Row fields
         - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
         - `n_smaller`: Count of age values falling below lowest histogram bin edge.
         - `n_larger`: Count of age values falling above highest histogram bin edge.
-- `freq_comparison_stats`
+- `freq_comparison_stats`: Struct containing results from contingency table and Cochran-Mantel-Haenszel tests comparing allele frequencies between the gnomAD exomes and genomes.
   - `contingency_table_test`: Array of results from Hail's [`contingency_table_test`](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.contingency_table_test) with `min_cell_count=100` comparing allele frequencies between exomes and genomes. Each element in the array corresponds to the comparasion of a specific frequency aggregation group defined by the `joint.freq_meta` global field.
     - `odds_ratio`: Odds ratio from the contingency table test.
     - `p_value`: P-value from the contingency table test.
