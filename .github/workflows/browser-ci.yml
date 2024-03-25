@@ -5,11 +5,13 @@ on:
       - main
     paths:
       - 'browser/**'
+      - 'dataset-metadata/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
   pull_request:
     paths:
       - 'browser/**'
+      - 'dataset-metadata/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
 jobs:
