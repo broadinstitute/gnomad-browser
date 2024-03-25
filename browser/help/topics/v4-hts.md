@@ -39,15 +39,15 @@ Use the '`freq_index_dict`' global annotation to retrieve frequency information 
 
 The available v4.1 grouping combinations within the '`freq`' array annotation are listed below. adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main gnomAD callsets and subsets.
 
-- group, e.g. “`adj`”, “`raw`”
-- sex-group, e.g. “`XX_adj`”
-- subset-group, e.g. “`non_ukb-raw`”
-- gen-anc<sup>2</sup>-group, e.g. “`afr_adj`”
-- gen-anc-sex-group, e.g. “`ami_XX_adj`”
-- downsampling<sup>3</sup>-group-gen-anc, e.g. “`10_adj_eas`”,
-- subset-gen-anc-group, e.g. “`non_ukb_sas_adj`”
-- subset-sex-group, e.g. “`non_ukb_XY_adj`”
-- subset-gen-anc<sup>3</sup>-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
+- group, e.g. '`adj`', '`raw`'
+- sex-group, e.g. '`XX_adj`'
+- subset-group, e.g. '`non_ukb-raw`'
+- gen-anc<sup>2</sup>-group, e.g. '`afr_adj`'
+- gen-anc-sex-group, e.g. '`ami_XX_adj`'
+- downsampling<sup>3</sup>-group-gen-anc, e.g. '`10_adj_eas`',
+- subset-gen-anc-group, e.g. '`non_ukb_sas_adj`'
+- subset-sex-group, e.g. '`non_ukb_XY_adj`'
+- subset-gen-anc<sup>3</sup>-sex-group, e.g. '`non_ukb_mid_XX_adj`',
 
 To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.1 exomes:
 
