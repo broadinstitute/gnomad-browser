@@ -82,7 +82,7 @@ Global fields:
 - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the '`freq`' array row annotation.
 - `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
 - `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`faf`' array row annotation.
-- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
+- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency ('`faf`') row annotation.
 - `age_distribution`: Callset-wide age histogram calculated on release samples.
   - `bin_edges`: Bin edges for the age histogram.
   - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -90,7 +90,7 @@ Global fields:
   - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `downsamplings`: Dictionary keyed by dataset with values corresponding to available downsampled sample counts.
 - `filtering_model`: The variant filtering model used and its specific cutoffs.
-  - `filter_name`: Variant filtering model name used in the 'filters' row annotation, indicating the variant was filtered by this model during variant QC.
+  - `filter_name`: Variant filtering model name used in the '`filters`' row annotation, indicating the variant was filtered by this model during variant QC.
   - `score_name`: Annotation name of the score used for variant filtering.
   - `snv_cutoff`: SNV filtering cutoff information.
     - `bin`: Filtering percentile cutoff for SNVs.
@@ -104,7 +104,7 @@ Global fields:
 - `interval_qc_parameters`: Thresholds used to determine whether an exome calling interval was high coverage and passed interval QC.
   - `per_platform`: Whether these thresholds were stratified per platform.
   - `all_platforms`: Whether these thresholds were applied uniformly across platforms, as long as a platform had a sample size above `min_platform_size`.
-  - `high_qual_cutoffs`: Interval QC thresholds per chromosomal region:
+  - `high_qual_cutoffs`: Dictionary of interval QC thresholds per chromosomal region. Items in the dictionary are:
     - `autosome_par`: Contains annotation used to filter high coverage intervals on autosomes and in pseudoautosomal regions and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
     - `x_non_par`: Contains annotation used to filter high coverage intervals in non-pseudoautosomal regions of chromosome X and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
     - `y_non_par`: Contains annotation used to filter high coverage intervals in non-pseudoautosomal regions of chromosome Y and threshold for annotation. Interval was considered high quality only if this annotation was over the specified threshold value.
@@ -128,7 +128,7 @@ Global fields:
   - `vep_config`: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
   - `gencode_version`: GENCODE version used in VEP.
   - `mane_select_version`: MANE select version used in VEP.
-- `frequency_README`: Explanation of how to use the 'freq_index_dict' global annotation to extract frequencies from the 'freq' row annotation.
+- `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
 - `date`: Date Hail Table was created.
 - `version`: gnomAD data version.
 
@@ -147,7 +147,7 @@ Row fields:
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
     - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
-    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency.
   - `non_ukb`: grpmax information across the non-UKB subset.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
@@ -306,46 +306,46 @@ The v4.1 genomes Hail Table annotation schema is the same as the exomes schema, 
 
 Global fields
 
-- `interval_qc_parameters`: Only the v4 exomes HT has this global annotation
+- `interval_qc_parameters`: Only the v4 exomes HT has this global annotation.
 
 Row fields
 
-- `fafmax`: This annotation is stratified by subset in the v4 exomes, but the v4 genomes annotation does not have any subset stratification
+- `fafmax`: This annotation is stratified by subset in the v4 exomes, but the v4 genomes annotation does not have any subset stratification.
 - `region_flags`: The v4 exomes Hail Table has the following fields that are not present in the struct on the v4 genomes Hail Table:
   - `fail_interval_qc`
   - `outside_ukb_capture_region`
   - `outside_broad_capture_region`
-- `allele_info`: The v4 exomes Hail Table has an additional field in this struct, 'has_star', that is not present in the struct on the v4 genomes Hail Table
-- `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC
+- `allele_info`: The v4 exomes Hail Table has an additional field in this struct, 'has_star', that is not present in the struct on the v4 genomes Hail Table.
+- `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC.
 
 #### gnomAD v4.1 joint frequency Hail Table annotations
 Global fields
 
 - `versions`: Struct containing the exomes and genomes versions.
 - `genomes_globals`: Global fields from the gnomAD genomes.
-  - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘genomes.freq’ array row annotation.
-  - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes ‘genomes.freq_meta’ global annotation.
-  - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the ‘genomes.faf’ array row annotation.
+  - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.freq` array row annotation.
+  - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes `genomes.freq_meta` global annotation.
+  - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.faf` array row annotation.
   - `age_distribution`: Callset-wide age histogram calculated on the gnomAD genomes.
     - `bin_edges`: Bin edges for the age histogram.
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
     - `n_smaller`: Count of age values falling below lowest histogram bin edge.
     - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `exomes_globals`: Global fields from the gnomAD exomes.
-  - `freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the ‘exomes.freq’ array row annotation.
-  - `freq_meta_sample_count`: A sample count per sample grouping defined in the exomes ‘exomes.freq_meta’ global annotation.
-  - `faf_meta`: Filtering allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the ‘exomes.faf’ array row annotation.
+  - `freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.freq` array row annotation.
+  - `freq_meta_sample_count`: A sample count per sample grouping defined in the exomes `exomes.freq_meta` global annotation.
+  - `faf_meta`: Filtering allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.faf` array row annotation.
   - `age_distribution`: Callset-wide age histogram calculated on the gnomAD exomes.
     - `bin_edges`: Bin edges for the age histogram.
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
     - `n_smaller`: Count of age values falling below lowest histogram bin edge.
     - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `joint_globals`: Global fields from the combined (joint) gnomAD exomes and genomes.
-  - `freq_meta`: Allele frequency metadata for the joint gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the ‘joint.freq’ array row annotation.
-  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘joint.freq’ array row annotation.
-  - `faf_meta`: Filtering allele frequency metadata for the combined gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the ‘joint.faf’ array row annotation.
-  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘joint.faf’) row annotation.
-  - `freq_meta_sample_count`: A sample count per sample grouping defined in the joint ‘joint.freq_meta’ global annotation.
+  - `freq_meta`: Allele frequency metadata for the joint gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the `joint.freq` array row annotation.
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `joint.freq` array row annotation.
+  - `faf_meta`: Filtering allele frequency metadata for the combined gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the `joint.faf` array row annotation.
+  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`joint.faf`) row annotation.
+  - `freq_meta_sample_count`: A sample count per sample grouping defined in the joint `joint.freq_meta` global annotation.
   - `age_distribution`: Callset-wide age histogram calculated on the combined gnomAD exomes and genomes.
     - `bin_edges`: Bin edges for the age histogram.
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -611,14 +611,13 @@ Row fields
         - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
         - `n_smaller`: Count of age values falling below lowest histogram bin edge.
         - `n_larger`: Count of age values falling above highest histogram bin edge.
-  - `metric_data_type`: Data type associated with metric. One of 'exomes', 'genomes', or 'joint'.
 - `freq_comparison_stats`
-  - `contingency_table_test`
-    - `odds_ratio`
-    - `p_value`
-  - `cochran_mantel_haenszel_test`
-    - `odds_ratio`
-    - `p_value`
+  - `contingency_table_test`: Array of results from Hail's [`contingency_table_test`](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.contingency_table_test) with `min_cell_count=100` comparing allele frequencies between exomes and genomes. Each element in the array corresponds to the comparasion of a specific frequency aggregation group defined by the `joint.freq_meta` global field.
+    - `odds_ratio`: Odds ratio from the contingency table test.
+    - `p_value`: P-value from the contingency table test.
+  - `cochran_mantel_haenszel_test`: Results from statsmodels [`stats.contingency_tables.StratifiedTable`](https://www.statsmodels.org/dev/generated/statsmodels.stats.contingency_tables.StratifiedTable.html) comparing allele frequencies between exomes and genomes stratified by genetic ancestry group `gen_anc`. The test is performed using the Cochran-Mantel-Haenszel test, a stratified test of independence for 2x2xK contingency tables.
+    - `chisq`: Chi-squared test statistic from the Cochran-Mantel-Haenszel test.
+    - `p_value`: P-value from the Cochran-Mantel-Haenszel test.
 
 <br/><br/>
 
