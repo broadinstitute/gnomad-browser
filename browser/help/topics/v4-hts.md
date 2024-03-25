@@ -45,7 +45,7 @@ The available v4.1 grouping combinations within the 'freq' array annotation are 
 - gen-anc<sup>2</sup>-group, e.g. “`afr_adj`”
 - gen-anc-sex-group, e.g. “`ami_XX_adj`”
 - downsampling<sup>3</sup>-group-gen-anc, e.g. “`10_adj_eas`”,
-- subset-gen-anc-group, e.g. “`_sas_adj`”
+- subset-gen-anc-group, e.g. “`non_ukb_sas_adj`”
 - subset-sex-group, e.g. “`non_ukb_XY_adj`”
 - subset-gen-anc<sup>3</sup>-sex-group, e.g. “`non_ukb_mid_XX_adj`”,
 
