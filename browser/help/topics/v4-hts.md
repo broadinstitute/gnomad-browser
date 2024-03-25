@@ -112,7 +112,7 @@ Global fields:
 - `tool_versions`: Versions of in silico predictors used in the callset.
   - `cadd_version`: Combined Annotation Dependent Depletion (CADD) version.
   - `revel_version`: Rare Exome Variant Ensemble Learner (REVEL) version.
-  - `spliceai_version`: spliceAI version.
+  - `spliceai_version`: SpliceAI version.
   - `pangolin_version`: Pangolin version.
   - `phylop_version`: phyloP version.
   - `dbsnp_version`: dbSNP version used in the callset.
