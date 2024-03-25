@@ -78,7 +78,7 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 
 Global fields:
 
-- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
+- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`freq`' array row annotation.
 - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
 - `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
 - `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
