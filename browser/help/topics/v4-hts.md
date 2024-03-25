@@ -57,13 +57,13 @@ from gnomad.resources.grch38.gnomad import public_release
 ht = public_release("exomes").ht()
 
 # Use the key 'afr-XX-adj' to retrieve the index of this groups frequency data in 'freq'
-ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict['afr_XX_adj']])
+ht = ht.annotate(afr_XX_freq=ht.freq[ht.freq_index_dict["afr_XX_adj"]])
 ```
 
 The above example will retrieve the entire frequency struct for each variant. To grab a certain statistic, such as `AC`, specify the statistic after the value:
 
 ```
-ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['afr_XX_adj']].AC)
+ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict["afr_XX_adj"].AC)
 ```
 
 This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
