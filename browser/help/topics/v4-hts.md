@@ -319,6 +319,15 @@ Row fields
 - `info`: Sibling singletons were used to train the variant QC models for the v4 exomes but were not used in the v4 genomes variant QC.
 
 #### gnomAD v4.1 joint frequency Hail Table annotations
+
+The v4.1 joint (combined exomes + genomes) frequency Hail Table only contains frequencies for the following groupings:
+- `group`
+- `sex` (`adj`<sup>1</sup> only)
+- `gen_anc` (`adj`<sup>1</sup> only)
+- `gen_anc` and `sex` (`adj`<sup>1</sup> only)
+
+1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
+
 Global fields
 
 - `versions`: Struct containing the exomes and genomes versions.
