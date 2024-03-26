@@ -28,6 +28,13 @@ const ResponsiveSection = styled.section`
   }
 `
 
+export type CopyNumberVariantPopulation = {
+  id: string
+  sc: number
+  sn: number
+  sf: number
+}
+
 export type CopyNumberVariant = {
   alts: string[] | null
   sc: number
@@ -38,14 +45,7 @@ export type CopyNumberVariant = {
   filters: string[] | null
   genes: string[]
   length: number | null
-  populations:
-    | {
-        id: string
-        sc: number
-        sn: number
-        sf: number
-      }[]
-    | null
+  ancestry_groups: CopyNumberVariantPopulation[] | null
   pos: number
   qual: number | null
   reference_genome: ReferenceGenome
@@ -133,7 +133,7 @@ const ConnectedCopyNumberVariantPage = ({
         filters
         genes
         length
-        populations {
+        ancestry_groups {
             id
             sc
             sn

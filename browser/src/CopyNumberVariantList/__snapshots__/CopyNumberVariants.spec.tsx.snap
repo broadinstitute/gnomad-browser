@@ -14,6 +14,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
         [
           {
             "alts": null,
+            "ancestry_groups": [],
             "chrom": "21",
             "end": 456,
             "endmax": 100168742,
@@ -21,7 +22,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             "filters": [],
             "genes": [],
             "length": 333,
-            "populations": [],
             "pos": 123,
             "posmax": 100121284,
             "posmin": 100121281,
@@ -35,6 +35,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
           },
           {
             "alts": null,
+            "ancestry_groups": [],
             "chrom": "21",
             "end": 456,
             "endmax": 100168742,
@@ -42,7 +43,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             "filters": [],
             "genes": [],
             "length": 333,
-            "populations": [],
             "pos": 123,
             "posmax": 100121284,
             "posmin": 100121281,
@@ -56,6 +56,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
           },
           {
             "alts": null,
+            "ancestry_groups": [],
             "chrom": "21",
             "end": 456,
             "endmax": 100168742,
@@ -63,7 +64,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             "filters": [],
             "genes": [],
             "length": 333,
-            "populations": [],
             "pos": 123,
             "posmax": 100121284,
             "posmin": 100121281,
@@ -111,6 +111,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             [
               {
                 "alts": null,
+                "ancestry_groups": [],
                 "chrom": "21",
                 "end": 456,
                 "endmax": 100168742,
@@ -118,7 +119,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
                 "filters": [],
                 "genes": [],
                 "length": 333,
-                "populations": [],
                 "pos": 123,
                 "posmax": 100121284,
                 "posmin": 100121281,
@@ -132,6 +132,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
               },
               {
                 "alts": null,
+                "ancestry_groups": [],
                 "chrom": "21",
                 "end": 456,
                 "endmax": 100168742,
@@ -139,7 +140,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
                 "filters": [],
                 "genes": [],
                 "length": 333,
-                "populations": [],
                 "pos": 123,
                 "posmax": 100121284,
                 "posmin": 100121281,
@@ -153,6 +153,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
               },
               {
                 "alts": null,
+                "ancestry_groups": [],
                 "chrom": "21",
                 "end": 456,
                 "endmax": 100168742,
@@ -160,7 +161,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
                 "filters": [],
                 "genes": [],
                 "length": 333,
-                "populations": [],
                 "pos": 123,
                 "posmax": 100121284,
                 "posmin": 100121281,
@@ -293,6 +293,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
           [
             {
               "alts": null,
+              "ancestry_groups": [],
               "chrom": "21",
               "end": 456,
               "endmax": 100168742,
@@ -300,7 +301,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
               "filters": [],
               "genes": [],
               "length": 333,
-              "populations": [],
               "pos": 123,
               "posmax": 100121284,
               "posmin": 100121281,
@@ -314,6 +314,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             },
             {
               "alts": null,
+              "ancestry_groups": [],
               "chrom": "21",
               "end": 456,
               "endmax": 100168742,
@@ -321,7 +322,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
               "filters": [],
               "genes": [],
               "length": 333,
-              "populations": [],
               "pos": 123,
               "posmax": 100121284,
               "posmin": 100121281,
@@ -335,6 +335,7 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
             },
             {
               "alts": null,
+              "ancestry_groups": [],
               "chrom": "21",
               "end": 456,
               "endmax": 100168742,
@@ -342,7 +343,6 @@ exports[`CopyNumberVariants has no unexpected changes 1`] = `
               "filters": [],
               "genes": [],
               "length": 333,
-              "populations": [],
               "pos": 123,
               "posmax": 100121284,
               "posmin": 100121281,
