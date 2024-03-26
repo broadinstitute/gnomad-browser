@@ -12,7 +12,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     filters = [],
     genes = [],
     length = 333,
-    populations = [],
+    ancestry_groups = [],
     pos = 123,
     qual = 99,
     type = 'DUP',
@@ -35,7 +35,6 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     filters,
     genes,
     length,
-    populations,
     pos,
     qual,
     type,
@@ -45,6 +44,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     endmax,
     variant_id,
     reference_genome,
+    ancestry_groups,
   }
 })
 

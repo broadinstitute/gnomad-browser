@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ExternalLink, Page, ListItem } from '@gnomad/ui'
 import Link from '../Link'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset, ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Query from '../Query'
@@ -12,7 +12,6 @@ import { variantFeedbackUrl } from '../variantFeedback'
 import CopyNumberVariantAttributeList from './CopyNumberVariantAttributeList'
 import CopyNumberVariantPopulationsTable from './CopyNumberVariantPopulationsTable'
 import CNVReferenceList from './CNVReferenceList'
-import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,6 +27,13 @@ const ResponsiveSection = styled.section`
   }
 `
 
+export type CopyNumberVariantPopulation = {
+  id: string
+  sc: number
+  sn: number
+  sf: number
+}
+
 export type CopyNumberVariant = {
   alts: string[] | null
   sc: number
@@ -38,14 +44,7 @@ export type CopyNumberVariant = {
   filters: string[] | null
   genes: string[]
   length: number | null
-  populations:
-    | {
-        id: string
-        sc: number
-        sn: number
-        sf: number
-      }[]
-    | null
+  ancestry_groups: CopyNumberVariantPopulation[] | null
   pos: number
   qual: number | null
   reference_genome: ReferenceGenome
@@ -133,7 +132,7 @@ const ConnectedCopyNumberVariantPage = ({
         filters
         genes
         length
-        populations {
+        ancestry_groups {
             id
             sc
             sn
