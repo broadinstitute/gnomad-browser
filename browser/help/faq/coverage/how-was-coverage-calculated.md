@@ -2,9 +2,11 @@
 question: 'How was coverage calculated?'
 ---
 
-#### gnomAD v4.0
+#### gnomAD v4.1
 
-Coverage was computed using all 730,947 gnomAD v4.0 samples from their gVCFs.
+gnomAD v4.1 uses the same coverage data as gnomAD v4.0.
+
+For gnomAD v4.0, coverage was computed using all 730,947 gnomAD v4.0 samples from their gVCFs.
 
 The exome gVCFs were produced using a two schemes:
 
