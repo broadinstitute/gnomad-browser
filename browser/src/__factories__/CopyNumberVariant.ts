@@ -20,6 +20,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     posmax = 100121284,
     endmin = 100168738,
     endmax = 100168742,
+    reference_genome = 'GRCh38',
   } = params
 
   const variant_id = `${chrom}__${type}`
@@ -43,6 +44,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     endmin,
     endmax,
     variant_id,
+    reference_genome,
   }
 })
 
