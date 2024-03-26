@@ -29,7 +29,7 @@ import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentR
 type ShortTandemRepeatRepeatUnit = {
   repeat_unit: string
   distribution: number[][]
-  populations: {
+  ancestry_groups: {
     id: string
     distribution: number[][]
   }[]
@@ -46,7 +46,7 @@ export type ShortTandemRepeatAdjacentRepeat = {
   repeat_units: string[]
   allele_size_distribution: {
     distribution: number[][]
-    populations: {
+    ancestry_groups: {
       id: string
       distribution: number[][]
     }[]
@@ -54,14 +54,14 @@ export type ShortTandemRepeatAdjacentRepeat = {
   }
   genotype_distribution: {
     distribution: number[][]
-    populations: {
+    ancestry_groups: {
       id: string
       distribution: number[][]
     }[]
     repeat_units: {
       repeat_units: string[]
       distribution: number[][]
-      populations: {
+      ancestry_groups: {
         id: string
         distribution: number[][]
       }[]
@@ -101,7 +101,7 @@ export type ShortTandemRepeat = {
   }[]
   allele_size_distribution: {
     distribution: number[][]
-    populations: {
+    ancestry_groups: {
       id: string
       distribution: number[][]
     }[]
@@ -109,14 +109,14 @@ export type ShortTandemRepeat = {
   }
   genotype_distribution: {
     distribution: number[][]
-    populations: {
+    ancestry_groups: {
       id: string
       distribution: number[][]
     }[]
     repeat_units: {
       repeat_units: string[]
       distribution: number[][]
-      populations: {
+      ancestry_groups: {
         id: string
         distribution: number[][]
       }[]
@@ -183,7 +183,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
   const [showAdjacentRepeats, setShowAdjacentRepeats] = useState(false)
 
-  const populationIds = shortTandemRepeat.allele_size_distribution.populations.map((pop) => pop.id)
+  const populationIds = shortTandemRepeat.allele_size_distribution.ancestry_groups.map(
+    (pop) => pop.id
+  )
 
   const allRepeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
