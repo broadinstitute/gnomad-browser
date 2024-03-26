@@ -12,6 +12,7 @@ import { variantFeedbackUrl } from '../variantFeedback'
 import CopyNumberVariantAttributeList from './CopyNumberVariantAttributeList'
 import CopyNumberVariantPopulationsTable from './CopyNumberVariantPopulationsTable'
 import CNVReferenceList from './CNVReferenceList'
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,22 +35,25 @@ export type CopyNumberVariant = {
   sf: number
   chrom: string
   end: number
-  filters: string[]
+  filters: string[] | null
   genes: string[]
-  length: number
-  populations: {
-    id: string
-    sc: number
-    sn: number
-    sf: number
-  }[]
+  length: number | null
+  populations:
+    | {
+        id: string
+        sc: number
+        sn: number
+        sf: number
+      }[]
+    | null
   pos: number
-  qual: number
-  type: string
-  posmin: number
-  posmax: number
-  endmin: number
-  endmax: number
+  qual: number | null
+  reference_genome: ReferenceGenome
+  type: string | null
+  posmin: number | null
+  posmax: number | null
+  endmin: number | null
+  endmax: number | null
   variant_id: string
 }
 

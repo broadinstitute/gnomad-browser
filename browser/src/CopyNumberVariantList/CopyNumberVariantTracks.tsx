@@ -6,7 +6,7 @@ import { Track } from '@gnomad/region-viewer'
 
 import Link from '../Link'
 import CopyNumberVariantPlot from './CopyNumberVariantPlot'
-import CopyNumberVariantPropType from './CopyNumberVariantPropType'
+import { CopyNumberVariant } from '../CopyNumberVariantPage/CopyNumberVariantPage'
 
 type RowProps = {
   data: {
@@ -15,7 +15,7 @@ type RowProps = {
     onHover: (...args: any[]) => any
     scalePosition: (...args: any[]) => any
     trackColor: (...args: any[]) => any
-    variants: CopyNumberVariantPropType[]
+    variants: CopyNumberVariant[]
     width: number
   }
   index: number
@@ -67,7 +67,7 @@ type OwnCopyNumberVariantTracksProps = {
   onScroll: (...args: any[]) => any
   trackColor: (...args: any[]) => any
   trackHeight: number
-  variants: CopyNumberVariantPropType[]
+  variants: CopyNumberVariant[]
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'OwnCopyNumberVariantTracksProps' circular... Remove this comment to see the full error message
