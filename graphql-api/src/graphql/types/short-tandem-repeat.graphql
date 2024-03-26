@@ -31,37 +31,57 @@ type ShortTandemRepeatRepeatUnit {
   classification: String!
 }
 
-type ShortTandemRepeatAlleleSizeDistributionPopulation {
+type ShortTandemRepeatAlleleSizeDistributionAncestryGroup {
   id: String!
   distribution: [[Int!]!]!
+}
+
+type ShortTandemRepeatAlleleSizeDistributionPopulation {
+  id: String! @deprecated(reason: "Use ShortTandemRepeatAlleleSizeDistributionAncestryGroup.id")
+  distribution: [[Int!]!]!
+    @deprecated(reason: "Use ShortTandemRepeatAlleleSizeDistributionAncestryGroup.distribution")
 }
 
 type ShortTandemRepeatAlleleSizeDistributionRepeatUnit {
   repeat_unit: String!
   distribution: [[Int!]!]!
+  ancestry_groups: [ShortTandemRepeatAlleleSizeDistributionAncestryGroup!]!
   populations: [ShortTandemRepeatAlleleSizeDistributionPopulation!]!
+    @deprecated(reason: "Use ancestry_groups")
 }
 
 type ShortTandemRepeatAlleleSizeDistribution {
   distribution: [[Int!]!]!
+  ancestry_groups: [ShortTandemRepeatAlleleSizeDistributionAncestryGroup!]!
   populations: [ShortTandemRepeatAlleleSizeDistributionPopulation!]!
+    @deprecated(reason: "Use ancestry_groups")
   repeat_units: [ShortTandemRepeatAlleleSizeDistributionRepeatUnit!]!
 }
 
-type ShortTandemRepeatGenotypeDistributionPopulation {
+type ShortTandemRepeatGenotypeDistributionAncestryGroup {
   id: String!
   distribution: [[Int!]!]!
+}
+
+type ShortTandemRepeatGenotypeDistributionPopulation {
+  id: String! @deprecated(reason: "Use ShortTandemRepeatGenotypeDistributionAncestryGroup.id")
+  distribution: [[Int!]!]!
+    @deprecated(reason: "Use ShortTandemRepeatGenotypeDistributionAncestryGroup.distribution")
 }
 
 type ShortTandemRepeatGenotypeDistributionRepeatUnit {
   repeat_units: [String!]!
   distribution: [[Int!]!]!
+  ancestry_groups: [ShortTandemRepeatGenotypeDistributionAncestryGroup!]!
   populations: [ShortTandemRepeatGenotypeDistributionPopulation!]!
+    @deprecated(reason: "Use ancestry_groups")
 }
 
 type ShortTandemRepeatGenotypeDistribution {
   distribution: [[Int!]!]!
+  ancestry_groups: [ShortTandemRepeatGenotypeDistributionAncestryGroup!]!
   populations: [ShortTandemRepeatGenotypeDistributionPopulation!]!
+    @deprecated(reason: "Use ancestry_groups")
   repeat_units: [ShortTandemRepeatGenotypeDistributionRepeatUnit!]!
 }
 

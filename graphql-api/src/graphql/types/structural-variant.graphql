@@ -1,13 +1,21 @@
-type StructuralVariantPopulation {
+type StructuralVariantAncestryGroup {
   id: String!
   ac: Int!
   an: Int!
   homozygote_count: Int
   hemizygote_count: Int
+  ac_hemi: Int @deprecated(reason: "Use hemizygote_count")
+  ac_hom: Int @deprecated(reason: "Use homozygote_count")
+}
 
-  # Deprecated - replaced by homozygote/hemizygote count
-  ac_hemi: Int
-  ac_hom: Int
+type StructuralVariantPopulation {
+  id: String! @deprecated(reason: "Use StructuralVariantAncestryGroup.id")
+  ac: Int! @deprecated(reason: "Use StructuralVariantAncestryGroup.ac")
+  an: Int! @deprecated(reason: "Use StructuralVariantAncestryGroup.an")
+  homozygote_count: Int @deprecated(reason: "Use StructuralVariantAncestryGroup.homozygote_count")
+  hemizygote_count: Int @deprecated(reason: "Use StructuralVariantAncestryGroup.hemizygote_count")
+  ac_hemi: Int @deprecated(reason: "Use StructuralVariantAncestryGroup.hemizygote_count")
+  ac_hom: Int @deprecated(reason: "Use StructuralVariantAncestryGroup.homozygote_count")
 }
 
 type StructuralVariantAgeDistribution {
@@ -87,7 +95,8 @@ type StructuralVariantDetails {
   genes: [String!]
   genotype_quality: StructuralVariantGenotypeQuality
   length: Int
-  populations: [StructuralVariantPopulation!]
+  ancestry_groups: [StructuralVariantAncestryGroup!]
+  populations: [StructuralVariantPopulation!] @deprecated(reason: "Use ancestry_groups")
   pos: Int!
   pos2: Int
   qual: Float
