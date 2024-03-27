@@ -72,15 +72,13 @@ export type StructuralVariant = {
     alt: Histogram | null
   } | null
   length: number | null
-  populations:
+  ancestry_groups:
     | {
         id: string
         ac: number
         an: number
         homozygote_count: number | null
         hemizygote_count: number | null
-        ac_hemi: number | null
-        ac_hom: number | null
       }[]
     | null
   pos: number
@@ -243,7 +241,7 @@ const ConnectedStructuralVariantPage = ({
           }
         }
         length
-        populations {
+        ancestry_groups {
           id
           ac
           an

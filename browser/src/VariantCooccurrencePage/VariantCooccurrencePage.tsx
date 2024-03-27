@@ -44,7 +44,7 @@ export type CooccurrenceData = {
   genotype_counts: GenotypeCounts
   haplotype_counts: HaplotypeCounts
   p_compound_heterozygous: number | null
-  populations: {
+  ancestry_groups: {
     id: string
     genotype_counts: GenotypeCounts
     haplotype_counts: HaplotypeCounts
@@ -193,7 +193,7 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
   const cooccurrenceInSelectedPopulation =
     selectedPopulation === 'All'
       ? cooccurrenceData
-      : cooccurrenceData.populations!.find((pop: any) => pop.id === selectedPopulation)!
+      : cooccurrenceData.ancestry_groups!.find((pop) => pop.id === selectedPopulation)!
 
   const prediction = makePrediction(cooccurrenceInSelectedPopulation)
 
@@ -206,9 +206,10 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
       cooccurrenceData.genotype_counts.hom_hom >
     0
 
-  const anyPopulationWithoutPrediction = [cooccurrenceData, ...cooccurrenceData.populations].some(
-    noPredictionPossible
-  )
+  const anyPopulationWithoutPrediction = [
+    cooccurrenceData,
+    ...cooccurrenceData.ancestry_groups,
+  ].some(noPredictionPossible)
 
   const isDistantCis =
     prediction === 'in_cis' && variantDistance(cooccurrenceData) > distantCisThreshold
@@ -325,7 +326,7 @@ query ${operationName}($variants: [String!]!, $variant1: String!, $variant2: Str
     genotype_counts
     haplotype_counts
     p_compound_heterozygous
-    populations {
+    ancestry_groups {
       id
       genotype_counts
       haplotype_counts
@@ -444,12 +445,12 @@ const structureCounts = (population: ArrayCountPopulation): ObjectCountPopulatio
 }
 
 const normalizeCooccurrenceData = (cooccurrenceData: any): CooccurrenceData => {
-  const populations = cooccurrenceData.populations
-    ? cooccurrenceData.populations.map(structureCounts)
-    : cooccurrenceData.populations
+  const ancestry_groups = cooccurrenceData.ancestry_groups
+    ? cooccurrenceData.ancestry_groups.map(structureCounts)
+    : cooccurrenceData.ancestry_groups
 
   const topLevel = structureCounts(cooccurrenceData)
-  return { ...topLevel, populations } as CooccurrenceData
+  return { ...topLevel, ancestry_groups } as CooccurrenceData
 }
 
 const VariantCoocurrenceContainer = ({

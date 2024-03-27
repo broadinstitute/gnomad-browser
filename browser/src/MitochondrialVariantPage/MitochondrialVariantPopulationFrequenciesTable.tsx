@@ -84,7 +84,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     )
   }
 
-  const renderedPopulations = variant.populations
+  const renderedPopulations = variant.ancestry_groups
     .map((population) => ({
       ...population,
       af_hom: population.an !== 0 ? population.ac_hom / population.an : 0,

@@ -26,7 +26,7 @@ const createAncestryGroupObjects = (shorthands: AncestryGroupShorthand[]) => {
 }
 
 describe('mergeExomeAndGenomePopulationData', () => {
-  it('returns expected values when exomes and genomes have the same populations', () => {
+  it('returns expected values when exomes and genomes have the same ancestry_groups', () => {
     const geneticAncestryGroupObjects = createAncestryGroupObjects([
       { id: 'afr', value: 1 },
       { id: 'remaining', value: 2 },
@@ -35,8 +35,8 @@ describe('mergeExomeAndGenomePopulationData', () => {
 
     const testVariant = variantFactory.build({
       variant_id: 'test_variant',
-      exome: { populations: geneticAncestryGroupObjects },
-      genome: { populations: geneticAncestryGroupObjects },
+      exome: { ancestry_groups: geneticAncestryGroupObjects },
+      genome: { ancestry_groups: geneticAncestryGroupObjects },
     })
 
     const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
@@ -50,7 +50,7 @@ describe('mergeExomeAndGenomePopulationData', () => {
     expect(result).toStrictEqual(expected)
   })
 
-  it('returns expected values when exomes have less populations than genomes', () => {
+  it('returns expected values when exomes have less ancestry_groups than genomes', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects([
       { id: 'afr', value: 1 },
       { id: 'remaining', value: 2 },
@@ -66,8 +66,8 @@ describe('mergeExomeAndGenomePopulationData', () => {
 
     const testVariant = variantFactory.build({
       variant_id: 'test_variant',
-      exome: { populations: exomeGeneticAncestryGroupObjects },
-      genome: { populations: genomeGeneticAncestryGroupObjects },
+      exome: { ancestry_groups: exomeGeneticAncestryGroupObjects },
+      genome: { ancestry_groups: genomeGeneticAncestryGroupObjects },
     })
 
     const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
@@ -82,7 +82,7 @@ describe('mergeExomeAndGenomePopulationData', () => {
     expect(result).toStrictEqual(expected)
   })
 
-  it('returns expected values exomes have more populations than genomes', () => {
+  it('returns expected values exomes have more ancestry_groups than genomes', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects([
       { id: 'afr', value: 1 },
       { id: 'remaining', value: 2 },
@@ -98,8 +98,8 @@ describe('mergeExomeAndGenomePopulationData', () => {
 
     const testVariant = variantFactory.build({
       variant_id: 'test_variant',
-      exome: { populations: exomeGeneticAncestryGroupObjects },
-      genome: { populations: genomeGeneticAncestryGroupObjects },
+      exome: { ancestry_groups: exomeGeneticAncestryGroupObjects },
+      genome: { ancestry_groups: genomeGeneticAncestryGroupObjects },
     })
 
     const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
@@ -114,7 +114,7 @@ describe('mergeExomeAndGenomePopulationData', () => {
     expect(result).toStrictEqual(expected)
   })
 
-  it('returns expected values when exome and genome populations are in a different order', () => {
+  it('returns expected values when exome and genome ancestry_groups are in a different order', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects([
       { id: 'eur', value: 1 },
       { id: 'afr', value: 2 },
@@ -129,8 +129,8 @@ describe('mergeExomeAndGenomePopulationData', () => {
 
     const testVariant = variantFactory.build({
       variant_id: 'test_variant',
-      exome: { populations: exomeGeneticAncestryGroupObjects },
-      genome: { populations: genomeGeneticAncestryGroupObjects },
+      exome: { ancestry_groups: exomeGeneticAncestryGroupObjects },
+      genome: { ancestry_groups: genomeGeneticAncestryGroupObjects },
     })
 
     const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
