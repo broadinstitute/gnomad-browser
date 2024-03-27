@@ -4,6 +4,8 @@ type StructuralVariantAncestryGroup {
   an: Int!
   homozygote_count: Int
   hemizygote_count: Int
+  ac_hemi: Int @deprecated(reason: "Use hemizygote_count")
+  ac_hom: Int @deprecated(reason: "Use homozygote_count")
 }
 
 type StructuralVariantPopulation {
