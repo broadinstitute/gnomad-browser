@@ -4,6 +4,28 @@ type VariantAncestryGroup {
   an: Int!
   homozygote_count: Int!
   hemizygote_count: Int
+  ac_hom: Int! @deprecated(reason: "Use homozygote_count")
+  ac_hemi: Int @deprecated(reason: "Use hemizygote_count")
+}
+
+type VariantLocalAncestryGroup {
+  id: String!
+  ac: Int!
+  an: Int!
+}
+
+type VariantLocalAncestryPopulation {
+  id: String! @deprecated(reason: "Use VariantLocalAncestryGroup.id")
+  ac: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.ac")
+  an: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.an")
+}
+
+type VariantAlleleBalance {
+  alt: Histogram
+}
+
+type VariantGenotypeDepth {
+  all: Histogram
 }
 
 type VariantPopulation {
