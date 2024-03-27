@@ -4,12 +4,12 @@ import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import { StructuralVariant } from './StructuralVariantPage'
 import { populationName } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-const nestPopulations = (populations: any) => {
+const nestPopulations = (ancestry_groups: any) => {
   const popIndices = []
-  const subpopulations = {}
+  const subancestry_groups = {}
 
-  for (let i = 0; i < populations.length; i += 1) {
-    const pop = populations[i]
+  for (let i = 0; i < ancestry_groups.length; i += 1) {
+    const pop = ancestry_groups[i]
 
     // IDs are one of:
     // * pop
@@ -22,28 +22,28 @@ const nestPopulations = (populations: any) => {
     } else {
       const parentPop = divisions[0]
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      if (subpopulations[parentPop] === undefined) {
+      if (subancestry_groups[parentPop] === undefined) {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        subpopulations[parentPop] = [{ ...pop }]
+        subancestry_groups[parentPop] = [{ ...pop }]
       } else {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        subpopulations[parentPop].push({ ...pop })
+        subancestry_groups[parentPop].push({ ...pop })
       }
     }
   }
 
   return popIndices.map((index) => {
-    const pop = populations[index]
+    const pop = ancestry_groups[index]
     return {
       ...pop,
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      subpopulations: subpopulations[pop.id],
+      subancestry_groups: subancestry_groups[pop.id],
     }
   })
 }
 
-const addPopulationNames = (populations: any) => {
-  return populations.map((pop: any) => {
+const addPopulationNames = (ancestry_groups: any) => {
+  return ancestry_groups.map((pop: any) => {
     let name
     if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
       name = 'XX'
@@ -61,7 +61,7 @@ type StructuralVariantPopulationsTableProps = {
 }
 
 const StructuralVariantPopulationsTable = ({ variant }: StructuralVariantPopulationsTableProps) => {
-  const populations = nestPopulations(addPopulationNames((variant as any).populations))
+  const ancestry_groups = nestPopulations(addPopulationNames(variant.ancestry_groups))
 
   const columnLabels =
     variant.type === 'MCNV'
@@ -75,7 +75,7 @@ const StructuralVariantPopulationsTable = ({ variant }: StructuralVariantPopulat
   return (
     <PopulationsTable
       columnLabels={columnLabels}
-      populations={populations}
+      populations={ancestry_groups}
       showHomozygotes={variant.type !== 'MCNV' && variant.chrom !== 'Y'}
       showHemizygotes={variant.type !== 'MCNV' && (variant.chrom === 'X' || variant.chrom === 'Y')}
     />
