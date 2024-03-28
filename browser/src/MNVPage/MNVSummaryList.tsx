@@ -3,6 +3,7 @@ import React from 'react'
 import { Badge, List, ListItem } from '@gnomad/ui'
 
 import Link from '../Link'
+import { logButtonClick } from '../analytics'
 
 type Props = {
   multiNucleotideVariants: {
@@ -37,6 +38,9 @@ const MNVSummaryList = ({ multiNucleotideVariants }: Props) => (
         in {mnv.n_individuals} individual{mnv.individuals !== 1 && 's'}
         {mnv.changes_amino_acids && ', altering the amino acid sequence'}.{' '}
         <Link
+          onClick={() => {
+            logButtonClick('User clicked "more info" in the MNV summary text')
+          }}
           to={`/variant/${mnv.combined_variant_id}?dataset=gnomad_r2_1`}
           preserveSelectedDataset={false}
         >

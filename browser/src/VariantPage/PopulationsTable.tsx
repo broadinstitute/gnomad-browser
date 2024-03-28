@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { BaseTable, TextButton, TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { logButtonClick } from '../analytics'
 
 const Table = styled(BaseTable)`
   min-width: 100%;
@@ -160,7 +161,10 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
           <TogglePopulationButton
             // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             isExpanded={isExpanded}
-            onClick={() => this.togglePopulationExpanded(pop.name)}
+            onClick={() => {
+              logButtonClick(`User toggled ${pop.name} in variant page frequency table`)
+              this.togglePopulationExpanded(pop.name)
+            }}
           >
             {pop.name}
           </TogglePopulationButton>

@@ -70,6 +70,7 @@ import {
   CheckboxInput,
   LegendSwatch,
 } from '../ChartStyles'
+import { logButtonClick } from '../analytics'
 
 export type Strand = '+' | '-'
 
@@ -189,7 +190,12 @@ const BaseTableSelector = styled.div<TableSelectorProps>
 
 const TableSelector = BaseTableSelector.attrs(
   ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
-    onClick: () => setSelectedTableName(ownTableName),
+    onClick: () => {
+      if (ownTableName === 'cooccurrence') {
+        logButtonClick('User selected variant co-occurrence table on Gene page')
+      }
+      setSelectedTableName(ownTableName)
+    },
   })
 )`
   border: 1px solid black;
