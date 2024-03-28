@@ -10,6 +10,9 @@ import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
+import MitochondrialRegionConstraintTrack, {
+  MitochondrialRegionConstraint,
+} from './MitochondrialRegionConstraintTrack'
 
 import {
   DatasetId,
@@ -62,8 +65,48 @@ import {
   CopyNumberVariant,
 } from '../VariantPage/VariantPage'
 import CopyNumberVariantsInGene from './CopyNumberVariantsInGene'
-import { ControlPanel, Legend, LegendItemWrapper, Label, CheckboxInput, LegendSwatch } from '../ChartStyles'
+import {
+  ControlPanel,
+  Legend,
+  LegendItemWrapper,
+  Label,
+  CheckboxInput,
+  LegendSwatch,
+} from '../ChartStyles'
 
+export type ProteinMitochondrialGeneConstraint = {
+  exp_lof: number
+  exp_mis: number
+  exp_syn: number
+
+  obs_lof: number
+  obs_mis: number
+  obs_syn: number
+
+  oe_lof: number
+  oe_lof_lower: number
+  oe_lof_upper: number
+
+  oe_mis: number
+  oe_mis_lower: number
+  oe_mis_upper: number
+
+  oe_syn: number
+  oe_syn_lower: number
+  oe_syn_upper: number
+}
+
+export type RNAMitochondrialGeneConstraint = {
+  observed: number
+  expected: number
+  oe: number
+  oe_upper: number
+  oe_lower: number
+}
+
+export type MitochondrialGeneConstraint =
+  | ProteinMitochondrialGeneConstraint
+  | RNAMitochondrialGeneConstraint
 
 export type Strand = '+' | '-'
 
@@ -71,19 +114,19 @@ export type GeneMetadata = {
   gene_id: string
   gene_version: string
   symbol: string
-  mane_select_transcript?: {
+  mane_select_transcript: {
     ensembl_id: string
     ensembl_version: string
     refseq_id: string
     refseq_version: string
-  }
+  } | null
   canonical_transcript_id: string | null
   flags: string[]
 }
 
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
-  name?: string
+  name: string | null
   chrom: string
   strand: Strand
   start: number
@@ -103,9 +146,9 @@ export type Gene = GeneMetadata & {
     }[]
   }[]
   flags: string[]
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
-  pext?: {
+  gnomad_constraint: GnomadConstraint | null
+  exac_constraint: ExacConstraint | null
+  pext: {
     regions: {
       start: number
       stop: number
@@ -115,18 +158,22 @@ export type Gene = GeneMetadata & {
       }
     }[]
     flags: string[]
-  }
-  short_tandem_repeats?: {
-    id: string
-  }[]
-  exac_regional_missense_constraint_regions?: any
-  gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
+  } | null
+  short_tandem_repeats:
+    | {
+        id: string
+      }[]
+    | null
+  exac_regional_missense_constraint_regions: any | null
+  gnomad_v2_regional_missense_constraint: RegionalMissenseConstraint | null
   variants: Variant[]
   structural_variants: StructuralVariant[]
   copy_number_variants: CopyNumberVariant[]
   clinvar_variants: ClinvarVariant[]
   homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
   heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  mitochondrial_constraint: MitochondrialGeneConstraint | null
+  mitochondrial_missense_constraint_regions: MitochondrialRegionConstraint[] | null
 }
 
 const GeneName = styled.span`
@@ -511,6 +558,16 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               preferredTranscriptDescription={preferredTranscriptDescription}
             />
           </TrackWrapper>
+        )}
+
+        {gene.chrom.startsWith('M') && (
+          <MitochondrialRegionConstraintTrack
+            geneSymbol={gene.symbol}
+            constraintRegions={gene.mitochondrial_missense_constraint_regions}
+            geneStart={gene.start}
+            geneStop={gene.stop}
+            exons={gene.exons}
+          />
         )}
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (

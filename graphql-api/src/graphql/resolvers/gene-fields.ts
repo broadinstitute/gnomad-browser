@@ -1,4 +1,10 @@
 import { isEmpty } from 'lodash'
+import {
+  resolveMitochondrialGeneConstraint,
+  resolveMitochondialGeneConstraintType,
+  resolveMitochondrialRegionConstraint,
+  resolveMitochondrialRegionConstraintType,
+} from './mitochondrial-constraint'
 
 const nullifyEmptyObject = (field: any) => {
   return (obj: any) => {
@@ -14,6 +20,8 @@ const resolvers = {
     pext: nullifyEmptyObject('pext'),
     gnomad_constraint: nullifyEmptyObject('gnomad_constraint'),
     exac_constraint: nullifyEmptyObject('exac_constraint'),
+    mitochondrial_constraint: resolveMitochondrialGeneConstraint,
+    mitochondrial_missense_constraint_regions: resolveMitochondrialRegionConstraint,
   },
   TranscriptGene: {
     // Elasticsearch documents may contain an empty object instead of null
@@ -21,6 +29,12 @@ const resolvers = {
     pext: nullifyEmptyObject('pext'),
     gnomad_constraint: nullifyEmptyObject('gnomad_constraint'),
     exac_constraint: nullifyEmptyObject('exac_constraint'),
+  },
+  MitochondrialGeneConstraint: {
+    __resolveType: resolveMitochondialGeneConstraintType,
+  },
+  MitochondrialRegionConstraint: {
+    __resolveType: resolveMitochondrialRegionConstraintType,
   },
 }
 

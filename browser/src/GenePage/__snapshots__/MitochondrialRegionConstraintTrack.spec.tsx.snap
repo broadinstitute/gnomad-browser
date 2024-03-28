@@ -1,0 +1,478 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`track for protein gene has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      Regional constraint
+    </h2>
+  </div>,
+  " ",
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="Track__TitlePanel-sc-1sdyh2h-5 ekfFko"
+        >
+          <span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <svg
+          height={100}
+          style={
+            {
+              "overflow": "visible",
+            }
+          }
+          width={1200}
+        >
+          <rect
+            fill="#377eb8"
+            height={30}
+            width={1180}
+          />
+          <rect
+            fill="#ff4040"
+            height={30}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            width={15.989159891598916}
+            x={12.791327913279133}
+          />
+          <rect
+            fill="#ff4040"
+            height={30}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            width={15.989159891598916}
+            x={44.769647696476966}
+          />
+          <g
+            className="visx-group"
+            transform="translate(0, 30)"
+            width={1200}
+          >
+            <g
+              className="visx-group visx-axis visx-axis-bottom"
+              transform="translate(0, 0)"
+            >
+              <g
+                className="visx-group visx-axis-tick"
+                transform="translate(0, 0)"
+              >
+                <line
+                  className="visx-line"
+                  fill="transparent"
+                  shapeRendering="crispEdges"
+                  stroke="#222"
+                  strokeLinecap="square"
+                  strokeWidth={1}
+                  x1={0}
+                  x2={0}
+                  y1={0}
+                  y2={8}
+                />
+                <svg
+                  fontSize={10}
+                  style={
+                    {
+                      "overflow": "visible",
+                    }
+                  }
+                  x={0}
+                  y="0.25em"
+                >
+                  <text
+                    fill="#222"
+                    fontFamily="Arial"
+                    fontSize={10}
+                    textAnchor="middle"
+                    transform=""
+                    x={0}
+                    y={18}
+                  >
+                    <tspan
+                      dy="0em"
+                      x={0}
+                    >
+                      1
+                    </tspan>
+                  </text>
+                </svg>
+              </g>
+              <g
+                className="visx-group visx-axis-tick"
+                transform="translate(0, 0)"
+              >
+                <line
+                  className="visx-line"
+                  fill="transparent"
+                  shapeRendering="crispEdges"
+                  stroke="#222"
+                  strokeLinecap="square"
+                  strokeWidth={1}
+                  x1={1180}
+                  x2={1180}
+                  y1={0}
+                  y2={8}
+                />
+                <svg
+                  fontSize={10}
+                  style={
+                    {
+                      "overflow": "visible",
+                    }
+                  }
+                  x={0}
+                  y="0.25em"
+                >
+                  <text
+                    fill="#222"
+                    fontFamily="Arial"
+                    fontSize={10}
+                    textAnchor="middle"
+                    transform=""
+                    x={1180}
+                    y={18}
+                  >
+                    <tspan
+                      dy="0em"
+                      x={1180}
+                    >
+                      370
+                    </tspan>
+                  </text>
+                </svg>
+              </g>
+              <line
+                className="visx-line visx-axis-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#333"
+                strokeWidth={1}
+                x1={0.5}
+                x2={1180.5}
+                y1={0}
+                y2={0}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x={0}
+                y={0}
+              >
+                <text
+                  className="visx-axis-label"
+                  fill="#222"
+                  fontFamily="Arial"
+                  fontSize={10}
+                  textAnchor="middle"
+                  x={590}
+                  y={36}
+                >
+                  <tspan
+                    dy="0em"
+                    x={590}
+                  >
+                    Residue number
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`track for rRNA gene has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      Regional constraint
+    </h2>
+  </div>,
+  " ",
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="Track__TitlePanel-sc-1sdyh2h-5 ekfFko"
+        >
+          <span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <svg
+          height={100}
+          style={
+            {
+              "overflow": "visible",
+            }
+          }
+          width={1200}
+        >
+          <rect
+            fill="#984ea3"
+            height={30}
+            width={1180}
+          />
+          <rect
+            fill="#ff4040"
+            height={30}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            width={69.818763326226}
+            x={271.727078891258}
+          />
+          <rect
+            fill="#ff4040"
+            height={30}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            width={69.818763326226}
+            x={411.36460554371}
+          />
+          <g
+            className="visx-group"
+            transform="translate(0, 30)"
+            width={1200}
+          >
+            <g
+              className="visx-group visx-axis visx-axis-bottom"
+              transform="translate(0, 0)"
+            >
+              <g
+                className="visx-group visx-axis-tick"
+                transform="translate(0, 0)"
+              >
+                <line
+                  className="visx-line"
+                  fill="transparent"
+                  shapeRendering="crispEdges"
+                  stroke="#222"
+                  strokeLinecap="square"
+                  strokeWidth={1}
+                  x1={0}
+                  x2={0}
+                  y1={0}
+                  y2={8}
+                />
+                <svg
+                  fontSize={10}
+                  style={
+                    {
+                      "overflow": "visible",
+                    }
+                  }
+                  x={0}
+                  y="0.25em"
+                >
+                  <text
+                    fill="#222"
+                    fontFamily="Arial"
+                    fontSize={10}
+                    textAnchor="middle"
+                    transform=""
+                    x={0}
+                    y={18}
+                  >
+                    <tspan
+                      dy="0em"
+                      x={0}
+                    >
+                      123
+                    </tspan>
+                  </text>
+                </svg>
+              </g>
+              <g
+                className="visx-group visx-axis-tick"
+                transform="translate(0, 0)"
+              >
+                <line
+                  className="visx-line"
+                  fill="transparent"
+                  shapeRendering="crispEdges"
+                  stroke="#222"
+                  strokeLinecap="square"
+                  strokeWidth={1}
+                  x1={1180}
+                  x2={1180}
+                  y1={0}
+                  y2={8}
+                />
+                <svg
+                  fontSize={10}
+                  style={
+                    {
+                      "overflow": "visible",
+                    }
+                  }
+                  x={0}
+                  y="0.25em"
+                >
+                  <text
+                    fill="#222"
+                    fontFamily="Arial"
+                    fontSize={10}
+                    textAnchor="middle"
+                    transform=""
+                    x={1180}
+                    y={18}
+                  >
+                    <tspan
+                      dy="0em"
+                      x={1180}
+                    >
+                      1,999
+                    </tspan>
+                  </text>
+                </svg>
+              </g>
+              <line
+                className="visx-line visx-axis-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#333"
+                strokeWidth={1}
+                x1={0.5}
+                x2={1180.5}
+                y1={0}
+                y2={0}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x={0}
+                y={0}
+              >
+                <text
+                  className="visx-axis-label"
+                  fill="#222"
+                  fontFamily="Arial"
+                  fontSize={10}
+                  textAnchor="middle"
+                  x={590}
+                  y={36}
+                >
+                  <tspan
+                    dy="0em"
+                    x={590}
+                  >
+                    mtDNA position
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`track for tRNA gene has no unexpected changes 1`] = `
+[
+  <div
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+  >
+    <h2>
+      Regional constraint
+    </h2>
+  </div>,
+  " ",
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="Track__TitlePanel-sc-1sdyh2h-5 ekfFko"
+        >
+          <span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <div>
+          Regional constraint is not available for this gene
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
