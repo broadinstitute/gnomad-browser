@@ -669,13 +669,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                       296,184 Insertions
                     </li>
                     <li>
-                      2,185 Inversersions
+                      2,185 Inversions
                     </li>
                     <li>
                       13,116 Complex
                     </li>
                     <li>
-                      92 Canonical recriprocal translocations
+                      92 Canonical reciprocal translocations
                     </li>
                   </ul>
                 </li>
