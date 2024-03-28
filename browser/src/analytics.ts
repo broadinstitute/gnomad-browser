@@ -12,3 +12,7 @@ export const logAnalyticsEvent = (
 
   return undefined
 }
+
+export const logButtonClick = (eventLabel: string): void => {
+  logAnalyticsEvent('button_click', 'User Interaction', eventLabel)
+}

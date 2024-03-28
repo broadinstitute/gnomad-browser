@@ -12,7 +12,7 @@ import { Badge, Button, Modal, SearchInput, Select, TooltipAnchor } from '@gnoma
 import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from '../gtex'
 import InfoButton from '../help/InfoButton'
 
-import { logAnalyticsEvent } from '../analytics'
+import { logButtonClick } from '../analytics'
 
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 
@@ -429,11 +429,7 @@ const TissueExpressionTrack = ({
                   }}
                   onClick={() => {
                     if (!isExpanded) {
-                      logAnalyticsEvent(
-                        'button_click',
-                        'User Interaction',
-                        'User expanded v2 tissue expression track'
-                      )
+                      logButtonClick('User expanded v2 tissue expression track')
                     }
                     setIsExpanded(!isExpanded)
                   }}
