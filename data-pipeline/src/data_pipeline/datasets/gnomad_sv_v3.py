@@ -18,8 +18,8 @@ TOP_LEVEL_INFO_FIELDS = [
     "EVIDENCE",
     "PESR_GT_OVERDISPERSION",
     "SOURCE",
-    "STRANDS",
     "UNRESOLVED_TYPE",
+    "PAR",
 ]
 
 RANKED_CONSEQUENCES = [
@@ -30,6 +30,7 @@ RANKED_CONSEQUENCES = [
     "TSS_DUP",
     "MSV_EXON_OVERLAP",
     "DUP_PARTIAL",
+    "PARTIAL_DISPERSED_DUP",
     "BREAKEND_EXONIC",
     "UTR",
     "PROMOTER",
@@ -46,13 +47,9 @@ FREQ_FIELDS = [
     "N_HOMALT",
 ]
 
-POPULATIONS = ["afr", "ami", "amr", "asj", "eas", "fin", "mid", "nfe", "oth", "sas"]
+POPULATIONS = ["afr", "ami", "amr", "asj", "eas", "fin", "mid", "nfe", "rmi", "sas"]
 
-DIVISIONS = list(
-    itertools.chain.from_iterable(
-        [(pop, pop), (f"{pop}_XX", f"{pop}_FEMALE"), (f"{pop}_XY", f"{pop}_MALE")] for pop in POPULATIONS
-    )
-) + [("XX", "FEMALE"), ("XY", "MALE")]
+DIVISIONS = list(itertools.chain.from_iterable([pop, f"{pop}_XX", f"{pop}_XY"] for pop in POPULATIONS)) + ["XX", "XY"]
 
 
 # For MCNVs, sum AC/AF for all alt alleles except CN=2
@@ -66,14 +63,10 @@ def sum_mcnv_ac_or_af(alts, values):
     )
 
 
-def import_svs_from_vcfs(vcf_paths, preserve_par):
-    ds = hl.import_vcf(vcf_paths, force_bgz=True, min_partitions=32, reference_genome="GRCh38").rows()
+def import_svs_from_vcfs(vcf_path):
+    ds = hl.import_vcf(vcf_path, force_bgz=True, reference_genome="GRCh38")
+    ds = ds.rows()
     ds = ds.annotate(**{field.lower(): ds.info[field] for field in TOP_LEVEL_INFO_FIELDS})
-
-    if preserve_par:
-        ds = ds.annotate(par=ds.info.PAR)
-    else:
-        ds = ds.annotate(par=hl.missing(hl.tbool))
 
     ds = ds.annotate(
         variant_id=ds.rsid.replace("^gnomAD-SV_v3_", ""),
@@ -134,8 +127,8 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
         freq=hl.struct(
             **{field.lower(): ds.info[field] for field in FREQ_FIELDS},
             populations=[
-                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{pop_key}_{field}"] for field in FREQ_FIELDS})
-                for (pop_id, pop_key) in DIVISIONS
+                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{field}_{pop_id}"] for field in FREQ_FIELDS})
+                for pop_id in DIVISIONS
             ],
         )
     )
@@ -186,7 +179,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
                     pop_id,
                     hl.if_else(
                         ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
-                        ds.info[f"{pop_id}_MALE_N_HEMIALT"],
+                        ds.info[f"N_HEMIALT_{pop_id}_XY"],
                         0,
                     ),
                 )
@@ -198,7 +191,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
                     f"{pop_id}_XY",
                     hl.if_else(
                         ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
-                        ds.info[f"{pop_id}_MALE_N_HEMIALT"],
+                        ds.info[f"N_HEMIALT_{pop_id}_XY"],
                         0,
                     ),
                 )
@@ -208,7 +201,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
             + [
                 (
                     "XY",
-                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.MALE_N_HEMIALT, 0),
+                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.N_HEMIALT_XY, 0),
                 )
             ]
         )
@@ -218,7 +211,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
         freq=ds.freq.annotate(
             hemizygote_count=hl.or_missing(
                 ds.type != "MCNV",
-                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.MALE_N_HEMIALT, 0),
+                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.N_HEMIALT_XY, 0),
             ),
             populations=hl.if_else(
                 ds.type != "MCNV",
@@ -239,7 +232,7 @@ def import_svs_from_vcfs(vcf_paths, preserve_par):
             ),
         ).drop("n_homalt")
     )
-
+    ds = ds.annotate(freq=hl.struct(all=ds.freq))
     # Re-key
     ds = ds.key_by("variant_id")
 
@@ -284,13 +277,3 @@ def annotate_with_histograms(svs_path, histograms_path):
     histograms = histograms.key_by(histograms.variant_id).drop("locus", "alleles")
     ds = ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
     return ds
-
-
-def import_all_svs_from_vcfs(autosome_vcf_paths, allosome_vcf_paths):
-    autosome_svs = import_svs_from_vcfs(autosome_vcf_paths, False)
-    autosome_svs = autosome_svs.annotate(freq=hl.struct(all=autosome_svs.freq))
-    allosome_svs = import_svs_from_vcfs(allosome_vcf_paths, True)
-    allosome_svs = allosome_svs.annotate(freq=hl.struct(all=allosome_svs.freq))
-
-    svs = autosome_svs.union(allosome_svs)
-    return svs
