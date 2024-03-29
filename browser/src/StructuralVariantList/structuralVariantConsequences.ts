@@ -36,6 +36,11 @@ const rankedConsequences = [
     category: 'other',
   },
   {
+    term: 'partial_dispersed_dup',
+    label: 'partial dispersed duplication',
+    category: 'other',
+  },
+  {
     term: 'breakend_exonic',
     label: 'exonic breakend',
     category: 'other',

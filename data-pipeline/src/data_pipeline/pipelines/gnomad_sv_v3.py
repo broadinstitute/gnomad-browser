@@ -1,7 +1,7 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.datasets.gnomad_sv_v3 import (
-    import_all_svs_from_vcfs,
+    import_svs_from_vcfs,
     annotate_with_histograms,
     add_variant_id_upper_case,
 )
@@ -9,40 +9,16 @@ from data_pipeline.datasets.gnomad_sv_v3 import (
 
 pipeline = Pipeline()
 
-# TK permanent home for these
-vcf_path_template = (
-    "gs://gnomadev-data-pipeline-output/pwd-2022-12-06/external_sources/gnomad_v3_SV_2/gnomAD.v3.SV.chr{id}.vcf.gz"
-)
-
-autosome_ids = list(range(1, 23))
-allosome_ids = ["X", "Y"]
-
-autosome_vcf_paths = list(
-    map(
-        lambda id: vcf_path_template.format(id=id),
-        autosome_ids,
-    )
-)
-
-allosome_vcf_paths = list(
-    map(
-        lambda id: vcf_path_template.format(id=id),
-        allosome_ids,
-    )
-)
 ###############################################
 # Variants
 ###############################################
 
 pipeline.add_task(
-    "import_all_svs_from_vcfs",
-    import_all_svs_from_vcfs,
+    "import_svs_from_vcfs",
+    import_svs_from_vcfs,
     "/gnomad_sv_v3/structural_variants_step_1.ht",
     {},
-    {
-        "autosome_vcf_paths": autosome_vcf_paths,
-        "allosome_vcf_paths": allosome_vcf_paths,
-    },
+    {"vcf_path": ["gs://gnomad-browser-data-pipeline/phil-scratch/gnomAD_SV_v3.release_4_1.sites_only.vcf.gz"]},
 )
 
 pipeline.add_task(
@@ -50,8 +26,8 @@ pipeline.add_task(
     annotate_with_histograms,
     "/gnomad_sv_v3/structural_variants_step_2.ht",
     {
-        "svs_path": pipeline.get_task("import_all_svs_from_vcfs"),
-        "histograms_path": "gs://gnomadev-data-pipeline-output/pwd-2022-12-06/external_sources/gnomad_sv_v3.age_and_gq_hists.ht",
+        "svs_path": pipeline.get_task("import_svs_from_vcfs"),
+        "histograms_path": "gs://gnomad-browser-data-pipeline/phil-scratch/gnomad_sv_v3.age_and_gq_hists.ht",
     },
 )
 
