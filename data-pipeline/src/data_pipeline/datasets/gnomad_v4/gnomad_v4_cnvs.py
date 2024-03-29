@@ -11,12 +11,8 @@ def x_position(chrom, position):
 
 
 FREQ_FIELDS = ["SC", "SN", "SF"]
-POPULATIONS = ["afr", "amr", "asj", "eas", "fin", "mid", "nfe", "sas"]
-DIVISIONS = list(
-    itertools.chain.from_iterable(
-        [(pop, pop), (f"{pop}_XX", f"{pop}_FEMALE"), (f"{pop}_XY", f"{pop}_MALE")] for pop in POPULATIONS
-    )
-) + [("XX", "FEMALE"), ("XY", "MALE")]
+POPULATIONS = ["afr", "amr", "asj", "eas", "fin", "mid", "nfe", "sas", "remaining"]
+DIVISIONS = list(itertools.chain.from_iterable([pop, f"{pop}_XX", f"{pop}_XY"] for pop in POPULATIONS)) + ["XX", "XY"]
 
 
 def prepare_gnomad_v4_cnvs(vcf_path):
@@ -47,8 +43,8 @@ def prepare_gnomad_v4_cnvs(vcf_path):
         freq=hl.struct(
             **{field.lower(): ds.info[field] for field in FREQ_FIELDS},
             populations=[
-                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{pop_key}_{field}"] for field in FREQ_FIELDS})
-                for (pop_id, pop_key) in DIVISIONS
+                hl.struct(id=pop_id, **{field.lower(): ds.info[f"{field}_{pop_id}"] for field in FREQ_FIELDS})
+                for pop_id in DIVISIONS
             ],
         )
     )
