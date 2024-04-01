@@ -11,7 +11,6 @@ def prepare_gnomad_v4_constraint(path):
     ds = ds.select(
         # ID
         transcript_id=ds.transcript,
-        gene_id=ds.gene,
         # Expected
         exp_lof=ds.lof.exp,
         exp_mis=ds.mis.exp,

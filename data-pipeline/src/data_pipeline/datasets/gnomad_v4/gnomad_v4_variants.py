@@ -183,7 +183,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
                     hl.struct(grpmax=fafs[0].faf, grpmax_gen_anc=fafs[0].population),
-                    hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
+                    hl.struct(grpmax=hl.missing(hl.tfloat), grpmax_gen_anc=hl.missing(hl.tstr)),
                 ),
             ),
             faf99=hl.rbind(
@@ -199,25 +199,15 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
                 lambda fafs: hl.if_else(
                     hl.len(fafs) > 0,
                     hl.struct(grpmax=fafs[0].faf, grpmax_gen_anc=fafs[0].population),
-                    hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
+                    hl.struct(grpmax=hl.missing(hl.tfloat), grpmax_gen_anc=hl.missing(hl.tstr)),
                 ),
             ),
-        ),
-        faf95_joint=hl.if_else(
-            hl.is_defined(ds.joint_fafmax.joint_fafmax_data_type),
-            hl.struct(grpmax=ds.joint_fafmax.faf95_max, grpmax_gen_anc=ds.joint_fafmax.faf95_max_gen_anc),
-            hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
-        ),
-        faf99_joint=hl.if_else(
-            hl.is_defined(ds.joint_fafmax.joint_fafmax_data_type),
-            hl.struct(grpmax=ds.joint_fafmax.faf95_max, grpmax_gen_anc=ds.joint_fafmax.faf95_max_gen_anc),
-            hl.struct(grpmax=hl.null(hl.tfloat), grpmax_gen_anc=hl.null(hl.tstr)),
         ),
     )
 
     ds = ds.annotate(gnomad=ds.gnomad.annotate(fafmax=ds.fafmax))
 
-    ds = ds.drop("faf", "fafmax", "joint_freq", "joint_grpmax", "joint_faf", "joint_fafmax")
+    ds = ds.drop("faf", "fafmax")
 
     ####################
     # Age distribution #
@@ -325,7 +315,83 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
     return ds
 
 
-def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: str):
+def prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_path):
+    ds = hl.read_table(variants_joint_frequency_path)
+    globals = hl.eval(ds.globals)
+
+    def joint_freq_index_key(subset=None, pop=None, sex=None, raw=False):
+        parts = [s for s in [subset, pop, sex] if s is not None]
+        parts.append("raw" if raw else "adj")
+        return "_".join(parts)
+
+    def freq_joint(ds, subset=None, pop=None, sex=None, raw=False):
+        return ds.joint.freq[globals.joint_globals.freq_index_dict[joint_freq_index_key(subset, pop, sex, raw)]]
+
+    flags = [
+        hl.or_missing(ds.freq_comparison_stats.cochran_mantel_haenszel_test.p_value < 10e-4, "discrepant_frequencies"),
+        hl.or_missing(ds.region_flags.not_called_in_exomes, "not_called_in_exomes"),
+        hl.or_missing(ds.region_flags.not_called_in_genomes, "not_called_in_genomes"),
+    ]
+
+    ancestry_groups = set(m.get("gen_anc", None) for m in globals.joint_globals.freq_meta)
+
+    ds = ds.annotate(
+        joint=hl.struct(
+            freq=hl.struct(
+                all=hl.struct(
+                    ac=freq_joint(ds).AC,
+                    ac_raw=freq_joint(ds, raw=True).AC,
+                    an=freq_joint(ds).AN,
+                    hemizygote_count=hl.if_else(
+                        ds.locus.in_autosome_or_par(), 0, hl.or_else(freq_joint(ds, sex="XY").AC, 0)
+                    ),
+                    homozygote_count=freq_joint(ds).homozygote_count,
+                    ancestry_groups=[
+                        hl.struct(
+                            id="_".join(filter(bool, [pop, sex])),
+                            ac=hl.or_else(freq_joint(ds, pop=pop, sex=sex).AC, 0),
+                            an=hl.or_else(freq_joint(ds, pop=pop, sex=sex).AN, 0),
+                            hemizygote_count=(
+                                0
+                                if sex == "XX"
+                                else hl.if_else(
+                                    ds.locus.in_autosome_or_par(),
+                                    0,
+                                    hl.or_else(freq_joint(ds, pop=pop, sex="XY").AC, 0),
+                                )
+                            ),
+                            homozygote_count=hl.or_else(freq_joint(ds, pop=pop, sex=sex).homozygote_count, 0),
+                        )
+                        for pop, sex in list(itertools.product(ancestry_groups, [None, "XX", "XY"]))
+                        + [(None, "XX"), (None, "XY")]
+                    ],
+                ),
+            ),
+            faf=ds.joint.faf,
+            fafmax=ds.joint.fafmax,
+            grpmax=ds.joint.grpmax,
+            histograms=ds.joint.histograms,
+            flags=hl.set(flags).filter(hl.is_defined),
+            faf95_joint=hl.struct(
+                grpmax=ds.joint.fafmax.faf95_max,
+                grpmax_gen_anc=ds.joint.fafmax.faf95_max_gen_anc,
+            ),
+            faf99_joint=hl.struct(
+                grpmax=ds.joint.fafmax.faf99_max,
+                grpmax_gen_anc=ds.joint.fafmax.faf99_max_gen_anc,
+            ),
+            freq_comparison_stats=ds.freq_comparison_stats,
+        ),
+    )
+
+    ds = ds.select(
+        "joint",
+    )
+
+    return ds
+
+
+def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: str, variants_joint_frequency_path: str):
     exome_variants = prepare_gnomad_v4_variants_helper(exome_variants_path, "exome")
     genome_variants = prepare_gnomad_v4_variants_helper(genome_variants_path, "genome")
 
@@ -339,8 +405,6 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
         "vep",
         "in_silico_predictors",
         "variant_id",
-        "faf95_joint",
-        "faf99_joint",
     ]
     variants = variants.annotate(
         **{field: hl.or_else(variants.exome[field], variants.genome[field]) for field in shared_fields}
@@ -389,5 +453,8 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
             }
         )
     )
+
+    joint_frequency_data = prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_path)
+    variants = variants.annotate(**joint_frequency_data[variants.locus, variants.alleles])
 
     return variants
