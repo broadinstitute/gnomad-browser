@@ -50,8 +50,9 @@ pipeline.add_task(
     task_function=prepare_gnomad_v4_variants,
     output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
     inputs={
-        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht",
-        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/",
+        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
+        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht",
+        "variants_joint_frequency_path": "gs://gcp-public-data--gnomad/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht",
     },
 )
 
