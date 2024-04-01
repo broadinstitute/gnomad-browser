@@ -10,9 +10,3 @@ Note that the GroupMax FAF contains filtering allele frequency information from 
 The filtering allele frequency calculation only includes non-bottlenecked genetic ancestry groups: we did not calculate this metric on the Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining Individuals" (`rmi`) groups.
 
 On the browser, the **GroupMax FAF** annotation is directly available on the variant page. In the VCF and Hail Tables, the filtering allele frequency annotation (abbreviated "`faf`") is computed globally and for each genetic ancestry group. Filtering allele frequencies (FAFs) for each genetic ancestry group are listed separately with 95% and 99% CIs.
-
-### <a name="grpmax"></a>Group maximum filtering allele frequency
-
-This annotation (abbreviated "`grpmax FAF`") contains filtering allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry groups with the highest FAF. Note that this field contains filtering allele frequency information from the genetic ancestry group with the highest **FAF**, not the filtering allele frequency information calculated on the genetic ancestry group with the highest **AF**.
-
-For gnomAD v4, this calculation excludes Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (mid), and "Remaining Individuals" (`rmi`) groups. For gnomAD v2, this calculation excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), and "Remaining Individuals" (`rmi`) groups.
