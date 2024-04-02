@@ -30,10 +30,10 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
     reference_region = { chrom: '1', start: 10000000, stop: 15000000 },
     allele_size_distribution = {
       distribution: [[1, 1]],
-      ancestry_groups: [],
+      populations: [],
       repeat_units: [],
     },
-    genotype_distribution = { distribution: [], ancestry_groups: [], repeat_units: [] },
+    genotype_distribution = { distribution: [], populations: [], repeat_units: [] },
   } = associations
 
   return {

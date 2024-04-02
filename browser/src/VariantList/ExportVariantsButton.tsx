@@ -22,8 +22,8 @@ const getValueGivenProperty = (
   variant: VariantTableVariant,
   property: Property
 ) => {
-  return variant.ancestry_groups.filter((v) => v.id === popId)[0]
-    ? JSON.stringify(variant.ancestry_groups.filter((v) => v.id === popId)[0][property])
+  return variant.populations.filter((v) => v.id === popId)[0]
+    ? JSON.stringify(variant.populations.filter((v) => v.id === popId)[0][property])
     : ''
 }
 
@@ -342,7 +342,7 @@ export type VariantTableVariant = {
   hgvs?: string
   hgvsc?: string
   hgvsp?: string
-  ancestry_groups: Population[]
+  populations: Population[]
   pos: number
   rsids?: string[]
   transcript_id: string

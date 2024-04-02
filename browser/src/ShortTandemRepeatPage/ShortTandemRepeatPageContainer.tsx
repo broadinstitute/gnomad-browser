@@ -43,14 +43,14 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
     }
     allele_size_distribution {
       distribution
-      ancestry_groups {
+      populations {
         id
         distribution
       }
       repeat_units {
         repeat_unit
         distribution
-        ancestry_groups {
+        populations {
           id
           distribution
         }
@@ -58,14 +58,14 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
     }
     genotype_distribution {
       distribution
-      ancestry_groups {
+      populations {
         id
         distribution
       }
       repeat_units {
         repeat_units
         distribution
-        ancestry_groups {
+        populations {
           id
           distribution
         }
@@ -87,14 +87,14 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       repeat_units
       allele_size_distribution {
         distribution
-        ancestry_groups {
+        populations {
           id
           distribution
         }
         repeat_units {
           repeat_unit
           distribution
-          ancestry_groups {
+          populations {
             id
             distribution
           }
@@ -102,14 +102,14 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       }
       genotype_distribution {
         distribution
-        ancestry_groups {
+        populations {
           id
           distribution
         }
         repeat_units {
           repeat_units
           distribution
-          ancestry_groups {
+          populations {
             id
             distribution
           }

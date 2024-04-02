@@ -194,8 +194,8 @@ export type SequencingType = {
   hemizygote_count: number | null
   faf95: Faf95
   filters: string[]
-  ancestry_groups: Population[]
-  local_ancestry_groups: LocalAncestryPopulation[]
+  populations: Population[]
+  local_ancestry_populations: LocalAncestryPopulation[]
   age_distribution: AgeDistribution | null
   quality_metrics: VariantQualityMetrics
 }
@@ -348,7 +348,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
           Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
         </h2>
         {hasLocalAncestryPopulations(datasetId) &&
-          ((variant.genome && variant.genome.local_ancestry_groups) || []).length > 0 && (
+          ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (
             <div
               style={{
                 padding: '0 1em',
@@ -495,14 +495,14 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
         popmax_population
       }
       filters
-      ancestry_groups {
+      populations {
         id
         ac
         an
         ac_hemi
         ac_hom
       }
-      local_ancestry_groups @include(if: $includeLocalAncestry) {
+      local_ancestry_populations @include(if: $includeLocalAncestry) {
         id
         ac
         an
@@ -574,14 +574,14 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
         popmax_population
       }
       filters
-      ancestry_groups {
+      populations {
         id
         ac
         an
         ac_hemi
         ac_hom
       }
-      local_ancestry_groups @include(if: $includeLocalAncestry) {
+      local_ancestry_populations @include(if: $includeLocalAncestry) {
         id
         ac
         an

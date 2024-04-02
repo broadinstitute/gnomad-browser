@@ -99,7 +99,7 @@ export type MitochondrialVariant = {
     ac_het: number
   }[]
   max_heteroplasmy: number | null
-  ancestry_groups: {
+  populations: {
     id: PopulationId
     an: number
     ac_het: number
@@ -330,7 +330,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     mitotip_trna_prediction
     pon_ml_probability_of_pathogenicity
     pon_mt_trna_prediction
-    ancestry_groups {
+    populations {
       id
       ac_het
       ac_hom

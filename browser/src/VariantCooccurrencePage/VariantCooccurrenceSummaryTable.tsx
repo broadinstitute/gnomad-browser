@@ -80,7 +80,7 @@ const VariantCooccurrenceSummaryTable = ({
         </tr>
       </thead>
       <tbody>
-        {cooccurrenceData.ancestry_groups.map((pop) => (
+        {cooccurrenceData.populations.map((pop) => (
           <tr
             key={pop.id}
             style={pop.id === selectedPopulation ? { background: '#eee' } : undefined}

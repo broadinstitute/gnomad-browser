@@ -79,7 +79,7 @@ const copyNumberVariantTableColumns = [
       if (variant.length === -1) {
         s = '—'
       } else {
-        const size = variant.length || 0
+        const size = variant.length
         if (size >= 1e6) {
           s = `${(size / 1e6).toPrecision(3)} Mb`
         } else if (size >= 1e3) {

@@ -12,7 +12,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     filters = [],
     genes = [],
     length = 333,
-    ancestry_groups = [],
+    populations = [],
     pos = 123,
     qual = 99,
     type = 'DUP',
@@ -20,7 +20,6 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     posmax = 100121284,
     endmin = 100168738,
     endmax = 100168742,
-    reference_genome = 'GRCh38',
   } = params
 
   const variant_id = `${chrom}__${type}`
@@ -35,6 +34,7 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     filters,
     genes,
     length,
+    populations,
     pos,
     qual,
     type,
@@ -43,8 +43,6 @@ const cnvFactory = Factory.define<CopyNumberVariant>(({ params }) => {
     endmin,
     endmax,
     variant_id,
-    reference_genome,
-    ancestry_groups,
   }
 })
 

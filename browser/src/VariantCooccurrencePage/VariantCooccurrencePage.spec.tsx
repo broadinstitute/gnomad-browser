@@ -32,7 +32,7 @@ const baseApiResponse = {
     haplotype_counts: [10, 11, 12, 13],
     p_compound_heterozygous: 0.123, // TK calculate in real value
 
-    ancestry_groups: [],
+    populations: [],
   },
   variant1: {
     exome: { ac: 999, an: 101010 },

@@ -15,13 +15,13 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -56,8 +56,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -120,13 +120,13 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -161,8 +161,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -364,13 +364,13 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -405,8 +405,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -508,13 +508,13 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -549,8 +549,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -584,13 +584,13 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -625,8 +625,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -689,13 +689,13 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -730,8 +730,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -933,13 +933,13 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -974,8 +974,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -1077,13 +1077,13 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -1118,8 +1118,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -1153,13 +1153,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -1194,8 +1194,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -1258,13 +1258,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -1299,8 +1299,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -1502,13 +1502,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -1543,8 +1543,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -1646,13 +1646,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -1687,8 +1687,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -1722,13 +1722,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -1763,8 +1763,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -1827,13 +1827,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -1868,8 +1868,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2071,13 +2071,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -2112,8 +2112,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2215,13 +2215,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -2256,8 +2256,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -2291,13 +2291,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -2332,8 +2332,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2396,13 +2396,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -2437,8 +2437,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2640,13 +2640,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -2681,8 +2681,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2784,13 +2784,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -2825,8 +2825,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -2860,13 +2860,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -2901,8 +2901,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -2965,13 +2965,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -3006,8 +3006,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -3209,13 +3209,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -3250,8 +3250,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -3353,13 +3353,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -3394,8 +3394,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -3429,13 +3429,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -3470,8 +3470,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -3534,13 +3534,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -3575,8 +3575,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -3778,13 +3778,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -3819,8 +3819,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -3922,13 +3922,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -3963,8 +3963,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -3998,13 +3998,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4039,8 +4039,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -4103,13 +4103,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4144,8 +4144,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -4347,13 +4347,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4388,8 +4388,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -4491,13 +4491,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -4532,8 +4532,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -4567,13 +4567,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4608,8 +4608,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -4672,13 +4672,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4713,8 +4713,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -4916,13 +4916,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -4957,8 +4957,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -5060,13 +5060,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -5101,8 +5101,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -5136,13 +5136,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -5177,8 +5177,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -5241,13 +5241,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -5282,8 +5282,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -5485,13 +5485,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -5526,8 +5526,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -5629,13 +5629,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -5670,8 +5670,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -5705,13 +5705,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -5746,8 +5746,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -5810,13 +5810,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -5851,8 +5851,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6054,13 +6054,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6095,8 +6095,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6198,13 +6198,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -6239,8 +6239,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -6274,13 +6274,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6315,8 +6315,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6379,13 +6379,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6420,8 +6420,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6623,13 +6623,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6664,8 +6664,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6767,13 +6767,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -6808,8 +6808,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -6843,13 +6843,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6884,8 +6884,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -6948,13 +6948,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -6989,8 +6989,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -7192,13 +7192,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -7233,8 +7233,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -7336,13 +7336,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -7377,8 +7377,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -7412,13 +7412,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -7453,8 +7453,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -7517,13 +7517,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -7558,8 +7558,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -7761,13 +7761,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -7802,8 +7802,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -7905,13 +7905,13 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -7946,8 +7946,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -7981,13 +7981,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8022,8 +8022,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -8086,13 +8086,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8127,8 +8127,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -8330,13 +8330,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8371,8 +8371,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -8474,13 +8474,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -8515,8 +8515,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -8550,13 +8550,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8591,8 +8591,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -8655,13 +8655,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8696,8 +8696,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -8899,13 +8899,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -8940,8 +8940,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -9043,13 +9043,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -9084,8 +9084,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -9119,13 +9119,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -9160,8 +9160,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -9224,13 +9224,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -9265,8 +9265,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -9468,13 +9468,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -9509,8 +9509,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -9612,13 +9612,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -9653,8 +9653,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",
@@ -9688,13 +9688,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -9729,8 +9729,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -9793,13 +9793,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -9834,8 +9834,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -10037,13 +10037,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           {
             "adjacent_repeats": [],
             "allele_size_distribution": {
-              "ancestry_groups": [],
               "distribution": [
                 [
                   1,
                   1,
                 ],
               ],
+              "populations": [],
               "repeat_units": [],
             },
             "associated_diseases": [
@@ -10078,8 +10078,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
               "symbol": "ABCD1",
             },
             "genotype_distribution": {
-              "ancestry_groups": [],
               "distribution": [],
+              "populations": [],
               "repeat_units": [],
             },
             "id": "STR1",
@@ -10181,13 +10181,13 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         {
           "adjacent_repeats": [],
           "allele_size_distribution": {
-            "ancestry_groups": [],
             "distribution": [
               [
                 1,
                 1,
               ],
             ],
+            "populations": [],
             "repeat_units": [],
           },
           "associated_diseases": [
@@ -10222,8 +10222,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             "symbol": "ABCD1",
           },
           "genotype_distribution": {
-            "ancestry_groups": [],
             "distribution": [],
+            "populations": [],
             "repeat_units": [],
           },
           "id": "STR1",

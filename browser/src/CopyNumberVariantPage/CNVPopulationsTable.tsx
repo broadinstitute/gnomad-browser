@@ -62,18 +62,18 @@ const renderPopSF = (sf: number | string) => {
   return sf
 }
 
-type CNVPopulationsTableProps = {
+type OwnPopulationsTableProps = {
   columnLabels?: {
     sc?: string
     sn?: string
     sf?: string
   }
-  ancestry_groups: {
+  populations: {
     id: string
     name: string
     sc: number
     sn: number
-    subancestry_groups?: {
+    subpopulations?: {
       id: string
       name: string
       sc: number
@@ -86,23 +86,25 @@ type CNVPopulationsTableProps = {
 
 type CNVPopulationsTableState = any
 
+type CNVPopulationsTableProps = OwnPopulationsTableProps & typeof CNVPopulationsTable.defaultProps
+
 export class CNVPopulationsTable extends Component<
-  CNVPopulationsTableProps & { variant: CopyNumberVariant },
+  CNVPopulationsTableProps & { variant: CopyNumberVariant},
   CNVPopulationsTableState
 > {
   static defaultProps = {
     columnLabels: {},
     initiallyExpandRows: false,
-    variant: {},
+    variant: {}
   }
 
-  constructor(props: CNVPopulationsTableProps) {
+  constructor(props: CNVPopulationsTableProps ) {
     super(props)
 
     this.state = {
       sortBy: 'sf',
       sortAscending: false,
-      expandedPopulations: props.ancestry_groups.reduce(
+      expandedPopulations: props.populations.reduce(
         (acc, pop) => ({ ...acc, [pop.name]: props.initiallyExpandRows }),
         {}
       ),
@@ -155,10 +157,10 @@ export class CNVPopulationsTable extends Component<
     const { expandedPopulations } = this.state
     const isExpanded = expandedPopulations[pop.name]
     const colSpan = isExpanded ? 1 : 2
-    const rowSpan = isExpanded ? pop.subancestry_groups.length + 1 : 1
+    const rowSpan = isExpanded ? pop.subpopulations.length + 1 : 1
     return (
       <th colSpan={colSpan} rowSpan={rowSpan} scope="row">
-        {pop.subancestry_groups.length > 0 ? (
+        {pop.subpopulations.length > 0 ? (
           <TogglePopulationButton
             // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             isExpanded={isExpanded}
@@ -174,13 +176,12 @@ export class CNVPopulationsTable extends Component<
   }
 
   render() {
-    const { ancestry_groups, variant } = this.props
+    const { columnLabels, populations, variant } = this.props
     const { expandedPopulations, sortAscending, sortBy } = this.state
-    const columnLabels = this.props.columnLabels || {}
 
-    const renderedPopulations = ancestry_groups
+    const renderedPopulations = populations
       .map((pop) => {
-        const transformedSubpopulations = (pop.subancestry_groups || [])
+        const transformedSubpopulations = (pop.subpopulations || [])
           .map((subPop) => ({
             id: subPop.id,
             name: subPop.name,
@@ -210,7 +211,7 @@ export class CNVPopulationsTable extends Component<
           sc: pop.sc,
           sn: pop.sn,
           sf: calculatePopSF(pop.sc, pop.sn),
-          subancestry_groups: transformedSubpopulations,
+          subpopulations: transformedSubpopulations,
         }
       })
       .sort((a, b) => {
@@ -274,7 +275,7 @@ export class CNVPopulationsTable extends Component<
           </tr>
         </thead>
         {renderedPopulations.map((pop, i) => (
-          <tbody key={pop.id}>
+          <tbody key={(pop as any).id}>
             <tr
               className={
                 i > 0 &&
@@ -290,15 +291,15 @@ export class CNVPopulationsTable extends Component<
               <td className="right-align">{pop.sn}</td>
               <td className="right-align">{renderPopSF(pop.sf)}</td>
             </tr>
-            {pop.subancestry_groups &&
+            {pop.subpopulations &&
               expandedPopulations[pop.name] &&
-              pop.subancestry_groups.map((subPop, j) => (
+              pop.subpopulations.map((subPop, j) => (
                 <tr
                   key={`${pop.name}-${subPop.name}`}
                   className={
                     j === 0 ||
                     (isSexSpecificPopulation(subPop) &&
-                      !isSexSpecificPopulation(pop.subancestry_groups[j - 1]))
+                      !isSexSpecificPopulation(pop.subpopulations[j - 1]))
                       ? 'border'
                       : undefined
                   }

@@ -16,7 +16,7 @@ import filterCopyNumberVariants from './filterCopyNumberVariants'
 import CopyNumberVariantFilterControls from './CopyNumberVariantFilterControls'
 
 import { cnvTypeColors } from './copyNumberVariantTypes'
-import { CopyNumberVariant } from '../CopyNumberVariantPage/CopyNumberVariantPage'
+import CopyNumberVariantPropType from './CopyNumberVariantPropType'
 import copyNumberVariantTableColumns, {
   getColumnsForContext,
 } from './copyNumberVariantTableColumns'
@@ -48,7 +48,7 @@ export interface Context {
 type CopyNumberVariantsProps = {
   context: Context
   exportFileName: string
-  variants: CopyNumberVariant[]
+  variants: CopyNumberVariantPropType[]
 }
 
 const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVariantsProps) => {

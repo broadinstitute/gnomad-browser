@@ -7,10 +7,10 @@ export const mergeExomeAndGenomePopulationData = (
   exome: SequencingType,
   genome: SequencingType
 ) => {
-  const ancestry_groups: { [key: string]: Population } = {}
+  const populations: { [key: string]: Population } = {}
 
-  exome.ancestry_groups.forEach((exomePopulation: Population) => {
-    ancestry_groups[exomePopulation.id] = {
+  exome.populations.forEach((exomePopulation: Population) => {
+    populations[exomePopulation.id] = {
       id: exomePopulation.id,
       ac: exomePopulation.ac,
       an: exomePopulation.an,
@@ -19,10 +19,10 @@ export const mergeExomeAndGenomePopulationData = (
     }
   })
 
-  genome.ancestry_groups.forEach((genomePopulation: Population) => {
-    if (genomePopulation.id in ancestry_groups) {
-      const entry = ancestry_groups[genomePopulation.id]
-      ancestry_groups[genomePopulation.id] = {
+  genome.populations.forEach((genomePopulation: Population) => {
+    if (genomePopulation.id in populations) {
+      const entry = populations[genomePopulation.id]
+      populations[genomePopulation.id] = {
         id: genomePopulation.id,
         ac: add(entry.ac, genomePopulation.ac),
         an: add(entry.an, genomePopulation.an),
@@ -30,7 +30,7 @@ export const mergeExomeAndGenomePopulationData = (
         ac_hom: add(entry.ac_hom, genomePopulation.ac_hom),
       }
     } else {
-      ancestry_groups[genomePopulation.id] = {
+      populations[genomePopulation.id] = {
         id: genomePopulation.id,
         ac: genomePopulation.ac,
         an: genomePopulation.an,
@@ -40,7 +40,7 @@ export const mergeExomeAndGenomePopulationData = (
     }
   })
 
-  return Object.values(ancestry_groups)
+  return Object.values(populations)
 }
 
 const mergeExomeAndGenomeData = (variants: any) =>
@@ -74,7 +74,7 @@ const mergeExomeAndGenomeData = (variants: any) =>
       ac_hemi: add(exome.ac_hemi, genome.ac_hemi),
       ac_hom: add(exome.ac_hom, genome.ac_hom),
       filters: exome.filters.concat(genome.filters),
-      ancestry_groups: mergeExomeAndGenomePopulationData(exome!, genome!),
+      populations: mergeExomeAndGenomePopulationData(exome!, genome!),
     }
   })
 

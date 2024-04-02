@@ -1,48 +1,52 @@
 import React from 'react'
 
-import { CopyNumberVariant, CopyNumberVariantPopulation } from './CopyNumberVariantPage'
+import { CopyNumberVariant } from './CopyNumberVariantPage'
 import { populationName } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { CNVPopulationsTable } from './CNVPopulationsTable'
 
-type NamedCopyNumberVariantPopulation = CopyNumberVariantPopulation & {
+type CopyNumberVariantPopulation = {
+  id: string
+  sc: number
+  sn: number
+  sf: number
   name: string
 }
 
-type SubancestryGroups = {
-  [key: string]: NamedCopyNumberVariantPopulation[]
+type Subpopulations = {
+  [key: string]: CopyNumberVariantPopulation[]
 }
 
-const nestPopulations = (ancestry_groups: NamedCopyNumberVariantPopulation[]) => {
+const nestPopulations = (populations: CopyNumberVariantPopulation[]) => {
   const popIndices = []
-  const subancestry_groups: SubancestryGroups = {}
+  const subpopulations: Subpopulations = {}
 
-  for (let i = 0; i < ancestry_groups.length; i += 1) {
-    const pop = ancestry_groups[i]
+  for (let i = 0; i < populations.length; i += 1) {
+    const pop = populations[i]
 
     const divisions = pop.id.split('_')
     if (divisions.length === 1) {
       popIndices.push(i)
     } else {
       const parentPop = divisions[0]
-      if (subancestry_groups[parentPop] === undefined) {
-        subancestry_groups[parentPop] = [{ ...pop }]
+      if (subpopulations[parentPop] === undefined) {
+        subpopulations[parentPop] = [{ ...pop }]
       } else {
-        subancestry_groups[parentPop].push({ ...pop })
+        subpopulations[parentPop].push({ ...pop })
       }
     }
   }
 
   return popIndices.map((index) => {
-    const pop = ancestry_groups[index]
+    const pop = populations[index]
     return {
       ...pop,
-      subancestry_groups: subancestry_groups[pop.id],
+      subpopulations: subpopulations[pop.id],
     }
   })
 }
 
-const addPopulationNames = (ancestry_groups: CopyNumberVariantPopulation[] | null) => {
-  return (ancestry_groups || []).map((pop: CopyNumberVariantPopulation) => {
+const addPopulationNames = (populations: CopyNumberVariantPopulation[]) => {
+  return populations.map((pop: CopyNumberVariantPopulation) => {
     let name
     if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
       name = 'XX'
@@ -60,7 +64,7 @@ type CopyNumberVariantPopulationsTableProps = {
 }
 
 const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulationsTableProps) => {
-  const ancestry_groups = nestPopulations(addPopulationNames(variant.ancestry_groups))
+  const populations = nestPopulations(addPopulationNames((variant as any).populations))
 
   const columnLabels = {
     sc: 'Site Count',
@@ -68,13 +72,7 @@ const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulat
     sf: 'Site Frequency',
   }
 
-  return (
-    <CNVPopulationsTable
-      columnLabels={columnLabels}
-      ancestry_groups={ancestry_groups}
-      variant={variant}
-    />
-  )
+  return <CNVPopulationsTable columnLabels={columnLabels} populations={populations} variant={variant} />
 }
 
 export default CopyNumberVariantPopulationsTable

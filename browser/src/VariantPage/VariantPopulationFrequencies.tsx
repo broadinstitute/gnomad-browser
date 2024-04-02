@@ -23,22 +23,22 @@ type Props = {
 const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
   if (hasLocalAncestryPopulations(datasetId) && variant.genome) {
     const genome = variant.genome!
-    const genomePopulations = genome.ancestry_groups.filter(
+    const genomePopulations = genome.populations.filter(
       (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
     )
     const exomePopulations = variant.exome
-      ? variant.exome.ancestry_groups.filter(
+      ? variant.exome.populations.filter(
           (pop) => !(pop.id.startsWith('hgdp:') || pop.id.startsWith('1kg:'))
         )
       : []
-    const hgdpPopulations = genome.ancestry_groups
+    const hgdpPopulations = genome.populations
       .filter((pop) => pop.id.startsWith('hgdp:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(5) })) // Remove hgdp: prefix
-    const tgpPopulations = genome.ancestry_groups
+    const tgpPopulations = genome.populations
       .filter((pop) => pop.id.startsWith('1kg:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(4) })) // Remove 1kg: prefix
 
-    const localAncestryPopulations = genome.local_ancestry_groups || []
+    const localAncestryPopulations = genome.local_ancestry_populations || []
 
     return (
       // @ts-expect-error TS(2741) FIXME: Property 'onChange' is missing in type '{ tabs: { ... Remove this comment to see the full error message
@@ -141,8 +141,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
     <TableWrapper>
       <GnomadPopulationsTable
         datasetId={datasetId}
-        exomePopulations={variant.exome ? variant.exome.ancestry_groups : []}
-        genomePopulations={variant.genome ? variant.genome.ancestry_groups : []}
+        exomePopulations={variant.exome ? variant.exome.populations : []}
+        genomePopulations={variant.genome ? variant.genome.populations : []}
         showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
       />
     </TableWrapper>
