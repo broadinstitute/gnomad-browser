@@ -50,6 +50,24 @@ Then move ES shards from temporary pods onto permanent pods.
   ./deployctl elasticsearch apply --n-ingest-pods=48
   ```
 
+- (Optional) Set elasticsearch recovery parameters for faster shard copies.
+  By default, Elasticsearch speed-limits recovery activity to prioritize query
+  performance. You can tune the following settings to increase the speed at which
+  shards are copied. The following example has been found to be a reasonable
+  speed to run large scale shard movements during slower periods (overnight).
+  The concurrent recoveries setting is per-node, so the actual maximum number of
+  recoveries will depend on how large the cluster actually is:
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT "localhost:9200/_cluster/settings" -H 'Content-Type: application/json' -d '{
+"persistent" : {
+  "cluster.routing.allocation.node_concurrent_recoveries" : "2",
+  "indices.recovery.max_bytes_per_sec": "400mb"
+  }
+}'
+
+```
+
 - Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
   on new indices to move shards to the new node set. Do this for any newly loaded indices as well as any pre-existing indices that will be kept.
 
