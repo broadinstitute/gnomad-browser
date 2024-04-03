@@ -169,6 +169,26 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
           ac_hom
         }
       }
+      joint {
+        ac
+        hemizygote_count
+        homozygote_count
+        fafmax {
+          faf95_max
+          faf95_max_gen_anc
+          faf99_max
+          faf99_max_gen_anc
+        }
+        an
+        filters
+        populations {
+          id
+          ac
+          an
+          homozygote_count
+          hemizygote_count
+        }
+      }
       in_silico_predictors {
         id
         value
