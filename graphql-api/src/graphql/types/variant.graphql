@@ -117,6 +117,23 @@ type VariantSequencingTypeData {
   ac_hemi: Int
 }
 
+type JointFafmax {
+  faf95_max: Float
+  faf95_max_gen_anc: String
+  faf99_max: Float
+  faf99_max_gen_anc: String
+}
+
+type VariantJointSequencingTypeData {
+  ac: Int
+  an: Int
+  homozygote_count: Int
+  hemizygote_count: Int
+  filters: [String!]
+  populations: [VariantPopulation]
+  fafmax: JointFafmax
+}
+
 type NonCodingConstraintRegion {
   chrom: String!
   start: Int!
@@ -139,6 +156,7 @@ type Variant {
   rsids: [String!]
   exome: VariantSequencingTypeData
   genome: VariantSequencingTypeData
+  joint: VariantJointSequencingTypeData
   flags: [String!]
   lof_curation: LoFCurationInGene
   transcript_consequence: TranscriptConsequence
@@ -247,8 +265,6 @@ type VariantDetails {
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
-  faf95_joint: VariantFilteringAlleleFrequency
-  faf99_joint: VariantFilteringAlleleFrequency
 
   non_coding_constraint: NonCodingConstraintRegion
 
