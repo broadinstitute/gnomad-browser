@@ -252,9 +252,11 @@ const shapeVariantSummary = (subset: any, context: any) => {
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
+    const jointFilters = variant.joint.filter || []
 
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = variant.genome.freq[subset].ac_raw
+    const hasJointVariant = variant.joint.freq[subset].ac_raw
 
     if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
@@ -264,7 +266,11 @@ const shapeVariantSummary = (subset: any, context: any) => {
       genomeFilters.push('AC0')
     }
 
-    const hasJointFafData = variant.faf95_joint && variant.faf99_joint
+    if (variant.exome.freq[subset].ac === 0 && !jointFilters.includes('AC0')) {
+      jointFilters.push('AC0')
+    }
+
+    // const hasJointFafData = variant.faf95_joint && variant.faf99_joint
 
     const inSilicoPredictorIds = [
       'cadd',
@@ -320,16 +326,19 @@ const shapeVariantSummary = (subset: any, context: any) => {
             filters: genomeFilters,
           }
         : null,
+      joint: hasJointVariant
+        ? {
+            ...omit(variant.joint, 'freq'),
+            ...variant.joint.freq[subset],
+            populations: variant.joint.freq[subset].ancestry_groups.filter(
+              (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
+            ),
+            filters: jointFilters,
+            fafmax: variant.joint.fafmax,
+          }
+        : null,
       flags,
       transcript_consequence: transcriptConsequence,
-      faf95_joint: hasJointFafData && {
-        popmax_population: variant.faf95_joint.grpmax_gen_anc,
-        popmax: variant.faf95_joint.grpmax,
-      },
-      faf99_joint: hasJointFafData && {
-        popmax_population: variant.faf99_joint.grpmax_gen_anc,
-        popmax: variant.faf99_joint.grpmax,
-      },
       in_silico_predictors: inSilicoPredictorsList,
     }
   }
@@ -343,6 +352,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
   const subset = 'all'
   const exomeSubset = 'all'
   const genomeSubset = 'all'
+  const jointSubset = 'all'
 
   const isLargeGene = largeGenes.includes(gene.gene_id)
 
@@ -378,8 +388,10 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
       _source: [
         `value.exome.freq.${exomeSubset}`,
         `value.genome.freq.${genomeSubset}`,
+        `value.joint.freq.${jointSubset}`,
         'value.exome.filters',
         'value.genome.filters',
+        'value.joint.filters',
         'value.alleles',
         // 'value.caid',
         'value.locus',
@@ -387,8 +399,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
         'value.rsids',
         'value.transcript_consequences',
         'value.variant_id',
-        'value.faf95_joint',
-        'value.faf99_joint',
+        'value.joint.fafmax',
         'value.in_silico_predictors',
       ],
       body: {
