@@ -77,9 +77,11 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
   const variant = response.body.hits.hits[0]._source.value
 
+  const subsetJointFreq = variant.joint.freq[subset] || {}
+
   const hasExomeVariant = variant.exome.freq[subset].ac_raw
   const hasGenomeVariant = variant.genome.freq[subset].ac_raw
-  const hasJointFafData = variant.faf95_joint && variant.faf99_joint
+  const hasJointFrequencyData = subsetJointFreq.ac_raw
 
   if (!(variant.genome.freq[subset] || {}).ac_raw && !(variant.exome.freq[subset] || {}).ac_raw) {
     throw new UserVisibleError('Variant not found in selected subset.')
@@ -87,6 +89,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
   const exomeFilters = variant.exome.filters || []
   const genomeFilters = variant.genome.filters || []
+  const jointFilters = variant.joint.flags || []
 
   if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
     exomeFilters.push('AC0')
@@ -151,7 +154,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
       ? await fetchLocalAncestryPopulationsByVariant(esClient, 'gnomad_r3', variant.variant_id)
       : { genome: null }
 
-  return {
+  const shapedVariant = {
     ...variant,
     reference_genome: 'GRCh38',
     chrom: variant.locus.contig.slice(3), // remove "chr" prefix
@@ -159,14 +162,6 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     ref: variant.alleles[0],
     alt: variant.alleles[1],
     colocated_variants: variant.colocated_variants[subset] || [],
-    faf95_joint: hasJointFafData && {
-      popmax_population: variant.faf95_joint.grpmax_gen_anc,
-      popmax: variant.faf95_joint.grpmax,
-    },
-    faf99_joint: hasJointFafData && {
-      popmax_population: variant.faf99_joint.grpmax_gen_anc,
-      popmax: variant.faf99_joint.grpmax,
-    },
     exome: hasExomeVariant && {
       ...variant.exome,
       ...variant.exome.freq[subset],
@@ -229,6 +224,15 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
       },
       local_ancestry_populations: localAncestryPopulations.genome,
     },
+    joint: hasJointFrequencyData && {
+      ...variant.joint,
+      ...variant.joint.freq[subset],
+      filters: jointFilters,
+      faf95: {
+        popmax_population: variant.joint.fafmax.faf95_max_gen_anc,
+        popmax: variant.joint.fafmax.faf95_max,
+      },
+    },
     flags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
@@ -236,6 +240,8 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     ),
     in_silico_predictors: inSilicoPredictorsList,
   }
+
+  return shapedVariant
 }
 
 // ================================================================================================
@@ -254,9 +260,11 @@ const shapeVariantSummary = (subset: any, context: any) => {
     const genomeFilters = variant.genome.filters || []
     const jointFilters = variant.joint.filter || []
 
+    const subsetJointFreq = variant.joint.freq[subset].ac_raw
+
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = variant.genome.freq[subset].ac_raw
-    const hasJointVariant = variant.joint.freq[subset].ac_raw
+    const hasJointVariant = subsetJointFreq.ac_raw
 
     if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
@@ -269,8 +277,6 @@ const shapeVariantSummary = (subset: any, context: any) => {
     if (variant.exome.freq[subset].ac === 0 && !jointFilters.includes('AC0')) {
       jointFilters.push('AC0')
     }
-
-    // const hasJointFafData = variant.faf95_joint && variant.faf99_joint
 
     const inSilicoPredictorIds = [
       'cadd',
