@@ -344,6 +344,31 @@ const shapeVariantSummary = (subset: any, context: any) => {
   }
 }
 
+const getMultiVariantSourceFields = (
+  exomeSubset: string,
+  genomeSubset: string,
+  jointSubset: string
+): string[] => {
+  const commonMultiVariantQuerySourceFields = [
+    `value.exome.freq.${exomeSubset}`,
+    `value.genome.freq.${genomeSubset}`,
+    `value.joint.freq.${jointSubset}`,
+    'value.exome.filters',
+    'value.genome.filters',
+    'value.joint.filters',
+    'value.alleles',
+    // 'value.caid',
+    'value.locus',
+    'value.flags',
+    'value.rsids',
+    'value.transcript_consequences',
+    'value.variant_id',
+    'value.joint.fafmax',
+    'value.in_silico_predictors',
+  ]
+  return commonMultiVariantQuerySourceFields
+}
+
 // ================================================================================================
 // Gene query
 // ================================================================================================
@@ -385,23 +410,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
       index: GNOMAD_V4_VARIANT_INDEX,
       type: '_doc',
       size: pageSize,
-      _source: [
-        `value.exome.freq.${exomeSubset}`,
-        `value.genome.freq.${genomeSubset}`,
-        `value.joint.freq.${jointSubset}`,
-        'value.exome.filters',
-        'value.genome.filters',
-        'value.joint.filters',
-        'value.alleles',
-        // 'value.caid',
-        'value.locus',
-        'value.flags',
-        'value.rsids',
-        'value.transcript_consequences',
-        'value.variant_id',
-        'value.joint.fafmax',
-        'value.in_silico_predictors',
-      ],
+      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
       body: {
         query: {
           bool: {
@@ -434,27 +443,13 @@ const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) =
   const subset = 'all'
   const exomeSubset = 'all'
   const genomeSubset = 'all'
+  const jointSubset = 'all'
 
   const hits = await fetchAllSearchResults(esClient, {
     index: GNOMAD_V4_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
-    _source: [
-      `value.exome.freq.${exomeSubset}`,
-      `value.genome.freq.${genomeSubset}`,
-      'value.exome.filters',
-      'value.genome.filters',
-      'value.alleles',
-      // 'value.caid',
-      'value.locus',
-      'value.flags',
-      'value.rsids',
-      'value.transcript_consequences',
-      'value.variant_id',
-      'value.faf95_joint',
-      'value.faf99_joint',
-      'value.in_silico_predictors',
-    ],
+    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
     body: {
       query: {
         bool: {
@@ -492,6 +487,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
   const subset = 'all'
   const exomeSubset = 'all'
   const genomeSubset = 'all'
+  const jointSubset = 'all'
 
   if (transcript.gene.symbol === 'TTN') {
     throw new UserVisibleError(
@@ -525,23 +521,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
     index: GNOMAD_V4_VARIANT_INDEX,
     type: '_doc',
     size: 10000,
-    _source: [
-      `value.exome.freq.${exomeSubset}`,
-      `value.genome.freq.${genomeSubset}`,
-      'value.exome.filters',
-      'value.genome.filters',
-      'value.genome.filters',
-      'value.alleles',
-      // 'value.caid',
-      'value.locus',
-      'value.flags',
-      'value.rsids',
-      'value.transcript_consequences',
-      'value.variant_id',
-      'value.faf95_joint',
-      'value.faf99_joint',
-      'value.in_silico_predictors',
-    ],
+    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
     body: {
       query: {
         bool: {
