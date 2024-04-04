@@ -234,6 +234,42 @@ type VariantDetailsSequencingTypeData {
   ac_hemi: Int
 }
 
+type ContingencyTableTest {
+  p_value: Float
+  odds_ratio: Float
+}
+
+type CochranMantelHaenszelTest {
+  chisq: Float
+  p_value: Float
+}
+
+type StatUnion {
+  p_value: Float
+  stat_test_name: String
+  gen_ancs: [String]
+}
+
+type VariantJointFrequencyComparisonStats {
+  contingency_table_test: [ContingencyTableTest]
+  cochran_mantel_haenszel_test: CochranMantelHaenszelTest
+  stat_union: StatUnion
+}
+
+type VariantDetailsJointSequencingTypeData {
+  ac: Int
+  an: Int
+  homozygote_count: Int
+  hemizygote_count: Int
+  faf95: VariantFilteringAlleleFrequency
+  faf99: VariantFilteringAlleleFrequency
+  filters: [String!]
+  populations: [VariantPopulation]
+  age_distribution: VariantAgeDistribution
+  quality_metrics: VariantQualityMetrics
+  freq_comparison_stats: VariantJointFrequencyComparisonStats
+}
+
 type MultiNucleotideVariantSummary {
   combined_variant_id: String!
   changes_amino_acids: Boolean!
@@ -262,6 +298,7 @@ type VariantDetails {
   multi_nucleotide_variants: [MultiNucleotideVariantSummary!]
   exome: VariantDetailsSequencingTypeData
   genome: VariantDetailsSequencingTypeData
+  joint: VariantDetailsJointSequencingTypeData
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
