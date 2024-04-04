@@ -465,10 +465,6 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     alt
     caid
     colocated_variants
-    faf95_joint {
-      popmax
-      popmax_population
-    }
     coverage {
       exome {
         mean
@@ -640,6 +636,53 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
         site_quality_metrics {
           metric
           value
+        }
+      }
+    }
+    joint {
+      ac
+      an
+      homozygote_count
+      hemizygote_count
+      faf95 {
+        popmax
+        popmax_population
+      }
+      filters
+      populations {
+        id
+        ac
+        an
+        homozygote_count
+        hemizygote_count
+      }
+      age_distribution {
+        het {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+        hom {
+          bin_edges
+          bin_freq
+          n_smaller
+          n_larger
+        }
+      }
+      freq_comparison_stats {
+        contingency_table_test {
+          p_value
+          odds_ratio
+        }
+        cochran_mantel_haenszel_test {
+          chisq
+          odds_ratio
+        }
+        stat_union {
+          p_value
+          stat_test_name
+          gen_ancs
         }
       }
     }
