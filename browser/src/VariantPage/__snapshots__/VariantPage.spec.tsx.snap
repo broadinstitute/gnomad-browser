@@ -421,7 +421,35 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -9835,7 +9863,35 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -19252,7 +19308,35 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -28669,7 +28753,35 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -38086,7 +38198,35 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -47503,7 +47643,35 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -64422,7 +64590,35 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -74052,7 +74248,35 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -83682,7 +83906,35 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -93312,7 +93564,35 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
@@ -102942,7 +103222,35 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
-                    Filters
+                    Filters 
+                    <button
+                      className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="test-file-stub"
+                      />
+                      <span
+                        style={
+                          {
+                            "border": "0",
+                            "clip": "rect(0 0 0 0)",
+                            "height": "1px",
+                            "margin": "-1px",
+                            "overflow": "hidden",
+                            "padding": "0",
+                            "position": "absolute",
+                            "whiteSpace": "nowrap",
+                            "width": "1px",
+                          }
+                        }
+                      >
+                        More information
+                      </span>
+                    </button>
                   </span>
                 </th>
                 <td>
