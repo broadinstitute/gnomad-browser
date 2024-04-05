@@ -89,6 +89,7 @@ export const variantFactory = Factory.define<Variant>(({ params, associations })
   const {
     exome = null,
     genome = null,
+    joint = null,
     non_coding_constraint = null,
     clinvar = null,
     coverage = { exome: null, genome: null },
@@ -110,6 +111,7 @@ export const variantFactory = Factory.define<Variant>(({ params, associations })
     clinvar,
     exome,
     genome,
+    joint,
     lof_curations,
     in_silico_predictors,
     non_coding_constraint,
@@ -195,8 +197,8 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
   const {
     ac = 1,
     an = 1,
-    homozygote_count = null,
-    hemizygote_count = null,
+    homozygote_count = 0,
+    hemizygote_count = 0,
     filters = [],
     populations = [],
     local_ancestry_populations = [],

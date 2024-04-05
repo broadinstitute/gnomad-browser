@@ -45,6 +45,7 @@ import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 import { URLBuilder } from '../DatasetSelector'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { Filter } from '../QCFilter'
 
 const Section = styled.section`
   width: 100%;
@@ -185,19 +186,40 @@ export type Faf95 = {
   popmax_population: string
 }
 
-export type SequencingType = {
+type BaseSequencingType = {
   ac: number
   an: number
-  ac_hemi: number | null
-  ac_hom: number
-  homozygote_count: number | null
-  hemizygote_count: number | null
+  homozygote_count: number
+  hemizygote_count: number
   faf95: Faf95
-  filters: string[]
+  filters: Filter[]
   populations: Population[]
-  local_ancestry_populations: LocalAncestryPopulation[]
   age_distribution: AgeDistribution | null
+}
+
+export type SequencingType = BaseSequencingType & {
   quality_metrics: VariantQualityMetrics
+  local_ancestry_populations: LocalAncestryPopulation[]
+  ac_hom: number
+  ac_hemi: number
+}
+
+export type JointSequencingType = BaseSequencingType & {
+  freq_comparison_stats: {
+    contingency_table_test: {
+      p_value: number
+      odds_ratio: number
+    }[]
+    cochran_mantel_haenszel_test: {
+      chisq: number
+      p_value: number
+    }
+    stat_union: {
+      p_value: number
+      stat_test_name: string
+      gen_ancs: string[]
+    }
+  }
 }
 
 export type LofCuration = {
@@ -283,6 +305,7 @@ export type Variant = {
   clinvar: ClinvarVariant | null
   exome: SequencingType | null
   genome: SequencingType | null
+  joint: JointSequencingType | null
   lof_curations: LofCuration[] | null
   in_silico_predictors: InSilicoPredictor[] | null
   transcript_consequences: TranscriptConsequence[] | null
@@ -676,8 +699,8 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
           odds_ratio
         }
         cochran_mantel_haenszel_test {
+          p_value
           chisq
-          odds_ratio
         }
         stat_union {
           p_value
