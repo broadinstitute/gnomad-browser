@@ -60,17 +60,17 @@ spec:
             - name: JSON_CACHE_COMPRESSION
               value: 'true'
             - name: NODE_OPTIONS
-              value: '--max-old-space-size=3072'
+              value: '--max-old-space-size=10240'
           ports:
             - name: http
               containerPort: 8000
           resources:
             requests:
               cpu: '1'
-              memory: '2Gi'
+              memory: '11Gi'
             limits:
               cpu: '2'
-              memory: '4Gi'
+              memory: '12Gi'
           readinessProbe:
             httpGet:
               path: /health/ready

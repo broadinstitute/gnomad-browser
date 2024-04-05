@@ -57,6 +57,13 @@ type StructuralVariant {
   ac_hemi: Int
 }
 
+# The StructuralVariantDetails schema below has some nullable fields, for
+# instance "length", where it seems pretty unlikely that any record actually
+# does have a null value. We could simplify the code some if we can make some
+# of these fields non-nullable, but if we do that, we should double-check
+# against the datasets to make sure there are not actually any nulls in the#
+# fields in question.
+
 type StructuralVariantDetails {
   age_distribution: StructuralVariantAgeDistribution
   algorithms: [String!]

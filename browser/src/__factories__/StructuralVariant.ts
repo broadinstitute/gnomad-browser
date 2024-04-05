@@ -8,8 +8,12 @@ const structuralVariantFactory = Factory.define<StructuralVariant>(
       alts = null,
       ac = 123,
       an = 345,
+      af = 456,
+      homozygote_count = null,
+      hemizygote_count = null,
       chrom = '21',
       chrom2 = null,
+      major_consequence = null,
       copy_numbers = [],
       cpx_intervals = [],
       cpx_type = null,
@@ -24,6 +28,9 @@ const structuralVariantFactory = Factory.define<StructuralVariant>(
       pos2 = null,
       qual = 99,
       type = 'DUP',
+      consequence = null,
+      ac_hom = null,
+      ac_hemi = null,
     } = params
 
     const { age_distribution = null, consequences = [], genotype_quality = null } = associations
@@ -38,6 +45,10 @@ const structuralVariantFactory = Factory.define<StructuralVariant>(
       alts,
       ac,
       an,
+      af,
+      homozygote_count,
+      hemizygote_count,
+      major_consequence,
       chrom,
       chrom2,
       consequences,
@@ -57,6 +68,9 @@ const structuralVariantFactory = Factory.define<StructuralVariant>(
       qual,
       type,
       variant_id,
+      consequence,
+      ac_hom,
+      ac_hemi,
     }
   }
 )

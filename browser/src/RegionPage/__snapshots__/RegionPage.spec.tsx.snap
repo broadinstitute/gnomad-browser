@@ -3781,6 +3781,14 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
         }
       }
     />
+    <React.Fragment>
+      <RegionalGenomicConstraintTrack
+        height={45}
+        regions={[]}
+        start={345}
+        stop={456}
+      />
+    </React.Fragment>
     <MitochondrialVariantsInRegion
       datasetId="gnomad_r4"
       region={
@@ -3925,6 +3933,14 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
         }
       }
     />
+    <React.Fragment>
+      <RegionalGenomicConstraintTrack
+        height={45}
+        regions={[]}
+        start={345}
+        stop={456}
+      />
+    </React.Fragment>
     <ConnectedVariantsInRegion
       datasetId="gnomad_r4"
       region={

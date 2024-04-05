@@ -137,6 +137,7 @@ const ShortTandemRepeatPageContainer = ({
         datasetOptions={{
           includeShortVariants: true,
           includeStructuralVariants: false,
+          includeCopyNumberVariants: false,
           includeExac: false,
           includeGnomad2: false,
           includeGnomad3: true,

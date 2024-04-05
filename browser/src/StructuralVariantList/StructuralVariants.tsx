@@ -19,7 +19,7 @@ import {
 } from './structuralVariantConsequences'
 import { svTypeColors } from './structuralVariantTypes'
 import StructuralVariantFilterControls from './StructuralVariantFilterControls'
-import StructuralVariantPropType from './StructuralVariantPropType'
+import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 import structuralVariantTableColumns, {
   getColumnsForContext,
 } from './structuralVariantTableColumns'
@@ -71,7 +71,7 @@ export interface Context {
 type StructuralVariantsProps = {
   context: Context
   exportFileName: string
-  variants: StructuralVariantPropType[]
+  variants: StructuralVariant[]
 }
 
 const StructuralVariants = ({ context, exportFileName, variants }: StructuralVariantsProps) => {
@@ -203,7 +203,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   // are based on, then offset the positions so that they are based on the
   // region viewer's coordinate system.
   const currentChromIndex = HUMAN_CHROMOSOMES.indexOf(context.chrom) // eslint-disable-line react/destructuring-assignment
-  const positionCorrectedVariants = renderedVariants.map((variant: StructuralVariantPropType) => {
+  const positionCorrectedVariants = renderedVariants.map((variant: StructuralVariant) => {
     const copy = { ...variant }
 
     // This can only happen when chrom2/pos2/end2 is non-null
@@ -238,7 +238,6 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
       <Wrapper>
         <StructuralVariantTracks
           ref={tracks}
-          // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; highlightedVa... Remove this comment to see the full error message
           highlightedVariant={variantHoveredInTable}
           numTracksRendered={numRowsRendered}
           onHover={setVariantHoveredInTrack}

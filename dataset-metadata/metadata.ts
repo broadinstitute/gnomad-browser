@@ -201,17 +201,15 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
     datasetId.startsWith('gnomad_r2') ||
     datasetId.startsWith('gnomad_sv_r2') ||
     datasetId === 'exac',
-  hasNonCodingConstraints: datasetId.startsWith('gnomad_r3') || datasetId === 'gnomad_sv_r4',
+  hasNonCodingConstraints:
+    datasetId.startsWith('gnomad_r3') ||
+    datasetId.startsWith('gnomad_r4') ||
+    datasetId === 'gnomad_sv_r4',
   hasExome: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   genesHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   transcriptsHaveExomeCoverage: !datasetId.startsWith('gnomad_r3') && datasetId !== 'gnomad_sv_r4',
   referenceGenome:
-    datasetId.startsWith('gnomad_r3') ||
-      datasetId.startsWith('gnomad_r4') ||
-      datasetId === 'gnomad_sv_r4' ||
-      datasetId === 'gnomad_cnv_r4'
-      ? 'GRCh38'
-      : 'GRCh37',
+    datasetId.startsWith('gnomad_r3') || datasetId.endsWith('r4') ? 'GRCh38' : 'GRCh37',
   genesHaveGenomeCoverage: !datasetId.startsWith('gnomad_cnv'),
   regionsHaveExomeCoverage:
     !datasetId.startsWith('gnomad_sv') && !datasetId.startsWith('gnomad_r3'),
@@ -245,7 +243,10 @@ const metadataForDataset = (datasetId: DatasetId): DatasetMetadata => ({
   hasRelatedVariants: datasetId !== 'gnomad_r2_1',
   showAllIndividualsInAgeDistributionByDefault: datasetId !== 'exac',
   hasExons: !datasetId.startsWith('gnomad_sv'),
-  hasShortTandemRepeats: datasetId.startsWith('gnomad_r3') || datasetId.startsWith('gnomad_r4') || datasetId === "gnomad_sv_r4",
+  hasShortTandemRepeats:
+    datasetId.startsWith('gnomad_r3') ||
+    datasetId.startsWith('gnomad_r4') ||
+    datasetId === 'gnomad_sv_r4',
   hasMitochondrialGenomeCoverage: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
   hasMitochondrialVariants: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),
   hasNonCodingReadData: !(datasetId === 'exac' || datasetId.startsWith('gnomad_r2')),

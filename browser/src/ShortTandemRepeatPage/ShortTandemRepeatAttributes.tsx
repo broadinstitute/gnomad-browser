@@ -1,13 +1,13 @@
 import React from 'react'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
 type ShortTandemRepeatRepeatUnitsProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRepeatUnitsProps) => {
@@ -27,8 +27,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
     !(repeatUnitsByClassification as any).benign
   ) {
     return (
-      // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-      <AttributeList.Item
+      <AttributeListItem
         label={`Repeat unit${(repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''}`}
       >
         <InlineList
@@ -42,15 +41,14 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           ))}
           label={`Repeat unit${(repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''}`}
         />
-      </AttributeList.Item>
+      </AttributeListItem>
     )
   }
 
   return (
     <>
       {(repeatUnitsByClassification as any).pathogenic && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item
+        <AttributeListItem
           label={`Pathogenic repeat unit${
             (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
           }`}
@@ -69,11 +67,10 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
               (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
             }`}
           />
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
       {(repeatUnitsByClassification as any).benign && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item
+        <AttributeListItem
           label={`Benign repeat unit${
             (repeatUnitsByClassification as any).benign.length > 1 ? 's' : ''
           }`}
@@ -92,11 +89,10 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
               (repeatUnitsByClassification as any).benign.length > 1 ? 's' : ''
             }`}
           />
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
       {(repeatUnitsByClassification as any).unknown && (
-        // @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message
-        <AttributeList.Item
+        <AttributeListItem
           label={`Other repeat unit${
             (repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''
           }`}
@@ -115,36 +111,33 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
               (repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''
             }`}
           />
-        </AttributeList.Item>
+        </AttributeListItem>
       )}
     </>
   )
 }
 
 type ShortTandemRepeatAttributesProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatAttributes = ({ shortTandemRepeat }: ShortTandemRepeatAttributesProps) => {
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Gene">
+      <AttributeListItem label="Gene">
         <Link to={`/gene/${shortTandemRepeat.gene.ensembl_id}`}>
           {shortTandemRepeat.gene.symbol}
         </Link>
-      </AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Gene region">{shortTandemRepeat.gene.region}</AttributeList.Item>
-      {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-      <AttributeList.Item label="Reference region">
+      </AttributeListItem>
+      <AttributeListItem label="Gene region">{shortTandemRepeat.gene.region}</AttributeListItem>
+      <AttributeListItem label="Reference region">
         <Link
           to={`/region/${shortTandemRepeat.reference_region.chrom}-${shortTandemRepeat.reference_region.start}-${shortTandemRepeat.reference_region.stop}`}
         >
           {shortTandemRepeat.reference_region.chrom}-{shortTandemRepeat.reference_region.start}-
           {shortTandemRepeat.reference_region.stop}
         </Link>
-      </AttributeList.Item>
+      </AttributeListItem>
       <ShortTandemRepeatRepeatUnits shortTandemRepeat={shortTandemRepeat} />
     </AttributeList>
   )
