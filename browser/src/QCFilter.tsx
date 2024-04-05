@@ -53,7 +53,13 @@ const renderFilterDescription = (filter: Filter, data: any) => {
   let description = FILTER_DISPLAY_MAPPING[filter].description
 
   if (filter === 'discrepant_frequencies') {
-    description = description.concat(`, with a p value of ${data.cochran_p_value}`)
+    description = description.concat(
+      `, with a ${
+        data.testName === 'cochran_mantel_haenszel_test'
+          ? 'Cochran Mantel Haenszel test'
+          : 'Contingency Table test'
+      } p-value of ${data.pValue.toExponential(2)}`
+    )
   }
 
   return description

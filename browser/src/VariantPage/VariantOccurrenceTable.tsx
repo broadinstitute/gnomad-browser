@@ -43,15 +43,25 @@ const NoWrap = styled.span`
 type VariantContext = 'exome' | 'genome' | 'joint'
 const renderGnomadVariantFlag = (variant: Variant, context: VariantContext) => {
   if (!variant[context]) {
-    return <Badge level="error">No variant</Badge>
+    return context === 'joint' ? <div /> : <Badge level="error">No variant</Badge>
   }
   const { filters } = variant[context]!
 
   if (filters.length === 0) {
-    return <Badge level="success">Pass</Badge>
+    return context === 'joint' ? <div /> : <Badge level="success">Pass</Badge>
   }
 
-  return filters.map((filter: any) => <QCFilter key={filter} filter={filter} />)
+  return filters.map((filter) => {
+    const data =
+      filter === 'discrepant_frequencies'
+        ? {
+            pValue: variant.joint!.freq_comparison_stats.stat_union.p_value,
+            testName: variant.joint!.freq_comparison_stats.stat_union.stat_test_name,
+          }
+        : {}
+
+    return <QCFilter key={filter} filter={filter} data={data} />
+  })
 }
 
 const FilteringAlleleFrequencyPopulation = styled.div`
@@ -264,12 +274,14 @@ export const GnomadVariantOccurrenceTable = ({
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Quality control filters that this variant failed (if any)">
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-                <TooltipHint>Filters</TooltipHint>
+                <TooltipHint>
+                  Filters <InfoButton topic="what-do-the-flags-on-the-browser-mean" />
+                </TooltipHint>
               </TooltipAnchor>
             </th>
             {showExomes && <td>{renderGnomadVariantFlag(variant, 'exome')}</td>}
             {showGenomes && <td>{renderGnomadVariantFlag(variant, 'genome')}</td>}
-            {showTotal && <td />}
+            {showTotal && <td>{renderGnomadVariantFlag(variant, 'joint')}</td>}
           </tr>
           <tr>
             <th scope="row">
