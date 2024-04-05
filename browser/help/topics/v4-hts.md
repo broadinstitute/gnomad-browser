@@ -333,8 +333,10 @@ Global fields
 - `versions`: Struct containing the exomes and genomes versions.
 - `genomes_globals`: Global fields from the gnomAD genomes.
   - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.freq` array row annotation.
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `genomes.freq` array row annotation.
   - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes `genomes.freq_meta` global annotation.
   - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.faf` array row annotation.
+  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`genomes.faf`) row annotation.
   - `age_distribution`: Callset-wide age histogram calculated on the gnomAD genomes.
     - `bin_edges`: Bin edges for the age histogram.
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -342,8 +344,10 @@ Global fields
     - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `exomes_globals`: Global fields from the gnomAD exomes.
   - `freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.freq` array row annotation.
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `exomes.freq` array row annotation. 
   - `freq_meta_sample_count`: A sample count per sample grouping defined in the exomes `exomes.freq_meta` global annotation.
   - `faf_meta`: Filtering allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.faf` array row annotation.
+  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`exomes.faf`) row annotation.
   - `age_distribution`: Callset-wide age histogram calculated on the gnomAD exomes.
     - `bin_edges`: Bin edges for the age histogram.
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
