@@ -61,21 +61,39 @@ const mergeExomeAndGenomeData = (variants: any) =>
       }
     }
 
-    const totalAC = add(exome.ac, genome.ac)
-    const totalAN = add(exome.an, genome.an)
-    const totalAF = totalAN ? totalAC / totalAN : 0
+    const jointAC = variant.joint ? variant.joint.ac : add(exome.ac, genome.ac)
+    const jointAN = variant.joint ? variant.joint.an : add(exome.an, genome.an)
+    const jointAF = jointAC ? jointAC / jointAN : 0
 
-    return {
+    const jointHemizygoteCount = variant.joint
+      ? variant.joint.hemizygote_count
+      : add(exome.ac_hemi, genome.ac_hemi)
+    const jointHomozygoteCount = variant.joint
+      ? variant.joint.homozygote_count
+      : add(exome.ac_hom, genome.ac_hom)
+
+    const exomeAndGenomeFilters = exome.filters.concat(genome.filters)
+    const jointFilters = variant.joint
+      ? exomeAndGenomeFilters.concat(variant.joint.filters)
+      : exomeAndGenomeFilters
+
+    const jointPopulations = variant.join
+      ? variant.joint.populations
+      : mergeExomeAndGenomePopulationData(exome!, genome!)
+
+    const jointVariantData = {
       ...variant,
-      ac: totalAC,
-      an: totalAN,
-      af: totalAF,
-      allele_freq: totalAF, // hack for variant track which expects allele_freq field
-      ac_hemi: add(exome.ac_hemi, genome.ac_hemi),
-      ac_hom: add(exome.ac_hom, genome.ac_hom),
-      filters: exome.filters.concat(genome.filters),
-      populations: mergeExomeAndGenomePopulationData(exome!, genome!),
+      ac: jointAC,
+      an: jointAN,
+      af: jointAF,
+      allele_freq: jointAF, // hack for variant track which expects allele_freq field
+      ac_hemi: jointHemizygoteCount,
+      ac_hom: jointHomozygoteCount,
+      filters: jointFilters,
+      populations: jointPopulations,
     }
+
+    return jointVariantData
   })
 
 export default mergeExomeAndGenomeData

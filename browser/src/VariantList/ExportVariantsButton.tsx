@@ -86,11 +86,18 @@ export const createVersionSpecificColumns = (datasetId: DatasetId) => {
   if (isV4(datasetId)) {
     versionSpecificColumns = [
       {
+        label: 'Filters - joint',
+        getValue: (variant) => {
+          const v4Variant = variant as V4VariantTableVariant
+          return v4Variant.joint.filters.length === 0 ? 'PASS' : v4Variant.joint.filters.join(',')
+        },
+      },
+      {
         label: 'GroupMax FAF group',
         getValue: (variant) => {
           const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.faf95_joint.popmax_population !== null
-            ? v4Variant.faf95_joint.popmax_population
+          return v4Variant.joint.fafmax.faf95_max_gen_anc !== null
+            ? v4Variant.joint.fafmax.faf95_max_gen_anc
             : ''
         },
       },
@@ -98,8 +105,8 @@ export const createVersionSpecificColumns = (datasetId: DatasetId) => {
         label: 'GroupMax FAF frequency',
         getValue: (variant) => {
           const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.faf95_joint.popmax !== null
-            ? JSON.stringify(v4Variant.faf95_joint.popmax)
+          return v4Variant.joint.fafmax.faf95_max !== null
+            ? JSON.stringify(v4Variant.joint.fafmax.faf95_max)
             : ''
         },
       },
@@ -371,7 +378,13 @@ type V2VariantTableVariant = VariantTableVariant & {
 }
 
 type V4VariantTableVariant = VariantTableVariant & {
-  faf95_joint: FilteredAlleleFrequency
+  joint: {
+    filters: string[]
+    fafmax: {
+      faf95_max: number | null
+      faf95_max_gen_anc: string | null
+    }
+  }
   in_silico_predictors: {
     id: string
     value: string
