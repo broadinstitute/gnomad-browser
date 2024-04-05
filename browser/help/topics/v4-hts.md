@@ -331,20 +331,9 @@ The v4.1 joint (combined exomes + genomes) frequency Hail Table only contains fr
 Global fields
 
 - `versions`: Struct containing the exomes and genomes versions.
-- `genomes_globals`: Global fields from the gnomAD genomes.
-  - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.freq` array row annotation.
-  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `genomes.freq` array row annotation.
-  - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes `genomes.freq_meta` global annotation.
-  - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.faf` array row annotation.
-  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`genomes.faf`) row annotation.
-  - `age_distribution`: Callset-wide age histogram calculated on the gnomAD genomes.
-    - `bin_edges`: Bin edges for the age histogram.
-    - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
-    - `n_smaller`: Count of age values falling below lowest histogram bin edge.
-    - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `exomes_globals`: Global fields from the gnomAD exomes.
   - `freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.freq` array row annotation.
-  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `exomes.freq` array row annotation. 
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group [adj only], sex: sex karyotype [adj only]), with values describing the corresponding index of each grouping entry in the `exomes.freq` array row annotation. 
   - `freq_meta_sample_count`: A sample count per sample grouping defined in the exomes `exomes.freq_meta` global annotation.
   - `faf_meta`: Filtering allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.faf` array row annotation.
   - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`exomes.faf`) row annotation.
@@ -353,9 +342,20 @@ Global fields
     - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
     - `n_smaller`: Count of age values falling below lowest histogram bin edge.
     - `n_larger`: Count of age values falling above highest histogram bin edge.
+- `genomes_globals`: Global fields from the gnomAD genomes.
+  - `freq_meta`: Allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.freq` array row annotation.
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group [adj only], sex: sex karyotype [adj only]), with values describing the corresponding index of each grouping entry in the `genomes.freq` array row annotation.
+  - `freq_meta_sample_count`: A sample count per sample grouping defined in the genomes `genomes.freq_meta` global annotation.
+  - `faf_meta`: Filtering allele frequency metadata for the gnomAD genomes. An ordered list containing the frequency aggregation group for each element of the `genomes.faf` array row annotation.
+  - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`genomes.faf`) row annotation.
+  - `age_distribution`: Callset-wide age histogram calculated on the gnomAD genomes.
+    - `bin_edges`: Bin edges for the age histogram.
+    - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+    - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+    - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `joint_globals`: Global fields from the combined (joint) gnomAD exomes and genomes.
   - `freq_meta`: Allele frequency metadata for the joint gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the `joint.freq` array row annotation.
-  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `joint.freq` array row annotation.
+  - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group [adj only], sex: sex karyotype [adj only]), with values describing the corresponding index of each grouping entry in the `joint.freq` array row annotation.
   - `faf_meta`: Filtering allele frequency metadata for the combined gnomAD exomes and genomes. An ordered list containing the frequency aggregation group for each element of the `joint.faf` array row annotation.
   - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`joint.faf`) row annotation.
   - `freq_meta_sample_count`: A sample count per sample grouping defined in the joint `joint.freq_meta` global annotation.
@@ -377,90 +377,6 @@ Row fields
   - `outside_broad_calling_region`: Variant falls outside of Broad exome capture regions plus 150 bp padding.
   - `not_called_in_exomes`: Variant was not called in the gnomAD exomes.
   - `not_called_in_genomes`: Variant was not called in the gnomAD genomes.
-- `genomes`: Struct of allele frequency information from the gnomAD genomes.
-  - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD genomes.
-    - `AC`: Alternate allele count in release.
-    - `AF`: Alternate allele frequency, (AC/AN), in release.
-    - `AN`: Total number of alleles in release.
-    - `homozygote_count`: Count of homozygous alternate individuals in release.
-  - `faf`: Filtering allele frequency in the gnomAD genomes.
-    - `faf95`: Filtering allele frequency (using Poisson 95% CI).
-    - `faf99`: Filtering allele frequency (using Poisson 99% CI).
-  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
-    - `AC`: Alternate allele count in the group with the maximum allele frequency.
-    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
-    - `AN`: Total number of alleles in the group with the maximum allele frequency.
-    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
-    - `gen_anc`: Genetic ancestry group with maximum allele frequency
-  - `fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency.
-    - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI).
-    - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
-    - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
-    - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
-  - `histograms`: Variant information histograms from the gnomAD genomes.
-    - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
-      - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
-        - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the GQ histogram calculated on high quality genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of GQ values falling below the lowest histogram bin edge, calculated on high quality genotypes.
-        - `n_larger`: Count of GQ values falling above the highest histogram bin edge, calculated on high quality genotypes.
-      - `dp_hist_all`: Histogram for DP|70|75|80|85|90|95|100.
-        - `bin_edges`: Bin edges for the DP histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the DP histogram calculated on high quality genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of DP values falling below the lowest histogram bin edge, calculated on high quality genotypes.
-        - `n_larger`: Count of DP values falling above the highest histogram bin edge, calculated on high quality genotypes.
-      - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on high quality genotypes.
-        - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of GQ values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
-        - `n_larger`: Count of GQ values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
-      - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on high quality genotypes.
-        - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of DP values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
-        - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on high quality genotypes.
-      - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on high quality genotypes.
-        - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on high quality genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
-        - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of AB values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
-        - `n_larger`: Count of AB values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
-    - `raw_qual_hists`: Genotype quality metric histograms for all genotypes as opposed to high quality genotypes.
-      - `gq_hist_all`: Histogram for GQ calculated on all genotypes.
-        - `bin_edges`: Bin edges for the GQ histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the GQ histogram calculated on all genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of GQ values falling below lowest histogram bin edge, for GQ calculated on all genotypes.
-        - `n_larger`: Count of GQ values falling above highest histogram bin edge, for GQ calculated on all genotypes.
-      - `dp_hist_all`: Histogram for DP calculated on all genotypes.
-        - `bin_edges`: Bin edges for the DP histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100
-        - `bin_freq`: Bin frequencies for the DP histogram calculated on all genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of DP values falling below lowest histogram bin edge, for DP calculated on all genotypes.
-        - `n_larger`: Count of DP values falling above highest histogram bin edge, for DP calculated on all genotypes.
-      - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on all genotypes.
-        - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of GQ values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
-        - `n_larger`: Count of GQ values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
-      - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on all genotypes.
-        - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
-        - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of DP values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
-        - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
-      - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on all genotypes.
-        - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on all genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
-        - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
-        - `n_smaller`: Count of AB values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
-        - `n_larger`: Count of AB values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
-      - `age_hists`: Histograms containing age information for release samples.
-        - `age_hist_het`: Histogram for age in all heterozygous release samples calculated on high quality genotypes.
-          - `bin_edges`: Bin edges for the age histogram.
-          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
-          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
-          - `n_larger`: Count of age values falling above highest histogram bin edge.
-        - `age_hist_hom`: Histogram for age in all homozygous release samples calculated on high quality genotypes. If variant is in the pseudoautosomal regions of chrX or chrY, this histogram also includes age counts of hemizygous samples.
-          - `bin_edges`: Bin edges for the age histogram.
-          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
-          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
-          - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `exomes`: Struct of allele frequency information from the gnomAD exomes.
   - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD exomes.
     - `AC`: Alternate allele count in release.
@@ -545,6 +461,90 @@ Row fields
         - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
         - `n_smaller`: Count of age values falling below lowest histogram bin edge.
         - `n_larger`: Count of age values falling above highest histogram bin edge.
+- `genomes`: Struct of allele frequency information from the gnomAD genomes.
+  - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) for each frequency aggregation group in the gnomAD genomes.
+    - `AC`: Alternate allele count in release.
+    - `AF`: Alternate allele frequency, (AC/AN), in release.
+    - `AN`: Total number of alleles in release.
+    - `homozygote_count`: Count of homozygous alternate individuals in release.
+  - `faf`: Filtering allele frequency in the gnomAD genomes.
+    - `faf95`: Filtering allele frequency (using Poisson 95% CI).
+    - `faf99`: Filtering allele frequency (using Poisson 99% CI).
+  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+    - `AC`: Alternate allele count in the group with the maximum allele frequency.
+    - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
+    - `AN`: Total number of alleles in the group with the maximum allele frequency.
+    - `homozygote_count`: Count of homozygous individuals in the group with the maximum allele frequency.
+    - `gen_anc`: Genetic ancestry group with maximum allele frequency
+  - `fafmax`: Information about the genetic ancestry group with the maximum filtering allele frequency.
+    - `faf95_max`: Maximum filtering allele frequency (using Poisson 95% CI).
+    - `faf95_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (95% CI).
+    - `faf99_max`: Maximum filtering allele frequency (using Poisson 99% CI).
+    - `faf99_max_gen_anc`: Genetic ancestry group with the maximum filtering allele frequency (99% CI).
+  - `histograms`: Variant information histograms from the gnomAD genomes.
+    - `qual_hists`: Genotype quality metric histograms for high quality genotypes.
+      - `gq_hist_all`: Histogram for GQ calculated on high quality genotypes.
+        - `bin_edges`: Bin edges for the GQ histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the GQ histogram calculated on high quality genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of GQ values falling below the lowest histogram bin edge, calculated on high quality genotypes.
+        - `n_larger`: Count of GQ values falling above the highest histogram bin edge, calculated on high quality genotypes.
+      - `dp_hist_all`: Histogram for DP|70|75|80|85|90|95|100.
+        - `bin_edges`: Bin edges for the DP histogram calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the DP histogram calculated on high quality genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of DP values falling below the lowest histogram bin edge, calculated on high quality genotypes.
+        - `n_larger`: Count of DP values falling above the highest histogram bin edge, calculated on high quality genotypes.
+      - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on high quality genotypes.
+        - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of GQ values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+        - `n_larger`: Count of GQ values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
+      - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on high quality genotypes.
+        - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on high quality genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of DP values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+        - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on high quality genotypes.
+      - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on high quality genotypes.
+        - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on high quality genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
+        - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on high quality genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of AB values in heterozygous individuals falling below the lowest histogram bin edge, calculated on high quality genotypes.
+        - `n_larger`: Count of AB values in heterozygous individuals falling above the highest histogram bin edge, calculated on high quality genotypes.
+    - `raw_qual_hists`: Genotype quality metric histograms for all genotypes as opposed to high quality genotypes.
+      - `gq_hist_all`: Histogram for GQ calculated on all genotypes.
+        - `bin_edges`: Bin edges for the GQ histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the GQ histogram calculated on all genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of GQ values falling below lowest histogram bin edge, for GQ calculated on all genotypes.
+        - `n_larger`: Count of GQ values falling above highest histogram bin edge, for GQ calculated on all genotypes.
+      - `dp_hist_all`: Histogram for DP calculated on all genotypes.
+        - `bin_edges`: Bin edges for the DP histogram calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100
+        - `bin_freq`: Bin frequencies for the DP histogram calculated on all genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of DP values falling below lowest histogram bin edge, for DP calculated on all genotypes.
+        - `n_larger`: Count of DP values falling above highest histogram bin edge, for DP calculated on all genotypes.
+      - `gq_hist_alt`: Histogram for GQ in heterozygous individuals calculated on all genotypes.
+        - `bin_edges`: Bin edges for the histogram of GQ in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the histogram of GQ in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of GQ values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+        - `n_larger`: Count of GQ values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+      - `dp_hist_alt`: Histogram for DP in heterozygous individuals calculated on all genotypes.
+        - `bin_edges`: Bin edges for the histogram of DP in heterozygous individuals calculated on all genotypes are: 0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100.
+        - `bin_freq`: Bin frequencies for the histogram of DP in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of DP values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+        - `n_larger`: Count of DP values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+      - `ab_hist_alt`: Histogram for AB in heterozygous individuals calculated on all genotypes.
+        - `bin_edges`: Bin edges for the histogram of AB in heterozygous individuals calculated on all genotypes are: 0.00|0.05|0.10|0.15|0.20|0.25|0.30|0.35|0.40|0.45|0.50|0.55|0.60|0.65|0.70|0.75|0.80|0.85|0.90|0.95|1.00.
+        - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
+        - `n_smaller`: Count of AB values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
+        - `n_larger`: Count of AB values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
+      - `age_hists`: Histograms containing age information for release samples.
+        - `age_hist_het`: Histogram for age in all heterozygous release samples calculated on high quality genotypes.
+          - `bin_edges`: Bin edges for the age histogram.
+          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+          - `n_larger`: Count of age values falling above highest histogram bin edge.
+        - `age_hist_hom`: Histogram for age in all homozygous release samples calculated on high quality genotypes. If variant is in the pseudoautosomal regions of chrX or chrY, this histogram also includes age counts of hemizygous samples.
+          - `bin_edges`: Bin edges for the age histogram.
+          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+          - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `joint`: Struct of combined (joint) exomes and genomes allele frequency information.
   - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) across the combined (joint) gnomAD exomes and genomes and for each genetic ancestry group.
     - `AC`: Combined (exomes + genomes) alternate allele count in release.
