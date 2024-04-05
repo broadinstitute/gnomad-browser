@@ -92,7 +92,7 @@ spec:
               command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
             - name: install-plugins
               command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-gcs']
-    - name: data-blue
+    - name: data-green
       count: 3
       config:  # https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html
         node.roles: ["data"]
@@ -141,7 +141,7 @@ spec:
           spec:
             accessModes:
               - ReadWriteOnce
-            storageClassName: standard
+            storageClassName: premium-rwo
             resources:
               requests:
                 storage: 1750Gi

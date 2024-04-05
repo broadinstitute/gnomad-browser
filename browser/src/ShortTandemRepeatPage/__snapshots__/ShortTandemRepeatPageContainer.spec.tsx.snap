@@ -8,6 +8,7 @@ exports[`ShortTandemRepeatPageContainer with dataset exac queries API with corre
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -158,6 +159,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_cnv_r4 queries API w
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -308,6 +310,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r2_1 queries API wit
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -458,6 +461,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r2_1_controls querie
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -608,6 +612,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r2_1_non_cancer quer
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -758,6 +763,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r2_1_non_neuro queri
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -908,6 +914,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r2_1_non_topmed quer
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1058,6 +1065,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3 queries API with 
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1208,6 +1216,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3_controls_and_biob
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1358,6 +1367,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3_non_cancer querie
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1508,6 +1518,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3_non_neuro queries
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1658,6 +1669,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3_non_topmed querie
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1808,6 +1820,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r3_non_v2 queries AP
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -1958,6 +1971,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_r4 queries API with 
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -2108,6 +2122,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r2_1 queries API 
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -2258,6 +2273,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r2_1_controls que
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -2408,6 +2424,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r2_1_non_neuro qu
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,
@@ -2558,6 +2575,7 @@ exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r4 queries API wi
   <GnomadPageHeading
     datasetOptions={
       {
+        "includeCopyNumberVariants": false,
         "includeExac": false,
         "includeGnomad2": false,
         "includeGnomad3": true,

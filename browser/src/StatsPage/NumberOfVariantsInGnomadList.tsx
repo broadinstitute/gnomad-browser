@@ -55,9 +55,9 @@ const NumberOfVariantsInGnomadList = () => {
               <li>258,882 Duplications</li>
               <li>711 CNVs</li>
               <li>296,184 Insertions</li>
-              <li>2,185 Inversersions</li>
+              <li>2,185 Inversions</li>
               <li>13,116 Complex</li>
-              <li>92 Canonical recriprocal translocations</li>
+              <li>92 Canonical reciprocal translocations</li>
             </SectionList>
           </li>
           <li>

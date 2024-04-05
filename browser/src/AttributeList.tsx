@@ -33,17 +33,13 @@ const AttributeList = styled.dl`
   }
 `
 
-type OwnProps = {
+type AttributeListItemProps = {
   children: React.ReactNode
   label: string | React.ReactNode
   tooltip?: string
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof AttributeListItem.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'AttributeListItem' implicitly has type 'any' beca... Remove this comment to see the full error message
-const AttributeListItem = ({ children, label, tooltip }: Props) => (
+export const AttributeListItem = ({ children, label, tooltip }: AttributeListItemProps) => (
   <div>
     <dt>
       {tooltip ? (
@@ -59,12 +55,5 @@ const AttributeListItem = ({ children, label, tooltip }: Props) => (
     <dd>{children}</dd>
   </div>
 )
-
-AttributeListItem.defaultProps = {
-  tooltip: undefined,
-}
-
-// @ts-expect-error TS(2322) FIXME: Type 'any' is not assignable to type 'never'.
-AttributeList.Item = AttributeListItem
 
 export default AttributeList

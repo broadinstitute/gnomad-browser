@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from '@gnomad/ui'
 
 import { svConsequenceLabels } from './structuralVariantConsequences'
-import StructuralVariantPropType from './StructuralVariantPropType'
+import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 import { svTypeLabels } from './structuralVariantTypes'
 
 const columns = [
@@ -26,7 +26,6 @@ const columns = [
   },
   {
     label: 'Class',
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     getValue: (variant: any) => svTypeLabels[variant.type] || variant.type,
   },
   {
@@ -114,7 +113,7 @@ const exportVariantsToCsv = (variants: any, baseFileName: any) => {
 
 type ExportStructuralVariantsButtonProps = {
   exportFileName: string
-  variants: StructuralVariantPropType[]
+  variants: StructuralVariant[]
 }
 
 const ExportStructuralVariantsButton = ({

@@ -10,12 +10,10 @@ import TableWrapper from '../TableWrapper'
 import InfoButton from '../help/InfoButton'
 import ControlSection from '../VariantPage/ControlSection'
 
-import ShortTandemRepeatAdjacentRepeat from './ShortTandemRepeatAdjacentRepeat'
 import ShortTandemRepeatAgeDistributionPlot from './ShortTandemRepeatAgeDistributionPlot'
 import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssociatedDiseasesTable'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
@@ -26,6 +24,106 @@ import {
   getSelectedGenotypeDistribution,
   getGenotypeDistributionPlotAxisLabels,
 } from './shortTandemRepeatHelpers'
+import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentRepeatSection'
+
+type ShortTandemRepeatRepeatUnit = {
+  repeat_unit: string
+  distribution: number[][]
+  populations: {
+    id: string
+    distribution: number[][]
+  }[]
+}
+
+export type ShortTandemRepeatAdjacentRepeat = {
+  id: string
+  reference_region: {
+    chrom: string
+    start: number
+    stop: number
+  }
+  reference_repeat_unit: string
+  repeat_units: string[]
+  allele_size_distribution: {
+    distribution: number[][]
+    populations: {
+      id: string
+      distribution: number[][]
+    }[]
+    repeat_units: ShortTandemRepeatRepeatUnit[]
+  }
+  genotype_distribution: {
+    distribution: number[][]
+    populations: {
+      id: string
+      distribution: number[][]
+    }[]
+    repeat_units: {
+      repeat_units: string[]
+      distribution: number[][]
+      populations: {
+        id: string
+        distribution: number[][]
+      }[]
+    }[]
+  }
+}
+
+export type ShortTandemRepeat = {
+  id: string
+  gene: {
+    ensembl_id: string
+    symbol: string
+    region: string
+  }
+  associated_diseases: {
+    name: string
+    symbol: string
+    omim_id: string | null
+    inheritance_mode: string
+    repeat_size_classifications: {
+      classification: string
+      min: number | null
+      max: number | null
+    }[]
+    notes: string | null
+  }[]
+  stripy_id: string | null
+  reference_region: {
+    chrom: string
+    start: number
+    stop: number
+  }
+  reference_repeat_unit: string
+  repeat_units: {
+    repeat_unit: string
+    classification: string
+  }[]
+  allele_size_distribution: {
+    distribution: number[][]
+    populations: {
+      id: string
+      distribution: number[][]
+    }[]
+    repeat_units: ShortTandemRepeatRepeatUnit[]
+  }
+  genotype_distribution: {
+    distribution: number[][]
+    populations: {
+      id: string
+      distribution: number[][]
+    }[]
+    repeat_units: {
+      repeat_units: string[]
+      distribution: number[][]
+      populations: {
+        id: string
+        distribution: number[][]
+      }[]
+    }[]
+  }
+  adjacent_repeats: ShortTandemRepeatAdjacentRepeat[]
+}
 
 const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
@@ -59,7 +157,7 @@ const parseCombinedPopulationId = (combinedPopulationId: any) => {
 
 type ShortTandemRepeatPageProps = {
   datasetId: DatasetId
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
@@ -87,14 +185,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
   const populationIds = shortTandemRepeat.allele_size_distribution.populations.map((pop) => pop.id)
 
-  const allRepeatUnitsByClassification = {}
+  const allRepeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     if (allRepeatUnitsByClassification[repeatUnit.classification] === undefined) {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       allRepeatUnitsByClassification[repeatUnit.classification] = []
     }
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     allRepeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
@@ -106,9 +201,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     )
   )
 
-  const repeatUnitsFoundInGnomadByClassification = {}
+  const repeatUnitsFoundInGnomadByClassification: Record<string, string[]> = {}
   Object.keys(allRepeatUnitsByClassification).forEach((classification) => {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     repeatUnitsFoundInGnomadByClassification[classification] = allRepeatUnitsByClassification[
       classification
     ].filter((repeatUnit: any) => repeatUnitsFoundInGnomad.has(repeatUnit))
@@ -120,20 +214,23 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     .filter((classification) => classification !== 'pathogenic')
     .every(
       (classification) =>
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         (repeatUnitsFoundInGnomadByClassification[classification] || []).length === 0
     )
 
-  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-  const plotRanges = shortTandemRepeat.associated_diseases
-    .find((disease: any) => disease.name === selectedDisease)
-    .repeat_size_classifications.map((classification: any) => {
-      return {
-        label: classification.classification,
-        start: classification.min !== null ? classification.min : 0,
-        stop: classification.max !== null ? classification.max + 1 : Infinity,
-      }
-    })
+  const diseaseToPlot = shortTandemRepeat.associated_diseases.find(
+    (disease) => disease.name === selectedDisease
+  )
+  const repeatSizeClassificationsToPlot = diseaseToPlot
+    ? diseaseToPlot.repeat_size_classifications
+    : []
+
+  const plotRanges = repeatSizeClassificationsToPlot.map((classification) => {
+    return {
+      label: classification.classification,
+      start: classification.min !== null ? classification.min : 0,
+      stop: classification.max !== null ? classification.max + 1 : Infinity,
+    }
+  })
 
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
@@ -244,7 +341,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                       <optgroup label="Grouped by classification">
                         {['pathogenic', 'benign', 'unknown'].map((classification) => {
                           const foundInGnomad =
-                            // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                             (repeatUnitsFoundInGnomadByClassification[classification] || [])
                               .length > 0
                           return (
@@ -265,7 +361,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                   {['pathogenic', 'benign', 'unknown']
                     .filter(
                       (classification) =>
-                        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                         (allRepeatUnitsByClassification[classification] || []).length > 0
                     )
                     .map((classification) => (
@@ -275,7 +370,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                           1
                         )}`}
                       >
-                        {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
                         {allRepeatUnitsByClassification[classification].map((repeatUnit: any) => {
                           const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
                           const notes = []
@@ -500,7 +594,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           {showAdjacentRepeats ? (
             shortTandemRepeat.adjacent_repeats.map((adjacentRepeat) => {
               return (
-                <ShortTandemRepeatAdjacentRepeat
+                <ShortTandemRepeatAdjacentRepeatSection
                   key={adjacentRepeat.id}
                   adjacentRepeat={adjacentRepeat}
                   populationIds={populationIds}

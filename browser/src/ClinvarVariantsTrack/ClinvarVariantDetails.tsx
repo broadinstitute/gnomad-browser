@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ExternalLink } from '@gnomad/ui'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import SubmissionsList from '../SubmissionsList'
 import Link from '../Link'
 import Query from '../Query'
@@ -43,12 +43,9 @@ const ClinvarVariantDetailsGnomadData = ({
   return (
     <>
       <AttributeList>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Allele count">{ac}</AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Allele number">{an}</AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Allele frequency">{formattedAF}</AttributeList.Item>
+        <AttributeListItem label="Allele count">{ac}</AttributeListItem>
+        <AttributeListItem label="Allele number">{an}</AttributeListItem>
+        <AttributeListItem label="Allele frequency">{formattedAF}</AttributeListItem>
       </AttributeList>
     </>
   )
@@ -117,12 +114,10 @@ const ClinvarVariantDetails = ({
       </p>
 
       <AttributeList>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="ClinVar Variation ID">
+        <AttributeListItem label="ClinVar Variation ID">
           {clinvarVariant.clinvar_variation_id}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Conditions">
+        </AttributeListItem>
+        <AttributeListItem label="Conditions">
           {Object.values(conditions)
             .map((condition: any) =>
               condition.medgen_id ? (
@@ -141,20 +136,17 @@ const ClinvarVariantDetails = ({
               (acc: any, el: any, i: any) => (i === 0 ? [...acc, el] : [...acc, ', ', el]),
               []
             )}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Clinical significance">
+        </AttributeListItem>
+        <AttributeListItem label="Clinical significance">
           {clinvarVariant.clinical_significance}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Review status">
+        </AttributeListItem>
+        <AttributeListItem label="Review status">
           {clinvarVariant.review_status} ({clinvarVariant.gold_stars}{' '}
           {clinvarVariant.gold_stars === 1 ? 'star' : 'stars'})
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Last evaluated">
+        </AttributeListItem>
+        <AttributeListItem label="Last evaluated">
           {clinvarVariant.last_evaluated ? formatClinvarDate(clinvarVariant.last_evaluated) : '–'}
-        </AttributeList.Item>
+        </AttributeListItem>
       </AttributeList>
 
       <h4>Submissions</h4>

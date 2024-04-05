@@ -6,7 +6,7 @@ import { Modal, Select } from '@gnomad/ui'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import { ShortTandemRepeatAdjacentRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
@@ -19,7 +19,7 @@ import {
 } from './shortTandemRepeatHelpers'
 
 type Props = {
-  adjacentRepeat: ShortTandemRepeatAdjacentRepeatPropType
+  adjacentRepeat: ShortTandemRepeatAdjacentRepeat
   populationIds: string[]
   selectedPopulationId: string
   onSelectPopulationId: (...args: any[]) => any
@@ -27,7 +27,7 @@ type Props = {
   onSelectScaleType: (...args: any[]) => any
 }
 
-const ShortTandemRepeatAdjacentRepeat = ({
+const ShortTandemRepeatAdjacentRepeatSection = ({
   adjacentRepeat,
   populationIds,
   selectedPopulationId,
@@ -170,4 +170,4 @@ const ShortTandemRepeatAdjacentRepeat = ({
   )
 }
 
-export default ShortTandemRepeatAdjacentRepeat
+export default ShortTandemRepeatAdjacentRepeatSection

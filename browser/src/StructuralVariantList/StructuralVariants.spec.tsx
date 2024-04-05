@@ -7,15 +7,7 @@ import { createRenderer } from 'react-test-renderer/shallow'
 describe('StructuralVariants', () => {
   const context: Context = { chrom: '12' }
 
-  // The mapping of nulls to undefined turns a StructuralVariant into a
-  // StructuralVariantPropType; we should eliminate the latter eventually,
-  // but this is not a good moment to do so.
-  const variants = structuralVariantFactory.buildList(3).map((v) => ({
-    ...v,
-    chrom2: v.chrom2 || undefined,
-    end2: v.end2 || undefined,
-    pos2: v.pos2 || undefined,
-  }))
+  const variants = structuralVariantFactory.buildList(3)
 
   test('has no unexpected changes', () => {
     // We can't do a full render because the Grid component invoked a couple of

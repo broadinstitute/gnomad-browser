@@ -5,13 +5,13 @@ import { Button, Input, Select } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import AttributeList from '../AttributeList'
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import useRequest from '../useRequest'
 import ControlSection from '../VariantPage/ControlSection'
 
-import { ShortTandemRepeatPropType } from './ShortTandemRepeatPropTypes'
+import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
@@ -57,29 +57,23 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
   return (
     <div>
       <AttributeList style={{ marginBottom: '1em' }}>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Population">
+        <AttributeListItem label="Population">
           {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
           {GNOMAD_POPULATION_NAMES[read.population]}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Sex">{read.sex}</AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Age">
+        </AttributeListItem>
+        <AttributeListItem label="Sex">{read.sex}</AttributeListItem>
+        <AttributeListItem label="Age">
           {read.age || 'Not available for this sample'}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="PCR protocol">
+        </AttributeListItem>
+        <AttributeListItem label="PCR protocol">
           {read.pcr_protocol.replace('pcr', 'PCR').split('_').join(' ')}
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Allele 1">
+        </AttributeListItem>
+        <AttributeListItem label="Allele 1">
           {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
           {read.alleles[0].repeats_confidence_interval.lower}-
           {read.alleles[0].repeats_confidence_interval.upper} confidence interval
-        </AttributeList.Item>
-        {/* @ts-expect-error TS(2604) FIXME: JSX element type 'AttributeList.Item' does not hav... Remove this comment to see the full error message */}
-        <AttributeList.Item label="Allele 2">
+        </AttributeListItem>
+        <AttributeListItem label="Allele 2">
           {read.alleles.length > 1 ? (
             <>
               {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
@@ -89,7 +83,7 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
           ) : (
             'None'
           )}
-        </AttributeList.Item>
+        </AttributeListItem>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
         <ShortTandemRepeatReadImage
@@ -199,7 +193,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
 
 type ShortTandemRepeatReadsProps = {
   datasetId: string
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   filter: {
     population?: string
     sex?: string
@@ -225,7 +219,7 @@ const ShortTandemRepeatReads = ({
       fetchReadsTimer.current = setTimeout(() => {
         fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }).then(
           resolve,
-          reject,
+          reject
         )
       }, 300)
     })
@@ -267,7 +261,7 @@ const ShortTandemRepeatReads = ({
                 const read = i < fetchedReads.length ? fetchedReads[i] : null
                 readsStore.current.set(readIndexToFetch + i, read)
                 return read
-              }),
+              })
             )
           })
 
@@ -355,7 +349,7 @@ const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
 `
 
 type ShortTandemRepeatReadsAllelesFilterControlsProps = {
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   value: {
     repeat_unit?: string
     min_repeats?: number
@@ -388,8 +382,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newRepeatUnit = e.target.value
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v,
-                  ),
+                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+                  )
                 )
               }}
             >
@@ -415,8 +409,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v,
-                  ),
+                    i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
+                  )
                 )
               }}
             />
@@ -433,8 +427,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
                 onChange(
                   value.map((v, i) =>
-                    i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v,
-                  ),
+                    i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
+                  )
                 )
               }}
             />
@@ -448,7 +442,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
 
 type ShortTandemRepeatReadsContainerProps = {
   datasetId: string
-  shortTandemRepeat: ShortTandemRepeatPropType
+  shortTandemRepeat: ShortTandemRepeat
   filter: {
     population?: string
     sex?: string

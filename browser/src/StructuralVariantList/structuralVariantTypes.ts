@@ -1,7 +1,6 @@
-// BND and CTX types are grouped as "other"
-export const svTypes = ['DEL', 'DUP', 'MCNV', 'INS', 'INV', 'CPX', 'OTH']
+export const svTypes = ['DEL', 'DUP', 'MCNV', 'INS', 'INV', 'CPX', 'OTH', 'BND', 'CTX'] as const
 
-export const svTypeLabels = {
+export const svTypeLabels: Record<string, string> = {
   BND: 'breakend',
   CPX: 'complex',
   CTX: 'translocation',
@@ -14,9 +13,9 @@ export const svTypeLabels = {
 }
 
 export const svTypeColors = {
-  BND: undefined,
+  BND: '#397246',
   CPX: '#71E38C',
-  CTX: undefined,
+  CTX: '#397246',
   DEL: '#D43925',
   DUP: '#2376B2',
   INS: '#D474E0',

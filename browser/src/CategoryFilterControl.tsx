@@ -129,7 +129,7 @@ const Wrapper = styled.div`
   }
 `
 
-type OwnCategoryFilterControlProps = {
+type CategoryFilterControlProps = {
   breakpoint?: number
   categories: {
     id: string
@@ -147,13 +147,8 @@ type OwnCategoryFilterControlProps = {
   }
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'CategoryFilterControlProps' circularly... Remove this comment to see the full error message
-type CategoryFilterControlProps = OwnCategoryFilterControlProps &
-  typeof CategoryFilterControl.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'CategoryFilterControl' implicitly has type 'any' ... Remove this comment to see the full error message
 const CategoryFilterControl = ({
-  breakpoint,
+  breakpoint = 1200,
   categories,
   categorySelections,
   className,
@@ -188,7 +183,6 @@ const CategoryFilterControl = ({
           onClick={() =>
             onChange(
               categories.reduce(
-                // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
                 (acc, cat) => ({
                   ...acc,
                   [cat.id]: cat.id === category.id,
@@ -207,7 +201,6 @@ const CategoryFilterControl = ({
       onClick={() =>
         onChange(
           categories.reduce(
-            // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
             (acc, cat) => ({
               ...acc,
               [cat.id]: true,
