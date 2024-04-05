@@ -16,8 +16,12 @@ The following subsets from previous versions are currently available, but access
 #### gnomAD v4.1
 
 - **gnomAD v4.1**
-- gnomAD v4.1 (non-UK Biobank): Only samples that are not present in the UKBB 455,000 exome release. The allele counts in this subset can thus be added to those of UKBB to enable federated use of both datasets. ([Download only](/downloads#v4))
+- gnomAD v4.1 (non-UK Biobank): Only samples that are not present in the UKBB 455,000 exome release. The allele counts in this subset can thus be added to those of UKBB to enable federated use of both datasets.
 
+#### gnomAD v4.0
+
+**gnomAD v4.0**
+- gnomAD v4.0 (non-UK Biobank): Only samples that are not present in the UKBB 455,000 exome release. The allele counts in this subset can thus be added to those of UKBB to enable federated use of both datasets. ([Download only](/downloads#v4))
 #### gnomAD v3.1.2
 
 - **gnomAD v3.1.2**
