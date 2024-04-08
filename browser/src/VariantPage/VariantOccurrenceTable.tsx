@@ -11,6 +11,7 @@ import { DatasetId, labelForDataset, isV4 } from '@gnomad/dataset-metadata/metad
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import QCFilter from '../QCFilter'
+import { Variant } from './VariantPage'
 
 const Table = styled.table`
   /* To vertically align with the right column's heading */
@@ -39,14 +40,17 @@ const NoWrap = styled.span`
   white-space: nowrap;
 `
 
-const renderGnomadVariantFlag = (variant: any, exomeOrGenome: any) => {
-  if (!variant[exomeOrGenome]) {
+type VariantContext = 'exome' | 'genome' | 'joint'
+const renderGnomadVariantFlag = (variant: Variant, context: VariantContext) => {
+  if (!variant[context]) {
     return <Badge level="error">No variant</Badge>
   }
-  const { filters } = variant[exomeOrGenome]
+  const { filters } = variant[context]!
+
   if (filters.length === 0) {
     return <Badge level="success">Pass</Badge>
   }
+
   return filters.map((filter: any) => <QCFilter key={filter} filter={filter} />)
 }
 
@@ -136,58 +140,13 @@ const LowAlleleNumberWarning = ({
   )
 }
 
-type OwnGnomadVariantOccurrenceTableProps = {
+type GnomadVariantOccurrenceTableProps = {
   datasetId: DatasetId
   showExomes?: boolean
   showGenomes?: boolean
-  variant: {
-    chrom: string
-    coverage: {
-      exome?: {
-        mean?: number
-      }
-      genome?: {
-        mean?: number
-      }
-    }
-    exome?: {
-      ac: number
-      an: number
-      ac_hom: number
-      ac_hemi?: number
-      faf95: {
-        popmax?: number
-        popmax_population?: string
-      }
-      quality_metrics: {
-        allele_balance: {
-          alt?: histogramPropType
-        }
-      }
-    }
-    genome?: {
-      ac: number
-      an: number
-      ac_hom: number
-      ac_hemi?: number
-      faf95: {
-        popmax?: number
-        popmax_population?: string
-      }
-      quality_metrics: {
-        allele_balance: {
-          alt?: histogramPropType
-        }
-      }
-    }
-  }
+  variant: Variant
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'GnomadVariantOccurrenceTableProps' cir... Remove this comment to see the full error message
-type GnomadVariantOccurrenceTableProps = OwnGnomadVariantOccurrenceTableProps &
-  typeof GnomadVariantOccurrenceTable.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GnomadVariantOccurrenceTable' implicitly has type... Remove this comment to see the full error message
 export const GnomadVariantOccurrenceTable = ({
   datasetId,
   showExomes,
@@ -198,27 +157,36 @@ export const GnomadVariantOccurrenceTable = ({
 
   const isPresentInExome = Boolean(variant.exome)
   const isPresentInGenome = Boolean(variant.genome)
+  const hasJointFrequencyData = Boolean(variant.joint)
 
-  const exomeAlleleCount = isPresentInExome ? variant.exome.ac : 0
-  const exomeAlleleNumber = isPresentInExome ? variant.exome.an : 0
-  const genomeAlleleCount = isPresentInGenome ? variant.genome.ac : 0
-  const genomeAlleleNumber = isPresentInGenome ? variant.genome.an : 0
+  const exomeAlleleCount = isPresentInExome ? variant.exome!.ac : 0
+  const exomeAlleleNumber = isPresentInExome ? variant.exome!.an : 0
+  const genomeAlleleCount = isPresentInGenome ? variant.genome!.ac : 0
+  const genomeAlleleNumber = isPresentInGenome ? variant.genome!.an : 0
 
   const exomeAlleleFrequency = exomeAlleleNumber === 0 ? 0 : exomeAlleleCount / exomeAlleleNumber
   const genomeAlleleFrequency =
     genomeAlleleNumber === 0 ? 0 : genomeAlleleCount / genomeAlleleNumber
 
-  const totalAlleleCount = exomeAlleleCount + genomeAlleleCount
-  const totalAlleleNumber = exomeAlleleNumber + genomeAlleleNumber
+  const totalAlleleCount = hasJointFrequencyData
+    ? variant.joint!.ac
+    : exomeAlleleCount + genomeAlleleCount
+  const totalAlleleNumber = hasJointFrequencyData
+    ? variant.joint!.an
+    : exomeAlleleNumber + genomeAlleleNumber
   const totalAlleleFrequency = totalAlleleNumber === 0 ? 0 : totalAlleleCount / totalAlleleNumber
 
-  const exomeHomozygoteCount = isPresentInExome ? variant.exome.ac_hom : 0
-  const genomeHomozygoteCount = isPresentInGenome ? variant.genome.ac_hom : 0
-  const totalHomozygoteCount = exomeHomozygoteCount + genomeHomozygoteCount
+  const exomeHomozygoteCount = isPresentInExome ? variant.exome!.ac_hom : 0
+  const genomeHomozygoteCount = isPresentInGenome ? variant.genome!.ac_hom : 0
+  const totalHomozygoteCount = hasJointFrequencyData
+    ? variant.joint?.homozygote_count
+    : exomeHomozygoteCount + genomeHomozygoteCount
 
-  const exomeHemizygoteCount = isPresentInExome ? variant.exome.ac_hemi : 0
-  const genomeHemizygoteCount = isPresentInGenome ? variant.genome.ac_hemi : 0
-  const totalHemizygoteCount = exomeHemizygoteCount + genomeHemizygoteCount
+  const exomeHemizygoteCount = isPresentInExome ? variant.exome!.ac_hemi : 0
+  const genomeHemizygoteCount = isPresentInGenome ? variant.genome!.ac_hemi : 0
+  const totalHemizygoteCount = hasJointFrequencyData
+    ? variant.joint?.hemizygote_count
+    : exomeHemizygoteCount + genomeHemizygoteCount
 
   const exomeCoverage = {
     mean: (variant.coverage.exome || { mean: null }).mean,
@@ -249,20 +217,20 @@ export const GnomadVariantOccurrenceTable = ({
     genomeMaxAN = datasetSampleCounts.genomesTotal * 2
   }
 
-  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome.an < exomeMaxAN / 2
-  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome.an < genomeMaxAN / 2
+  const hasLowAlleleNumberInExomes = isPresentInExome && variant.exome!.an < exomeMaxAN / 2
+  const hasLowAlleleNumberInGenomes = isPresentInGenome && variant.genome!.an < genomeMaxAN / 2
 
   // Display a warning if there are some high allele balance samples that may have been misinterpreted as heterozygous.
   // See https://gnomad.broadinstitute.org/help/why-are-some-variants-depleted-for-homozygotes-out-of-hardy-weinberg-equilibrium
   const exomeHighAlleleBalanceSamples =
-    isPresentInExome && variant.exome.quality_metrics.allele_balance.alt
-      ? variant.exome.quality_metrics.allele_balance.alt.bin_freq[18] +
-        variant.exome.quality_metrics.allele_balance.alt.bin_freq[19]
+    isPresentInExome && variant.exome!.quality_metrics.allele_balance.alt
+      ? variant.exome!.quality_metrics.allele_balance.alt.bin_freq[18] +
+        variant.exome!.quality_metrics.allele_balance.alt.bin_freq[19]
       : 0
   const genomeHighAlleleBalanceSamples =
-    isPresentInGenome && variant.genome.quality_metrics.allele_balance.alt
-      ? variant.genome.quality_metrics.allele_balance.alt.bin_freq[18] +
-        variant.genome.quality_metrics.allele_balance.alt.bin_freq[19]
+    isPresentInGenome && variant.genome!.quality_metrics.allele_balance.alt
+      ? variant.genome!.quality_metrics.allele_balance.alt.bin_freq[18] +
+        variant.genome!.quality_metrics.allele_balance.alt.bin_freq[19]
       : 0
   const totalHighAlleleBalanceSamples =
     exomeHighAlleleBalanceSamples + genomeHighAlleleBalanceSamples
@@ -363,14 +331,16 @@ export const GnomadVariantOccurrenceTable = ({
               (95% confidence)
             </th>
             {showExomes && (
-              <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome.faf95} />}</td>
+              <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome!.faf95} />}</td>
             )}
             {showGenomes && (
-              <td>{isPresentInGenome && <FilteringAlleleFrequency {...variant.genome.faf95} />}</td>
-            )}
-            {showTotal && variant.faf95_joint && (
               <td>
-                <FilteringAlleleFrequency {...variant.faf95_joint} />
+                {isPresentInGenome && <FilteringAlleleFrequency {...variant.genome!.faf95} />}
+              </td>
+            )}
+            {showTotal && (
+              <td>
+                {hasJointFrequencyData && <FilteringAlleleFrequency {...variant.joint!.faf95} />}
               </td>
             )}
           </tr>
