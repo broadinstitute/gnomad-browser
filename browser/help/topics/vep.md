@@ -3,7 +3,7 @@ id: vep
 title: 'Annotations in gnomAD'
 ---
 
-### gnomAD v4.0
+### gnomAD v4.1
 
 #### VEP
 
@@ -14,8 +14,6 @@ Variants in the browser (and all current VCFs available for download) were annot
 LOFTEE considers all stop-gained, splice-disrupting, and frameshift variants, and filters out many known false-positive modes, such as variants near the end of transcripts and in non-canonical splice sites, as described in the [code documentation](https://github.com/konradjk/loftee). These variants are flagged on the gene page with "LC pLoF" and on the variant page in the Annotations section: however, as these annotations are transcript specific, you may need to click on the "Transcripts" box in order to observe the annotation for each particular transcript.
 
 ### LCR and SEGDUP flags
-
-#### gnomAD v4
 
 Variants have been flagged according to whether they fall into low-complexity regions (LCRs) or segmental duplication (SEGDUP) regions.
 

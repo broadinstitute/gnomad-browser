@@ -1126,9 +1126,9 @@ exports[`Help Page has no unexpected changes 1`] = `
 question: "What's the difference between the different versions of gnomAD?"
 ---
 
-The gnomAD v4.0 data set contains 730,947 exomes plus the 76,215 genomes previously called gnomAD v3.1, all mapped to the GRCh38/hg38 reference sequence.
+The gnomAD v4.1 data set contains 730,947 exomes plus the 76,215 genomes previously called gnomAD v3.1, all mapped to the GRCh38/hg38 reference sequence.
 
-The gnomAD v2.1 data set contained data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence. Most of the data from v2 are included in v4.0.
+The gnomAD v2.1 data set contained data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence. Most of the data from v2 are included in v4.1.
 ",
                       }
                     }
@@ -1345,6 +1345,7 @@ question: 'Where can I find more details on the QC pipeline?'
 
 More details on our QC process can be found in our blog posts:
 
+- ["gnomad v4.1"](https://gnomad.broadinstitute.org/news/2024-03-gnomad-v4-1)
 - ["gnomad v4.0"](https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0)
 - ["gnomAD v3.1"](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/)
 - ["gnomAD v3.0"](https://gnomad.broadinstitute.org/news/2019-10-gnomad-v3-0/)
@@ -1376,7 +1377,7 @@ More details on our QC process can be found in our blog posts:
 question: 'Should I switch to the latest version of gnomAD?'
 ---
 
-With 730,947 exomes and 76,215 genomes, the gnomAD v4.0 call set is the largest of all the gnomAD versions. It also contains nearly all data from prior versions (v2 and v3) except a small number of samples excluded due to data quality and updated sample filtering pipelines. Since gnomAD v4.0 is mapped to GRCh38, if you haven’t switched to GRCh38, now is the time!
+With 730,947 exomes and 76,215 genomes, the gnomAD v4.1 call set is the largest of all the gnomAD versions. It also contains nearly all data from prior versions (v2 and v3) except a small number of samples excluded due to data quality and updated sample filtering pipelines. Since gnomAD v4.1 is mapped to GRCh38, if you haven’t switched to GRCh38, now is the time!
 ",
                       }
                     }
@@ -1807,7 +1808,7 @@ gnomAD v4 and v3 are based on GRCh38, and gnomAD v2 and ExAC files are based on 
 question: 'What version of GENCODE was used to annotate variants?'
 ---
 
-We use VEP to annotate variants on GENCODE transcripts. For details on the version used in v4.0, and past gnomAD versions, please see [VEP annotations](/help/vep).
+We use VEP to annotate variants on GENCODE transcripts. For details on the version used in v4.1, and past gnomAD versions, please see [VEP annotations](/help/vep).
 ",
                       }
                     }
@@ -1834,7 +1835,7 @@ We use VEP to annotate variants on GENCODE transcripts. For details on the versi
 question: 'Are all the individuals in 1000 Genomes included?'
 ---
 
-The majority of samples from the 1000 Genomes Project for which exome sequencing is available were included in v4.0. Whole genome sequencing from 3,202 subjects from the 1000 Genomes Project was included in gnomAD v3.1, and which are now in v4.0 genomes, though some were filtered out by our QC pipeline. A [fully genotyped callset](/downloads#v3-hgdp-1kg) containing individual genotypes for these data is available.
+The majority of samples from the 1000 Genomes Project for which exome sequencing is available were included in v4.1. Whole genome sequencing from 3,202 subjects from the 1000 Genomes Project was included in gnomAD v3.1, and which are now in v4.1 genomes, though some were filtered out by our QC pipeline. A [fully genotyped callset](/downloads#v3-hgdp-1kg) containing individual genotypes for these data is available.
 ",
                       }
                     }
@@ -1888,7 +1889,7 @@ No. We were not given permission from NHLBI to include individuals from several 
 question: 'Do the cancer samples in the database include tumor exomes, or is this from germline samples only?'
 ---
 
-Version 4.0 of gnomAD does not contain samples that were specifically recruited for cancer. Although v2 included TCGA samples, these were removed from v4 during sample QC due to data quality issues. It should be noted that we do not collect detailed phenotypes for all individuals and thus do not know if any individuals in gnomAD have a personal or family history of cancer.
+Version 4.1 of gnomAD does not contain samples that were specifically recruited for cancer. Although v2 included TCGA samples, these were removed from v4 during sample QC due to data quality issues. It should be noted that we do not collect detailed phenotypes for all individuals and thus do not know if any individuals in gnomAD have a personal or family history of cancer.
 All of the "cancer" samples in ExAC and v2 are blood ("germline") samples from TCGA. We excluded any sample labeled as tumor. In addition, it is possible that in some patients the blood samples are contaminated by circulating tumor cells.
 ",
                       }
@@ -9828,6 +9829,7 @@ question: 'Why is this variant linked to the wrong dbSNP rsID?'
 
 First, we do not continuously update the dbSNP rsIDs displayed in the browser, so there will be some differences between the databases and dbSNP depending on versions being used. The dbSNP version used are:
 
+- gnomAD v4.1: dbSNP version 156
 - gnomAD v4.0: dbSNP version 156
 - gnomAD v3.1: dbSNP version 154
 - gnomAD v3: dbSNP version 151
@@ -9890,7 +9892,7 @@ question: 'Why are some variants depleted for homozygotes/out of Hardy-Weinberg 
 
 Prior to v3.1, a number of genotypes with a high proportion of alternate allele reads (Allele Balance; AB >= 90%) were being called as heterozygous when they may be homozygous. This deflated the number of reported homozygotes, and was especially apparent at common variants and more so for long insertions and deletions. This affected frequency estimates and especially the calculation of Hardy-Weinberg Equilibrium; see our [preprint](https://doi.org/10.1101/784157) for more details.
 
-The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward. However, for v4.0, the majority of variant calls were already generated using an uncorrected version of HaplotypeCaller. We therefore made an adjustment to heterozygous genotypes with highly skewed allele balance (>0.9) at common variant sites (>0.01 AF), setting these genotypes to homozygous alternate genotypes. This change is reflected in the aggregate allele frequencies, allele numbers, and allele counts displayed on the browser as well as in the genotype data released for the gnomAD HGDP and 1000 Genomes callset.
+The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward. However, for v4.0 and v4.1, the majority of variant calls were already generated using an uncorrected version of HaplotypeCaller. We therefore made an adjustment to heterozygous genotypes with highly skewed allele balance (>0.9) at common variant sites (>0.01 AF), setting these genotypes to homozygous alternate genotypes. This change is reflected in the aggregate allele frequencies, allele numbers, and allele counts displayed on the browser as well as in the genotype data released for the gnomAD HGDP and 1000 Genomes callset.
 ",
                       }
                     }
@@ -10071,9 +10073,11 @@ Please see our gnomAD Hail Table [help text](/help/v4-hts)
 question: 'How was coverage calculated?'
 ---
 
-#### gnomAD v4.0
+#### gnomAD v4.1
 
-Coverage was computed using all 730,947 gnomAD v4.0 samples from their gVCFs.
+gnomAD v4.1 uses the same coverage data as gnomAD v4.0.
+
+For gnomAD v4.0, coverage was computed using all 730,947 gnomAD v4.0 samples from their gVCFs.
 
 The exome gVCFs were produced using a two schemes:
 
