@@ -386,7 +386,7 @@ Row fields
   - `faf`: Filtering allele frequency in the gnomAD exomes.
     - `faf95`: Filtering allele frequency (using Poisson 95% CI).
     - `faf99`: Filtering allele frequency (using Poisson 99% CI).
-  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD exomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD exomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), and "Remaining individuals" (`remaining`) groups.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
@@ -470,7 +470,7 @@ Row fields
   - `faf`: Filtering allele frequency in the gnomAD genomes.
     - `faf95`: Filtering allele frequency (using Poisson 95% CI).
     - `faf99`: Filtering allele frequency (using Poisson 99% CI).
-  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
+  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency in the gnomAD genomes. Excludes Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), Middle Eastern (`mid`), and "Remaining individuals" (`remaining`) groups.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
@@ -551,7 +551,7 @@ Row fields
     - `AF`: Combined (exomes + genomes) alternate allele frequency, (AC/AN), in release.
     - `AN`: Total number of alleles across exomes and genomes in release.
     - `homozygote_count`: Count of homozygous alternate individuals across exomes and genomes in release.
-  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), and "Remaining individuals" (remaining) groups.
+  - `grpmax`: Allele frequency information (AC, AN, AF, homozygote count) for the non-bottlenecked genetic ancestry group with maximum allele frequency across both exomes and genomes. Excludes Amish (`ami`), Ashkenazi Jewish (`asj`), European Finnish (`fin`), and "Remaining individuals" (`remaining`) groups.
     - `AC`: Alternate allele count in the group with the maximum allele frequency.
     - `AF`: Maximum alternate allele frequency, (AC/AN), across groups in gnomAD.
     - `AN`: Total number of alleles in the group with the maximum allele frequency.
