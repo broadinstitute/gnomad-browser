@@ -534,17 +534,17 @@ Row fields
         - `bin_freq`: Bin frequencies for the histogram of AB in heterozygous individuals calculated on all genotypes. The number of records found in each bin.
         - `n_smaller`: Count of AB values in heterozygous individuals falling below lowest histogram bin edge, calculated on all genotypes.
         - `n_larger`: Count of AB values in heterozygous individuals falling above highest histogram bin edge, calculated on all genotypes.
-      - `age_hists`: Histograms containing age information for release samples.
-        - `age_hist_het`: Histogram for age in all heterozygous release samples calculated on high quality genotypes.
-          - `bin_edges`: Bin edges for the age histogram.
-          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
-          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
-          - `n_larger`: Count of age values falling above highest histogram bin edge.
-        - `age_hist_hom`: Histogram for age in all homozygous release samples calculated on high quality genotypes. If variant is in the pseudoautosomal regions of chrX or chrY, this histogram also includes age counts of hemizygous samples.
-          - `bin_edges`: Bin edges for the age histogram.
-          - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
-          - `n_smaller`: Count of age values falling below lowest histogram bin edge.
-          - `n_larger`: Count of age values falling above highest histogram bin edge.
+    - `age_hists`: Histograms containing age information for release samples.
+      - `age_hist_het`: Histogram for age in all heterozygous release samples calculated on high quality genotypes.
+        - `bin_edges`: Bin edges for the age histogram.
+        - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+        - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+        - `n_larger`: Count of age values falling above highest histogram bin edge.
+      - `age_hist_hom`: Histogram for age in all homozygous release samples calculated on high quality genotypes. If variant is in the pseudoautosomal regions of chrX or chrY, this histogram also includes age counts of hemizygous samples.
+        - `bin_edges`: Bin edges for the age histogram.
+        - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
+        - `n_smaller`: Count of age values falling below lowest histogram bin edge.
+        - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `joint`: Struct of combined (joint) exomes and genomes allele frequency information.
   - `freq`: Array of allele frequency information (AC, AN, AF, homozygote count) across the combined (joint) gnomAD exomes and genomes and for each genetic ancestry group.
     - `AC`: Combined (exomes + genomes) alternate allele count in release.
