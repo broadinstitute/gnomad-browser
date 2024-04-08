@@ -22,9 +22,9 @@ Using the [`hwe_normalized_pca` function in Hail](https://hail.is/docs/0.2/metho
 
 Any samples that we were unable to cluster using these probabilities were grouped into "Remaining individuals". Genetic ancestry sub-group clustering has not been performed for gnomAD v4 at this time.
 
-#### gnomAD v4.0 genomes (previously v3.1)
+#### gnomAD v4.1 genomes (previously v3.1)
 
-To select the variants for PCA ([`hwe_normalized_pca` function in Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca)) from the gnomAD v3.1 dataset, which were inrocporated into gnomAD v4, we lifted-over the high-quality variants used for gnomAD v2, as well as a set of 5k variants widely used for quality control of GWAS data [defined by Shaun Purcell](https://www.nature.com/articles/nature12975). We then took these variants and applied our quality threshold, leading to 76,215 high quality variants for PCA.
+To select the variants for PCA ([`hwe_normalized_pca` function in Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.hwe_normalized_pca)) from the gnomAD v3.1 dataset, which were incorporated into gnomAD v4.1, we lifted-over the high-quality variants used for gnomAD v2, as well as a set of 5k variants widely used for quality control of GWAS data [defined by Shaun Purcell](https://www.nature.com/articles/nature12975). We then took these variants and applied our quality threshold, leading to 76,215 high quality variants for PCA.
 
 We then trained a random forest classifier using 17,906 samples with known ancestry in gnomAD v3 and 14,949 samples for which we had a genetic ancestry group label from gnomAD v2. Many of the additional genomes in v3.1 have ancestry information, increasing the total ancestry labels used for training to 36,882. We used 16 PCs as features and assigned ancestry to all samples for which the probability of that ancestry was > 75% according to the random forest model.
 
