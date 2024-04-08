@@ -2,20 +2,71 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-const FILTER_DESCRIPTIONS = {
-  AC0: 'Allele count is zero (i.e. no high-confidence genotype)',
-  AS_VQSR: 'Failed allele-specific VQSR filter',
-  InbreedingCoeff: 'Has an inbreeding coefficient < -0.3',
-  RF: 'Failed random forest filters',
+export type Filter =
+  | 'AC0'
+  | 'AS_VQSR'
+  | 'InbreedingCoeff'
+  | 'RF'
+  | 'discrepant_frequencies'
+  | 'not_called_in_exomes'
+  | 'not_called_in_genomes'
+
+type DisplayData = {
+  name: string
+  description: string
+}
+
+const FILTER_DISPLAY_MAPPING: Record<Filter, DisplayData> = {
+  AC0: {
+    name: 'AC0',
+    description: 'Allele count is zero (i.e.e no high-confidence genotype)',
+  },
+  AS_VQSR: {
+    name: 'AS VSQR',
+    description: 'Failed allele-specific VQSR filter',
+  },
+  InbreedingCoeff: {
+    name: 'Inbreeding Coeff',
+    description: 'Has an inbreeding coefficient < -0.3',
+  },
+  RF: {
+    name: 'RF',
+    description: 'Failed random forest filters',
+  },
+  discrepant_frequencies: {
+    name: 'Discrepant Frequencies',
+    description: 'Has discrepant frequencies between genomes and exomes',
+  },
+  not_called_in_exomes: {
+    name: 'Not in Exomes',
+    description:
+      'This variant was not called in the gnomAD exome callset; no samples had any exome call (no samples had reference or alternate calls).',
+  },
+  not_called_in_genomes: {
+    name: 'Not in gemomes',
+    description:
+      'This variant was not called in the gnomAD genome callset; no samples had any genome call (no samples had reference or alternate calls).',
+  },
+}
+
+const renderFilterDescription = (filter: Filter, data: any) => {
+  let description = FILTER_DISPLAY_MAPPING[filter].description
+
+  if (filter === 'discrepant_frequencies') {
+    description = description.concat(`, with a p value of ${data.cochran_p_value}`)
+  }
+
+  return description
 }
 
 type Props = {
-  filter: 'AC0' | 'AS_VQSR' | 'InbreedingCoeff' | 'RF'
+  filter: Filter
+  data?: any
 }
 
-const QCFilter = ({ filter }: Props) => (
-  <Badge level="warning" tooltip={FILTER_DESCRIPTIONS[filter]}>
-    {filter}
+const QCFilter = ({ filter, data }: Props) => (
+  <Badge level="warning" tooltip={renderFilterDescription(filter, data)}>
+    {FILTER_DISPLAY_MAPPING[filter].name}
   </Badge>
 )
 
