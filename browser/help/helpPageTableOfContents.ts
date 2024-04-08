@@ -19,6 +19,8 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     'variant-cooccurrence',
     'hgdp-1kg-annotations',
     'v4-hts',
+    'exome-capture-tech',
+    'combined-freq-stats',
   ],
   faq: [
     {
