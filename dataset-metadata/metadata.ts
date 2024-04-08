@@ -18,7 +18,7 @@ export const datasetLabels = {
   gnomad_sv_r2_1_non_neuro: 'gnomAD SVs v2.1 (non-neuro)',
   gnomad_sv_r4: 'gnomAD SVs v4.0',
   gnomad_cnv_r4: 'gnomAD CNVs v4.0',
-  gnomad_r4: 'gnomAD v4.0.0',
+  gnomad_r4: 'gnomAD v4.1.0',
   gnomad_r4_non_ukb: 'gnomAD v4.1.0 (non-UKB)',
 } as const
 export type DatasetId = keyof typeof datasetLabels
