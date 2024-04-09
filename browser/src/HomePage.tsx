@@ -76,6 +76,18 @@ export default () => (
       <ListItem>
         <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
       </ListItem>
+      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+      <ListItem>
+        <Link
+          preserveSelectedDataset={false}
+          to={{
+            pathname: '/short-tandem-repeats',
+            search: queryString.stringify({ dataset: 'gnomad_r4' }),
+          }}
+        >
+          Browse tandem repeats in gnomAD
+        </Link>
+      </ListItem>
     </List>
 
     <p>

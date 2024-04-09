@@ -338,6 +338,17 @@ exports[`Home Page has no unexpected changes 1`] = `
         Find co-occurrence of two variants
       </a>
     </li>
+    <li
+      className="c7"
+    >
+      <a
+        className="-Link c8"
+        href="/short-tandem-repeats?dataset=gnomad_r4"
+        onClick={[Function]}
+      >
+        Browse tandem repeats in gnomAD
+      </a>
+    </li>
   </ul>
   <p>
     Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see
