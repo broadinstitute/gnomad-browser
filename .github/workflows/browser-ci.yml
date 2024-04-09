@@ -33,12 +33,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run ESLint
-        run: pnpm eslint .
+        run: pnpm eslint browser
       - name: Run stylelint
-        run: pnpm stylelint './**/*.(js|jsx|ts|tsx)'
+        run: pnpm stylelint 'browser/**/*.(js|jsx|ts|tsx)'
       - name: Type check
         run: pnpm ts-node ./browser/build/buildHelp.ts && pnpm typecheck
       - name: Verify clean build
         run: cd browser && pnpm build
       - name: Run Jest tests
-        run: pnpm jest
+        run: pnpm jest --selectProjects browser
