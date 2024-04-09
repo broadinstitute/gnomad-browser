@@ -14,12 +14,14 @@ import largeGenes from '../helpers/large-genes'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
 
+type Subset = 'all' | 'non_ukb'
+
 // ================================================================================================
 // Count query
 // ================================================================================================
 
 // eslint-disable-next-line no-unused-vars
-const countVariantsInRegion = async (esClient: any, region: any, _subset: any) => {
+const countVariantsInRegion = async (esClient: any, region: any, _subset: Subset) => {
   const response = await esClient.count({
     index: GNOMAD_V4_VARIANT_INDEX,
     type: '_doc',
@@ -49,10 +51,7 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: any) =
 // Variant query
 // ================================================================================================
 
-const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any) => {
-  const exomeSubset = subset
-  const genomeSubset = subset === 'non_cancer' ? 'gnomad' : subset
-
+const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Subset) => {
   const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
   const response = await esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
@@ -77,13 +76,14 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
   const variant = response.body.hits.hits[0]._source.value
 
+  const subsetGenomeFreq = variant.genome.freq[subset] || {}
   const subsetJointFreq = variant.joint.freq[subset] || {}
 
   const hasExomeVariant = variant.exome.freq[subset].ac_raw
-  const hasGenomeVariant = variant.genome.freq[subset].ac_raw
+  const hasGenomeVariant = subsetGenomeFreq.ac_raw
   const hasJointFrequencyData = subsetJointFreq.ac_raw
 
-  if (!(variant.genome.freq[subset] || {}).ac_raw && !(variant.exome.freq[subset] || {}).ac_raw) {
+  if (!subsetGenomeFreq.ac_raw && !(variant.exome.freq[subset] || {}).ac_raw) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
@@ -91,17 +91,16 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
   const genomeFilters = variant.genome.filters || []
   const jointFilters = variant.joint.flags || []
 
-  if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
+  if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
     exomeFilters.push('AC0')
   }
-  if (variant.genome.freq[genomeSubset].ac === 0 && !genomeFilters.includes('AC0')) {
+  if (variant.genome.freq.all.ac === 0 && !genomeFilters.includes('AC0')) {
     genomeFilters.push('AC0')
   }
 
   const flags = getFlagsForContext({ type: 'region' })(variant)
 
-  let { ancestry_groups: genome_ancestry_groups } = variant.genome.freq[subset]
-
+  let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
   if (variant.genome.freq.hgdp.ac_raw > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
@@ -113,7 +112,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
   }
   // Some 1KG samples are included in v2. Since the 1KG population frequencies are based on the full v3.1 dataset,
   // they are invalid for the non-v2 subset.
-  if (variant.genome.freq.tgp.ac_raw > 0 && subset !== 'non_v2') {
+  if (variant.genome.freq.tgp.ac_raw > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
       variant.genome.freq.tgp.ancestry_groups.map((pop: any) => ({
         ...pop,
@@ -248,7 +247,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 // Shape variant summary
 // ================================================================================================
 
-const shapeVariantSummary = (subset: any, context: any) => {
+const shapeVariantSummary = (subset: Subset, context: any) => {
   const getConsequence = getConsequenceForContext(context)
   const getFlags = getFlagsForContext(context)
 
@@ -262,15 +261,16 @@ const shapeVariantSummary = (subset: any, context: any) => {
 
     const subsetJointFreq = variant.joint.freq[subset].ac_raw
 
+    const subsetGenomeFreq = variant.genome.freq[subset] || {}
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
-    const hasGenomeVariant = variant.genome.freq[subset].ac_raw
+    const hasGenomeVariant = subsetGenomeFreq.ac_raw
     const hasJointVariant = subsetJointFreq.ac_raw
 
     if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
     }
 
-    if (variant.genome.freq[subset].ac === 0 && !genomeFilters.includes('AC0')) {
+    if (subsetGenomeFreq.ac === 0 && !genomeFilters.includes('AC0')) {
       genomeFilters.push('AC0')
     }
 
@@ -379,9 +379,8 @@ const getMultiVariantSourceFields = (
 // Gene query
 // ================================================================================================
 
-const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
-  const subset = 'all'
-  const exomeSubset = 'all'
+const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => {
+  const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
@@ -431,7 +430,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
       .map((hit: any) => hit._source.value)
       .filter(
         (variant: any) =>
-          variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+          (variant.genome.freq[subset] && variant.genome.freq[subset].ac_raw > 0) ||
+          variant.exome.freq[subset].ac_raw > 0
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
@@ -445,9 +445,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, _subset: any) => {
 // Region query
 // ================================================================================================
 
-const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) => {
-  const subset = 'all'
-  const exomeSubset = 'all'
+const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset) => {
+  const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
@@ -480,7 +479,8 @@ const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) =
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+        (variant.genome.freq[subset] && variant.genome.freq[subset].ac_raw > 0) ||
+        variant.exome.freq[subset].ac_raw > 0
     )
     .map(shapeVariantSummary(subset, { type: 'region' }))
 }
@@ -489,9 +489,8 @@ const fetchVariantsByRegion = async (esClient: any, region: any, _subset: any) =
 // Transcript query
 // ================================================================================================
 
-const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset: any) => {
-  const subset = 'all'
-  const exomeSubset = 'all'
+const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: Subset) => {
+  const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
@@ -545,7 +544,8 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+        (variant.genome.freq[subset] && variant.genome.freq[subset].ac_raw > 0) ||
+        variant.exome.freq[subset].ac_raw > 0
     )
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
@@ -559,7 +559,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, _subset
 const fetchMatchingVariants = async (
   esClient: any,
   { caid = null, rsid = null, variantId = null },
-  subset: any
+  subset: Subset
 ) => {
   let query
   if (caid) {
@@ -590,7 +590,8 @@ const fetchMatchingVariants = async (
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        variant.genome.freq[subset].ac_raw > 0 || variant.exome.freq[subset].ac_raw > 0
+        (variant.genome.freq[subset] && variant.genome.freq[subset].ac_raw > 0) ||
+        variant.exome.freq[subset].ac_raw > 0
     )
     .map((variant: any) => ({
       variant_id: variant.variant_id,
