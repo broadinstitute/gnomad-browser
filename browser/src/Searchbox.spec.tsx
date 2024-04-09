@@ -49,6 +49,7 @@ describe('Searchbox', () => {
       gnomad_sv_r4: 'gnomad_sv_r4',
       gnomad_r4: 'gnomad_r4',
       gnomad_cnv_r4: 'gnomad_cnv_r4',
+      gnomad_r4_non_ukb: 'gnomad_r4',
     }
 
     test('has correct default dataset', () => {

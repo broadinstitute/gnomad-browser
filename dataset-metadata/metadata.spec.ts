@@ -21,6 +21,7 @@ const expectedReferenceGenome: Record<DatasetId, ReferenceGenome> = {
   gnomad_sv_r2_1_non_neuro: 'GRCh37',
   gnomad_sv_r4: 'GRCh38',
   gnomad_cnv_r4: 'GRCh38',
+  gnomad_r4_non_ukb: 'GRCh38',
 }
 
 forAllDatasets('referenceGenome(%s)', (datasetId) => {
