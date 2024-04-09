@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - 'deploy/deployctl/**'
+      - '.github/workflows/**'
 jobs:
   checks:
     name: Checks
