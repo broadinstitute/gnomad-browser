@@ -12,7 +12,8 @@
     "lint:js": "eslint .",
     "test:jest": "jest",
     "test:jest:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "test:full": "pnpm test:jest",
+    "test:playwright": "playwright test --reporter=list --workers=1",
+    "test:full": "pnpm test:jest && pnpm test:playwright",
     "typecheck": "pnpm tsc --noEmit",
     "typecheck:watch": "pnpm tsc -w --noEmit"
   },
@@ -30,6 +31,7 @@
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.18.6",
     "@jest/globals": "^29.0.0",
+    "@playwright/test": "^1.43.0",
     "@types/d3-array": "^3.0.3",
     "@types/d3-scale": "^4.0.2",
     "@types/d3-shape": "^3.1.0",
