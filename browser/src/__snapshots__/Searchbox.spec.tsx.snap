@@ -1320,6 +1320,94 @@ exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`]
 </div>
 `;
 
+exports[`Searchbox with selected dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
+<div
+  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+>
+  <select
+    className="Select-sc-1lkyg9e-0 ivadCR"
+    onChange={[Function]}
+    value="gnomad_r4"
+  >
+    <optgroup
+      label="GRCh38"
+    >
+      <option
+        value="gnomad_r4"
+      >
+        gnomAD v4.0.0
+      </option>
+      <option
+        value="gnomad_r3"
+      >
+        gnomAD v3.1.2
+      </option>
+      <option
+        value="gnomad_sv_r4"
+      >
+        gnomAD SVs v4
+      </option>
+      <option
+        value="gnomad_cnv_r4"
+      >
+        gnomAD CNVs v4.0
+      </option>
+    </optgroup>
+    <optgroup
+      label="GRCh37"
+    >
+      <option
+        value="gnomad_r2_1"
+      >
+        gnomAD v2.1.1
+      </option>
+      <option
+        value="gnomad_sv_r2_1"
+      >
+        gnomAD SVs v2.1
+      </option>
+      <option
+        value="exac"
+      >
+        ExAC
+      </option>
+    </optgroup>
+  </select>
+  <span
+    style={
+      {
+        "flexGrow": 1,
+      }
+    }
+  >
+    <div
+      style={
+        {
+          "display": "inline-block",
+          "width": "100%",
+        }
+      }
+    >
+      <input
+        aria-autocomplete="list"
+        aria-expanded={false}
+        autoComplete="off"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        data-testid="searchbox-input"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search by gene, region, or variant"
+        role="combobox"
+        value=""
+      />
+    </div>
+  </span>
+</div>
+`;
+
 exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected changes 1`] = `
 <div
   className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"

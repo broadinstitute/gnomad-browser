@@ -19595,6 +19595,318 @@ exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r4 has no unexpected 
 </div>
 `;
 
+exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
+<div
+  className="Page-sc-w7h773-0 kodnkv"
+>
+  <div
+    className="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+  >
+    <div
+      className="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+    >
+      <h1
+        className="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+      >
+        Variant Co-Occurrence
+      </h1>
+    </div>
+    <div
+      className="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+    >
+      <span
+        className="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+      >
+        Dataset
+      </span>
+      <ul
+        className="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+      >
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_short_variant"
+            href="/?dataset=gnomad_r4_non_ukb"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD v4.1.0 (non-UKB)
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_short_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r4"
+                  href="/?dataset=gnomad_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.0.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    807,162 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_r2_1"
+                  href="/?dataset=gnomad_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v2.1.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    141,456 samples
+                  </div>
+                </a>
+              </li>
+            </li>
+          </ul>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+        >
+          <a
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="current_sv_dataset"
+            href="/?dataset=gnomad_sv_r4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+          >
+            gnomAD SVs v4.0
+          </a>
+        </li>
+        <li
+          className="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+        >
+          <a
+            aria-expanded={false}
+            aria-haspopup="true"
+            aria-label="More datasets"
+            className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+            data-item="other_structural_variant"
+            href="/"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <span
+              className="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+            </span>
+          </a>
+          <ul
+            className="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+          >
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh38
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r4"
+                  href="/?dataset=gnomad_sv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    63,046 samples, genome
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_cnv_r4"
+                  href="/?dataset=gnomad_cnv_r4"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD CNVs v4.0
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    464,297 samples, exome, rare (&lt;0.01)
+                  </div>
+                </a>
+              </li>
+            </li>
+            <li>
+              <div
+                className="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+              >
+                GRCh37
+              </div>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1"
+                  href="/?dataset=gnomad_sv_r2_1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    10,847 samples, genome
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_non_neuro"
+                  href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (non-neuro)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    8,342 samples, genome
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                  data-item="gnomad_sv_r2_1_controls"
+                  href="/?dataset=gnomad_sv_r2_1_controls"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD SVs v2.1 (controls)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                  >
+                    5,192 samples, genome
+                  </div>
+                </a>
+              </li>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span>
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  >
+    Variant co-occurrence is only available for gnomAD v2.1.1
+    <br />
+    <br />
+    <a
+      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      href="/?dataset=gnomad_r2_1"
+      onClick={[Function]}
+    >
+      View variant co-occurrence in gnomAD v2.1.1
+    </a>
+  </div>
+</div>
+`;
+
 exports[`VariantCoocurrencePage for non-2.1 dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
 <div
   className="Page-sc-w7h773-0 kodnkv"
