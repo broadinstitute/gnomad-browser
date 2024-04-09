@@ -12,6 +12,7 @@ export const GNOMAD_POPULATION_NAMES = {
   fin: 'European (Finnish)',
   oth: 'Remaining individuals',
   sas: 'South Asian',
+  rmi: 'Remaining',
   remaining: 'Remaining',
 
   // EAS subpopulations
