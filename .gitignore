@@ -29,3 +29,7 @@ hail-*.log
 
 # vscode settings
 **/.vscode/
+
+# Playright test dirs
+/tests/playwright/
+/playwright/.cache/
