@@ -2114,6 +2114,157 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
 </Page>
 `;
 
+exports[`ShortTandemRepeatPageContainer with dataset gnomad_r4_non_ukb queries API with correct parameters 1`] = `
+<Page>
+  <DocumentTitle
+    title="ATXN1 | Tandem Repeat | gnomAD v4.1.0 (non-UKB)"
+  />
+  <GnomadPageHeading
+    datasetOptions={
+      {
+        "includeCopyNumberVariants": false,
+        "includeExac": false,
+        "includeGnomad2": false,
+        "includeGnomad3": true,
+        "includeGnomad3Subsets": false,
+        "includeShortVariants": true,
+        "includeStructuralVariants": false,
+      }
+    }
+    selectedDataset="gnomad_r4_non_ukb"
+  >
+    Tandem Repeat: 
+    <span>
+      ATXN1
+    </span>
+  </GnomadPageHeading>
+  <Query
+    errorMessage="Unable to load tandem repeat data"
+    loadingMessage="Loading tandem repeat data"
+    operationName="ShortTandemRepeat"
+    query="
+query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
+  short_tandem_repeat(id: $strId, dataset: $datasetId) {
+    id
+    gene {
+      ensembl_id
+      symbol
+      region
+    }
+    associated_diseases {
+      name
+      symbol
+      omim_id
+      inheritance_mode
+      repeat_size_classifications {
+        classification
+        min
+        max
+      }
+      notes
+    }
+    reference_region {
+      chrom
+      start
+      stop
+    }
+    reference_repeat_unit
+    repeat_units {
+      repeat_unit
+      classification
+    }
+    allele_size_distribution {
+      distribution
+      populations {
+        id
+        distribution
+      }
+      repeat_units {
+        repeat_unit
+        distribution
+        populations {
+          id
+          distribution
+        }
+      }
+    }
+    genotype_distribution {
+      distribution
+      populations {
+        id
+        distribution
+      }
+      repeat_units {
+        repeat_units
+        distribution
+        populations {
+          id
+          distribution
+        }
+      }
+    }
+    age_distribution {
+      age_range
+      distribution
+    }
+    stripy_id
+    adjacent_repeats {
+      id
+      reference_region {
+        chrom
+        start
+        stop
+      }
+      reference_repeat_unit
+      repeat_units
+      allele_size_distribution {
+        distribution
+        populations {
+          id
+          distribution
+        }
+        repeat_units {
+          repeat_unit
+          distribution
+          populations {
+            id
+            distribution
+          }
+        }
+      }
+      genotype_distribution {
+        distribution
+        populations {
+          id
+          distribution
+        }
+        repeat_units {
+          repeat_units
+          distribution
+          populations {
+            id
+            distribution
+          }
+        }
+      }
+    }
+  }
+}
+"
+    success={[Function]}
+    url="/api/"
+    variables={
+      {
+        "datasetId": "gnomad_r4_non_ukb",
+        "strId": "ATXN1",
+      }
+    }
+  >
+    [Function]
+  </Query>
+</Page>
+`;
+
 exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r2_1 queries API with correct parameters 1`] = `
 <Page>
   <DocumentTitle
