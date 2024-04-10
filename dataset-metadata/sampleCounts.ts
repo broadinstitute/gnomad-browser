@@ -39,7 +39,6 @@ const sampleCounts = [
   ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
     [`gnomad_r4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
   })),
-  { gnomad_r4_non_ukb: { total: 12345 } },
 ].reduce(Object.assign, {})
 
 export default sampleCounts

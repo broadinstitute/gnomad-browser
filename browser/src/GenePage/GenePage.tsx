@@ -62,8 +62,14 @@ import {
   CopyNumberVariant,
 } from '../VariantPage/VariantPage'
 import CopyNumberVariantsInGene from './CopyNumberVariantsInGene'
-import { ControlPanel, Legend, LegendItemWrapper, Label, CheckboxInput, LegendSwatch } from '../ChartStyles'
-
+import {
+  ControlPanel,
+  Legend,
+  LegendItemWrapper,
+  Label,
+  CheckboxInput,
+  LegendSwatch,
+} from '../ChartStyles'
 
 export type Strand = '+' | '-'
 
@@ -310,6 +316,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             includeGnomad2: gene.chrom !== 'M',
             includeGnomad3: true,
             includeGnomad3Subsets: gene.chrom !== 'M',
+            includeGnomad4Subsets: true,
           }}
         >
           {gene.symbol} <GeneName>{gene.name}</GeneName>
