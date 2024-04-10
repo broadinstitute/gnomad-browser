@@ -2,7 +2,11 @@ import React from 'react'
 
 import { BaseTable, ExternalLink, Page } from '@gnomad/ui'
 
-import { DatasetId, hasShortTandemRepeats, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  hasShortTandemRepeats,
+  labelForDataset,
+} from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
@@ -30,63 +34,73 @@ type ShortTandemRepeatsPageProps = {
 
 const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPageProps) => {
   return (
-    <TableWrapper>
-      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-      <BaseTable style={{ minWidth: '100%' }}>
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Reference repeat unit</th>
-            <th scope="col">Region</th>
-            <th scope="col">Inheritance mode</th>
-            <th scope="col">Associated disease(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {shortTandemRepeats.map((shortTandemRepeat) => {
-            return (
-              <tr key={shortTandemRepeat.id}>
-                <th scope="row" style={{ whiteSpace: 'nowrap' }}>
-                  <Link to={`/short-tandem-repeat/${shortTandemRepeat.id}`}>
-                    {shortTandemRepeat.id}
-                  </Link>
-                </th>
-                <td style={{ minWidth: '18ch' }}>{shortTandemRepeat.reference_repeat_unit}</td>
-                <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.gene.region}</td>
-                <td style={{ whiteSpace: 'nowrap' }}>
-                  {Array.from(
-                    new Set(
-                      shortTandemRepeat.associated_diseases.map(
-                        (disease) => disease.inheritance_mode
+    <>
+      <p>
+        For more information about Tandem Repeats in gnomAD, read our{' '}
+        <a href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
+          blog post
+        </a>
+        .
+      </p>
+
+      <TableWrapper>
+        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+        <BaseTable style={{ minWidth: '100%' }}>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Reference repeat unit</th>
+              <th scope="col">Region</th>
+              <th scope="col">Inheritance mode</th>
+              <th scope="col">Associated disease(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shortTandemRepeats.map((shortTandemRepeat) => {
+              return (
+                <tr key={shortTandemRepeat.id}>
+                  <th scope="row" style={{ whiteSpace: 'nowrap' }}>
+                    <Link to={`/short-tandem-repeat/${shortTandemRepeat.id}`}>
+                      {shortTandemRepeat.id}
+                    </Link>
+                  </th>
+                  <td style={{ minWidth: '18ch' }}>{shortTandemRepeat.reference_repeat_unit}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.gene.region}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
+                    {Array.from(
+                      new Set(
+                        shortTandemRepeat.associated_diseases.map(
+                          (disease) => disease.inheritance_mode
+                        )
                       )
-                    )
-                  ).join(', ')}
-                </td>
-                <td style={{ minWidth: '30ch' }}>
-                  {shortTandemRepeat.associated_diseases
-                    .map((disease) => {
-                      return (
-                        <React.Fragment key={disease.name}>
-                          {disease.omim_id ? (
-                            // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-                            <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
-                              {disease.name}
-                            </ExternalLink>
-                          ) : (
-                            disease.name
-                          )}
-                        </React.Fragment>
-                      )
-                    })
-                    .flatMap((el: any) => [', ', el])
-                    .slice(1)}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </BaseTable>
-    </TableWrapper>
+                    ).join(', ')}
+                  </td>
+                  <td style={{ minWidth: '30ch' }}>
+                    {shortTandemRepeat.associated_diseases
+                      .map((disease) => {
+                        return (
+                          <React.Fragment key={disease.name}>
+                            {disease.omim_id ? (
+                              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
+                              <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
+                                {disease.name}
+                              </ExternalLink>
+                            ) : (
+                              disease.name
+                            )}
+                          </React.Fragment>
+                        )
+                      })
+                      .flatMap((el: any) => [', ', el])
+                      .slice(1)}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </BaseTable>
+      </TableWrapper>
+    </>
   )
 }
 
