@@ -102,6 +102,23 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -1603,6 +1620,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -3087,6 +3121,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -4583,6 +4634,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -6073,6 +6141,23 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -7557,6 +7642,23 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -9087,6 +9189,23 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -10582,6 +10701,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -12207,6 +12343,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -13820,6 +13973,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -15445,6 +15615,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -17058,6 +17245,23 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -18683,6 +18887,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -20202,6 +20423,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -21733,6 +21971,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -23252,6 +23507,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -24783,6 +25055,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -26302,6 +26591,23 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>
@@ -27833,6 +28139,23 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
                 <li>
                   <a
                     className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
                     data-item="gnomad_r3"
                     href="/?dataset=gnomad_r3"
                     onBlur={[Function]}
@@ -29351,6 +29674,23 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
                       807,162 samples
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                    data-item="gnomad_r4_non_ukb"
+                    href="/?dataset=gnomad_r4_non_ukb"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    gnomAD v4.1.0 (non-UKB)
+                    <div
+                      className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                    >
+                      314,392 samples
                     </div>
                   </a>
                 </li>

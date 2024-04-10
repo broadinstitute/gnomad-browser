@@ -443,6 +443,7 @@ export type DatasetOptions = {
   includeGnomad3?: boolean
   includeGnomad3Subsets?: boolean
   includeGnomad4?: boolean
+  includeGnomad4Subsets?: boolean
   includeCopyNumberVariants?: boolean
   urlBuilder?: URLBuilder
 }
@@ -470,6 +471,7 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
     includeGnomad3 = true,
     includeGnomad3Subsets = true,
     includeGnomad4 = true,
+    includeGnomad4Subsets = false,
     includeCopyNumberVariants = true,
     urlBuilder = datasetLink,
   } = datasetOptions
@@ -504,6 +506,16 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
         url: urlBuilder(window.location, 'gnomad_r4'),
         description: `${sampleCounts.gnomad_r4.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('gnomad_r4'),
+      })
+    }
+
+    if (includeGnomad4Subsets) {
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r4_non_ukb',
+        label: labelForDataset('gnomad_r4_non_ukb'),
+        url: urlBuilder(window.location, 'gnomad_r4_non_ukb'),
+        description: `${sampleCounts.gnomad_r4_non_ukb.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r4_non_ukb'),
       })
     }
 
