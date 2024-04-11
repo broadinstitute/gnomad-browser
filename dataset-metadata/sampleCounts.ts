@@ -37,9 +37,9 @@ const sampleCounts = [
   { gnomad_cnv_r4: gnomadCnvV4SubsetSampleCounts }, // TODO: should not be called "subset"
   { gnomad_r4: gnomadV4SampleCounts },
   ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
-    [`gnomad_v4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
+    [`gnomad_r4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
   })),
+  { gnomad_r4_non_ukb: { total: 12345 } },
 ].reduce(Object.assign, {})
-
 
 export default sampleCounts
