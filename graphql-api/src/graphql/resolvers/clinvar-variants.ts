@@ -24,8 +24,11 @@ const resolveClinVarVariant = async (_: any, args: any, ctx: any) => {
 
   const variant = await fetchClinvarVariantById(ctx.esClient, args.reference_genome, variantId)
 
+  // Previously, we would return an error from the API if a variant was not found in ClinVar
+  //   This interefered with our nginx cache, as it uniformly does not cache responses that include
+  //   an error. Now we instead return null.
   if (!variant) {
-    throw new UserVisibleError('ClinVar variant not found')
+    return null
   }
 
   return variant
