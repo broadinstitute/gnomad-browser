@@ -82,27 +82,27 @@ class Configuration:
 
     @property
     def api_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-api"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-api"
 
     @property
     def browser_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-browser"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-browser"
 
     @property
     def reads_server_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-reads-server"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-reads-server"
 
     @property
     def reads_api_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-reads-api"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-reads-api"
 
     @property
     def blog_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-blog"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-blog"
 
     @property
     def blog_auth_image_repository(self):
-        return f"gcr.io/{self.project}/gnomad-blog-auth"
+        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-blog-auth"
 
 
 config = Configuration(_CONFIG_PATH)  # pylint: disable=invalid-name
