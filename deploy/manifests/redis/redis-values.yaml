@@ -21,10 +21,10 @@ master:
   resources: &podresources
     requests:
       cpu: 1
-      memory: '36Gi'
+      memory: '39Gi'
     limits:
       cpu: 2
-      memory: '36Gi'
+      memory: '39Gi'
   nodeSelector: *nodeselector
 replica:
   persistence: *podpersistence
