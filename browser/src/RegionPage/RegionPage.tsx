@@ -131,6 +131,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             includeGnomad2: region.reference_genome === 'GRCh37' && chrom !== 'M',
             includeGnomad3: region.reference_genome === 'GRCh38' || chrom === 'M',
             includeGnomad3Subsets: chrom !== 'M',
+            includeGnomad4Subsets: true,
           }}
         >
           {`${region.chrom}-${region.start}-${region.stop}`}
