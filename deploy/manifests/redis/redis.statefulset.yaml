@@ -42,10 +42,10 @@ spec:
           resources:
             requests:
               cpu: '500m'
-              memory: '36Gi'
+              memory: '39Gi'
             limits:
               cpu: 1
-              memory: '36Gi'
+              memory: '39Gi'
           volumeMounts:
             - mountPath: /data
               name: redis-data
