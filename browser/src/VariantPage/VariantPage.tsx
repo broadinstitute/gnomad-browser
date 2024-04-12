@@ -933,6 +933,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
                   // Include gnomAD versions based on the same reference genome as the current dataset
                   includeGnomad2: true,
                   includeGnomad3: true,
+                  includeGnomad4Subsets: true,
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
                   includeCopyNumberVariants: false,
