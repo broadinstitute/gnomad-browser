@@ -32,7 +32,14 @@ import { ExacConstraint } from '../ConstraintTable/ExacConstraintTable'
 import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
 import { Variant, ClinvarVariant } from '../VariantPage/VariantPage'
 import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
-import { ControlPanel, Legend, LegendItemWrapper, Label, CheckboxInput, LegendSwatch } from '../ChartStyles'
+import {
+  ControlPanel,
+  Legend,
+  LegendItemWrapper,
+  Label,
+  CheckboxInput,
+  LegendSwatch,
+} from '../ChartStyles'
 
 export type Exon = {
   feature_type: string
@@ -137,6 +144,7 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
             includeGnomad2: transcript.chrom !== 'M',
             includeGnomad3: true,
             includeGnomad3Subsets: transcript.chrom !== 'M',
+            includeGnomad4Subsets: true,
           }}
         >
           Transcript: {transcript.transcript_id}.{transcript.transcript_version}
