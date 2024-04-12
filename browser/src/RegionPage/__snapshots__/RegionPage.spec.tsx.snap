@@ -14,6 +14,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -155,6 +156,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -288,6 +290,7 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -429,6 +432,7 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -573,6 +577,7 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a m
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -714,6 +719,7 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a n
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -847,6 +853,7 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -988,6 +995,7 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -1121,6 +1129,7 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -1262,6 +1271,7 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -1395,6 +1405,7 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -1536,6 +1547,7 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -1669,6 +1681,7 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -1810,6 +1823,7 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -1943,6 +1957,7 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a mit
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -2092,6 +2107,7 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a non
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -2233,6 +2249,7 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -2382,6 +2399,7 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -2523,6 +2541,7 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -2672,6 +2691,7 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -2813,6 +2833,7 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -2962,6 +2983,7 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -3103,6 +3125,7 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -3252,6 +3275,7 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -3393,6 +3417,7 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -3542,6 +3567,7 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -3683,6 +3709,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -3832,6 +3859,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -3973,6 +4001,7 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -4122,6 +4151,7 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -4263,6 +4293,7 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -4404,6 +4435,7 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -4548,6 +4580,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -4689,6 +4722,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -4833,6 +4867,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -4974,6 +5009,7 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
           "includeGnomad2": true,
           "includeGnomad3": false,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
@@ -5118,6 +5154,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": false,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": false,
         }
@@ -5267,6 +5304,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
           "includeGnomad2": false,
           "includeGnomad3": true,
           "includeGnomad3Subsets": true,
+          "includeGnomad4Subsets": true,
           "includeShortVariants": true,
           "includeStructuralVariants": true,
         }
