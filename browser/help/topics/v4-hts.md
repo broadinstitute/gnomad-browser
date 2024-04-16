@@ -330,7 +330,6 @@ The v4.1 joint (combined exomes + genomes) frequency Hail Table only contains fr
 
 Global fields
 
-- `versions`: Struct containing the exomes and genomes versions.
 - `exomes_globals`: Global fields from the gnomAD exomes.
   - `freq_meta`: Allele frequency metadata for the gnomAD exomes. An ordered list containing the frequency aggregation group for each element of the `exomes.freq` array row annotation.
   - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group [adj only], sex: sex karyotype [adj only]), with values describing the corresponding index of each grouping entry in the `exomes.freq` array row annotation. 
@@ -631,6 +630,10 @@ Row fields
   - `cochran_mantel_haenszel_test`: Results from statsmodels [`stats.contingency_tables.StratifiedTable`](https://www.statsmodels.org/dev/generated/statsmodels.stats.contingency_tables.StratifiedTable.html) comparing allele frequencies between exomes and genomes stratified by genetic ancestry group `gen_anc`. The test is performed using the Cochran-Mantel-Haenszel test, a stratified test of independence for 2x2xK contingency tables.
     - `chisq`: Chi-squared test statistic from the Cochran-Mantel-Haenszel test.
     - `p_value`: P-value from the Cochran-Mantel-Haenszel test.
+  - `stat_union`: Struct containing the selected results from the contingency table and Cochran-Mantel-Haenszel tests comparing allele frequencies between exomes and genomes. When there is only one genetic ancestry group, the results from the contingency table test are used. When there are multiple genetic ancestry groups, the results from the Cochran-Mantel-Haenszel test are used.
+    - `p_value`: p-value from the contingency table or Cochran-Mantel-Haenszel tests.
+    - `stat_test_name`: Name of the test used to compare allele frequencies between exomes and genomes.
+    - `gen_ancs`: Genetic ancestry groups included in the test. 
 
 <br/><br/>
 
