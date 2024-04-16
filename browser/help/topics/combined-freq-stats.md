@@ -5,7 +5,7 @@ title: 'Combined genomes and exomes frequency statistics'
 
 **Contingency Table Test (Chi-squared or Fisher's exact test):**
 
-We applied Hail's [contingency_table_test](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.contingency_table_test) to a 2x2 table representing allele counts (AC) and allele numbers (AN) for both exomes and genomes. The minimum cell count in the contingency table defines whether a chi-squared or Fisher's exact test is used. We used a threshold of `min_cell_count=100`, meaning that if all cell counts in the 2x2 table were over 100, we used a Fisher's exact test.  We generated odds ratio and p-values for all variants in both the gnomAD exomes and genomes.
+We applied Hail's [contingency_table_test](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.contingency_table_test) to a 2x2 table representing allele counts (AC) and allele numbers (AN) for both exomes and genomes. The minimum cell count in the contingency table defines whether a chi-squared or Fisher's exact test is used. We used a threshold of `min_cell_count=100`, meaning that if all cell counts in the 2x2 table were over 100, we used a Fisher's exact test. We generated odds ratio and p-values for all variants in both the gnomAD exomes and genomes.
 
 **Cochran–Mantel–Haenszel (CMH) Test:**
 
@@ -13,7 +13,7 @@ This stratified test of independence is applied to 2x2xK contingency tables, whe
 
 **Variant Warnings Based on CMH Test Results:**
 
-In gnomAD v4.1, we add a warning to variants exhibiting highly discordant frequencies between the exomes and genomes. By leveraging CMH test statistics, we've pinpointed variants where the CMH p-value is less than 10^-4 and have flagged these variants for users' attention. About 4% of variants (2,486,726 out of 57,553,936) exhibit statistically different frequencies between the two data types at this threshold.
+In gnomAD v4.1, we add a warning to variants exhibiting highly discordant frequencies between the exomes and genomes. By leveraging CMH test statistics, we've pinpointed variants where the CMH p-value is less than 10<sup>-4</sup> and have flagged these variants for users' attention. About 4% of variants (2,486,726 out of 57,553,936) exhibit statistically different frequencies between the two data types at this threshold.
 
 The expected number of variants to reach this threshold by chance is 5,800 (out of 58 million total variants shared between the exomes and genomes). Observing approximately 430 times more variants than expected highlights the robustness of our approach. The CMH p-value distribution further supports the validity of our warnings, showing minimal baseline inflation and underscoring the significance of flagged variants.
 
