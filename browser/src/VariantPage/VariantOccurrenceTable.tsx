@@ -463,29 +463,6 @@ export const GnomadVariantOccurrenceTable = ({
               {showTotal && <td />}
             </tr>
           )}
-          {isV4(datasetId) && (
-            <tr>
-              <th scope="row">
-                {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-                <TooltipAnchor tooltip="Fraction of individuals with >20x coverage at this variant's locus">
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-                  <TooltipHint>Fraction of individuals with &gt;20x coverage</TooltipHint>
-                </TooltipAnchor>
-              </th>
-              {/* TODO: this logic can be extracted into a helper, and cleaned for clarity, todo after V4 mvp launch */}
-              {variant.exome ? (
-                <td>{exomeCoverage.over20 !== null ? exomeCoverage.over20.toFixed(1) : '–'}</td>
-              ) : (
-                <td />
-              )}
-              {variant.genome ? (
-                <td>{genomeCoverage.over20 !== null ? genomeCoverage.over20.toFixed(1) : '–'}</td>
-              ) : (
-                <td />
-              )}
-              {showTotal && <td />}
-            </tr>
-          )}
         </tbody>
       </Table>
       {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && (
