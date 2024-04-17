@@ -22,7 +22,7 @@ As part of gnomAD v4.1, we calculated allele number across all callable sites in
 For example, this [variant](https://gnomad.broadinstitute.org/variant/1-55039909-TC-T?dataset=gnomad_r4) only has alternate genotype calls in the gnomAD exomes. All of the gnomAD genome samples with defined genotypes at this site had homozygous reference genotype calls. Thus, this variant is flagged as "No variant" in the genomes and an allele count of 0 is displayed.
 
 ![variant without alternate genotypes](no_alt_gt.png)
-*Screenshot showing a variant flagged with "No variant" because all variants in that data type had homozygous reference genotype calls.*
+*Screenshot showing a variant flagged with "No variant" because all samples in that data type had homozygous reference genotype calls.*
 
 ### <a id="no-hq-genotypes"></a>No high quality genotype calls
 Variants flagged with the "AC0" [flag](https://gnomad.broadinstitute.org/help/what-do-the-flags-on-the-browser-mean) indicates that the allele count for that variant in the specified data type is 0 after removing low quality genotypes. We filter out genotypes as being low quality according to the following criteria:
