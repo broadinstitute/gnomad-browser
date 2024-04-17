@@ -10,6 +10,7 @@ Flags that will appear on variant pages:
 - RF (gnomAD v2 only): Failed random forest filtering thresholds of 0.055 for exome SNVs, 0.206 for exome indels, 0.263 for genome SNVs, and 0.222 for genome indels
 - Not in exomes: Variant was not called in the gnomAD exomes, i.e. no gnomAD exome sample had a reference or non-reference genotype call. Any loci outside of the [exome capture regions](https://gnomad.broadinstitute.org/help/exome-capture-tech) will have this flag.
 - Not in genomes: Variant was not called in the gnomAD genomes, i.e., no gnomAD genome sample had a reference or non-reference genotype call.
+- No data: Variant was not called in the specified data type, i.e., no samples in that data type had a reference or non-reference genotype call. Flag will always exist in combination with either "Not in exomes" or "Not in genomes" flag. For more information, see our allele count zero [help page]([help page](https://gnomad.broadinstitute.org/help/allele-count-zero).
 - Discrepant Frequencies: Variant has highly discordant frequencies in the gnomAD exomes and genomes. Variants are flagged using a Cochran–Mantel–Haenszel (CMH) test. For more information, see our combined frequency [help page](https://gnomad.broadinstitute.org/help/combined-freq-stats).
 
 Flags that will appear in the variant table on gene/region pages:
