@@ -43,7 +43,26 @@ const NoWrap = styled.span`
 type VariantContext = 'exome' | 'genome' | 'joint'
 const renderGnomadVariantFlag = (variant: Variant, context: VariantContext) => {
   if (!variant[context]) {
-    return context === 'joint' ? <div /> : <Badge level="error">No variant</Badge>
+    let badgeName = 'No variant'
+    let badgeDescription
+
+    if (variant.joint) {
+      if (
+        (context === 'exome' && variant.joint.filters.includes('not_called_in_exomes')) ||
+        (context === 'genome' && variant.joint.filters.includes('not_called_in_genomes'))
+      ) {
+        badgeName = 'No data'
+        badgeDescription = `This variant was not called in the gnomAD ${context} callset; no ${context} samples had any genotype call (no reference or alternate calls)`
+      }
+    }
+
+    return context === 'joint' ? (
+      <div />
+    ) : (
+      <Badge level="error" tooltip={badgeDescription}>
+        {badgeName}
+      </Badge>
+    )
   }
   const { filters } = variant[context]!
 
@@ -169,6 +188,11 @@ export const GnomadVariantOccurrenceTable = ({
   const isPresentInGenome = Boolean(variant.genome)
   const hasJointFrequencyData = Boolean(variant.joint)
 
+  const notCalledInExomes =
+    hasJointFrequencyData && variant.joint!.filters.includes('not_called_in_exomes')
+  const notCalledInGenomes =
+    hasJointFrequencyData && variant.joint!.filters.includes('not_called_in_genomes')
+
   const exomeAlleleCount = isPresentInExome ? variant.exome!.ac : 0
   const exomeAlleleNumber = isPresentInExome ? variant.exome!.an : 0
   const genomeAlleleCount = isPresentInGenome ? variant.genome!.ac : 0
@@ -291,8 +315,20 @@ export const GnomadVariantOccurrenceTable = ({
                 <TooltipHint>Allele Count</TooltipHint>
               </TooltipAnchor>
             </th>
-            {showExomes && <td>{isPresentInExome && exomeAlleleCount}</td>}
-            {showGenomes && <td>{isPresentInGenome && genomeAlleleCount}</td>}
+            {showExomes && (
+              <td>
+                {isPresentInExome && exomeAlleleCount}
+                {notCalledInExomes && '-'}
+                {hasJointFrequencyData && !isPresentInExome && !notCalledInExomes && 0}
+              </td>
+            )}
+            {showGenomes && (
+              <td>
+                {isPresentInGenome && genomeAlleleCount}
+                {notCalledInGenomes && '-'}
+                {hasJointFrequencyData && !isPresentInGenome && !notCalledInGenomes && 0}
+              </td>
+            )}
             {showTotal && <td>{totalAlleleCount}</td>}
           </tr>
           <tr>
@@ -306,12 +342,22 @@ export const GnomadVariantOccurrenceTable = ({
             {showExomes && (
               <td>
                 {isPresentInExome && exomeAlleleNumber}
+                {notCalledInExomes && '-'}
+                {hasJointFrequencyData &&
+                  !isPresentInExome &&
+                  !notCalledInExomes &&
+                  totalAlleleNumber - genomeAlleleNumber}
                 {hasLowAlleleNumberInExomes && ' *'}
               </td>
             )}
             {showGenomes && (
               <td>
                 {isPresentInGenome && genomeAlleleNumber}
+                {notCalledInGenomes && '-'}
+                {hasJointFrequencyData &&
+                  !isPresentInGenome &&
+                  !notCalledInGenomes &&
+                  totalAlleleNumber - exomeAlleleNumber}
                 {hasLowAlleleNumberInGenomes && ' *'}
               </td>
             )}
