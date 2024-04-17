@@ -21,6 +21,7 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     'v4-hts',
     'exome-capture-tech',
     'combined-freq-stats',
+    'allele-count-zero',
   ],
   faq: [
     {
