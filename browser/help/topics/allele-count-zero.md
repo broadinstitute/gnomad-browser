@@ -17,7 +17,7 @@ For example, for this [variant](https://gnomad.broadinstitute.org/variant/1-5504
 #TODO: Add screenshot when dashes have been added to this variant
 
 ### <a id="no-alt-genotypes"></a>No alternate genotype calls
-As part of gnomAD v4.1, we calculated allele number across all callable sites in the gnomAD v4 exomes and genomes. This means that we now display allele number (AN) for both data gnomAD types if the variant was **called** in either data type, i.e., we display AN even if there were zero alternate genotype calls in that data type.
+As part of gnomAD v4.1, we calculated allele number across all callable sites in the gnomAD exomes and genomes. This means that we now display allele number (AN) for both data types if a variant was **called** in either data type and the site was callable in both data types, i.e., we display AN even if there were zero alternate genotype calls in that data type.
 
 For example, this [variant](https://gnomad.broadinstitute.org/variant/1-55039909-TC-T?dataset=gnomad_r4) only has alternate genotype calls in tthe gnomAD exomes. All of the gnomAD genome samples with defined genotypes at this site had homozygous reference genotype calls. Thus, this variant is flagged as "No variant" in the genomes and an allele count of 0 is displayed.
 
