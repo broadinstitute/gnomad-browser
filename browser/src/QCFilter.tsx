@@ -19,7 +19,8 @@ type DisplayData = {
 const FILTER_DISPLAY_MAPPING: Record<Filter, DisplayData> = {
   AC0: {
     name: 'AC0',
-    description: 'Allele count is zero (i.e.e no high-confidence genotype)',
+    description:
+      'Allele count is zero due to removal of low quality genotypes (GQ < 20; DP < 10; and AB < 0.2 for het calls) at this site',
   },
   AS_VQSR: {
     name: 'AS VSQR',
@@ -34,18 +35,18 @@ const FILTER_DISPLAY_MAPPING: Record<Filter, DisplayData> = {
     description: 'Failed random forest filters',
   },
   discrepant_frequencies: {
-    name: 'Discrepant Frequencies',
+    name: 'Discrepant frequencies',
     description: 'Has discrepant frequencies between genomes and exomes',
   },
   not_called_in_exomes: {
-    name: 'Not in Exomes',
+    name: 'Not in exomes',
     description:
-      'This variant was not called in the gnomAD exome callset; no samples had any exome call (no samples had reference or alternate calls).',
+      'This variant was not called in the gnomAD exome callset; no exome samples had any genotype call (no reference or alternate calls)',
   },
   not_called_in_genomes: {
-    name: 'Not in gemomes',
+    name: 'Not in genomes',
     description:
-      'This variant was not called in the gnomAD genome callset; no samples had any genome call (no samples had reference or alternate calls).',
+      'This variant was not called in the gnomAD genome callset; no genome samples had any genotype call (no reference or alternate calls)',
   },
 }
 
