@@ -40,22 +40,16 @@ type VALiteralSequenceExpression {
 }
 
 type VASequenceLocation {
-  _id: VACURIE
+  _id: String
   type: String!
   sequence_id: String!
   interval: VASequenceInterval!
 }
 
-type VACURIE {
-  value: String!
-}
-
-union VAAlleleLocation = VACURIE | VASequenceLocation
-
 type VAAllele {
-  _id: VACURIE
+  _id: String
   type: String!
-  location: VAAlleleLocation!
+  location: VASequenceLocation!
   state: VALiteralSequenceExpression!
 }
 
@@ -65,12 +59,6 @@ type VACohortAlleleFrequencyDerivation {
   label: String
   version: String
 }
-
-type VAFocusAlleleURI {
-  value: String!
-}
-
-union VAFocusAllele = VAAllele | VAFocusAlleleURI
 
 type VACohortCharacteristic {
   name: String!
@@ -113,7 +101,7 @@ type VACohortAlleleFrequency {
   type: String!
   label: String
   derivedFrom: VACohortAlleleFrequencyDerivation
-  focusAllele: VAFocusAllele!
+  focusAllele: VAAllele!
   focusAlleleCount: Int!
   locusAlleleCount: Int!
   alleleFrequency: Float!
