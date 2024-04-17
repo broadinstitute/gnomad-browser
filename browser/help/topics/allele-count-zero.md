@@ -25,7 +25,7 @@ For example, this [variant](https://gnomad.broadinstitute.org/variant/1-55039909
 *Screenshot showing a variant flagged with "No variant" because all samples in that data type had homozygous reference genotype calls.*
 
 ### <a id="no-hq-genotypes"></a>No high quality genotype calls
-Variants flagged with the "AC0" [flag](https://gnomad.broadinstitute.org/help/what-do-the-flags-on-the-browser-mean) indicates that the allele count for that variant in the specified data type is 0 after removing low quality genotypes. We filter out genotypes as being low quality according to the following criteria:
+A variant flagged with the "AC0" [flag](https://gnomad.broadinstitute.org/help/what-do-the-flags-on-the-browser-mean) indicates that the allele count for that variant in the specified data type is 0 after removing low quality genotypes. We filter out genotypes as being low quality according to the following criteria:
 
 - Genotype quality (GQ) < 20
 - Depth (DP) < 10 for diploid genotype calls or DP < 5  for haploid genotype calls
