@@ -3,7 +3,7 @@ id: allele-count-zero
 title: Allele count zero
 ---
 
-There are three reasons why a variant either will have an allele count of 0 or will not have a defined allele count (indicated by `-`):
+There are three reasons why a variant will have an allele count of 0 or an undefined (missing) allele count (indicated by `-`):
 
 - No data
 - No alternate genotype calls
