@@ -14,7 +14,7 @@ click==8.1.7
     # via flask
 flask==3.0.0
     # via -r auth-requirements.in
-gunicorn==21.2.0
+gunicorn==22.0.0
     # via -r auth-requirements.in
 idna==3.6
     # via requests
