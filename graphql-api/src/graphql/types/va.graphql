@@ -16,7 +16,7 @@ enum VAComparator {
 
 type VAIndefiniteRange {
   type: String!
-  value: Float!
+  value: Int!
   comparator: VAComparator!
 }
 
