@@ -44,7 +44,8 @@ type VariantContext = 'exome' | 'genome' | 'joint'
 const renderGnomadVariantFlag = (variant: Variant, context: VariantContext) => {
   if (!variant[context]) {
     let badgeName = 'No variant'
-    let badgeDescription
+    let badgeDescription =
+      'Variant is not present in this data type. All called sample genotypes from this data type are homozygous reference'
 
     if (variant.joint) {
       if (

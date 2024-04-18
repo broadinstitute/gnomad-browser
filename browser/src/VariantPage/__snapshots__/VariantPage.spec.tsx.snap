@@ -64767,6 +64767,8 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 <td>
                   <span
                     className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     No variant
                   </span>
@@ -74442,6 +74444,8 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 <td>
                   <span
                     className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     No variant
                   </span>
@@ -84117,6 +84121,8 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 <td>
                   <span
                     className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     No variant
                   </span>
@@ -93792,6 +93798,8 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 <td>
                   <span
                     className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     No variant
                   </span>
@@ -103467,6 +103475,8 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 <td>
                   <span
                     className="Badge__BadgeWrapper-sc-j4izdp-1 hcZQTs"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     No variant
                   </span>
