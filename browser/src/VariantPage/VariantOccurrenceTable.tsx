@@ -376,8 +376,18 @@ export const GnomadVariantOccurrenceTable = ({
                 <TooltipHint>Allele Frequency</TooltipHint>
               </TooltipAnchor>
             </th>
-            {showExomes && <td>{isPresentInExome && exomeAlleleFrequency.toPrecision(4)}</td>}
-            {showGenomes && <td>{isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}</td>}
+            {showExomes && (
+              <td>
+                {isPresentInExome && exomeAlleleFrequency.toPrecision(4)}
+                {notCalledInExomes && '-'}
+              </td>
+            )}
+            {showGenomes && (
+              <td>
+                {isPresentInGenome && genomeAlleleFrequency.toPrecision(4)}
+                {notCalledInGenomes && '-'}
+              </td>
+            )}
             {showTotal && <td>{totalAlleleFrequency.toPrecision(4)}</td>}
           </tr>
           <tr>
@@ -389,11 +399,15 @@ export const GnomadVariantOccurrenceTable = ({
               (95% confidence)
             </th>
             {showExomes && (
-              <td>{isPresentInExome && <FilteringAlleleFrequency {...variant.exome!.faf95} />}</td>
+              <td>
+                {isPresentInExome && <FilteringAlleleFrequency {...variant.exome!.faf95} />}
+                {notCalledInExomes && '-'}
+              </td>
             )}
             {showGenomes && (
               <td>
                 {isPresentInGenome && <FilteringAlleleFrequency {...variant.genome!.faf95} />}
+                {notCalledInGenomes && '-'}
               </td>
             )}
             {showTotal && (
@@ -414,12 +428,14 @@ export const GnomadVariantOccurrenceTable = ({
               {showExomes && (
                 <td>
                   {isPresentInExome && exomeHomozygoteCount}
+                  {notCalledInExomes && '-'}
                   {showExomeHighAlleleBalanceWarning && ' *'}
                 </td>
               )}
               {showGenomes && (
                 <td>
                   {isPresentInGenome && genomeHomozygoteCount}
+                  {notCalledInGenomes && '-'}
                   {showGenomeHighAlleleBalanceWarning && ' *'}
                 </td>
               )}
