@@ -9,6 +9,7 @@ import ErrorBoundary from './ErrorBoundary'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
+import { ExternalLink } from '@gnomad/ui'
 
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
@@ -70,8 +71,15 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = <>gnomAD v4 is now version v4.1.0</>
-
+const BANNER_CONTENT = (
+  <>
+    gnomAD v4 is here! Read our {/* @ts-expect-error */}
+    <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1">
+      blog post
+    </ExternalLink>{' '}
+    for more details
+  </>
+)
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
