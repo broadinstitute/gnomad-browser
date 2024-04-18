@@ -39,7 +39,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD CNVs v4.0
+            gnomAD CNVs v4.1.0
           </a>
         </li>
         <li
@@ -85,7 +85,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4.0
+                  gnomAD SVs v4.1.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -102,7 +102,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD CNVs v4.0
+                  gnomAD CNVs v4.1.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -491,7 +491,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            gnomAD CNVs v4.0
+            gnomAD CNVs v4.1.0
           </a>
         </li>
         <li
@@ -537,7 +537,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD SVs v4.0
+                  gnomAD SVs v4.1.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >
@@ -554,7 +554,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
                   onClick={[Function]}
                   onKeyDown={[Function]}
                 >
-                  gnomAD CNVs v4.0
+                  gnomAD CNVs v4.1.0
                   <div
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                   >

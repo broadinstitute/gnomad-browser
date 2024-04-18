@@ -154,7 +154,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
 exports[`ShortTandemRepeatPageContainer with dataset gnomad_cnv_r4 queries API with correct parameters 1`] = `
 <Page>
   <DocumentTitle
-    title="ATXN1 | Tandem Repeat | gnomAD CNVs v4.0"
+    title="ATXN1 | Tandem Repeat | gnomAD CNVs v4.1.0"
   />
   <GnomadPageHeading
     datasetOptions={
@@ -2721,7 +2721,7 @@ query ShortTandemRepeat($strId: String!, $datasetId: DatasetId!) {
 exports[`ShortTandemRepeatPageContainer with dataset gnomad_sv_r4 queries API with correct parameters 1`] = `
 <Page>
   <DocumentTitle
-    title="ATXN1 | Tandem Repeat | gnomAD SVs v4.0"
+    title="ATXN1 | Tandem Repeat | gnomAD SVs v4.1.0"
   />
   <GnomadPageHeading
     datasetOptions={
