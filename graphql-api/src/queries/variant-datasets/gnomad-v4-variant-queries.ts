@@ -12,7 +12,7 @@ import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
 
-const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
+const GNOMAD_V4_VARIANT_INDEX = 'v4p1_gnomad_v4_variants'
 
 type Subset = 'all' | 'non_ukb'
 
