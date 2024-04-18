@@ -280,7 +280,7 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | gnomAD CNVs v4.0"
+      title="M-345-456 | gnomAD CNVs v4.1.0"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -422,7 +422,7 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | gnomAD CNVs v4.0"
+      title="12-345-456 | gnomAD CNVs v4.1.0"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -5144,7 +5144,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | gnomAD SVs v4.0"
+      title="M-345-456 | gnomAD SVs v4.1.0"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -5294,7 +5294,7 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | gnomAD SVs v4.0"
+      title="12-345-456 | gnomAD SVs v4.1.0"
     />
     <GnomadPageHeading
       datasetOptions={
