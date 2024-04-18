@@ -259,9 +259,9 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
     const genomeFilters = variant.genome.filters || []
     const jointFilters = variant.joint.filter || []
 
-    const subsetJointFreq = variant.joint.freq[subset].ac_raw
-
     const subsetGenomeFreq = variant.genome.freq[subset] || {}
+    const subsetJointFreq = variant.joint.freq[subset] || {}
+
     const hasExomeVariant = variant.exome.freq[subset].ac_raw
     const hasGenomeVariant = subsetGenomeFreq.ac_raw
     const hasJointVariant = subsetJointFreq.ac_raw
