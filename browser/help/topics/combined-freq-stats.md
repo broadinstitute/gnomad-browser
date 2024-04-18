@@ -17,8 +17,7 @@ In gnomAD v4.1, we add a warning to variants exhibiting highly discordant freque
 
 The expected number of variants to reach this threshold by chance is 9,100 (out of 91 million total variants shared between the exomes and genomes). Observing approximately 245 times more variants than expected highlights the robustness of our approach. The p-value distribution further supports the validity of our warnings, showing minimal baseline inflation and underscoring the significance of flagged variants.
 
-# TODO: Change image
-<img src="cmh-pval.png" alt= "CMH p-value distribution" width="50%" height="50%">
+![CMH p-value distribution](cmh-pval.png)
 
 ### Why have we added these statistical tests
 
