@@ -14,7 +14,8 @@ A "No data" flag on a variant page indicates that there were no defined genotype
 
 For example, for this [variant](https://gnomad.broadinstitute.org/variant/1-55040207-C-T?dataset=gnomad_r4), the gnomAD exomes are flagged as having "No data", and the variant is also flagged with the "Not in exomes" flag. This means that no gnomAD exome samples had any defined genotype calls at this site, likely due to this variant being outside of the exome capture regions. For more information about the exome capture technologies within gnomAD v4, see our [help page](https://gnomad.broadinstitute.org/help/exome-capture-tech).
 
-#TODO: Add screenshot when dashes have been added to this variant
+![variant with no data in exomes](no_data_exomes.png)
+*Screenshot showing a variant flagged with "No data" in the exomes because no exome sample had a defined genotype call at this site.*
 
 ### <a id="no-alt-genotypes"></a>No alternate genotype calls
 As part of gnomAD v4.1, we calculated allele number across all callable sites in the gnomAD exomes and genomes. This means that we now display allele number (AN) for both data types if a variant was **called** in either data type and the site was callable in both data types, i.e., we display AN even if there were zero alternate genotype calls in that data type.
