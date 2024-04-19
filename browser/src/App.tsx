@@ -73,7 +73,7 @@ const Banner = styled.div`
 
 const BANNER_CONTENT = (
   <>
-    gnomAD v4 is here! Read our {/* @ts-expect-error */}
+    gnomAD v4.1.0 is now available. Read our {/* @ts-expect-error */}
     <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1">
       blog post
     </ExternalLink>{' '}
