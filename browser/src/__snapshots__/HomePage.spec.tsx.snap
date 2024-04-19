@@ -349,6 +349,17 @@ exports[`Home Page has no unexpected changes 1`] = `
         Browse tandem repeats in gnomAD
       </a>
     </li>
+    <li
+      className="c7"
+    >
+      <a
+        className="-Link c8"
+        href="/help/what-features-are-not-yet-in-v4-and-where-can-i-find-them"
+        onClick={[Function]}
+      >
+        Locate features not yet in gnomAD v4
+      </a>
+    </li>
   </ul>
   <p>
     Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see
