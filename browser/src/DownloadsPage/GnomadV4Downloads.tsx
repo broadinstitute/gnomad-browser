@@ -15,84 +15,57 @@ import {
 import Link from '../Link'
 
 const exomeChromosomeVcfs = [
-  { chrom: '1', size: '26.88 GiB', md5: '50bba514e8d4e65aef39c7baa9c29e71' },
-  { chrom: '2', size: '20.32 GiB', md5: '0bac3559c5d9442d35c72308ab4a8684' },
-  { chrom: '3', size: '16.33 GiB', md5: '4cb2b400a8dfd95711e3b20a7a166f25' },
-  { chrom: '4', size: '11.07 GiB', md5: '2d1988c3ef15027c1c978a245feb4110' },
-  { chrom: '5', size: '12.29 GiB', md5: '4e4b38e9a819748a7909684f311ebd20' },
-  { chrom: '6', size: '13.14 GiB', md5: '22bac98dcacfddcc43820e05d4a72081' },
-  { chrom: '7', size: '14.01 GiB', md5: 'bf00c8dfe5c22d6fd684b7b90be4e8ff' },
-  { chrom: '8', size: '10.38 GiB', md5: 'c10c6a7265af418cbfd7a855944bc9f2' },
-  { chrom: '9', size: '11.57 GiB', md5: 'f20000e361f3f2f4759619b3029c10ad' },
-  { chrom: '10', size: '11.23 GiB', md5: 'd85984b39664d800ec8da815004029c1' },
-  { chrom: '11', size: '16.58 GiB', md5: '882f7345687996ac5e728fe771debeb2' },
-  { chrom: '12', size: '15.21 GiB', md5: '1b11c7c60a205703a977ba03c30f2f41' },
-  { chrom: '13', size: '5.18 GiB', md5: '4611cd7c3e0a1111ba52b2ec544484b4' },
-  { chrom: '14', size: '9.54 GiB', md5: '628757952a5114929bf1150901bc34bb' },
-  { chrom: '15', size: '10.65 GiB', md5: '63574925084fa8e48dac46185c41975f' },
-  { chrom: '16', size: '13.90 GiB', md5: 'ba59445b0fb0f1a1d78df5dc623c40dd' },
-  { chrom: '17', size: '17.04 GiB', md5: '5010e1133a4153c34ae3b113c7c97280' },
-  { chrom: '18', size: '4.87 GiB', md5: 'aed2e7e455e35b97a32d4886d94ccaa0' },
-  { chrom: '19', size: '18.14 GiB', md5: '67c40daa48e50bb4ec1ec541570217b0' },
-  { chrom: '20', size: '6.9 GiB', md5: '09b0221006b59c1626d8188e909e933d' },
-  { chrom: '21', size: '3.27 GiB', md5: '206afe8d9dbe544697e1b67eee6d2f7f' },
-  { chrom: '22', size: '7.31 GiB', md5: '3084349c03194e8cf5063a1e46473248' },
-  { chrom: 'X', size: '7.96 GiB', md5: '6d33a288735eda242c473905ccb6743b' },
-  { chrom: 'Y', size: '163.66 MiB', md5: 'c8414744cf75fa498e2497a9391eb1ad' },
+  { chrom: '1', size: '17.50 GiB', md5: '848be4d85c953bc73a8e4f0c97026a72' },
+  { chrom: '2', size: '13.30 GiB', md5: 'e2f5d891a3374e88d1c3136f94bed0ea' },
+  { chrom: '3', size: '10.79 GiB', md5: 'a35b949b32453b4b5abd7b1de42e298a' },
+  { chrom: '4', size: '7.18 GiB', md5: 'c7c7008a73acbb8fea68b82951842832' },
+  { chrom: '5', size: '7.91 GiB', md5: 'c1016f56be62deb2e947fed4d31302dd' },
+  { chrom: '6', size: '8.50 GiB', md5: 'f96bc8711ed085d63b8bd5396664adbc' },
+  { chrom: '7', size: '9.01 GiB', md5: 'c41cd52571b001cf7d3e388a668e4dff' },
+  { chrom: '8', size: '6.78 GiB', md5: 'a47777fe141c01876cb170f2c2f2e6b6' },
+  { chrom: '9', size: '7.49 GiB', md5: 'c5abd4d8aff12f2bf8b4ec844769782f' },
+  { chrom: '10', size: '7.32 GiB', md5: '4befc8dc50ead888e8af24f556c9fdd6' },
+  { chrom: '11', size: '10.84 GiB', md5: '3833ce3ab046afe92c9b55df93a61ec' },
+  { chrom: '12', size: '9.90 GiB', md5: 'e530a9ed203cdcc914621ab7430774bb' },
+  { chrom: '13', size: '3.30 GiB', md5: 'af1eab40c8be47c8c7c04dc73e0333e4' },
+  { chrom: '14', size: '6.21 GiB', md5: 'd0e0fa71d94bf016a061ba4dc0bd869f' },
+  { chrom: '15', size: '6.87 GiB', md5: '01b116e34b3815cfd1d3afa53a29a41b' },
+  { chrom: '16', size: '9.10 GiB', md5: '44137843b2df39c8a654427181bda919' },
+  { chrom: '17', size: '11.19 GiB', md5: 'c61978218ab3eaa07b571eb9959f39d2' },
+  { chrom: '18', size: '3.16 GiB', md5: '1ec708d5cae9657ccee0626763ed9946' },
+  { chrom: '19', size: '11.75 GiB', md5: '50a37cfa9a9a3e030388bcf15bdabb79' },
+  { chrom: '20', size: '4.43 GiB', md5: '605680cd99e469bdf5f0045bd22359c9' },
+  { chrom: '21', size: '2.10 GiB', md5: '7ca6d51a42425b857eddb46d7bc5832d' },
+  { chrom: '22', size: '4.71 GiB', md5: 'dcf191563e69054a71bd4dc77862799a' },
+  { chrom: 'X', size: '5.35 GiB', md5: '5b7b17d3d4cff22c20480a908c861a28' },
+  { chrom: 'Y', size: '108.30 MiB', md5: ' d500cf5a73c53f02d1b95f1e092f2e49' },
 ]
 
 const genomeChromosomeVcfs = [
-  { chrom: '1', size: '64.64 GiB', md5: '722d44a602a6988c2ffd55b6ed7ca3ce' },
-  { chrom: '2', size: '68.24 GiB', md5: '2d14cb70a93d772191fa5133f5b1a129' },
-  { chrom: '3', size: '56.96 GiB', md5: 'b0c8955adcd44e8757d9bfdb01a2e180' },
-  { chrom: '4', size: '53.19 GiB', md5: '9fba0d34f3074100681b74fc489f620b' },
-  { chrom: '5', size: '48.64 GiB', md5: '007112b5d72df612dcfb3dc45606dc25' },
-  { chrom: '6', size: '46.85 GiB', md5: '9b0a289a7dc7910f1a79586b8aa62593' },
-  { chrom: '7', size: '45.95 GiB', md5: '0929e74108e1d7faab3f7e90e8af9410' },
-  { chrom: '8', size: '43.03 GiB', md5: '4c6bc15f9d1232f83e89f5305cc1fbab' },
-  { chrom: '9', size: '36.36 GiB', md5: '83c85e0d39b0bab7b8223642c8d2dab0' },
-  { chrom: '10', size: '39.16 GiB', md5: '757db8e8f1007144e6dd8dfcd697046b' },
-  { chrom: '11', size: '38.57 GiB', md5: '52c5b1e9313869dc347b55133dd5c31f' },
-  { chrom: '12', size: '37.86 GiB', md5: '19d5b3abacf1c6be990b3aa8f6ca2786' },
-  { chrom: '13', size: '25.65 GiB', md5: '94c6da5e72d87bf0a714d6b5c1c09272' },
-  { chrom: '14', size: '26.02 GiB', md5: '145c7f1710a6b3a90044f3d14912ce4b' },
-  { chrom: '15', size: '24.63 GiB', md5: '3e04c33c6a03f91b1b071dc8c3224f77' },
-  { chrom: '16', size: '27.57 GiB', md5: '572a343a3d8629e0579dbd424f5147ad' },
-  { chrom: '17', size: '25.17 GiB', md5: 'ac0003ebe2297dd4377c5045bb439c5c' },
-  { chrom: '18', size: '21.12 GiB', md5: '4e1b5b41b0bc70c23d43904dd9ff3bb1' },
-  { chrom: '19', size: '19.91 GiB', md5: '992829f49533843a5ced897d6388d5e2' },
-  { chrom: '20', size: '17.49 GiB', md5: 'd3ab3ed3c79c53a4fe15ced300b07ef5' },
-  { chrom: '21', size: '11.47 GiB', md5: '4d2e808cbaafcd2ddc7692be0a45a924' },
-  { chrom: '22', size: '12.77 GiB', md5: 'd6ba3b18b07423e3a1af56e8405a26c2' },
-  { chrom: 'X', size: '37.05 GiB', md5: 'b77d8f0219fa9a033a6f747d5fef12d9' },
-  { chrom: 'Y', size: '890.03 MiB', md5: '8c231b75745b6670555915847c9999e8' },
-]
-
-const svChromosomeVcfs = [
-  { chrom: '1', size: '616.33 MiB', crc32c: 'f497d60f' },
-  { chrom: '2', size: '612.83 MiB', crc32c: 'bee58761' },
-  { chrom: '3', size: '469.64 MiB', crc32c: '00c11e03' },
-  { chrom: '4', size: '446.44 MiB', crc32c: '4aa1be45' },
-  { chrom: '5', size: '418.1 MiB', crc32c: 'cc78d775' },
-  { chrom: '6', size: '418.37 MiB', crc32c: '8ad01764' },
-  { chrom: '7', size: '437.99 MiB', crc32c: '0e78bed7' },
-  { chrom: '8', size: '332.91 MiB', crc32c: '1a7974d3' },
-  { chrom: '9', size: '289.19 MiB', crc32c: '693c4cc1' },
-  { chrom: '10', size: '320.36 MiB', crc32c: '63dc92db' },
-  { chrom: '11', size: '312.75 MiB', crc32c: 'c0016756' },
-  { chrom: '12', size: '322.33 MiB', crc32c: '28396743' },
-  { chrom: '13', size: '208.4 MiB', crc32c: '504d3937' },
-  { chrom: '14', size: '218.37 MiB', crc32c: '06ccecf9' },
-  { chrom: '15', size: '183.5 MiB', crc32c: 'c191b2ca' },
-  { chrom: '16', size: '234 MiB', crc32c: '016c8e77' },
-  { chrom: '17', size: '233.1 MiB', crc32c: 'f37738a4' },
-  { chrom: '18', size: '157.88 MiB', crc32c: '1f802ad6' },
-  { chrom: '19', size: '227.48 MiB', crc32c: '16a48cf0' },
-  { chrom: '20', size: '148.62 MiB', crc32c: '7e34ac14' },
-  { chrom: '21', size: '109.55 MiB', crc32c: '6805d560' },
-  { chrom: '22', size: '112.34 MiB', crc32c: '3a0cce90' },
-  { chrom: 'X', size: '335.93 MiB', crc32c: '1b49e5a6' },
-  { chrom: 'Y', size: '50.76 MiB', crc32c: 'd8a3a636' },
+  { chrom: '1', size: '41.05 GiB', md5: '328b4578212afec2cde394a1b02d544f' },
+  { chrom: '2', size: '43.43 GiB', md5: '2d14cb70a93d772191fa5133f5b1a129' },
+  { chrom: '3', size: '36.56 GiB', md5: '716c181431a3c11a2eb18c5f50a3542d' },
+  { chrom: '4', size: '33.56 GiB', md5: 'd9b913f3e30c8f410f9ce7dee5dee6d4' },
+  { chrom: '5', size: '30.46 GiB', md5: 'a2a3b9014af5c8f9bbaaf743968e48f8' },
+  { chrom: '6', size: '29.61 GiB', md5: 'e65c2aa321c5e272548fb3d901bae382' },
+  { chrom: '7', size: '29.10 GiB', md5: '58ee22cf3dcc8cb8b493d218e19432cc' },
+  { chrom: '8', size: '27.28 GiB', md5: '9854d9df22977cf5bac0f9fc05f4e8f5' },
+  { chrom: '9', size: '23.06 GiB', md5: '6adfc9c47000cf66d1305392051b391d' },
+  { chrom: '10', size: '25.00 GiB', md5: 'c2cd760130d2339f7135fc70700db1e1' },
+  { chrom: '11', size: '24.58 GiB', md5: 'd1e7a4dcf3ff62eeffca57afefc5a33a' },
+  { chrom: '12', size: '24.17 GiB', md5: '644bdbc5c53d9112edbacad401a28d1a' },
+  { chrom: '13', size: '15.93 GiB', md5: '84b12f299210d2a7e390c56a234b7b68' },
+  { chrom: '14', size: '16.63 GiB', md5: '0e524b414faf5a51b74d153939b3ddcd' },
+  { chrom: '15', size: '15.74 GiB', md5: '00d1386eadbfcb653eb810a6c08ed250' },
+  { chrom: '16', size: '17.62 GiB', md5: '2b106c12ca8cca9bd58e98d2c248ef4d' },
+  { chrom: '17', size: '16.22 GiB', md5: '9d58b459e75312b487c660666ea540c4' },
+  { chrom: '18', size: '13.44 GiB', md5: 'b95d30a6f5a45242d834fc7351afd760' },
+  { chrom: '19', size: '12.74 GiB', md5: '73fa1c7c09072e8ca5e26a1443f0af2a' },
+  { chrom: '20', size: '11.03 GiB', md5: '6c6f326c67b288ec99932905da72c1e6' },
+  { chrom: '21', size: '7.23 GiB', md5: '9b6584cfe62f6e8bd0c3cea90a4ce56a' },
+  { chrom: '22', size: '8.13 GiB', md5: 'a7bcf712a6b8d29e690468bf1dd8913d' },
+  { chrom: 'X', size: '21.34 GiB', md5: '8b91766906865b0795c653af51cb73b8' },
+  { chrom: 'Y', size: '571.35 MiB', md5: '1ffb9c683674f41ff7cf524e5bb56bb8' },
 ]
 
 const GnomadV4Downloads = () => {
@@ -121,6 +94,11 @@ const GnomadV4Downloads = () => {
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
             gnomAD v4.0.0 blog post
           </ExternalLink>
+          and the{' '}
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1">
+            gnomAD v4.1.0 blog post
+          </ExternalLink>
           .
         </p>
         <ColumnsWrapper>
@@ -131,7 +109,7 @@ const GnomadV4Downloads = () => {
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
-                  path="/release/4.0/ht/exomes/gnomad.exomes.v4.0.sites.ht"
+                  path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht"
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -139,7 +117,7 @@ const GnomadV4Downloads = () => {
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
-                    path={`/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr${chrom}.vcf.bgz`}
+                    path={`/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
                     includeTBI
@@ -156,7 +134,7 @@ const GnomadV4Downloads = () => {
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
-                  path="/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht/"
+                  path="/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/"
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -164,13 +142,77 @@ const GnomadV4Downloads = () => {
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
-                    path={`/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr${chrom}.vcf.bgz`}
+                    path={`/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
                     includeTBI
                   />
                 </ListItem>
               ))}
+            </FileList>
+          </Column>
+        </ColumnsWrapper>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v4-joint-freq-stats">Joint Frequency</SectionTitle>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Joint sites Hail Table"
+              path="/release/4.1/ht/joint/gnomad.joint.v4.1.site.ht"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v4-all-sites-allele-number">All sites allele numbers</SectionTitle>
+        <ColumnsWrapper>
+          <Column>
+            <h3>Exomes</h3>
+            <FileList>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <GetUrlButtons
+                  label="Exomes all site allele number Hail Table"
+                  path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.allele_number_all_sites.ht"
+                />
+              </ListItem>
+
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <DownloadLinks
+                  label="Exomes all site allele number TSV"
+                  path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.allele_number_all_sites.tsv.bgz"
+                  md5="ee71ce1ccfa5c1d9dd86e1ee1b1d11e2"
+                  size="1.07 GiB"
+                />
+              </ListItem>
+            </FileList>
+          </Column>
+
+          <Column>
+            <h3>Genomes</h3>
+            <FileList>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <GetUrlButtons
+                  label="Genomes all site allele number Hail Table"
+                  path="/release/4.1/ht/genomes/gnomad.genomes.v4.1.allele_number_all_sites.ht"
+                />
+              </ListItem>
+
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <DownloadLinks
+                  label="Genomes all site allele number TSV"
+                  path="/release/4.1/tsv/genomes/gnomad.genomes.v4.1.allele_number_all_sites.tsv.bgz"
+                  md5="7101516dd79d48d10c28fa548b22884a"
+                  size="11.19 GiB"
+                />
+              </ListItem>
             </FileList>
           </Column>
         </ColumnsWrapper>
@@ -244,20 +286,20 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <DownloadLinks label="README" path="/release/4.0/constraint/README.txt" />
+            <DownloadLinks label="README" path="/release/4.1/constraint/README.txt" />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
-              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.ht"
+              path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Constraint metrics TSV"
-              path="/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv"
+              path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
             />
           </ListItem>
         </FileList>
@@ -270,18 +312,26 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
-          {svChromosomeVcfs.map(({ chrom, size, crc32c }) => (
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-            <ListItem key={chrom}>
-              <DownloadLinks
-                label={`chr${chrom} VCF`}
-                path={`/release/4.0/genome_sv/gnomad.v4.0.sv.chr${chrom}.vcf.gz`}
-                size={size}
-                crc32c={crc32c}
-                includeTBI
-              />
-            </ListItem>
-          ))}
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Genome SV VCF"
+              path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.vcf.gz"
+              size="1.62 GiB"
+              hash="3ee614951c2f0c36659842876f7ce0ba"
+              includeTBI
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Genome SV non neuro controls VCF"
+              path="/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.vcf.gz"
+              size="3.12 GiB"
+              hash="eb9eae81e32923829d256695731e899a"
+              includeTBI
+            />
+          </ListItem>
         </FileList>
       </DownloadsSection>
 
@@ -296,21 +346,27 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <DownloadLinks
               label="Exome CNV VCF"
-              path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.all.vcf.gz"
+              path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.all.vcf.gz"
+              size="8.51 MiB"
+              hash="a662f9c838eeda60c4b9918e437bee89"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome CNV non neuro VCF"
-              path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro.vcf.gz"
+              path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.non_neuro.vcf.gz"
+              size="7.90 MiB"
+              hash="532c77b717f7d67d4424c76c1f4ea0f2"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
-              label="Exome CNV non-neuro controls VCF"
-              path="/release/4.0/exome_cnv/gnomad.v4.0.cnv.non_neuro_controls.vcf.gz"
+              label="Exome CNV non neuro controls VCF"
+              path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.non_neuro_controls.vcf.gz"
+              size="5.33 MiB"
+              hash="e75e0ee3f5b7fb6e174a3fa7637a3d6d"
             />
           </ListItem>
         </FileList>
@@ -338,6 +394,27 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Exome calling intervals flat file"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="REVEL v4.1 README"
+              path="/release/4.1/tsv/revel_for_2414_unmatched_transcripts_README.md"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Exomes REVEL supplementary TSV"
+              path="/release/4.1/tsv/exomes/gnomad.v4.1.exomes.revel_for_2414_unmatched_transcripts.tsv.bgz"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Genomes REVEL supplementary TSV"
+              path="/release/4.1/tsv/genomes/gnomad.v4.1.genomes.revel_for_2414_unmatched_transcripts.tsv.bgz"
             />
           </ListItem>
         </FileList>
