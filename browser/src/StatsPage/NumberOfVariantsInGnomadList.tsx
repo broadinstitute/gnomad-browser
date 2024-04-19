@@ -14,7 +14,7 @@ const SectionHeader = styled.div`
   font-weight: bold;
 `
 
-const SectionList = styled.ul`
+export const SectionList = styled.ul`
   margin-top: 0.5em;
 
   li {
