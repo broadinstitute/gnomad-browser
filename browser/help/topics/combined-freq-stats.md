@@ -9,6 +9,7 @@ We applied Hail's [contingency_table_test](https://hail.is/docs/0.2/functions/st
 
 Example [variant](https://gnomad.broadinstitute.org/variant/1-55052214-G-T?dataset=gnomad_r4) flagged based on contingency table test:
 ![variant flagged with contingency table test](variant-ctt-flag.png)
+![variant flagged with contingency table test showing hover over text](variant-ctt-hover.png)
 
 ### <a id="cmh_test"></a> Cochran–Mantel–Haenszel (CMH) Test
 
@@ -16,6 +17,7 @@ This stratified [test](https://en.wikipedia.org/wiki/Cochran%E2%80%93Mantel%E2%8
 
 Example [variant](https://gnomad.broadinstitute.org/variant/1-55039847-G-A?dataset=gnomad_r4) flagged based on CMH test:
 ![variant flagged with CMH test](variant-cmh-flag.png)
+![variant flagged with CMH test showing hover over text](variant-cmh-hover.png)
 
 ### Variant Warnings Based on Contingency Table and CMH Test Results
 
