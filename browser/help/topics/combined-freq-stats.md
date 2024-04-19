@@ -7,14 +7,14 @@ title: 'Combined genomes and exomes frequency statistics'
 
 We applied Hail's [contingency_table_test](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.contingency_table_test) to a 2x2 table representing allele counts (AC) and allele numbers (AN) for both exomes and genomes. The minimum cell count in the contingency table defines whether a chi-squared or Fisher's exact test is used. We used a threshold of `min_cell_count=100`, meaning that if all cell counts in the 2x2 table were over 100, we used a Fisher's exact test. We generated odds ratio and p-values for all variants in both the gnomAD exomes and genomes.
 
-Example [variant](http://34.36.169.116/variant/1-55052214-G-T?dataset=gnomad_r4) flagged based on contingency table test:
+Example [variant](https://gnomad.broadinstitute.org/variant/1-55052214-G-T?dataset=gnomad_r4) flagged based on contingency table test:
 ![variant flagged with contingency table test](variant-ctt-flag.png)
 
 ### <a id="cmh_test"></a> Cochran–Mantel–Haenszel (CMH) Test
 
 This stratified [test](https://en.wikipedia.org/wiki/Cochran%E2%80%93Mantel%E2%80%93Haenszel_statistics) of independence is applied to 2x2xK contingency tables, where K represents the number of strata (in this case, inferred genetic ancestry groups). The CMH test provides a way to assess variant frequency differences between exomes and genomes while controlling for population structure, offering a more nuanced understanding of the discrepancies observed. The CMH test is computed using Hail's [cochran_mantel_haenszel_test](https://hail.is/docs/0.2/functions/stats.html#hail.expr.functions.cochran_mantel_haenszel_test), which outputs a chi-squared test statistic and corresponding p-value.
 
-Example [variant](http://34.36.169.116/variant/1-55039847-G-A?dataset=gnomad_r4) flagged based on CMH test:
+Example [variant](https://gnomad.broadinstitute.org/variant/1-55039847-G-A?dataset=gnomad_r4) flagged based on CMH test:
 ![variant flagged with CMH test](variant-cmh-flag.png)
 
 ### Variant Warnings Based on Contingency Table and CMH Test Results
