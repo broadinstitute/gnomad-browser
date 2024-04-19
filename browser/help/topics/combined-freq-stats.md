@@ -19,6 +19,12 @@ The expected number of variants to reach this threshold by chance is 9,100 (out 
 
 ![CMH p-value distribution](cmh-pval.png)
 
+Example [variant](http://34.36.169.116/variant/1-55039847-G-A?dataset=gnomad_r4) flagged based on CMH test:
+![variant flagged with CMH test](variant-cmh-flag.png)
+
+Example [variant](http://34.36.169.116/variant/1-55052214-G-T?dataset=gnomad_r4) flagged based on contingency table test:
+![variant flagged with contingency table test](variant-ctt-flag.png)
+
 ### Why have we added these statistical tests
 
 For the first time, in gnomAD v4.0, we released a combined filtering allele frequency (FAF), integrating variant frequencies across the 734,947 exomes and 76,215 genomes. This integration brings the advantage of a larger, more diverse sample set but also introduces challenges. These challenges stem from differences in sequencing and processing methodologies, as well as variations in sample composition due to ascertainment biases. Addressing these challenges is crucial for providing accurate and reliable genetic insights.
