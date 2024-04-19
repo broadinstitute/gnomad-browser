@@ -77,6 +77,8 @@ const renderGnomadVariantFlag = (variant: Variant, context: VariantContext) => {
         ? {
             pValue: variant.joint!.freq_comparison_stats.stat_union.p_value,
             testName: variant.joint!.freq_comparison_stats.stat_union.stat_test_name,
+            geneticAncestry:
+              variant.joint!.freq_comparison_stats.stat_union.gen_ancs[0] || undefined,
           }
         : {}
 
