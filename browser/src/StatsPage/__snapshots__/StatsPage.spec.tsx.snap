@@ -115,24 +115,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
   line-height: 1.4;
 }
 
-.c5 {
+.c6 {
   margin-left: 2rem;
 }
 
-.c6 {
+.c7 {
   margin-bottom: 1em;
 }
 
-.c7 {
+.c8 {
   font-size: 1.1em;
   font-weight: bold;
 }
 
-.c8 {
+.c5 {
   margin-top: 0.5em;
 }
 
-.c8 li {
+.c5 li {
   margin-bottom: 0.5em;
 }
 
@@ -556,7 +556,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           <h2>
             gnomAD v4 includes 807,162 individuals
           </h2>
-          <ul>
+          <ul
+            className="c5"
+          >
             <li>
               730,947 
               <span
@@ -568,6 +570,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
               >
                 exomes
               </span>
+              <ul
+                className="c5"
+              >
+                <li>
+                  314,392 in the non-UKB subset
+                </li>
+              </ul>
             </li>
             <li>
               76,215 
@@ -586,18 +595,18 @@ exports[`Stats Page has no unexpected changes 1`] = `
             v4 variants
           </h2>
           <div
-            className="c5"
+            className="c6"
           >
             <div
-              className="c6"
+              className="c7"
             >
               <div
-                className="c7"
+                className="c8"
               >
                 Short variants
               </div>
               <ul
-                className="c8"
+                className="c5"
               >
                 <li>
                   Total SNVs: 786,500,648
@@ -608,7 +617,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <li>
                   Variant type* counts
                   <ul
-                    className="c8"
+                    className="c5"
                   >
                     <li>
                       Synonymous: 9,643,254
@@ -641,20 +650,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </div>
             </div>
             <div
-              className="c6"
+              className="c7"
             >
               <div
-                className="c7"
+                className="c8"
               >
                 Structural variants
               </div>
               <ul
-                className="c8"
+                className="c5"
               >
                 <li>
                   1,199,117 genome SVs
                   <ul
-                    className="c8"
+                    className="c5"
                   >
                     <li>
                       627,947 Deletions
@@ -682,7 +691,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <li>
                   66,903 rare (&lt;1% site frequency (SF)) exome CNVs
                   <ul
-                    className="c8"
+                    className="c5"
                   >
                     <li>
                       30,877 Deletions
@@ -695,15 +704,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </ul>
             </div>
             <div
-              className="c6"
+              className="c7"
             >
               <div
-                className="c7"
+                className="c8"
               >
                 Average number of variants per person
               </div>
               <ul
-                className="c8"
+                className="c5"
               >
                 <li>
                   SNVs per person (

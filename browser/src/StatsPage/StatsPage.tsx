@@ -22,7 +22,7 @@ import Link from '../Link'
 import gnomadExomeGenomeCountsByVersion from './BarGraphData/gnomADExomeGenomeCountsByVersion.json'
 import gnomadV4GeneticAncestryCounts from './BarGraphData/gnomadV4GeneticAncestryCounts.json'
 import gnomadV4GeneticDiversityCounts from './BarGraphData/gnomadV4GeneticDiversityCounts.json'
-import NumberOfVariantsInGnomadList from './NumberOfVariantsInGnomadList'
+import NumberOfVariantsInGnomadList, { SectionList } from './NumberOfVariantsInGnomadList'
 import StackedBarGraph from './StackedBarGraph'
 import GeneticAncestryGroupsByVersionTable from './StatsPageTables/GeneticAncestryGroupsByVersionTable'
 import V4GeneticAncestryTable from './StatsPageTables/V4GeneticAncestryTable'
@@ -185,14 +185,17 @@ const StatsPage = () => {
           <TwoColumnLayout>
             <div>
               <h2>gnomAD v4 includes 807,162 individuals</h2>
-              <ul>
+              <SectionList>
                 <li>
                   730,947 <span style={{ color: gnomadBlue }}>exomes</span>
+                  <SectionList>
+                    <li>314,392 in the non-UKB subset</li>
+                  </SectionList>
                 </li>
                 <li>
                   76,215 <span style={{ color: gnomadGreen }}>genomes</span>
                 </li>
-              </ul>
+              </SectionList>
               <h2>v4 variants</h2>
               <NumberOfVariantsInGnomadList />
             </div>
