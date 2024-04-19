@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Badge } from '@gnomad/ui'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 export type Filter =
   | 'AC0'
@@ -58,7 +59,8 @@ const renderFilterDescription = (filter: Filter, data: any) => {
       `, with a ${
         data.testName === 'cochran_mantel_haenszel_test'
           ? 'Cochran Mantel Haenszel test'
-          : 'Contingency Table test'
+          : // @ts-ignore
+            `Contingency Table test on ${GNOMAD_POPULATION_NAMES[data.geneticAncestry]}`
       } p-value of ${data.pValue.toExponential(2)}`
     )
   }
