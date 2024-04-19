@@ -33,7 +33,7 @@ For the first time, in gnomAD v4.0, we released a combined filtering allele freq
 
 These enhancements and warnings are part of our ongoing commitment to data integrity and usability in gnomAD. By identifying variants with significant frequency discrepancies and providing contextual warnings, we aim to equip researchers with the knowledge needed to make informed decisions in their genetic analyses. We encourage users to explore these new statistical analyses as they navigate gnomAD v4.1.
 
-For more information about this flag and how to approach interpreting frequencies at the flagged loci, please see our [blog post](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1).
+For more information about this flag and how to approach interpreting frequencies at the flagged loci, please see our [blog post](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#joint-combined-exome--genome-frequencies).
 
 ### Discrepant frequency MVP
 Note that the statistical tests and associated discrepant frequency flag added in gnomAD v4.1 are a minimum viable product (MVP) version. We will continue to iterate and improve on these analyses in future gnomAD releases.
