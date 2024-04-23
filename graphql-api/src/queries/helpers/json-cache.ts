@@ -100,7 +100,7 @@ export async function readJsonFromFileGcs<T>(
 async function fileExistsGcs(path: string, bucket: Bucket): Promise<boolean> {
   const file = bucket.file(path)
   const [exists] = await file.exists()
-  logger.info(`Key ${path} exists in cache`)
+  logger.info(`Key ${path} ${exists ? 'exists' : 'does not exist'} in cache`)
   return exists
 }
 
