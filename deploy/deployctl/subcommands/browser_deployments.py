@@ -55,7 +55,7 @@ patches:
               - name: app
                 env:
                   - name: JSON_CACHE_PATH
-                    value: 'gs://{cluster_name}-gene-cache/2023-12-01'
+                    value: 'gs://{cluster_name}-gene-cache/2024-04-24'
 """
 
 
