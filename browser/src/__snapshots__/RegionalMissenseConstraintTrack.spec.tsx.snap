@@ -1,0 +1,316 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has evidence and passed QC 1`] = `
+<div
+  className="RegionalMissenseConstraintTrack__Wrapper-sc-1lzrnv-0 jQmgFM"
+>
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 100,
+          }
+        }
+      >
+        <div
+          className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+        >
+          <span>
+            Regional missense constraint
+          </span>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 500,
+          }
+        }
+      >
+        <div
+          className="RegionalMissenseConstraintTrack__TopPanel-sc-1lzrnv-5 zqGGP"
+        >
+          <div
+            className="RegionalMissenseConstraintTrack__LegendWrapper-sc-1lzrnv-3 lboRwV"
+          >
+            <span>
+              Missense observed/expected
+            </span>
+            <svg
+              height={25}
+              width={170}
+            >
+              <rect
+                fill="#9b001f"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={10}
+                y={0}
+              />
+              <rect
+                fill="#de351b"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={40}
+                y={0}
+              />
+              <rect
+                fill="#fd8d3c"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={70}
+                y={0}
+              />
+              <rect
+                fill="#fecc5c"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={100}
+                y={0}
+              />
+              <rect
+                fill="#ffffb2"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={130}
+                y={0}
+              />
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={10}
+                y={10}
+              >
+                0.0
+              </text>
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={40}
+                y={10}
+              >
+                0.2
+              </text>
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={70}
+                y={10}
+              >
+                0.4
+              </text>
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={100}
+                y={10}
+              >
+                0.6
+              </text>
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={130}
+                y={10}
+              >
+                0.8
+              </text>
+              <text
+                dy="1.2em"
+                fontSize="10"
+                textAnchor="middle"
+                x={160}
+                y={10}
+              >
+                1.0+
+              </text>
+            </svg>
+            <svg
+              height={25}
+              width={170}
+            >
+              <rect
+                fill="#e2e2e2"
+                height={10}
+                stroke="#000"
+                width={20}
+                x={10}
+                y={0}
+              />
+              <text
+                dy="1em"
+                fontSize="10"
+                textAnchor="start"
+                x={35}
+                y={0}
+              >
+                Not significant (p &gt; 1e-3)
+              </text>
+            </svg>
+          </div>
+        </div>
+        <div
+          className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+        >
+          <svg
+            height={55}
+            width={500}
+          >
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#e2e2e2"
+                height={15}
+                stroke="black"
+                width={56}
+                x={124}
+                y={0}
+              />
+            </g>
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#e2e2e2"
+                height={15}
+                stroke="black"
+                width={54}
+                x={346}
+                y={0}
+              />
+            </g>
+            <g
+              transform="translate(0,20)"
+            >
+              <g>
+                <line
+                  stroke="#424242"
+                  x1={50}
+                  x2={50}
+                  y1={2}
+                  y2={11}
+                />
+                <line
+                  stroke="#424242"
+                  x1={50}
+                  x2={180}
+                  y1={7}
+                  y2={7}
+                />
+                <line
+                  stroke="#424242"
+                  x1={180}
+                  x2={180}
+                  y1={2}
+                  y2={11}
+                />
+                <rect
+                  fill="#fafafa"
+                  height={5}
+                  width={30}
+                  x={100}
+                  y={3}
+                />
+                <text
+                  dy="0.33em"
+                  textAnchor="middle"
+                  x={115}
+                  y={8}
+                >
+                  0.35
+                </text>
+              </g>
+              <g>
+                <line
+                  stroke="#424242"
+                  x1={250}
+                  x2={250}
+                  y1={2}
+                  y2={11}
+                />
+                <line
+                  stroke="#424242"
+                  x1={250}
+                  x2={400}
+                  y1={7}
+                  y2={7}
+                />
+                <line
+                  stroke="#424242"
+                  x1={400}
+                  x2={400}
+                  y1={2}
+                  y2={11}
+                />
+                <rect
+                  fill="#fafafa"
+                  height={5}
+                  width={30}
+                  x={310}
+                  y={3}
+                />
+                <text
+                  dy="0.33em"
+                  textAnchor="middle"
+                  x={325}
+                  y={8}
+                >
+                  0.37
+                </text>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
