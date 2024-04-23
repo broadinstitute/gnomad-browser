@@ -2,7 +2,7 @@
 
 exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has evidence and passed QC 1`] = `
 <div
-  className="RegionalMissenseConstraintTrack__Wrapper-sc-1lzrnv-0 jQmgFM"
+  className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
 >
   <div
     className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
@@ -19,7 +19,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         }
       >
         <div
-          className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+          className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
         >
           <span>
             Regional missense constraint
@@ -63,10 +63,10 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         }
       >
         <div
-          className="RegionalMissenseConstraintTrack__TopPanel-sc-1lzrnv-5 zqGGP"
+          className="ConstraintTrack__TopPanel-sc-113yvfg-3 imJcbb"
         >
           <div
-            className="RegionalMissenseConstraintTrack__LegendWrapper-sc-1lzrnv-3 lboRwV"
+            className="RegionalMissenseConstraintTrack__LegendWrapper-sc-1lzrnv-1 glMGEq"
           >
             <span>
               Missense observed/expected
@@ -195,7 +195,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
           </div>
         </div>
         <div
-          className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+          className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
         >
           <svg
             height={55}
