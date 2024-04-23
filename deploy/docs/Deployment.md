@@ -90,7 +90,7 @@ Should be set when running the API server.
 `JSON_CACHE_LARGE_GENES`
 
 - Description: Controls the caching behavior specifically for large genes.
-- Usage: When set to true, only large genes listed in the `largeGenes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
+- Usage: When set to true, only large genes listed in the `large-genes.ts` file will be cached. This can be useful for getting extremely large genes like TTN to load.
 - Example Value: true or false
 
 `JSON_CACHE_COMPRESSION`
