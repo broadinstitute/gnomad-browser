@@ -303,7 +303,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
       exome: hasExomeVariant
         ? {
             ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-            ...variant.exome.freq[subset],
+            ...omit(variant.exome.freq[subset], 'ancestry_groups'),
             populations: variant.exome.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
@@ -313,7 +313,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
       genome: hasGenomeVariant
         ? {
             ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-            ...subsetGenomeFreq,
+            ...omit(subsetGenomeFreq, 'ancestry_groups'),
             populations: variant.genome.freq.all.ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
@@ -323,7 +323,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
       joint: hasJointVariant
         ? {
             ...omit(variant.joint, 'freq'),
-            ...variant.joint.freq[subset],
+            ...omit(variant.joint.freq[subset], 'ancestry_groups'),
             populations: variant.joint.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
