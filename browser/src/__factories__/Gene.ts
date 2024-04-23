@@ -1,11 +1,16 @@
 import { Factory } from 'fishery'
 import { Gene, GeneMetadata } from '../GenePage/GenePage'
-import { Transcript } from '../TranscriptPage/TranscriptPage'
+import { Transcript, Exon } from '../TranscriptPage/TranscriptPage'
 import transcriptFactory from './Transcript'
 import {
   HeterozygousVariantCooccurrenceCountsPerSeverityAndAfFactory,
   HomozygousVariantCooccurrenceCountsPerSeverityAndAfFactory,
 } from './VariantCooccurrenceCountsPerSeverityAndAf'
+
+export const exonFactory = Factory.define<Exon>(({ params }) => {
+  const { feature_type = 'CDS', start = 100, stop = 200 } = params
+  return { feature_type, start, stop }
+})
 
 const geneFactory = Factory.define<Gene>(({ params, associations }) => {
   const {
