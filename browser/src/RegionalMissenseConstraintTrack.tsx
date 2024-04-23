@@ -10,7 +10,7 @@ import Link from './Link'
 import InfoButton from './help/InfoButton'
 import { Gene } from './GenePage/GenePage'
 
-type RegionalMissenseConstraintRegion = {
+export type RegionalMissenseConstraintRegion = {
   chrom: string
   start: number
   stop: number
