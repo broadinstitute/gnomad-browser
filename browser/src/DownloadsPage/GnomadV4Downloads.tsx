@@ -16,7 +16,7 @@ import Link from '../Link'
 
 const exomeChromosomeVcfs = [
   { chrom: '1', size: '17.50 GiB', md5: '848be4d85c953bc73a8e4f0c97026a72' },
-  { chrom: '2', size: '13.30 GiB', md5: 'e2f5d891a3374e88d1c3136f94bed0ea' },
+  { chrom: '2', size: '13.30 GiB', md5: '518ca01e6757a68bc0abe76f85af644d' },
   { chrom: '3', size: '10.79 GiB', md5: 'a35b949b32453b4b5abd7b1de42e298a' },
   { chrom: '4', size: '7.18 GiB', md5: 'c7c7008a73acbb8fea68b82951842832' },
   { chrom: '5', size: '7.91 GiB', md5: 'c1016f56be62deb2e947fed4d31302dd' },
