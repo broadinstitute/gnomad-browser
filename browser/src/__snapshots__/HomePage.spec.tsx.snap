@@ -213,12 +213,12 @@ exports[`Home Page has no unexpected changes 1`] = `
         <option
           value="gnomad_sv_r4"
         >
-          gnomAD SVs v4
+          gnomAD SVs v4.1.0
         </option>
         <option
           value="gnomad_cnv_r4"
         >
-          gnomAD CNVs v4.0
+          gnomAD CNVs v4.1.0
         </option>
       </optgroup>
       <optgroup
@@ -237,7 +237,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         <option
           value="exac"
         >
-          ExAC
+          ExAC v1.0
         </option>
       </optgroup>
     </select>
