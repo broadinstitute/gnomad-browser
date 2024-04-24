@@ -44,7 +44,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              ExAC v1.0
+              ExAC
             </a>
           </li>
           <li
@@ -318,7 +318,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -1773,7 +1773,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -3228,7 +3228,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -4683,7 +4683,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -6138,7 +6138,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -7593,7 +7593,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -9048,7 +9048,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -10503,7 +10503,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -11959,7 +11959,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -13415,7 +13415,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -14871,7 +14871,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -16327,7 +16327,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -17783,7 +17783,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -19239,7 +19239,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >
@@ -20694,7 +20694,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >
-                    ExAC v1.0
+                    ExAC
                     <div
                       className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
                     >

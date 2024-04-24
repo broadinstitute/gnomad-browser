@@ -4,7 +4,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | ExAC v1.0"
+      title="M-345-456 | ExAC"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -146,7 +146,7 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | ExAC v1.0"
+      title="12-345-456 | ExAC"
     />
     <GnomadPageHeading
       datasetOptions={

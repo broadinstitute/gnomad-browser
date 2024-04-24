@@ -178,7 +178,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      ExAC v1.0
+      ExAC
     </a>
   </li>
   <li
@@ -435,7 +435,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes 1`]
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -770,7 +770,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      ExAC v1.0
+      ExAC
     </a>
   </li>
   <li
@@ -1027,7 +1027,7 @@ exports[`DataSelector with "exac" dataset selected has no unexpected changes whe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -1619,7 +1619,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -2211,7 +2211,7 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -2803,7 +2803,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -3395,7 +3395,7 @@ exports[`DataSelector with "gnomad_r2_1" dataset selected has no unexpected chan
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -3987,7 +3987,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -4579,7 +4579,7 @@ exports[`DataSelector with "gnomad_r2_1_controls" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -5171,7 +5171,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -5763,7 +5763,7 @@ exports[`DataSelector with "gnomad_r2_1_non_cancer" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -6355,7 +6355,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -6947,7 +6947,7 @@ exports[`DataSelector with "gnomad_r2_1_non_neuro" dataset selected has no unexp
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -7539,7 +7539,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -8131,7 +8131,7 @@ exports[`DataSelector with "gnomad_r2_1_non_topmed" dataset selected has no unex
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -8723,7 +8723,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -9315,7 +9315,7 @@ exports[`DataSelector with "gnomad_r3" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -9907,7 +9907,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -10499,7 +10499,7 @@ exports[`DataSelector with "gnomad_r3_controls_and_biobanks" dataset selected ha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -11091,7 +11091,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -11683,7 +11683,7 @@ exports[`DataSelector with "gnomad_r3_non_cancer" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -12275,7 +12275,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -12867,7 +12867,7 @@ exports[`DataSelector with "gnomad_r3_non_neuro" dataset selected has no unexpec
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -13459,7 +13459,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -14051,7 +14051,7 @@ exports[`DataSelector with "gnomad_r3_non_topmed" dataset selected has no unexpe
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -14643,7 +14643,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -15235,7 +15235,7 @@ exports[`DataSelector with "gnomad_r3_non_v2" dataset selected has no unexpected
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -15827,7 +15827,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -16419,7 +16419,7 @@ exports[`DataSelector with "gnomad_r4" dataset selected has no unexpected change
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -17011,7 +17011,7 @@ exports[`DataSelector with "gnomad_r4_non_ukb" dataset selected has no unexpecte
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -17603,7 +17603,7 @@ exports[`DataSelector with "gnomad_r4_non_ukb" dataset selected has no unexpecte
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -18195,7 +18195,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -18787,7 +18787,7 @@ exports[`DataSelector with "gnomad_sv_r2_1" dataset selected has no unexpected c
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -19379,7 +19379,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -19971,7 +19971,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_controls" dataset selected has no une
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -20563,7 +20563,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -21155,7 +21155,7 @@ exports[`DataSelector with "gnomad_sv_r2_1_non_neuro" dataset selected has no un
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -21747,7 +21747,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
@@ -22339,7 +22339,7 @@ exports[`DataSelector with "gnomad_sv_r4" dataset selected has no unexpected cha
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
             <div
               className="c8"
             >
