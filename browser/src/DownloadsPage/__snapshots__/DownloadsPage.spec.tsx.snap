@@ -4756,7 +4756,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Joint sites Hail Table from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/ht/joint/gnomad.joint.v4.1.site.ht"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -4766,7 +4766,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Joint sites Hail Table from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/ht/joint/gnomad.joint.v4.1.site.ht"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -4776,7 +4776,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Joint sites Hail Table from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/ht/joint/gnomad.joint.v4.1.site.ht"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
               rel="noopener noreferrer"
               target="_blank"
             >
