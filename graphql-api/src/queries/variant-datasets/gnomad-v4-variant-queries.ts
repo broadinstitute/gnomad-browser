@@ -121,34 +121,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Sub
     )
   }
 
-  const inSilicoPredictorIds = [
-    'cadd',
-    'revel_max',
-    'spliceai_ds_max',
-    'pangolin_largest_ds',
-    'phylop',
-    'sift_max',
-    'polyphen_max',
-  ]
-
-  const inSilicoPredictorsList = inSilicoPredictorIds
-    .map((id) => {
-      if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
-        const name: string = id
-        if (id === 'cadd') {
-          return variant.in_silico_predictors.cadd.phred
-            ? {
-                id: name,
-                value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
-                flags: [],
-              }
-            : null
-        }
-        return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
-      }
-      return null
-    })
-    .filter((item) => item)
+  const inSilicoPredictorsList = createInSilicoPredictorsList(variant)
 
   const localAncestryPopulations = await fetchLocalAncestryPopulationsByVariant(
     esClient,
@@ -247,6 +220,43 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Sub
 }
 
 // ================================================================================================
+// Shared functions
+// ================================================================================================
+
+const createInSilicoPredictorsList = (variant: any) => {
+  const inSilicoPredictorIds = [
+    'cadd',
+    'revel_max',
+    'spliceai_ds_max',
+    'pangolin_largest_ds',
+    'phylop',
+    'sift_max',
+    'polyphen_max',
+  ]
+
+  const inSilicoPredictorsList = inSilicoPredictorIds
+    .map((id) => {
+      if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
+        const name: string = id
+        if (id === 'cadd') {
+          return variant.in_silico_predictors.cadd.phred
+            ? {
+                id: name,
+                value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+                flags: [],
+              }
+            : null
+        }
+        return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
+      }
+      return null
+    })
+    .filter((item) => item)
+
+  return inSilicoPredictorsList
+}
+
+// ================================================================================================
 // Shape variant summary
 // ================================================================================================
 
@@ -281,34 +291,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
       jointFilters.push('AC0')
     }
 
-    const inSilicoPredictorIds = [
-      'cadd',
-      'revel_max',
-      'spliceai_ds_max',
-      'pangolin_largest_ds',
-      'phylop',
-      'sift_max',
-      'polyphen_max',
-    ]
-
-    const inSilicoPredictorsList = inSilicoPredictorIds
-      .map((id) => {
-        if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
-          const name: string = id
-          if (id === 'cadd') {
-            return variant.in_silico_predictors.cadd.phred
-              ? {
-                  id: name,
-                  value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
-                  flags: [],
-                }
-              : null
-          }
-          return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
-        }
-        return null
-      })
-      .filter((item) => item)
+    const inSilicoPredictorsList = createInSilicoPredictorsList(variant)
 
     return {
       ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
