@@ -5,7 +5,7 @@ exports[`MitochondrialTranscriptCoverageTrack with dataset exac has no unexpecte
   className="StatusMessage-sc-neg7mh-0 hJFlwG"
 >
   Mitochondrial genome coverage is not available in 
-  ExAC v1.0
+  ExAC
 </div>
 `;
 
