@@ -1,7 +1,7 @@
 export type ReferenceGenome = 'GRCh37' | 'GRCh38'
 
 export const datasetLabels = {
-  exac: 'ExAC v1.0',
+  exac: 'ExAC',
   gnomad_r2_1: 'gnomAD v2.1.1',
   gnomad_r2_1_controls: 'gnomAD v2.1.1 (controls)',
   gnomad_r2_1_non_cancer: 'gnomAD v2.1.1 (non-cancer)',

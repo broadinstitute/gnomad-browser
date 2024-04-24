@@ -3,7 +3,7 @@
 exports[`ShortTandemRepeatPageContainer with dataset exac queries API with correct parameters 1`] = `
 <Page>
   <DocumentTitle
-    title="ATXN1 | Tandem Repeat | ExAC v1.0"
+    title="ATXN1 | Tandem Repeat | ExAC"
   />
   <GnomadPageHeading
     datasetOptions={

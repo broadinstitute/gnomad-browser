@@ -15577,7 +15577,7 @@ exports[`VariantCoocurrencePage for non-2.1 dataset exac has no unexpected chang
             onClick={[Function]}
             onKeyDown={[Function]}
           >
-            ExAC v1.0
+            ExAC
           </a>
         </li>
         <li

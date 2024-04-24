@@ -237,7 +237,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         <option
           value="exac"
         >
-          ExAC v1.0
+          ExAC
         </option>
       </optgroup>
     </select>
