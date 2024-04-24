@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Searchbox, Select } from '@gnomad/ui'
 
 import { fetchSearchResults } from './search'
-import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 
 const Wrapper = styled.div`
   display: flex;
@@ -79,6 +79,9 @@ export default withRouter((props: any) => {
 
   const innerSearchbox = useRef(null)
 
+  const grch38Datasets: DatasetId[] = ['gnomad_r4', 'gnomad_r3', 'gnomad_sv_r4', 'gnomad_cnv_r4']
+  const grch37Datasets: DatasetId[] = ['gnomad_r2_1', 'gnomad_sv_r2_1', 'exac']
+
   return (
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <Wrapper width={width}>
@@ -93,15 +96,14 @@ export default withRouter((props: any) => {
         }}
       >
         <optgroup label="GRCh38">
-          <option value="gnomad_r4">gnomAD v4.1.0</option>
-          <option value="gnomad_r3">gnomAD v3.1.2</option>
-          <option value="gnomad_sv_r4">gnomAD SVs v4</option>
-          <option value="gnomad_cnv_r4">gnomAD CNVs v4.0</option>
+          {grch38Datasets.map((datasetId) => (
+            <option value={datasetId}>{labelForDataset(datasetId)}</option>
+          ))}
         </optgroup>
         <optgroup label="GRCh37">
-          <option value="gnomad_r2_1">gnomAD v2.1.1</option>
-          <option value="gnomad_sv_r2_1">gnomAD SVs v2.1</option>
-          <option value="exac">ExAC</option>
+          {grch37Datasets.map((datasetId) => (
+            <option value={datasetId}>{labelForDataset(datasetId)}</option>
+          ))}
         </optgroup>
       </Select>
       <span style={{ flexGrow: 1 }}>
