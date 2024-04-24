@@ -161,7 +161,7 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <DownloadLinks
               label="Joint sites Hail Table"
-              path="/release/4.1/ht/joint/gnomad.joint.v4.1.site.ht"
+              path="/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
             />
           </ListItem>
         </FileList>
