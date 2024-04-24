@@ -136,11 +136,13 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Sub
       if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
         const name: string = id
         if (id === 'cadd') {
-          return {
-            id: name,
-            value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
-            flags: [],
-          }
+          return variant.in_silico_predictors.cadd.phred
+            ? {
+                id: name,
+                value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+                flags: [],
+              }
+            : null
         }
         return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
       }
@@ -294,11 +296,13 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
         if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
           const name: string = id
           if (id === 'cadd') {
-            return {
-              id: name,
-              value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
-              flags: [],
-            }
+            return variant.in_silico_predictors.cadd.phred
+              ? {
+                  id: name,
+                  value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+                  flags: [],
+                }
+              : null
           }
           return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
         }
