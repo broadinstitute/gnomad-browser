@@ -159,7 +159,7 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <DownloadLinks
+            <GetUrlButtons
               label="Joint sites Hail Table"
               path="/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
             />
