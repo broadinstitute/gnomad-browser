@@ -783,7 +783,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                17.50 GiB
+                17.5 GiB
                 , MD5: 
                 848be4d85c953bc73a8e4f0c97026a72
               </span>
@@ -864,7 +864,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                13.30 GiB
+                13.3 GiB
                 , MD5: 
                 e2f5d891a3374e88d1c3136f94bed0ea
               </span>
@@ -1188,7 +1188,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                8.50 GiB
+                8.5 GiB
                 , MD5: 
                 f96bc8711ed085d63b8bd5396664adbc
               </span>
@@ -1595,7 +1595,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               <span>
                 10.84 GiB
                 , MD5: 
-                3833ce3ab046afe92c9b55df93a61ec
+                3833ce3ab046afe92c9b55df93a61ec8
               </span>
               <br />
               <span>
@@ -1674,7 +1674,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                9.90 GiB
+                9.9 GiB
                 , MD5: 
                 e530a9ed203cdcc914621ab7430774bb
               </span>
@@ -1755,7 +1755,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                3.30 GiB
+                3.3 GiB
                 , MD5: 
                 af1eab40c8be47c8c7c04dc73e0333e4
               </span>
@@ -1998,7 +1998,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                9.10 GiB
+                9.1 GiB
                 , MD5: 
                 44137843b2df39c8a654427181bda919
               </span>
@@ -2403,7 +2403,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                2.10 GiB
+                2.1 GiB
                 , MD5: 
                 7ca6d51a42425b857eddb46d7bc5832d
               </span>
@@ -2646,9 +2646,9 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                108.30 MiB
+                108.3 MiB
                 , MD5: 
-                 d500cf5a73c53f02d1b95f1e092f2e49
+                d500cf5a73c53f02d1b95f1e092f2e49
               </span>
               <br />
               <span>
@@ -2855,7 +2855,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                43.43 GiB
+                43.36 GiB
                 , MD5: 
                 518ca01e6757a68bc0abe76f85af644d
               </span>
@@ -3260,7 +3260,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                29.10 GiB
+                29.1 GiB
                 , MD5: 
                 58ee22cf3dcc8cb8b493d218e19432cc
               </span>
@@ -3503,7 +3503,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
               </span>
               <br />
               <span>
-                25.00 GiB
+                25.0 GiB
                 , MD5: 
                 c2cd760130d2339f7135fc70700db1e1
               </span>
