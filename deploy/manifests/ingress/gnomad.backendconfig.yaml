@@ -3,5 +3,6 @@ kind: BackendConfig
 metadata:
   name: gnomad-backend-config
 spec:
+  timeoutSec: 60
   securityPolicy:
     name: 'deny-problematic-requests'
