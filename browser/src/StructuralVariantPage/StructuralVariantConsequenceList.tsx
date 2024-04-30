@@ -78,7 +78,7 @@ class StructuralVariantConsequenceList extends Component<Props, State> {
                     <ListItem>
                       <TextButton
                         onClick={() => {
-                          this.setState({ expandedConsequence: consequence })
+                          this.setState({ expandedConsequence: category })
                         }}
                       >
                         and {genes.length - 3} more
