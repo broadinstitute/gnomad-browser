@@ -83,7 +83,8 @@ def main():
             print(json.dumps(info))
     elif args.bucket:
         aggregated_info = fetch_object_metadata_from_bucket(args.bucket)
-        del aggregated_info[":"]
+        if ":" in aggregated_info:
+            del aggregated_info[":"]
         aggregated_info = {k: v for k, v in aggregated_info.items() if not k.endswith("tbi:")}
 
         sorted_filenames = sorted(
