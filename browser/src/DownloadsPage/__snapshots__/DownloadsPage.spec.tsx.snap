@@ -4779,6 +4779,1950 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             Microsoft
           </button>
         </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr1 sites VCF
+          </span>
+          <br />
+          <span>
+            67.11 GiB
+            , MD5: 
+            11c62331b0a654fce6a9cd43838de648
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr1 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr1 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr1 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr1 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr1 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr1 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr1.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr2 sites VCF
+          </span>
+          <br />
+          <span>
+            64.64 GiB
+            , MD5: 
+            563a8fe6f148621169b0215ac9f19602
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr2 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr2 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr2 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr2 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr2 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr2 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr2.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr3 sites VCF
+          </span>
+          <br />
+          <span>
+            52.28 GiB
+            , MD5: 
+            c44f1661bafc15685f1eee593b4886ea
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr3 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr3 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr3 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr3 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr3 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr3 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr3.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr4 sites VCF
+          </span>
+          <br />
+          <span>
+            48.04 GiB
+            , MD5: 
+            e6d438b84539c6adad5bc67d6febb33b
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr4 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr4 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr4 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr4 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr4 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr4 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr4.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr5 sites VCF
+          </span>
+          <br />
+          <span>
+            46.04 GiB
+            , MD5: 
+            d226db0e0055b5e87e72f4b63158664a
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr5 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr5 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr5 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr5 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr5 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr5 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr5.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr6 sites VCF
+          </span>
+          <br />
+          <span>
+            44.57 GiB
+            , MD5: 
+            2820f13a2439ebbdf55066a0c320cdb5
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr6 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr6 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr6 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr6 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr6 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr6 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr6.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr7 sites VCF
+          </span>
+          <br />
+          <span>
+            44.26 GiB
+            , MD5: 
+            d1d50e4fa082246a5787eee76c036189
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr7 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr7 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr7 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr7 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr7 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr7 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr7.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr8 sites VCF
+          </span>
+          <br />
+          <span>
+            39.26 GiB
+            , MD5: 
+            195f2825e94c9b5e43b34bb2b1ab5c7b
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr8 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr8 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr8 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr8 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr8 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr8 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr8.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr9 sites VCF
+          </span>
+          <br />
+          <span>
+            35.19 GiB
+            , MD5: 
+            1c739fb01fd9de816e3fddc958668627
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr9 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr9 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr9 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr9 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr9 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr9 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr9.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr10 sites VCF
+          </span>
+          <br />
+          <span>
+            36.48 GiB
+            , MD5: 
+            e2f174f150b5d709d5d7349ac241c438
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr10 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr10 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr10 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr10 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr10 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr10 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr10.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr11 sites VCF
+          </span>
+          <br />
+          <span>
+            39.79 GiB
+            , MD5: 
+            b8651f2e5a0aafa23d7fc3406b35bc69
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr11 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr11 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr11 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr11 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr11 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr11 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr11.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr12 sites VCF
+          </span>
+          <br />
+          <span>
+            38.53 GiB
+            , MD5: 
+            62795bafd326eae566ef49781a26bc91
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr12 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr12 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr12 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr12 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr12 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr12 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr12.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr13 sites VCF
+          </span>
+          <br />
+          <span>
+            23.84 GiB
+            , MD5: 
+            92244327bee6d45973f6077a8134ccd9
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr13 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr13 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr13 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr13 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr13 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr13 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr13.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr14 sites VCF
+          </span>
+          <br />
+          <span>
+            25.82 GiB
+            , MD5: 
+            f7a8344b03a4162cb71cdb628dd1e15b
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr14 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr14 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr14 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr14 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr14 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr14 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr14.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr15 sites VCF
+          </span>
+          <br />
+          <span>
+            25.58 GiB
+            , MD5: 
+            40c8ab829f973688d2ef891ce5acabb7
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr15 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr15 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr15 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr15 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr15 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr15 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr15.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr16 sites VCF
+          </span>
+          <br />
+          <span>
+            29.46 GiB
+            , MD5: 
+            58a5f920fc191b2069126c41278cc077
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr16 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr16 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr16 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr16 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr16 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr16 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr16.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr17 sites VCF
+          </span>
+          <br />
+          <span>
+            29.64 GiB
+            , MD5: 
+            aa48657f45d8db7711c69fbf71a25cdc
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr17 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr17 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr17 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr17 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr17 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr17 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr17.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr18 sites VCF
+          </span>
+          <br />
+          <span>
+            19.08 GiB
+            , MD5: 
+            80dd729bc61be464c964d3a3bfb0f41a
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr18 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr18 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr18 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr18 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr18 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr18 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr18.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr19 sites VCF
+          </span>
+          <br />
+          <span>
+            27.07 GiB
+            , MD5: 
+            1853ca4993ceb25bd6f3a4554173f7cf
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr19 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr19 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr19 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr19 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr19 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr19 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr19.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr20 sites VCF
+          </span>
+          <br />
+          <span>
+            18.11 GiB
+            , MD5: 
+            09263d3c29b822760c61607c6398f5c4
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr20 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr20 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr20 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr20 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr20 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr20 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr20.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr21 sites VCF
+          </span>
+          <br />
+          <span>
+            11.03 GiB
+            , MD5: 
+            2ec2d9876d61fc9c5b1e84ab6841b62e
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr21 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr21 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr21 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr21 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr21 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr21 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr21.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chr22 sites VCF
+          </span>
+          <br />
+          <span>
+            14.57 GiB
+            , MD5: 
+            df15a5ea8ae2e3090eae112f548c74ef
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chr22 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chr22 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chr22 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chr22 sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr22 sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chr22 sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr22.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chrX sites VCF
+          </span>
+          <br />
+          <span>
+            35.49 GiB
+            , MD5: 
+            a5288ced0c2fe893fcfae4d2022b9cd9
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chrX sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chrX sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chrX sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chrX sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrX sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrX sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrX.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            chrY sites VCF
+          </span>
+          <br />
+          <span>
+            777.46 MiB
+            , MD5: 
+            7b882f00919d582139acbc116a7a559f
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download chrY sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download chrY sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download chrY sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download TBI from
+             
+            <a
+              aria-label="Download TBI file for chrY sites VCF from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrY sites VCF from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download TBI file for chrY sites VCF from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chrY.vcf.bgz.tbi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
       </ul>
     </section>
     <section
