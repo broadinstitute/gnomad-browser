@@ -68,6 +68,33 @@ const genomeChromosomeVcfs = [
   { chrom: 'Y', size: '571.35 MiB', md5: '1ffb9c683674f41ff7cf524e5bb56bb8' },
 ]
 
+const jointChromosomeVcfs = [
+  { chrom: '1', size: '67.11 GiB', md5: '11c62331b0a654fce6a9cd43838de648' },
+  { chrom: '2', size: '64.64 GiB', md5: '563a8fe6f148621169b0215ac9f19602' },
+  { chrom: '3', size: '52.28 GiB', md5: 'c44f1661bafc15685f1eee593b4886ea' },
+  { chrom: '4', size: '48.04 GiB', md5: 'e6d438b84539c6adad5bc67d6febb33b' },
+  { chrom: '5', size: '46.04 GiB', md5: 'd226db0e0055b5e87e72f4b63158664a' },
+  { chrom: '6', size: '44.57 GiB', md5: '2820f13a2439ebbdf55066a0c320cdb5' },
+  { chrom: '7', size: '44.26 GiB', md5: 'd1d50e4fa082246a5787eee76c036189' },
+  { chrom: '8', size: '39.26 GiB', md5: '195f2825e94c9b5e43b34bb2b1ab5c7b' },
+  { chrom: '9', size: '35.19 GiB', md5: '1c739fb01fd9de816e3fddc958668627' },
+  { chrom: '10', size: '36.48 GiB', md5: 'e2f174f150b5d709d5d7349ac241c438' },
+  { chrom: '11', size: '39.79 GiB', md5: 'b8651f2e5a0aafa23d7fc3406b35bc69' },
+  { chrom: '12', size: '38.53 GiB', md5: '62795bafd326eae566ef49781a26bc91' },
+  { chrom: '13', size: '23.84 GiB', md5: '92244327bee6d45973f6077a8134ccd9' },
+  { chrom: '14', size: '25.82 GiB', md5: 'f7a8344b03a4162cb71cdb628dd1e15b' },
+  { chrom: '15', size: '25.58 GiB', md5: '40c8ab829f973688d2ef891ce5acabb7' },
+  { chrom: '16', size: '29.46 GiB', md5: '58a5f920fc191b2069126c41278cc077' },
+  { chrom: '17', size: '29.64 GiB', md5: 'aa48657f45d8db7711c69fbf71a25cdc' },
+  { chrom: '18', size: '19.08 GiB', md5: '80dd729bc61be464c964d3a3bfb0f41a' },
+  { chrom: '19', size: '27.07 GiB', md5: '1853ca4993ceb25bd6f3a4554173f7cf' },
+  { chrom: '20', size: '18.11 GiB', md5: '09263d3c29b822760c61607c6398f5c4' },
+  { chrom: '21', size: '11.03 GiB', md5: '2ec2d9876d61fc9c5b1e84ab6841b62e' },
+  { chrom: '22', size: '14.57 GiB', md5: 'df15a5ea8ae2e3090eae112f548c74ef' },
+  { chrom: 'X', size: '35.49 GiB', md5: 'a5288ced0c2fe893fcfae4d2022b9cd9' },
+  { chrom: 'Y', size: '777.46 MiB', md5: '7b882f00919d582139acbc116a7a559f' },
+]
+
 const GnomadV4Downloads = () => {
   return (
     <>
@@ -164,6 +191,18 @@ const GnomadV4Downloads = () => {
               path="/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
             />
           </ListItem>
+          {jointChromosomeVcfs.map(({ chrom, size, md5 }) => (
+            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+            <ListItem key={chrom}>
+              <DownloadLinks
+                label={`chr${chrom} sites VCF`}
+                path={`/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr${chrom}.vcf.bgz`}
+                size={size}
+                md5={md5}
+                includeTBI
+              />
+            </ListItem>
+          ))}
         </FileList>
       </DownloadsSection>
 
