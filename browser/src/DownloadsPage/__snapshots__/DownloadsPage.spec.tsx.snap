@@ -7427,6 +7427,12 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </span>
           <br />
           <span>
+            1.62 GiB
+            , MD5: 
+            3ee614951c2f0c36659842876f7ce0ba
+          </span>
+          <br />
+          <span>
             Download from
              
             <a
@@ -7499,6 +7505,12 @@ exports[`Downloads Page has no unexpected changes 1`] = `
         >
           <span>
             Genome SV non neuro controls VCF
+          </span>
+          <br />
+          <span>
+            3.19 GiB
+            , MD5: 
+            442b43a740f7f12f1f9b054f9d09b530
           </span>
           <br />
           <span>
@@ -7619,6 +7631,12 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </span>
           <br />
           <span>
+            8.5 MiB
+            , MD5: 
+            74000fc29d0b9bc547859cfc2ba4ac84
+          </span>
+          <br />
+          <span>
             Download from
              
             <a
@@ -7660,6 +7678,12 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </span>
           <br />
           <span>
+            7.9 MiB
+            , MD5: 
+            e2976db50823d608f2cf2fb8077f0ddd
+          </span>
+          <br />
+          <span>
             Download from
              
             <a
@@ -7698,6 +7722,12 @@ exports[`Downloads Page has no unexpected changes 1`] = `
         >
           <span>
             Exome CNV non neuro controls VCF
+          </span>
+          <br />
+          <span>
+            5.32 MiB
+            , MD5: 
+            10e6b0d9585d79d9620c40c96c257e4c
           </span>
           <br />
           <span>
