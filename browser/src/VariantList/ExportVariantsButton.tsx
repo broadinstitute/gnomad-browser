@@ -10,9 +10,11 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { DatasetId, isExac, isV2, isV3, isV4 } from '@gnomad/dataset-metadata/metadata'
 
-type Column = {
+type ColumnGetter = (variant: VariantTableVariant) => string
+
+export type Column = {
   label: string
-  getValue: (variant: VariantTableVariant) => string
+  getValue: ColumnGetter
 }
 
 type Property = 'ac' | 'an' | 'ac_hemi' | 'ac_hom'
@@ -70,105 +72,128 @@ export const createPopulationColumns = (datasetId: DatasetId) => {
   return populationColumns
 }
 
-export const createVersionSpecificColumns = (datasetId: DatasetId) => {
-  const inSilicoPredictorIds = [
-    'cadd',
-    'revel_max',
-    'spliceai_ds_max',
-    'pangolin_largest_ds',
-    'phylop',
-    'sift_max',
-    'polyphen_max',
-  ]
+export const getJointFilters: ColumnGetter = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.joint.filters.length === 0 ? 'PASS' : v4Variant.joint.filters.join(',')
+}
 
-  let versionSpecificColumns: Column[] = []
+export const getJointFAFGroup: ColumnGetter = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.joint.fafmax.faf95_max_gen_anc !== null
+    ? v4Variant.joint.fafmax.faf95_max_gen_anc
+    : ''
+}
 
+export const getJointFAFFreq: ColumnGetter = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.joint.fafmax.faf95_max !== null
+    ? JSON.stringify(v4Variant.joint.fafmax.faf95_max)
+    : ''
+}
+
+export const getExomeFAFGroup = (variant: VariantTableVariant) => {
+  const v2Variant = variant as V2VariantTableVariant
+  return v2Variant.exome && v2Variant.exome.faf95.popmax_population !== null
+    ? v2Variant.exome.faf95.popmax_population
+    : ''
+}
+
+export const getExomeFAFFreq = (variant: VariantTableVariant) => {
+  const v2Variant = variant as V2VariantTableVariant
+  return v2Variant.exome && v2Variant.exome.faf95.popmax !== null
+    ? JSON.stringify(v2Variant.exome.faf95.popmax)
+    : ''
+}
+
+export const getGenomeFAFGroup = (variant: VariantTableVariant) => {
+  const v2Variant = variant as V2VariantTableVariant
+  return v2Variant.genome && v2Variant.genome.faf95.popmax_population !== null
+    ? v2Variant.genome.faf95.popmax_population
+    : ''
+}
+
+export const getGenomeFAFFreq = (variant: VariantTableVariant) => {
+  const v2Variant = variant as V2VariantTableVariant
+  return v2Variant.genome && v2Variant.genome.faf95.popmax !== null
+    ? JSON.stringify(v2Variant.genome.faf95.popmax)
+    : ''
+}
+
+const getPredictorValue = (variant: VariantTableVariant, id: string) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id).length > 0
+    ? v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id)[0].value
+    : ''
+}
+
+export const getCadd: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'cadd')
+
+export const getRevel: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'revel_max')
+
+export const getSpliceAI: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'spliceai_ds_max')
+
+export const getPangolin: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'pangolin_largest_ds')
+
+export const getPhylop: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'phylop')
+
+export const getSift: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'sift_max')
+
+export const getPolyphen: ColumnGetter = (variant: VariantTableVariant) =>
+  getPredictorValue(variant, 'polyphen_max')
+
+export const createVersionSpecificColumns = (datasetId: DatasetId): Column[] => {
   if (isV4(datasetId)) {
-    versionSpecificColumns = [
+    return [
       {
         label: 'Filters - joint',
-        getValue: (variant) => {
-          const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.joint.filters.length === 0 ? 'PASS' : v4Variant.joint.filters.join(',')
-        },
+        getValue: getJointFilters,
       },
       {
         label: 'GroupMax FAF group',
-        getValue: (variant) => {
-          const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.joint.fafmax.faf95_max_gen_anc !== null
-            ? v4Variant.joint.fafmax.faf95_max_gen_anc
-            : ''
-        },
+        getValue: getJointFAFGroup,
       },
       {
         label: 'GroupMax FAF frequency',
-        getValue: (variant) => {
-          const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.joint.fafmax.faf95_max !== null
-            ? JSON.stringify(v4Variant.joint.fafmax.faf95_max)
-            : ''
-        },
+        getValue: getJointFAFFreq,
       },
+      { label: 'cadd', getValue: getCadd },
+      { label: 'revel_max', getValue: getRevel },
+      { label: 'spliceai_ds_max', getValue: getSpliceAI },
+      { label: 'pangolin_largest_ds', getValue: getPangolin },
+      { label: 'phylop', getValue: getPhylop },
+      { label: 'sift_max', getValue: getSift },
+      { label: 'polyphen_max', getValue: getPolyphen },
     ]
-
-    inSilicoPredictorIds.forEach((id) => {
-      const inSilicoColumn = {
-        label: id,
-        getValue: (variant: VariantTableVariant) => {
-          const v4Variant = variant as V4VariantTableVariant
-          return v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id).length >
-            0
-            ? v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id)[0].value
-            : ''
-        },
-      }
-      versionSpecificColumns = versionSpecificColumns.concat(inSilicoColumn)
-    })
   }
 
   if (isV2(datasetId)) {
-    versionSpecificColumns = [
+    return [
       {
         label: 'Exome GroupMax FAF group',
-        getValue: (variant) => {
-          const v2Variant = variant as V2VariantTableVariant
-          return v2Variant.exome && v2Variant.exome.faf95.popmax_population !== null
-            ? v2Variant.exome.faf95.popmax_population
-            : ''
-        },
+        getValue: getExomeFAFGroup,
       },
       {
         label: 'Exome GroupMax FAF frequency',
-        getValue: (variant) => {
-          const v2Variant = variant as V2VariantTableVariant
-          return v2Variant.exome && v2Variant.exome.faf95.popmax !== null
-            ? JSON.stringify(v2Variant.exome.faf95.popmax)
-            : ''
-        },
+        getValue: getExomeFAFFreq,
       },
       {
         label: 'Genome GroupMax FAF group',
-        getValue: (variant) => {
-          const v2Variant = variant as V2VariantTableVariant
-          return v2Variant.genome && v2Variant.genome.faf95.popmax_population !== null
-            ? v2Variant.genome.faf95.popmax_population
-            : ''
-        },
+        getValue: getGenomeFAFGroup,
       },
       {
         label: 'Genome GroupMax FAF frequency',
-        getValue: (variant) => {
-          const v2Variant = variant as V2VariantTableVariant
-          return v2Variant.genome && v2Variant.genome.faf95.popmax !== null
-            ? JSON.stringify(v2Variant.genome.faf95.popmax)
-            : ''
-        },
+        getValue: getGenomeFAFFreq,
       },
     ]
   }
 
-  return versionSpecificColumns
+  return []
 }
 
 const exportVariantsToCsv = (
