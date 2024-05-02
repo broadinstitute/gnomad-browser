@@ -357,7 +357,7 @@ const GnomadV4Downloads = () => {
               label="Genome SV VCF"
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.vcf.gz"
               size="1.62 GiB"
-              hash="3ee614951c2f0c36659842876f7ce0ba"
+              md5="3ee614951c2f0c36659842876f7ce0ba"
               includeTBI
             />
           </ListItem>
@@ -366,8 +366,8 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Genome SV non neuro controls VCF"
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.vcf.gz"
-              size="3.12 GiB"
-              hash="eb9eae81e32923829d256695731e899a"
+              size="3.19 GiB"
+              md5="442b43a740f7f12f1f9b054f9d09b530"
               includeTBI
             />
           </ListItem>
@@ -386,8 +386,8 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Exome CNV VCF"
               path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.all.vcf.gz"
-              size="8.51 MiB"
-              hash="a662f9c838eeda60c4b9918e437bee89"
+              size="8.5 MiB"
+              md5="74000fc29d0b9bc547859cfc2ba4ac84"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -395,8 +395,8 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Exome CNV non neuro VCF"
               path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.non_neuro.vcf.gz"
-              size="7.90 MiB"
-              hash="532c77b717f7d67d4424c76c1f4ea0f2"
+              size="7.9 MiB"
+              md5="e2976db50823d608f2cf2fb8077f0ddd"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -404,8 +404,8 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Exome CNV non neuro controls VCF"
               path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.non_neuro_controls.vcf.gz"
-              size="5.33 MiB"
-              hash="e75e0ee3f5b7fb6e174a3fa7637a3d6d"
+              size="5.32 MiB"
+              md5="10e6b0d9585d79d9620c40c96c257e4c"
             />
           </ListItem>
         </FileList>
