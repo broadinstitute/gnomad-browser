@@ -256,7 +256,7 @@ GetUrlButtons.defaultProps = {
   includeAzure: true,
 }
 
-type OwnDownloadLinksProps = {
+type DownloadLinksProps = {
   label: string
   path: string
   size?: string
@@ -266,24 +266,21 @@ type OwnDownloadLinksProps = {
   includeGCP?: boolean
   includeAWS?: boolean
   includeAzure?: boolean
-  includeTBI?: boolean
+  associatedFileType?: string
+  logClicks?: boolean
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'DownloadLinksProps' circula... Remove this comment to see the full error message
-type DownloadLinksProps = OwnDownloadLinksProps & typeof DownloadLinks.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'DownloadLinks' implicitly has type 'an... Remove this comment to see the full error message
 export const DownloadLinks = ({
   label,
   path,
   size,
   md5,
   crc32c,
-  gcsBucket,
-  includeGCP,
-  includeAWS,
-  includeAzure,
-  includeTBI,
+  gcsBucket = 'gcp-public-data--gnomad',
+  includeGCP = true,
+  includeAWS = true,
+  includeAzure = true,
+  associatedFileType,
 }: DownloadLinksProps) => {
   return (
     <>
@@ -340,18 +337,18 @@ export const DownloadLinks = ({
           ),
         ])}
       </span>
-      {includeTBI && (
+      {associatedFileType && (
         <>
           <br />
           <span>
-            Download TBI from{' '}
+            Download {associatedFileType.toUpperCase()} from{' '}
             {renderDownloadOptions([
               includeGCP && (
                 // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="gcp"
-                  aria-label={`Download TBI file for ${label} from Google`}
-                  href={`https://storage.googleapis.com/${gcsBucket}${path}.tbi`}
+                  aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Google`}
+                  href={`https://storage.googleapis.com/${gcsBucket}${path}.${associatedFileType.toLowerCase()}`}
                 >
                   Google
                 </ExternalLink>
@@ -360,8 +357,8 @@ export const DownloadLinks = ({
                 // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="aws"
-                  aria-label={`Download TBI file for ${label} from Amazon`}
-                  href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.tbi`}
+                  aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Amazon`}
+                  href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.${associatedFileType.toLowerCase()}`}
                 >
                   Amazon
                 </ExternalLink>
@@ -370,8 +367,8 @@ export const DownloadLinks = ({
                 // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="azure"
-                  aria-label={`Download TBI file for ${label} from Microsoft`}
-                  href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.tbi`}
+                  aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Microsoft`}
+                  href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.${associatedFileType.toLowerCase()}`}
                 >
                   Microsoft
                 </ExternalLink>
@@ -382,14 +379,4 @@ export const DownloadLinks = ({
       )}
     </>
   )
-}
-
-DownloadLinks.defaultProps = {
-  size: undefined,
-  md5: undefined,
-  gcsBucket: 'gcp-public-data--gnomad',
-  includeGCP: true,
-  includeAWS: true,
-  includeAzure: true,
-  includeTBI: false,
 }

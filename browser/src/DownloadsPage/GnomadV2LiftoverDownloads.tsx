@@ -109,7 +109,7 @@ const Gnomadv2LiftoverDownloads = () => {
                   path="/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
                   size="85.31 GiB"
                   md5="cff8d0cfed50adc9211d1feaed2d4ca7"
-                  includeTBI
+                  associatedFileType="TBI"
                 />
               </ListItem>
               {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -120,7 +120,7 @@ const Gnomadv2LiftoverDownloads = () => {
                     path={`/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}
@@ -144,7 +144,7 @@ const Gnomadv2LiftoverDownloads = () => {
                   path="/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.vcf.bgz"
                   size="743.06 GiB"
                   md5="83de3d5b52669f714e810d4fcf047c18"
-                  includeTBI
+                  associatedFileType="TBI"
                 />
               </ListItem>
               {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -155,7 +155,7 @@ const Gnomadv2LiftoverDownloads = () => {
                     path={`/release/2.1.1/liftover_grch38/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.liftover_grch38.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}

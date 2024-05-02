@@ -66,7 +66,7 @@ const ExacDownloads = () => (
             path="/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz"
             size="4.56 GiB"
             md5="f2b57a6f0660a00e7550f62da2654948"
-            includeTBI
+            associatedFileType="TBI"
           />
         </ListItem>
       </FileList>
