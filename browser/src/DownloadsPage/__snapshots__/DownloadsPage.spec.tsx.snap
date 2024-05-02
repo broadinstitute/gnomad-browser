@@ -10651,7 +10651,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.tsv.bgz"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_updated.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -10661,7 +10661,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.tsv.bgz"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_updated.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -10671,7 +10671,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_1kg_subset_sample_meta.tsv.bgz"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_updated.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13654,7 +13654,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_v1.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13664,7 +13664,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_v1.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13674,7 +13674,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Sample metadata TSV from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/gnomad_meta_v1.tsv"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/gnomad_meta_v1.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13803,7 +13803,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download PCA outliers table from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/pca/pca_outliers.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13813,7 +13813,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download PCA outliers table from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/pca/pca_outliers.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13823,7 +13823,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download PCA outliers table from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/pca/pca_outliers.txt"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/pca/pca_outliers.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13952,7 +13952,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level statistical summary TSV from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/post_qc_summary.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13962,7 +13962,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level statistical summary TSV from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/post_qc_summary.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13972,7 +13972,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level statistical summary TSV from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/metadata_and_qc/post_qc_summary.tsv"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/metadata_and_qc/post_qc_summary.tsv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -13993,7 +13993,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Doubleton counts CSV from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/doubleton_count.csv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14003,7 +14003,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Doubleton counts CSV from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/doubleton_count.csv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14013,7 +14013,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Doubleton counts CSV from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/doubleton_count.csv"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/doubleton_count.csv"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14025,13 +14025,13 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           className="c20"
         >
           <span>
-            Variants and unrelated sample PLINK files
+            Variants and unrelated sample PLINK files - .bed
           </span>
           <br />
           Show URL for
            
           <button
-            aria-label="Show Google URL for Variants and unrelated sample PLINK files"
+            aria-label="Show Google URL for Variants and unrelated sample PLINK files - .bed"
             className="c21"
             onClick={[Function]}
             type="button"
@@ -14040,7 +14040,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </button>
            / 
           <button
-            aria-label="Show Amazon URL for Variants and unrelated sample PLINK files"
+            aria-label="Show Amazon URL for Variants and unrelated sample PLINK files - .bed"
             className="c21"
             onClick={[Function]}
             type="button"
@@ -14049,7 +14049,79 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </button>
            / 
           <button
-            aria-label="Show Microsoft URL for Variants and unrelated sample PLINK files"
+            aria-label="Show Microsoft URL for Variants and unrelated sample PLINK files - .bed"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Variants and unrelated sample PLINK files - .bim
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variants and unrelated sample PLINK files - .bim"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variants and unrelated sample PLINK files - .bim"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Variants and unrelated sample PLINK files - .bim"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Variants and unrelated sample PLINK files - .fam
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Variants and unrelated sample PLINK files - .fam"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Variants and unrelated sample PLINK files - .fam"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Variants and unrelated sample PLINK files - .fam"
             className="c21"
             onClick={[Function]}
             type="button"
@@ -14070,7 +14142,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level mean fixation index table from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/mean_fst.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14080,7 +14152,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level mean fixation index table from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/mean_fst.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14090,7 +14162,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Population-level mean fixation index table from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/f2_fst/mean_fst.txt"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/f2_fst/mean_fst.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14559,7 +14631,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Post-QC site frequency spectrum table from Google"
               className="c10"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/hgdp_1kg_v2/plot_datasets/sfs_post_qc.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14569,7 +14641,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Post-QC site frequency spectrum table from Amazon"
               className="c10"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/hgdp_1kg_v2/plot_datasets/sfs_post_qc.txt"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -14579,7 +14651,238 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Post-QC site frequency spectrum table from Microsoft"
               className="c10"
-              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg/plot_datasets/sfs_post_qc.txt"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/hgdp_1kg_v2/plot_datasets/sfs_post_qc.txt"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Phased haplotype ChrX PAR1
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Phased haplotype ChrX PAR1 from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX PAR1 from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX PAR1 from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download 
+            CSI
+             from
+             
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR1 from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR1 from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR1 from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par1.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Phased haplotype ChrX PAR2
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Phased haplotype ChrX PAR2 from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX PAR2 from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX PAR2 from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download 
+            CSI
+             from
+             
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR2 from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR2 from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX PAR2 from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_par2.shapeit5_common.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Phased haplotype ChrX Non-PAR
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Phased haplotype ChrX Non-PAR from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX Non-PAR from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Phased haplotype ChrX Non-PAR from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+          <br />
+          <span>
+            Download 
+            CSI
+             from
+             
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX Non-PAR from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX Non-PAR from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf.csi"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download CSI file for Phased haplotype ChrX Non-PAR from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/resources/hgdp_1kg/phased_haplotypes_v2/hgdp1kgp_chrX_non_par.full.shapeit5_rare.bcf.csi"
               rel="noopener noreferrer"
               target="_blank"
             >
