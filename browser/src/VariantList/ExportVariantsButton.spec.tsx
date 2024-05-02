@@ -1,7 +1,25 @@
 import { test, expect } from '@jest/globals'
 
 import { forAllDatasets } from '../../../tests/__helpers__/datasets'
-import { createPopulationColumns, createVersionSpecificColumns } from './ExportVariantsButton'
+import {
+  createPopulationColumns,
+  createVersionSpecificColumns,
+  Column,
+  getJointFAFFreq,
+  getJointFilters,
+  getJointFAFGroup,
+  getExomeFAFFreq,
+  getExomeFAFGroup,
+  getGenomeFAFFreq,
+  getGenomeFAFGroup,
+  getCadd,
+  getRevel,
+  getSpliceAI,
+  getPangolin,
+  getPhylop,
+  getSift,
+  getPolyphen,
+} from './ExportVariantsButton'
 import {
   GNOMAD_POPULATION_NAMES,
   PopulationId,
@@ -81,37 +99,37 @@ const EXOME_GROUPMAX_FREQ_LABEL = 'Exome GroupMax FAF frequency'
 const GENOME_GROUPMAX_GROUP_LABEL = 'Genome GroupMax FAF group'
 const GENOME_GROUPMAX_FREQ_LABEL = 'Genome GroupMax FAF frequency'
 
-const expectedVersionSpecificColumns: Record<DatasetId, string[]> = {
+const expectedVersionSpecificColumns: Record<DatasetId, Column[]> = {
   exac: [],
   gnomad_r2_1: [
-    EXOME_GROUPMAX_GROUP_LABEL,
-    EXOME_GROUPMAX_FREQ_LABEL,
-    GENOME_GROUPMAX_GROUP_LABEL,
-    GENOME_GROUPMAX_FREQ_LABEL,
+    { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getExomeFAFGroup },
+    { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getExomeFAFFreq },
+    { label: GENOME_GROUPMAX_GROUP_LABEL, getValue: getGenomeFAFGroup },
+    { label: GENOME_GROUPMAX_FREQ_LABEL, getValue: getGenomeFAFFreq },
   ],
   gnomad_r2_1_controls: [
-    EXOME_GROUPMAX_GROUP_LABEL,
-    EXOME_GROUPMAX_FREQ_LABEL,
-    GENOME_GROUPMAX_GROUP_LABEL,
-    GENOME_GROUPMAX_FREQ_LABEL,
+    { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getExomeFAFGroup },
+    { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getExomeFAFFreq },
+    { label: GENOME_GROUPMAX_GROUP_LABEL, getValue: getGenomeFAFGroup },
+    { label: GENOME_GROUPMAX_FREQ_LABEL, getValue: getGenomeFAFFreq },
   ],
   gnomad_r2_1_non_cancer: [
-    EXOME_GROUPMAX_GROUP_LABEL,
-    EXOME_GROUPMAX_FREQ_LABEL,
-    GENOME_GROUPMAX_GROUP_LABEL,
-    GENOME_GROUPMAX_FREQ_LABEL,
+    { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getExomeFAFGroup },
+    { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getExomeFAFFreq },
+    { label: GENOME_GROUPMAX_GROUP_LABEL, getValue: getGenomeFAFGroup },
+    { label: GENOME_GROUPMAX_FREQ_LABEL, getValue: getGenomeFAFFreq },
   ],
   gnomad_r2_1_non_neuro: [
-    EXOME_GROUPMAX_GROUP_LABEL,
-    EXOME_GROUPMAX_FREQ_LABEL,
-    GENOME_GROUPMAX_GROUP_LABEL,
-    GENOME_GROUPMAX_FREQ_LABEL,
+    { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getExomeFAFGroup },
+    { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getExomeFAFFreq },
+    { label: GENOME_GROUPMAX_GROUP_LABEL, getValue: getGenomeFAFGroup },
+    { label: GENOME_GROUPMAX_FREQ_LABEL, getValue: getGenomeFAFFreq },
   ],
   gnomad_r2_1_non_topmed: [
-    EXOME_GROUPMAX_GROUP_LABEL,
-    EXOME_GROUPMAX_FREQ_LABEL,
-    GENOME_GROUPMAX_GROUP_LABEL,
-    GENOME_GROUPMAX_FREQ_LABEL,
+    { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getExomeFAFGroup },
+    { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getExomeFAFFreq },
+    { label: GENOME_GROUPMAX_GROUP_LABEL, getValue: getGenomeFAFGroup },
+    { label: GENOME_GROUPMAX_FREQ_LABEL, getValue: getGenomeFAFFreq },
   ],
   gnomad_r3: [],
   gnomad_r3_controls_and_biobanks: [],
@@ -123,60 +141,60 @@ const expectedVersionSpecificColumns: Record<DatasetId, string[]> = {
   gnomad_sv_r2_1_controls: [],
   gnomad_sv_r2_1_non_neuro: [],
   gnomad_sv_r4: [
-    JOINT_FILTERS_LABEL,
-    JOINT_GROUPMAX_GROUP_LABEL,
-    JOINT_GROUPMAX_FREQ_LABEL,
-    CADD_LABEL,
-    REVEL_MAX_LABEL,
-    SPLICEAI_DS_MAX_LABEL,
-    PANGOLIN_LARGEST_DS_LABEL,
-    PHYLOP_LABEL,
-    SIFT_MAX_LABEL,
-    POLYPHEN_MAX_LABEL,
+    { label: JOINT_FILTERS_LABEL, getValue: getJointFilters },
+    { label: JOINT_GROUPMAX_GROUP_LABEL, getValue: getJointFAFGroup },
+    { label: JOINT_GROUPMAX_FREQ_LABEL, getValue: getJointFAFFreq },
+    { label: CADD_LABEL, getValue: getCadd },
+    { label: REVEL_MAX_LABEL, getValue: getRevel },
+    { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
+    { label: PANGOLIN_LARGEST_DS_LABEL, getValue: getPangolin },
+    { label: PHYLOP_LABEL, getValue: getPhylop },
+    { label: SIFT_MAX_LABEL, getValue: getSift },
+    { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
   ],
   gnomad_cnv_r4: [
-    JOINT_FILTERS_LABEL,
-    JOINT_GROUPMAX_GROUP_LABEL,
-    JOINT_GROUPMAX_FREQ_LABEL,
-    CADD_LABEL,
-    REVEL_MAX_LABEL,
-    SPLICEAI_DS_MAX_LABEL,
-    PANGOLIN_LARGEST_DS_LABEL,
-    PHYLOP_LABEL,
-    SIFT_MAX_LABEL,
-    POLYPHEN_MAX_LABEL,
+    { label: JOINT_FILTERS_LABEL, getValue: getJointFilters },
+    { label: JOINT_GROUPMAX_GROUP_LABEL, getValue: getJointFAFGroup },
+    { label: JOINT_GROUPMAX_FREQ_LABEL, getValue: getJointFAFFreq },
+    { label: CADD_LABEL, getValue: getCadd },
+    { label: REVEL_MAX_LABEL, getValue: getRevel },
+    { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
+    { label: PANGOLIN_LARGEST_DS_LABEL, getValue: getPangolin },
+    { label: PHYLOP_LABEL, getValue: getPhylop },
+    { label: SIFT_MAX_LABEL, getValue: getSift },
+    { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
   ],
   gnomad_r4: [
-    JOINT_FILTERS_LABEL,
-    JOINT_GROUPMAX_GROUP_LABEL,
-    JOINT_GROUPMAX_FREQ_LABEL,
-    CADD_LABEL,
-    REVEL_MAX_LABEL,
-    SPLICEAI_DS_MAX_LABEL,
-    PANGOLIN_LARGEST_DS_LABEL,
-    PHYLOP_LABEL,
-    SIFT_MAX_LABEL,
-    POLYPHEN_MAX_LABEL,
+    { label: JOINT_FILTERS_LABEL, getValue: getJointFilters },
+    { label: JOINT_GROUPMAX_GROUP_LABEL, getValue: getJointFAFGroup },
+    { label: JOINT_GROUPMAX_FREQ_LABEL, getValue: getJointFAFFreq },
+    { label: CADD_LABEL, getValue: getCadd },
+    { label: REVEL_MAX_LABEL, getValue: getRevel },
+    { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
+    { label: PANGOLIN_LARGEST_DS_LABEL, getValue: getPangolin },
+    { label: PHYLOP_LABEL, getValue: getPhylop },
+    { label: SIFT_MAX_LABEL, getValue: getSift },
+    { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
   ],
   gnomad_r4_non_ukb: [
-    JOINT_FILTERS_LABEL,
-    JOINT_GROUPMAX_GROUP_LABEL,
-    JOINT_GROUPMAX_FREQ_LABEL,
-    CADD_LABEL,
-    REVEL_MAX_LABEL,
-    SPLICEAI_DS_MAX_LABEL,
-    PANGOLIN_LARGEST_DS_LABEL,
-    PHYLOP_LABEL,
-    SIFT_MAX_LABEL,
-    POLYPHEN_MAX_LABEL,
+    { label: JOINT_FILTERS_LABEL, getValue: getJointFilters },
+    { label: JOINT_GROUPMAX_GROUP_LABEL, getValue: getJointFAFGroup },
+    { label: JOINT_GROUPMAX_FREQ_LABEL, getValue: getJointFAFFreq },
+    { label: CADD_LABEL, getValue: getCadd },
+    { label: REVEL_MAX_LABEL, getValue: getRevel },
+    { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
+    { label: PANGOLIN_LARGEST_DS_LABEL, getValue: getPangolin },
+    { label: PHYLOP_LABEL, getValue: getPhylop },
+    { label: SIFT_MAX_LABEL, getValue: getSift },
+    { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
   ],
 }
 
 forAllDatasets('createVersionSpecificColumns for %s dataset', (datasetId) => {
-  const columnLabels = expectedVersionSpecificColumns[datasetId]
-  test(`returns the columns ${columnLabels.join(', ')}`, () => {
-    expect(createVersionSpecificColumns(datasetId).map((column) => column.label)).toEqual(
-      columnLabels
-    )
+  const expectedColumns = expectedVersionSpecificColumns[datasetId]
+  const expectedLabels = expectedColumns.map((column) => column.label)
+  test(`returns the columns ${expectedLabels.join(', ')}`, () => {
+    const actual = createVersionSpecificColumns(datasetId)
+    expect(actual).toEqual(expectedColumns)
   })
 })
