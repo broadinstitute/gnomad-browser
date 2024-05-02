@@ -212,7 +212,7 @@ const GnomadV2Downloads = () => {
                   path="/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.vcf.bgz"
                   size="58.81 GiB"
                   md5="f034173bf6e57fbb5e8ce680e95134f2"
-                  includeTBI
+                  associatedFileType="TBI"
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -223,7 +223,7 @@ const GnomadV2Downloads = () => {
                     path={`/release/2.1.1/vcf/exomes/gnomad.exomes.r2.1.1.sites.${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}
@@ -247,7 +247,7 @@ const GnomadV2Downloads = () => {
                   path="/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.vcf.bgz"
                   size="460.93 GiB"
                   md5="e6eadf5ac7b2821b40f350da6e1279a2"
-                  includeTBI
+                  associatedFileType="TBI"
                 />
               </ListItem>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -257,7 +257,7 @@ const GnomadV2Downloads = () => {
                   path="/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.exome_calling_intervals.sites.vcf.bgz"
                   size="9.7 GiB"
                   md5="e5bd69a0f89468149bc3afca78cd5acc"
-                  includeTBI
+                  associatedFileType="TBI"
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -268,7 +268,7 @@ const GnomadV2Downloads = () => {
                     path={`/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}
@@ -331,7 +331,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 sites VCF"
               path="/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -339,7 +339,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 sites BED"
               path="/papers/2019-sv/gnomad_v2.1_sv.sites.bed.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -347,7 +347,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 (controls) sites VCF"
               path="/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.vcf.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -355,7 +355,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 (controls) sites BED"
               path="/papers/2019-sv/gnomad_v2.1_sv.controls_only.sites.bed.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -363,7 +363,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 (non-neuro) sites VCF"
               path="/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.vcf.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -371,7 +371,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="SV 2.1 (non-neuro) sites BED"
               path="/papers/2019-sv/gnomad_v2.1_sv.nonneuro.sites.bed.gz"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
         </FileList>
