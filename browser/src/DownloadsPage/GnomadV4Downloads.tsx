@@ -147,7 +147,7 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}
@@ -172,7 +172,7 @@ const GnomadV4Downloads = () => {
                     path={`/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
-                    includeTBI
+                    associatedFileType="TBI"
                   />
                 </ListItem>
               ))}
@@ -199,7 +199,7 @@ const GnomadV4Downloads = () => {
                 path={`/release/4.1/vcf/joint/gnomad.joint.v4.1.sites.chr${chrom}.vcf.bgz`}
                 size={size}
                 md5={md5}
-                includeTBI
+                associatedFileType="TBI"
               />
             </ListItem>
           ))}
@@ -358,7 +358,7 @@ const GnomadV4Downloads = () => {
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.vcf.gz"
               size="1.62 GiB"
               md5="3ee614951c2f0c36659842876f7ce0ba"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -368,7 +368,7 @@ const GnomadV4Downloads = () => {
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.vcf.gz"
               size="3.19 GiB"
               md5="442b43a740f7f12f1f9b054f9d09b530"
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
         </FileList>

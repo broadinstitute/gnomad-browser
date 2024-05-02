@@ -116,7 +116,7 @@ const GnomadV3Downloads = () => (
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.sites.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
         ))}
@@ -206,7 +206,7 @@ const GnomadV3Downloads = () => (
               path={`/release/3.1.2/vcf/genomes/gnomad.genomes.v3.1.2.hgdp_tgp.chr${chrom}.vcf.bgz`}
               size={size}
               md5={md5}
-              includeTBI
+              associatedFileType="TBI"
             />
           </ListItem>
         ))}
@@ -238,7 +238,7 @@ const GnomadV3Downloads = () => (
             path="/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz"
             size="4.77 MiB"
             md5="d0ef2bd882ae44236897d743cb5528cf"
-            includeTBI
+            associatedFileType="TBI"
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
