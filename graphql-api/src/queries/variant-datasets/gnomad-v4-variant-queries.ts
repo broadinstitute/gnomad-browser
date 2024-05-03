@@ -309,6 +309,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
+            fafmax: variant.exome.fafmax[subset],
           }
         : null,
       genome: hasGenomeVariant
@@ -349,6 +350,7 @@ const getMultiVariantSourceFields = (
     `value.genome.freq.${genomeSubset}`,
     `value.joint.freq.${jointSubset}`,
     'value.exome.filters',
+    'value.exome.fafmax',
     'value.genome.filters',
     'value.joint.filters',
     'value.alleles',

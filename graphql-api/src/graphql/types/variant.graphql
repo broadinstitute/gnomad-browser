@@ -99,6 +99,13 @@ type LoFCuration {
   project: String!
 }
 
+type Fafmax {
+  faf95_max: Float
+  faf95_max_gen_anc: String
+  faf99_max: Float
+  faf99_max_gen_anc: String
+}
+
 type VariantSequencingTypeData {
   ac: Int
   an: Int
@@ -107,6 +114,7 @@ type VariantSequencingTypeData {
   filters: [String!]
   populations: [VariantPopulation]
   faf95: VariantFilteringAlleleFrequency
+  fafmax: Fafmax
 
   # Deprecated - calculate from AC and AN
   # Preserved for compatibility with existing browser queries
@@ -117,13 +125,6 @@ type VariantSequencingTypeData {
   ac_hemi: Int
 }
 
-type JointFafmax {
-  faf95_max: Float
-  faf95_max_gen_anc: String
-  faf99_max: Float
-  faf99_max_gen_anc: String
-}
-
 type VariantJointSequencingTypeData {
   ac: Int
   an: Int
@@ -131,7 +132,7 @@ type VariantJointSequencingTypeData {
   hemizygote_count: Int
   filters: [String!]
   populations: [VariantPopulation]
-  fafmax: JointFafmax
+  fafmax: Fafmax
 }
 
 type NonCodingConstraintRegion {
