@@ -50,9 +50,9 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
     logger.info({
       httpRequest: {
         requestMethod: request.method,
-        requestUrl: `${request.protocol}://${request.hostname}${
-          request.originalUrl || request.url
-        }`,
+        // requestUrl: `${request.protocol}://${request.hostname}${
+        //   request.originalUrl || request.url
+        // }`,
         status: response.statusCode,
         userAgent: request.headers['user-agent'],
         remoteIp: request.ip,
@@ -67,14 +67,14 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
             : undefined,
         protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
       },
-      graphqlRequest: request.graphqlParams
-        ? {
-            graphqlQueryOperationName: request.graphqlParams.operationName,
-            graphqlQueryString: request.graphqlParams.query,
-            graphqlQueryVariables: request.graphqlParams.variables,
-            graphqlQueryCost: request.graphqlQueryCost,
-          }
-        : undefined,
+      // graphqlRequest: request.graphqlParams
+      //   ? {
+      //       graphqlQueryOperationName: request.graphqlParams.operationName,
+      //       graphqlQueryString: request.graphqlParams.query,
+      //       graphqlQueryVariables: request.graphqlParams.variables,
+      //       graphqlQueryCost: request.graphqlQueryCost,
+      //     }
+      //   : undefined,
     })
   })
 

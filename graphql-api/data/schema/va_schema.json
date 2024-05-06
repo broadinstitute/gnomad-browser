@@ -1,0 +1,383 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "additionalProperties": false,
+  "definitions": {
+    "Allele": {
+      "additionalProperties": false,
+      "description": "The state of a molecule at a Location.",
+      "properties": {
+        "_id": {
+          "$ref": "#/definitions/CURIE",
+          "description": "Variation Id. MUST be unique within document."
+        },
+        "location": {
+          "description": "Where Allele is located",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/CURIE"
+            },
+            {
+              "$ref": "#/definitions/SequenceLocation"
+            }
+          ]
+        },
+        "state": {
+          "$ref": "#/definitions/LiteralSequenceExpression",
+          "description": "An expression of the sequence state"
+        },
+        "type": {
+          "const": "Allele",
+          "default": "Allele",
+          "description": "MUST be \"Allele\"",
+          "type": "string"
+        }
+      },
+      "required": ["location", "state", "type"],
+      "type": "object"
+    },
+    "CURIE": {
+      "description": "A [W3C Compact URI](https://www.w3.org/TR/curie/) formatted string. A CURIE string has the structure ``prefix``:``reference``, as defined by the W3C syntax.",
+      "example": "ensembl:ENSG00000139618",
+      "pattern": "^\\w[^:]*:.+$",
+      "type": "string"
+    },
+    "DefiniteRange": {
+      "additionalProperties": false,
+      "description": "A bounded, inclusive range of numbers.",
+      "properties": {
+        "max": {
+          "description": "The maximum value; inclusive",
+          "type": "number"
+        },
+        "min": {
+          "description": "The minimum value; inclusive",
+          "type": "number"
+        },
+        "type": {
+          "const": "DefiniteRange",
+          "default": "DefiniteRange",
+          "description": "MUST be \"DefiniteRange\"",
+          "type": "string"
+        }
+      },
+      "required": ["max", "min", "type"],
+      "type": "object"
+    },
+    "GrpMaxFAF95": {
+      "additionalProperties": false,
+      "properties": {
+        "confidenceInterval": {
+          "const": 0.95,
+          "default": 0.95,
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "groupId": {
+          "description": "The genetic ancestry group from which the max frequency was calculated.",
+          "type": "string"
+        }
+      },
+      "required": ["frequency", "confidenceInterval", "groupId"],
+      "type": "object"
+    },
+    "IndefiniteRange": {
+      "additionalProperties": false,
+      "description": "A half-bounded range of numbers represented as a number bound and associated comparator. The bound operator is interpreted as follows: '>=' are all numbers greater than and including `value`, '<=' are all numbers less than and including `value`.",
+      "properties": {
+        "comparator": {
+          "description": "MUST be one of \"<=\" or \">=\", indicating which direction the range is indefinite",
+          "enum": ["<=", ">="],
+          "type": "string"
+        },
+        "type": {
+          "const": "IndefiniteRange",
+          "default": "IndefiniteRange",
+          "description": "MUST be \"IndefiniteRange\"",
+          "type": "string"
+        },
+        "value": {
+          "description": "The bounded value; inclusive",
+          "type": "number"
+        }
+      },
+      "required": ["comparator", "type", "value"],
+      "type": "object"
+    },
+    "LiteralSequenceExpression": {
+      "additionalProperties": false,
+      "description": "An explicit expression of a Sequence.",
+      "properties": {
+        "sequence": {
+          "$ref": "#/definitions/Sequence",
+          "description": "the literal Sequence expressed"
+        },
+        "type": {
+          "const": "LiteralSequenceExpression",
+          "default": "LiteralSequenceExpression",
+          "description": "MUST be \"LiteralSequenceExpression\"",
+          "type": "string"
+        }
+      },
+      "required": ["sequence", "type"],
+      "type": "object"
+    },
+    "Number": {
+      "additionalProperties": false,
+      "description": "A simple integer value as a VRS class.",
+      "properties": {
+        "type": {
+          "const": "Number",
+          "default": "Number",
+          "description": "MUST be \"Number\"",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value represented by Number",
+          "type": "integer"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "Residue": {
+      "description": "A character representing a specific residue (i.e., molecular species) or groupings of these (\"ambiguity codes\"), using [one-letter IUPAC abbreviations](https://en.wikipedia.org/wiki/International_Union_of_Pure_and_Applied_Chemistry#Amino_acid_and_nucleotide_base_codes) for nucleic acids and amino acids.",
+      "pattern": "[A-Z*\\-]",
+      "type": "string"
+    },
+    "Sequence": {
+      "description": "A character string of Residues that represents a biological sequence using the conventional sequence order (5\u2019-to-3\u2019 for nucleic acid sequences, and amino-to-carboxyl for amino acid sequences). IUPAC ambiguity codes are permitted in Sequences.",
+      "pattern": "^[A-Z*\\-]*$",
+      "type": "string"
+    },
+    "SequenceInterval": {
+      "additionalProperties": false,
+      "description": "A SequenceInterval represents a span on a Sequence. Positions are always represented by contiguous spans using interbase coordinates or coordinate ranges.",
+      "properties": {
+        "end": {
+          "description": "The end coordinate or range of the interval. The minimum value of this coordinate or range is 0. MUST represent a coordinate or range greater than the value of `start`.",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/DefiniteRange"
+            },
+            {
+              "$ref": "#/definitions/IndefiniteRange"
+            },
+            {
+              "$ref": "#/definitions/Number"
+            }
+          ]
+        },
+        "start": {
+          "description": "The start coordinate or range of the interval. The minimum value of this coordinate or range is 0. MUST represent a coordinate or range less than the value of `end`.",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/DefiniteRange"
+            },
+            {
+              "$ref": "#/definitions/IndefiniteRange"
+            },
+            {
+              "$ref": "#/definitions/Number"
+            }
+          ]
+        },
+        "type": {
+          "const": "SequenceInterval",
+          "default": "SequenceInterval",
+          "description": "MUST be \"SequenceInterval\"",
+          "type": "string"
+        }
+      },
+      "required": ["end", "start", "type"],
+      "type": "object"
+    },
+    "SequenceLocation": {
+      "additionalProperties": false,
+      "description": "A Location defined by an interval on a referenced Sequence.",
+      "properties": {
+        "_id": {
+          "$ref": "#/definitions/CURIE",
+          "description": "Location Id. MUST be unique within document."
+        },
+        "interval": {
+          "$ref": "#/definitions/SequenceInterval",
+          "description": "Reference sequence region defined by a SequenceInterval."
+        },
+        "sequence_id": {
+          "$ref": "#/definitions/CURIE",
+          "description": "A VRS Computed Identifier for the reference Sequence."
+        },
+        "type": {
+          "const": "SequenceLocation",
+          "default": "SequenceLocation",
+          "description": "MUST be \"SequenceLocation\"",
+          "type": "string"
+        }
+      },
+      "required": ["interval", "sequence_id", "type"],
+      "type": "object"
+    }
+  },
+  "properties": {
+    "alleleFrequency": {
+      "type": "number"
+    },
+    "ancillaryResults": {
+      "additionalProperties": false,
+      "properties": {
+        "grpMaxFAF95": {
+          "$ref": "#/definitions/GrpMaxFAF95"
+        },
+        "hemizygotes": {
+          "type": "integer"
+        },
+        "homozygotes": {
+          "type": "integer"
+        },
+        "jointGrpMaxFAF95": {
+          "$ref": "#/definitions/GrpMaxFAF95",
+          "description": "The Group Max Filtering Allele Frequency (95% confidence interval) calculated jointly from genome and exome data."
+        }
+      },
+      "type": "object"
+    },
+    "cohort": {
+      "additionalProperties": false,
+      "properties": {
+        "characteristics": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "value"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": ["id"],
+      "type": "object"
+    },
+    "derivedFrom": {
+      "properties": {
+        "additionalProperties": false,
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "focusAllele": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/Allele"
+        },
+        {
+          "format": "uri-reference",
+          "type": "string"
+        }
+      ]
+    },
+    "focusAlleleCount": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "locusAlleleCount": {
+      "type": "integer"
+    },
+    "qualityMeasures": {
+      "additionalProperties": false,
+      "properties": {
+        "fractionCoverage20x": {
+          "description": "The fraction of individuals with at least 20x coverage.",
+          "type": "number"
+        },
+        "heterozygousSkewedAlleleCount": {
+          "description": "The count of individuals called as heterozygous for this variant with a skewed allele balance, indicating some of these individuals may be miscalled homozygous alternative allele.",
+          "type": "integer"
+        },
+        "lossOfFunctionWarning": {
+          "description": "A warning provided by LOFTEE to use caution when interpreting the transcript or variant.",
+          "type": "boolean"
+        },
+        "lowComplexityRegion": {
+          "description": "This flag indicates the variant is found in a low complexity region. These regions were identified with the symmetric DUST algorithm at a score threshold of 30.",
+          "type": "boolean"
+        },
+        "lowConfidenceLossOfFunctionError": {
+          "description": "Low confidence in predicted Loss of Function (pLoF), where variant is determined by LOFTEE to be unlikely loss of function for a transcript.",
+          "type": "boolean"
+        },
+        "meanDepth": {
+          "description": "The mean depth of coverage.",
+          "type": "number"
+        },
+        "monoallelic": {
+          "description": "All samples are homozygous alternate for the variant.",
+          "type": "boolean"
+        },
+        "noncodingTranscriptError": {
+          "description": "Marked in a putative loss of function category by VEP (essential splice, stop-gained, or frameshift) but appears on a non-protein-coding transcript.",
+          "type": "boolean"
+        },
+        "qcFilters": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "subcohortFrequency": {
+      "items": {
+        "$ref": "#"
+      },
+      "type": "array"
+    },
+    "type": {
+      "const": "CohortAlleleFrequency",
+      "default": "CohortAlleleFrequency",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "focusAllele",
+    "focusAlleleCount",
+    "locusAlleleCount",
+    "alleleFrequency",
+    "cohort"
+  ],
+  "title": "Cohort Allele Frequency",
+  "type": "object"
+}
