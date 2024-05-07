@@ -43,21 +43,37 @@ export const mergeExomeAndGenomePopulationData = (
   return Object.values(populations)
 }
 
-const mergeExomeAndGenomeData = (variants: any) =>
+export const mergeExomeAndGenomeData = (variants: any) =>
   variants.map((variant: any) => {
-    const { exome, genome } = variant
+    const { exome, genome, joint } = variant
     if (!exome) {
+      if (!joint) {
+        return {
+          ...variant,
+          ...variant.genome,
+          allele_freq: variant.genome.af, // hack for variant track which expects allele_freq field
+        }
+      }
       return {
         ...variant,
-        ...variant.genome,
-        allele_freq: variant.genome.af, // hack for variant track which expects allele_freq field
+        ...variant.joint,
+        filters: variant.genome.filters,
+        allele_freq: variant.joint.ac / variant.joint.an,
       }
     }
     if (!genome) {
+      if (!joint) {
+        return {
+          ...variant,
+          ...variant.exome,
+          allele_freq: variant.exome.af, // hack for variant track which expects allele_freq field
+        }
+      }
       return {
         ...variant,
-        ...variant.exome,
-        allele_freq: variant.exome.af, // hack for variant track which expects allele_freq field
+        ...variant.joint,
+        filters: variant.exome.filters,
+        allele_freq: variant.joint.ac / variant.joint.an, // hack for variant track which expects allele_freq field
       }
     }
 
