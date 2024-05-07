@@ -202,6 +202,7 @@ export type SequencingType = BaseSequencingType & {
   local_ancestry_populations: LocalAncestryPopulation[]
   ac_hom: number
   ac_hemi: number
+  af?: number
 }
 
 export type JointSequencingType = BaseSequencingType & {
