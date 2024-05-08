@@ -203,6 +203,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Sub
       ...variant.joint,
       ...variant.joint.freq[subset],
       filters: jointFilters,
+      populations: subsetJointFreq.ancestry_groups,
       faf95: {
         popmax_population: variant.joint.fafmax.faf95_max_gen_anc,
         popmax: variant.joint.fafmax.faf95_max,
