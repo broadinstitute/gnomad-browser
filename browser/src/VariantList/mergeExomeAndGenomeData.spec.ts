@@ -4,13 +4,12 @@ import { populationFactory, variantFactory } from '../__factories__/Variant'
 import { Population } from '../VariantPage/VariantPage'
 
 import {
-  mergeExomeAndGenomePopulationData,
+  mergeExomeGenomeAndJointPopulationData,
   mergeExomeAndGenomeData,
 } from './mergeExomeAndGenomeData'
-import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 type AncestryGroupShorthand = {
-  id: PopulationId
+  id: string
   value: number
 }
 
@@ -37,7 +36,7 @@ const createAncestryGroupObjects = (
   return geneticAncestryGroupObjects
 }
 
-describe('mergeExomeAndGenomePopulationData', () => {
+describe('mergeExomeGenomeAndJointPopulationData', () => {
   it('returns expected values when exomes and genomes have the same populations', () => {
     const geneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -54,7 +53,10 @@ describe('mergeExomeAndGenomePopulationData', () => {
       genome: { populations: geneticAncestryGroupObjects },
     })
 
-    const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
+    const result = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+    })
 
     const expected = [
       { ac: 2, ac_hemi: 4, ac_hom: 6, an: 20, id: 'afr' },
@@ -91,7 +93,10 @@ describe('mergeExomeAndGenomePopulationData', () => {
       genome: { populations: genomeGeneticAncestryGroupObjects },
     })
 
-    const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
+    const result = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+    })
 
     const expected = [
       { ac: 9, ac_hemi: 11, ac_hom: 13, an: 90, id: 'afr' },
@@ -129,7 +134,10 @@ describe('mergeExomeAndGenomePopulationData', () => {
       genome: { populations: genomeGeneticAncestryGroupObjects },
     })
 
-    const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
+    const result = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+    })
 
     const expected = [
       { ac: 17, ac_hemi: 19, ac_hom: 21, an: 170, id: 'afr' },
@@ -166,7 +174,10 @@ describe('mergeExomeAndGenomePopulationData', () => {
       genome: { populations: genomeGeneticAncestryGroupObjects },
     })
 
-    const result = mergeExomeAndGenomePopulationData(testVariant.exome!, testVariant.genome!)
+    const result = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+    })
 
     const expected = [
       { ac: 33, ac_hemi: 35, ac_hom: 37, an: 330, id: 'eur' },
@@ -175,6 +186,62 @@ describe('mergeExomeAndGenomePopulationData', () => {
     ]
 
     expect(result).toStrictEqual(expected)
+  })
+
+  it('returns expected values when joint values are present', () => {
+    const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'eur', value: 1 },
+        { id: 'afr', value: 2 },
+        { id: 'remaining', value: 4 },
+      ],
+      false
+    )
+
+    const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 8 },
+        { id: 'remaining', value: 16 },
+        { id: 'eur', value: 32 },
+      ],
+      false
+    )
+
+    const jointGeneticAncestryGroupObjects = [
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr' },
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr_XX' },
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr_YY' },
+      { ac: 32, hemizygote_count: 33, homozygote_count: 34, an: 320, id: 'remaining' },
+      { ac: 64, hemizygote_count: 65, homozygote_count: 66, an: 640, id: 'eur' },
+      { ac: 128, hemizygote_count: 129, homozygote_count: 130, an: 1280, id: 'mid' },
+    ]
+
+    const testVariant = variantFactory.build({
+      variant_id: 'test_variant',
+      exome: { populations: exomeGeneticAncestryGroupObjects },
+      genome: { populations: genomeGeneticAncestryGroupObjects },
+      joint: { populations: jointGeneticAncestryGroupObjects as Population[] },
+    })
+
+    const result = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+      jointPopulations: testVariant.joint!.populations,
+    })
+
+    const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 16 },
+        { id: 'afr_XX', value: 16 },
+        { id: 'afr_YY', value: 16 },
+        { id: 'remaining', value: 32 },
+        { id: 'eur', value: 64 },
+        { id: 'mid', value: 128 },
+      ],
+      true
+    )
+
+    expect(result).toStrictEqual(expectedJointGeneticAncestryGroupObjects)
   })
 })
 
