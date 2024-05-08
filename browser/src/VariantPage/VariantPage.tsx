@@ -146,10 +146,10 @@ export type Population = {
   id: PopulationId
   ac: number
   an: number
-  ac_hemi?: number | null
-  ac_hom?: number
+  ac_hemi: number | null
+  ac_hom: number
   hemizygote_count?: number | null
-  homozygote_count?: number | null
+  homozygote_count?: number
 }
 
 export type LocalAncestryPopulation = {
