@@ -1,4 +1,5 @@
-import { Population, SequencingType } from '../VariantPage/VariantPage'
+import { Filter } from '../QCFilter'
+import { Population, SequencingType, Variant } from '../VariantPage/VariantPage'
 
 // safe math on possibly null values
 const add = (n1: any, n2: any) => (n1 || 0) + (n2 || 0)
@@ -43,73 +44,88 @@ export const mergeExomeAndGenomePopulationData = (
   return Object.values(populations)
 }
 
-export const mergeExomeAndGenomeData = (variants: any) =>
-  variants.map((variant: any) => {
+type MergedVariant = Variant & {
+  ac: number
+  an: number
+  af: number
+  allele_freq: number
+  ac_hemi: number
+  ac_hom: number
+  filters: Filter[]
+  populations: Population[]
+}
+
+export const mergeExomeAndGenomeData = (variants: Variant[]): MergedVariant[] => {
+  const mergedVariants = variants.map((variant: Variant) => {
     const { exome, genome, joint } = variant
-    if (!exome) {
-      if (!joint) {
-        return {
-          ...variant,
-          ...variant.genome,
-          allele_freq: variant.genome.af, // hack for variant track which expects allele_freq field
-        }
-      }
+
+    if (joint) {
+      const exomeFilters = exome ? exome.filters : []
+      const genomeFilters = genome ? genome.filters : []
+      const jointFilters = exomeFilters.concat(genomeFilters, joint.filters)
+
       return {
         ...variant,
-        ...variant.joint,
-        filters: variant.genome.filters,
-        allele_freq: variant.joint.ac / variant.joint.an,
-      }
-    }
-    if (!genome) {
-      if (!joint) {
-        return {
-          ...variant,
-          ...variant.exome,
-          allele_freq: variant.exome.af, // hack for variant track which expects allele_freq field
-        }
-      }
-      return {
-        ...variant,
-        ...variant.joint,
-        filters: variant.exome.filters,
-        allele_freq: variant.joint.ac / variant.joint.an, // hack for variant track which expects allele_freq field
+        ac: joint.ac,
+        an: joint.an,
+        af: joint.ac / joint.an,
+        allele_freq: joint.ac / joint.an,
+        ac_hemi: joint.hemizygote_count,
+        ac_hom: joint.homozygote_count,
+        filters: jointFilters,
+        populations: joint.populations.map((population) => ({
+          ...population,
+          ac_hemi: population.hemizygote_count!,
+          ac_hom: population.homozygote_count!,
+        })),
       }
     }
 
-    const jointAC = variant.joint ? variant.joint.ac : add(exome.ac, genome.ac)
-    const jointAN = variant.joint ? variant.joint.an : add(exome.an, genome.an)
-    const jointAF = jointAC ? jointAC / jointAN : 0
+    const emptySequencingType = {
+      ac: 0,
+      ac_hemi: 0,
+      ac_hom: 0,
+      faf95: {
+        popmax: null,
+        popmax_population: null,
+      },
+      an: 0,
+      af: 5,
+      filters: [] as Filter[],
+      populations: [] as Population[],
+    }
 
-    const jointHemizygoteCount = variant.joint
-      ? variant.joint.hemizygote_count
-      : add(exome.ac_hemi, genome.ac_hemi)
-    const jointHomozygoteCount = variant.joint
-      ? variant.joint.homozygote_count
-      : add(exome.ac_hom, genome.ac_hom)
+    const exomeOrNone = exome || emptySequencingType
+    const genomeOrNone = genome || emptySequencingType
 
-    const exomeAndGenomeFilters = exome.filters.concat(genome.filters)
-    const jointFilters = variant.joint
-      ? exomeAndGenomeFilters.concat(variant.joint.filters)
-      : exomeAndGenomeFilters
+    const combinedAC = add(exomeOrNone.ac, genomeOrNone.ac)
+    const combinedAN = add(exomeOrNone.an, genomeOrNone.an)
+    const combinedAF = combinedAC ? combinedAC / combinedAN : 0
+    const combinedHemizygoteCount = add(exomeOrNone.ac_hemi, genomeOrNone.ac_hemi)
+    const combinedHomozygoteCount = add(exomeOrNone.ac_hom, genomeOrNone.ac_hom)
 
-    const jointPopulations = variant.join
-      ? variant.joint.populations
-      : mergeExomeAndGenomePopulationData(exome!, genome!)
+    const exomeFilters: Filter[] = exomeOrNone.filters
+    const genomeFilters: Filter[] = genomeOrNone.filters
+    const combinedFilters = exomeFilters.concat(genomeFilters)
 
-    const jointVariantData = {
+    const combinedPopulations = mergeExomeAndGenomePopulationData(
+      exomeOrNone as SequencingType,
+      genomeOrNone as SequencingType
+    )
+
+    return {
       ...variant,
-      ac: jointAC,
-      an: jointAN,
-      af: jointAF,
-      allele_freq: jointAF, // hack for variant track which expects allele_freq field
-      ac_hemi: jointHemizygoteCount,
-      ac_hom: jointHomozygoteCount,
-      filters: jointFilters,
-      populations: jointPopulations,
+      ac: combinedAC,
+      an: combinedAN,
+      af: combinedAF,
+      allele_freq: combinedAF,
+      ac_hemi: combinedHemizygoteCount,
+      ac_hom: combinedHomozygoteCount,
+      filters: combinedFilters,
+      populations: combinedPopulations,
     }
-
-    return jointVariantData
   })
 
+  return mergedVariants
+}
 export default mergeExomeAndGenomeData

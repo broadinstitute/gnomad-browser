@@ -146,8 +146,10 @@ export type Population = {
   id: PopulationId
   ac: number
   an: number
-  ac_hemi: number | null
-  ac_hom: number
+  ac_hemi?: number | null
+  ac_hom?: number
+  hemizygote_count?: number | null
+  homozygote_count?: number | null
 }
 
 export type LocalAncestryPopulation = {
@@ -182,8 +184,8 @@ export type VariantQualityMetrics = {
 }
 
 export type Faf95 = {
-  popmax: number
-  popmax_population: string
+  popmax: number | null
+  popmax_population: string | null
 }
 
 type BaseSequencingType = {
