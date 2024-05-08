@@ -53,6 +53,7 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
                   datasetId={datasetId}
                   exomePopulations={exomePopulations}
                   genomePopulations={genomePopulations}
+                  jointPopulations={variant.joint ? variant.joint.populations : null}
                   showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
                 />
               </TableWrapper>
@@ -143,6 +144,7 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
         datasetId={datasetId}
         exomePopulations={variant.exome ? variant.exome.populations : []}
         genomePopulations={variant.genome ? variant.genome.populations : []}
+        jointPopulations={variant.joint ? variant.joint.populations : null}
         showHemizygotes={variant.chrom === 'X' || variant.chrom === 'Y'}
       />
     </TableWrapper>
