@@ -7,6 +7,7 @@ import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulati
 import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 import { PopulationsTable } from './PopulationsTable'
 import { Population } from './VariantPage'
+import { mergeExomeGenomeAndJointPopulationData } from '../VariantList/mergeExomeAndGenomeData'
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -15,38 +16,6 @@ const ControlSection = styled.div`
     margin-left: 1em;
   }
 `
-
-/**
- * Merge frequency information for multiple populations with the same ID.
- * This is used to add exome and genome population frequencies.
- *
- * @param {Object[]} populations Array of populations.
- */
-const mergePopulations = (populations: any) => {
-  const indices = {}
-  const merged = []
-
-  for (let i = 0; i < populations.length; i += 1) {
-    const pop = populations[i]
-
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    const popIndex = indices[pop.id]
-    if (popIndex === undefined) {
-      merged.push({ ...pop })
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      indices[pop.id] = merged.length - 1
-    } else {
-      merged[popIndex].ac += pop.ac
-      merged[popIndex].an += pop.an
-      if (pop.ac_hemi !== null) {
-        merged[popIndex].ac_hemi += pop.ac_hemi
-      }
-      merged[popIndex].ac_hom += pop.ac_hom
-    }
-  }
-
-  return merged
-}
 
 const addPopulationNames = (populations: any) => {
   return populations.map((pop: any) => {
@@ -137,15 +106,15 @@ export class GnomadPopulationsTable extends Component<
       this.props
     const { includeExomes, includeGenomes } = this.state
 
-    let includedPopulations: any = []
-    if (includeExomes) {
-      includedPopulations = includedPopulations.concat(exomePopulations)
-    }
-    if (includeGenomes) {
-      includedPopulations = includedPopulations.concat(genomePopulations)
-    }
+    const mergedPopulations = mergeExomeGenomeAndJointPopulationData({
+      exomePopulations: includeExomes ? exomePopulations : [],
+      genomePopulations: includeGenomes ? genomePopulations : [],
+    })
 
-    let populations = nestPopulations(addPopulationNames(mergePopulations(includedPopulations)))
+    const mergedPopulationsWithNames = addPopulationNames(mergedPopulations)
+    const mergedNestedPopulationsWithNames = nestPopulations(mergedPopulationsWithNames)
+    let populations = mergedNestedPopulationsWithNames
+
     if (hasV2Genome(datasetId) && includeGenomes) {
       populations = populations.map((pop) => {
         if (pop.id === 'eas') {
