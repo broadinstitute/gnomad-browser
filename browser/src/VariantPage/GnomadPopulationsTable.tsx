@@ -74,6 +74,7 @@ type OwnGnomadPopulationsTableProps = {
   datasetId: DatasetId
   exomePopulations: Population[]
   genomePopulations: Population[]
+  jointPopulations: Population[] | null
   showHemizygotes?: boolean
   showHomozygotes?: boolean
 }
@@ -102,14 +103,21 @@ export class GnomadPopulationsTable extends Component<
   }
 
   render() {
-    const { datasetId, exomePopulations, genomePopulations, showHemizygotes, showHomozygotes } =
-      this.props
+    const {
+      datasetId,
+      exomePopulations,
+      genomePopulations,
+      jointPopulations,
+      showHemizygotes,
+      showHomozygotes,
+    } = this.props
     const { includeExomes, includeGenomes } = this.state
 
     const mergedPopulations = mergeExomeGenomeAndJointPopulationData({
       exomePopulations: includeExomes ? exomePopulations : [],
       genomePopulations: includeGenomes ? genomePopulations : [],
-    })
+      jointPopulations,
+    }).filter((mergedAncestry) => (mergedAncestry.id as string) !== '')
 
     const mergedPopulationsWithNames = addPopulationNames(mergedPopulations)
     const mergedNestedPopulationsWithNames = nestPopulations(mergedPopulationsWithNames)
