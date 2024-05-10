@@ -149,6 +149,12 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
           ac_hemi
           ac_hom
         }
+        fafmax {
+          faf95_max
+          faf95_max_gen_anc
+          faf99_max
+          faf99_max_gen_anc
+        }
       }
       genome {
         ac
