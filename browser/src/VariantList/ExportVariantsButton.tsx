@@ -8,7 +8,14 @@ import {
   PopulationId,
   populationsInDataset,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
-import { DatasetId, isExac, isV2, isV3, isV4 } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  isExac,
+  isV2,
+  isV3,
+  isV4,
+  hasJointFrequencyData,
+} from '@gnomad/dataset-metadata/metadata'
 
 type ColumnGetter = (variant: VariantTableVariant) => string
 
@@ -91,14 +98,35 @@ export const getJointFAFFreq: ColumnGetter = (variant: VariantTableVariant) => {
     : ''
 }
 
-export const getExomeFAFGroup = (variant: VariantTableVariant) => {
+export const getExomeFilters: ColumnGetter = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return !v4Variant.exome || v4Variant.exome.filters.length === 0
+    ? 'PASS'
+    : v4Variant.exome!.filters.join(',')
+}
+
+export const getV4ExomeFAFGroup = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.exome && v4Variant.exome.fafmax.faf95_max_gen_anc !== null
+    ? v4Variant.exome.fafmax.faf95_max_gen_anc
+    : ''
+}
+
+export const getV4ExomeFAFFreq = (variant: VariantTableVariant) => {
+  const v4Variant = variant as V4VariantTableVariant
+  return v4Variant.exome && v4Variant.exome.fafmax.faf95_max !== null
+    ? JSON.stringify(v4Variant.exome.fafmax.faf95_max)
+    : ''
+}
+
+export const getV2ExomeFAFGroup = (variant: VariantTableVariant) => {
   const v2Variant = variant as V2VariantTableVariant
   return v2Variant.exome && v2Variant.exome.faf95.popmax_population !== null
     ? v2Variant.exome.faf95.popmax_population
     : ''
 }
 
-export const getExomeFAFFreq = (variant: VariantTableVariant) => {
+export const getV2ExomeFAFFreq = (variant: VariantTableVariant) => {
   const v2Variant = variant as V2VariantTableVariant
   return v2Variant.exome && v2Variant.exome.faf95.popmax !== null
     ? JSON.stringify(v2Variant.exome.faf95.popmax)
@@ -147,28 +175,50 @@ export const getSift: ColumnGetter = (variant: VariantTableVariant) =>
 export const getPolyphen: ColumnGetter = (variant: VariantTableVariant) =>
   getPredictorValue(variant, 'polyphen_max')
 
+const inSilicoColumns: Column[] = [
+  { label: 'cadd', getValue: getCadd },
+  { label: 'revel_max', getValue: getRevel },
+  { label: 'spliceai_ds_max', getValue: getSpliceAI },
+  { label: 'pangolin_largest_ds', getValue: getPangolin },
+  { label: 'phylop', getValue: getPhylop },
+  { label: 'sift_max', getValue: getSift },
+  { label: 'polyphen_max', getValue: getPolyphen },
+]
+
 export const createVersionSpecificColumns = (datasetId: DatasetId): Column[] => {
   if (isV4(datasetId)) {
+    if (hasJointFrequencyData(datasetId)) {
+      return [
+        {
+          label: 'Filters - joint',
+          getValue: getJointFilters,
+        },
+        {
+          label: 'GroupMax FAF group',
+          getValue: getJointFAFGroup,
+        },
+        {
+          label: 'GroupMax FAF frequency',
+          getValue: getJointFAFFreq,
+        },
+        ...inSilicoColumns,
+      ]
+    }
+
     return [
       {
-        label: 'Filters - joint',
-        getValue: getJointFilters,
+        label: 'Filters - exome',
+        getValue: getExomeFilters,
       },
       {
-        label: 'GroupMax FAF group',
-        getValue: getJointFAFGroup,
+        label: 'Exome GroupMax FAF group',
+        getValue: getV4ExomeFAFGroup,
       },
       {
-        label: 'GroupMax FAF frequency',
-        getValue: getJointFAFFreq,
+        label: 'Exome GroupMax FAF frequency',
+        getValue: getV4ExomeFAFFreq,
       },
-      { label: 'cadd', getValue: getCadd },
-      { label: 'revel_max', getValue: getRevel },
-      { label: 'spliceai_ds_max', getValue: getSpliceAI },
-      { label: 'pangolin_largest_ds', getValue: getPangolin },
-      { label: 'phylop', getValue: getPhylop },
-      { label: 'sift_max', getValue: getSift },
-      { label: 'polyphen_max', getValue: getPolyphen },
+      ...inSilicoColumns,
     ]
   }
 
@@ -176,11 +226,11 @@ export const createVersionSpecificColumns = (datasetId: DatasetId): Column[] => 
     return [
       {
         label: 'Exome GroupMax FAF group',
-        getValue: getExomeFAFGroup,
+        getValue: getV2ExomeFAFGroup,
       },
       {
         label: 'Exome GroupMax FAF frequency',
-        getValue: getExomeFAFFreq,
+        getValue: getV2ExomeFAFFreq,
       },
       {
         label: 'Genome GroupMax FAF group',
@@ -402,14 +452,20 @@ type V2VariantTableVariant = VariantTableVariant & {
   }
 }
 
+type Fafmax = {
+  faf95_max: number | null
+  faf95_max_gen_anc: string | null
+}
+
 type V4VariantTableVariant = VariantTableVariant & {
   joint: {
     filters: string[]
-    fafmax: {
-      faf95_max: number | null
-      faf95_max_gen_anc: string | null
-    }
+    fafmax: Fafmax
   }
+  exome: {
+    filters: string[]
+    fafmax: Fafmax
+  } | null
   in_silico_predictors: {
     id: string
     value: string

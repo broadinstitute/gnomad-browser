@@ -181,6 +181,12 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
           ac_hemi
           ac_hom
         }
+        fafmax {
+          faf95_max
+          faf95_max_gen_anc
+          faf99_max
+          faf99_max_gen_anc
+        }
       }
       genome {
         ac
