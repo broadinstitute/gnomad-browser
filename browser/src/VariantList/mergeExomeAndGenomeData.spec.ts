@@ -243,10 +243,104 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
 
     expect(result).toStrictEqual(expectedJointGeneticAncestryGroupObjects)
   })
+
+  it('returns all ancestries from dataset if provided, filling in missing ones and removing not included ones', () => {
+    const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'eur', value: 1 },
+        { id: 'afr', value: 2 },
+        { id: 'remaining', value: 4 },
+      ],
+      false
+    )
+
+    const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 8 },
+        { id: 'remaining', value: 16 },
+        { id: 'eur', value: 32 },
+      ],
+      false
+    )
+
+    const jointGeneticAncestryGroupObjects = [
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr' },
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr_XX' },
+      { ac: 16, hemizygote_count: 17, homozygote_count: 18, an: 160, id: 'afr_YY' },
+      { ac: 32, hemizygote_count: 33, homozygote_count: 34, an: 320, id: 'remaining' },
+      { ac: 64, hemizygote_count: 65, homozygote_count: 66, an: 640, id: 'eur' },
+      { ac: 128, hemizygote_count: 129, homozygote_count: 130, an: 1280, id: 'mid' },
+    ]
+
+    const testVariant = variantFactory.build({
+      variant_id: 'test_variant',
+      exome: { populations: exomeGeneticAncestryGroupObjects },
+      genome: { populations: genomeGeneticAncestryGroupObjects },
+      joint: { populations: jointGeneticAncestryGroupObjects as Population[] },
+    })
+
+    const result = mergeExomeGenomeAndJointPopulationData({
+      datasetId: 'gnomad_r4',
+      exomePopulations: testVariant.exome!.populations,
+      genomePopulations: testVariant.genome!.populations,
+      jointPopulations: testVariant.joint!.populations,
+    })
+
+    const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 16 },
+        { id: 'afr_XX', value: 16 },
+        { id: 'afr_YY', value: 16 },
+        { id: 'remaining', value: 32 },
+        { id: 'eur', value: 64 },
+        { id: 'mid', value: 128 },
+      ],
+      true
+    )
+
+    const missingAncestries: Population[] = [
+      { id: 'amr', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'amr_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'amr_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'asj', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'asj_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'asj_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'eas', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'eas_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'eas_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'fin', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'fin_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'fin_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'nfe', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'nfe_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'nfe_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'ami', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'ami_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'ami_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'sas', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'sas_XX', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+      { id: 'sas_XY', ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+    ]
+
+    // include missing ancstries from v4 (e.g. fin)
+    const expectedObjectsIncludingMissingAncestries =
+      expectedJointGeneticAncestryGroupObjects.concat(missingAncestries)
+
+    //  removes ancestries not present in v4 (e.g. eur)
+    const expectedAncestriesIncludingMissingMinusNotIncluded =
+      expectedObjectsIncludingMissingAncestries.filter((ancestry) => !ancestry.id.includes('eur'))
+
+    const sortAncestries = (ancestryA: Population, ancestryB: Population) =>
+      ancestryA.id.localeCompare(ancestryB.id)
+
+    expect(result.sort(sortAncestries)).toEqual(
+      expectedAncestriesIncludingMissingMinusNotIncluded.sort(sortAncestries)
+    )
+  })
 })
 
 describe('mergeExomeAndGenomeData', () => {
-  it('returns expected values with just exome data', () => {
+  it('returns just exome populations if only exome data is present, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 1 },
@@ -272,7 +366,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testExomeOnlyVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testExomeOnlyVariant] })
 
     const expected = [
       {
@@ -290,7 +384,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
-  it('returns expected values with just genome data', () => {
+  it('returns just genome populations if only genome data is present, but no dataset', () => {
     const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 8 },
@@ -317,7 +411,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testGenomeOnlyVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testGenomeOnlyVariant] })
 
     const expected = [
       {
@@ -336,7 +430,7 @@ describe('mergeExomeAndGenomeData', () => {
     expect(result).toStrictEqual(expected)
   })
 
-  it('returns expected values with exome and genome data', () => {
+  it('merges present populations with exome and genome data, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 1 },
@@ -384,7 +478,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testExomeAndGenomeVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testExomeAndGenomeVariant] })
 
     const expected = [
       {
@@ -407,7 +501,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
-  it('returns expected values with exome and joint data', () => {
+  it('preferentially uses joint populations if both exome and joint are present, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 1 },
@@ -453,7 +547,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testExomeAndJointVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testExomeAndJointVariant] })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -481,7 +575,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
-  it('returns expected values with genome and joint data', () => {
+  it('preferentially uses joint populations if both genome and joint are present, but no dataset', () => {
     const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 8 },
@@ -527,7 +621,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testGenomeAndJointVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testGenomeAndJointVariant] })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -554,7 +648,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
-  it('returns expected values with exome, genome, and joint data', () => {
+  it('preferentially uses joint populations if exome, genome and joint are present, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
         { id: 'afr', value: 1 },
@@ -623,7 +717,7 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData([testExomeGenomeAndJointVariant])
+    const result = mergeExomeAndGenomeData({ variants: [testExomeGenomeAndJointVariant] })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
