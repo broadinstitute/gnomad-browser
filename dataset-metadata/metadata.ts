@@ -1139,3 +1139,20 @@ export const baseDatasetForReferenceGenome = (genome: ReferenceGenome): DatasetI
 
 export const hasJointFrequencyData = (datasetId: DatasetId): boolean =>
   getMetadata(datasetId, 'hasJointFrequencyData')
+
+export const getTopLevelDataset = (datasetId: DatasetId) => {
+  if (isV4(datasetId)) {
+    return 'v4'
+  }
+  if (isV3(datasetId)) {
+    return 'v3'
+  }
+  if (isV2(datasetId)) {
+    return 'v2'
+  }
+  if (isExac(datasetId)) {
+    return 'ExAC'
+  }
+
+  return 'default'
+}

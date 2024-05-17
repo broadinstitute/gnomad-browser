@@ -26,9 +26,9 @@ import {
 import {
   GNOMAD_POPULATION_NAMES,
   PopulationId,
-  populationsInDataset,
+  getPopulationsInDataset,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
-import { DatasetId, isV4, isV3, isV2, isExac } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 const getAllPopulationColumns = (columns: { label: string }[]) => {
   let populationColumns: string[] = []
@@ -36,24 +36,6 @@ const getAllPopulationColumns = (columns: { label: string }[]) => {
     populationColumns = populationColumns.concat(column.label)
   })
   return populationColumns
-}
-
-const getDatasetPopulations = (datasetId: DatasetId) => {
-  /* eslint-disable no-nested-ternary */
-  const topLevelDataset = isV4(datasetId)
-    ? 'v4'
-    : isV3(datasetId)
-    ? 'v3'
-    : isV2(datasetId)
-    ? 'v2'
-    : isExac(datasetId)
-    ? 'ExAC'
-    : 'default'
-  /* eslint-enable no-nested-ternary */
-
-  const datasetPopulations: PopulationId[] = populationsInDataset[topLevelDataset]
-
-  return datasetPopulations
 }
 
 const createExpectedPopulationColumns = (populations: PopulationId[]) => {
@@ -78,7 +60,7 @@ const createExpectedPopulationColumns = (populations: PopulationId[]) => {
 
 forAllDatasets('ExportVariantsButton with "%s" selected', (datasetId) => {
   test('returns the expected genetic ancestry group columns', () => {
-    const expectedPopulations = getDatasetPopulations(datasetId)
+    const expectedPopulations = getPopulationsInDataset(datasetId)
     const result = createPopulationColumns(datasetId)
 
     expect(getAllPopulationColumns(result)).toStrictEqual(

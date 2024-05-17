@@ -1,4 +1,5 @@
 import { textOrMissingTextWarning } from '../browser/src/missingContent'
+import { DatasetId, getTopLevelDataset } from './metadata'
 
 export const GNOMAD_POPULATION_NAMES = {
   afr: 'African/African American',
@@ -35,18 +36,18 @@ export const populationName = (populationId: string) =>
   textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)
 
 const ExACPopulations: PopulationId[] = ['sas', 'afr', 'amr', 'eas', 'fin', 'nfe', 'remaining']
-const v2Populations: PopulationId[] = ['amr', 'nfe', 'afr', 'asj', 'eas', 'fin', 'sas', 'remaining']
+const v2Populations: PopulationId[] = ['amr', 'nfe', 'afr', 'asj', 'eas', 'fin', 'sas', 'oth']
 const v3Populations: PopulationId[] = [
   'nfe',
+  'fin',
   'amr',
-  'eur',
   'ami',
   'eas',
   'mid',
   'afr',
   'sas',
   'asj',
-  'remaining',
+  'oth',
 ]
 const v4Populations: PopulationId[] = [
   'afr',
@@ -60,25 +61,16 @@ const v4Populations: PopulationId[] = [
   'sas',
   'remaining',
 ]
-const allPopulations: PopulationId[] = [
-  'afr',
-  'ami',
-  'amr',
-  'asj',
-  'eas',
-  'mid',
-  'eur',
-  'nfe',
-  'fin',
-  'oth',
-  'sas',
-  'remaining',
-]
 
 export const populationsInDataset = {
   ExAC: ExACPopulations,
   v2: v2Populations,
   v3: v3Populations,
   v4: v4Populations,
-  default: allPopulations,
+  default: [],
+}
+
+export const getPopulationsInDataset = (datasetId: DatasetId): PopulationId[] => {
+  const topLeveDataset = getTopLevelDataset(datasetId)
+  return populationsInDataset[topLeveDataset]
 }
