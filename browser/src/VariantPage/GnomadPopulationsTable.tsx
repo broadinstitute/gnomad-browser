@@ -114,9 +114,17 @@ export class GnomadPopulationsTable extends Component<
     const { includeExomes, includeGenomes } = this.state
 
     const mergedPopulations = mergeExomeGenomeAndJointPopulationData({
+      datasetId,
       exomePopulations: includeExomes ? exomePopulations : [],
       genomePopulations: includeGenomes ? genomePopulations : [],
-      jointPopulations,
+      jointPopulations:
+        // if theres joint data, but no variant present in genomes, still use joint
+        (includeExomes || exomePopulations.length === 0) &&
+        // if theres joint data, but no variant present in exomes, still use joint
+        (includeGenomes || genomePopulations.length === 0) &&
+        jointPopulations
+          ? jointPopulations
+          : null,
     }).filter((mergedAncestry) => (mergedAncestry.id as string) !== '')
 
     const mergedPopulationsWithNames = addPopulationNames(mergedPopulations)

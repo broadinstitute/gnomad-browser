@@ -44,7 +44,7 @@ import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 import { URLBuilder } from '../DatasetSelector'
-import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationIdAndChromosome } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 
 const Section = styled.section`
@@ -143,7 +143,7 @@ export type Histogram = {
 }
 
 export type Population = {
-  id: PopulationId
+  id: PopulationIdAndChromosome
   ac: number
   an: number
   ac_hemi: number | null

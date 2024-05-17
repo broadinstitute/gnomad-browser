@@ -161,8 +161,11 @@ const Variants = ({
   }, [])
 
   const filteredVariants = useMemo(() => {
-    return mergeExomeAndGenomeData(filterVariants(variants, filter, renderedTableColumns))
-  }, [variants, filter, renderedTableColumns])
+    return mergeExomeAndGenomeData({
+      datasetId,
+      variants: filterVariants(variants, filter, renderedTableColumns),
+    })
+  }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
     return sortVariants(filteredVariants, sortState)
