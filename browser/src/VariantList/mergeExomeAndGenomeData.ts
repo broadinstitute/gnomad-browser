@@ -1,29 +1,68 @@
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { Filter } from '../QCFilter'
 import { Population, Variant } from '../VariantPage/VariantPage'
+import { PopulationId, getPopulationsInDataset } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // safe math on possibly null values
 const add = (n1: number | null | undefined, n2: number | null | undefined) => (n1 || 0) + (n2 || 0)
 
+const emptyAncestries = (ancestry: PopulationId): Population[] => {
+  return [
+    { id: ancestry, ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+    { id: `${ancestry}_XX`, ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+    { id: `${ancestry}_XY`, ac: 0, an: 0, ac_hemi: 0, ac_hom: 0 },
+  ]
+}
+
+const findAncestries = (
+  target: PopulationId,
+  candidates: Population[]
+): Population[] | undefined => {
+  const foundAncestries = candidates.filter((ancestry) => ancestry.id.startsWith(target))
+  return foundAncestries.length > 0 ? foundAncestries : undefined
+}
+
+// include placeholders for any ancestries missing from the dataset
+const addMissingAncestries = (
+  currentAncestries: Population[],
+  versionAncestries: PopulationId[]
+) => {
+  const fullAncestries = versionAncestries.flatMap(
+    (versionAncestry) =>
+      findAncestries(versionAncestry, currentAncestries) || emptyAncestries(versionAncestry)
+  )
+
+  return fullAncestries
+}
+
 export const mergeExomeGenomeAndJointPopulationData = ({
+  datasetId,
   exomePopulations = [],
   genomePopulations = [],
   jointPopulations = null,
 }: {
+  datasetId?: DatasetId
   exomePopulations: Population[]
   genomePopulations: Population[]
   jointPopulations?: Population[] | null
 }) => {
+  const datasetPopulations = datasetId ? getPopulationsInDataset(datasetId) : undefined
+
   if (jointPopulations) {
-    return (
-      jointPopulations
-        // filter to remove duplicate XX an XY keys from joint populations array
-        .filter((item, index, self) => index === self.findIndex((t) => t.id === item.id))
-        .map((jointPopulation) => ({
-          ...jointPopulation,
-          ac_hemi: jointPopulation.hemizygote_count!,
-          ac_hom: jointPopulation.homozygote_count!,
-        }))
-    )
+    const reshapedJointPopulations = jointPopulations
+      // filter to remove duplicate XX an XY keys from joint populations array
+      .filter((item, index, self) => index === self.findIndex((t) => t.id === item.id))
+      .map((jointPopulation) => ({
+        ...jointPopulation,
+        ac_hemi: jointPopulation.hemizygote_count!,
+        ac_hom: jointPopulation.homozygote_count!,
+      }))
+
+    const reshapedJointPopulationWithAddedAncestries = datasetPopulations
+      ? addMissingAncestries(reshapedJointPopulations, datasetPopulations)
+      : reshapedJointPopulations
+
+    return reshapedJointPopulationWithAddedAncestries
   }
 
   const populations: { [key: string]: Population } = {}
@@ -59,7 +98,12 @@ export const mergeExomeGenomeAndJointPopulationData = ({
     }
   })
 
-  return Object.values(populations)
+  const reshapedMergedPopulations = Object.values(populations)
+  const reshapedMergedPopulationsWithAddedAncestries = datasetPopulations
+    ? addMissingAncestries(reshapedMergedPopulations, datasetPopulations)
+    : reshapedMergedPopulations
+
+  return reshapedMergedPopulationsWithAddedAncestries
 }
 
 type MergedVariant = Variant & {
@@ -73,7 +117,13 @@ type MergedVariant = Variant & {
   populations: Population[]
 }
 
-export const mergeExomeAndGenomeData = (variants: Variant[]): MergedVariant[] => {
+export const mergeExomeAndGenomeData = ({
+  datasetId,
+  variants,
+}: {
+  datasetId?: DatasetId
+  variants: Variant[]
+}): MergedVariant[] => {
   const mergedVariants = variants.map((variant: Variant) => {
     const { exome, genome, joint } = variant
 
@@ -127,6 +177,7 @@ export const mergeExomeAndGenomeData = (variants: Variant[]): MergedVariant[] =>
     const combinedFilters = exomeFilters.concat(genomeFilters)
 
     const combinedPopulations = mergeExomeGenomeAndJointPopulationData({
+      datasetId,
       exomePopulations: exomeOrNone.populations,
       genomePopulations: genomeOrNone.populations,
     })
