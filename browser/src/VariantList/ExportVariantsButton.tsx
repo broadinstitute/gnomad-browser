@@ -6,16 +6,9 @@ import { Population } from '../VariantPage/VariantPage'
 import {
   GNOMAD_POPULATION_NAMES,
   PopulationId,
-  populationsInDataset,
+  getPopulationsInDataset,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
-import {
-  DatasetId,
-  isExac,
-  isV2,
-  isV3,
-  isV4,
-  hasJointFrequencyData,
-} from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, isV2, isV4, hasJointFrequencyData } from '@gnomad/dataset-metadata/metadata'
 
 type ColumnGetter = (variant: VariantTableVariant) => string
 
@@ -37,19 +30,7 @@ const getValueGivenProperty = (
 }
 
 export const createPopulationColumns = (datasetId: DatasetId) => {
-  /* eslint-disable no-nested-ternary */
-  const topLevelDataset = isV4(datasetId)
-    ? 'v4'
-    : isV3(datasetId)
-    ? 'v3'
-    : isV2(datasetId)
-    ? 'v2'
-    : isExac(datasetId)
-    ? 'ExAC'
-    : 'default'
-  /* eslint-enable no-nested-ternary */
-
-  const datasetPopulations: PopulationId[] = populationsInDataset[topLevelDataset]
+  const datasetPopulations: PopulationId[] = getPopulationsInDataset(datasetId)
 
   let populationColumns: Column[] = []
   datasetPopulations.forEach((popId: PopulationId) => {
