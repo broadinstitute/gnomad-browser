@@ -74,7 +74,8 @@ const LocalAncestryPopulationsTable = ({ populations }: LocalAncestryPopulations
         showHomozygotes={false}
       />
       <p>
-        <Badge level="info">Note</Badge> Local ancestry is not available for all gnomAD populations.
+        <Badge level="info">Note</Badge> Local ancestry is not available for all gnomAD genetic
+        ancestry groups.
       </p>
     </div>
   )
