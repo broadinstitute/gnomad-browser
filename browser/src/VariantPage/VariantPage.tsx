@@ -389,7 +389,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
                 by selecting the tab below. See our blog post on{' '}
                 {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
-                  local ancestry inference for Latino/Admixed American samples in gnomAD
+                  local ancestry inference for Admixed American samples in gnomAD
                 </ExternalLink>{' '}
                 for more information.
               </p>
