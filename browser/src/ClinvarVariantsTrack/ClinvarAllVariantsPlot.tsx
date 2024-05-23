@@ -210,7 +210,9 @@ const VariantLine = ({
   }
 
   if (category === 'frameshift') {
-    const transcript = transcripts.find((t) => t.transcript_id === variant.transcript_id)
+    const transcript: Transcript | undefined = transcripts.find(
+      (t) => t.transcript_id === variant.transcript_id
+    )
     const [endpoint1, endpoint2] = getGlobalFrameshiftCoordinates(variant, transcript)
     const frameshiftMinPos = Math.min(endpoint1, endpoint2)
     const frameshiftMaxPos = Math.max(endpoint1, endpoint2)
