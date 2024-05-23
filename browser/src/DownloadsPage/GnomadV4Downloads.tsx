@@ -102,7 +102,7 @@ const GnomadV4Downloads = () => {
         v4 Downloads
       </SectionTitle>
       <StyledParagraph>
-        The gnomAD v4.0.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all
+        The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all
         mapped to the GRCh38 reference sequence.
       </StyledParagraph>
 

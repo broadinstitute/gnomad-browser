@@ -647,7 +647,7 @@ exports[`Downloads Page has no unexpected changes 1`] = `
     <p
       className="c11"
     >
-      The gnomAD v4.0.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all mapped to the GRCh38 reference sequence.
+      The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all mapped to the GRCh38 reference sequence.
     </p>
     <span
       className="c6"
