@@ -14,7 +14,7 @@ test.describe('Region page', () => {
     test('region query', async () => {
       await expect(page.getByText('Loading region')).toHaveCount(0)
       await expect(
-        page.getByText('1-55050934-55053465ChangeDatasetgnomAD v4.0.0GRCh38gnomAD v4.0.0807,162')
+        page.getByText('1-55050934-55053465ChangeDatasetgnomAD v4.1.0GRCh38gnomAD v4.1.0807,162')
       ).toBeVisible({ timeout: 20_000 })
     })
 
