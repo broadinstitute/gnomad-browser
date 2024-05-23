@@ -19,7 +19,7 @@ test.describe('Gene page', () => {
       await expect(page.getByText('Loading gene')).toHaveCount(0)
 
       await expect(
-        page.getByText('PCSK9 proprotein convertase subtilisin/kexin type 9DatasetgnomAD v4.0.')
+        page.getByText('PCSK9 proprotein convertase subtilisin/kexin type 9DatasetgnomAD v4.1.')
       ).toBeVisible({ timeout: 10_000 })
     })
 

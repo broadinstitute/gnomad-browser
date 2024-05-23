@@ -16,7 +16,7 @@ test.describe('Transcript page', () => {
     test('transcript query', async () => {
       await expect(page.getByText('Loading transcript')).toHaveCount(0)
 
-      await expect(page.getByText('Transcript: ENST00000302118.5DatasetgnomAD v4.0.')).toBeVisible({
+      await expect(page.getByText('Transcript: ENST00000302118.5DatasetgnomAD v4.1.')).toBeVisible({
         timeout: 10_000,
       })
     })
