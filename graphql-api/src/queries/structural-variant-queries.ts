@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const GNOMAD_STRUCTURAL_VARIANTS_V2_INDEX = 'gnomad_structural_variants_v2'
-const GNOMAD_STRUCTURAL_VARIANTS_V3_INDEX = 'v4p1_gnomad_structural_variants_v3'
+const GNOMAD_STRUCTURAL_VARIANTS_V3_INDEX = 'gnomad_structural_variants_v3'
 
 type SvDatasetId =
   | 'gnomad_sv_r2_1'

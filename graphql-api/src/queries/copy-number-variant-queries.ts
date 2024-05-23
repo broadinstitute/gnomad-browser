@@ -1,6 +1,6 @@
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
-const GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX = 'v4p1_gnomad_v4_cnvs'
+const GNOMAD_COPY_NUMBER_VARIANTS_V4_INDEX = 'gnomad_v4_cnvs'
 
 type CnvDatasetId = 'gnomad_cnv_r4'
 type DatasetDependentQueryParams = {
