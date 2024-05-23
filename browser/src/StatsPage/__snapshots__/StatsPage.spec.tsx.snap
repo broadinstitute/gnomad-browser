@@ -7527,6 +7527,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         <div>
           <table
             className="c37"
+            id="inferred-sex-by-genetic-ancestry-group-table"
           >
             <thead>
               <tr
@@ -7596,107 +7597,72 @@ exports[`Stats Page has no unexpected changes 1`] = `
             >
               <tr>
                 <td>
-                  African/African American
-                </td>
-                <td>
-                  AFR
-                </td>
-                <td>
-                  16740
-                </td>
-                <td>
-                  9663
-                </td>
-                <td>
-                  7077
-                </td>
-                <td>
-                  20805
-                </td>
-                <td>
-                  11094
-                </td>
-                <td>
-                  9711
-                </td>
-                <td>
-                  37545
-                </td>
-                <td>
-                  20757
-                </td>
-                <td>
-                  16788
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Amish
-                </td>
-                <td>
-                  AMI
-                </td>
-                <td>
-                  -
-                </td>
-                <td>
-                  -
-                </td>
-                <td>
-                  -
-                </td>
-                <td>
-                  456
-                </td>
-                <td>
-                  235
-                </td>
-                <td>
-                  221
-                </td>
-                <td>
-                  456
-                </td>
-                <td>
-                  235
-                </td>
-                <td>
-                  221
-                </td>
-              </tr>
-              <tr>
-                <td>
                   Admixed American
                 </td>
                 <td>
-                  AMR
+                  amr
                 </td>
                 <td>
-                  22362
+                  22,362
                 </td>
                 <td>
-                  12845
+                  12,845
                 </td>
                 <td>
-                  9517
+                  9,517
                 </td>
                 <td>
-                  7657
+                  7,657
                 </td>
                 <td>
-                  3399
+                  3,399
                 </td>
                 <td>
-                  4258
+                  4,258
                 </td>
                 <td>
-                  30019
+                  30,019
                 </td>
                 <td>
-                  16244
+                  16,244
                 </td>
                 <td>
-                  13775
+                  13,775
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td>
+                  afr
+                </td>
+                <td>
+                  16,740
+                </td>
+                <td>
+                  9,663
+                </td>
+                <td>
+                  7,077
+                </td>
+                <td>
+                  20,805
+                </td>
+                <td>
+                  11,094
+                </td>
+                <td>
+                  9,711
+                </td>
+                <td>
+                  37,545
+                </td>
+                <td>
+                  20,757
+                </td>
+                <td>
+                  16,788
                 </td>
               </tr>
               <tr>
@@ -7704,19 +7670,19 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   Ashkenazi Jewish
                 </td>
                 <td>
-                  ASJ
+                  asj
                 </td>
                 <td>
-                  13068
+                  13,068
                 </td>
                 <td>
-                  6318
+                  6,318
                 </td>
                 <td>
-                  6750
+                  6,750
                 </td>
                 <td>
-                  1736
+                  1,736
                 </td>
                 <td>
                   934
@@ -7725,13 +7691,48 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   802
                 </td>
                 <td>
-                  14804
+                  14,804
                 </td>
                 <td>
-                  7252
+                  7,252
                 </td>
                 <td>
-                  7552
+                  7,552
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Amish
+                </td>
+                <td>
+                  ami
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td>
+                  221
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td>
+                  221
                 </td>
               </tr>
               <tr>
@@ -7739,34 +7740,34 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   East Asian
                 </td>
                 <td>
-                  EAS
+                  eas
                 </td>
                 <td>
-                  19850
+                  19,850
                 </td>
                 <td>
-                  10356
+                  10,356
                 </td>
                 <td>
-                  9494
+                  9,494
                 </td>
                 <td>
-                  2598
+                  2,598
                 </td>
                 <td>
-                  1136
+                  1,136
                 </td>
                 <td>
-                  1462
+                  1,462
                 </td>
                 <td>
-                  22448
+                  22,448
                 </td>
                 <td>
-                  11492
+                  11,492
                 </td>
                 <td>
-                  10956
+                  10,956
                 </td>
               </tr>
               <tr>
@@ -7774,34 +7775,69 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   European (Finnish)
                 </td>
                 <td>
-                  FIN
+                  fin
                 </td>
                 <td>
-                  26710
+                  26,710
                 </td>
                 <td>
-                  13824
+                  13,824
                 </td>
                 <td>
-                  12886
+                  12,886
                 </td>
                 <td>
-                  5316
+                  5,316
                 </td>
                 <td>
-                  1287
+                  1,287
                 </td>
                 <td>
-                  4029
+                  4,029
                 </td>
                 <td>
-                  32026
+                  32,026
                 </td>
                 <td>
-                  15111
+                  15,111
                 </td>
                 <td>
-                  16915
+                  16,915
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (non-Finnish)
+                </td>
+                <td>
+                  nfe
+                </td>
+                <td>
+                  556,006
+                </td>
+                <td>
+                  286,144
+                </td>
+                <td>
+                  269,862
+                </td>
+                <td>
+                  34,025
+                </td>
+                <td>
+                  19,683
+                </td>
+                <td>
+                  14,342
+                </td>
+                <td>
+                  590,031
+                </td>
+                <td>
+                  305,827
+                </td>
+                <td>
+                  284,204
                 </td>
               </tr>
               <tr>
@@ -7809,16 +7845,16 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   Middle Eastern
                 </td>
                 <td>
-                  MID
+                  mid
                 </td>
                 <td>
-                  2884
+                  2,884
                 </td>
                 <td>
-                  1253
+                  1,253
                 </td>
                 <td>
-                  1631
+                  1,631
                 </td>
                 <td>
                   147
@@ -7830,48 +7866,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   75
                 </td>
                 <td>
-                  3031
+                  3,031
                 </td>
                 <td>
-                  1325
+                  1,325
                 </td>
                 <td>
-                  1706
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  European (non-Finnish)
-                </td>
-                <td>
-                  NFE
-                </td>
-                <td>
-                  556006
-                </td>
-                <td>
-                  286144
-                </td>
-                <td>
-                  269862
-                </td>
-                <td>
-                  34025
-                </td>
-                <td>
-                  19683
-                </td>
-                <td>
-                  14342
-                </td>
-                <td>
-                  590031
-                </td>
-                <td>
-                  305827
-                </td>
-                <td>
-                  284204
+                  1,706
                 </td>
               </tr>
               <tr>
@@ -7879,19 +7880,19 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   Remaining
                 </td>
                 <td>
-                  Remaining
+                  remaining
                 </td>
                 <td>
-                  30198
+                  30,198
                 </td>
                 <td>
-                  15900
+                  15,900
                 </td>
                 <td>
-                  14298
+                  14,298
                 </td>
                 <td>
-                  1058
+                  1,058
                 </td>
                 <td>
                   525
@@ -7900,13 +7901,13 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   533
                 </td>
                 <td>
-                  31256
+                  31,256
                 </td>
                 <td>
-                  16425
+                  16,425
                 </td>
                 <td>
-                  14831
+                  14,831
                 </td>
               </tr>
               <tr>
@@ -7914,34 +7915,34 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   South Asian
                 </td>
                 <td>
-                  SAS
+                  sas
                 </td>
                 <td>
-                  43129
+                  43,129
                 </td>
                 <td>
-                  11020
+                  11,020
                 </td>
                 <td>
-                  32109
+                  32,109
                 </td>
                 <td>
-                  2417
+                  2,417
                 </td>
                 <td>
                   577
                 </td>
                 <td>
-                  1840
+                  1,840
                 </td>
                 <td>
-                  45546
+                  45,546
                 </td>
                 <td>
-                  11597
+                  11,597
                 </td>
                 <td>
-                  33949
+                  33,949
                 </td>
               </tr>
             </tbody>
@@ -7954,31 +7955,31 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td />
                 <td>
-                  730947
+                  730,947
                 </td>
                 <td>
-                  367323
+                  367,323
                 </td>
                 <td>
-                  363624
+                  363,624
                 </td>
                 <td>
-                  76215
+                  76,215
                 </td>
                 <td>
-                  38942
+                  38,942
                 </td>
                 <td>
-                  37273
+                  37,273
                 </td>
                 <td>
-                  807162
+                  807,162
                 </td>
                 <td>
-                  406265
+                  406,265
                 </td>
                 <td>
-                  400897
+                  400,897
                 </td>
               </tr>
             </tfoot>
@@ -8019,6 +8020,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         <div>
           <table
             className="c37"
+            id="non-ukb-inferred-sex-by-genetic-ancestry-group-table"
           >
             <thead>
               <tr
@@ -8033,16 +8035,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   colSpan={3}
                 >
                   v4 Exomes
-                </th>
-                <th
-                  colSpan={3}
-                >
-                  v4 Genomes
-                </th>
-                <th
-                  colSpan={3}
-                >
-                  Combined
                 </th>
               </tr>
               <tr
@@ -8063,24 +8055,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th>
                   XY
                 </th>
-                <th>
-                  Sample Count
-                </th>
-                <th>
-                  XX
-                </th>
-                <th>
-                  XY
-                </th>
-                <th>
-                  Sample Count
-                </th>
-                <th>
-                  XX
-                </th>
-                <th>
-                  XY
-                </th>
               </tr>
             </thead>
             <tbody
@@ -8088,210 +8062,156 @@ exports[`Stats Page has no unexpected changes 1`] = `
             >
               <tr>
                 <td>
-                  African/African American
-                </td>
-                <td>
-                  AFR
-                </td>
-                <td>
-                  8847
-                </td>
-                <td>
-                  5143
-                </td>
-                <td>
-                  3704
-                </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-              </tr>
-              <tr>
-                <td>
                   Admixed American
                 </td>
                 <td>
-                  AMR
+                  amr
                 </td>
                 <td>
-                  21870
+                  21,870
                 </td>
                 <td>
-                  12520
+                  12,520
                 </td>
                 <td>
-                  9350
+                  9,350
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
+              </tr>
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td>
+                  afr
+                </td>
+                <td>
+                  8,847
+                </td>
+                <td>
+                  5,143
+                </td>
+                <td>
+                  3,704
+                </td>
               </tr>
               <tr>
                 <td>
                   Ashkenazi Jewish
                 </td>
                 <td>
-                  ASJ
+                  asj
                 </td>
                 <td>
-                  10492
+                  10,492
                 </td>
                 <td>
-                  4919
+                  4,919
                 </td>
                 <td>
-                  5573
+                  5,573
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
               <tr>
                 <td>
                   East Asian
                 </td>
                 <td>
-                  EAS
+                  eas
                 </td>
                 <td>
-                  18035
+                  18,035
                 </td>
                 <td>
-                  9149
+                  9,149
                 </td>
                 <td>
-                  8886
+                  8,886
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
               <tr>
                 <td>
                   European (Finnish)
                 </td>
                 <td>
-                  FIN
+                  fin
                 </td>
                 <td>
-                  26572
+                  26,572
                 </td>
                 <td>
-                  13699
+                  13,699
                 </td>
                 <td>
-                  12873
+                  12,873
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-              </tr>
-              <tr>
-                <td>
-                  Middle Eastern
-                </td>
-                <td>
-                  MID
-                </td>
-                <td>
-                  2074
-                </td>
-                <td>
-                  958
-                </td>
-                <td>
-                  1116
-                </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
               <tr>
                 <td>
                   European (non-Finnish)
                 </td>
                 <td>
-                  NFE
+                  nfe
                 </td>
                 <td>
-                  175054
+                  175,054
                 </td>
                 <td>
-                  81110
+                  81,110
                 </td>
                 <td>
-                  93944
+                  93,944
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td>
+                  mid
+                </td>
+                <td>
+                  2,074
+                </td>
+                <td>
+                  958
+                </td>
+                <td>
+                  1,116
+                </td>
               </tr>
               <tr>
                 <td>
                   Remaining
                 </td>
                 <td>
-                  Remaining
+                  remaining
                 </td>
                 <td>
-                  16549
+                  16,549
                 </td>
                 <td>
-                  8376
+                  8,376
                 </td>
                 <td>
-                  8173
+                  8,173
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
               <tr>
                 <td>
                   South Asian
                 </td>
                 <td>
-                  SAS
+                  sas
                 </td>
                 <td>
-                  34899
+                  34,899
                 </td>
                 <td>
-                  7251
+                  7,251
                 </td>
                 <td>
-                  27648
+                  27,648
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
             </tbody>
             <tfoot
@@ -8303,20 +8223,14 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td />
                 <td>
-                  314392
+                  314,392
                 </td>
                 <td>
-                  143125
+                  143,125
                 </td>
                 <td>
-                  171267
+                  171,267
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
             </tfoot>
             <caption

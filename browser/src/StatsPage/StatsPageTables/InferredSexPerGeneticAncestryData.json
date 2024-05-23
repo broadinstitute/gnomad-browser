@@ -1,0 +1,217 @@
+{
+  "gnomADV4": [
+    {
+      "geneticAncestryGroup": "amr",
+      "exomes": {
+        "XX": 12845,
+        "XY": 9517
+      },
+      "genomes": {
+        "XX": 3399,
+        "XY": 4258
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "afr",
+      "exomes": {
+        "XX": 9663,
+        "XY": 7077
+      },
+      "genomes": {
+        "XX": 11094,
+        "XY": 9711
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "asj",
+      "exomes": {
+        "XX": 6318,
+        "XY": 6750
+      },
+      "genomes": {
+        "XX": 934,
+        "XY": 802
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "ami",
+      "exomes": {
+        "XX": 0,
+        "XY": 0
+      },
+      "genomes": {
+        "XX": 235,
+        "XY": 221
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "eas",
+      "exomes": {
+        "XX": 10356,
+        "XY": 9494
+      },
+      "genomes": {
+        "XX": 1136,
+        "XY": 1462
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "fin",
+      "exomes": {
+        "XX": 13824,
+        "XY": 12886
+      },
+      "genomes": {
+        "XX": 1287,
+        "XY": 4029
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "nfe",
+      "exomes": {
+        "XX": 286144,
+        "XY": 269862
+      },
+      "genomes": {
+        "XX": 19683,
+        "XY": 14342
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "mid",
+      "exomes": {
+        "XX": 1253,
+        "XY": 1631
+      },
+      "genomes": {
+        "XX": 72,
+        "XY": 75
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "remaining",
+      "exomes": {
+        "XX": 15900,
+        "XY": 14298
+      },
+      "genomes": {
+        "XX": 525,
+        "XY": 533
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "sas",
+      "exomes": {
+        "XX": 11020,
+        "XY": 32109
+      },
+      "genomes": {
+        "XX": 577,
+        "XY": 1840
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "total",
+      "exomes": {
+        "XX": 367323,
+        "XY": 363624
+      },
+      "genomes": {
+        "XX": 38942,
+        "XY": 37273
+      }
+    }
+  ],
+
+  "gnomADV4NonUkb": [
+    {
+      "geneticAncestryGroup": "amr",
+      "exomes": {
+        "XX": 12520,
+        "XY": 9350
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "afr",
+      "exomes": {
+        "XX": 5143,
+        "XY": 3704
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "asj",
+      "exomes": {
+        "XX": 4919,
+        "XY": 5573
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "eas",
+      "exomes": {
+        "XX": 9149,
+        "XY": 8886
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "fin",
+      "exomes": {
+        "XX": 13699,
+        "XY": 12873
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "nfe",
+      "exomes": {
+        "XX": 81110,
+        "XY": 93944
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "mid",
+      "exomes": {
+        "XX": 958,
+        "XY": 1116
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "remaining",
+      "exomes": {
+        "XX": 8376,
+        "XY": 8173
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "sas",
+      "exomes": {
+        "XX": 7251,
+        "XY": 27648
+      }
+    },
+
+    {
+      "geneticAncestryGroup": "total",
+      "exomes": {
+        "XX": 143125,
+        "XY": 171267
+      }
+    }
+  ]
+}
