@@ -54,9 +54,7 @@ const makeMockClient = (response: any) => {
 }
 
 const expectedIndex = (datasetId: SvDatasetId) =>
-  datasetId === 'gnomad_sv_r4'
-    ? 'v4p1_gnomad_structural_variants_v3'
-    : 'gnomad_structural_variants_v2'
+  datasetId === 'gnomad_sv_r4' ? 'gnomad_structural_variants_v3' : 'gnomad_structural_variants_v2'
 
 describe('fetchStructuralVariantById', () => {
   const variantId = 'dummy-variant'
