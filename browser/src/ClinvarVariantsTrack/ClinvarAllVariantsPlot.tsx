@@ -210,21 +210,27 @@ const VariantLine = ({
   }
 
   if (category === 'frameshift') {
-    const transcript = transcripts.find((t) => t.transcript_id === variant.transcript_id)
+    const transcript: Transcript | undefined = transcripts.find(
+      (t) => t.transcript_id === variant.transcript_id
+    )
     const [endpoint1, endpoint2] = getGlobalFrameshiftCoordinates(variant, transcript)
     const frameshiftMinPos = Math.min(endpoint1, endpoint2)
     const frameshiftMaxPos = Math.max(endpoint1, endpoint2)
     const terminationPos =
       transcript && transcript.strand === '+' ? frameshiftMaxPos : frameshiftMinPos
-    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-    const frameshiftExonRegions = transcript.exons
-      .sort((e1, e2) => e1.start - e2.start)
-      .filter((e) => e.start <= frameshiftMaxPos && e.stop >= frameshiftMinPos)
-      .map((e) => ({
-        start: Math.max(e.start, frameshiftMinPos),
-        stop: Math.min(e.stop, frameshiftMaxPos),
-        feature_type: e.feature_type,
-      }))
+
+    // if a frameshift variant-consequence pair from ClinVar exists for a transcript
+    //   that the browser doesn't recognize, use an empty array for exon information
+    const frameshiftExonRegions = transcript
+      ? transcript.exons
+          .sort((e1, e2) => e1.start - e2.start)
+          .filter((e) => e.start <= frameshiftMaxPos && e.stop >= frameshiftMinPos)
+          .map((e) => ({
+            start: Math.max(e.start, frameshiftMinPos),
+            stop: Math.min(e.stop, frameshiftMaxPos),
+            feature_type: e.feature_type,
+          }))
+      : []
 
     return (
       <TooltipAnchor
