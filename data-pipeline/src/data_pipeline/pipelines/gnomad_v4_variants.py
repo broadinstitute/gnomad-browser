@@ -28,6 +28,7 @@ from data_pipeline.data_types.variant import (
     annotate_variants,
     annotate_transcript_consequences,
     annotate_caids,
+    annotate_vrs_ids,
 )
 
 RUN = True
@@ -90,11 +91,22 @@ pipeline.add_task(
     },
 )
 
+pipeline.add_task(
+    name="annotate_vrs_ids",
+    task_function=annotate_vrs_ids,
+    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_4.ht",
+    inputs={
+        "variants_path": pipeline.get_task("annotate_gnomad_v4_caids"),
+        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
+        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht",
+    },
+)
+
 ###############################################
 # Outputs
 ###############################################
 
-pipeline.set_outputs({"variants": "annotate_gnomad_v4_caids"})
+pipeline.set_outputs({"variants": "annotate_vrs_ids"})
 
 ###############################################
 # Run
@@ -106,12 +118,13 @@ if __name__ == "__main__":
 
         write_schemas(
             [pipeline],
-            os.path.join("/home/msolomon", "schemas"),
+            os.path.expanduser("~/schemas"),
             task_names=[
                 "prepare_gnomad_v4_variants",
                 "annotate_gnomad_v4_variants",
                 "annotate_gnomad_v4_transcript_consequences",
                 "annotate_gnomad_v4_caids",
+                "annotate_vrs_ids",
             ],
         )
         # copy locally using:
