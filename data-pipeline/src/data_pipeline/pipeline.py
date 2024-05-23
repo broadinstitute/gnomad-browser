@@ -102,7 +102,7 @@ class DownloadTask:
             elapsed = stop - start
             logger.info("Finished %s in %dm%02ds", self._name, elapsed // 60, elapsed % 60)
         else:
-            logger.info("Skipping %s", self._name)
+            logger.info(f"Skipping {self._name}")
 
 
 @attr.define
