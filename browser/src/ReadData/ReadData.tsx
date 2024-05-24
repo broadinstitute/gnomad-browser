@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component, Suspense, lazy } from 'react'
+import React, { Component, Suspense, lazy, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
@@ -16,8 +16,19 @@ import {
 } from '@gnomad/dataset-metadata/metadata'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
+import { CheckboxInput } from '../ChartStyles'
+import { logButtonClick } from '../analytics'
+import InfoButton from '../help/InfoButton'
 
 const IGVBrowser = lazy(() => import('./IGVBrowser'))
+
+const LoadReadsControls = styled.div`
+  margin-bottom: 3rem;
+`
+
+const NoReadsSpacer = styled.div`
+  margin-bottom: 10rem;
+`
 
 function getBrowserConfig(datasetId: DatasetId, locus: string) {
   if (isV4(datasetId)) {
@@ -165,6 +176,8 @@ type ReadDataTracks = {
 }
 
 type ReadDataState = {
+  loadOnce: boolean
+  alwaysLoad: boolean
   tracksAvailable: {
     exome: ReadDataTracks
     genome: ReadDataTracks
@@ -193,6 +206,8 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
     const { exomeReads, genomeReads } = this.props
 
     this.state = {
+      loadOnce: false,
+      alwaysLoad: false, // TODO: Need to use context here
       tracksAvailable: {
         exome: exomeReads.reduce(
           (acc, read) => ({
@@ -483,6 +498,17 @@ type ReadDataContainerProps = {
 }
 
 const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) => {
+  const localStorageItemName = 'alwaysLoadReadsDataOnVariantPage'
+
+  const [loadOnce, setLoadOnce] = useState<boolean>(false)
+  const [alwaysLoad, setAlwaysLoad] = useState<boolean>(
+    () => localStorage.getItem(localStorageItemName) === 'true'
+  )
+
+  useEffect(() => {
+    localStorage.setItem(localStorageItemName, alwaysLoad.toString())
+  }, [alwaysLoad])
+
   if (variantIds.length === 0) {
     return null
   }
@@ -517,102 +543,135 @@ const ReadDataContainer = ({ datasetId, variantIds }: ReadDataContainerProps) =>
   `
 
   return (
-    <BaseQuery operationName="ReadData" query={query} url="/reads/">
-      {({ data, error, graphQLErrors, loading }: any) => {
-        if (loading) {
-          return <StatusMessage>Loading reads...</StatusMessage>
-        }
-
-        if (error || !data) {
-          return <StatusMessage>Unable to load reads</StatusMessage>
-        }
-
-        const variants = variantIds.map((variantId) => {
-          const [chrom, pos, ref, alt] = variantId.split('-')
-          return { chrom, pos: Number(pos), ref, alt }
-        })
-
-        // Assume all variants are on the same chromosome
-        const { chrom } = variants[0]
-
-        const minPosition = variants.reduce(
-          (minPos, variant) => Math.min(minPos, variant.pos),
-          Infinity
-        )
-        const maxPosition = variants.reduce(
-          (maxPos, variant) => Math.max(maxPos, variant.pos),
-          -Infinity
-        )
-
-        const positionDifference = maxPosition - minPosition
-        const [start, stop] =
-          positionDifference > 80
-            ? [minPosition, maxPosition]
-            : [
-                minPosition - Math.ceil((80 - positionDifference) / 2),
-                maxPosition + Math.floor((80 - positionDifference) / 2),
-              ]
-
-        // Concatenate reads from all variants
-        const exomeReads = interleaveReads(
-          variantIds.map((variantId, i) => {
-            const categoryCount = { het: 0, hom: 0, hemi: 0 }
-            return (data[`variant_${i}`].exome || []).map((read: any) => {
-              const { category } = read
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-              categoryCount[category] += 1
-              return {
-                ...read,
-                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${
-                  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                  categoryCount[category]
-                }`,
+    <>
+      <LoadReadsControls>
+        <InfoButton topic="hidden-reads-visualization" />{' '}
+        <Button
+          id="load-once"
+          disabled={loadOnce}
+          onClick={() => {
+            logButtonClick('User loaded readviz data once')
+            setLoadOnce(!loadOnce)
+          }}
+        >
+          Load read data
+        </Button>
+        <div>
+          <br />
+          <CheckboxInput
+            id="always-load"
+            checked={alwaysLoad}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (e.target.checked) {
+                logButtonClick('User toggled option to always load readviz data on')
               }
-            })
-          })
-        )
-
-        const genomeReads = interleaveReads(
-          variantIds.map((variantId, i) => {
-            const categoryCount = { het: 0, hom: 0, hemi: 0 }
-            return (data[`variant_${i}`].genome || []).map((read: any) => {
-              const { category } = read
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-              categoryCount[category] += 1
-              return {
-                ...read,
-                label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${
-                  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                  categoryCount[category]
-                }`,
-              }
-            })
-          })
-        )
-
-        return (
-          <ReadData
-            datasetId={datasetId}
-            referenceGenome={
-              readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2' ? 'GRCh37' : 'GRCh38'
+              setAlwaysLoad(e.target.checked)
+              setLoadOnce(true)
+            }}
+          />
+          Always load read data
+        </div>
+      </LoadReadsControls>
+      {!loadOnce && !alwaysLoad && <NoReadsSpacer />}
+      {(loadOnce || alwaysLoad) && (
+        <BaseQuery operationName="ReadData" query={query} url="/reads/">
+          {({ data, error, graphQLErrors, loading }: any) => {
+            if (loading) {
+              return <StatusMessage>Loading reads...</StatusMessage>
             }
-            chrom={chrom}
-            start={start}
-            stop={stop}
-            exomeReads={exomeReads}
-            genomeReads={genomeReads}
-            showHemizygotes={chrom === 'X' || chrom === 'Y'}
-          >
-            {graphQLErrors && (
-              <p>
-                <Badge level="warning">Warning</Badge>{' '}
-                {graphQLErrors.map((e: any) => e.message).join('. ')}.
-              </p>
-            )}
-          </ReadData>
-        )
-      }}
-    </BaseQuery>
+
+            if (error || !data) {
+              return <StatusMessage>Unable to load reads</StatusMessage>
+            }
+
+            const variants = variantIds.map((variantId) => {
+              const [chrom, pos, ref, alt] = variantId.split('-')
+              return { chrom, pos: Number(pos), ref, alt }
+            })
+
+            // Assume all variants are on the same chromosome
+            const { chrom } = variants[0]
+
+            const minPosition = variants.reduce(
+              (minPos, variant) => Math.min(minPos, variant.pos),
+              Infinity
+            )
+            const maxPosition = variants.reduce(
+              (maxPos, variant) => Math.max(maxPos, variant.pos),
+              -Infinity
+            )
+
+            const positionDifference = maxPosition - minPosition
+            const [start, stop] =
+              positionDifference > 80
+                ? [minPosition, maxPosition]
+                : [
+                    minPosition - Math.ceil((80 - positionDifference) / 2),
+                    maxPosition + Math.floor((80 - positionDifference) / 2),
+                  ]
+
+            // Concatenate reads from all variants
+            const exomeReads = interleaveReads(
+              variantIds.map((variantId, i) => {
+                const categoryCount = { het: 0, hom: 0, hemi: 0 }
+                return (data[`variant_${i}`].exome || []).map((read: any) => {
+                  const { category } = read
+                  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                  categoryCount[category] += 1
+                  return {
+                    ...read,
+                    label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [exome] #${
+                      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                      categoryCount[category]
+                    }`,
+                  }
+                })
+              })
+            )
+
+            const genomeReads = interleaveReads(
+              variantIds.map((variantId, i) => {
+                const categoryCount = { het: 0, hom: 0, hemi: 0 }
+                return (data[`variant_${i}`].genome || []).map((read: any) => {
+                  const { category } = read
+                  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                  categoryCount[category] += 1
+                  return {
+                    ...read,
+                    label: `${variantIds.length > 1 ? `${variantId} ` : ''}${category} [genome] #${
+                      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                      categoryCount[category]
+                    }`,
+                  }
+                })
+              })
+            )
+
+            return (
+              <ReadData
+                datasetId={datasetId}
+                referenceGenome={
+                  readsDatasetId === 'exac' || readsDatasetId === 'gnomad_r2' ? 'GRCh37' : 'GRCh38'
+                }
+                chrom={chrom}
+                start={start}
+                stop={stop}
+                exomeReads={exomeReads}
+                genomeReads={genomeReads}
+                showHemizygotes={chrom === 'X' || chrom === 'Y'}
+              >
+                {graphQLErrors && (
+                  <p>
+                    <Badge level="warning">Warning</Badge>{' '}
+                    {graphQLErrors.map((e: any) => e.message).join('. ')}.
+                  </p>
+                )}
+              </ReadData>
+            )
+          }}
+        </BaseQuery>
+      )}
+    </>
   )
 }
 

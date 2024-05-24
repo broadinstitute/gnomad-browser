@@ -9859,11 +9859,62 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -19731,11 +19782,62 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -29603,11 +29705,62 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -39475,11 +39628,62 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -49347,11 +49551,62 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -59219,11 +59474,62 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -66990,19 +67296,62 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -76995,19 +77344,62 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -87000,19 +87392,62 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -97005,19 +97440,62 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -107010,19 +107488,62 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>
@@ -117015,19 +117536,62 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
       <h2>
         Read Data
       </h2>
-      <div>
-        <p>
-          No read data available for this variant.
-        </p>
-        <p>
+      <div
+        className="ReadData__LoadReadsControls-sc-p2sb8k-0 cOzoPQ"
+      >
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
           <span
-            className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
           >
-            Note
+            More information
           </span>
-           Read data for non-coding regions is not available in gnomAD v2.1.1 and ExAC.
-        </p>
+        </button>
+         
+        <button
+          className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
+          disabled={false}
+          id="load-once"
+          onClick={[Function]}
+          type="button"
+        >
+          Load read data
+        </button>
+        <div>
+          <br />
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 jqlQQw"
+            id="always-load"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Always load read data
+        </div>
       </div>
+      <div
+        className="ReadData__NoReadsSpacer-sc-p2sb8k-1 dYfzIa"
+      />
     </section>
   </div>
 </div>

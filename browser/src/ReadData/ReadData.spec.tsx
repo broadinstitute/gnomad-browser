@@ -38,6 +38,9 @@ const {
 } = mockQueries()
 
 beforeEach(() => {
+  localStorage.clear()
+  localStorage.setItem('alwaysLoadReadsDataOnVariantPage', 'true')
+
   Query.mockImplementation(
     jest.fn(({ query, children, operationName, variables }) =>
       simulateApiResponse('Query', query, children, operationName, variables)
