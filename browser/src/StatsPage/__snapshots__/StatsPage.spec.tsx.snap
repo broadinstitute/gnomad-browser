@@ -4519,7 +4519,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
               <tr>
                 <td>
-                  African
+                  African/African American
                 </td>
                 <td>
                   5,203
@@ -4634,7 +4634,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               </tr>
               <tr>
                 <td>
-                  Remaining Individuals^
+                  Remaining^
                 </td>
                 <td>
                   454
@@ -4696,10 +4696,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   76,156
                 </td>
                 <td>
-                  -
+                  807,162
                 </td>
                 <td>
-                  807,162
+                  -
                 </td>
                 <td>
                   -
