@@ -282,6 +282,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
   font-weight: normal;
 }
 
+.c39 th.rb {
+  border-right: 1px solid #0e6fbf;
+}
+
 .c41 tr {
   background-color: #508a14;
   color: #fafafa;
@@ -298,6 +302,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
 
 .c40 tr:nth-of-type(even) {
   background-color: #f3f3f3;
+}
+
+.c40 td.rb {
+  border-right: 1px solid #bbb;
 }
 
 .c42 {
@@ -4468,16 +4476,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
               <tr
                 className="c39"
               >
-                <th>
+                <th
+                  className="rb"
+                >
                    
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   #
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   #
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   #
                 </th>
                 <th>
@@ -4493,7 +4509,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   %
                 </th>
                 <th>
-                  Fold increase from v2
+                  Increase from v2
                 </th>
               </tr>
             </thead>
@@ -4501,16 +4517,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c40"
             >
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Admixed American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,789
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   17,720
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   7,647
                 </td>
                 <td>
@@ -4530,16 +4554,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   African/African American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,203
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   12,487
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   20,744
                 </td>
                 <td>
@@ -4559,16 +4591,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Ashkenazi Jewish
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,185
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,736
                 </td>
                 <td>
@@ -4588,16 +4628,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   East Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   4,327
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   9,977
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   2,604
                 </td>
                 <td>
@@ -4617,16 +4665,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   European^
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   36,667
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   77,165
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   39,345
                 </td>
                 <td>
@@ -4646,16 +4702,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Middle Eastern
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   158
                 </td>
                 <td>
@@ -4675,16 +4739,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Remaining^
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   454
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   3,614
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,503
                 </td>
                 <td>
@@ -4704,16 +4776,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   South Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   8,256
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   15,308
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   2,419
                 </td>
                 <td>

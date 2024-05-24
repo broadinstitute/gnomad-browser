@@ -33,15 +33,15 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <th colSpan={5}>gnomAD v4*</th>
           </StatsTableHeaderRow>
           <StatsTableSubHeaderRow>
-            <th>&nbsp;</th>
-            <th>#</th>
-            <th>#</th>
-            <th>#</th>
+            <th className="rb">&nbsp;</th>
+            <th className="rb">#</th>
+            <th className="rb">#</th>
+            <th className="rb">#</th>
             <th>#</th>
             <th># XX</th>
             <th># XY</th>
             <th>%</th>
-            <th>Fold increase from v2</th>
+            <th>Increase from v2</th>
           </StatsTableSubHeaderRow>
         </thead>
         <StatsTableBody>
@@ -50,12 +50,12 @@ const GeneticAncestryGroupsByVersionTable = () => {
             .map((tableRow) => {
               return (
                 <tr>
-                  <td>{`${populationName(tableRow.geneticAncestryGroup)}${
+                  <td className="rb">{`${populationName(tableRow.geneticAncestryGroup)}${
                     tableRow.optionalSymbol
                   }`}</td>
-                  <td>{renderNumberOrDash(tableRow.EXaC.sampleCount)}</td>
-                  <td>{renderNumberOrDash(tableRow.gnomADV2.sampleCount)}</td>
-                  <td>{renderNumberOrDash(tableRow.gnomADV3.sampleCount)}</td>
+                  <td className="rb">{renderNumberOrDash(tableRow.EXaC.sampleCount)}</td>
+                  <td className="rb">{renderNumberOrDash(tableRow.gnomADV2.sampleCount)}</td>
+                  <td className="rb">{renderNumberOrDash(tableRow.gnomADV3.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXX)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXY)}</td>
