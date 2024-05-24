@@ -14,6 +14,8 @@
       },
       "gnomADV4": {
         "sampleCount": 30019,
+        "sampleCountXX": 16244,
+        "sampleCountXY": 13775,
         "percentOfSamples": 3.72,
         "foldIncreaseFromV2": 1.7
       }
@@ -32,6 +34,8 @@
       },
       "gnomADV4": {
         "sampleCount": 37545,
+        "sampleCountXX": 20757,
+        "sampleCountXY": 16788,
         "percentOfSamples": 4.65,
         "foldIncreaseFromV2": 3
       }
@@ -50,6 +54,8 @@
       },
       "gnomADV4": {
         "sampleCount": 14804,
+        "sampleCountXX": 7252,
+        "sampleCountXY": 7552,
         "percentOfSamples": 1.83,
         "foldIncreaseFromV2": 2.9
       }
@@ -68,6 +74,8 @@
       },
       "gnomADV4": {
         "sampleCount": 22448,
+        "sampleCountXX": 11492,
+        "sampleCountXY": 10956,
         "percentOfSamples": 2.78,
         "foldIncreaseFromV2": 2.3
       }
@@ -86,6 +94,8 @@
       },
       "gnomADV4": {
         "sampleCount": 622057,
+        "sampleCountXX": 320938,
+        "sampleCountXY": 301119,
         "percentOfSamples": 77.07,
         "foldIncreaseFromV2": 8.1
       }
@@ -104,6 +114,8 @@
       },
       "gnomADV4": {
         "sampleCount": 3031,
+        "sampleCountXX": 1325,
+        "sampleCountXY": 1706,
         "percentOfSamples": 0.38,
         "foldIncreaseFromV2": 19.2
       }
@@ -122,6 +134,8 @@
       },
       "gnomADV4": {
         "sampleCount": 31712,
+        "sampleCountXX": 16660,
+        "sampleCountXY": 15052,
         "percentOfSamples": 3.93,
         "foldIncreaseFromV2": 8.8
       }
@@ -140,6 +154,8 @@
       },
       "gnomADV4": {
         "sampleCount": 45546,
+        "sampleCountXX": 11597,
+        "sampleCountXY": 33949,
         "percentOfSamples": 5.64,
         "foldIncreaseFromV2": 3
       }
@@ -158,6 +174,8 @@
       },
       "gnomADV4": {
         "sampleCount": 807162,
+        "sampleCountXX": 406265,
+        "sampleCountXY": 400897,
         "percentOfSamples": 0,
         "foldIncreaseFromV2": 0
       }

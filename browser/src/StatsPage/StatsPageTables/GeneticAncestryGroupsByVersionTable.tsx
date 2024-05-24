@@ -2,7 +2,7 @@ import React from 'react'
 
 import { DownloadElementAsPNGButton } from '../DownloadFigure'
 
-import tableData from './GeneticAncestryGroupsByVersionData.json'
+import versionData from './GeneticAncestryGroupsByVersionData.json'
 
 import {
   StatsTable,
@@ -30,7 +30,7 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <th>ExAC</th>
             <th>gnomAD v2</th>
             <th>gnomAD v3</th>
-            <th colSpan={3}>gnomAD v4*</th>
+            <th colSpan={5}>gnomAD v4*</th>
           </StatsTableHeaderRow>
           <StatsTableSubHeaderRow>
             <th>&nbsp;</th>
@@ -38,12 +38,14 @@ const GeneticAncestryGroupsByVersionTable = () => {
             <th>#</th>
             <th>#</th>
             <th>#</th>
+            <th># XX</th>
+            <th># XY</th>
             <th>%</th>
             <th>Fold increase from v2</th>
           </StatsTableSubHeaderRow>
         </thead>
         <StatsTableBody>
-          {tableData.data
+          {versionData.data
             .filter((tableRow) => tableRow.geneticAncestryGroup !== 'total')
             .map((tableRow) => {
               return (
@@ -55,6 +57,8 @@ const GeneticAncestryGroupsByVersionTable = () => {
                   <td>{renderNumberOrDash(tableRow.gnomADV2.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV3.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCount)}</td>
+                  <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXX)}</td>
+                  <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXY)}</td>
                   <td>{`${tableRow.gnomADV4.percentOfSamples}%`}</td>
                   <td>{`${tableRow.gnomADV4.foldIncreaseFromV2}x`}</td>
                 </tr>
@@ -62,7 +66,7 @@ const GeneticAncestryGroupsByVersionTable = () => {
             })}
         </StatsTableBody>
         <StatsTableFooter>
-          {tableData.data
+          {versionData.data
             .filter((tableRow) => tableRow.geneticAncestryGroup === 'total')
             .map((tableRow) => {
               return (
@@ -72,6 +76,8 @@ const GeneticAncestryGroupsByVersionTable = () => {
                   <td>{renderNumberOrDash(tableRow.gnomADV2.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV3.sampleCount)}</td>
                   <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCount)}</td>
+                  <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXX)}</td>
+                  <td>{renderNumberOrDash(tableRow.gnomADV4.sampleCountXY)}</td>
                   <td>-</td>
                   <td>-</td>
                 </tr>
