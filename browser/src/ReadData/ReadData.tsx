@@ -154,7 +154,26 @@ type OwnReadDataProps = {
   showHemizygotes?: boolean
 }
 
-type ReadDataState = any
+type SequencingType = 'exome' | 'genome'
+
+type TrackCategory = 'het' | 'hom' | 'hemi'
+
+type ReadDataTracks = {
+  het: number
+  hom: number
+  hemi: number
+}
+
+type ReadDataState = {
+  tracksAvailable: {
+    exome: ReadDataTracks
+    genome: ReadDataTracks
+  }
+  tracksLoaded: {
+    exome: ReadDataTracks
+    genome: ReadDataTracks
+  }
+}
 
 type ReadDataProps = OwnReadDataProps & typeof ReadData.defaultProps
 
@@ -236,7 +255,7 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
     return false
   }
 
-  canLoadMoreTracks(exomeOrGenome: any, category: any) {
+  canLoadMoreTracks(exomeOrGenome: SequencingType, category: TrackCategory) {
     const { showHemizygotes } = this.props
     const { tracksAvailable, tracksLoaded } = this.state
 
@@ -254,9 +273,8 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
     return tracksLoadedForCategory < tracksAvailableForCategory
   }
 
-  loadNextTrack(exomeOrGenome: any, category: any) {
+  loadNextTrack(exomeOrGenome: SequencingType, category: TrackCategory) {
     const { exomeReads, genomeReads } = this.props
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     const reads = {
       exome: exomeReads,
       genome: genomeReads,
@@ -307,8 +325,8 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   }
 
   loadInitialTracks() {
-    ;['exome', 'genome'].forEach((exomeOrGenome) => {
-      ;['het', 'hom', 'hemi'].forEach((category) => {
+    ;(['exome', 'genome'] as SequencingType[]).forEach((exomeOrGenome) => {
+      ;(['het', 'hom', 'hemi'] as TrackCategory[]).forEach((category) => {
         if (this.canLoadMoreTracks(exomeOrGenome, category)) {
           this.loadNextTrack(exomeOrGenome, category)
         }
@@ -319,8 +337,8 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
   loadAllTracks() {
     const { tracksAvailable, tracksLoaded } = this.state
 
-    ;['exome', 'genome'].forEach((exomeOrGenome) => {
-      ;['het', 'hom', 'hemi'].forEach((category) => {
+    ;(['exome', 'genome'] as SequencingType[]).forEach((exomeOrGenome) => {
+      ;(['het', 'hom', 'hemi'] as TrackCategory[]).forEach((category) => {
         const tracksAvailableForCategory = tracksAvailable[exomeOrGenome][category]
         const tracksLoadedForCategory = tracksLoaded[exomeOrGenome][category]
 
