@@ -5,6 +5,7 @@ import { DownloadElementAsPNGButton } from '../DownloadFigure'
 import inferredSexAllV4Data from './InferredSexPerGeneticAncestryData.json'
 
 import {
+  renderNumberOrDash,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -29,13 +30,13 @@ export const InferredSexAllV4Table = () => {
           </StatsTableHeaderRow>
           <StatsTableSubHeaderRow>
             <th>Genetic Ancestry</th>
-            <th>Genetic Ancestry </th>
+            <th className="rb">Genetic Ancestry </th>
             <th>Sample Count</th>
             <th>XX</th>
-            <th>XY</th>
+            <th className="rb">XY</th>
             <th>Sample Count</th>
             <th>XX</th>
-            <th>XY</th>
+            <th className="rb">XY</th>
             <th>Sample Count</th>
             <th>XX</th>
             <th>XY</th>
@@ -50,16 +51,16 @@ export const InferredSexAllV4Table = () => {
               return (
                 <tr>
                   <td>{populationName(tableRowData.geneticAncestryGroup)}</td>
-                  <td>{tableRowData.geneticAncestryGroup}</td>
-                  <td>{exomesCombined.toLocaleString()}</td>
-                  <td>{tableRowData.exomes.XX.toLocaleString()}</td>
-                  <td>{tableRowData.exomes.XY.toLocaleString()}</td>
-                  <td>{genomesCombined.toLocaleString()}</td>
-                  <td>{tableRowData.genomes.XX.toLocaleString()}</td>
-                  <td>{tableRowData.genomes.XY.toLocaleString()}</td>
-                  <td>{(exomesCombined + genomesCombined).toLocaleString()}</td>
-                  <td>{(tableRowData.exomes.XX + tableRowData.genomes.XX).toLocaleString()}</td>
-                  <td>{(tableRowData.exomes.XY + tableRowData.genomes.XY).toLocaleString()}</td>
+                  <td className="rb">{tableRowData.geneticAncestryGroup}</td>
+                  <td>{renderNumberOrDash(exomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XX)}</td>
+                  <td className="rb">{renderNumberOrDash(tableRowData.exomes.XY)}</td>
+                  <td>{renderNumberOrDash(genomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.genomes.XX)}</td>
+                  <td className="rb">{renderNumberOrDash(tableRowData.genomes.XY)}</td>
+                  <td>{renderNumberOrDash(exomesCombined + genomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XX + tableRowData.genomes.XX)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XY + tableRowData.genomes.XY)}</td>
                 </tr>
               )
             })}
@@ -74,15 +75,15 @@ export const InferredSexAllV4Table = () => {
                 <tr>
                   <td>Total</td>
                   <td />
-                  <td>{exomesCombined.toLocaleString()}</td>
-                  <td>{tableRowData.exomes.XX.toLocaleString()}</td>
-                  <td>{tableRowData.exomes.XY.toLocaleString()}</td>
-                  <td>{genomesCombined.toLocaleString()}</td>
-                  <td>{tableRowData.genomes.XX.toLocaleString()}</td>
-                  <td>{tableRowData.genomes.XY.toLocaleString()}</td>
-                  <td>{(exomesCombined + genomesCombined).toLocaleString()}</td>
-                  <td>{(tableRowData.exomes.XX + tableRowData.genomes.XX).toLocaleString()}</td>
-                  <td>{(tableRowData.exomes.XY + tableRowData.genomes.XY).toLocaleString()}</td>
+                  <td>{renderNumberOrDash(exomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XX)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XY)}</td>
+                  <td>{renderNumberOrDash(genomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.genomes.XX)}</td>
+                  <td>{renderNumberOrDash(tableRowData.genomes.XY)}</td>
+                  <td>{renderNumberOrDash(exomesCombined + genomesCombined)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XX + tableRowData.genomes.XX)}</td>
+                  <td>{renderNumberOrDash(tableRowData.exomes.XY + tableRowData.genomes.XY)}</td>
                 </tr>
               )
             })}
@@ -111,7 +112,7 @@ export const InferredSexNonUKBV4Table = () => {
           </StatsTableHeaderRow>
           <StatsTableSubHeaderRow>
             <th>Genetic Ancestry</th>
-            <th>Genetic Ancestry </th>
+            <th className="rb">Genetic Ancestry </th>
             <th>Sample Count</th>
             <th>XX</th>
             <th>XY</th>
@@ -123,7 +124,7 @@ export const InferredSexNonUKBV4Table = () => {
             .map((tableRowData) => (
               <tr>
                 <td>{populationName(tableRowData.geneticAncestryGroup)}</td>
-                <td>{tableRowData.geneticAncestryGroup}</td>
+                <td className="rb">{tableRowData.geneticAncestryGroup}</td>
                 <td>{(tableRowData.exomes.XX + tableRowData.exomes.XY).toLocaleString()}</td>
                 <td>{tableRowData.exomes.XX.toLocaleString()}</td>
                 <td>{tableRowData.exomes.XY.toLocaleString()}</td>

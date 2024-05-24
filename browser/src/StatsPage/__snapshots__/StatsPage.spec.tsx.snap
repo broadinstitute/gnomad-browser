@@ -7700,7 +7700,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th>
                   Genetic Ancestry
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   Genetic Ancestry 
                 </th>
                 <th>
@@ -7709,7 +7711,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th>
                   XX
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   XY
                 </th>
                 <th>
@@ -7718,7 +7722,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th>
                   XX
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   XY
                 </th>
                 <th>
@@ -7739,7 +7745,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Admixed American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   amr
                 </td>
                 <td>
@@ -7748,7 +7756,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   12,845
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   9,517
                 </td>
                 <td>
@@ -7757,7 +7767,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   3,399
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   4,258
                 </td>
                 <td>
@@ -7774,7 +7786,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   African/African American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   afr
                 </td>
                 <td>
@@ -7783,7 +7797,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   9,663
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   7,077
                 </td>
                 <td>
@@ -7792,7 +7808,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   11,094
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   9,711
                 </td>
                 <td>
@@ -7809,7 +7827,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Ashkenazi Jewish
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   asj
                 </td>
                 <td>
@@ -7818,7 +7838,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   6,318
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   6,750
                 </td>
                 <td>
@@ -7827,7 +7849,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   934
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   802
                 </td>
                 <td>
@@ -7844,17 +7868,21 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Amish
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   ami
                 </td>
                 <td>
-                  0
+                  -
                 </td>
                 <td>
-                  0
+                  -
                 </td>
-                <td>
-                  0
+                <td
+                  className="rb"
+                >
+                  -
                 </td>
                 <td>
                   456
@@ -7862,7 +7890,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   235
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   221
                 </td>
                 <td>
@@ -7879,7 +7909,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   East Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   eas
                 </td>
                 <td>
@@ -7888,7 +7920,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   10,356
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   9,494
                 </td>
                 <td>
@@ -7897,7 +7931,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   1,136
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,462
                 </td>
                 <td>
@@ -7914,7 +7950,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   European (Finnish)
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   fin
                 </td>
                 <td>
@@ -7923,7 +7961,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   13,824
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   12,886
                 </td>
                 <td>
@@ -7932,7 +7972,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   1,287
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   4,029
                 </td>
                 <td>
@@ -7949,7 +7991,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   European (non-Finnish)
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   nfe
                 </td>
                 <td>
@@ -7958,7 +8002,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   286,144
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   269,862
                 </td>
                 <td>
@@ -7967,7 +8013,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   19,683
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   14,342
                 </td>
                 <td>
@@ -7984,7 +8032,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Middle Eastern
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   mid
                 </td>
                 <td>
@@ -7993,7 +8043,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   1,253
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,631
                 </td>
                 <td>
@@ -8002,7 +8054,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   72
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   75
                 </td>
                 <td>
@@ -8019,7 +8073,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Remaining
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   remaining
                 </td>
                 <td>
@@ -8028,7 +8084,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   15,900
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   14,298
                 </td>
                 <td>
@@ -8037,7 +8095,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   525
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   533
                 </td>
                 <td>
@@ -8054,7 +8114,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   South Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   sas
                 </td>
                 <td>
@@ -8063,7 +8125,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   11,020
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   32,109
                 </td>
                 <td>
@@ -8072,7 +8136,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   577
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,840
                 </td>
                 <td>
@@ -8183,7 +8249,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th>
                   Genetic Ancestry
                 </th>
-                <th>
+                <th
+                  className="rb"
+                >
                   Genetic Ancestry 
                 </th>
                 <th>
@@ -8204,7 +8272,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Admixed American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   amr
                 </td>
                 <td>
@@ -8221,7 +8291,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   African/African American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   afr
                 </td>
                 <td>
@@ -8238,7 +8310,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Ashkenazi Jewish
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   asj
                 </td>
                 <td>
@@ -8255,7 +8329,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   East Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   eas
                 </td>
                 <td>
@@ -8272,7 +8348,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   European (Finnish)
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   fin
                 </td>
                 <td>
@@ -8289,7 +8367,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   European (non-Finnish)
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   nfe
                 </td>
                 <td>
@@ -8306,7 +8386,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Middle Eastern
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   mid
                 </td>
                 <td>
@@ -8323,7 +8405,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   Remaining
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   remaining
                 </td>
                 <td>
@@ -8340,7 +8424,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <td>
                   South Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   sas
                 </td>
                 <td>

@@ -5,6 +5,7 @@ import { DownloadElementAsPNGButton } from '../DownloadFigure'
 import versionData from './GeneticAncestryGroupsByVersionData.json'
 
 import {
+  renderNumberOrDash,
   StatsTable,
   StatsTableHeaderRow,
   StatsTableSubHeaderRow,
@@ -16,10 +17,6 @@ import { populationName } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 const GeneticAncestryGroupsByVersionTable = () => {
   const elementId = 'genetic-ancestry-group-size-by-version-table'
-
-  const renderNumberOrDash = (number: number): string => {
-    return number ? number.toLocaleString() : '-'
-  }
 
   return (
     <div>

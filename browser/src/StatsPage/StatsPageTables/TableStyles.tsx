@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+export const renderNumberOrDash = (number: number): string => {
+  return number ? number.toLocaleString() : '-'
+}
+
 export const StatsTable = styled.table`
   border-collapse: collapse;
   min-width: 400px;
