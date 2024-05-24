@@ -36,6 +36,7 @@ export const StatsTableSubHeaderRow = styled.tr`
   th {
     font-weight: normal;
   }
+
   th.rb {
     border-right: 1px solid #0e6fbf;
   }
