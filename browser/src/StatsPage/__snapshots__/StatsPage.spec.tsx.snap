@@ -4484,26 +4484,26 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 <th
                   className="rb"
                 >
-                  #
+                  Sample count
                 </th>
                 <th
                   className="rb"
                 >
-                  #
+                  Sample count
                 </th>
                 <th
                   className="rb"
                 >
-                  #
+                  Sample count
                 </th>
                 <th>
-                  #
+                  Sample count
                 </th>
                 <th>
-                  # XX
+                  XX
                 </th>
                 <th>
-                  # XY
+                  XY
                 </th>
                 <th>
                   %

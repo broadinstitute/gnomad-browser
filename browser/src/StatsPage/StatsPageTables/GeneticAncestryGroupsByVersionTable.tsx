@@ -31,12 +31,12 @@ const GeneticAncestryGroupsByVersionTable = () => {
           </StatsTableHeaderRow>
           <StatsTableSubHeaderRow>
             <th className="rb">&nbsp;</th>
-            <th className="rb">#</th>
-            <th className="rb">#</th>
-            <th className="rb">#</th>
-            <th>#</th>
-            <th># XX</th>
-            <th># XY</th>
+            <th className="rb">Sample count</th>
+            <th className="rb">Sample count</th>
+            <th className="rb">Sample count</th>
+            <th>Sample count</th>
+            <th>XX</th>
+            <th>XY</th>
             <th>%</th>
             <th>Increase from v2</th>
           </StatsTableSubHeaderRow>
