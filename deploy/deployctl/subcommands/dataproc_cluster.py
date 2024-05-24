@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import typing
+import importlib.metadata
 
 from deployctl.config import config
 
@@ -24,6 +25,22 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
         raise RuntimeError("project configuration is required")
 
     with open(os.path.join(DATA_PIPELINE_DIRECTORY, "requirements.txt")) as requirements_file:
+        requirements_hail_version = next(
+            (line.strip().split("==")[1] for line in requirements_file if line.strip().startswith("hail==")), None
+        )
+        try:
+            local_hail_version = importlib.metadata.version("hail")
+        except importlib.metadata.PackageNotFoundError as package_not_found:
+            raise RuntimeError("Hail must be installed locally") from package_not_found
+
+        if not requirements_hail_version:
+            raise RuntimeError("Hail must be pinned in data-pipeline/requirements.txt")
+        if requirements_hail_version != local_hail_version:
+            raise RuntimeError(
+                f"Local hail version differs from version pinned in data-pipeline/requirements.txt\nRequired version {requirements_hail_version}\nLocal version {local_hail_version}"
+            )
+
+        requirements_file.seek(0)
         requirements = [line.strip() for line in requirements_file.readlines()]
 
     subprocess.check_output(
