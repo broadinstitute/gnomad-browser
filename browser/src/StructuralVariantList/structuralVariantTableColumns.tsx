@@ -137,7 +137,7 @@ const structuralVariantTableColumns = [
         position = `${variant.pos}`
       } else if (variant.type === 'BND' || variant.type === 'CTX') {
         // Only show pos because end == pos + 1 for BNDs and CTXs
-        position = `${variant.chrom}:${variant.pos}} | ${variant.chrom2}:${variant.pos2}`
+        position = `${variant.chrom}:${variant.pos} | ${variant.chrom2}:${variant.pos2}`
       } else {
         position = `${variant.pos} - ${variant.end}`
       }
