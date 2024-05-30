@@ -13,22 +13,29 @@ export default () => (
     <p>
       Tell us how you use gnomAD and your wish list by filling out{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="http://broad.io/gnomad_user_survey">our user survey</ExternalLink>.
+      <ExternalLink href="http://broad.io/2024_survey">our user survey</ExternalLink>.
     </p>
 
     <p>
-      Report data problems or feature suggestions by{' '}
+      Use the gnomAD{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="mailto:gnomad@broadinstitute.org">email</ExternalLink>.
+      <ExternalLink href="https://discuss.gnomad.broadinstitute.org/new-topic?category=General">
+        Forum
+      </ExternalLink>{' '}
+      to request help, discuss the data, and ask questions.*
     </p>
 
     <p>
       Report errors in the website on{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues">
+      <ExternalLink href="https://github.com/broadinstitute/gnomad-browser/issues/new?labels=Type%3A%20Bug">
         GitHub
+      </ExternalLink>{' '}
+      or the{' '}
+      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+      <ExternalLink href="https://discuss.gnomad.broadinstitute.org/new-topic?category=Browser&tags=bug">
+        Forum
       </ExternalLink>
-      .
     </p>
 
     <p>
@@ -48,6 +55,15 @@ export default () => (
       Follow us on Twitter{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://twitter.com/gnomad_project">@gnomad_project</ExternalLink>.
+    </p>
+
+    <br />
+    <p>
+      *Alternately, you can{' '}
+      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+      <ExternalLink href="mailto:gnomad@broadinstitute.org">email us</ExternalLink>. Please note
+      that we prioritize answering issues on Github and topics on the Forum, so if you choose to
+      email it may take us longer to respond.
     </p>
   </InfoPage>
 )
