@@ -104,7 +104,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
      
     <a
       className="c3"
-      href="http://broad.io/gnomad_user_survey"
+      href="http://broad.io/2024_survey"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -113,30 +113,41 @@ exports[`Contact Page has no unexpected changes 1`] = `
     .
   </p>
   <p>
-    Report data problems or feature suggestions by
+    Use the gnomAD
      
     <a
       className="c3"
-      href="mailto:gnomad@broadinstitute.org"
+      href="https://discuss.gnomad.broadinstitute.org/new-topic?category=General"
       rel="noopener noreferrer"
       target="_blank"
     >
-      email
+      Forum
     </a>
-    .
+     
+    to request help, discuss the data, and ask questions.*
   </p>
   <p>
     Report errors in the website on
      
     <a
       className="c3"
-      href="https://github.com/broadinstitute/gnomad-browser/issues"
+      href="https://github.com/broadinstitute/gnomad-browser/issues/new?labels=Type%3A%20Bug"
       rel="noopener noreferrer"
       target="_blank"
     >
       GitHub
     </a>
-    .
+     
+    or the
+     
+    <a
+      className="c3"
+      href="https://discuss.gnomad.broadinstitute.org/new-topic?category=Browser&tags=bug"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Forum
+    </a>
   </p>
   <p>
     For questions about gnomAD, check out the
@@ -166,6 +177,20 @@ exports[`Contact Page has no unexpected changes 1`] = `
       @gnomad_project
     </a>
     .
+  </p>
+  <br />
+  <p>
+    *Alternately, you can
+     
+    <a
+      className="c3"
+      href="mailto:gnomad@broadinstitute.org"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      email us
+    </a>
+    . Please note that we prioritize answering issues on Github and topics on the Forum, so if you choose to email it may take us longer to respond.
   </p>
 </div>
 `;
