@@ -12,28 +12,11 @@ updates:
     reviewers:
       - 'broadinstitute/gnomad-browser'
   - package-ecosystem: 'pip'
-    directory: '/deploy/dockerfiles/blog'
-    schedule:
-      interval: 'weekly'
-    open-pull-requests-limit: 0
-    reviewers:
-      - 'broadinstitute/gnomad-browser'
-  - package-ecosystem: 'pip'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-    open-pull-requests-limit: 0
-    reviewers:
-      - 'broadinstitute/gnomad-browser'
-  - package-ecosystem: 'pip'
-    directory: '/deploy/deployctl'
-    schedule:
-      interval: 'weekly'
-    open-pull-requests-limit: 0
-    reviewers:
-      - 'broadinstitute/gnomad-browser'
-  - package-ecosystem: 'pip'
-    directory: '/data-pipeline'
+    directories:
+      - '/'
+      - '/deploy/dockerfiles/blog'
+      - '/deploy/deployctl'
+      - '/data-pipeline'
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 0
