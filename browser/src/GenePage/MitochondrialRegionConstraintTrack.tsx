@@ -16,7 +16,7 @@ type Props = {
   exons: Exon[]
 }
 
-const constraintColor = '#fd8d3c'
+const constraintColor = '#9b001f'
 
 const Legend = () => (
   <>

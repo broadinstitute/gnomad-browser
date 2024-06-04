@@ -76,7 +76,7 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
               width={50}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={10}
                 stroke="#000"
                 width={30}
@@ -104,7 +104,7 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
               onMouseLeave={[Function]}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={15}
                 stroke="black"
                 width={111}
@@ -117,7 +117,7 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
               onMouseLeave={[Function]}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={15}
                 stroke="black"
                 width={111}
@@ -211,7 +211,7 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
               width={50}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={10}
                 stroke="#000"
                 width={30}
@@ -239,7 +239,7 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
               onMouseLeave={[Function]}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={15}
                 stroke="black"
                 width={111}
@@ -252,7 +252,7 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
               onMouseLeave={[Function]}
             >
               <rect
-                fill="#fd8d3c"
+                fill="#9b001f"
                 height={15}
                 stroke="black"
                 width={111}
