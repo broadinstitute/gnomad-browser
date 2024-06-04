@@ -63,10 +63,7 @@ const MitochondrialConstraintRegionTrack = ({ constraintRegions, exons }: Props)
       colorFn={() => constraintColor}
       tooltipComponent={Tooltip}
       allRegions={null}
-      constrainedRegions={regionsInExons(
-        constraintRegions,
-        exons.filter((exon) => exon.feature_type === 'CDS')
-      )}
+      constrainedRegions={regionsInExons(constraintRegions, exons)}
     />
   )
 }
