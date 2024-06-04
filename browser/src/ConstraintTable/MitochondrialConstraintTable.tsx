@@ -31,7 +31,7 @@ const ConstraintRow = ({
     <td>{expected < 10 ? expected.toFixed(2) : expected.toFixed(1)}</td>
     <td>{observed < 10 ? observed.toFixed(2) : observed.toFixed(1)}</td>
     <td>
-      {oe.toFixed(2)} ({oeLower.toFixed(2)}-{oeUpper.toFixed(2)})
+      o/e = {oe.toFixed(2)} ({oeLower.toFixed(2)} - {oeUpper.toFixed(2)})
     </td>
   </tr>
 )
@@ -121,7 +121,7 @@ const MitochondrialConstraintTable = ({
           <th scope="col">Category</th>
           <th scope="col">Expected SNVs</th>
           <th scope="col">Observed SNVs</th>
-          <th scope="col">Observed/Expected</th>
+          <th scope="col">Constraint metrics</th>
         </tr>
       </thead>
       {isProteinMitochondrialGeneConstraint(constraint) ? (
