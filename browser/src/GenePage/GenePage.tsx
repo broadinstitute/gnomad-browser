@@ -571,6 +571,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <MitochondrialRegionConstraintTrack
             constraintRegions={gene.mitochondrial_missense_constraint_regions}
             exons={gene.exons}
+            geneSymbol={gene.symbol}
           />
         )}
 

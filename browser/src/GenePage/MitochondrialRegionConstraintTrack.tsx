@@ -11,6 +11,7 @@ export type MitochondrialConstraintRegion = {
 }
 
 type Props = {
+  geneSymbol: string
   constraintRegions: MitochondrialConstraintRegion[] | null
   exons: Exon[]
 }
@@ -49,14 +50,17 @@ const Tooltip = ({ region }: TooltipProps) => {
 
 const formattedOE = (region: MitochondrialConstraintRegion) => region.oe.toFixed(3)
 
-const MitochondrialConstraintRegionTrack = ({ constraintRegions, exons }: Props) => {
+const MitochondrialConstraintRegionTrack = ({ geneSymbol, constraintRegions, exons }: Props) => {
   if (constraintRegions === null) {
     return null
   }
 
+  const isRNAGene = geneSymbol.startsWith('MT-R')
+  const trackTitle = isRNAGene ? 'Regional constraint' : 'Regional missense constraint'
+
   return (
     <ConstraintTrack
-      trackTitle="Regional constraint"
+      trackTitle={trackTitle}
       infobuttonTopic="TK-mitochondrial-gene-constraint"
       legend={<Legend />}
       valueFn={formattedOE}
