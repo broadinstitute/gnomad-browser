@@ -164,7 +164,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -182,10 +182,11 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -218,7 +219,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -236,10 +237,11 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -257,10 +259,11 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -278,10 +281,11 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -1081,7 +1085,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -1099,10 +1103,11 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -1135,7 +1140,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -1153,10 +1158,11 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -1174,10 +1180,11 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -1195,10 +1202,11 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -1998,7 +2006,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -2016,10 +2024,11 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -2052,7 +2061,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -2070,10 +2079,11 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -2091,10 +2101,11 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -2112,10 +2123,11 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -2923,7 +2935,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -2941,10 +2953,11 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -2977,7 +2990,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -2995,10 +3008,11 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -3016,10 +3030,11 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -3037,10 +3052,11 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -3848,7 +3864,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -3866,10 +3882,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -3902,7 +3919,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -3920,10 +3937,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -3941,10 +3959,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -3962,10 +3981,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -4773,7 +4793,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -4791,10 +4811,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -4827,7 +4848,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -4845,10 +4866,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -4866,10 +4888,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -4887,10 +4910,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -5698,7 +5722,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -5716,10 +5740,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -5752,7 +5777,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -5770,10 +5795,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -5791,10 +5817,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -5812,10 +5839,11 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -6951,7 +6979,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -6969,10 +6997,11 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -7005,7 +7034,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -7023,10 +7052,11 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -7044,10 +7074,11 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -7065,10 +7096,11 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -7868,7 +7900,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -7886,10 +7918,11 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -7922,7 +7955,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -7940,10 +7973,11 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -7961,10 +7995,11 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -7982,10 +8017,11 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -8785,7 +8821,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -8803,10 +8839,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -8839,7 +8876,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -8857,10 +8894,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -8878,10 +8916,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -8899,10 +8938,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -9710,7 +9750,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -9728,10 +9768,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -9764,7 +9805,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -9782,10 +9823,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -9803,10 +9845,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -9824,10 +9867,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -10635,7 +10679,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -10653,10 +10697,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -10689,7 +10734,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -10707,10 +10752,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -10728,10 +10774,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -10749,10 +10796,11 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
@@ -11552,7 +11600,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -11570,10 +11618,11 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         1.10
       </td>
       <td>
+        o/e = 
         0.33
          (
         0.31
-        -
+         - 
         0.35
         )
       </td>
@@ -11606,7 +11655,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
       <th
         scope="col"
       >
-        Observed/Expected
+        Constraint metrics
       </th>
     </tr>
   </thead>
@@ -11624,10 +11673,11 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         0.22
       </td>
       <td>
+        o/e = 
         0.91
          (
         0.80
-        -
+         - 
         0.95
         )
       </td>
@@ -11645,10 +11695,11 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         0.33
       </td>
       <td>
+        o/e = 
         0.89
          (
         0.80
-        -
+         - 
         0.99
         )
       </td>
@@ -11666,10 +11717,11 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         0.11
       </td>
       <td>
+        o/e = 
         0.79
          (
         0.60
-        -
+         - 
         0.90
         )
       </td>
