@@ -69,7 +69,7 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
             className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
           >
             <span>
-              Constrained region
+              Regionally constrained interval
             </span>
             <svg
               height={25}
@@ -204,7 +204,7 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
             className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
           >
             <span>
-              Constrained region
+              Regionally constrained interval
             </span>
             <svg
               height={25}

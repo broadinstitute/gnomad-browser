@@ -20,7 +20,7 @@ const constraintColor = '#fd8d3c'
 
 const Legend = () => (
   <>
-    <span>Constrained region</span>
+    <span>Regionally constrained interval</span>
     <svg width={50} height={25}>
       <rect x={10} y={3} width={30} height={10} stroke="#000" fill={constraintColor} />
     </svg>
