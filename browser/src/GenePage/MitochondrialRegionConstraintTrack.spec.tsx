@@ -17,11 +17,7 @@ const childProps = {
   scalePosition: (i: number) => i,
 }
 
-const exons: Exon[] = [
-  { feature_type: 'CDS', start: 123, stop: 234 },
-  { feature_type: 'UTR', start: 235, stop: 999 },
-  { feature_type: 'CDS', start: 1000, stop: 1999 },
-]
+const exons: Exon[] = [{ feature_type: 'CDS', start: 123, stop: 1999 }]
 
 test('track has no unexpected changes when gene has constraint', () => {
   const constraintRegions: MitochondrialConstraintRegion[] = [
