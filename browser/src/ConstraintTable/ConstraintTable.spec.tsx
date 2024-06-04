@@ -67,8 +67,8 @@ const proteinMitochondrialConstraintFactory = Factory.define<ProteinMitochondria
 )
 
 const rnaMitochondrialConstraintFactory = Factory.define<RNAMitochondrialGeneConstraint>(() => ({
-  observed: 0.11,
-  expected: 0.22,
+  observed: 1.1,
+  expected: 22.2,
   oe: 0.33,
   oe_lower: 0.31,
   oe_upper: 0.35,
