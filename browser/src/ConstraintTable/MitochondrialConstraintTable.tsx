@@ -28,8 +28,8 @@ const ConstraintRow = ({
 }) => (
   <tr>
     <th scope="row">{category}</th>
-    <td>{expected.toFixed(1)}</td>
-    <td>{observed.toFixed(1)}</td>
+    <td>{expected < 10 ? expected.toFixed(2) : expected.toFixed(1)}</td>
+    <td>{observed < 10 ? observed.toFixed(2) : observed.toFixed(1)}</td>
     <td>
       {oe.toFixed(2)} ({oeLower.toFixed(2)}-{oeUpper.toFixed(2)})
     </td>

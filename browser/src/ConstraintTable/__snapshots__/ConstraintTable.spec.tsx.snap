@@ -176,10 +176,10 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -230,10 +230,10 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -251,10 +251,10 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -272,10 +272,10 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -1093,10 +1093,10 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -1147,10 +1147,10 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -1168,10 +1168,10 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -1189,10 +1189,10 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -2010,10 +2010,10 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -2064,10 +2064,10 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -2085,10 +2085,10 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -2106,10 +2106,10 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -2935,10 +2935,10 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -2989,10 +2989,10 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -3010,10 +3010,10 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -3031,10 +3031,10 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -3860,10 +3860,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -3914,10 +3914,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -3935,10 +3935,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -3956,10 +3956,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -4785,10 +4785,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -4839,10 +4839,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -4860,10 +4860,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -4881,10 +4881,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -5710,10 +5710,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -5764,10 +5764,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -5785,10 +5785,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -5806,10 +5806,10 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -6963,10 +6963,10 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -7017,10 +7017,10 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -7038,10 +7038,10 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -7059,10 +7059,10 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -7880,10 +7880,10 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -7934,10 +7934,10 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -7955,10 +7955,10 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -7976,10 +7976,10 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -8797,10 +8797,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -8851,10 +8851,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -8872,10 +8872,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -8893,10 +8893,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -9722,10 +9722,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -9776,10 +9776,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -9797,10 +9797,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -9818,10 +9818,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -10647,10 +10647,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -10701,10 +10701,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -10722,10 +10722,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -10743,10 +10743,10 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
@@ -11564,10 +11564,10 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         RNA variant
       </th>
       <td>
-        0.2
+        22.2
       </td>
       <td>
-        0.1
+        1.10
       </td>
       <td>
         0.33
@@ -11618,10 +11618,10 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         Synonymous
       </th>
       <td>
-        0.2
+        0.23
       </td>
       <td>
-        0.2
+        0.22
       </td>
       <td>
         0.91
@@ -11639,10 +11639,10 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         Missense
       </th>
       <td>
-        0.3
+        0.34
       </td>
       <td>
-        0.3
+        0.33
       </td>
       <td>
         0.89
@@ -11660,10 +11660,10 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         pLoF
       </th>
       <td>
-        0.1
+        0.12
       </td>
       <td>
-        0.1
+        0.11
       </td>
       <td>
         0.79
