@@ -14,13 +14,13 @@ click==8.1.7
     # via flask
 flask==3.0.0
     # via -r auth-requirements.in
-gunicorn==21.2.0
+gunicorn==22.0.0
     # via -r auth-requirements.in
-idna==3.6
+idna==3.7
     # via requests
 itsdangerous==2.1.2
     # via flask
-jinja2==3.1.2
+jinja2==3.1.4
     # via flask
 markupsafe==2.1.3
     # via
@@ -34,7 +34,7 @@ requests==2.32.3
     # via requests-oauthlib
 requests-oauthlib==1.3.1
     # via -r auth-requirements.in
-urllib3==2.1.0
+urllib3==2.2.1
     # via requests
 werkzeug==3.0.1
     # via flask
