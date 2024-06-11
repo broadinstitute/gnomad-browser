@@ -56,6 +56,7 @@ const DEFAULT_COLUMNS = [
   'an',
   'af',
   'homozygote_count',
+  'hemizygote_count',
 ]
 
 const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
