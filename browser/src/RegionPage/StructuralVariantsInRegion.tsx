@@ -30,6 +30,7 @@ const StructuralVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: 
       region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
         structural_variants(dataset: $datasetId) {
           ac
+          ac_hemi
           ac_hom
           an
           af
