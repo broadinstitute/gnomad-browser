@@ -103,6 +103,16 @@ const structuralVariantTableColumns = [
   },
 
   {
+    key: 'hemizygote_count',
+    heading: 'Number of Hemizygotes',
+    contextNotes: 'Only shown when viewing X or Y chromosomes',
+    minWidth: 100,
+    compareFunction: makeNumericCompareFunction('ac_hemi'),
+    render: (variant: any) => renderAlleleCountCell(variant, 'ac_hemi'),
+    shouldShowInContext: (context: any) => context.chrom === 'X' || context.chrom === 'Y',
+  },
+
+  {
     key: 'length',
     heading: 'Size',
     minWidth: 100,

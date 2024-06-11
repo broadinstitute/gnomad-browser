@@ -29,6 +29,7 @@ const StructuralVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Prop
       gene(gene_id: $geneId, reference_genome: $referenceGenome) {
         structural_variants(dataset: $datasetId) {
           ac
+          ac_hemi
           ac_hom
           an
           af
