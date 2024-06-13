@@ -1,24 +1,41 @@
-type Query{
-    gene(gene_id: String, gene_symbol: String, reference_genome: ReferenceGenomeId!): Gene @cost(value: 1)
-    region(chrom: String!, start: Int!, stop: Int!, reference_genome: ReferenceGenomeId!): Region! @cost(value: 1)
-    transcript(transcript_id: String!, reference_genome: ReferenceGenomeId!): Transcript @cost(value: 1)
+type Query {
+  gene(gene_id: String, gene_symbol: String, reference_genome: ReferenceGenomeId!): Gene
+    @cost(value: 1)
+  region(chrom: String!, start: Int!, stop: Int!, reference_genome: ReferenceGenomeId!): Region!
+    @cost(value: 1)
+  transcript(transcript_id: String!, reference_genome: ReferenceGenomeId!): Transcript
+    @cost(value: 1)
 
-    clinvar_variant(variant_id: String!, reference_genome: ReferenceGenomeId!): ClinVarVariantDetails @cost(value: 1)
-    mitochondrial_variant(variant_id: String, dataset: DatasetId!): MitochondrialVariantDetails @cost(value: 1)
-    multiNucleotideVariant(variant_id: String!, dataset: DatasetId!): MultiNucleotideVariantDetails @cost(value: 1)
-    structural_variant(variantId: String!, dataset: StructuralVariantDatasetId!): StructuralVariantDetails @cost(value: 1)
-    variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
-    copy_number_variant(variantId: String!, dataset: CopyNumberVariantDatasetId!): CopyNumberVariantDetails @cost(value: 1)  
-    gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
-    variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
+  clinvar_variant(variant_id: String!, reference_genome: ReferenceGenomeId!): ClinVarVariantDetails
+    @cost(value: 1)
+  mitochondrial_variant(variant_id: String, dataset: DatasetId!): MitochondrialVariantDetails
+    @cost(value: 1)
+  multiNucleotideVariant(variant_id: String!, dataset: DatasetId!): MultiNucleotideVariantDetails
+    @cost(value: 1)
+  structural_variant(
+    variantId: String!
+    dataset: StructuralVariantDatasetId!
+  ): StructuralVariantDetails @cost(value: 1)
+  variant(variantId: String, rsid: String, dataset: DatasetId!): VariantDetails @cost(value: 1)
+  copy_number_variant(
+    variantId: String!
+    dataset: CopyNumberVariantDatasetId!
+  ): CopyNumberVariantDetails @cost(value: 1)
+  gene_search(query: String!, reference_genome: ReferenceGenomeId!): [GeneSearchResult!]!
+  variant_search(query: String!, dataset: DatasetId!): [VariantSearchResult!]!
 
-    liftover(source_variant_id: String, liftover_variant_id: String, reference_genome: ReferenceGenomeId!): [LiftoverResult!]!
+  liftover(
+    source_variant_id: String
+    liftover_variant_id: String
+    reference_genome: ReferenceGenomeId!
+  ): [LiftoverResult!]!
 
-    variant_cooccurrence(variants: [String!]!, dataset: DatasetId!): VariantCooccurrence @cost(value: 5)
+  variant_cooccurrence(variants: [String!]!, dataset: DatasetId!): VariantCooccurrence
+    @cost(value: 5)
 
-    short_tandem_repeat(id: String!, dataset: DatasetId!): ShortTandemRepeatDetails @cost(value: 1)
+  short_tandem_repeat(id: String!, dataset: DatasetId!): ShortTandemRepeatDetails @cost(value: 1)
 
-    short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
+  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
 
-    meta: BrowserMetadata!
+  meta: BrowserMetadata!
 }
