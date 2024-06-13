@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unexpected changes when gene has constraint 1`] = `
+<div
+  className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
+>
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
+        >
+          <span>
+            Regional missense constraint
+          </span>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <div
+          className="ConstraintTrack__TopPanel-sc-113yvfg-3 imJcbb"
+        >
+          <div
+            className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
+          >
+            <span>
+              Regionally constrained interval
+            </span>
+            <svg
+              height={25}
+              width={50}
+            >
+              <rect
+                fill="#9b001f"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={10}
+                y={3}
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
+        >
+          <svg
+            height={55}
+            width={3}
+          >
+            <rect
+              height={1}
+              width={3}
+              x={0}
+              y={7.5}
+            />
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#9b001f"
+                height={15}
+                stroke="black"
+                width={111}
+                x={555}
+                y={1}
+              />
+            </g>
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#9b001f"
+                height={15}
+                stroke="black"
+                width={111}
+                x={777}
+                y={1}
+              />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unexpected changes when no constraint for gene 1`] = `null`;
+
+exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpected changes when gene has constraint 1`] = `
+<div
+  className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
+>
+  <div
+    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+  >
+    <div
+      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+    >
+      <div
+        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        style={
+          {
+            "width": 4,
+          }
+        }
+      >
+        <div
+          className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
+        >
+          <span>
+            Regional constraint
+          </span>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        style={
+          {
+            "width": 3,
+          }
+        }
+      >
+        <div
+          className="ConstraintTrack__TopPanel-sc-113yvfg-3 imJcbb"
+        >
+          <div
+            className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
+          >
+            <span>
+              Regionally constrained interval
+            </span>
+            <svg
+              height={25}
+              width={50}
+            >
+              <rect
+                fill="#9b001f"
+                height={10}
+                stroke="#000"
+                width={30}
+                x={10}
+                y={3}
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
+        >
+          <svg
+            height={55}
+            width={3}
+          >
+            <rect
+              height={1}
+              width={3}
+              x={0}
+              y={7.5}
+            />
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#9b001f"
+                height={15}
+                stroke="black"
+                width={111}
+                x={555}
+                y={1}
+              />
+            </g>
+            <g
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <rect
+                fill="#9b001f"
+                height={15}
+                stroke="black"
+                width={111}
+                x={777}
+                y={1}
+              />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpected changes when no constraint for gene 1`] = `null`;

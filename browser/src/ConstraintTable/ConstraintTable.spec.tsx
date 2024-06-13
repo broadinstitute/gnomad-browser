@@ -11,6 +11,10 @@ import { BrowserRouter } from 'react-router-dom'
 import ConstraintTable from './ConstraintTable'
 import { ExacConstraint } from './ExacConstraintTable'
 import { GnomadConstraint } from './GnomadConstraintTable'
+import {
+  ProteinMitochondrialGeneConstraint,
+  RNAMitochondrialGeneConstraint,
+} from '../GenePage/GenePage'
 
 const exacConstraintFactory = Factory.define<ExacConstraint>(() => ({
   exp_lof: 0.123,
@@ -42,6 +46,34 @@ const gnomadConstraintFactory = Factory.define<GnomadConstraint>(() => ({
   oe_syn_upper: 0.95,
 }))
 
+const proteinMitochondrialConstraintFactory = Factory.define<ProteinMitochondrialGeneConstraint>(
+  () => ({
+    exp_lof: 0.123,
+    exp_syn: 0.234,
+    exp_mis: 0.345,
+    oe_lof: 0.789,
+    oe_lof_lower: 0.6,
+    oe_lof_upper: 0.9,
+    oe_mis: 0.891,
+    oe_mis_lower: 0.8,
+    oe_mis_upper: 0.99,
+    oe_syn: 0.912,
+    oe_syn_lower: 0.8,
+    oe_syn_upper: 0.95,
+    obs_lof: 0.111,
+    obs_syn: 0.222,
+    obs_mis: 0.333,
+  })
+)
+
+const rnaMitochondrialConstraintFactory = Factory.define<RNAMitochondrialGeneConstraint>(() => ({
+  observed: 1.1,
+  expected: 22.2,
+  oe: 0.33,
+  oe_lower: 0.31,
+  oe_upper: 0.35,
+}))
+
 forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
   describe('with a minimal gene', () => {
     test('has no unexpected changes', () => {
@@ -65,18 +97,54 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
     })
   })
 
-  describe('with a mitochondrial gene', () => {
+  describe('with a mitochondrial protein gene', () => {
     test('has no unexpected changes', () => {
+      const constraint = proteinMitochondrialConstraintFactory.build()
       const tree = renderer.create(
         <BrowserRouter>
           <ConstraintTable
             datasetId={datasetId}
-            geneOrTranscript={geneFactory.build({ chrom: 'M' })}
+            geneOrTranscript={geneFactory.build({
+              chrom: 'M',
+              mitochondrial_constraint: constraint,
+            })}
           />
         </BrowserRouter>
       )
       expect(tree).toMatchSnapshot()
     })
+  })
+
+  describe('with a mitochondrial RNA gene', () => {
+    test('has no unexpected changes', () => {
+      const constraint = rnaMitochondrialConstraintFactory.build()
+      const tree = renderer.create(
+        <BrowserRouter>
+          <ConstraintTable
+            datasetId={datasetId}
+            geneOrTranscript={geneFactory.build({
+              chrom: 'M',
+              mitochondrial_constraint: constraint,
+            })}
+          />
+        </BrowserRouter>
+      )
+      expect(tree).toMatchSnapshot()
+    })
+  })
+
+  describe('with a mitochondrial gene missing constraint data', () => {
+    const tree = renderer.create(
+      <BrowserRouter>
+        <ConstraintTable
+          datasetId={datasetId}
+          geneOrTranscript={geneFactory.build({
+            chrom: 'M',
+          })}
+        />
+      </BrowserRouter>
+    )
+    expect(tree).toMatchSnapshot()
   })
 
   describe('with a mitochondrial transcript', () => {

@@ -12128,7 +12128,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -12172,7 +12172,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -13764,7 +13764,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -13808,7 +13808,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -15400,7 +15400,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -15444,7 +15444,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -17036,7 +17036,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -17080,7 +17080,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -18672,7 +18672,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -18716,7 +18716,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
