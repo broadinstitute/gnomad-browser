@@ -37,5 +37,5 @@ type Query {
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
 
-  meta: BrowserMetadata!
+  meta(reference_genome: ReferenceGenomeId): BrowserMetadata!
 }
