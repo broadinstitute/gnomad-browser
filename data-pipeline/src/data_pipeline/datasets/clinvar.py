@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 from xml.etree import ElementTree
+import xml.sax.saxutils as saxutils
 
 import hail as hl
 from tqdm import tqdm
@@ -17,23 +18,35 @@ from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
-CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/weekly_release/ClinVarVariationRelease_00-latest_weekly.xml.gz"
+# CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/weekly_release/ClinVarVariationRelease_00-latest_weekly.xml.gz"
+CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/VCV_xml_old_format/weekly_release/ClinVarVariationRelease_00-latest_weekly.xml.gz"
 
 
 CLINVAR_GOLD_STARS = {
-    "criteria provided, conflicting interpretations": 1,
-    "criteria provided, multiple submitters, no conflicts": 2,
-    "criteria provided, single submitter": 1,
-    "no assertion criteria provided": 0,
-    "no assertion provided": 0,
+    None: 0,
     "no interpretation for the single variant": 0,
-    "practice guideline": 4,
+    "no assertion provided": 0,
+    "no classification provided": 0,
+    "no classifications from unflagged records": 0,
+    "no classification for the single variant": 0,
+    "no assertion criteria provided": 0,
+    "criteria provided, single submitter": 1,
+    "criteria provided, conflicting interpretations": 1,
+    "criteria provided, conflicting classifications": 1,
+    "criteria provided, multiple submitters, no conflicts": 2,
     "reviewed by expert panel": 3,
+    "practice guideline": 4,
 }
 
 
 class SkipVariant(Exception):
     pass
+
+
+def escape_xpath_value(value):
+    if value:
+        return saxutils.escape(value)
+    return ""
 
 
 def _parse_submission(submission_element, trait_mapping_list_element):
@@ -61,7 +74,15 @@ def _parse_submission(submission_element, trait_mapping_list_element):
         if trait_mapping_list_element is not None:
             xref_elements = trait_element.findall("XRef")
             for xref_element in xref_elements:
-                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{xref_element.attrib['ID']}']"  # noqa
+                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{escape_xpath_value(xref_element.attrib['ID'])}']"  # noqa
+                try:
+                    mapping_element = trait_mapping_list_element.find(selector)
+                except KeyError as e:
+                    print(f"   Skipping due to key error: {selector}, error: {e}")
+                    continue
+                except Exception as e:
+                    print(f"   Skipping due to some rando error: {selector}, error: {e}")
+                    continue
                 mapping_element = trait_mapping_list_element.find(selector)
                 if mapping_element is not None:
                     break
@@ -70,7 +91,14 @@ def _parse_submission(submission_element, trait_mapping_list_element):
             preferred_name_element = trait_element.find("./Name/ElementValue[@Type='Preferred']")
             if preferred_name_element is not None and trait_mapping_list_element is not None:
                 selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{preferred_name_element.text}\"]"  # noqa
-                mapping_element = trait_mapping_list_element.find(selector)
+                try:
+                    mapping_element = trait_mapping_list_element.find(selector)
+                except KeyError as e:
+                    print(f"   Skipping due to key error: {selector}, error: {e}")
+                    continue
+                except Exception as e:
+                    print(f"   Skipping due to some rando error: {selector}, error: {e}")
+                    continue
 
         if mapping_element is None:
             name_elements = trait_element.findall("./Name/ElementValue")
@@ -179,7 +207,7 @@ def import_clinvar_xml(clinvar_xml_path):
         with open_file(clinvar_xml_local_path, "r") as xml_file:
             # The exact number of variants in the XML file is unknown.
             # Approximate it to show a progress bar.
-            progress = tqdm(total=1_100_000, mininterval=5)
+            progress = tqdm(total=3_000_000, mininterval=5)
 
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
@@ -211,7 +239,7 @@ def import_clinvar_xml(clinvar_xml_path):
                         pass
                     except Exception:
                         print(
-                            f"Failed to parse variant {element.attrib['VariationID']}",
+                            f" Failed to parse variant {element.attrib['VariationID']}",
                             file=sys.stderr,
                         )
                         raise
