@@ -8,7 +8,7 @@
 
 2. Run data pipeline
 
-   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.0 (GRCh38) ClinVar variants should be annotated with VEP 101.
+   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1 (GRCh38) ClinVar variants should be annotated with VEP 105.
 
    1. Start Dataproc cluster
 
@@ -46,8 +46,6 @@
       ```
       ./deployctl data-pipeline run --cluster vep105 clinvar_grch38
       ```
-
-      \*Note: The `vep105-init.sh` script is inconsistent about starting Docker. As a workaround, after starting the Dataproc Cluster, SSH into every individual node and run `sudo systemctl start docker`
 
 3. Load variants to Elasticsearch
 
@@ -94,6 +92,11 @@
 
    Start a shell in the Redis pod.
 
+   ```
+   REDIS_POD=$(kubectl get pods --selector=name=redis -o=name)
+   kubectl exec -ti $REDIS_POD -- /bin/bash
+   ```
+
    Delete cache keys matching `clinvar_variants:*`.
 
    ```
@@ -114,4 +117,10 @@
 
    ```
    curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT 'http://localhost:9200/_snapshot/backups/%3Csnapshot-%7Bnow%7BYYYY.MM.dd.HH.mm%7D%7D%3E'
+   ```
+
+   View all snapshots
+
+   ```
+   curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_snapshot/backups/_all | jq ".snapshots[].snapshot"
    ```
