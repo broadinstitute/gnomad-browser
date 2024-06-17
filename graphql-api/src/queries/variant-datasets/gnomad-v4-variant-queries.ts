@@ -51,14 +51,27 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: Subset
 // Variant query
 // ================================================================================================
 
-const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: Subset) => {
-  const idField = isRsId(variantIdOrRsid) ? 'rsids' : 'variant_id'
+const isVrsId = (id: string) => /^ga4gh:/.test(id)
+
+const chooseIdField = (variantId: string) => {
+  if (isRsId(variantId)) {
+    return 'rsids'
+  }
+
+  if (isVrsId(variantId)) {
+    return 'allele_id'
+  }
+  return 'variant_id'
+}
+
+const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) => {
+  const idField = chooseIdField(variantId)
   const response = await esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
     body: {
       query: {
         bool: {
-          filter: { term: { [idField]: variantIdOrRsid } },
+          filter: { term: { [idField]: variantId } },
         },
       },
     },

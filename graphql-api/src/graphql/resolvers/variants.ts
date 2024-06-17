@@ -15,35 +15,49 @@ import {
 
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
 
+import { hasVRSData } from '@gnomad/dataset-metadata/metadata'
+
 const resolveVariant = async (_obj: any, args: any, ctx: any) => {
-  if (!(args.rsid || args.variantId)) {
-    throw new UserVisibleError('One of "rsid" or "variantId" is required')
-  }
-  if (args.rsid && args.variantId) {
-    throw new UserVisibleError('Only one of "rsid" or "variantId" is allowed')
-  }
+  // These are all "variant IDs" of one kind or another but `variantId` here
+  // specifically refers to the chrom-pos-ref-alt style ubiquitous in gnomAD
+  const { rsid, variantId, vrsId, dataset } = args
 
-  let variantId
-  if (args.variantId) {
-    if (!isVariantId(args.variantId)) {
-      throw new UserVisibleError('Invalid variant ID')
-    }
-
-    variantId = normalizeVariantId(args.variantId)
-  } else {
-    if (!isRsId(args.rsid)) {
-      throw new UserVisibleError('Invalid rsID')
-    }
-
-    variantId = args.rsid.toLowerCase()
-  }
-
-  const { dataset } = args
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
   }
 
-  const variant = await fetchVariantById(ctx.esClient, dataset, variantId)
+  const nSpecifiedIds = [rsid, variantId, vrsId].filter((id) => id).length
+  if (nSpecifiedIds !== 1) {
+    throw new UserVisibleError('Exactly one of "rsid", "variantId", or "vrsId" is required')
+  }
+
+  let normalizedVariantId
+
+  if (variantId) {
+    if (!isVariantId(variantId)) {
+      throw new UserVisibleError('Invalid variant ID')
+    }
+
+    normalizedVariantId = normalizeVariantId(variantId)
+  }
+
+  if (rsid) {
+    if (!isRsId(rsid)) {
+      throw new UserVisibleError('Invalid rsID')
+    }
+
+    normalizedVariantId = args.rsid.toLowerCase()
+  }
+
+  if (vrsId) {
+    if (!hasVRSData(dataset)) {
+      throw new UserVisibleError(`Dataset ${dataset} does not have VRS data`)
+    }
+
+    normalizedVariantId = /^ga4gh:/.test(vrsId) ? vrsId : `ga4gh:${vrsId}`
+  }
+
+  const variant = await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
   const posRounded = Math.floor(variant.pos / 1000) * 1000
   const variantNCCId = `chr${variant.chrom}-${posRounded}-${posRounded + 1000}`
   const variantNCC = await fetchNccConstraintRegionById(ctx.esClient, variantNCCId)
