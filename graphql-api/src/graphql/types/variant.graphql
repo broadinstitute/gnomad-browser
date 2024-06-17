@@ -189,6 +189,10 @@ type Variant {
 
   # Deprecated - use hgvsp and hgvsc instead
   hgvs: String
+
+  # GA4GH-format data
+  va: [VACohortAlleleFrequency!]
+  vrs: VAAllele
 }
 
 type Coverage {
@@ -315,6 +319,9 @@ type VariantDetails {
   colocatedVariants: [String!]!
   multiNucleotideVariants: [MultiNucleotideVariantSummary!]
   sortedTranscriptConsequences: [TranscriptConsequence!]
+
+  va: [VACohortAlleleFrequency!]
+  vrs: VAAllele
 }
 
 type VariantSearchResult {
