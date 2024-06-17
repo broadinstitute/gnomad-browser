@@ -22,6 +22,8 @@ VERDICT_MAPPING = {
     "conflicting_evidence": "Uncertain",
     "insufficient_evidence": "Uncertain",
     "uncertain": "Uncertain",
+    "uncertain_lof": "Uncertain",
+    "likey_lof": "Likely LoF",
     "likely_lof": "Likely LoF",
     "likely_not_lof": "Likely not LoF",
     "lof": "LoF",
