@@ -1,0 +1,6 @@
+black
+pip-tools
+ruff
+pyright
+pytest
+wheel

@@ -220,7 +220,7 @@ pipeline.add_task(
     "prepare_gnomad_v4_constraint",
     prepare_gnomad_v4_constraint,
     f"/{constraint_subdir}/gnomad_v4_constraint.ht",
-    {"path": "gs://gcp-public-data--gnomad/release/v4.1/constraint/gnomad.v4.1.constraint_metrics.ht"},
+    {"path": "gs://gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"},
 )
 
 pipeline.add_task(
