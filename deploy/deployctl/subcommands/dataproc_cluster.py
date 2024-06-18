@@ -123,6 +123,7 @@ def _prep_vep_cluster_options(
         ["gcloud", "compute", "images", "describe", custom_image, "--format=json"],
         capture_output=True,
         text=True,
+        check=True,
     )
     image_described = json.loads(cli_output.stdout)
     hail_version = image_described["labels"]["hail-version"].replace("-", ".")
