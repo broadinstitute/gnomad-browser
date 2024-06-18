@@ -15,7 +15,7 @@ DATA_PIPELINE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__)
 # the hailctl command to start a Dataproc cluster for Hail.
 # They are necessary here for starting clusters using a custom OS images,
 # in which case they would not use hailctl.
-VEP_SUPPORTED_REGIONS = {'us-central1', 'europe-west1', 'europe-west2', 'australia-southeast1'}
+VEP_SUPPORTED_REGIONS = {"us-central1", "europe-west1", "europe-west2", "australia-southeast1"}
 DATAPROC_PROPERTIES = (
     # NOTE: ^#^ specifies # as the delimiter
     # Spark properties
@@ -39,7 +39,7 @@ DATAPROC_PROPERTIES = (
 
 def _parse_flags(flags: typing.List[str]) -> typing.Dict:
     """Parse a list of string cli flags into dict.
-    
+
     This function checks both the "--flag=value" and
     "--flag value" formats. The former appears in the
     "flags" list as:
@@ -89,7 +89,7 @@ def _prep_vep_cluster_options(
     cluster_args_dict: typing.Dict,
 ) -> typing.Dict:
     """Adjust cluster creation arguments for VEP.
-    
+
     Recreates steps from hailctl as seen below:
     https://github.com/hail-is/hail/blob/main/hail/python/hailtop/hailctl/dataproc/start.py#L249
 
@@ -99,9 +99,7 @@ def _prep_vep_cluster_options(
     region = cluster_args_dict.get("region", config.region)
     if region not in VEP_SUPPORTED_REGIONS:
         supported_regions = ", ".join(VEP_SUPPORTED_REGIONS)
-        raise RuntimeError(
-            f"VEP is only supported in the following regions: {supported_regions}"
-        )
+        raise RuntimeError(f"VEP is only supported in the following regions: {supported_regions}")
 
     vep_options_dict = {
         "secondary-worker-boot-disk-size": "200GB",
@@ -115,7 +113,7 @@ def _prep_vep_cluster_options(
     metadata_list += [
         f"VEP_CONFIG_PATH={vep_config_path}",
         f"VEP_CONFIG_URI=file://{vep_config_path}",
-        f"VEP_REPLICATE={region}"
+        f"VEP_REPLICATE={region}",
     ]
     vep_options_dict["metadata"] = ",".join(metadata_list)
 
@@ -128,7 +126,7 @@ def _prep_vep_cluster_options(
     )
     image_described = json.loads(cli_output.stdout)
     hail_version = image_described["labels"]["hail-version"].replace("-", ".")
-    vep_gcs_path = f'gs://hail-common/hailctl/dataproc/{hail_version}/vep-{vep}.sh'
+    vep_gcs_path = f"gs://hail-common/hailctl/dataproc/{hail_version}/vep-{vep}.sh"
     init_actions_value = cluster_args_dict.get("initialization-actions", "")
     init_actions_list = init_actions_value.split(",") if init_actions_value else []
     init_actions_list = [val for val in init_actions_list if val]
@@ -176,7 +174,8 @@ def start_custom_image_cluster(
             "--worker-boot-disk-size=40GB",
             "--num-workers=2",
             "--num-secondary-workers=0",
-        ] + cluster_args_list  # Image flag is included in this var
+        ]
+        + cluster_args_list  # Image flag is included in this var
     )
 
 
