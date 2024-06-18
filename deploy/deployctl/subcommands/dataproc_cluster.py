@@ -38,16 +38,41 @@ DATAPROC_PROPERTIES = (
 
 
 def _parse_flags(flags: typing.List[str]) -> typing.Dict:
-    """Parse a list of string cli flags into dict."""
+    """Parse a list of string cli flags into dict.
+    
+    This function checks both the "--flag=value" and
+    "--flag value" formats. The former appears in the
+    "flags" list as:
+        ["--flag1=val1", "--flag2=val2"...]
+    which is a little easier to work with than the
+    second format, which is:
+        ["--flag1", "val1", "--flag2", "val2", ...]
+
+    It will ignore any flags/values that do not follow
+    the above two formats.
+    """
     flags_dict = {}
+    key = ""
+    value = ""
     for flag in flags:
         flag_split = flag.split("=")
-        key = flag_split[0].replace("--", "")
-        if len(flag_split) > 1:
-            value = flag_split[1]
-        else:
-            value = None
-        flags_dict[key] = value
+        if len(flag_split) == 2:
+            key = flag_split[0].replace("--", "")
+            if len(flag_split) > 1:
+                value = flag_split[1]
+            else:
+                value = None
+
+        elif flag.startswith("--"):
+            key = flag.replace("--", "")
+        elif key:
+            value = flag
+
+        if key and value:
+            flags_dict[key] = value
+            key = ""
+            value = ""
+
     return flags_dict
 
 
@@ -84,7 +109,8 @@ def _prep_vep_cluster_options(
         "worker-machine-type": "n1-highmem-8",
     }
 
-    metadata_list = cluster_args_dict.get("metadata", "").split(",")
+    metadata_value = cluster_args_dict.get("metadata", "")
+    metadata_list = metadata_value.split(",") if metadata_value else []
     vep_config_path = "/vep_data/vep-gcloud.json"
     metadata_list += [
         f"VEP_CONFIG_PATH={vep_config_path}",
@@ -103,7 +129,9 @@ def _prep_vep_cluster_options(
     image_described = json.loads(cli_output.stdout)
     hail_version = image_described["labels"]["hail-version"].replace("-", ".")
     vep_gcs_path = f'gs://hail-common/hailctl/dataproc/{hail_version}/vep-{vep}.sh'
-    init_actions_list = cluster_args_dict.get("initialization-actions", "").split(",")
+    init_actions_value = cluster_args_dict.get("initialization-actions", "")
+    init_actions_list = init_actions_value.split(",") if init_actions_value else []
+    init_actions_list = [val for val in init_actions_list if val]
     init_actions_list.append(vep_gcs_path)
     vep_options_dict["initialization-actions"] = ",".join(init_actions_list)
 
@@ -117,6 +145,7 @@ def start_custom_image_cluster(
     if "vep" in cluster_args_dict:
         vep_args_dict = _prep_vep_cluster_options(cluster_args_dict)
         cluster_args_dict.update(vep_args_dict)
+        del cluster_args_dict["vep"]  # Not an actual valid gcloud flag
 
     cluster_args_list = []
     for k, v in cluster_args_dict.items():
