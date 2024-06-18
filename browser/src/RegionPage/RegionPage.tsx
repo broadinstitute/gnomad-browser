@@ -16,6 +16,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
+import HaplotypeTrack from '../Haplotypes'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -141,7 +142,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             <RegionInfo region={region} />
             {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
               <p>
-                <Badge level="info">Note</Badge> Data is available for a{' '}
+                <Badge level='info'>Note</Badge> Data is available for a{' '}
                 <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
                   tandem repeat locus
                 </Link>{' '}
@@ -174,20 +175,15 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
-
-        {hasNonCodingConstraints(datasetId) && (
-          <>
-            <RegionalGenomicConstraintTrack
-              start={region.start}
-              stop={region.stop}
-              regions={
-                region.non_coding_constraints !== null
-                  ? region.non_coding_constraints.map(nccToRegion)
-                  : null
-              }
-            />
-          </>
-        )}
+        <HaplotypeTrack
+          start={region.start}
+          stop={region.stop}
+          regions={
+            region.non_coding_constraints !== null
+              ? region.non_coding_constraints.map(nccToRegion)
+              : null
+          }
+        />
         {variantsInRegion(datasetId, region)}
       </RegionViewer>
     </TrackPage>
