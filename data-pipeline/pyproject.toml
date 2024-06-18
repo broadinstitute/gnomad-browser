@@ -32,7 +32,7 @@ line-length = 120
 line-length = 120
 
 [tool.pyright]
-include = [ 
+include = [
 "src/data_pipeline/pipeline.py",
 "src/data_pipeline/config.py",
 "src/data_pipeline/helpers/write_schemas.py",
@@ -46,4 +46,3 @@ reportMissingImports = true
 reportMissingTypeStubs = false
 typeCheckingMode = "basic"
 pythonVersion = "3.9"
-
