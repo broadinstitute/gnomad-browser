@@ -175,16 +175,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
-        <HaplotypeTrack
-          start={region.start}
-          stop={region.stop}
-          regions={
-            region.non_coding_constraints !== null
-              ? region.non_coding_constraints.map(nccToRegion)
-              : null
-          }
-        />
-        {variantsInRegion(datasetId, region)}
+        <HaplotypeTrack />
+        {/* {variantsInRegion(datasetId, region)} */}
       </RegionViewer>
     </TrackPage>
   )

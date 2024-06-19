@@ -72,6 +72,8 @@ import {
 } from '../ChartStyles'
 import { logButtonClick } from '../analytics'
 
+import HaplotypeTrack from '../Haplotypes'
+
 export type Strand = '+' | '-'
 
 export type GeneMetadata = {
@@ -334,7 +336,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             <GeneFlags gene={gene} />
             {gene.short_tandem_repeats && gene.short_tandem_repeats.length > 0 && (
               <p>
-                <Badge level="info">Note</Badge> Data is available for a{' '}
+                <Badge level='info'>Note</Badge> Data is available for a{' '}
                 <Link to={`/short-tandem-repeat/${gene.short_tandem_repeats[0].id}`}>
                   tandem repeat locus
                 </Link>{' '}
@@ -346,17 +348,17 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             <TableSelectorWrapper>
               <TableSelector
                 selectedTableName={selectedTableName}
-                ownTableName="constraint"
+                ownTableName='constraint'
                 setSelectedTableName={setSelectedTableName}
               >
-                Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}
+                Constraint {gene.chrom !== 'M' && <InfoButton topic='constraint' />}
               </TableSelector>
               <TableSelector
                 selectedTableName={selectedTableName}
                 setSelectedTableName={setSelectedTableName}
-                ownTableName="cooccurrence"
+                ownTableName='cooccurrence'
               >
-                Variant co-occurrence <InfoButton topic="variant-cooccurrence-table" />
+                Variant co-occurrence <InfoButton topic='variant-cooccurrence-table' />
               </TableSelector>
             </TableSelectorWrapper>
             {selectedTableName === 'constraint' ? (
@@ -376,7 +378,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         </GeneInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
-        contextType="gene"
+        contextType='gene'
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
@@ -420,11 +422,11 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           Include:
           <Legend>
             <LegendItemWrapper>
-              <Label htmlFor="include-cds-regions">
+              <Label htmlFor='include-cds-regions'>
                 <CheckboxInput
                   checked={hasCodingExons}
                   disabled
-                  id="include-cds-regions"
+                  id='include-cds-regions'
                   onChange={() => {}}
                 />
                 Coding regions (CDS)
@@ -437,11 +439,11 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             </LegendItemWrapper>
 
             <LegendItemWrapper>
-              <Label htmlFor="include-utr-regions">
+              <Label htmlFor='include-utr-regions'>
                 <CheckboxInput
                   checked={includeUTRs}
                   disabled={!hasUTRs}
-                  id="include-utr-regions"
+                  id='include-utr-regions'
                   onChange={(e: any) => {
                     setIncludeUTRs(e.target.checked)
                   }}
@@ -456,11 +458,11 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             </LegendItemWrapper>
 
             <LegendItemWrapper>
-              <Label htmlFor="include-nc-transcripts">
+              <Label htmlFor='include-nc-transcripts'>
                 <CheckboxInput
                   checked={includeNonCodingTranscripts}
                   disabled={!hasNonCodingTranscripts || (!hasCodingExons && !hasUTRs)}
-                  id="include-nc-transcripts"
+                  id='include-nc-transcripts'
                   onChange={(e: any) => {
                     setIncludeNonCodingTranscripts(e.target.checked)
                   }}
@@ -551,6 +553,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
+        <HaplotypeTrack />
         {/* eslint-disable-next-line no-nested-ternary */}
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />

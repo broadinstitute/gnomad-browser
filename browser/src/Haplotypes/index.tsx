@@ -12,7 +12,7 @@ import Link from '../Link'
 
 import InfoButton from '../help/InfoButton'
 
-import haplotypeBlocks from '/Users/msolomon/code/karyogram/datasets/long-read/data/2024-06-18/haplotype_blocks.json'
+import haplotypeGroups from '/Users/msolomon/code/karyogram/datasets/long-read/data/2024-06-19/afewgenes/haplotype_groups-e79fd160-0b06-42ae-9241-057ef74b7974.json'
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,17 +44,15 @@ const RegionAttributeList = styled.dl`
   }
 `
 
-export function regionColor(region: any) {
-  // http://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=3
-  let color
-  if (region.num_samples > 40) {
-    color = '#f03b20'
-  } else if (region.num_samples > 20) {
-    color = '#ffeda0'
+export function regionColor(region: { num_samples: number }) {
+  // Use a colorblind-friendly scheme from ColorBrewer: https://colorbrewer2.org/#type=sequential&scheme=PuOr&n=3
+  if (region.num_samples > 8) {
+    return '#b35806' // Dark orange
+  } else if (region.num_samples > 4) {
+    return '#f1a340' // Light orange
   } else {
-    color = '#e2e2e2'
+    return '#fee0b6' // Very light orange
   }
-  return color
 }
 
 const LegendWrapper = styled.div`
@@ -86,20 +84,20 @@ export const Legend = () => {
         </>
       )}
       <span>
-        Frequency{' '}
+        Allele count{' '}
         <TooltipAnchor key='Legend' tooltipComponent={LegendTooltip}>
           <img src={QuestionMarkIcon} height='12' alt='' aria-hidden='true' />
         </TooltipAnchor>
       </span>
       <svg width={330} height={25}>
-        <text x={15} y={-4} fontSize='10' dy='1.2em'>
-          Low
+        <text x={70} y={-4} fontSize='10' dy='1.2em'>
+          Rare
         </text>
         <rect x={95} y={0} width={40} height={10} stroke='#000' fill='#e2e2e2' />
         <rect x={135} y={0} width={40} height={10} stroke='#000' fill='#ffeda0' />
         <rect x={175} y={0} width={40} height={10} stroke='#000' fill='#f03b20' />
         <text x={220} y={-4} fontSize='10' dy='1.2em'>
-          High
+          Common
         </text>
         <text x={110} y={10} fontSize='10' dy='1.2em' textAnchor='middle' />
         <text x={135} y={10} fontSize='10' dy='1.2em' textAnchor='middle'>
@@ -121,13 +119,10 @@ type RegionTooltipProps = {
     haplotype_id: number
     start: string
     stop: string
-    haplotype: {
-      alleles: number[]
-      phased: boolean
-      ploidy: number
-    }
-    size: number
+    size_bp: number
     num_samples: number
+    phased: boolean
+    ploidy: number
   }
 }
 
@@ -146,20 +141,16 @@ const RegionTooltip = ({ region }: RegionTooltipProps) => (
       <dd>{region.stop}</dd>
     </div>
     <div>
-      <dt>Alleles:</dt>
-      <dd>{region.haplotype.alleles.join('/')}</dd>
-    </div>
-    <div>
       <dt>Phased:</dt>
-      <dd>{region.haplotype.phased ? 'Yes' : 'No'}</dd>
+      <dd>{region.phased ? 'Yes' : 'No'}</dd>
     </div>
     <div>
       <dt>Ploidy:</dt>
-      <dd>{region.haplotype.ploidy}</dd>
+      <dd>{region.ploidy}</dd>
     </div>
     <div>
       <dt>Size:</dt>
-      <dd>{region.size}</dd>
+      <dd>{region.size_bp} BP</dd>
     </div>
     <div>
       <dt>Number of Samples:</dt>
@@ -168,11 +159,11 @@ const RegionTooltip = ({ region }: RegionTooltipProps) => (
   </RegionAttributeList>
 )
 
-const renderTrackLeftPanel = (constraintWidth: number) => {
+const renderTrackLeftPanel = () => {
   return (
     <SidePanel>
       <span>{`Long Read Haplotypes`}</span>
-      <InfoButton topic='genomic-constraint' />
+      <InfoButton topic='haplotypes' />
     </SidePanel>
   )
 }
@@ -195,43 +186,24 @@ type TrackProps = {
   width: number
 }
 
-type Region = {
-  start: number
-  stop: number
-  z: number
-}
-
 type OwnRegionalConstraintTrackProps = {
   height?: number
   start: number
   stop: number
-  regions: Region[] | null
+  regions: any[] | null
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'RegionalConstraintTrackProps' circular... Remove this comment to see the full error message
-type RegionalConstraintTrackProps = OwnRegionalConstraintTrackProps &
-  typeof HaplotypeTrack.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'RegionalConstraintTrack' implicitly has type 'any... Remove this comment to see the full error message
-const HaplotypeTrack = ({ height, start, stop, regions }: RegionalConstraintTrackProps) => {
-  const returnConstraintsThreshold = 150_000
-  const constraintRegionSize = 1_000
-
+const HaplotypeTrack = ({ height, start, stop, regions }: typeof HaplotypeTrack.defaultProps) => {
   if (regions === null) {
     return (
       <Wrapper>
-        <Track renderLeftPanel={() => renderTrackLeftPanel(constraintRegionSize)}>
+        <Track renderLeftPanel={renderTrackLeftPanel}>
           {({ width }: { width: number }) => (
             <>
               <PlotWrapper>
                 <svg height={height} width={width}>
                   <text x={width / 2} y={height / 2} dy='0.33rem' textAnchor='middle'>
-                    {stop - start > returnConstraintsThreshold &&
-                      `The genomic constraint track is only displayed for regions with a size of ${
-                        returnConstraintsThreshold / 1000
-                      }kb or smaller. Zoom in or adjust the region to see this track.`}
-                    {stop - start <= returnConstraintsThreshold &&
-                      `There is no genomic constraint data for this region`}
+                    {`There is no haplotype data for this region`}
                   </text>
                 </svg>
               </PlotWrapper>
@@ -245,84 +217,115 @@ const HaplotypeTrack = ({ height, start, stop, regions }: RegionalConstraintTrac
   const currentParams = queryString.parse(location.search)
   const variantId = currentParams.variant
 
-  console.log(haplotypeBlocks)
-
   return (
     <Wrapper>
-      <Track renderLeftPanel={() => renderTrackLeftPanel(constraintRegionSize)}>
-        {({ scalePosition, width }: TrackProps) => (
-          <>
-            <TopPanel>
-              <Legend />
-            </TopPanel>
-            <PlotWrapper>
-              <svg height={height} width={width}>
-                <rect
-                  x={scalePosition(start)}
-                  y={30}
-                  width={scalePosition(stop) - scalePosition(start)}
-                  height={1}
-                  fill='#000'
-                />
-                {typeof variantId === 'string' && (
-                  <>
-                    <rect
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={15}
-                      width={2}
-                      height={30}
-                      fill='#000'
-                    />
-                    <text
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={9}
-                      dy='0.33rem'
-                      textAnchor='middle'
-                    >
-                      <Link to={`/variant/${variantId}`}>{variantId}</Link>
-                    </text>
-                  </>
-                )}
-                {haplotypeBlocks.map((block: any) => {
-                  const startX = scalePosition(block.start_pos)
-                  const stopX = scalePosition(block.stop_pos)
-                  const blockWidth = stopX - startX
+      <Track renderLeftPanel={renderTrackLeftPanel}>
+        {({ scalePosition, width }: TrackProps) => {
+          const rows: Array<Array<any>> = [[]]
 
-                  return (
-                    <TooltipAnchor
-                      key={`block-${block.haplotype_id}`}
-                      region={{ ...block, z: undefined, obs_exp: undefined }} // Include all block attributes except z and obs_exp
-                      tooltipComponent={() => <RegionTooltip region={block} />}
-                    >
-                      <g>
-                        <rect
-                          x={startX}
-                          y={22.5}
-                          width={blockWidth}
-                          height={15}
-                          fill={regionColor(block)}
-                          stroke='black'
-                        />
-                        {blockWidth > 32 && (
-                          <text x={(startX + stopX) / 2} y={30} dy='0.33em' textAnchor='middle'>
-                            {block.haplotype.alleles.join('/')}
-                          </text>
-                        )}
-                      </g>
-                    </TooltipAnchor>
-                  )
-                })}
-              </svg>
-            </PlotWrapper>
-          </>
-        )}
+          haplotypeGroups.groups.forEach((group: any) => {
+            const startX = scalePosition(group.start)
+            const stopX = scalePosition(group.stop)
+            const groupWidth = stopX - startX
+
+            let placed = false
+
+            // Find a row where the group can be placed without overlapping
+            for (const row of rows) {
+              if (row.length === 0 || scalePosition(row[row.length - 1].stop) + 1 < startX) {
+                // adjusted to avoid touching
+                row.push(group)
+                placed = true
+                break
+              }
+            }
+
+            // If no row was found, create a new row
+            if (!placed) {
+              rows.push([group])
+            }
+          })
+
+          return (
+            <>
+              <TopPanel>
+                <Legend />
+              </TopPanel>
+              <PlotWrapper>
+                <svg height={height} width={width}>
+                  <rect
+                    x={scalePosition(start)}
+                    y={30}
+                    width={scalePosition(stop) - scalePosition(start)}
+                    height={1}
+                    fill='#000'
+                  />
+                  {typeof variantId === 'string' && (
+                    <>
+                      <rect
+                        x={scalePosition(variantId.split('-')[1])}
+                        y={15}
+                        width={2}
+                        height={30}
+                        fill='#000'
+                      />
+                      <text
+                        x={scalePosition(variantId.split('-')[1])}
+                        y={9}
+                        dy='0.33rem'
+                        textAnchor='middle'
+                      >
+                        <Link to={`/variant/${variantId}`}>{variantId}</Link>
+                      </text>
+                    </>
+                  )}
+                  {rows.map((row, rowIndex) =>
+                    row.map((group: any) => {
+                      const startX = scalePosition(group.start)
+                      const stopX = scalePosition(group.stop)
+                      const groupWidth = stopX - startX
+
+                      return (
+                        <TooltipAnchor
+                          key={`group-${group.start}-${group.stop}`}
+                          tooltipComponent={() => <RegionTooltip region={group} />}
+                        >
+                          <g>
+                            {group.size_bp === 0 ? (
+                              <circle
+                                cx={(startX + stopX) / 2}
+                                cy={30 + rowIndex * 20}
+                                r={1}
+                                fill={regionColor(group)}
+                                stroke='black'
+                              />
+                            ) : (
+                              <rect
+                                x={startX}
+                                y={22.5 + rowIndex * 20}
+                                width={groupWidth}
+                                height={15}
+                                fill={regionColor(group)}
+                                stroke='black'
+                              />
+                            )}
+                          </g>
+                        </TooltipAnchor>
+                      )
+                    })
+                  )}
+                </svg>
+              </PlotWrapper>
+            </>
+          )
+        }}
       </Track>
     </Wrapper>
   )
 }
 
 HaplotypeTrack.defaultProps = {
-  height: 45,
+  height: 1000,
 }
 
 export default HaplotypeTrack
