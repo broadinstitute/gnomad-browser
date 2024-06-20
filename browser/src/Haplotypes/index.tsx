@@ -318,28 +318,44 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstrain
                           stroke='black'
                           strokeWidth={1}
                         />
-                        {group.stop - group.start === 0 ? (
-                          <circle
-                            cx={(startX + stopX) / 2}
-                            cy={30 + rowIndex * 20}
-                            r={4}
-                            fill={getColorForVariant(group.variants.variants[0].locus)}
-                            stroke='black'
-                          />
-                        ) : (
-                          <>
-                            {group.variants.variants.map((variant) => (
-                              <circle
-                                key={variant.locus}
-                                cx={scalePosition(variant.position.toString())}
-                                cy={30 + rowIndex * 20}
-                                r={4}
-                                fill={getColorForVariant(variant.locus)}
-                                stroke='black'
-                              />
-                            ))}
-                          </>
-                        )}
+                        {group.variants.variants.map((variant) => {
+                          let isDottedLine = false
+                          const refLength = variant.alleles[0].length
+                          const altLength = variant.alleles[1].length
+                          let color = getColorForVariant(variant.locus)
+
+                          if (refLength > 5) {
+                            // Deletion
+                            isDottedLine = true
+                            color = '#FF0000' // Red
+                          } else if (altLength > 5) {
+                            // Insertion
+                            isDottedLine = true
+                            color = '#0000FF' // Blue
+                          }
+
+                          return isDottedLine ? (
+                            <line
+                              key={variant.locus}
+                              x1={scalePosition(variant.position.toString())}
+                              y1={22.5 + rowIndex * 20}
+                              x2={scalePosition(variant.position.toString())}
+                              y2={37.5 + rowIndex * 20}
+                              stroke={color}
+                              strokeDasharray='4 2'
+                              strokeWidth={4}
+                            />
+                          ) : (
+                            <circle
+                              key={variant.locus}
+                              cx={scalePosition(variant.position.toString())}
+                              cy={30 + rowIndex * 20}
+                              r={4}
+                              fill={color}
+                              stroke='black'
+                            />
+                          )
+                        })}
                       </g>
                     </TooltipAnchor>
                   )
