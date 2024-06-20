@@ -188,10 +188,22 @@ const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
   </RegionAttributeList>
 )
 
-const renderTrackLeftPanel = () => {
+const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () => {
   return (
     <SidePanel>
-      <span>{`Long Read Haplotypes`}</span>
+      {!haplotypeGroups ? (
+        <div>
+          <span>No haplogroups found</span>
+        </div>
+      ) : (
+        <svg width={200} height={haplotypeGroups.length * 20}>
+          {haplotypeGroups.map((group, index) => (
+            <text key={index} x={10} y={60 + index * 20} fontSize='12'>
+              {`${group.samples.length} Samples`}
+            </text>
+          ))}
+        </svg>
+      )}
       <InfoButton topic='haplotypes' />
     </SidePanel>
   )
@@ -199,7 +211,7 @@ const renderTrackLeftPanel = () => {
 
 const SidePanel = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   height: 100%;
 `
 
@@ -240,7 +252,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstrain
   if (!haplotypeGroups) {
     return (
       <Wrapper>
-        <Track renderLeftPanel={renderTrackLeftPanel}>
+        <Track renderLeftPanel={renderTrackLeftPanel(null)}>
           {({ width }: { width: number }) => (
             <>
               <PlotWrapper>
@@ -263,7 +275,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstrain
 
   return (
     <Wrapper>
-      <Track renderLeftPanel={renderTrackLeftPanel}>
+      <Track renderLeftPanel={renderTrackLeftPanel(haplotypeGroups)}>
         {({ scalePosition, width }: TrackProps) => (
           <>
             <TopPanel>
