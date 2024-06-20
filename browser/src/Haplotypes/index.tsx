@@ -222,7 +222,21 @@ type OwnRegionalConstraintTrackProps = {
   haplotypeGroups: HaplotypeGroup[] | null
 }
 
-const HaplotypeTrack = ({ height = 5000, haplotypeGroups }: OwnRegionalConstraintTrackProps) => {
+const variantColors: Record<string, string> = {}
+
+const getColorForVariant = (variantId: string) => {
+  if (!variantColors[variantId]) {
+    const seed = variantId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)
+    // Use a simple hash function for more randomness
+    const hash = (seed * 9301 + 49297) % 233280
+    const hue = hash % 360
+    const color = `hsl(${hue}, 100%, 50%)`
+    variantColors[variantId] = color
+  }
+  return variantColors[variantId]
+}
+
+const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstraintTrackProps) => {
   if (!haplotypeGroups) {
     return (
       <Wrapper>
@@ -245,114 +259,95 @@ const HaplotypeTrack = ({ height = 5000, haplotypeGroups }: OwnRegionalConstrain
 
   const currentParams = queryString.parse(location.search)
   let variantId = currentParams.variant as string
+  const dynamicHeight = haplotypeGroups.length * 25
 
   return (
     <Wrapper>
       <Track renderLeftPanel={renderTrackLeftPanel}>
-        {({ scalePosition, width }: TrackProps) => {
-          const rows: HaplotypeGroup[][] = [[]]
+        {({ scalePosition, width }: TrackProps) => (
+          <>
+            <TopPanel>
+              <Legend />
+            </TopPanel>
+            <PlotWrapper>
+              <svg height={dynamicHeight} width={width}>
+                {variantId && (
+                  <>
+                    <rect
+                      x={scalePosition(variantId.split('-')[1])}
+                      y={15}
+                      width={2}
+                      height={30}
+                      fill='#000'
+                    />
+                    <text
+                      x={scalePosition(variantId.split('-')[1])}
+                      y={9}
+                      dy='0.33rem'
+                      textAnchor='middle'
+                    >
+                      <Link to={`/variant/${variantId}`}>{variantId}</Link>
+                    </text>
+                  </>
+                )}
+                {haplotypeGroups.map((group, rowIndex) => {
+                  const startX = scalePosition(group.start.toString())
+                  const stopX = scalePosition(group.stop.toString())
+                  const groupWidth = stopX - startX
+                  const num_samples = computeNumSamples(group)
 
-          haplotypeGroups.forEach((group: HaplotypeGroup) => {
-            const startX = scalePosition(group.start.toString())
-            const stopX = scalePosition(group.stop.toString())
-            const groupWidth = stopX - startX
-
-            let placed = false
-
-            for (const row of rows) {
-              if (
-                row.length === 0 ||
-                scalePosition(row[row.length - 1].stop.toString()) + 1 < startX
-              ) {
-                row.push(group)
-                placed = true
-                break
-              }
-            }
-
-            if (!placed) {
-              rows.push([group])
-            }
-          })
-
-          return (
-            <>
-              <TopPanel>
-                <Legend />
-              </TopPanel>
-              <PlotWrapper>
-                <svg height={height} width={width}>
-                  {variantId && (
-                    <>
-                      <rect
-                        x={scalePosition(variantId.split('-')[1])}
-                        y={15}
-                        width={2}
-                        height={30}
-                        fill='#000'
-                      />
-                      <text
-                        x={scalePosition(variantId.split('-')[1])}
-                        y={9}
-                        dy='0.33rem'
-                        textAnchor='middle'
-                      >
-                        <Link to={`/variant/${variantId}`}>{variantId}</Link>
-                      </text>
-                    </>
-                  )}
-                  {rows.map((row, rowIndex) =>
-                    row.map((group) => {
-                      const startX = scalePosition(group.start.toString())
-                      const stopX = scalePosition(group.stop.toString())
-                      const groupWidth = stopX - startX
-                      const num_samples = computeNumSamples(group)
-
-                      return (
-                        <TooltipAnchor
-                          key={`group-${group.start}-${group.stop}`}
-                          tooltipComponent={() => <RegionTooltip region={group} />}
-                        >
-                          <g>
-                            {group.stop - group.start === 0 ? (
+                  return (
+                    <TooltipAnchor
+                      key={`group-${group.start}-${group.stop}`}
+                      tooltipComponent={() => <RegionTooltip region={group} />}
+                    >
+                      <g>
+                        <rect
+                          x={startX}
+                          y={22.5 + rowIndex * 20}
+                          width={groupWidth}
+                          height={15}
+                          fill='#d3d3d3'
+                          stroke='none'
+                        />
+                        <line
+                          x1={startX}
+                          y1={30 + rowIndex * 20}
+                          x2={stopX}
+                          y2={30 + rowIndex * 20}
+                          stroke='black'
+                          strokeWidth={1}
+                        />
+                        {group.stop - group.start === 0 ? (
+                          <circle
+                            cx={(startX + stopX) / 2}
+                            cy={30 + rowIndex * 20}
+                            r={4}
+                            fill={getColorForVariant(group.variants.variants[0].locus)}
+                            stroke='black'
+                          />
+                        ) : (
+                          <>
+                            {group.variants.variants.map((variant) => (
                               <circle
-                                cx={(startX + stopX) / 2}
+                                key={variant.locus}
+                                cx={scalePosition(variant.position.toString())}
                                 cy={30 + rowIndex * 20}
-                                r={5}
-                                fill={regionColor({ num_samples })}
+                                r={4}
+                                fill={getColorForVariant(variant.locus)}
                                 stroke='black'
                               />
-                            ) : (
-                              <>
-                                <rect
-                                  x={startX}
-                                  y={22.5 + rowIndex * 20}
-                                  width={groupWidth}
-                                  height={15}
-                                  fill={regionColor({ num_samples })}
-                                  stroke='black'
-                                />
-                                {group.variants.variants.map((variant) => (
-                                  <circle
-                                    key={variant.locus}
-                                    cx={scalePosition(variant.position.toString())}
-                                    cy={27 + rowIndex * 20 + 8 / 2} // Center the circles inside the rect
-                                    r={3}
-                                    fill='#000'
-                                  />
-                                ))}
-                              </>
-                            )}
-                          </g>
-                        </TooltipAnchor>
-                      )
-                    })
-                  )}
-                </svg>
-              </PlotWrapper>
-            </>
-          )
-        }}
+                            ))}
+                          </>
+                        )}
+                      </g>
+                    </TooltipAnchor>
+                  )
+                })}
+              </svg>
+            </PlotWrapper>
+          </>
+        )}
       </Track>
     </Wrapper>
   )
