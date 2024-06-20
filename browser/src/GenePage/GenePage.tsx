@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
@@ -273,6 +274,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const [includeUTRs, setIncludeUTRs] = useState(false)
   const [showTranscripts, setShowTranscripts] = useState(false)
   const [selectedTableName, setSelectedTableName] = useState<TableName>('constraint')
+  const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
@@ -309,6 +311,22 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const [zoomRegion, setZoomRegion] = useState(null)
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
+
+  useEffect(() => {
+    const fetchHaplotypeGroups = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8123/haplo?start=${gene.start}&stop=${gene.stop}`
+        )
+        const data = await response.json()
+        setHaplotypeGroups(data)
+      } catch (error) {
+        console.error('Error fetching haplotype groups:', error)
+      }
+    }
+
+    fetchHaplotypeGroups()
+  }, [gene.start, gene.stop])
 
   return (
     <TrackPage>
@@ -553,7 +571,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        <HaplotypeTrack />
+        {haplotypeGroups && <HaplotypeTrack haplotypeGroups={haplotypeGroups.groups} />}
+
         {/* eslint-disable-next-line no-nested-ternary */}
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />

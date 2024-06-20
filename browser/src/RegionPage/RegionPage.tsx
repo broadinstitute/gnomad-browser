@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
@@ -16,7 +16,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
-import HaplotypeTrack from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups } from '../Haplotypes'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -106,6 +106,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
 
+  const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
+
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
       start: ncc.start,
@@ -114,6 +116,20 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       obs_exp: ncc.oe,
     }
   }
+
+  useEffect(() => {
+    const fetchHaplotypeGroups = async () => {
+      try {
+        const response = await fetch(`http://localhost:8123/haplo?start=${start}&stop=${stop}`)
+        const data = await response.json()
+        setHaplotypeGroups(data)
+      } catch (error) {
+        console.error('Error fetching haplotype groups:', error)
+      }
+    }
+
+    fetchHaplotypeGroups()
+  }, [start, stop])
 
   return (
     <TrackPage>
@@ -175,7 +191,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
-        <HaplotypeTrack />
+        {haplotypeGroups && <HaplotypeTrack haplotypeGroups={haplotypeGroups.groups} />}
         {/* {variantsInRegion(datasetId, region)} */}
       </RegionViewer>
     </TrackPage>
