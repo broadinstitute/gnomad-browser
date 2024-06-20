@@ -2,6 +2,9 @@ import itertools
 
 import hail as hl
 
+# ruff doesn't like explicit comparisons to False, but we need them in here, so:
+# ruff: noqa: E712
+
 
 def x_position(chrom, position):
     contig_number = (
@@ -178,7 +181,7 @@ def import_svs_from_vcfs(vcf_path):
                 (
                     pop_id,
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False),
                         ds.info[f"N_HEMIALT_{pop_id}_XY"],
                         0,
                     ),
@@ -190,7 +193,7 @@ def import_svs_from_vcfs(vcf_path):
                 (
                     f"{pop_id}_XY",
                     hl.if_else(
-                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False),
+                        ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False),
                         ds.info[f"N_HEMIALT_{pop_id}_XY"],
                         0,
                     ),
@@ -201,7 +204,7 @@ def import_svs_from_vcfs(vcf_path):
             + [
                 (
                     "XY",
-                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.N_HEMIALT_XY, 0),
+                    hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.N_HEMIALT_XY, 0),
                 )
             ]
         )
@@ -211,7 +214,9 @@ def import_svs_from_vcfs(vcf_path):
         freq=ds.freq.annotate(
             hemizygote_count=hl.or_missing(
                 ds.type != "MCNV",
-                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par is False), ds.info.N_HEMIALT_XY, 0),
+                hl.if_else(
+                    ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.N_HEMIALT_XY, 0
+                ),  # noqa: E712
             ),
             populations=hl.if_else(
                 ds.type != "MCNV",
