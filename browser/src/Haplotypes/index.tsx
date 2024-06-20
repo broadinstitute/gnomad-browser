@@ -66,43 +66,50 @@ const LegendTooltip = () => (
   </>
 )
 
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 1em;
+`
 export const Legend = () => {
   const currentParams = queryString.parse(location.search)
 
   return (
     <LegendWrapper>
-      {currentParams.variant && (
-        <>
-          <span>Selected Variant</span>
-          <svg width={40} height={25}>
-            <rect x={10} y={0} width={2} height={20} fill='#000' />
-          </svg>
-        </>
-      )}
-      <span>
-        Allele count{' '}
-        <TooltipAnchor key='Legend' tooltipComponent={LegendTooltip}>
-          <img src={QuestionMarkIcon} height='12' alt='' aria-hidden='true' />
-        </TooltipAnchor>
-      </span>
-      <svg width={330} height={25}>
-        <text x={70} y={-4} fontSize='10' dy='1.2em'>
-          Rare
-        </text>
-        <rect x={95} y={0} width={40} height={10} stroke='#000' fill='#fee0b6' />
-        <rect x={135} y={0} width={40} height={10} stroke='#000' fill='#f1a340' />
-        <rect x={175} y={0} width={40} height={10} stroke='#000' fill='#b35806' />
-        <text x={220} y={-4} fontSize='10' dy='1.2em'>
-          More common
-        </text>
-        <text x={110} y={10} fontSize='10' dy='1.2em' textAnchor='middle' />
-        <text x={135} y={10} fontSize='10' dy='1.2em' textAnchor='middle'>
-          2
-        </text>
-        <text x={175} y={10} fontSize='10' dy='1.2em' textAnchor='middle'>
-          3
-        </text>
-      </svg>
+      <LegendItem>
+        <svg width={30} height={30}>
+          <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
+        </svg>
+        <span>Variant</span>
+      </LegendItem>
+      <LegendItem>
+        <svg width={30} height={30}>
+          <line
+            x1={15}
+            y1={5}
+            x2={15}
+            y2={25}
+            stroke='#FF0000'
+            strokeDasharray='4 2'
+            strokeWidth={4}
+          />
+        </svg>
+        <span>Insertion</span>
+      </LegendItem>
+      <LegendItem>
+        <svg width={30} height={30}>
+          <line
+            x1={15}
+            y1={5}
+            x2={15}
+            y2={25}
+            stroke='#0000FF'
+            strokeDasharray='4 2'
+            strokeWidth={4}
+          />
+        </svg>
+        <span>Deletion</span>
+      </LegendItem>
     </LegendWrapper>
   )
 }
@@ -188,7 +195,26 @@ const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
   </RegionAttributeList>
 )
 
+import { scaleLinear } from 'd3-scale'
+
 const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () => {
+  const maxSamples = (haplotypeGroups || []).reduce(
+    (max, group) => Math.max(max, group.samples.length),
+    0
+  )
+  const maxVariants = (haplotypeGroups || []).reduce(
+    (max, group) => Math.max(max, group.variants.variants.length),
+    0
+  )
+
+  const sampleColorScale = scaleLinear<string>()
+    .domain([0, maxSamples === 0 ? 1 : maxSamples])
+    .range(['#fee0b6', '#b35806'])
+
+  const variantColorScale = scaleLinear<string>()
+    .domain([0, maxVariants === 0 ? 1 : maxVariants])
+    .range(['#efefef', '#7f7f7f'])
+
   return (
     <SidePanel>
       {!haplotypeGroups ? (
@@ -196,17 +222,55 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
           <span>No haplogroups found</span>
         </div>
       ) : (
-        <svg width={200} height={haplotypeGroups.length * 20}>
-          {haplotypeGroups.map((group, index) => (
-            <text key={index} x={10} y={60 + index * 20} fontSize='12'>
-              {`${group.samples.length} Samples`}
+        <svg width={200} height={haplotypeGroups.length * 20 + 30}>
+          <g>
+            <text x={0} y={20} fontSize='12'>
+              Haplotypes
             </text>
+            <text x={0} y={37} fontSize='10'>
+              Samples
+            </text>
+            <text x={50} y={37} fontSize='10'>
+              Variants
+            </text>
+          </g>
+          {haplotypeGroups.map((group, index) => (
+            <g key={index}>
+              <circle
+                cx={5}
+                cy={60 + index * 20 - 5}
+                r={5}
+                fill={sampleColorScale(group.samples.length)}
+              />
+              <text x={15} y={60 + index * 20} fontSize='12'>
+                {group.samples.length}
+              </text>
+              <circle
+                cx={50}
+                cy={60 + index * 20 - 5}
+                r={5}
+                fill={variantColorScale(group.variants.variants.length)}
+              />
+              <text x={60} y={60 + index * 20} fontSize='12'>
+                {group.variants.variants.length}
+              </text>
+            </g>
           ))}
         </svg>
       )}
       <InfoButton topic='haplotypes' />
     </SidePanel>
   )
+}
+
+const variantColor = (variant: { num_variants: number }) => {
+  if (variant.num_variants > 2) {
+    return '#7f7f7f'
+  } else if (variant.num_variants > 1) {
+    return '#bfbfbf'
+  } else {
+    return '#efefef'
+  }
 }
 
 const SidePanel = styled.div`
