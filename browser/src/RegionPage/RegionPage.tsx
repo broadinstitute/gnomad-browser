@@ -130,11 +130,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (threshold: number) => {
       try {
-        const currentParams = queryString.parse(location.search)
-        const useThreshold = currentParams.useThreshold === 'true'
-        const url = useThreshold
-          ? `http://localhost:8124/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
-          : `http://localhost:8124/haplo?start=${start}&stop=${stop}`
+        const url = `http://localhost:8124/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
         const response = await fetch(url)
         const data = await response.json()
         setHaplotypeGroups(data)
@@ -214,7 +210,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             haplotypeGroups={haplotypeGroups.groups}
             start={start}
             stop={stop}
-            onMinAfChange={setThreshold} // Use the minAfThreshold function from HaplotypeTrack
+            onMinAfChange={setThreshold}
           />
         )}
         {/* {variantsInRegion(datasetId, region)} */}

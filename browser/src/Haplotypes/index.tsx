@@ -48,10 +48,11 @@ export function regionColor(region: { num_samples: number }) {
 
 const LegendWrapper = styled.div`
   display: flex;
+  align-items: center;
 
   @media (max-width: 600px) {
     flex-direction: column;
-    align-items: center;
+    justify-content: center;
   }
 `
 const LegendItem = styled.div`
@@ -67,7 +68,7 @@ export const Legend = ({
   onColorModeChange?: (mode: string) => void
 }) => {
   const [threshold, setThreshold] = useState(0)
-  const [colorMode, setColorMode] = useState('hash')
+  const [colorMode, setColorMode] = useState('log_af')
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newThreshold = parseFloat(event.target.value)
@@ -84,11 +85,37 @@ export const Legend = ({
   return (
     <LegendWrapper>
       <LegendItem>
+        <span>Phased variants:</span>
+      </LegendItem>
+      <LegendItem>
         <svg width={30} height={30}>
           <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
         </svg>
-        <span>Phased variants (colors by {colorMode})</span>
+        <span>
+          {' '}
+          SNVs (colored by{' '}
+          {colorMode === 'log_af' ? 'allele frequency' : 'randomly by allele ID hash'})
+        </span>
       </LegendItem>
+      {colorMode === 'log_af' && (
+        <LegendItem>
+          <svg width={100} height={20}>
+            <defs>
+              <linearGradient id='logAfGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0%' style={{ stopColor: '#d3d3d3', stopOpacity: 1 }} />
+                <stop offset='100%' style={{ stopColor: '#424242', stopOpacity: 1 }} />
+              </linearGradient>
+            </defs>
+            <rect x='20' y='5' width='60' height='10' fill='url(#logAfGradient)' />
+            <text x='10' y='15' fontSize='10' textAnchor='middle'>
+              0.1
+            </text>
+            <text x='85' y='15' fontSize='10' textAnchor='middle'>
+              1
+            </text>
+          </svg>
+        </LegendItem>
+      )}
       <LegendItem>
         <svg width={30} height={30}>
           <line
@@ -96,7 +123,7 @@ export const Legend = ({
             y1={5}
             x2={15}
             y2={25}
-            stroke='#FF0000'
+            stroke='rgba(0, 122, 255, 0.8)'
             strokeDasharray='4 2'
             strokeWidth={4}
           />
@@ -110,15 +137,24 @@ export const Legend = ({
             y1={5}
             x2={15}
             y2={25}
-            stroke='#0000FF'
+            stroke='rgba(255, 69, 58, 0.8)'
             strokeDasharray='4 2'
             strokeWidth={4}
           />
         </svg>
         <span>Deletion</span>
       </LegendItem>
-      <div style={{ minWidth: '300px', marginLeft: '50px' }}>
-        <label htmlFor='threshold-slider'>Min AF:</label>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          minWidth: '300px',
+          marginLeft: '50px',
+        }}
+      >
+        <label htmlFor='threshold-slider'>Mininum variant AF:</label>
         <input
           type='range'
           id='threshold-slider'
@@ -133,7 +169,7 @@ export const Legend = ({
       <div style={{ marginLeft: '20px' }}>
         <label htmlFor='color-mode-select'>Color by:</label>
         <select id='color-mode-select' value={colorMode} onChange={handleColorModeChange}>
-          <option value='hash'>Hash</option>
+          <option value='hash'>Allele ID</option>
           <option value='log_af'>Log AF</option>
         </select>
       </div>
@@ -203,18 +239,6 @@ const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
       <dt>Variant Count:</dt>
       <dd>{group.variants.variants.length}</dd>
     </div>
-    {group.variants.variants.map((variant) => (
-      <div key={`${group.hash}-${variant.position}-${variant.alleles.join('-')}`}>
-        <dt>Variant Position:</dt>
-        <dd>{variant.position}</dd>
-        <dt>Alleles:</dt>
-        <dd>
-          {variant.alleles.join(', ').length > 5
-            ? variant.alleles.join(', ').substring(0, 5) + '...'
-            : variant.alleles.join(', ')}
-        </dd>
-      </div>
-    ))}
     <div>
       <dt>Sample IDs:</dt>
       <dd>{group.samples.map((sample) => sample.sample_id).join(', ')}</dd>
@@ -306,16 +330,19 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
       ) : (
         <svg width={200} height={(haplotypeGroups.length + 1) * 20 + 30}>
           <g>
-            <text x={0} y={20} fontSize='12'>
-              {`Haplotypes (${haplotypeGroups.length})`}
+            <text x={0} y={9} fontSize='12'>
+              Unique haplotypes
             </text>
-            <text x={0} y={34} fontSize='10'>
+            <text x={0} y={21} fontSize='12'>
+              {`in region (${haplotypeGroups.length})`}
+            </text>
+            <text x={0} y={36} fontSize='10'>
               {`Samples `}
               <tspan x={0} dy={12} fontSize='8'>
                 ({haplotypeGroups.reduce((sum, group) => sum + group.samples.length, 0)})
               </tspan>
             </text>
-            <text x={50} y={34} fontSize='10'>
+            <text x={50} y={36} fontSize='10'>
               {`Variants `}
               <tspan x={50} dy={12} fontSize='8'>
                 (
@@ -395,7 +422,9 @@ const getColorForVariantByHash = (variantId: string) => {
     const seed = variantId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)
     const hash = (seed * 9301 + 49297) % 233280
     const hue = hash % 360
-    const color = `hsl(${hue}, 100%, 50%)`
+    const saturation = 70 + (hash % 30) // Saturation between 70% and 100%
+    const lightness = 40 + (hash % 20) // Lightness between 40% and 60%
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     variantColors[variantId] = color
   }
   return variantColors[variantId]
@@ -408,14 +437,14 @@ const getColorForVariantByAf = (af: number) => {
 }
 
 const HaplotypeTrack = ({
-  height = 2500,
+  height,
   haplotypeGroups,
   start,
   stop,
   onMinAfChange,
   onColorModeChange,
 }: HaplotypeTrackProps) => {
-  const [colorMode, setColorMode] = useState('hash')
+  const [colorMode, setColorMode] = useState('log_af')
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -450,7 +479,7 @@ const HaplotypeTrack = ({
 
   const currentParams = queryString.parse(location.search)
   let variantId = currentParams.variant as string
-  const dynamicHeight = haplotypeGroups.length * 25
+  const dynamicHeight = haplotypeGroups.length * 21 + 7
 
   console.log(haplotypeGroups)
 
@@ -495,7 +524,7 @@ const HaplotypeTrack = ({
                         y={22.5 + rowIndex * 20}
                         width={groupWidth}
                         height={15}
-                        fill='#d3d3d3'
+                        fill='#e0e0e0'
                         stroke='none'
                       />
                       <line
@@ -516,12 +545,12 @@ const HaplotypeTrack = ({
                           color = getColorForVariantByAf(variant.info_AF[0])
                         }
 
-                        if (variant.info_SVTYPE === 'DEL' && variant.info_SVLEN > 5) {
+                        if (variant.info_SVTYPE === 'DEL') {
                           isDottedLine = true
-                          color = '#FF0000'
-                        } else if (variant.info_SVTYPE === 'INS' && variant.info_SVLEN > 5) {
+                          color = 'rgba(255, 69, 58, 0.8)' // stylish red with transparency
+                        } else if (variant.info_SVTYPE === 'INS') {
                           isDottedLine = true
-                          color = '#0000FF'
+                          color = 'rgba(0, 122, 255, 0.8)' // stylish blue with transparency
                         }
 
                         return (
@@ -537,7 +566,7 @@ const HaplotypeTrack = ({
                                 y2={37.5 + rowIndex * 20}
                                 stroke={color}
                                 strokeDasharray='4 2'
-                                strokeWidth={4}
+                                strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} // Scale strokeWidth based on SV length, capped at 6px
                               />
                             ) : (
                               <circle
