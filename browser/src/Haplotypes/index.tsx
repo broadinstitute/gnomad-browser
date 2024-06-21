@@ -45,10 +45,6 @@ export function regionColor(region: { num_samples: number }) {
   }
 }
 
-const computeNumSamples = (group: HaplotypeGroup) => {
-  return group.samples.length
-}
-
 const LegendWrapper = styled.div`
   display: flex;
 
@@ -57,21 +53,12 @@ const LegendWrapper = styled.div`
     align-items: center;
   }
 `
-
-const LegendTooltip = () => (
-  <>
-    {`The sample count ranges from 0 to 100. Sample count > 40 (red) and sample count > 20 (yellow) represent regions with more samples.`}
-  </>
-)
-
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
   margin-right: 1em;
 `
 export const Legend = () => {
-  const currentParams = queryString.parse(location.search)
-
   return (
     <LegendWrapper>
       <LegendItem>
@@ -112,9 +99,6 @@ export const Legend = () => {
   )
 }
 
-const renderNumber = (number: number | null | undefined) =>
-  number === undefined || number === null ? '-' : number.toPrecision(4)
-
 type Variant = {
   locus: string
   position: number
@@ -127,6 +111,8 @@ type Variant = {
   info_AC: number
   info_CM: number[]
   info_AN: number
+  info_SVTYPE: string
+  info_SVLEN: number
   GT_alleles: number[]
   GT_phased: boolean
 }
@@ -146,6 +132,7 @@ type HaplotypeGroup = {
   variants: VariantSet
   start: number
   stop: number
+  hash: number
 }
 
 type HaplotypeGroups = {
@@ -274,16 +261,6 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
   )
 }
 
-const variantColor = (variant: { num_variants: number }) => {
-  if (variant.num_variants > 2) {
-    return '#7f7f7f'
-  } else if (variant.num_variants > 1) {
-    return '#bfbfbf'
-  } else {
-    return '#efefef'
-  }
-}
-
 const SidePanel = styled.div`
   display: flex;
   align-items: flex-start;
@@ -351,6 +328,8 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
   let variantId = currentParams.variant as string
   const dynamicHeight = haplotypeGroups.length * 25
 
+  console.log(haplotypeGroups)
+
   return (
     <Wrapper>
       <Track renderLeftPanel={renderTrackLeftPanel(haplotypeGroups)}>
@@ -384,7 +363,6 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
                   const startX = scalePosition(group.start.toString())
                   const stopX = scalePosition(group.stop.toString())
                   const groupWidth = stopX - startX
-                  const num_samples = computeNumSamples(group)
 
                   return (
                     <TooltipAnchor
@@ -410,15 +388,13 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
                         />
                         {group.variants.variants.map((variant) => {
                           let isDottedLine = false
-                          const refLength = variant.alleles[0].length
-                          const altLength = variant.alleles[1].length
                           let color = getColorForVariant(variant.locus)
 
-                          if (refLength > 5) {
+                          if (variant.info_SVTYPE === 'DEL' && variant.info_SVLEN > 5) {
                             // Deletion
                             isDottedLine = true
                             color = '#FF0000' // Red
-                          } else if (altLength > 5) {
+                          } else if (variant.info_SVTYPE === 'INS' && variant.info_SVLEN > 5) {
                             // Insertion
                             isDottedLine = true
                             color = '#0000FF' // Blue

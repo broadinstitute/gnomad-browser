@@ -120,7 +120,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   useEffect(() => {
     const fetchHaplotypeGroups = async () => {
       try {
-        const response = await fetch(`http://localhost:8123/haplo?start=${start}&stop=${stop}`)
+        const response = await fetch(`http://localhost:8124/haplo?start=${start}&stop=${stop}`)
         const data = await response.json()
         setHaplotypeGroups(data)
       } catch (error) {
