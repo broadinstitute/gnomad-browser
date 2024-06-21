@@ -384,10 +384,12 @@ const StatsPage = () => {
             Inferred sex in gnomAD v4 per genetic ancestry group
           </h3>
 
+          <h4 style={{ marginBottom: '2em' }}>gnomAD v4</h4>
           <ResponsiveTable style={{ marginBottom: '6em' }}>
             <InferredSexAllV4Table />
           </ResponsiveTable>
 
+          <h4 style={{ marginBottom: '2em' }}>gnomAD v4 non-UKB</h4>
           <ResponsiveTable style={{ marginBottom: '3em' }}>
             <InferredSexNonUKBV4Table />
           </ResponsiveTable>

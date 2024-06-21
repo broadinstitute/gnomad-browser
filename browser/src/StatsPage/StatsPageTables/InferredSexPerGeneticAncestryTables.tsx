@@ -147,7 +147,7 @@ export const InferredSexNonUKBV4Table = () => {
         <StatsTableCaption>
           <div>
             Inferred sex counts of the gnomAD v4 samples per genetic ancestry group not including UK
-            Bio Bank samples
+            Biobank samples
           </div>
         </StatsTableCaption>
       </StatsTable>

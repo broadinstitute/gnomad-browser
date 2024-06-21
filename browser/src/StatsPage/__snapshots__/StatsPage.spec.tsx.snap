@@ -7596,6 +7596,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
       >
         Inferred sex in gnomAD v4 per genetic ancestry group
       </h3>
+      <h4
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        gnomAD v4
+      </h4>
       <div
         className="c36"
         style={
@@ -8155,6 +8164,15 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
         </div>
       </div>
+      <h4
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        gnomAD v4 non-UKB
+      </h4>
       <div
         className="c36"
         style={
@@ -8403,7 +8421,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c42"
             >
               <div>
-                Inferred sex counts of the gnomAD v4 samples per genetic ancestry group not including UK Bio Bank samples
+                Inferred sex counts of the gnomAD v4 samples per genetic ancestry group not including UK Biobank samples
               </div>
             </caption>
           </table>
