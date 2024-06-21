@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import queryString from 'query-string'
 import { Track } from '@gnomad/region-viewer'
@@ -59,14 +59,26 @@ const LegendItem = styled.div`
   align-items: center;
   margin-right: 1em;
 `
-export const Legend = () => {
+export const Legend = ({
+  onMinAfChange = () => {},
+}: {
+  onMinAfChange?: (threshold: number) => void
+}) => {
+  const [threshold, setThreshold] = useState(0)
+
+  const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newThreshold = parseFloat(event.target.value)
+    setThreshold(newThreshold)
+    onMinAfChange(newThreshold)
+  }
+
   return (
     <LegendWrapper>
       <LegendItem>
         <svg width={30} height={30}>
           <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
         </svg>
-        <span>Phased variants (unique colors for each allele)</span>
+        <span>Phased variants (unique colors for each ID)</span>
       </LegendItem>
       <LegendItem>
         <svg width={30} height={30}>
@@ -96,6 +108,19 @@ export const Legend = () => {
         </svg>
         <span>Deletion</span>
       </LegendItem>
+      <div style={{ minWidth: '300px', marginLeft: '50px' }}>
+        <label htmlFor='threshold-slider'>Min AF:</label>
+        <input
+          type='range'
+          id='threshold-slider'
+          min='0'
+          max='1'
+          step='0.01'
+          value={threshold}
+          onChange={handleThresholdChange}
+        />
+        <span>{threshold.toFixed(2)}</span>
+      </div>
     </LegendWrapper>
   )
 }
@@ -163,7 +188,7 @@ const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
       <dd>{region.variants.variants.length}</dd>
     </div>
     {region.variants.variants.map((variant) => (
-      <div key={variant.position}>
+      <div key={`${region.hash}-${variant.position}-${variant.alleles.join('-')}`}>
         <dt>Variant Position:</dt>
         <dd>{variant.position}</dd>
         <dt>Alleles:</dt>
@@ -291,10 +316,10 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
           </g>
           {haplotypeGroups.map((group, index) => (
             <TooltipAnchor
-              key={group.hash}
+              key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
               tooltipComponent={() => <RegionTooltip region={group} />}
             >
-              <g key={index}>
+              <g>
                 <circle
                   cx={5}
                   cy={60 + index * 20 - 5}
@@ -345,6 +370,7 @@ type HaplotypeTrackProps = {
   start: number
   stop: number
   haplotypeGroups: HaplotypeGroup[] | null
+  onMinAfChange?: (threshold: number) => {}
 }
 
 const variantColors: Record<string, string> = {}
@@ -361,7 +387,13 @@ const getColorForVariant = (variantId: string) => {
   return variantColors[variantId]
 }
 
-const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: HaplotypeTrackProps) => {
+const HaplotypeTrack = ({
+  height = 2500,
+  haplotypeGroups,
+  start,
+  stop,
+  onMinAfChange,
+}: HaplotypeTrackProps) => {
   if (!haplotypeGroups) {
     return (
       <Wrapper>
@@ -397,7 +429,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
         {({ scalePosition, width }: TrackProps) => (
           <>
             <TopPanel>
-              <Legend />
+              <Legend onMinAfChange={onMinAfChange} />
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
@@ -459,7 +491,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
 
                         return (
                           <TooltipAnchor
-                            key={variant.locus}
+                            key={`${group.hash}-${variant.locus}-${variant.alleles.join('-')}`}
                             tooltipComponent={() => <VariantTooltip variant={variant} />}
                           >
                             {isDottedLine ? (

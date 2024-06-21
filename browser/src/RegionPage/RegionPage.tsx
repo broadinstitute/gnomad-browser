@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
-
 import { Badge } from '@gnomad/ui'
-
+import queryString from 'query-string'
 import {
   DatasetId,
   labelForDataset,
@@ -20,7 +19,6 @@ import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups } from '../Haplotypes'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
-
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
 import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
@@ -31,6 +29,7 @@ import RegionInfo from './RegionInfo'
 import RegularVariantsInRegion from './VariantsInRegion'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
 import CopyNumberVariantsInRegion from './CopyNumberVariantsInRegion'
+import { debounce } from 'lodash'
 
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
@@ -52,6 +51,17 @@ const RegionInfoColumnWrapper = styled.div`
 const RegionControlsWrapper = styled.div`
   @media (min-width: 1201px) {
     margin-top: 1em;
+  }
+`
+
+const SliderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+
+  input {
+    margin-left: 10px;
+    flex-grow: 1;
   }
 `
 
@@ -99,7 +109,6 @@ const variantsInRegion = (datasetId: DatasetId, region: Region) => {
 
 const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const { chrom, start, stop } = region
-
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
 
@@ -107,6 +116,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const regionViewerWidth = windowWidth - 30
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
+  const [threshold, setThreshold] = useState(0)
 
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
@@ -117,19 +127,27 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
     }
   }
 
-  useEffect(() => {
-    const fetchHaplotypeGroups = async () => {
+  const debouncedFetchHaplotypeGroups = useCallback(
+    debounce(async (threshold: number) => {
       try {
-        const response = await fetch(`http://localhost:8124/haplo?start=${start}&stop=${stop}`)
+        const currentParams = queryString.parse(location.search)
+        const useThreshold = currentParams.useThreshold === 'true'
+        const url = useThreshold
+          ? `http://localhost:8124/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
+          : `http://localhost:8124/haplo?start=${start}&stop=${stop}`
+        const response = await fetch(url)
         const data = await response.json()
         setHaplotypeGroups(data)
       } catch (error) {
         console.error('Error fetching haplotype groups:', error)
       }
-    }
+    }, 300),
+    [start, stop]
+  )
 
-    fetchHaplotypeGroups()
-  }, [start, stop])
+  useEffect(() => {
+    debouncedFetchHaplotypeGroups(threshold)
+  }, [start, stop, threshold, debouncedFetchHaplotypeGroups])
 
   return (
     <TrackPage>
@@ -192,7 +210,12 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
 
         <GenesInRegionTrack genes={region.genes} region={region} />
         {haplotypeGroups && (
-          <HaplotypeTrack haplotypeGroups={haplotypeGroups.groups} start={start} stop={stop} />
+          <HaplotypeTrack
+            haplotypeGroups={haplotypeGroups.groups}
+            start={start}
+            stop={stop}
+            onMinAfChange={setThreshold} // Use the minAfThreshold function from HaplotypeTrack
+          />
         )}
         {/* {variantsInRegion(datasetId, region)} */}
       </RegionViewer>
