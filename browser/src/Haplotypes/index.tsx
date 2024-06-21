@@ -3,9 +3,7 @@ import styled from 'styled-components'
 import queryString from 'query-string'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
-import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-circle.svg'
 import Link from '../Link'
-import InfoButton from '../help/InfoButton'
 
 const Wrapper = styled.div`
   display: flex;
@@ -80,7 +78,7 @@ export const Legend = () => {
         <svg width={30} height={30}>
           <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
         </svg>
-        <span>Variant</span>
+        <span>In-phase variant</span>
       </LegendItem>
       <LegendItem>
         <svg width={30} height={30}>
@@ -225,13 +223,27 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
         <svg width={200} height={haplotypeGroups.length * 20 + 30}>
           <g>
             <text x={0} y={20} fontSize='12'>
-              Haplotypes
+              {`Haplotypes (${haplotypeGroups.length})`}
             </text>
-            <text x={0} y={37} fontSize='10'>
-              Samples
+            <text x={0} y={34} fontSize='10'>
+              {`Samples `}
+              <tspan x={0} dy={12} fontSize='8'>
+                ({haplotypeGroups.reduce((sum, group) => sum + group.samples.length, 0)})
+              </tspan>
             </text>
-            <text x={50} y={37} fontSize='10'>
-              Variants
+            <text x={50} y={34} fontSize='10'>
+              {`Variants `}
+              <tspan x={50} dy={12} fontSize='8'>
+                (
+                {
+                  new Set(
+                    haplotypeGroups.flatMap((group) =>
+                      group.variants.variants.map((variant) => variant.locus)
+                    )
+                  ).size
+                }
+                )
+              </tspan>
             </text>
           </g>
           {haplotypeGroups.map((group, index) => (
@@ -258,7 +270,6 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
           ))}
         </svg>
       )}
-      <InfoButton topic='haplotypes' />
     </SidePanel>
   )
 }
@@ -291,7 +302,7 @@ type TrackProps = {
   width: number
 }
 
-type OwnRegionalConstraintTrackProps = {
+type HaplotypeTrackProps = {
   height?: number
   start: number
   stop: number
@@ -312,7 +323,7 @@ const getColorForVariant = (variantId: string) => {
   return variantColors[variantId]
 }
 
-const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstraintTrackProps) => {
+const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: HaplotypeTrackProps) => {
   if (!haplotypeGroups) {
     return (
       <Wrapper>
@@ -332,6 +343,9 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstrain
       </Wrapper>
     )
   }
+
+  const regionSize = stop - start
+  const variantCircleRadius = regionSize > 100000 ? 2 : 4
 
   const currentParams = queryString.parse(location.search)
   let variantId = currentParams.variant as string
@@ -426,7 +440,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups }: OwnRegionalConstrain
                               key={variant.locus}
                               cx={scalePosition(variant.position.toString())}
                               cy={30 + rowIndex * 20}
-                              r={4}
+                              r={variantCircleRadius}
                               fill={color}
                               stroke='black'
                             />

@@ -191,7 +191,9 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         )}
 
         <GenesInRegionTrack genes={region.genes} region={region} />
-        {haplotypeGroups && <HaplotypeTrack haplotypeGroups={haplotypeGroups.groups} />}
+        {haplotypeGroups && (
+          <HaplotypeTrack haplotypeGroups={haplotypeGroups.groups} start={start} stop={stop} />
+        )}
         {/* {variantsInRegion(datasetId, region)} */}
       </RegionViewer>
     </TrackPage>
