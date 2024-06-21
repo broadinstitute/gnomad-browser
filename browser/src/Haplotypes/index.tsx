@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import queryString from 'query-string'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import Link from '../Link'
-import { scaleLinear } from 'd3-scale'
+import { scaleLinear, scaleLog } from 'd3-scale'
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,15 +61,24 @@ const LegendItem = styled.div`
 `
 export const Legend = ({
   onMinAfChange = () => {},
+  onColorModeChange = () => {},
 }: {
   onMinAfChange?: (threshold: number) => void
+  onColorModeChange?: (mode: string) => void
 }) => {
   const [threshold, setThreshold] = useState(0)
+  const [colorMode, setColorMode] = useState('hash')
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newThreshold = parseFloat(event.target.value)
     setThreshold(newThreshold)
     onMinAfChange(newThreshold)
+  }
+
+  const handleColorModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newColorMode = event.target.value
+    setColorMode(newColorMode)
+    onColorModeChange(newColorMode)
   }
 
   return (
@@ -78,7 +87,7 @@ export const Legend = ({
         <svg width={30} height={30}>
           <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
         </svg>
-        <span>Phased variants (unique colors for each ID)</span>
+        <span>Phased variants (colors by {colorMode})</span>
       </LegendItem>
       <LegendItem>
         <svg width={30} height={30}>
@@ -120,6 +129,13 @@ export const Legend = ({
           onChange={handleThresholdChange}
         />
         <span>{threshold.toFixed(2)}</span>
+      </div>
+      <div style={{ marginLeft: '20px' }}>
+        <label htmlFor='color-mode-select'>Color by:</label>
+        <select id='color-mode-select' value={colorMode} onChange={handleColorModeChange}>
+          <option value='hash'>Hash</option>
+          <option value='log_af'>Log AF</option>
+        </select>
       </div>
     </LegendWrapper>
   )
@@ -165,30 +181,30 @@ type HaplotypeGroups = {
   groups: HaplotypeGroup[]
 }
 
-const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
+const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
   <RegionAttributeList>
     <div>
       <dt>Start:</dt>
-      <dd>{region.start}</dd>
+      <dd>{group.start}</dd>
     </div>
     <div>
       <dt>Stop:</dt>
-      <dd>{region.stop}</dd>
+      <dd>{group.stop}</dd>
     </div>
     <div>
       <dt>Num Samples:</dt>
-      <dd>{region.samples.length}</dd>
+      <dd>{group.samples.length}</dd>
     </div>
     <div>
       <dt>Size:</dt>
-      <dd>{region.stop - region.start}</dd>
+      <dd>{group.stop - group.start}</dd>
     </div>
     <div>
       <dt>Variant Count:</dt>
-      <dd>{region.variants.variants.length}</dd>
+      <dd>{group.variants.variants.length}</dd>
     </div>
-    {region.variants.variants.map((variant) => (
-      <div key={`${region.hash}-${variant.position}-${variant.alleles.join('-')}`}>
+    {group.variants.variants.map((variant) => (
+      <div key={`${group.hash}-${variant.position}-${variant.alleles.join('-')}`}>
         <dt>Variant Position:</dt>
         <dd>{variant.position}</dd>
         <dt>Alleles:</dt>
@@ -201,7 +217,7 @@ const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
     ))}
     <div>
       <dt>Sample IDs:</dt>
-      <dd>{region.samples.map((sample) => sample.sample_id).join(', ')}</dd>
+      <dd>{group.samples.map((sample) => sample.sample_id).join(', ')}</dd>
     </div>
   </RegionAttributeList>
 )
@@ -288,7 +304,7 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
           <span>No haplogroups found</span>
         </div>
       ) : (
-        <svg width={200} height={haplotypeGroups.length * 20 + 30}>
+        <svg width={200} height={(haplotypeGroups.length + 1) * 20 + 30}>
           <g>
             <text x={0} y={20} fontSize='12'>
               {`Haplotypes (${haplotypeGroups.length})`}
@@ -314,33 +330,31 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
               </tspan>
             </text>
           </g>
-          {haplotypeGroups.map((group, index) => (
-            <TooltipAnchor
-              key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
-              tooltipComponent={() => <RegionTooltip region={group} />}
-            >
-              <g>
-                <circle
-                  cx={5}
-                  cy={60 + index * 20 - 5}
-                  r={5}
-                  fill={sampleColorScale(group.samples.length)}
-                />
-                <text x={15} y={60 + index * 20} fontSize='12'>
-                  {group.samples.length}
-                </text>
-                <circle
-                  cx={50}
-                  cy={60 + index * 20 - 5}
-                  r={5}
-                  fill={variantColorScale(group.variants.variants.length)}
-                />
-                <text x={60} y={60 + index * 20} fontSize='12'>
-                  {group.variants.variants.length}
-                </text>
-              </g>
-            </TooltipAnchor>
-          ))}
+          {haplotypeGroups.map((group, index) => {
+            const y = 63 + index * 20
+            return (
+              <TooltipAnchor
+                key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
+                tooltipComponent={() => <HaplotypeGroupTooltip group={group} />}
+              >
+                <g>
+                  <circle cx={5} cy={y} r={5} fill={sampleColorScale(group.samples.length)} />
+                  <text x={15} y={y + 5} fontSize='12'>
+                    {group.samples.length}
+                  </text>
+                  <circle
+                    cx={50}
+                    cy={y}
+                    r={5}
+                    fill={variantColorScale(group.variants.variants.length)}
+                  />
+                  <text x={60} y={y + 5} fontSize='12'>
+                    {group.variants.variants.length}
+                  </text>
+                </g>
+              </TooltipAnchor>
+            )
+          })}
         </svg>
       )}
     </SidePanel>
@@ -370,15 +384,15 @@ type HaplotypeTrackProps = {
   start: number
   stop: number
   haplotypeGroups: HaplotypeGroup[] | null
-  onMinAfChange?: (threshold: number) => {}
+  onMinAfChange?: (threshold: number) => void
+  onColorModeChange?: (mode: string) => void
 }
 
 const variantColors: Record<string, string> = {}
 
-const getColorForVariant = (variantId: string) => {
+const getColorForVariantByHash = (variantId: string) => {
   if (!variantColors[variantId]) {
     const seed = variantId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)
-    // Use a simple hash function for more randomness
     const hash = (seed * 9301 + 49297) % 233280
     const hue = hash % 360
     const color = `hsl(${hue}, 100%, 50%)`
@@ -387,13 +401,30 @@ const getColorForVariant = (variantId: string) => {
   return variantColors[variantId]
 }
 
+const getColorForVariantByAf = (af: number) => {
+  const afScale = scaleLog<string>().domain([0.1, 1]).range(['#d3d3d3', '#424242']).clamp(true)
+
+  return afScale(af)
+}
+
 const HaplotypeTrack = ({
   height = 2500,
   haplotypeGroups,
   start,
   stop,
   onMinAfChange,
+  onColorModeChange,
 }: HaplotypeTrackProps) => {
+  const [colorMode, setColorMode] = useState('hash')
+
+  const handleColorModeChange = useCallback(
+    (mode: string) => {
+      setColorMode(mode)
+      onColorModeChange && onColorModeChange(mode)
+    },
+    [onColorModeChange]
+  )
+
   if (!haplotypeGroups) {
     return (
       <Wrapper>
@@ -429,7 +460,7 @@ const HaplotypeTrack = ({
         {({ scalePosition, width }: TrackProps) => (
           <>
             <TopPanel>
-              <Legend onMinAfChange={onMinAfChange} />
+              <Legend onMinAfChange={onMinAfChange} onColorModeChange={handleColorModeChange} />
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
@@ -477,16 +508,20 @@ const HaplotypeTrack = ({
                       />
                       {group.variants.variants.map((variant) => {
                         let isDottedLine = false
-                        let color = getColorForVariant(variant.locus)
+                        let color
+
+                        if (colorMode === 'hash') {
+                          color = getColorForVariantByHash(variant.locus)
+                        } else {
+                          color = getColorForVariantByAf(variant.info_AF[0])
+                        }
 
                         if (variant.info_SVTYPE === 'DEL' && variant.info_SVLEN > 5) {
-                          // Deletion
                           isDottedLine = true
-                          color = '#FF0000' // Red
+                          color = '#FF0000'
                         } else if (variant.info_SVTYPE === 'INS' && variant.info_SVLEN > 5) {
-                          // Insertion
                           isDottedLine = true
-                          color = '#0000FF' // Blue
+                          color = '#0000FF'
                         }
 
                         return (
