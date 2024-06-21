@@ -8,7 +8,7 @@ While we hope gnomAD exists for decades to come, we recognize the importance of 
 
 ## gnomAD Open Science Policy
 
-The gnomAD team has a firm commitment to open science. This includes, but is not limited to, making our data and code open-source, posting pre-prints, and prioritizing publishing in journals that support open access. However, we ask that you refrain from using the name "gnomAD"/"Genome Aggregation Database" or the gnomAD logo without permission.
+The gnomAD team has a firm commitment to open science. This includes, but is not limited to, making our data and code open-source, posting pre-prints, and prioritizing publishing in journals that support open access.
 
 ## Data Generation
 
