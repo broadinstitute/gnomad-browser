@@ -4,6 +4,7 @@ import queryString from 'query-string'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import Link from '../Link'
+import { scaleLinear } from 'd3-scale'
 
 const Wrapper = styled.div`
   display: flex;
@@ -65,7 +66,7 @@ export const Legend = () => {
         <svg width={30} height={30}>
           <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
         </svg>
-        <span>In-phase variant</span>
+        <span>Phased variants (unique colors for each allele)</span>
       </LegendItem>
       <LegendItem>
         <svg width={30} height={30}>
@@ -180,7 +181,62 @@ const RegionTooltip = ({ region }: { region: HaplotypeGroup }) => (
   </RegionAttributeList>
 )
 
-import { scaleLinear } from 'd3-scale'
+const VariantTooltip = ({ variant }: { variant: Variant }) => (
+  <RegionAttributeList>
+    <div>
+      <dt>Position:</dt>
+      <dd>{variant.position}</dd>
+    </div>
+    <div>
+      <dt>Ref:</dt>
+      <dd>
+        {variant.alleles[0].length > 10
+          ? variant.alleles[0].substring(0, 10) + '...'
+          : variant.alleles[0]}
+      </dd>
+    </div>
+    <div>
+      <dt>Alt:</dt>
+      <dd>
+        {variant.alleles[1].length > 10
+          ? variant.alleles[1].substring(0, 10) + '...'
+          : variant.alleles[1]}
+      </dd>
+    </div>
+    <div>
+      <dt>RSID:</dt>
+      <dd>{variant.rsid.length > 10 ? `${variant.rsid.substring(0, 10)}...` : variant.rsid}</dd>
+    </div>
+    <div>
+      <dt>SVTYPE:</dt>
+      <dd>{variant.info_SVTYPE}</dd>
+    </div>
+    <div>
+      <dt>SVLEN:</dt>
+      <dd>{variant.info_SVLEN}</dd>
+    </div>
+    <div>
+      <dt>Quality:</dt>
+      <dd>{variant.qual}</dd>
+    </div>
+    <div>
+      <dt>Allele Frequency:</dt>
+      <dd>{variant.info_AF.join(', ')}</dd>
+    </div>
+    <div>
+      <dt>Allele Count:</dt>
+      <dd>{variant.info_AC}</dd>
+    </div>
+    {/* <div> */}
+    {/*   <dt>Sample Alleles:</dt> */}
+    {/*   <dd>{variant.GT_alleles.join(', ')}</dd> */}
+    {/* </div> */}
+    <div>
+      <dt>Phased:</dt>
+      <dd>{variant.GT_phased ? 'Yes' : 'No'}</dd>
+    </div>
+  </RegionAttributeList>
+)
 
 const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () => {
   const maxSamples = (haplotypeGroups || []).reduce(
@@ -234,26 +290,31 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
             </text>
           </g>
           {haplotypeGroups.map((group, index) => (
-            <g key={index}>
-              <circle
-                cx={5}
-                cy={60 + index * 20 - 5}
-                r={5}
-                fill={sampleColorScale(group.samples.length)}
-              />
-              <text x={15} y={60 + index * 20} fontSize='12'>
-                {group.samples.length}
-              </text>
-              <circle
-                cx={50}
-                cy={60 + index * 20 - 5}
-                r={5}
-                fill={variantColorScale(group.variants.variants.length)}
-              />
-              <text x={60} y={60 + index * 20} fontSize='12'>
-                {group.variants.variants.length}
-              </text>
-            </g>
+            <TooltipAnchor
+              key={group.hash}
+              tooltipComponent={() => <RegionTooltip region={group} />}
+            >
+              <g key={index}>
+                <circle
+                  cx={5}
+                  cy={60 + index * 20 - 5}
+                  r={5}
+                  fill={sampleColorScale(group.samples.length)}
+                />
+                <text x={15} y={60 + index * 20} fontSize='12'>
+                  {group.samples.length}
+                </text>
+                <circle
+                  cx={50}
+                  cy={60 + index * 20 - 5}
+                  r={5}
+                  fill={variantColorScale(group.variants.variants.length)}
+                />
+                <text x={60} y={60 + index * 20} fontSize='12'>
+                  {group.variants.variants.length}
+                </text>
+              </g>
+            </TooltipAnchor>
           ))}
         </svg>
       )}
@@ -365,65 +426,65 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
                   const groupWidth = stopX - startX
 
                   return (
-                    <TooltipAnchor
-                      key={group.hash}
-                      tooltipComponent={() => <RegionTooltip region={group} />}
-                    >
-                      <g>
-                        <rect
-                          x={startX}
-                          y={22.5 + rowIndex * 20}
-                          width={groupWidth}
-                          height={15}
-                          fill='#d3d3d3'
-                          stroke='none'
-                        />
-                        <line
-                          x1={startX}
-                          y1={30 + rowIndex * 20}
-                          x2={stopX}
-                          y2={30 + rowIndex * 20}
-                          stroke='black'
-                          strokeWidth={1}
-                        />
-                        {group.variants.variants.map((variant) => {
-                          let isDottedLine = false
-                          let color = getColorForVariant(variant.locus)
+                    <g>
+                      <rect
+                        x={startX}
+                        y={22.5 + rowIndex * 20}
+                        width={groupWidth}
+                        height={15}
+                        fill='#d3d3d3'
+                        stroke='none'
+                      />
+                      <line
+                        x1={startX}
+                        y1={30 + rowIndex * 20}
+                        x2={stopX}
+                        y2={30 + rowIndex * 20}
+                        stroke='black'
+                        strokeWidth={1}
+                      />
+                      {group.variants.variants.map((variant) => {
+                        let isDottedLine = false
+                        let color = getColorForVariant(variant.locus)
 
-                          if (variant.info_SVTYPE === 'DEL' && variant.info_SVLEN > 5) {
-                            // Deletion
-                            isDottedLine = true
-                            color = '#FF0000' // Red
-                          } else if (variant.info_SVTYPE === 'INS' && variant.info_SVLEN > 5) {
-                            // Insertion
-                            isDottedLine = true
-                            color = '#0000FF' // Blue
-                          }
+                        if (variant.info_SVTYPE === 'DEL' && variant.info_SVLEN > 5) {
+                          // Deletion
+                          isDottedLine = true
+                          color = '#FF0000' // Red
+                        } else if (variant.info_SVTYPE === 'INS' && variant.info_SVLEN > 5) {
+                          // Insertion
+                          isDottedLine = true
+                          color = '#0000FF' // Blue
+                        }
 
-                          return isDottedLine ? (
-                            <line
-                              key={variant.locus}
-                              x1={scalePosition(variant.position.toString())}
-                              y1={22.5 + rowIndex * 20}
-                              x2={scalePosition(variant.position.toString())}
-                              y2={37.5 + rowIndex * 20}
-                              stroke={color}
-                              strokeDasharray='4 2'
-                              strokeWidth={4}
-                            />
-                          ) : (
-                            <circle
-                              key={variant.locus}
-                              cx={scalePosition(variant.position.toString())}
-                              cy={30 + rowIndex * 20}
-                              r={variantCircleRadius}
-                              fill={color}
-                              stroke='black'
-                            />
-                          )
-                        })}
-                      </g>
-                    </TooltipAnchor>
+                        return (
+                          <TooltipAnchor
+                            key={variant.locus}
+                            tooltipComponent={() => <VariantTooltip variant={variant} />}
+                          >
+                            {isDottedLine ? (
+                              <line
+                                x1={scalePosition(variant.position.toString())}
+                                y1={22.5 + rowIndex * 20}
+                                x2={scalePosition(variant.position.toString())}
+                                y2={37.5 + rowIndex * 20}
+                                stroke={color}
+                                strokeDasharray='4 2'
+                                strokeWidth={4}
+                              />
+                            ) : (
+                              <circle
+                                cx={scalePosition(variant.position.toString())}
+                                cy={30 + rowIndex * 20}
+                                r={variantCircleRadius}
+                                fill={color}
+                                stroke='black'
+                              />
+                            )}
+                          </TooltipAnchor>
+                        )
+                      })}
+                    </g>
                   )
                 })}
               </svg>
