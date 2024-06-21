@@ -4500,12 +4500,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   Sample count
                 </th>
                 <th>
-                  XX
-                </th>
-                <th>
-                  XY
-                </th>
-                <th>
                   %
                 </th>
                 <th>
@@ -4541,12 +4535,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   30,019
                 </td>
                 <td>
-                  16,244
-                </td>
-                <td>
-                  13,775
-                </td>
-                <td>
                   3.72%
                 </td>
                 <td>
@@ -4576,12 +4564,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td>
                   37,545
-                </td>
-                <td>
-                  20,757
-                </td>
-                <td>
-                  16,788
                 </td>
                 <td>
                   4.65%
@@ -4615,12 +4597,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   14,804
                 </td>
                 <td>
-                  7,252
-                </td>
-                <td>
-                  7,552
-                </td>
-                <td>
                   1.83%
                 </td>
                 <td>
@@ -4650,12 +4626,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td>
                   22,448
-                </td>
-                <td>
-                  11,492
-                </td>
-                <td>
-                  10,956
                 </td>
                 <td>
                   2.78%
@@ -4689,12 +4659,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   622,057
                 </td>
                 <td>
-                  320,938
-                </td>
-                <td>
-                  301,119
-                </td>
-                <td>
                   77.07%
                 </td>
                 <td>
@@ -4724,12 +4688,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td>
                   3,031
-                </td>
-                <td>
-                  1,325
-                </td>
-                <td>
-                  1,706
                 </td>
                 <td>
                   0.38%
@@ -4763,12 +4721,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   31,712
                 </td>
                 <td>
-                  16,660
-                </td>
-                <td>
-                  15,052
-                </td>
-                <td>
                   3.93%
                 </td>
                 <td>
@@ -4800,12 +4752,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   45,546
                 </td>
                 <td>
-                  11,597
-                </td>
-                <td>
-                  33,949
-                </td>
-                <td>
                   5.64%
                 </td>
                 <td>
@@ -4831,12 +4777,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
                 <td>
                   807,162
-                </td>
-                <td>
-                  406,265
-                </td>
-                <td>
-                  400,897
                 </td>
                 <td>
                   -
