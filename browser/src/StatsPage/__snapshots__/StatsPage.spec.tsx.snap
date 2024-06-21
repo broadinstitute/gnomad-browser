@@ -282,6 +282,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
   font-weight: normal;
 }
 
+.c39 th.rb {
+  border-right: 1px solid #0e6fbf;
+}
+
 .c41 tr {
   background-color: #508a14;
   color: #fafafa;
@@ -298,6 +302,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
 
 .c40 tr:nth-of-type(even) {
   background-color: #f3f3f3;
+}
+
+.c40 td.rb {
+  border-right: 1px solid #bbb;
 }
 
 .c42 {
@@ -4384,7 +4392,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         }
       >
-        Genetic Ancestry Groups in gnomAD by version
+        Genetic ancestry groups in gnomAD by version
       </h3>
       <div
         className="c4"
@@ -4460,7 +4468,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   gnomAD v3
                 </th>
                 <th
-                  colSpan={3}
+                  colSpan={5}
                 >
                   gnomAD v4*
                 </th>
@@ -4468,26 +4476,34 @@ exports[`Stats Page has no unexpected changes 1`] = `
               <tr
                 className="c39"
               >
-                <th>
+                <th
+                  className="rb"
+                >
                    
                 </th>
-                <th>
-                  #
+                <th
+                  className="rb"
+                >
+                  Sample count
+                </th>
+                <th
+                  className="rb"
+                >
+                  Sample count
+                </th>
+                <th
+                  className="rb"
+                >
+                  Sample count
                 </th>
                 <th>
-                  #
-                </th>
-                <th>
-                  #
-                </th>
-                <th>
-                  #
+                  Sample count
                 </th>
                 <th>
                   %
                 </th>
                 <th>
-                  Fold increase from v2
+                  Increase from v2
                 </th>
               </tr>
             </thead>
@@ -4495,16 +4511,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c40"
             >
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Admixed American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,789
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   17,720
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   7,647
                 </td>
                 <td>
@@ -4518,16 +4542,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
-                  African
+                <td
+                  className="rb"
+                >
+                  African/African American
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,203
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   12,487
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   20,744
                 </td>
                 <td>
@@ -4541,16 +4573,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Ashkenazi Jewish
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   5,185
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,736
                 </td>
                 <td>
@@ -4564,16 +4604,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   East Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   4,327
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   9,977
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   2,604
                 </td>
                 <td>
@@ -4587,16 +4635,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   European^
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   36,667
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   77,165
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   39,345
                 </td>
                 <td>
@@ -4610,16 +4666,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   Middle Eastern
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   -
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   158
                 </td>
                 <td>
@@ -4633,16 +4697,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
-                  Remaining Individuals^
+                <td
+                  className="rb"
+                >
+                  Remaining^
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   454
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   3,614
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   1,503
                 </td>
                 <td>
@@ -4656,16 +4728,24 @@ exports[`Stats Page has no unexpected changes 1`] = `
                 </td>
               </tr>
               <tr>
-                <td>
+                <td
+                  className="rb"
+                >
                   South Asian
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   8,256
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   15,308
                 </td>
-                <td>
+                <td
+                  className="rb"
+                >
                   2,419
                 </td>
                 <td>
@@ -4696,10 +4776,10 @@ exports[`Stats Page has no unexpected changes 1`] = `
                   76,156
                 </td>
                 <td>
-                  -
+                  807,162
                 </td>
                 <td>
-                  807,162
+                  -
                 </td>
                 <td>
                   -
@@ -6197,7 +6277,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
         className="c43"
         style={
           {
-            "marginBottom": "0.5em",
+            "marginBottom": "6em",
           }
         }
       >
@@ -7507,6 +7587,862 @@ exports[`Stats Page has no unexpected changes 1`] = `
           </div>
         </div>
       </div>
+      <h3
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        Inferred sex in gnomAD v4 per genetic ancestry group
+      </h3>
+      <h4
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        gnomAD v4
+      </h4>
+      <div
+        className="c36"
+        style={
+          {
+            "marginBottom": "6em",
+          }
+        }
+      >
+        <div>
+          <table
+            className="c37"
+            id="inferred-sex-by-genetic-ancestry-group-table"
+          >
+            <thead>
+              <tr
+                className="c38"
+              >
+                <th
+                  colSpan={2}
+                >
+                  Genetic Ancestry
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Exomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Genomes
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  Combined
+                </th>
+              </tr>
+              <tr
+                className="c39"
+              >
+                <th>
+                  Genetic Ancestry
+                </th>
+                <th
+                  className="rb"
+                >
+                  Genetic Ancestry 
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th
+                  className="rb"
+                >
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th
+                  className="rb"
+                >
+                  XY
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c40"
+            >
+              <tr>
+                <td>
+                  Admixed American
+                </td>
+                <td
+                  className="rb"
+                >
+                  amr
+                </td>
+                <td>
+                  22,362
+                </td>
+                <td>
+                  12,845
+                </td>
+                <td
+                  className="rb"
+                >
+                  9,517
+                </td>
+                <td>
+                  7,657
+                </td>
+                <td>
+                  3,399
+                </td>
+                <td
+                  className="rb"
+                >
+                  4,258
+                </td>
+                <td>
+                  30,019
+                </td>
+                <td>
+                  16,244
+                </td>
+                <td>
+                  13,775
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td
+                  className="rb"
+                >
+                  afr
+                </td>
+                <td>
+                  16,740
+                </td>
+                <td>
+                  9,663
+                </td>
+                <td
+                  className="rb"
+                >
+                  7,077
+                </td>
+                <td>
+                  20,805
+                </td>
+                <td>
+                  11,094
+                </td>
+                <td
+                  className="rb"
+                >
+                  9,711
+                </td>
+                <td>
+                  37,545
+                </td>
+                <td>
+                  20,757
+                </td>
+                <td>
+                  16,788
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish
+                </td>
+                <td
+                  className="rb"
+                >
+                  asj
+                </td>
+                <td>
+                  13,068
+                </td>
+                <td>
+                  6,318
+                </td>
+                <td
+                  className="rb"
+                >
+                  6,750
+                </td>
+                <td>
+                  1,736
+                </td>
+                <td>
+                  934
+                </td>
+                <td
+                  className="rb"
+                >
+                  802
+                </td>
+                <td>
+                  14,804
+                </td>
+                <td>
+                  7,252
+                </td>
+                <td>
+                  7,552
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Amish
+                </td>
+                <td
+                  className="rb"
+                >
+                  ami
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  -
+                </td>
+                <td
+                  className="rb"
+                >
+                  -
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td
+                  className="rb"
+                >
+                  221
+                </td>
+                <td>
+                  456
+                </td>
+                <td>
+                  235
+                </td>
+                <td>
+                  221
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  East Asian
+                </td>
+                <td
+                  className="rb"
+                >
+                  eas
+                </td>
+                <td>
+                  19,850
+                </td>
+                <td>
+                  10,356
+                </td>
+                <td
+                  className="rb"
+                >
+                  9,494
+                </td>
+                <td>
+                  2,598
+                </td>
+                <td>
+                  1,136
+                </td>
+                <td
+                  className="rb"
+                >
+                  1,462
+                </td>
+                <td>
+                  22,448
+                </td>
+                <td>
+                  11,492
+                </td>
+                <td>
+                  10,956
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (Finnish)
+                </td>
+                <td
+                  className="rb"
+                >
+                  fin
+                </td>
+                <td>
+                  26,710
+                </td>
+                <td>
+                  13,824
+                </td>
+                <td
+                  className="rb"
+                >
+                  12,886
+                </td>
+                <td>
+                  5,316
+                </td>
+                <td>
+                  1,287
+                </td>
+                <td
+                  className="rb"
+                >
+                  4,029
+                </td>
+                <td>
+                  32,026
+                </td>
+                <td>
+                  15,111
+                </td>
+                <td>
+                  16,915
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (non-Finnish)
+                </td>
+                <td
+                  className="rb"
+                >
+                  nfe
+                </td>
+                <td>
+                  556,006
+                </td>
+                <td>
+                  286,144
+                </td>
+                <td
+                  className="rb"
+                >
+                  269,862
+                </td>
+                <td>
+                  34,025
+                </td>
+                <td>
+                  19,683
+                </td>
+                <td
+                  className="rb"
+                >
+                  14,342
+                </td>
+                <td>
+                  590,031
+                </td>
+                <td>
+                  305,827
+                </td>
+                <td>
+                  284,204
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td
+                  className="rb"
+                >
+                  mid
+                </td>
+                <td>
+                  2,884
+                </td>
+                <td>
+                  1,253
+                </td>
+                <td
+                  className="rb"
+                >
+                  1,631
+                </td>
+                <td>
+                  147
+                </td>
+                <td>
+                  72
+                </td>
+                <td
+                  className="rb"
+                >
+                  75
+                </td>
+                <td>
+                  3,031
+                </td>
+                <td>
+                  1,325
+                </td>
+                <td>
+                  1,706
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Remaining
+                </td>
+                <td
+                  className="rb"
+                >
+                  remaining
+                </td>
+                <td>
+                  30,198
+                </td>
+                <td>
+                  15,900
+                </td>
+                <td
+                  className="rb"
+                >
+                  14,298
+                </td>
+                <td>
+                  1,058
+                </td>
+                <td>
+                  525
+                </td>
+                <td
+                  className="rb"
+                >
+                  533
+                </td>
+                <td>
+                  31,256
+                </td>
+                <td>
+                  16,425
+                </td>
+                <td>
+                  14,831
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  South Asian
+                </td>
+                <td
+                  className="rb"
+                >
+                  sas
+                </td>
+                <td>
+                  43,129
+                </td>
+                <td>
+                  11,020
+                </td>
+                <td
+                  className="rb"
+                >
+                  32,109
+                </td>
+                <td>
+                  2,417
+                </td>
+                <td>
+                  577
+                </td>
+                <td
+                  className="rb"
+                >
+                  1,840
+                </td>
+                <td>
+                  45,546
+                </td>
+                <td>
+                  11,597
+                </td>
+                <td>
+                  33,949
+                </td>
+              </tr>
+            </tbody>
+            <tfoot
+              className="c41"
+            >
+              <tr>
+                <td>
+                  Total
+                </td>
+                <td />
+                <td>
+                  730,947
+                </td>
+                <td>
+                  367,323
+                </td>
+                <td>
+                  363,624
+                </td>
+                <td>
+                  76,215
+                </td>
+                <td>
+                  38,942
+                </td>
+                <td>
+                  37,273
+                </td>
+                <td>
+                  807,162
+                </td>
+                <td>
+                  406,265
+                </td>
+                <td>
+                  400,897
+                </td>
+              </tr>
+            </tfoot>
+            <caption
+              className="c42"
+            >
+              <div>
+                Inferred sex counts of gnomAD v4 samples per genetic ancestry group
+              </div>
+            </caption>
+          </table>
+          <div>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <h4
+        style={
+          {
+            "marginBottom": "2em",
+          }
+        }
+      >
+        gnomAD v4 non-UKB
+      </h4>
+      <div
+        className="c36"
+        style={
+          {
+            "marginBottom": "3em",
+          }
+        }
+      >
+        <div>
+          <table
+            className="c37"
+            id="non-ukb-inferred-sex-by-genetic-ancestry-group-table"
+          >
+            <thead>
+              <tr
+                className="c38"
+              >
+                <th
+                  colSpan={2}
+                >
+                  Genetic Ancestry
+                </th>
+                <th
+                  colSpan={3}
+                >
+                  v4 Exomes
+                </th>
+              </tr>
+              <tr
+                className="c39"
+              >
+                <th>
+                  Genetic Ancestry
+                </th>
+                <th
+                  className="rb"
+                >
+                  Genetic Ancestry 
+                </th>
+                <th>
+                  Sample Count
+                </th>
+                <th>
+                  XX
+                </th>
+                <th>
+                  XY
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="c40"
+            >
+              <tr>
+                <td>
+                  Admixed American
+                </td>
+                <td
+                  className="rb"
+                >
+                  amr
+                </td>
+                <td>
+                  21,870
+                </td>
+                <td>
+                  12,520
+                </td>
+                <td>
+                  9,350
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  African/African American
+                </td>
+                <td
+                  className="rb"
+                >
+                  afr
+                </td>
+                <td>
+                  8,847
+                </td>
+                <td>
+                  5,143
+                </td>
+                <td>
+                  3,704
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Ashkenazi Jewish
+                </td>
+                <td
+                  className="rb"
+                >
+                  asj
+                </td>
+                <td>
+                  10,492
+                </td>
+                <td>
+                  4,919
+                </td>
+                <td>
+                  5,573
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  East Asian
+                </td>
+                <td
+                  className="rb"
+                >
+                  eas
+                </td>
+                <td>
+                  18,035
+                </td>
+                <td>
+                  9,149
+                </td>
+                <td>
+                  8,886
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (Finnish)
+                </td>
+                <td
+                  className="rb"
+                >
+                  fin
+                </td>
+                <td>
+                  26,572
+                </td>
+                <td>
+                  13,699
+                </td>
+                <td>
+                  12,873
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  European (non-Finnish)
+                </td>
+                <td
+                  className="rb"
+                >
+                  nfe
+                </td>
+                <td>
+                  175,054
+                </td>
+                <td>
+                  81,110
+                </td>
+                <td>
+                  93,944
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Middle Eastern
+                </td>
+                <td
+                  className="rb"
+                >
+                  mid
+                </td>
+                <td>
+                  2,074
+                </td>
+                <td>
+                  958
+                </td>
+                <td>
+                  1,116
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Remaining
+                </td>
+                <td
+                  className="rb"
+                >
+                  remaining
+                </td>
+                <td>
+                  16,549
+                </td>
+                <td>
+                  8,376
+                </td>
+                <td>
+                  8,173
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  South Asian
+                </td>
+                <td
+                  className="rb"
+                >
+                  sas
+                </td>
+                <td>
+                  34,899
+                </td>
+                <td>
+                  7,251
+                </td>
+                <td>
+                  27,648
+                </td>
+              </tr>
+            </tbody>
+            <tfoot
+              className="c41"
+            >
+              <tr>
+                <td>
+                  Total
+                </td>
+                <td />
+                <td>
+                  314,392
+                </td>
+                <td>
+                  143,125
+                </td>
+                <td>
+                  171,267
+                </td>
+              </tr>
+            </tfoot>
+            <caption
+              className="c42"
+            >
+              <div>
+                Inferred sex counts of the gnomAD v4 samples per genetic ancestry group not including UK Biobank samples
+              </div>
+            </caption>
+          </table>
+          <div>
+            <span>
+              <button
+                className="c12"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt="Download figure"
+                  height={15}
+                  src="test-file-stub"
+                  width={15}
+                />
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       className="c3"
@@ -7531,7 +8467,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               width={12}
             />
           </a>
-          Study-provided labels and Genetic Ancestry Groups
+          Study-provided labels and genetic ancestry groups
         </h2>
       </span>
       <p>
