@@ -4392,7 +4392,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         }
       >
-        Genetic Ancestry Groups in gnomAD by version
+        Genetic ancestry groups in gnomAD by version
       </h3>
       <div
         className="c4"
@@ -7594,7 +7594,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
           }
         }
       >
-        Inferred sex in gnomAD v4 per Genetic Ancestry Group
+        Inferred sex in gnomAD v4 per genetic ancestry group
       </h3>
       <div
         className="c36"
@@ -8133,7 +8133,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c42"
             >
               <div>
-                Inferred sex counts of gnomAD v4 samples per Genetic Ancestry Group
+                Inferred sex counts of gnomAD v4 samples per genetic ancestry group
               </div>
             </caption>
           </table>
@@ -8403,7 +8403,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               className="c42"
             >
               <div>
-                Inferred sex counts of the gnomAD v4 samples per Genetic Ancestry Group not including UK Bio Bank samples
+                Inferred sex counts of the gnomAD v4 samples per genetic ancestry group not including UK Bio Bank samples
               </div>
             </caption>
           </table>
@@ -8449,7 +8449,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
               width={12}
             />
           </a>
-          Study-provided labels and Genetic Ancestry Groups
+          Study-provided labels and genetic ancestry groups
         </h2>
       </span>
       <p>

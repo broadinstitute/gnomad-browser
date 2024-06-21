@@ -320,7 +320,7 @@ const StatsPage = () => {
         <StatsSection>
           <SectionHeading id="diversity">Diversity in gnomAD</SectionHeading>
 
-          <h3 style={{ marginBottom: '2em' }}>Genetic Ancestry Groups in gnomAD by version</h3>
+          <h3 style={{ marginBottom: '2em' }}>Genetic ancestry groups in gnomAD by version</h3>
 
           <TwoColumnLayout style={{ marginBottom: '5em' }}>
             <img
@@ -381,7 +381,7 @@ const StatsPage = () => {
           </DiversityBarGraphContainer>
 
           <h3 style={{ marginBottom: '2em' }}>
-            Inferred sex in gnomAD v4 per Genetic Ancestry Group
+            Inferred sex in gnomAD v4 per genetic ancestry group
           </h3>
 
           <ResponsiveTable style={{ marginBottom: '6em' }}>
@@ -395,7 +395,7 @@ const StatsPage = () => {
 
         <StatsSection>
           <SectionHeading id="study-provided-labels">
-            Study-provided labels and Genetic Ancestry Groups
+            Study-provided labels and genetic ancestry groups
           </SectionHeading>
 
           <p>
