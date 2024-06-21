@@ -388,7 +388,7 @@ const HaplotypeTrack = ({ height = 2500, haplotypeGroups, start, stop }: Haploty
 
                   return (
                     <TooltipAnchor
-                      key={`group-${group.start}-${group.stop}`}
+                      key={group.hash}
                       tooltipComponent={() => <RegionTooltip region={group} />}
                     >
                       <g>
