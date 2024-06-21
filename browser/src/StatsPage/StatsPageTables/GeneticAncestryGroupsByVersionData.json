@@ -1,0 +1,166 @@
+{
+  "data": [
+    {
+      "geneticAncestryGroup": "amr",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 5789
+      },
+      "gnomADV2": {
+        "sampleCount": 17720
+      },
+      "gnomADV3": {
+        "sampleCount": 7647
+      },
+      "gnomADV4": {
+        "sampleCount": 30019,
+        "percentOfSamples": 3.72,
+        "foldIncreaseFromV2": 1.7
+      }
+    },
+    {
+      "geneticAncestryGroup": "afr",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 5203
+      },
+      "gnomADV2": {
+        "sampleCount": 12487
+      },
+      "gnomADV3": {
+        "sampleCount": 20744
+      },
+      "gnomADV4": {
+        "sampleCount": 37545,
+        "percentOfSamples": 4.65,
+        "foldIncreaseFromV2": 3
+      }
+    },
+    {
+      "geneticAncestryGroup": "asj",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 0
+      },
+      "gnomADV2": {
+        "sampleCount": 5185
+      },
+      "gnomADV3": {
+        "sampleCount": 1736
+      },
+      "gnomADV4": {
+        "sampleCount": 14804,
+        "percentOfSamples": 1.83,
+        "foldIncreaseFromV2": 2.9
+      }
+    },
+    {
+      "geneticAncestryGroup": "eas",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 4327
+      },
+      "gnomADV2": {
+        "sampleCount": 9977
+      },
+      "gnomADV3": {
+        "sampleCount": 2604
+      },
+      "gnomADV4": {
+        "sampleCount": 22448,
+        "percentOfSamples": 2.78,
+        "foldIncreaseFromV2": 2.3
+      }
+    },
+    {
+      "geneticAncestryGroup": "eur",
+      "optionalSymbol": "^",
+      "EXaC": {
+        "sampleCount": 36667
+      },
+      "gnomADV2": {
+        "sampleCount": 77165
+      },
+      "gnomADV3": {
+        "sampleCount": 39345
+      },
+      "gnomADV4": {
+        "sampleCount": 622057,
+        "percentOfSamples": 77.07,
+        "foldIncreaseFromV2": 8.1
+      }
+    },
+    {
+      "geneticAncestryGroup": "mid",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 0
+      },
+      "gnomADV2": {
+        "sampleCount": 0
+      },
+      "gnomADV3": {
+        "sampleCount": 158
+      },
+      "gnomADV4": {
+        "sampleCount": 3031,
+        "percentOfSamples": 0.38,
+        "foldIncreaseFromV2": 19.2
+      }
+    },
+    {
+      "geneticAncestryGroup": "remaining",
+      "optionalSymbol": "^",
+      "EXaC": {
+        "sampleCount": 454
+      },
+      "gnomADV2": {
+        "sampleCount": 3614
+      },
+      "gnomADV3": {
+        "sampleCount": 1503
+      },
+      "gnomADV4": {
+        "sampleCount": 31712,
+        "percentOfSamples": 3.93,
+        "foldIncreaseFromV2": 8.8
+      }
+    },
+    {
+      "geneticAncestryGroup": "sas",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 8256
+      },
+      "gnomADV2": {
+        "sampleCount": 15308
+      },
+      "gnomADV3": {
+        "sampleCount": 2419
+      },
+      "gnomADV4": {
+        "sampleCount": 45546,
+        "percentOfSamples": 5.64,
+        "foldIncreaseFromV2": 3
+      }
+    },
+    {
+      "geneticAncestryGroup": "total",
+      "optionalSymbol": "",
+      "EXaC": {
+        "sampleCount": 60706
+      },
+      "gnomADV2": {
+        "sampleCount": 141456
+      },
+      "gnomADV3": {
+        "sampleCount": 76156
+      },
+      "gnomADV4": {
+        "sampleCount": 807162,
+        "percentOfSamples": 0,
+        "foldIncreaseFromV2": 0
+      }
+    }
+  ]
+}
