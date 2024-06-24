@@ -54,9 +54,13 @@ type VAAllele {
 }
 
 type VACohortAlleleFrequencyDerivation {
+  "The identifier of the dataset."
   id: String
+  "The type of the dataset. (e.g. \"DataSet\")"
   type: String
+  "A descriptive label for the dataset."
   label: String
+  "The version of the dataset."
   version: String
 }
 
@@ -96,17 +100,30 @@ type VAQualityMeasures {
   heterozygousSkewedAlleleCount: Int
 }
 
+"A measure of the frequency of an Allele in a cohort."
 type VACohortAlleleFrequency {
   id: String!
   type: String!
   label: String
+  "Information about the dataset from which the CohortAlleleFrequency was reported."
   derivedFrom: VACohortAlleleFrequencyDerivation
+  "The Allele for which the frequency is being reported."
   focusAllele: VAAllele!
+  "The number of occurrences of the focusAllele in the cohort."
   focusAlleleCount: Int!
+  "The number of occurrences of alleles at the locus in the cohort (count of all alleles at this locus, sometimes referred to as \"allele number\")."
   locusAlleleCount: Int!
+  "The frequency of the focusAllele in the cohort."
   alleleFrequency: Float!
+  "The cohort from which the frequency was derived."
   cohort: VACohort!
+  "Ancillary results that may be associated with the CohortAlleleFrequency, providing additional context or information."
   ancillaryResults: VAAncillaryResults
+  """
+  A list of CohortAlleleFrequency objects describing subcohorts of the cohort currently being described.
+  This creates a recursive relationship and subcohorts can be further subdivided into more subcohorts.
+  This enables, for example, the description of different ancestry groups and sexes among those ancestry groups.
+  """
   subcohortFrequency: [VACohortAlleleFrequency]
 }
 
