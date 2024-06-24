@@ -1,40 +1,12 @@
 import { describe, it, expect } from '@jest/globals'
 
-import { populationFactory, variantFactory } from '../__factories__/Variant'
+import { createAncestryGroupObjects, variantFactory } from '../__factories__/Variant'
 import { Population } from '../VariantPage/VariantPage'
 
 import {
   mergeExomeGenomeAndJointPopulationData,
   mergeExomeAndGenomeData,
 } from './mergeExomeAndGenomeData'
-
-type AncestryGroupShorthand = {
-  id: string
-  value: number
-}
-
-const createAncestryGroupObjects = (
-  shorthands: AncestryGroupShorthand[],
-  includeJointFields: boolean
-) => {
-  const geneticAncestryGroupObjects: Population[] = shorthands.map((shorthand) => {
-    const populationFields: any = {
-      id: shorthand.id,
-      ac: shorthand.value,
-      an: shorthand.value * 10,
-      ac_hemi: shorthand.value + 1,
-      ac_hom: shorthand.value + 2,
-    }
-
-    if (includeJointFields) {
-      populationFields.hemizygote_count = shorthand.value + 1
-      populationFields.homozygote_count = shorthand.value + 2
-    }
-    return populationFactory.build(populationFields)
-  })
-
-  return geneticAncestryGroupObjects
-}
 
 describe('mergeExomeGenomeAndJointPopulationData', () => {
   it('returns expected values when exomes and genomes have the same populations', () => {

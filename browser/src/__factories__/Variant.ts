@@ -8,6 +8,34 @@ import {
   Population,
 } from '../VariantPage/VariantPage'
 
+type AncestryGroupShorthand = {
+  id: string
+  value: number
+}
+
+export const createAncestryGroupObjects = (
+  shorthands: AncestryGroupShorthand[],
+  includeJointFields: boolean
+) => {
+  const geneticAncestryGroupObjects: Population[] = shorthands.map((shorthand) => {
+    const populationFields: any = {
+      id: shorthand.id,
+      ac: shorthand.value,
+      an: shorthand.value * 10,
+      ac_hemi: shorthand.value + 1,
+      ac_hom: shorthand.value + 2,
+    }
+
+    if (includeJointFields) {
+      populationFields.hemizygote_count = shorthand.value + 1
+      populationFields.homozygote_count = shorthand.value + 2
+    }
+    return populationFactory.build(populationFields)
+  })
+
+  return geneticAncestryGroupObjects
+}
+
 export const defaultHistogram: Histogram = {
   bin_edges: [0.5],
   bin_freq: [100],
