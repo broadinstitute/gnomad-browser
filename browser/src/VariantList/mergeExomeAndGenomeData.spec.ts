@@ -43,6 +43,8 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
         { id: 'afr', value: 1 },
         { id: 'remaining', value: 2 },
         { id: 'eur', value: 4 },
+        { id: 'XX', value: 8 },
+        { id: 'XY', value: 16 },
       ],
       false
     )
@@ -62,6 +64,8 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
       { ac: 2, ac_hemi: 4, ac_hom: 6, an: 20, id: 'afr' },
       { ac: 4, ac_hemi: 6, ac_hom: 8, an: 40, id: 'remaining' },
       { ac: 8, ac_hemi: 10, ac_hom: 12, an: 80, id: 'eur' },
+      { ac: 16, ac_hemi: 18, ac_hom: 20, an: 160, id: 'XX' },
+      { ac: 32, ac_hemi: 34, ac_hom: 36, an: 320, id: 'XY' },
     ]
 
     expect(result).toStrictEqual(expected)
@@ -250,15 +254,19 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
         { id: 'eur', value: 1 },
         { id: 'afr', value: 2 },
         { id: 'remaining', value: 4 },
+        { id: 'XX', value: 8 },
+        { id: 'XY', value: 16 },
       ],
       false
     )
 
     const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
-        { id: 'afr', value: 8 },
-        { id: 'remaining', value: 16 },
-        { id: 'eur', value: 32 },
+        { id: 'afr', value: 32 },
+        { id: 'remaining', value: 64 },
+        { id: 'eur', value: 128 },
+        { id: 'XX', value: 256 },
+        { id: 'XY', value: 512 },
       ],
       false
     )
@@ -270,6 +278,8 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
       { ac: 32, hemizygote_count: 33, homozygote_count: 34, an: 320, id: 'remaining' },
       { ac: 64, hemizygote_count: 65, homozygote_count: 66, an: 640, id: 'eur' },
       { ac: 128, hemizygote_count: 129, homozygote_count: 130, an: 1280, id: 'mid' },
+      { ac: 256, hemizygote_count: 257, homozygote_count: 258, an: 2560, id: 'XX' },
+      { ac: 512, hemizygote_count: 513, homozygote_count: 514, an: 5120, id: 'XY' },
     ]
 
     const testVariant = variantFactory.build({
@@ -294,6 +304,8 @@ describe('mergeExomeGenomeAndJointPopulationData', () => {
         { id: 'remaining', value: 32 },
         { id: 'eur', value: 64 },
         { id: 'mid', value: 128 },
+        { id: 'XX', value: 256 },
+        { id: 'XY', value: 512 },
       ],
       true
     )
@@ -346,6 +358,8 @@ describe('mergeExomeAndGenomeData', () => {
         { id: 'afr', value: 1 },
         { id: 'remaining', value: 2 },
         { id: 'eur', value: 4 },
+        { id: 'XX', value: 8 },
+        { id: 'XY', value: 16 },
       ],
       false
     )

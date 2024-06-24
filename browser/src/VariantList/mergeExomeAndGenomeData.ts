@@ -32,7 +32,12 @@ const addMissingAncestries = (
       findAncestries(versionAncestry, currentAncestries) || emptyAncestries(versionAncestry)
   )
 
-  return fullAncestries
+  const totalXX = currentAncestries.filter((ancestry) => ancestry.id === 'XX')
+  const totalXY = currentAncestries.filter((ancestry) => ancestry.id === 'XY')
+
+  const fullAncestriesWithTotalKaryotypes = fullAncestries.concat(totalXX, totalXY)
+
+  return fullAncestriesWithTotalKaryotypes
 }
 
 export const mergeExomeGenomeAndJointPopulationData = ({
