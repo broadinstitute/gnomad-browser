@@ -32,7 +32,12 @@ export const GNOMAD_POPULATION_NAMES = {
 
 export type PopulationId = keyof typeof GNOMAD_POPULATION_NAMES
 
-export type PopulationIdAndChromosome = PopulationId | `${PopulationId}_XX` | `${PopulationId}_XY`
+export type PopulationIdAndChromosome =
+  | PopulationId
+  | `${PopulationId}_XX`
+  | `${PopulationId}_XY`
+  | 'XX'
+  | 'XY'
 
 export const populationName = (populationId: string) =>
   textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)
