@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Badge } from '@gnomad/ui'
+import { PositionAxisTrack } from '@gnomad/region-viewer'
 import queryString from 'query-string'
 import {
   DatasetId,
@@ -117,9 +118,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
 
   const queryParams = queryString.parse(location.search)
   const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
+  const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
   const [threshold, setThreshold] = useState(initialThreshold)
+  const [sortBy, setSortBy] = useState(initialSortBy)
 
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
@@ -133,7 +136,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (threshold: number) => {
       try {
-        const url = `http://localhost:8123/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
+        const url = `http://localhost:8123/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}&sort_by=${sortBy}`
         const response = await fetch(url)
         const data = await response.json()
         setHaplotypeGroups(data)
@@ -141,20 +144,21 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         console.error('Error fetching haplotype groups:', error)
       }
     }, 300),
-    [start, stop]
+    [start, stop, sortBy]
   )
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
-  }, [start, stop, threshold, debouncedFetchHaplotypeGroups])
+  }, [start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
   useEffect(() => {
     const newSearchParams = queryString.stringify({
       ...queryParams,
       threshold: threshold.toString(),
+      sortBy,
     })
     window.history.pushState({}, '', `${location.pathname}?${newSearchParams}`)
-  }, [threshold, queryParams])
+  }, [threshold, queryParams, sortBy])
 
   return (
     <TrackPage>
@@ -223,8 +227,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             stop={stop}
             initialMinAf={threshold}
             onMinAfChange={setThreshold}
+            initialSortBy={sortBy}
+            onSortModeChange={setSortBy}
           />
         )}
+        <PositionAxisTrack />
         {/* {variantsInRegion(datasetId, region)} */}
       </RegionViewer>
     </TrackPage>

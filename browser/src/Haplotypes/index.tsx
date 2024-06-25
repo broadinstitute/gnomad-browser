@@ -78,16 +78,18 @@ export const Legend = ({
   onMinAfChange = () => {},
   onColorModeChange = () => {},
   initialMinAf = 0,
+  initialSortBy = 'similarity_score',
   onSortModeChange = () => {},
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
   initialMinAf?: number
+  initialSortBy?: string
   onSortModeChange?: (mode: string) => void
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
-  const [colorMode, setColorMode] = useState('log_af')
-  const [sortMode, setSortMode] = useState('position')
+  const [colorMode, setColorMode] = useState('allele')
+  const [sortMode, setSortMode] = useState(initialSortBy)
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newThreshold = parseFloat(event.target.value)
@@ -114,7 +116,7 @@ export const Legend = ({
           <span>Phased variants:</span>
         </LegendItem>
         <LegendItem>
-          {colorMode === 'hash' ? (
+          {colorMode === 'allele' ? (
             <svg width={30} height={30}>
               <defs>
                 <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
@@ -132,9 +134,12 @@ export const Legend = ({
               <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='black' />
             </svg>
           )}
-          <span> SNVs </span>
+          <LegendItem>
+            {' '}
+            <span>SNVs {colorMode === 'allele' && <>(colored by allele)</>}</span>
+          </LegendItem>
         </LegendItem>
-        {colorMode === 'log_af' && (
+        {colorMode === 'af' && (
           <LegendItem>
             <svg width={100} height={30}>
               <defs>
@@ -168,7 +173,7 @@ export const Legend = ({
               strokeWidth={4}
             />
           </svg>
-          <span>Insertion</span>
+          <span>Indel</span>
         </LegendItem>
         <LegendItem>
           <svg width={30} height={30}>
@@ -182,7 +187,7 @@ export const Legend = ({
               strokeWidth={4}
             />
           </svg>
-          <span>Deletion</span>
+          <span>SV</span>
         </LegendItem>
         <LegendItem>
           <svg width={35} height={30}>
@@ -239,8 +244,10 @@ export const Legend = ({
         <SegmentedControl
           id='color-mode'
           options={[
-            { label: 'Allele ID', value: 'hash' },
-            { label: 'Log AF', value: 'log_af' },
+            { label: 'Allele ID', value: 'allele' },
+            { label: 'Log AF', value: 'af' },
+            // { label: 'Position', value: 'position' },
+            // { label: 'Haplotype count', value: 'haplotype_count' },
           ]}
           value={colorMode}
           onChange={(value) => handleColorModeChange({ target: { value } })}
@@ -251,8 +258,8 @@ export const Legend = ({
         <SegmentedControl
           id='sort-mode'
           options={[
-            { label: 'Similarity', value: 'position' },
-            { label: 'Count', value: 'frequency' },
+            { label: 'Similarity', value: 'similarity_score' },
+            { label: 'Count', value: 'sample_count' },
           ]}
           value={sortMode}
           onChange={(value) => handleSortModeChange({ target: { value } })}
@@ -505,11 +512,14 @@ const variantColors: Record<string, string> = {}
 
 const getColorForVariantByHash = (variantId: string) => {
   if (!variantColors[variantId]) {
-    const seed = variantId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)
-    const hash = (seed * 9301 + 49297) % 233280
+    const variantHash = variantId
+      .split('')
+      .reduce((acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1), 0)
+    const randomFactor = Math.sin(variantHash - 3.14) * 10000
+    const hash = (variantHash * 9301 + 49297 + randomFactor) % 233280
     const hue = hash % 360
-    const saturation = 70 + (hash % 30) // Saturation between 70% and 100%
-    const lightness = 40 + (hash % 20) // Lightness between 40% and 60%
+    const saturation = 60 + (hash % 40) // Saturation between 60% and 100%
+    const lightness = 30 + (hash % 40) // Lightness between 30% and 70%
     const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     variantColors[variantId] = color
   }
@@ -521,6 +531,40 @@ const getColorForVariantByAf = (af: number) => {
 
   return afScale(af)
 }
+const getColorForVariantByPosition = (
+  position: number,
+  minPosition: number,
+  maxPosition: number
+) => {
+  const fraction = (position - minPosition) / (maxPosition - minPosition)
+  const hue = Math.round(240 * (1 - fraction)) // Blue to Red across the hue spectrum
+  return `hsl(${hue}, 100%, 50%)`
+}
+
+const getColorForVariantByContinuousPosition = (
+  position: number,
+  regionStart: number,
+  regionEnd: number
+) => {
+  const relativePosition = (position - regionStart) / (regionEnd - regionStart)
+  const hue = Math.round(360 * relativePosition) // Gradient across the whole color wheel
+  const saturation = 70 + Math.round(relativePosition * 30) // Saturation between 70% and 100%
+  const lightness = 40 + Math.round(relativePosition * 20) // Lightness between 40% and 60%
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+}
+
+const getColorForVariantByHaplotypeCount = (haplotypeGroups: any[], locus: string) => {
+  const count = haplotypeGroups.reduce(
+    (acc, group) =>
+      acc + (group.variants.variants.some((variant) => variant.locus === locus) ? 1 : 0),
+    0
+  )
+  const haplotypeCountScale = scaleLinear<string>()
+    .domain([0, haplotypeGroups.length])
+    .range(['#d3d3d3', '#ff0000']) // Start from light grey to red
+    .clamp(true)
+  return haplotypeCountScale(count)
+}
 
 const HaplotypeTrack = ({
   height,
@@ -528,11 +572,14 @@ const HaplotypeTrack = ({
   start,
   stop,
   initialMinAf = 0,
+  initialSortBy = 'similarity_score',
   onMinAfChange,
   onColorModeChange,
+  onSortModeChange,
 }: HaplotypeTrackProps) => {
-  const [colorMode, setColorMode] = useState('log_af')
+  const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
+  const [sortMode, setSortMode] = useState(initialSortBy)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -548,6 +595,14 @@ const HaplotypeTrack = ({
       onMinAfChange && onMinAfChange(newThreshold)
     },
     [onMinAfChange]
+  )
+
+  const handleSortModeChange = useCallback(
+    (newSortMode: string) => {
+      setSortMode(newSortMode)
+      onSortModeChange && onSortModeChange(newSortMode)
+    },
+    [onSortModeChange]
   )
 
   if (!haplotypeGroups) {
@@ -575,7 +630,7 @@ const HaplotypeTrack = ({
 
   const currentParams = queryString.parse(location.search)
   let variantId = currentParams.variant as string
-  const dynamicHeight = haplotypeGroups.length * 21 + 7
+  const dynamicHeight = haplotypeGroups.length * 21 - 18
 
   console.log(haplotypeGroups)
 
@@ -587,8 +642,10 @@ const HaplotypeTrack = ({
             <TopPanel>
               <Legend
                 initialMinAf={initialMinAf}
+                initialSortBy={initialSortBy}
                 onMinAfChange={handleMinAfChange}
                 onColorModeChange={handleColorModeChange}
+                onSortModeChange={handleSortModeChange}
               />
             </TopPanel>
             <PlotWrapper>
@@ -646,7 +703,7 @@ const HaplotypeTrack = ({
                             r={1.5}
                             fill='none'
                             stroke={
-                              colorMode === 'hash'
+                              colorMode === 'allele'
                                 ? getColorForVariantByHash(variant.locus)
                                 : 'grey'
                             }
@@ -657,10 +714,14 @@ const HaplotypeTrack = ({
                         let isDottedLine = false
                         let color
 
-                        if (colorMode === 'hash') {
+                        if (colorMode === 'allele') {
                           color = getColorForVariantByHash(variant.locus)
-                        } else {
+                        } else if (colorMode === 'position') {
+                          color = getColorForVariantByPosition(variant.position, start, stop)
+                        } else if (colorMode === 'af') {
                           color = getColorForVariantByAf(variant.info_AF[0])
+                        } else if (colorMode === 'haplotype_count') {
+                          color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.locus)
                         }
 
                         if (variant.info_SVTYPE === 'DEL') {

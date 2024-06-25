@@ -74,7 +74,7 @@ const Banner = styled.div`
 const BANNER_CONTENT = (
   <>
     Help us continue to improve gnomAD by taking 5 minutes to fill out our {/* @ts-expect-error */}
-    <ExternalLink href="http://broad.io/2024_survey">user survey</ExternalLink>.
+    <ExternalLink href='http://broad.io/2024_survey'>user survey</ExternalLink>.
   </>
 )
 const App = () => {
@@ -98,7 +98,7 @@ const App = () => {
   return (
     <Router>
       {/* On any navigation, send event to Google Analytics. */}
-      <Route path="/" component={GoogleAnalytics} />
+      <Route path='/' component={GoogleAnalytics} />
 
       {/**
        * On any navigation, scroll to the anchor specified by location fragment (if any) or to the top of the page.
@@ -106,7 +106,7 @@ const App = () => {
        * module is loaded by Suspense, scrolling is handled by the useEffect hook in the PageLoading component.
        */}
       <Route
-        path="/"
+        path='/'
         render={({ location }: any) => {
           scrollToAnchorOrStartOfPage(location)
         }}
@@ -121,7 +121,7 @@ const App = () => {
           <Suspense fallback={null}>
             <TopBarWrapper>
               <NavBar />
-              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+              {/* {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>} */}
             </TopBarWrapper>
             <Notifications />
 
