@@ -1,6 +1,6 @@
 ---
 id: v4-browser-hts
-title: 'gnomAD v4 Browser Hail Table'
+title: 'gnomAD v4 Browser Hail Tables'
 ---
 
 To go from the gnomAD release tables to a format that is more convenient for the browser to display, the input tables undergo a few transformations. This groups data in ways that are more convenient to query from the database these tables ultimately get loaded into. In addition to performing some reshaping of the data, additional annotations or information is added as needed.
