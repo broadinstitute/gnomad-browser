@@ -15,7 +15,7 @@ import {
 
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
 
-import { hasVRSData } from '@gnomad/dataset-metadata/metadata'
+import { hasVRSData } from '../../../../dataset-metadata/metadata'
 
 const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   // These are all "variant IDs" of one kind or another but `variantId` here
