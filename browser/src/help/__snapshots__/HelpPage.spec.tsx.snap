@@ -763,6 +763,15 @@ exports[`Help Page has no unexpected changes 1`] = `
       <li>
         <a
           className="-Link c3"
+          href="/help/v4-browser-hts"
+          onClick={[Function]}
+        >
+          v4-browser-hts
+        </a>
+      </li>
+      <li>
+        <a
+          className="-Link c3"
           href="/help/exome-capture-tech"
           onClick={[Function]}
         >
@@ -1065,6 +1074,17 @@ exports[`Help Page has no unexpected changes 1`] = `
               onClick={[Function]}
             >
               v4-hts
+            </a>
+          </li>
+          <li
+            className="c10"
+          >
+            <a
+              className="-Link c3"
+              href="/help/v4-browser-hts"
+              onClick={[Function]}
+            >
+              v4-browser-hts
             </a>
           </li>
           <li
