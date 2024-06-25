@@ -5,6 +5,7 @@ import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import Link from '../Link'
 import { scaleLinear, scaleLog } from 'd3-scale'
+import { Button, Checkbox, SearchInput, SegmentedControl } from '@gnomad/ui'
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,6 +56,19 @@ const LegendWrapper = styled.div`
     justify-content: center;
   }
 `
+
+const PhasedVariantLegendSection = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 5px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    justify-content: center;
+  }
+`
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
@@ -63,12 +77,17 @@ const LegendItem = styled.div`
 export const Legend = ({
   onMinAfChange = () => {},
   onColorModeChange = () => {},
+  initialMinAf = 0,
+  onSortModeChange = () => {},
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
+  initialMinAf?: number
+  onSortModeChange?: (mode: string) => void
 }) => {
-  const [threshold, setThreshold] = useState(0)
+  const [threshold, setThreshold] = useState(initialMinAf)
   const [colorMode, setColorMode] = useState('log_af')
+  const [sortMode, setSortMode] = useState('position')
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newThreshold = parseFloat(event.target.value)
@@ -82,96 +101,162 @@ export const Legend = ({
     onColorModeChange(newColorMode)
   }
 
+  const handleSortModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSortMode = event.target.value
+    setSortMode(newSortMode)
+    onSortModeChange(newSortMode)
+  }
+
   return (
     <LegendWrapper>
-      <LegendItem>
-        <span>Phased variants:</span>
-      </LegendItem>
-      <LegendItem>
-        <svg width={30} height={30}>
-          <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='#000000' />
-        </svg>
-        <span>
-          {' '}
-          SNVs (colored by{' '}
-          {colorMode === 'log_af' ? 'allele frequency' : 'randomly by allele ID hash'})
-        </span>
-      </LegendItem>
-      {colorMode === 'log_af' && (
+      <PhasedVariantLegendSection>
         <LegendItem>
-          <svg width={100} height={20}>
-            <defs>
-              <linearGradient id='logAfGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                <stop offset='0%' style={{ stopColor: '#d3d3d3', stopOpacity: 1 }} />
-                <stop offset='100%' style={{ stopColor: '#424242', stopOpacity: 1 }} />
-              </linearGradient>
-            </defs>
-            <rect x='20' y='5' width='60' height='10' fill='url(#logAfGradient)' />
-            <text x='10' y='15' fontSize='10' textAnchor='middle'>
-              0.1
-            </text>
-            <text x='85' y='15' fontSize='10' textAnchor='middle'>
-              1
-            </text>
-          </svg>
+          <span>Phased variants:</span>
         </LegendItem>
-      )}
-      <LegendItem>
-        <svg width={30} height={30}>
-          <line
-            x1={15}
-            y1={5}
-            x2={15}
-            y2={25}
-            stroke='rgba(0, 122, 255, 0.8)'
-            strokeDasharray='4 2'
-            strokeWidth={4}
-          />
-        </svg>
-        <span>Insertion</span>
-      </LegendItem>
-      <LegendItem>
-        <svg width={30} height={30}>
-          <line
-            x1={15}
-            y1={5}
-            x2={15}
-            y2={25}
-            stroke='rgba(255, 69, 58, 0.8)'
-            strokeDasharray='4 2'
-            strokeWidth={4}
-          />
-        </svg>
-        <span>Deletion</span>
-      </LegendItem>
+        <LegendItem>
+          {colorMode === 'hash' ? (
+            <svg width={30} height={30}>
+              <defs>
+                <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                  <stop offset='0%' stopColor='hsl(0, 70%, 50%)' />
+                  <stop offset='25%' stopColor='hsl(90, 70%, 50%)' />
+                  <stop offset='50%' stopColor='hsl(180, 70%, 50%)' />
+                  <stop offset='75%' stopColor='hsl(270, 70%, 50%)' />
+                  <stop offset='100%' stopColor='hsl(360, 70%, 50%)' />
+                </linearGradient>
+              </defs>
+              <circle cx={15} cy={15} r={4} fill='url(#rainbow-gradient)' stroke='black' />
+            </svg>
+          ) : (
+            <svg width={30} height={30}>
+              <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='black' />
+            </svg>
+          )}
+          <span> SNVs </span>
+        </LegendItem>
+        {colorMode === 'log_af' && (
+          <LegendItem>
+            <svg width={100} height={30}>
+              <defs>
+                <linearGradient id='logAfGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                  <stop offset='0%' style={{ stopColor: '#d3d3d3', stopOpacity: 1 }} />
+                  <stop offset='100%' style={{ stopColor: '#424242', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              <rect x='20' y='5' width='60' height='10' fill='url(#logAfGradient)' />
+              <text x='10' y='15' fontSize='10' textAnchor='middle'>
+                0.1
+              </text>
+              <text x='90' y='15' fontSize='10' textAnchor='middle'>
+                1.0
+              </text>
+              <text x='50' y='27' fontSize='10' textAnchor='middle'>
+                Allele frequency
+              </text>
+            </svg>
+          </LegendItem>
+        )}
+        <LegendItem>
+          <svg width={30} height={30}>
+            <line
+              x1={15}
+              y1={5}
+              x2={15}
+              y2={25}
+              stroke='rgba(0, 122, 255, 0.8)'
+              strokeDasharray='4 2'
+              strokeWidth={4}
+            />
+          </svg>
+          <span>Insertion</span>
+        </LegendItem>
+        <LegendItem>
+          <svg width={30} height={30}>
+            <line
+              x1={15}
+              y1={5}
+              x2={15}
+              y2={25}
+              stroke='rgba(255, 69, 58, 0.8)'
+              strokeDasharray='4 2'
+              strokeWidth={4}
+            />
+          </svg>
+          <span>Deletion</span>
+        </LegendItem>
+        <LegendItem>
+          <svg width={35} height={30}>
+            <circle cx={15} cy={15} r={2} fill='none' stroke='grey' />
+          </svg>
+          <span>Below AF cutoff</span>
+        </LegendItem>
+      </PhasedVariantLegendSection>
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'space-between',
-          minWidth: '300px',
-          marginLeft: '50px',
+          minWidth: '200px',
+          marginLeft: '25',
         }}
       >
-        <label htmlFor='threshold-slider'>Mininum variant AF:</label>
-        <input
-          type='range'
-          id='threshold-slider'
-          min='0'
-          max='1'
-          step='0.01'
-          value={threshold}
-          onChange={handleThresholdChange}
-        />
-        <span>{threshold.toFixed(2)}</span>
+        <label htmlFor='threshold-slider'>Minimum variant AF:</label>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <input
+            type='range'
+            id='threshold-slider'
+            min='0'
+            max='1'
+            step='0.01'
+            value={threshold}
+            onChange={handleThresholdChange}
+          />
+          <span style={{ marginLeft: '3px' }}>{threshold.toFixed(2)}</span>
+        </div>
       </div>
-      <div style={{ marginLeft: '20px' }}>
-        <label htmlFor='color-mode-select'>Color by:</label>
-        <select id='color-mode-select' value={colorMode} onChange={handleColorModeChange}>
-          <option value='hash'>Allele ID</option>
-          <option value='log_af'>Log AF</option>
-        </select>
+      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
+        <label style={{ marginLeft: '3px' }}>Dataset:</label>
+        <SegmentedControl
+          id='dataset-dummy'
+          options={[
+            { label: 'PacBio', value: 'pacbio' },
+            { label: 'ONT', value: 'ont' },
+          ]}
+          value={'pacbio'}
+          onChange={(value) => {}}
+        />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
+        <label style={{ marginLeft: '3px' }}>Color by:</label>
+        <SegmentedControl
+          id='color-mode'
+          options={[
+            { label: 'Allele ID', value: 'hash' },
+            { label: 'Log AF', value: 'log_af' },
+          ]}
+          value={colorMode}
+          onChange={(value) => handleColorModeChange({ target: { value } })}
+        />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
+        <label style={{ marginLeft: '3px' }}>Sort by:</label>
+        <SegmentedControl
+          id='sort-mode'
+          options={[
+            { label: 'Similarity', value: 'position' },
+            { label: 'Count', value: 'frequency' },
+          ]}
+          value={sortMode}
+          onChange={(value) => handleSortModeChange({ target: { value } })}
+        />
       </div>
     </LegendWrapper>
   )
@@ -211,6 +296,7 @@ type HaplotypeGroup = {
   start: number
   stop: number
   hash: number
+  below_threshold: VariantSet
 }
 
 type HaplotypeGroups = {
@@ -331,10 +417,10 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
         <svg width={200} height={(haplotypeGroups.length + 1) * 20 + 30}>
           <g>
             <text x={0} y={9} fontSize='12'>
-              Unique haplotypes
+              Long Read
             </text>
-            <text x={0} y={21} fontSize='12'>
-              {`in region (${haplotypeGroups.length})`}
+            <text x={0} y={22} fontSize='12'>
+              Haplotypes {`(${haplotypeGroups.length})`}
             </text>
             <text x={0} y={36} fontSize='10'>
               {`Samples `}
@@ -358,7 +444,7 @@ const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () =>
             </text>
           </g>
           {haplotypeGroups.map((group, index) => {
-            const y = 63 + index * 20
+            const y = 60 + index * 20
             return (
               <TooltipAnchor
                 key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
@@ -441,10 +527,12 @@ const HaplotypeTrack = ({
   haplotypeGroups,
   start,
   stop,
+  initialMinAf = 0,
   onMinAfChange,
   onColorModeChange,
 }: HaplotypeTrackProps) => {
   const [colorMode, setColorMode] = useState('log_af')
+  const [threshold, setThreshold] = useState(initialMinAf)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -452,6 +540,14 @@ const HaplotypeTrack = ({
       onColorModeChange && onColorModeChange(mode)
     },
     [onColorModeChange]
+  )
+
+  const handleMinAfChange = useCallback(
+    (newThreshold: number) => {
+      setThreshold(newThreshold)
+      onMinAfChange && onMinAfChange(newThreshold)
+    },
+    [onMinAfChange]
   )
 
   if (!haplotypeGroups) {
@@ -489,7 +585,11 @@ const HaplotypeTrack = ({
         {({ scalePosition, width }: TrackProps) => (
           <>
             <TopPanel>
-              <Legend onMinAfChange={onMinAfChange} onColorModeChange={handleColorModeChange} />
+              <Legend
+                initialMinAf={initialMinAf}
+                onMinAfChange={handleMinAfChange}
+                onColorModeChange={handleColorModeChange}
+              />
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
@@ -513,28 +613,46 @@ const HaplotypeTrack = ({
                   </>
                 )}
                 {haplotypeGroups.map((group, rowIndex) => {
-                  const startX = scalePosition(group.start.toString())
-                  const stopX = scalePosition(group.stop.toString())
+                  const startX = scalePosition(start)
+                  const stopX = scalePosition(stop)
                   const groupWidth = stopX - startX
 
                   return (
                     <g>
                       <rect
                         x={startX}
-                        y={22.5 + rowIndex * 20}
+                        y={5 + rowIndex * 20}
                         width={groupWidth}
                         height={15}
-                        fill='#e0e0e0'
+                        fill='#f0f0f0'
                         stroke='none'
                       />
                       <line
                         x1={startX}
-                        y1={30 + rowIndex * 20}
+                        y1={12.5 + rowIndex * 20}
                         x2={stopX}
-                        y2={30 + rowIndex * 20}
-                        stroke='black'
+                        y2={12.5 + rowIndex * 20}
+                        stroke='#a8a8a8'
                         strokeWidth={1}
                       />
+                      {group.below_threshold.variants.map((variant, index) => (
+                        <TooltipAnchor
+                          key={`below-${group.hash}-${index}`}
+                          tooltipComponent={() => <VariantTooltip variant={variant} />}
+                        >
+                          <circle
+                            cx={scalePosition(variant.position.toString())}
+                            cy={12.5 + rowIndex * 20}
+                            r={1.5}
+                            fill='none'
+                            stroke={
+                              colorMode === 'hash'
+                                ? getColorForVariantByHash(variant.locus)
+                                : 'grey'
+                            }
+                          />
+                        </TooltipAnchor>
+                      ))}
                       {group.variants.variants.map((variant) => {
                         let isDottedLine = false
                         let color
@@ -561,9 +679,9 @@ const HaplotypeTrack = ({
                             {isDottedLine ? (
                               <line
                                 x1={scalePosition(variant.position.toString())}
-                                y1={22.5 + rowIndex * 20}
+                                y1={5 + rowIndex * 20}
                                 x2={scalePosition(variant.position.toString())}
-                                y2={37.5 + rowIndex * 20}
+                                y2={20 + rowIndex * 20}
                                 stroke={color}
                                 strokeDasharray='4 2'
                                 strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} // Scale strokeWidth based on SV length, capped at 6px
@@ -571,7 +689,7 @@ const HaplotypeTrack = ({
                             ) : (
                               <circle
                                 cx={scalePosition(variant.position.toString())}
-                                cy={30 + rowIndex * 20}
+                                cy={12.5 + rowIndex * 20}
                                 r={variantCircleRadius}
                                 fill={color}
                                 stroke='black'

@@ -77,9 +77,9 @@ const RegionCoverageTrack = ({
         includeExomeCoverage,
         includeGenomeCoverage,
       }}
-      loadingMessage="Loading coverage"
+      loadingMessage='Loading coverage'
       loadingPlaceholderHeight={220}
-      errorMessage="Unable to load coverage"
+      errorMessage='Unable to load coverage'
       success={(data: any) => {
         if (!data.region || !data.region.coverage) {
           return false
@@ -103,7 +103,7 @@ const RegionCoverageTrack = ({
             coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
             filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
             datasets={coverageConfig}
-            height={200}
+            height={100}
             datasetId={datasetId}
           />
         )

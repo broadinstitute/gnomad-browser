@@ -115,8 +115,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
 
+  const queryParams = queryString.parse(location.search)
+  const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
+
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
-  const [threshold, setThreshold] = useState(0)
+  const [threshold, setThreshold] = useState(initialThreshold)
 
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
@@ -130,7 +133,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (threshold: number) => {
       try {
-        const url = `http://localhost:8124/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
+        const url = `http://localhost:8123/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}`
         const response = await fetch(url)
         const data = await response.json()
         setHaplotypeGroups(data)
@@ -144,6 +147,14 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
   }, [start, stop, threshold, debouncedFetchHaplotypeGroups])
+
+  useEffect(() => {
+    const newSearchParams = queryString.stringify({
+      ...queryParams,
+      threshold: threshold.toString(),
+    })
+    window.history.pushState({}, '', `${location.pathname}?${newSearchParams}`)
+  }, [threshold, queryParams])
 
   return (
     <TrackPage>
@@ -210,6 +221,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             haplotypeGroups={haplotypeGroups.groups}
             start={start}
             stop={stop}
+            initialMinAf={threshold}
             onMinAfChange={setThreshold}
           />
         )}
