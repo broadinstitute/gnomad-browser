@@ -16,7 +16,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
-import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, Methylation } from '../Haplotypes'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -120,7 +120,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
 
-  const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
+  const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
+  const [methylationData, setMethylationData] = useState<Methylation[]>([])
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
 
@@ -146,6 +147,20 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
     }, 300),
     [start, stop, sortBy]
   )
+  const fetchMethylationData = async (start: number, stop: number) => {
+    try {
+      const response = await fetch(`http://localhost:8123/methylation?start=${start}&stop=${stop}`)
+      const data = await response.json()
+      setMethylationData(data)
+      console.log('Methylation Data:', data)
+    } catch (error) {
+      console.error('Error fetching methylation data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchMethylationData(start, stop)
+  }, [start, stop])
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
@@ -223,6 +238,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         {haplotypeGroups && (
           <HaplotypeTrack
             haplotypeGroups={haplotypeGroups.groups}
+            methylationData={methylationData}
             start={start}
             stop={stop}
             initialMinAf={threshold}

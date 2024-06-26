@@ -297,7 +297,7 @@ type Sample = {
   variant_sets: VariantSet[]
 }
 
-type HaplotypeGroup = {
+export type HaplotypeGroup = {
   samples: Sample[]
   variants: VariantSet
   start: number
@@ -306,8 +306,15 @@ type HaplotypeGroup = {
   below_threshold: VariantSet
 }
 
-type HaplotypeGroups = {
+export type HaplotypeGroups = {
   groups: HaplotypeGroup[]
+}
+
+export type Methylation = {
+  chr: string
+  methylation: number
+  pos1: number
+  pos2: number
 }
 
 const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
@@ -396,90 +403,103 @@ const VariantTooltip = ({ variant }: { variant: Variant }) => (
   </RegionAttributeList>
 )
 
-const renderTrackLeftPanel = (haplotypeGroups: HaplotypeGroup[] | null) => () => {
-  const maxSamples = (haplotypeGroups || []).reduce(
-    (max, group) => Math.max(max, group.samples.length),
-    0
-  )
-  const maxVariants = (haplotypeGroups || []).reduce(
-    (max, group) => Math.max(max, group.variants.variants.length),
-    0
-  )
+const renderTrackLeftPanel =
+  (haplotypeGroups: HaplotypeGroup[] | null, methylationMax: number) => () => {
+    const maxSamples = (haplotypeGroups || []).reduce(
+      (max, group) => Math.max(max, group.samples.length),
+      0
+    )
+    const maxVariants = (haplotypeGroups || []).reduce(
+      (max, group) => Math.max(max, group.variants.variants.length),
+      0
+    )
 
-  const sampleColorScale = scaleLinear<string>()
-    .domain([0, maxSamples === 0 ? 1 : maxSamples])
-    .range(['#fee0b6', '#b35806'])
+    const sampleColorScale = scaleLinear<string>()
+      .domain([0, maxSamples === 0 ? 1 : maxSamples])
+      .range(['#fee0b6', '#b35806'])
 
-  const variantColorScale = scaleLinear<string>()
-    .domain([0, maxVariants === 0 ? 1 : maxVariants])
-    .range(['#efefef', '#7f7f7f'])
+    const variantColorScale = scaleLinear<string>()
+      .domain([0, maxVariants === 0 ? 1 : maxVariants])
+      .range(['#efefef', '#7f7f7f'])
 
-  return (
-    <SidePanel>
-      {!haplotypeGroups ? (
-        <div>
-          <span>No haplogroups found</span>
-        </div>
-      ) : (
-        <svg width={200} height={(haplotypeGroups.length + 1) * 20 + 30}>
-          <g>
-            <text x={0} y={9} fontSize='12'>
-              Long Read
-            </text>
-            <text x={0} y={22} fontSize='12'>
-              Haplotypes {`(${haplotypeGroups.length})`}
-            </text>
-            <text x={0} y={36} fontSize='10'>
-              {`Samples `}
-              <tspan x={0} dy={12} fontSize='8'>
-                ({haplotypeGroups.reduce((sum, group) => sum + group.samples.length, 0)})
-              </tspan>
-            </text>
-            <text x={50} y={36} fontSize='10'>
-              {`Variants `}
-              <tspan x={50} dy={12} fontSize='8'>
-                (
-                {
-                  new Set(
-                    haplotypeGroups.flatMap((group) =>
-                      group.variants.variants.map((variant) => variant.locus)
-                    )
-                  ).size
-                }
-                )
-              </tspan>
-            </text>
-          </g>
-          {haplotypeGroups.map((group, index) => {
-            const y = 60 + index * 20
-            return (
-              <TooltipAnchor
-                key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
-                tooltipComponent={() => <HaplotypeGroupTooltip group={group} />}
-              >
-                <g>
-                  <circle cx={5} cy={y} r={5} fill={sampleColorScale(group.samples.length)} />
-                  <text x={15} y={y + 5} fontSize='12'>
-                    {group.samples.length}
-                  </text>
-                  <circle
-                    cx={50}
-                    cy={y}
-                    r={5}
-                    fill={variantColorScale(group.variants.variants.length)}
-                  />
-                  <text x={60} y={y + 5} fontSize='12'>
-                    {group.variants.variants.length}
-                  </text>
-                </g>
-              </TooltipAnchor>
-            )
-          })}
-        </svg>
-      )}
-    </SidePanel>
-  )
-}
+    return (
+      <SidePanel>
+        {!haplotypeGroups ? (
+          <div>
+            <span>No haplogroups found</span>
+          </div>
+        ) : (
+          <svg width={200} height={(haplotypeGroups.length + 1) * 70 + 50}>
+            <g>
+              <text x={0} y={9} fontSize='12'>
+                Long Read
+              </text>
+              <text x={0} y={22} fontSize='12'>
+                Haplotypes {`(${haplotypeGroups.length})`}
+              </text>
+              <text x={0} y={36} fontSize='10'>
+                {`Count`}
+                <tspan x={0} dy={12} fontSize='8'>
+                  ({haplotypeGroups.reduce((sum, group) => sum + group.samples.length, 0)})
+                </tspan>
+              </text>
+              <text x={50} y={36} fontSize='10'>
+                {`Variants `}
+                <tspan x={50} dy={12} fontSize='8'>
+                  (
+                  {
+                    new Set(
+                      haplotypeGroups.flatMap((group) =>
+                        group.variants.variants.map((variant) => variant.locus)
+                      )
+                    ).size
+                  }
+                  )
+                </tspan>
+              </text>
+            </g>
+            {haplotypeGroups.map((group, index) => {
+              const y = 60 + index * 70
+              return (
+                <TooltipAnchor
+                  key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
+                  tooltipComponent={() => <HaplotypeGroupTooltip group={group} />}
+                >
+                  <g>
+                    <circle cx={5} cy={y} r={5} fill={sampleColorScale(group.samples.length)} />
+                    <text x={15} y={y + 5} fontSize='12'>
+                      {group.samples.length}
+                    </text>
+                    <circle
+                      cx={50}
+                      cy={y}
+                      r={5}
+                      fill={variantColorScale(group.variants.variants.length)}
+                    />
+                    <text x={60} y={y + 5} fontSize='12'>
+                      {group.variants.variants.length}
+                    </text>
+                    {/* Y-axis for Methylation with three ticks */}
+                    <g transform={`translate(110, ${y + 18})`}>
+                      <line x1={0} y1={0} x2={0} y2={35} stroke='black' />
+                      {[0, 50, 100].map((tick) => (
+                        <g transform={`translate(0, ${35 - (tick / 100) * 35})`} key={tick}>
+                          <line x1={-5} y1={0} x2={0} y2={0} stroke='black' />
+                          <text x={-10} y={3} fontSize='10' textAnchor='end'>
+                            {tick}
+                          </text>
+                        </g>
+                      ))}
+                    </g>
+                  </g>
+                </TooltipAnchor>
+              )
+            })}
+          </svg>
+        )}
+      </SidePanel>
+    )
+  }
 
 const SidePanel = styled.div`
   display: flex;
@@ -495,7 +515,7 @@ const TopPanel = styled.div`
 `
 
 type TrackProps = {
-  scalePosition: (input: string) => number
+  scalePosition: (input: number) => number
   width: number
 }
 
@@ -503,9 +523,13 @@ type HaplotypeTrackProps = {
   height?: number
   start: number
   stop: number
-  haplotypeGroups: HaplotypeGroup[] | null
+  haplotypeGroups: HaplotypeGroup[]
+  methylationData: Methylation[]
+  initialMinAf?: number
+  initialSortBy?: string
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
+  onSortModeChange?: (mode: string) => void
 }
 
 const variantColors: Record<string, string> = {}
@@ -569,6 +593,7 @@ const getColorForVariantByHaplotypeCount = (haplotypeGroups: any[], locus: strin
 const HaplotypeTrack = ({
   height,
   haplotypeGroups,
+  methylationData,
   start,
   stop,
   initialMinAf = 0,
@@ -630,9 +655,14 @@ const HaplotypeTrack = ({
 
   const currentParams = queryString.parse(location.search)
   let variantId = currentParams.variant as string
-  const dynamicHeight = haplotypeGroups.length * 21 - 18
+  const dynamicHeight = haplotypeGroups.length * 21 + (haplotypeGroups.length + 1) * 50
 
   console.log(haplotypeGroups)
+  const methylationYScale = scaleLinear()
+    .domain([0, Math.max(...methylationData.map((d) => d.methylation))])
+    .range([65, 35])
+
+  console.log(methylationData)
 
   return (
     <Wrapper>
@@ -675,91 +705,124 @@ const HaplotypeTrack = ({
                   const groupWidth = stopX - startX
 
                   return (
-                    <g>
-                      <rect
-                        x={startX}
-                        y={5 + rowIndex * 20}
-                        width={groupWidth}
-                        height={15}
-                        fill='#f0f0f0'
-                        stroke='none'
-                      />
-                      <line
-                        x1={startX}
-                        y1={12.5 + rowIndex * 20}
-                        x2={stopX}
-                        y2={12.5 + rowIndex * 20}
-                        stroke='#a8a8a8'
-                        strokeWidth={1}
-                      />
-                      {group.below_threshold.variants.map((variant, index) => (
-                        <TooltipAnchor
-                          key={`below-${group.hash}-${index}`}
-                          tooltipComponent={() => <VariantTooltip variant={variant} />}
-                        >
-                          <circle
-                            cx={scalePosition(variant.position.toString())}
-                            cy={12.5 + rowIndex * 20}
-                            r={1.5}
-                            fill='none'
-                            stroke={
-                              colorMode === 'allele'
-                                ? getColorForVariantByHash(variant.locus)
-                                : 'grey'
-                            }
-                          />
-                        </TooltipAnchor>
-                      ))}
-                      {group.variants.variants.map((variant) => {
-                        let isDottedLine = false
-                        let color
-
-                        if (colorMode === 'allele') {
-                          color = getColorForVariantByHash(variant.locus)
-                        } else if (colorMode === 'position') {
-                          color = getColorForVariantByPosition(variant.position, start, stop)
-                        } else if (colorMode === 'af') {
-                          color = getColorForVariantByAf(variant.info_AF[0])
-                        } else if (colorMode === 'haplotype_count') {
-                          color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.locus)
-                        }
-
-                        if (variant.info_SVTYPE === 'DEL') {
-                          isDottedLine = true
-                          color = 'rgba(255, 69, 58, 0.8)' // stylish red with transparency
-                        } else if (variant.info_SVTYPE === 'INS') {
-                          isDottedLine = true
-                          color = 'rgba(0, 122, 255, 0.8)' // stylish blue with transparency
-                        }
-
-                        return (
+                    <>
+                      <g key={`haplo-${rowIndex}`}>
+                        <rect
+                          x={startX}
+                          y={5 + rowIndex * 70}
+                          width={groupWidth}
+                          height={15}
+                          fill='#f0f0f0'
+                          stroke='none'
+                        />
+                        <line
+                          x1={startX}
+                          y1={12.5 + rowIndex * 70}
+                          x2={stopX}
+                          y2={12.5 + rowIndex * 70}
+                          stroke='#a8a8a8'
+                          strokeWidth={1}
+                        />
+                        {group.below_threshold.variants.map((variant, index) => (
                           <TooltipAnchor
-                            key={`${group.hash}-${variant.locus}-${variant.alleles.join('-')}`}
+                            key={`below-${group.hash}-${index}`}
                             tooltipComponent={() => <VariantTooltip variant={variant} />}
                           >
-                            {isDottedLine ? (
-                              <line
-                                x1={scalePosition(variant.position.toString())}
-                                y1={5 + rowIndex * 20}
-                                x2={scalePosition(variant.position.toString())}
-                                y2={20 + rowIndex * 20}
-                                stroke={color}
-                                strokeDasharray='4 2'
-                                strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} // Scale strokeWidth based on SV length, capped at 6px
-                              />
-                            ) : (
-                              <circle
-                                cx={scalePosition(variant.position.toString())}
-                                cy={12.5 + rowIndex * 20}
-                                r={variantCircleRadius}
-                                fill={color}
-                                stroke='black'
-                              />
-                            )}
+                            <circle
+                              cx={scalePosition(variant.position)}
+                              cy={12.5 + rowIndex * 70}
+                              r={1.5}
+                              fill='none'
+                              stroke={
+                                colorMode === 'allele'
+                                  ? getColorForVariantByHash(variant.locus)
+                                  : 'grey'
+                              }
+                            />
                           </TooltipAnchor>
-                        )
-                      })}
-                    </g>
+                        ))}
+                        {group.variants.variants.map((variant) => {
+                          let isDottedLine = false
+                          let color
+
+                          if (colorMode === 'allele') {
+                            color = getColorForVariantByHash(variant.locus)
+                          } else if (colorMode === 'position') {
+                            color = getColorForVariantByPosition(variant.position, start, stop)
+                          } else if (colorMode === 'af') {
+                            color = getColorForVariantByAf(variant.info_AF[0])
+                          } else if (colorMode === 'haplotype_count') {
+                            color = getColorForVariantByHaplotypeCount(
+                              haplotypeGroups,
+                              variant.locus
+                            )
+                          }
+
+                          if (variant.info_SVTYPE === 'DEL') {
+                            isDottedLine = true
+                            color = 'rgba(255, 69, 58, 0.8)' // stylish red with transparency
+                          } else if (variant.info_SVTYPE === 'INS') {
+                            isDottedLine = true
+                            color = 'rgba(0, 122, 255, 0.8)' // stylish blue with transparency
+                          }
+
+                          return (
+                            <TooltipAnchor
+                              key={`${group.hash}-${variant.locus}-${variant.alleles.join('-')}`}
+                              tooltipComponent={() => <VariantTooltip variant={variant} />}
+                            >
+                              {isDottedLine ? (
+                                <line
+                                  x1={scalePosition(variant.position)}
+                                  y1={5 + rowIndex * 70}
+                                  x2={scalePosition(variant.position)}
+                                  y2={20 + rowIndex * 70}
+                                  stroke={color}
+                                  strokeDasharray='4 2'
+                                  strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} // Scale strokeWidth based on SV length, capped at 6px
+                                />
+                              ) : (
+                                <circle
+                                  cx={scalePosition(variant.position)}
+                                  cy={12.5 + rowIndex * 70}
+                                  r={variantCircleRadius}
+                                  fill={color}
+                                  stroke='black'
+                                />
+                              )}
+                            </TooltipAnchor>
+                          )
+                        })}
+                      </g>
+                      {/* Methylation Track */}
+                      <g>
+                        {methylationData.map((d, index) => (
+                          <TooltipAnchor
+                            key={`methylation-${rowIndex}-${index}`}
+                            tooltipComponent={() => (
+                              <RegionAttributeList>
+                                <div>
+                                  <dt>Position:</dt>
+                                  <dd>{d.pos1}</dd>
+                                </div>
+                                <div>
+                                  <dt>Methylation:</dt>
+                                  <dd>{d.methylation}</dd>
+                                </div>
+                              </RegionAttributeList>
+                            )}
+                          >
+                            <circle
+                              cx={scalePosition(d.pos1)}
+                              cy={methylationYScale(d.methylation) + rowIndex * 70}
+                              r={2}
+                              fill='grey'
+                              stroke='none'
+                            />
+                          </TooltipAnchor>
+                        ))}
+                      </g>
+                    </>
                   )
                 })}
               </svg>
