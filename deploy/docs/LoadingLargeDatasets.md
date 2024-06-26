@@ -3,60 +3,109 @@
 To speed up loading large datasets into Elasticsearch, spin up many temporary pods and spread indexing across them.
 Then move ES shards from temporary pods onto permanent pods.
 
-- Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
-  on existing indices so that data stays on permanent data pods and does not migrate to temporary ingest pods.
+## 1. Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
 
-- Create GKE node pool.
+This configures existing indices so that data stays on permanent data pods and does not migrate to temporary ingest pods. You can issue the following request to the `_all` index to pin existing indices to a particular node set.
 
-  ```
-  gcloud container node-pools create es-ingest \
-     --cluster $GKE_CLUSTER_NAME \
-     --zone $ZONE \
-     --service-account $SERVICE_ACCOUNT \
-     --num-nodes 48 \
-     --machine-type e2-highmem-4 \
-     --enable-autorepair --enable-autoupgrade \
-     --shielded-secure-boot \
-     --metadata=disable-legacy-endpoints=true
-  ```
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_all/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
+{"index.routing.allocation.require._name": "gnomad-es-data-green*"}
+EOF
+```
 
-- Add temporary pods to Elasticsearch cluster.
+## 2. Add nodes to the es-ingest node pool
 
-  ```
-  ./deployctl elasticsearch apply --n-ingest-pods=48
-  ```
+This can be done by adjusting the `pool_num_nodes` variable in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99) and opening a PR to review and apply the infrastructure change.
 
-  The number of ingest pods should match the number of nodes in the `es-ingest` node pool.
+## 3. When the new es-ingest GKE nodes are ready, Add temporary pods to Elasticsearch cluster
 
-  Watch pods' readiness with `kubectl get pods -w`.
+```
+./deployctl elasticsearch apply --n-ingest-pods=48
+```
 
-- Create a Dataproc cluster and load a Hail table. The number of workers in the cluster should match the number of ingest pods.
+The number of ingest pods should match the number of nodes in the `es-ingest` node pool.
 
-  ```
-  ./deployctl dataproc-cluster start es --num-preemptible-workers 48
-  ./deployctl elasticsearch load-datasets --dataproc-cluster es $DATASET
-  ./deployctl dataproc-cluster stop es
-  ```
+Watch pods' readiness with `kubectl get pods -w`.
 
-- Look at the total size of all indices in Elasticsearch to see how much storage will be required for permanent pods.
-  Add up the values in the `store.size` column output from the [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html).
+## 4. Create a Dataproc cluster and load a Hail table.
 
-- Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and add a new persistent data node set.
-  Set the storage request in the `volumeClaimTemplates` section of the new node set based on the total size of all indices.
-  Keep in mind that the storage request there is per-pod. If necessary, add permanent data pods to the cluster. Resize the `es-data`
-  node pool if necessary.
+The number of workers in the cluster should match the number of ingest pods.
 
-  ```
-  ./deployctl elasticsearch apply --n-ingest-pods=48
-  ```
+```
+./deployctl dataproc-cluster start es --num-preemptible-workers 48
+./deployctl elasticsearch load-datasets --dataproc-cluster es $DATASET
+./deployctl dataproc-cluster stop es
+```
 
-- (Optional) Set elasticsearch recovery parameters for faster shard copies.
-  By default, Elasticsearch speed-limits recovery activity to prioritize query
-  performance. You can tune the following settings to increase the speed at which
-  shards are copied. The following example has been found to be a reasonable
-  speed to run large scale shard movements during slower periods (overnight).
-  The concurrent recoveries setting is per-node, so the actual maximum number of
-  recoveries will depend on how large the cluster actually is:
+## 5. Determine available space on the persistent data nodes, and how much space you'll need for the new data
+
+First, Look at the total size of all indices in Elasticsearch to see how much storage will be required for permanent pods. Add up the values in the `store.size` column output from the [cat indices API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/cat-indices.html).
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/indices?v'
+```
+
+Next, see how much total space is available on the persistent data nodes. Add up the values in the `disk.avail` column output from the [cat allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/cat-allocation.html)
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/allocation/gnomad-es-data*?v'
+```
+
+Depending on how much additional space you need, you can take one of three options:
+
+1. Make no modifications to the ES cluster, your new indices will fit on the existing nodes, and won't fill the disks past about ~82%.
+2. You need slightly more space, so you can increase the size of the disks in the current persistent dataset pods.
+3. You need at least as much space as ~80% of a data pod holds (around ~1.4TB as of this writing), so you add another persistent data node.
+
+### Option 1: No modifications
+
+You don't need to make modifications, so you can simply move your new index to the permanent data pods. Skip to [Move data to persitent data pods](#6-move-data-to-persistent-data-pods)
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_all/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
+{"index.routing.allocation.require._name": "gnomad-es-data-green*"}
+EOF
+```
+
+### Option 2: Increase disk size
+
+You can increase the size of the disks on the of the existing data pods. This will do an online resize of the disks. It's a good idea to ensure you have a recent snapshot of the cluster before doing this. See [Elasticsearch snapshots](./ElasticsearchSnapshots.md) for more information.
+
+Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and set the storage request in the `volumeClaimTemplates` section of the persistent data node set based on the total size of all indices. Keep in mind that the storage request there is per-pod.
+
+Then apply the changes:
+
+```
+./deployctl elasticsearch apply --n-ingest-pods=48
+```
+
+### Option 3: Add another persistent data node
+
+Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and add a new pod to the persistent node set by incrementing the `count` parameter in the `data-{green,blue}` node set. Note that when applied, this will cause data movement as Elasticsearch rebalances shards across the persistent node set. This is generally low-impact, but it's a good idea to do this during a low-traffic period.
+
+Apply the changes:
+
+```
+./deployctl elasticsearch apply --n-ingest-pods=48
+```
+
+## 6. Move data to persistent data pods
+
+Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html) on new indices to move shards to the persistent data node set. Do this for any newly loaded indices as well as any pre-existing indices that will be kept. Replace $INDEX with the name of indicies you need to move.
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
+{"index.routing.allocation.require._name": "gnomad-es-data-green*"}
+EOF
+```
+
+Watch shard movement with the [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html).
+
+```
+curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_cat/shards?v" | grep RELOCATING
+```
+
+(Optional) Set elasticsearch recovery parameters for faster shard copies. By default, Elasticsearch speed-limits recovery activity to prioritize query performance. You can tune the following settings to increase the speed at which shards are copied. The following example has been found to be a reasonable speed to run large scale shard movements during slower periods (overnight). The concurrent recoveries setting is per-node, so the actual maximum number of recoveries will depend on how large the cluster actually is:
 
 ```
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT "localhost:9200/_cluster/settings" -H 'Content-Type: application/json' -d '{
@@ -68,36 +117,23 @@ curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT "localhost:9200/_cluster/setting
 
 ```
 
-- Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
-  on new indices to move shards to the new node set. Do this for any newly loaded indices as well as any pre-existing indices that will be kept.
+## 7. Once data is done being moved, remove the ingest pods
 
-  ```
-  curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
-  {"index.routing.allocation.require._name": "gnomad-es-data-blue*"}
-  EOF
-  ```
+```
+./deployctl elasticsearch apply --n-ingest-pods=0
+```
 
-  Watch shard movement with the [cat shards API](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html).
+Watch the cluster to ensure that the ingest pods are successfully terminated:
 
-  ```
-  curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_cat/shards?v" | grep RELOCATING
-  ```
+```
+kubectl get pods -w
+```
 
-- Remove ingest pods.
+## 8. Once the ingest pods are terminated, resize the es-ingest node pool to 0
 
-  ```
-  ./deployctl elasticsearch apply --n-ingest-pods=0
-  ```
+Set the `pool_num_nodes` varible for the es-ingest node pool to 0 in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99) and open a PR to review and apply the infrastructure change.
 
-- Delete ingest node pool.
-
-  ```
-  gcloud container node-pools delete es-ingest \
-    --cluster $GKE_CLUSTER_NAME \
-    --zone $ZONE
-  ```
-
-- Delete any unused indices.
+## 9. Clean up, delete any unused indices.
 
 - Edit elasticsearch.yaml.jinja2 and remove the old persistent data node set. Apply changes. Resize the `es-data` node pool if necessary.
 
