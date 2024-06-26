@@ -147,9 +147,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
     }, 300),
     [start, stop, sortBy]
   )
-  const fetchMethylationData = async (start: number, stop: number) => {
+  const fetchMethylationData = async (start: number, stop: number, sample: string) => {
     try {
-      const response = await fetch(`http://localhost:8123/methylation?start=${start}&stop=${stop}`)
+      const response = await fetch(
+        `http://localhost:8123/methylation?start=${start}&stop=${stop}&sample=${sample}`
+      )
       const data = await response.json()
       setMethylationData(data)
       console.log('Methylation Data:', data)
@@ -159,7 +161,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   }
 
   useEffect(() => {
-    fetchMethylationData(start, stop)
+    fetchMethylationData(start, stop, 'sample1')
   }, [start, stop])
 
   useEffect(() => {
