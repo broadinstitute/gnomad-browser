@@ -5,7 +5,7 @@ Then move ES shards from temporary pods onto permanent pods.
 
 ## 1. Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html)
 
-This configures existing indices so that data stays on permanent data pods and does not migrate to temporary ingest pods. You can issue the following request to the `_all` index to pin existing indices to a particular node set.
+This configures existing indices so that data stays on permanent data pods and does not migrate to temporary ingest pods. You can issue the following request to the `_all` index to pin existing indices to a particular nodeSet.
 
 ```
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_all/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
@@ -54,7 +54,7 @@ curl -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/allocation
 Depending on how much additional space you need, you can take one of three options:
 
 1. Make no modifications to the ES cluster, your new indices will fit on the existing nodes, and won't fill the disks past about ~82%.
-2. You need slightly more space, so you can increase the size of the disks in the current persistent dataset pods.
+2. You need slightly more space, so you can increase the size of the disks in the current persistent data nodeSet.
 3. You need at least as much space as ~80% of a data pod holds (around ~1.4TB as of this writing), so you add another persistent data node.
 
 ### Option 1: No modifications
@@ -71,7 +71,7 @@ EOF
 
 You can increase the size of the disks on the of the existing data pods. This will do an online resize of the disks. It's a good idea to ensure you have a recent snapshot of the cluster before doing this. See [Elasticsearch snapshots](./ElasticsearchSnapshots.md) for more information.
 
-Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and set the storage request in the `volumeClaimTemplates` section of the persistent data node set based on the total size of all indices. Keep in mind that the storage request there is per-pod.
+Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and set the storage request in the `volumeClaimTemplates` section of the persistent data nodeSet based on the total size of all indices. Keep in mind that the storage request there is per-pod.
 
 Then apply the changes:
 
@@ -81,7 +81,7 @@ Then apply the changes:
 
 ### Option 3: Add another persistent data node
 
-Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and add a new pod to the persistent node set by incrementing the `count` parameter in the `data-{green,blue}` node set. Note that when applied, this will cause data movement as Elasticsearch rebalances shards across the persistent node set. This is generally low-impact, but it's a good idea to do this during a low-traffic period.
+Edit [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2) and add a new pod to the persistent nodeSet by incrementing the `count` parameter in the `data-{green,blue}` nodeSet. Note that when applied, this will cause data movement as Elasticsearch rebalances shards across the persistent nodeSet. This is generally low-impact, but it's a good idea to do this during a low-traffic period.
 
 Apply the changes:
 
@@ -91,7 +91,7 @@ Apply the changes:
 
 ## 6. Move data to persistent data pods
 
-Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html) on new indices to move shards to the persistent data node set. Do this for any newly loaded indices as well as any pre-existing indices that will be kept. Replace $INDEX with the name of indicies you need to move.
+Set [shard allocation filters](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-allocation-filtering.html) on new indices to move shards to the persistent data nodeSet. Do this for any newly loaded indices as well as any pre-existing indices that will be kept. Replace $INDEX with the name of indicies you need to move.
 
 ```
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/$INDEX/_settings" -XPUT --header "Content-Type: application/json" --data @- <<EOF
@@ -135,13 +135,13 @@ Set the `pool_num_nodes` varible for the es-ingest node pool to 0 in our [terraf
 
 ## 9. Clean up, delete any unused indices.
 
-- Edit elasticsearch.yaml.jinja2 and remove the old persistent data node set. Apply changes. Resize the `es-data` node pool if necessary.
+If cleaning up unused indices affords you enough space to remove a persistent data node, you can do so by editing the `count` parameter in the `data-{green/blue}` nodeSet in [elasticsearch.yaml.jinja2](../manifests/elasticsearch/elasticsearch.yaml.jinja2). Note that applying this will cause data movement, and it's a good idea to do this during a low-traffic period.
 
-  ```
-  ./deployctl elasticsearch apply
-  ```
+```
+./deployctl elasticsearch apply
+```
 
-- Update relevant [Elasticsearch index aliases](./ElasticsearchIndexAliases.md) and [clear caches](./RedisCache.md).
+Lastly, besure to update relevant [Elasticsearch index aliases](./ElasticsearchIndexAliases.md) and [clear caches](./RedisCache.md).
 
 ## References
 
