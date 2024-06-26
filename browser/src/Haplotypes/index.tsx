@@ -80,12 +80,16 @@ export const Legend = ({
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
   onSortModeChange = () => {},
+  showMethylation = true,
+  onShowMethylationChange = () => {},
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
   initialMinAf?: number
   initialSortBy?: string
   onSortModeChange?: (mode: string) => void
+  showMethylation?: boolean
+  onShowMethylationChange?: (show: boolean) => void
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
   const [colorMode, setColorMode] = useState('allele')
@@ -107,6 +111,11 @@ export const Legend = ({
     const newSortMode = event.target.value
     setSortMode(newSortMode)
     onSortModeChange(newSortMode)
+  }
+
+  const handleShowMethylationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const show = event.target.checked
+    onShowMethylationChange(show)
   }
 
   return (
@@ -196,6 +205,12 @@ export const Legend = ({
           <span>Below AF cutoff</span>
         </LegendItem>
       </PhasedVariantLegendSection>
+      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
+        <label>
+          <input type='checkbox' checked={showMethylation} onChange={handleShowMethylationChange} />
+          Show Methylation
+        </label>
+      </div>
       <div
         style={{
           display: 'flex',
@@ -605,6 +620,7 @@ const HaplotypeTrack = ({
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
+  const [showMethylation, setShowMethylation] = useState(true)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -630,10 +646,14 @@ const HaplotypeTrack = ({
     [onSortModeChange]
   )
 
+  const handleShowMethylationChange = useCallback((show: boolean) => {
+    setShowMethylation(show)
+  }, [])
+
   if (!haplotypeGroups) {
     return (
       <Wrapper>
-        <Track renderLeftPanel={renderTrackLeftPanel(null)}>
+        <Track renderLeftPanel={renderTrackLeftPanel(null, 0)}>
           {({ width }: { width: number }) => (
             <>
               <PlotWrapper>
@@ -666,7 +686,12 @@ const HaplotypeTrack = ({
 
   return (
     <Wrapper>
-      <Track renderLeftPanel={renderTrackLeftPanel(haplotypeGroups)}>
+      <Track
+        renderLeftPanel={renderTrackLeftPanel(
+          haplotypeGroups,
+          showMethylation ? Math.max(...methylationData.map((d) => d.methylation)) : 0
+        )}
+      >
         {({ scalePosition, width }: TrackProps) => (
           <>
             <TopPanel>
@@ -676,6 +701,8 @@ const HaplotypeTrack = ({
                 onMinAfChange={handleMinAfChange}
                 onColorModeChange={handleColorModeChange}
                 onSortModeChange={handleSortModeChange}
+                showMethylation={showMethylation}
+                onShowMethylationChange={handleShowMethylationChange}
               />
             </TopPanel>
             <PlotWrapper>
@@ -796,31 +823,32 @@ const HaplotypeTrack = ({
                       </g>
                       {/* Methylation Track */}
                       <g>
-                        {methylationData.map((d, index) => (
-                          <TooltipAnchor
-                            key={`methylation-${rowIndex}-${index}`}
-                            tooltipComponent={() => (
-                              <RegionAttributeList>
-                                <div>
-                                  <dt>Position:</dt>
-                                  <dd>{d.pos1}</dd>
-                                </div>
-                                <div>
-                                  <dt>Methylation:</dt>
-                                  <dd>{d.methylation}</dd>
-                                </div>
-                              </RegionAttributeList>
-                            )}
-                          >
-                            <circle
-                              cx={scalePosition(d.pos1)}
-                              cy={methylationYScale(d.methylation) + rowIndex * 70}
-                              r={2}
-                              fill='grey'
-                              stroke='none'
-                            />
-                          </TooltipAnchor>
-                        ))}
+                        {showMethylation &&
+                          methylationData.map((d, index) => (
+                            <TooltipAnchor
+                              key={`methylation-${rowIndex}-${index}`}
+                              tooltipComponent={() => (
+                                <RegionAttributeList>
+                                  <div>
+                                    <dt>Position:</dt>
+                                    <dd>{d.pos1}</dd>
+                                  </div>
+                                  <div>
+                                    <dt>Methylation:</dt>
+                                    <dd>{d.methylation}</dd>
+                                  </div>
+                                </RegionAttributeList>
+                              )}
+                            >
+                              <circle
+                                cx={scalePosition(d.pos1)}
+                                cy={methylationYScale(d.methylation) + rowIndex * 70}
+                                r={2}
+                                fill='grey'
+                                stroke='none'
+                              />
+                            </TooltipAnchor>
+                          ))}
                       </g>
                     </>
                   )
