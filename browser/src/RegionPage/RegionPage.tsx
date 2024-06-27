@@ -17,6 +17,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
 import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, Methylation } from '../Haplotypes'
+import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
@@ -150,18 +151,18 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const fetchMethylationData = async (start: number, stop: number, sample: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8123/methylation?start=${start}&stop=${stop}&sample=${sample}`
+        // `http://localhost:8123/methylation?start=${start}&stop=${stop}&sample=${sample}`
+        `http://localhost:8123/methylation?start=${start}&stop=${stop}`
       )
       const data = await response.json()
       setMethylationData(data)
-      console.log('Methylation Data:', data)
     } catch (error) {
       console.error('Error fetching methylation data:', error)
     }
   }
 
   useEffect(() => {
-    fetchMethylationData(start, stop, 'sample1')
+    fetchMethylationData(start, stop, 'sample_9_high')
   }, [start, stop])
 
   useEffect(() => {
@@ -236,6 +237,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           />
         )}
 
+        <RecombinationRatePlot chrom={region.chrom} start={region.start} stop={region.stop} />
         <GenesInRegionTrack genes={region.genes} region={region} />
         {haplotypeGroups && (
           <HaplotypeTrack

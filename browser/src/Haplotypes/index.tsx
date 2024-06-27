@@ -7,6 +7,8 @@ import Link from '../Link'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { Button, Checkbox, SearchInput, SegmentedControl } from '@gnomad/ui'
 
+const renderMaxRows = 7
+
 const Wrapper = styled.div`
   display: flex;
   margin-bottom: 1em;
@@ -145,7 +147,7 @@ export const Legend = ({
           )}
           <LegendItem>
             {' '}
-            <span style={{ marginLeft: '5px', minWidth: '140px' }}>
+            <span style={{ marginLeft: '5px' }}>
               SNVs {colorMode === 'allele' && <>(colored by allele)</>}
             </span>
           </LegendItem>
@@ -185,6 +187,7 @@ export const Legend = ({
             />
           </svg>
           <span>Indel</span>
+          {/* <span>Insertion</span> */}
         </LegendItem>
         <LegendItem>
           <svg width={30} height={30}>
@@ -199,6 +202,7 @@ export const Legend = ({
             />
           </svg>
           <span>SV</span>
+          {/* <span>Deletion</span> */}
         </LegendItem>
         <LegendItem>
           <svg width={35} height={30}>
@@ -465,7 +469,16 @@ const renderTrackLeftPanel =
             <span>No haplogroups found</span>
           </div>
         ) : (
-          <svg width={200} height={(haplotypeGroups.length + 1) * trackHeight + 30}>
+          <svg
+            width={200}
+            height={
+              (haplotypeGroups.length > renderMaxRows
+                ? renderMaxRows
+                : haplotypeGroups.length + 1) *
+                trackHeight +
+              30
+            }
+          >
             <g>
               <text x={0} y={9} fontSize='12'>
                 Long Read
@@ -494,7 +507,7 @@ const renderTrackLeftPanel =
                 </tspan>
               </text>
             </g>
-            {haplotypeGroups.map((group, index) => {
+            {haplotypeGroups.slice(0, renderMaxRows).map((group, index) => {
               const y = 60 + index * trackHeight
               return (
                 <TooltipAnchor
@@ -601,7 +614,7 @@ const getColorForVariantByPosition = (
   maxPosition: number
 ) => {
   const fraction = (position - minPosition) / (maxPosition - minPosition)
-  const hue = Math.round(240 * (1 - fraction)) // Blue to Red across the hue spectrum
+  const hue = Math.round(240 * (1 - fraction))
   return `hsl(${hue}, 100%, 50%)`
 }
 
@@ -611,13 +624,13 @@ const getColorForVariantByContinuousPosition = (
   regionEnd: number
 ) => {
   const relativePosition = (position - regionStart) / (regionEnd - regionStart)
-  const hue = Math.round(360 * relativePosition) // Gradient across the whole color wheel
+  const hue = Math.round(360 * relativePosition)
   const saturation = 70 + Math.round(relativePosition * 30) // Saturation between 70% and 100%
   const lightness = 40 + Math.round(relativePosition * 20) // Lightness between 40% and 60%
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`
 }
 
-const getColorForVariantByHaplotypeCount = (haplotypeGroups: any[], locus: string) => {
+const getColorForVariantByHaplotypeCount = (haplotypeGroups: HaplotypeGroup[], locus: string) => {
   const count = haplotypeGroups.reduce(
     (acc, group) =>
       acc + (group.variants.variants.some((variant) => variant.locus === locus) ? 1 : 0),
@@ -625,13 +638,13 @@ const getColorForVariantByHaplotypeCount = (haplotypeGroups: any[], locus: strin
   )
   const haplotypeCountScale = scaleLinear<string>()
     .domain([0, haplotypeGroups.length])
-    .range(['#d3d3d3', '#ff0000']) // Start from light grey to red
+    .range(['#d3d3d3', '#ff0000'])
     .clamp(true)
   return haplotypeCountScale(count)
 }
 
 const HaplotypeTrack = ({
-  height,
+  height = 500,
   haplotypeGroups,
   methylationData,
   start,
@@ -645,7 +658,7 @@ const HaplotypeTrack = ({
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(true)
+  const [showMethylation, setShowMethylation] = useState(false)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -698,17 +711,28 @@ const HaplotypeTrack = ({
   const regionSize = stop - start
   const variantCircleRadius = regionSize > 100000 ? 2 : 4
 
-  const currentParams = queryString.parse(location.search)
-  let variantId = currentParams.variant as string
+  const methylationPlotHeight = showMethylation
+    ? (haplotypeGroups.length > renderMaxRows ? renderMaxRows : haplotypeGroups.length + 1) * 50
+    : 0
 
-  const methylationPlotHeight = showMethylation ? (haplotypeGroups.length + 1) * 50 : 0
-  const dynamicHeight = haplotypeGroups.length * 21 + methylationPlotHeight
-
-  console.log(haplotypeGroups)
+  const dynamicHeight =
+    (haplotypeGroups.length > renderMaxRows ? renderMaxRows : haplotypeGroups.length) * 21 +
+    methylationPlotHeight
 
   const methylationYScale = scaleLinear()
     .domain([0, Math.max(...methylationData.map((d) => d.methylation))])
     .range([65, 35])
+
+  const methylationDataBySample = methylationData.reduce<Record<string, Methylation[]>>(
+    (acc, d) => {
+      if (!acc[d.sample]) {
+        acc[d.sample] = []
+      }
+      acc[d.sample].push(d)
+      return acc
+    },
+    {}
+  )
 
   return (
     <Wrapper>
@@ -733,26 +757,7 @@ const HaplotypeTrack = ({
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
-                {variantId && (
-                  <>
-                    <rect
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={15}
-                      width={2}
-                      height={30}
-                      fill='#000'
-                    />
-                    <text
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={9}
-                      dy='0.33rem'
-                      textAnchor='middle'
-                    >
-                      <Link to={`/variant/${variantId}`}>{variantId}</Link>
-                    </text>
-                  </>
-                )}
-                {haplotypeGroups.map((group, rowIndex) => {
+                {haplotypeGroups.slice(0, renderMaxRows).map((group, rowIndex) => {
                   const startX = scalePosition(start)
                   const stopX = scalePosition(stop)
                   const groupWidth = stopX - startX
@@ -761,6 +766,19 @@ const HaplotypeTrack = ({
                   const hasMethylationImpactingVariant = group.variants.variants.some(
                     (variant) => variant.position === 100038008
                   )
+
+                  const methylationSampleKeys = Object.keys(methylationDataBySample)
+
+                  const methDataType = !hasMethylationImpactingVariant ? 'high' : 'normal'
+
+                  const sampleKeys = Object.keys(methylationDataBySample)
+                    .filter((key) => key.includes(methDataType))
+                    .sort(() => 0.5 - Math.random())
+
+                  const methSampleData =
+                    sampleKeys.length > 0
+                      ? methylationDataBySample[sampleKeys.shift() as string] || []
+                      : []
 
                   return (
                     <>
@@ -854,32 +872,7 @@ const HaplotypeTrack = ({
                       </g>
                       <g>
                         {showMethylation &&
-                          methylationData.map((d, index) => {
-                            let methylation = d.methylation
-                            let jitter = 0
-
-                            if (
-                              !hasMethylationImpactingVariant &&
-                              d.pos1 >= 100032744 &&
-                              d.pos1 <= 100045403
-                            ) {
-                              jitter = (Math.random() - 0.5) * 5 // Increase jitter significantly
-                              if (methylation < 95) {
-                                methylation = 95 + (Math.random() - 0.5) * 10 // Add jitter of ±1
-                              }
-                              if (methylation > 95) {
-                                methylation = 100 + (Math.random() - 0.5) * 10 // Add jitter of ±1
-                              }
-                            } else if (methylation >= 95 && methylation <= 100) {
-                              jitter = (Math.random() - 0.5) * 2 // Increase jitter significantly
-                            } else if (methylation >= 20 && methylation <= 80) {
-                              jitter = (Math.random() - 0.5) * 10 // Larger jitter
-                            } else if (methylation >= 0 && methylation <= 10) {
-                              jitter = (Math.random() - 0.5) * 5 // Small jitter
-                            } else {
-                              jitter = (Math.random() - 0.5) * 10 // Moderate jitter
-                            }
-
+                          methSampleData.map((d, index) => {
                             return (
                               <TooltipAnchor
                                 key={`methylation-${rowIndex}-${index}`}
@@ -893,14 +886,16 @@ const HaplotypeTrack = ({
                                       <dt>Methylation:</dt>
                                       <dd>{d.methylation}</dd>
                                     </div>
+                                    <div>
+                                      <dt>Sample:</dt>
+                                      <dd>{d.sample}</dd>
+                                    </div>
                                   </RegionAttributeList>
                                 )}
                               >
                                 <circle
                                   cx={scalePosition(d.pos1)}
-                                  cy={
-                                    methylationYScale(methylation + jitter) + rowIndex * trackHeight
-                                  }
+                                  cy={methylationYScale(d.methylation) + rowIndex * trackHeight}
                                   r={2}
                                   fill='grey'
                                   stroke='none'
