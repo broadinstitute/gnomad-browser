@@ -102,23 +102,6 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
           {hasNonCodingGenes && !includeNonCodingGenes ? 'Coding genes' : 'Genes'}
         </TitlePanel>
       )}
-      renderTopPanel={() =>
-        genes.length > 0 && (
-          <TopPanel>
-            <Label htmlFor="genes-track-include-non-coding-genes">
-              <CheckboxInput
-                checked={includeNonCodingGenes}
-                disabled={genes.length === 0 || !(hasCodingGenes && hasNonCodingGenes)}
-                id="genes-track-include-non-coding-genes"
-                onChange={(e: any) => {
-                  setIncludeNonCodingGenes(e.target.checked)
-                }}
-              />
-              Include non-coding genes
-            </Label>
-          </TopPanel>
-        )
-      }
     >
       {({ scalePosition, width }: any) => {
         if (genes.length === 0) {
@@ -131,7 +114,7 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
             includeNonCodingGenes
             renderGeneLabel={(gene: any) => (
               <GeneLink to={`/gene/${gene.gene_id}`}>
-                <text textAnchor="middle">{gene.symbol}</text>
+                <text textAnchor='middle'>{gene.symbol}</text>
               </GeneLink>
             )}
             scalePosition={scalePosition}
