@@ -376,17 +376,17 @@ class NavigationMenu extends Component<NavigationMenuProps, State> {
                 <React.Fragment key={item.id}>
                   <TopLevelNavigationLink
                     aria-expanded={isExpanded}
-                    aria-haspopup="true"
+                    aria-haspopup='true'
                     aria-label={item.label}
                     data-item={item.id}
-                    role="button"
-                    to="#"
+                    role='button'
+                    to='#'
                     onBlur={this.onBlur}
                     onClick={this.onClickExpandButton}
                     onKeyDown={this.onKeyDownTopLevelItem}
                   >
                     <MoreIcon>
-                      <img src={CaretDown} alt="" aria-hidden="true" />
+                      <img src={CaretDown} alt='' aria-hidden='true' />
                     </MoreIcon>
                   </TopLevelNavigationLink>
                   {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
@@ -524,12 +524,12 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
         id: 'gnomad_r3',
         label: labelForDataset('gnomad_r3'),
         url: urlBuilder(window.location, 'gnomad_r3'),
-        description: `${sampleCounts.gnomad_r3.total.toLocaleString()} samples`,
+        description: `20,000 samples`,
         childReferenceGenome: referenceGenome('gnomad_r3'),
       })
     }
 
-    if (includeGnomad3 && includeGnomad3Subsets) {
+    if (false) {
       shortVariantDatasets[1].children.push(
         {
           id: 'gnomad_r3_non_cancer',
@@ -619,6 +619,15 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
         url: urlBuilder(window.location, 'exac'),
         description: `${sampleCounts.exac.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('exac'),
+      })
+    }
+    if (true) {
+      shortVariantDatasets[1].children.push({
+        id: 'long_read',
+        label: 'gnomAD Long Read v0.1',
+        url: urlBuilder(window.location, 'long_read'),
+        description: `20,000 samples`,
+        childReferenceGenome: 'T2T',
       })
     }
 

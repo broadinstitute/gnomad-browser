@@ -80,6 +80,7 @@ export enum MetricOptions {
   over_1 = 'over_1',
   over_5 = 'over_5',
   over_10 = 'over_10',
+  over_12 = 'over_12x',
   over_15 = 'over_15',
   over_20 = 'over_20',
   over_25 = 'over_25',
@@ -125,7 +126,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     if (this.props.metric) {
       this.state = { selectedMetric: this.props.metric }
     } else if (isV4(this.props.datasetId)) {
-      this.state = { selectedMetric: MetricOptions.over_20 }
+      this.state = { selectedMetric: MetricOptions.over_10 }
     } else {
       this.state = { selectedMetric: MetricOptions.mean }
     }
@@ -206,7 +207,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                 height={barHeight}
                 fill={dataset.color}
                 fillOpacity={dataset.opacity}
-                stroke="none"
+                stroke='none'
               />
             )
           })}
@@ -243,7 +244,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     const trackTitle =
       selectedMetric === 'mean' || selectedMetric === 'median'
         ? `Per-base ${selectedMetric} depth of coverage`
-        : `Fraction of individuals with coverage over ${selectedMetric.slice(5)}`
+        : `Fraction of individuals with LrGS coverage over 12x`
 
     return (
       <Track
@@ -252,24 +253,24 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
           <TopPanel>
             <Legend datasets={datasets} />
             {/* eslint-disable-next-line jsx-a11y/label-has-for */}
-            <label htmlFor="coverage-metric">
+            <label htmlFor='coverage-metric'>
               Metric: {/* @ts-expect-error TS2769: No overload matches this call. */}
               <Select
-                id="coverage-metric"
+                id='coverage-metric'
                 value={selectedMetric}
                 onChange={(e: any) => {
                   this.setState({ selectedMetric: e.target.value })
                 }}
               >
-                <optgroup label="Per-base depth of coverage">
-                  <option value="mean">Mean</option>
-                  <option value="median">Median</option>
+                <optgroup label='Per-base depth of coverage'>
+                  <option value='mean'>Mean</option>
+                  <option value='median'>Median</option>
                 </optgroup>
                 {coverageOverThresholds && (
-                  <optgroup label="Fraction of individuals with coverage over X">
+                  <optgroup label='Fraction of individuals with coverage over X'>
                     {coverageOverThresholds.map((threshold) => (
                       <option key={`${threshold}`} value={`over_${threshold}`}>
-                        Over {threshold}
+                        Over 12x
                       </option>
                     ))}
                   </optgroup>
@@ -304,7 +305,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                     textAnchor: 'end',
                   })}
                   scale={scaleCoverageMetric}
-                  stroke="#333"
+                  stroke='#333'
                 />
                 <g transform={`translate(${axisWidth},0)`}>
                   {this.renderPlot({
@@ -314,7 +315,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                     scaleCoverageMetric,
                     width,
                   })}
-                  <line x1={0} y1={height} x2={width} y2={height} stroke="#333" />
+                  <line x1={0} y1={height} x2={width} y2={height} stroke='#333' />
                 </g>
               </svg>
             </div>
