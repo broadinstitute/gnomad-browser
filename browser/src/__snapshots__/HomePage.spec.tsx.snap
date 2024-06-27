@@ -443,10 +443,10 @@ exports[`Home Page has no unexpected changes 1`] = `
        
       <a
         className="-Link c8"
-        href="/region/2-49918501-51225575?dataset=gnomad_cnv_r4"
+        href="/region/1-55039447-55064852?dataset=gnomad_cnv_r4"
         onClick={[Function]}
       >
-        2-49918501-51225575
+        1-55039447-55064852
       </a>
     </li>
     <li
