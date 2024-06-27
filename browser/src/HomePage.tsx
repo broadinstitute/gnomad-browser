@@ -156,7 +156,7 @@ export default () => (
             search: queryString.stringify({ dataset: 'gnomad_cnv_r4' }),
           }}
         >
-          19-11078371-11144910
+          2-49918501-51225575
         </Link>
       </ListItem>
       {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
