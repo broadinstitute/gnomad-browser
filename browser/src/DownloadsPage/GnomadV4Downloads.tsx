@@ -371,6 +371,24 @@ const GnomadV4Downloads = () => {
               associatedFileType="TBI"
             />
           </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Genome SV BED"
+              path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.bed.gz"
+              size="1.26 GiB"
+              md5="a898e3e37aacfdb1e4d6218d5479683a"
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Genome SV non neuro controls BED"
+              path="/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.bed.gz"
+              size="1.95 GiB"
+              md5="42cc0071d81dd8ae0492a53a462e8c33"
+            />
+          </ListItem>
         </FileList>
       </DownloadsSection>
 
