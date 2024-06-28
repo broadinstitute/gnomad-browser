@@ -54,12 +54,15 @@ const resolvers = {
     ac_hom: fieldAliasResolver('homozygote_count'),
     ac_hemi: fieldAliasResolver('hemizygote_count'),
     af: (obj: any) => (obj.an === 0 ? 0 : obj.ac / obj.an),
+    ancestry_groups: fieldAliasResolver('populations'),
   },
   VariantDetailsSequencingTypeData: {
     qualityMetrics: fieldAliasResolver('quality_metrics'),
     ac_hom: fieldAliasResolver('homozygote_count'),
     ac_hemi: fieldAliasResolver('hemizygote_count'),
     af: (obj: any) => (obj.an === 0 ? 0 : obj.ac / obj.an),
+    ancestry_groups: fieldAliasResolver('populations'),
+    local_ancestry_groups: fieldAliasResolver('local_ancestry_populations'),
   },
   VariantPopulation: {
     ac_hom: fieldAliasResolver('homozygote_count'),
@@ -84,6 +87,7 @@ const resolvers = {
     consequence: fieldAliasResolver('major_consequence'),
     ac_hom: fieldAliasResolver('homozygote_count'),
     ac_hemi: fieldAliasResolver('hemizygote_count'),
+    ancestry_groups: fieldAliasResolver('populations'),
   },
   StructuralVariantPopulation: {
     ac_hom: fieldAliasResolver('homozygote_count'),
@@ -106,6 +110,29 @@ const resolvers = {
   MitochondrialVariantDetails: {
     // Single rsID
     rsid: (obj: any) => (obj.rsids || [])[0],
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  CopyNumberVariantDetails: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  ShortTandemRepeatAlleleSizeDistribution: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  ShortTandemRepeatAlleleSizeDistributionRepeatUnit: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  ShortTandemRepeatGenotypeDistribution: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  ShortTandemRepeatGenotypeDistributionRepeatUnit: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  VariantCooccurrence: {
+    ancestry_groups: fieldAliasResolver('populations'),
+  },
+  VariantFilteringAlleleFrequency: {
+    grpmax: fieldAliasResolver('popmax'),
+    grpmax_ancestry_group: fieldAliasResolver('popmax_population'),
   },
 }
 
