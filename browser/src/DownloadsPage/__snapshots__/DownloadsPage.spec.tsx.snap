@@ -7729,6 +7729,100 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             </a>
           </span>
         </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Genome SV BED
+          </span>
+          <br />
+          <span>
+            1.26 GiB
+            , MD5: 
+            a898e3e37aacfdb1e4d6218d5479683a
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Genome SV BED from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/genome_sv/gnomad.v4.1.sv.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Genome SV BED from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/genome_sv/gnomad.v4.1.sv.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Genome SV BED from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/genome_sv/gnomad.v4.1.sv.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Genome SV non neuro controls BED
+          </span>
+          <br />
+          <span>
+            1.95 GiB
+            , MD5: 
+            42cc0071d81dd8ae0492a53a462e8c33
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Genome SV non neuro controls BED from Google"
+              className="c10"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Genome SV non neuro controls BED from Amazon"
+              className="c10"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Genome SV non neuro controls BED from Microsoft"
+              className="c10"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/genome_sv/gnomad.v4.1.sv.non_neuro_controls.sites.bed.gz"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
       </ul>
     </section>
     <section
