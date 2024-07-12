@@ -18,6 +18,9 @@ resources:
 commonLabels:
   deployment: '{deployment_name}'
 nameSuffix: '-{deployment_name}'
+replicas:
+  - name: gnomad-api
+    count: {api_replicas_count}
 images:
   - name: gnomad-api
     newName: {api_image_repository}
@@ -81,7 +84,7 @@ def list_deployments() -> None:
         print(deployment[len("gnomad-browser-") :])
 
 
-def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -> None:
+def create_deployment(name: str, api_replicas_count: int, browser_tag: str = None, api_tag: str = None) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
@@ -91,6 +94,9 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
 
         if name == "latest":
             raise ValueError("'latest' cannot be used for a deployment name")
+
+    if not api_replicas_count:
+        api_replicas_count = 4
 
     deployment_directory = os.path.join(deployments_directory(), name)
 
@@ -119,6 +125,7 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             browser_image_repository=config.browser_image_repository,
             browser_tag=browser_tag,
             api_image_repository=config.api_image_repository,
+            api_replicas_count=api_replicas_count,
             api_tag=api_tag,
             project=config.project,
             cluster_name=config.gke_cluster_name,
@@ -174,6 +181,7 @@ def main(argv: typing.List[str]) -> None:
     create_parser.add_argument("--name")
     create_parser.add_argument("--browser-tag")
     create_parser.add_argument("--api-tag")
+    create_parser.add_argument("--api-replicas-count", type=int)
 
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_deployment)
