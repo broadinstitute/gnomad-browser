@@ -84,7 +84,7 @@ def list_deployments() -> None:
         print(deployment[len("gnomad-browser-") :])
 
 
-def create_deployment(name: str, api_replicas_count: int, browser_tag: str = None, api_tag: str = None) -> None:
+def create_deployment(name: str, api_replicas_count: int = None, browser_tag: str = None, api_tag: str = None) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
