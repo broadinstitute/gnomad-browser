@@ -13,6 +13,7 @@ const SUMMARY_FIELDS = [
   'value.gene',
   'value.associated_diseases',
   'value.stripy_id',
+  'value.main_reference_region',
   'value.reference_region',
   'value.reference_repeat_unit',
 ]
