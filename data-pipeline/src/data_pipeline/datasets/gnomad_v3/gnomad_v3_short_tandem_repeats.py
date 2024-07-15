@@ -1,6 +1,4 @@
-import itertools
 import json
-from collections import defaultdict
 
 import hail as hl
 
@@ -8,12 +6,8 @@ import hail as hl
 def _parse_region_id(region_id):
     [chrom, position_range] = region_id.split(":")
     chrom = chrom[3:]
-    [start, stop] = map(int, position_range.split("-"))
-    return {
-        "chrom": chrom,
-        "start": start,
-        "stop": stop,
-    }
+    [start, stop] = list(map(int, position_range.split("-")))
+    return {"chrom": chrom, "start": start, "stop": stop, "reference_genome": "GRCh38"}
 
 
 def _prepare_histogram(histogram):
@@ -21,161 +15,6 @@ def _prepare_histogram(histogram):
         ([int(n_repeats), n_samples] for n_repeats, n_samples in histogram.items()),
         key=lambda value: value[0],
     )
-
-
-def _population_sort_key(pop):
-    pop_id = pop["id"]
-    if pop_id == "XX" or pop_id == "XY":
-        return ("zzz", pop_id)
-
-    if "_" in pop_id:
-        return tuple(pop_id.split("_"))
-
-    return (pop_id, "")
-
-
-def _get_total_histogram(histogram):
-    total = defaultdict(int)
-    for v in histogram.values():
-        for k, n in v.items():
-            total[k] += n
-
-    return total
-
-
-def _prepare_allele_size_distribution_populations(locus):
-    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
-
-    distributions = sorted(
-        list(
-            itertools.chain.from_iterable(
-                [
-                    {
-                        "id": population,
-                        "distribution": _prepare_histogram(
-                            _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountHistogram"].items()
-                                    if k.split("/")[0] == population
-                                }
-                            )
-                        ),
-                    },
-                    {
-                        "id": f"{population}_XX",
-                        "distribution": _prepare_histogram(
-                            _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountHistogram"].items()
-                                    if k.split("/")[0] == population and k.split("/")[1] == "XX"
-                                }
-                            )
-                        ),
-                    },
-                    {
-                        "id": f"{population}_XY",
-                        "distribution": _prepare_histogram(
-                            _get_total_histogram(
-                                {
-                                    k: v
-                                    for k, v in locus["AlleleCountHistogram"].items()
-                                    if k.split("/")[0] == population and k.split("/")[1] == "XY"
-                                }
-                            )
-                        ),
-                    },
-                ]
-                for population in populations
-            )
-        )
-        + [
-            {
-                "id": sex,
-                "distribution": _prepare_histogram(
-                    _get_total_histogram(
-                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[1] == sex}
-                    )
-                ),
-            }
-            for sex in ["XX", "XY"]
-        ],
-        key=_population_sort_key,
-    )
-
-    return [distribution for distribution in distributions if distribution["distribution"]]
-
-
-def _prepare_allele_size_distribution_repeat_units(locus):
-    repeat_units = sorted(set(key.split("/")[2] for key in locus["AlleleCountHistogram"].keys()))
-    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountHistogram"].keys()))
-
-    distributions = sorted(
-        [
-            {
-                "repeat_unit": repeat_unit,
-                "distribution": _prepare_histogram(
-                    _get_total_histogram(
-                        {k: v for k, v in locus["AlleleCountHistogram"].items() if k.split("/")[2] == repeat_unit}
-                    )
-                ),
-                "populations": sorted(
-                    list(
-                        itertools.chain.from_iterable(
-                            [
-                                {
-                                    "id": population,
-                                    "distribution": _prepare_histogram(
-                                        _get_total_histogram(
-                                            {
-                                                k: v
-                                                for k, v in locus["AlleleCountHistogram"].items()
-                                                if k.split("/")[2] == repeat_unit and k.split("/")[0] == population
-                                            }
-                                        )
-                                    ),
-                                },
-                                {
-                                    "id": f"{population}_XX",
-                                    "distribution": _prepare_histogram(
-                                        locus["AlleleCountHistogram"].get(f"{population}/XX/{repeat_unit}", {})
-                                    ),
-                                },
-                                {
-                                    "id": f"{population}_XY",
-                                    "distribution": _prepare_histogram(
-                                        locus["AlleleCountHistogram"].get(f"{population}/XY/{repeat_unit}", {})
-                                    ),
-                                },
-                            ]
-                            for population in populations
-                        )
-                    )
-                    + [
-                        {
-                            "id": sex,
-                            "distribution": _prepare_histogram(
-                                _get_total_histogram(
-                                    {
-                                        k: v
-                                        for k, v in locus["AlleleCountHistogram"].items()
-                                        if k.split("/")[2] == repeat_unit and k.split("/")[1] == sex
-                                    }
-                                )
-                            ),
-                        }
-                        for sex in ["XX", "XY"]
-                    ],
-                    key=_population_sort_key,
-                ),
-            }
-            for repeat_unit in repeat_units
-        ],
-        key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
-    )
-
-    return [distribution for distribution in distributions if distribution["distribution"]]
 
 
 def _prepare_age_distribution(locus):
@@ -205,192 +44,6 @@ def _prepare_age_distribution(locus):
     ]
 
 
-def _prepare_genotype_distribution_histogram(histogram):
-    return sorted(
-        ([*(int(n) for n in n_repeats.split("/")), n_samples] for n_repeats, n_samples in histogram.items()),
-        key=lambda value: (value[0], value[1]),
-    )
-
-
-def _filter_genotype_distribution_histogram(histogram, repeat_units=None, population=None, sex=None):
-    predicates = []
-    if repeat_units:
-        predicates.append(
-            lambda key: tuple(sorted(key.split("/")[2:4])) in (repeat_units, tuple(reversed(repeat_units)))
-        )
-    if population:
-        predicates.append(lambda key: key.split("/")[0] == population)
-    if sex:
-        predicates.append(lambda key: key.split("/")[1] == sex)
-
-    filtered_histogram = {k: v for k, v in histogram.items() if all(predicate(k) for predicate in predicates)}
-
-    if not repeat_units:
-        return filtered_histogram
-
-    return dict(
-        itertools.chain(
-            ((k, v) for k, v in filtered_histogram.items() if tuple(k.split("/")[2:4]) == repeat_units),
-            (
-                (f"{k}-reversed", {"/".join(reversed(vk.split("/"))): vv for vk, vv in v.items()})
-                for k, v in filtered_histogram.items()
-                if tuple(k.split("/")[2:4]) == tuple(reversed(repeat_units))
-                and tuple(k.split("/")[2:4]) != repeat_units
-            ),
-        )
-    )
-
-
-def _prepare_genotype_distribution_populations(locus):
-    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountScatterPlot"].keys()))
-
-    distributions = sorted(
-        list(
-            itertools.chain.from_iterable(
-                [
-                    {
-                        "id": population,
-                        "distribution": _prepare_genotype_distribution_histogram(
-                            _get_total_histogram(
-                                _filter_genotype_distribution_histogram(
-                                    locus["AlleleCountScatterPlot"], population=population
-                                )
-                            )
-                        ),
-                    },
-                    {
-                        "id": f"{population}_XX",
-                        "distribution": _prepare_genotype_distribution_histogram(
-                            _get_total_histogram(
-                                _filter_genotype_distribution_histogram(
-                                    locus["AlleleCountScatterPlot"], population=population, sex="XX"
-                                )
-                            )
-                        ),
-                    },
-                    {
-                        "id": f"{population}_XY",
-                        "distribution": _prepare_genotype_distribution_histogram(
-                            _get_total_histogram(
-                                _filter_genotype_distribution_histogram(
-                                    locus["AlleleCountScatterPlot"], population=population, sex="XY"
-                                )
-                            )
-                        ),
-                    },
-                ]
-                for population in populations
-            )
-        )
-        + [
-            {
-                "id": sex,
-                "distribution": _prepare_genotype_distribution_histogram(
-                    _get_total_histogram(
-                        _filter_genotype_distribution_histogram(locus["AlleleCountScatterPlot"], sex=sex)
-                    )
-                ),
-            }
-            for sex in ["XX", "XY"]
-        ],
-        key=_population_sort_key,
-    )
-
-    return [distribution for distribution in distributions if distribution["distribution"]]
-
-
-def _prepare_genotype_distribution_repeat_units(locus):
-    repeat_unit_pairs = sorted(
-        set(tuple(sorted(key.split("/")[2:4])) for key in locus["AlleleCountScatterPlot"].keys())
-    )
-    populations = sorted(set(key.split("/")[0] for key in locus["AlleleCountScatterPlot"].keys()))
-
-    distributions = sorted(
-        [
-            {
-                "repeat_units": list(repeat_unit_pair),
-                "distribution": _prepare_genotype_distribution_histogram(
-                    _get_total_histogram(
-                        _filter_genotype_distribution_histogram(
-                            locus["AlleleCountScatterPlot"], repeat_units=repeat_unit_pair
-                        )
-                    )
-                ),
-                "populations": sorted(
-                    list(
-                        itertools.chain.from_iterable(
-                            [
-                                {
-                                    "id": population,
-                                    "distribution": _prepare_genotype_distribution_histogram(
-                                        _get_total_histogram(
-                                            _filter_genotype_distribution_histogram(
-                                                locus["AlleleCountScatterPlot"],
-                                                repeat_units=repeat_unit_pair,
-                                                population=population,
-                                            )
-                                        )
-                                    ),
-                                },
-                                {
-                                    "id": f"{population}_XX",
-                                    "distribution": _prepare_genotype_distribution_histogram(
-                                        _get_total_histogram(
-                                            _filter_genotype_distribution_histogram(
-                                                locus["AlleleCountScatterPlot"],
-                                                repeat_units=repeat_unit_pair,
-                                                population=population,
-                                                sex="XX",
-                                            )
-                                        )
-                                    ),
-                                },
-                                {
-                                    "id": f"{population}_XY",
-                                    "distribution": _prepare_genotype_distribution_histogram(
-                                        _get_total_histogram(
-                                            _filter_genotype_distribution_histogram(
-                                                locus["AlleleCountScatterPlot"],
-                                                repeat_units=repeat_unit_pair,
-                                                population=population,
-                                                sex="XY",
-                                            )
-                                        )
-                                    ),
-                                },
-                            ]
-                            for population in populations
-                        )
-                    )
-                    + [
-                        {
-                            "id": sex,
-                            "distribution": _prepare_genotype_distribution_histogram(
-                                _get_total_histogram(
-                                    _filter_genotype_distribution_histogram(
-                                        locus["AlleleCountScatterPlot"], repeat_units=repeat_unit_pair, sex=sex
-                                    )
-                                )
-                            ),
-                        }
-                        for sex in ["XX", "XY"]
-                    ],
-                    key=_population_sort_key,
-                ),
-            }
-            for repeat_unit_pair in repeat_unit_pairs
-        ],
-        key=lambda r: (
-            len(r["repeat_units"][0]),
-            len(r["repeat_units"][1]),
-            r["repeat_units"][0],
-            r["repeat_units"][1],
-        ),
-    )
-
-    return [distribution for distribution in distributions if distribution["distribution"]]
-
-
 def _prepare_disease_repeat_size_classifications(disease):
     ranges = []
 
@@ -414,6 +67,63 @@ INHERITANCE_MODES = {
 }
 
 
+def _parse_allele_count_histogram_section(cohort_key, distribution):
+    [ancestry_group, sex, repunit, quality_description, q_score] = cohort_key.split("/")
+    return {
+        "ancestry_group": ancestry_group,
+        "sex": sex,
+        "repunit": repunit,
+        "quality_description": quality_description.lower(),
+        "q_score": float(q_score),
+        "distribution": [{"repunit_count": int(k), "frequency": v} for k, v in distribution.items()],
+    }
+
+
+def _prepare_allele_size_distribution(allele_count_histogram):
+    return [_parse_allele_count_histogram_section(k, v) for (k, v) in allele_count_histogram.items()]
+
+
+def _parse_allele_scatter_plot_item(item):
+    (key, value) = item
+    [short_allele_repunit_count, long_allele_repunit_count] = key.split("/")
+    return {
+        "short_allele_repunit_count": int(short_allele_repunit_count),
+        "long_allele_repunit_count": int(long_allele_repunit_count),
+        "frequency": value,
+    }
+
+
+def _parse_allele_scatter_plot_distribution(distribution):
+    return list(map(_parse_allele_scatter_plot_item, distribution.items()))
+
+
+def _parse_allele_scatter_plot_histogram_section(cohort_key, distribution):
+    [ancestry_group, sex, short_allele_repunit, long_allele_repunit, quality_description, q_score] = cohort_key.split(
+        "/"
+    )
+    return {
+        "ancestry_group": ancestry_group,
+        "sex": sex,
+        "short_allele_repunit": short_allele_repunit,
+        "long_allele_repunit": long_allele_repunit,
+        "quality_description": quality_description,
+        "q_score": float(q_score),
+        "distribution": _parse_allele_scatter_plot_distribution(distribution),
+    }
+
+
+def _prepare_genotype_distribution(allele_scatter_plot_histogram):
+    return [_parse_allele_scatter_plot_histogram_section(k, v) for k, v in allele_scatter_plot_histogram.items()]
+
+
+def _parse_reference_regions(regions):
+    # "regions" may be a single string or list of strings
+
+    if isinstance(regions, str):
+        return [_parse_region_id(regions)]
+    return list(map(_parse_region_id, regions))
+
+
 def prepare_gnomad_v3_short_tandem_repeats(path):
     with hl.hadoop_open(path) as input_file:
         data = json.load(input_file)
@@ -435,7 +145,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 for disease in locus["Diseases"]
             ],
             "stripy_id": locus["STRipyName"] if "STRipyName" in locus else None,
-            "reference_region": {"reference_genome": "GRCh38", **_parse_region_id(locus["ReferenceRegion"])},
+            "main_reference_region": _parse_region_id(locus["MainReferenceRegion"]),
+            "reference_regions": _parse_reference_regions(locus["ReferenceRegion"]),
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
             "repeat_units": sorted(
                 (
@@ -456,18 +167,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 ),
                 key=lambda r: (len(r["repeat_unit"]), r["repeat_unit"]),
             ),
-            "allele_size_distribution": {
-                "distribution": _prepare_histogram(_get_total_histogram(locus["AlleleCountHistogram"])),
-                "populations": _prepare_allele_size_distribution_populations(locus),
-                "repeat_units": _prepare_allele_size_distribution_repeat_units(locus),
-            },
-            "genotype_distribution": {
-                "distribution": _prepare_genotype_distribution_histogram(
-                    _get_total_histogram(locus["AlleleCountScatterPlot"])
-                ),
-                "populations": _prepare_genotype_distribution_populations(locus),
-                "repeat_units": _prepare_genotype_distribution_repeat_units(locus),
-            },
+            "allele_size_distribution": _prepare_allele_size_distribution(locus["AlleleCountHistogram"]),
+            "genotype_distribution": _prepare_genotype_distribution(locus["AlleleCountScatterPlot"]),
             "age_distribution": _prepare_age_distribution(locus),
             "adjacent_repeats": sorted(
                 [
@@ -482,20 +183,12 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                             set(k.split("/")[2] for k in adjacent_repeat["AlleleCountHistogram"].keys()),
                             key=lambda repeat_unit: (len(repeat_unit), repeat_unit),
                         ),
-                        "allele_size_distribution": {
-                            "distribution": _prepare_histogram(
-                                _get_total_histogram(adjacent_repeat["AlleleCountHistogram"])
-                            ),
-                            "populations": _prepare_allele_size_distribution_populations(adjacent_repeat),
-                            "repeat_units": _prepare_allele_size_distribution_repeat_units(adjacent_repeat),
-                        },
-                        "genotype_distribution": {
-                            "distribution": _prepare_genotype_distribution_histogram(
-                                _get_total_histogram(adjacent_repeat["AlleleCountScatterPlot"])
-                            ),
-                            "populations": _prepare_genotype_distribution_populations(adjacent_repeat),
-                            "repeat_units": _prepare_genotype_distribution_repeat_units(adjacent_repeat),
-                        },
+                        "allele_size_distribution": _prepare_allele_size_distribution(
+                            adjacent_repeat["AlleleCountHistogram"]
+                        ),
+                        "genotype_distribution": _prepare_genotype_distribution(
+                            adjacent_repeat["AlleleCountScatterPlot"]
+                        ),
                         "age_distribution": _prepare_age_distribution(adjacent_repeat),
                     }
                     for adjacent_repeat_id, adjacent_repeat in locus.get("AdjacentRepeats", {}).items()
@@ -506,7 +199,31 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         for locus in data.values()
     ]
 
-    return hl.Table.parallelize(
+    allele_size_distribution_schema = hl.tarray(
+        hl.tstruct(
+            ancestry_group=hl.tstr,
+            sex=hl.tstr,
+            repunit=hl.tstr,
+            quality_description=hl.tstr,
+            q_score=hl.tfloat,
+            distribution=hl.tarray(hl.tstruct(repunit_count=hl.tint, frequency=hl.tint)),
+        )
+    )
+    genotype_distribution_schema = hl.tarray(
+        hl.tstruct(
+            ancestry_group=hl.tstr,
+            sex=hl.tstr,
+            short_allele_repunit=hl.tstr,
+            long_allele_repunit=hl.tstr,
+            quality_description=hl.tstr,
+            q_score=hl.tfloat,
+            distribution=hl.tarray(
+                hl.tstruct(short_allele_repunit_count=hl.tint, long_allele_repunit_count=hl.tint, frequency=hl.tfloat)
+            ),
+        )
+    )
+
+    ds = hl.Table.parallelize(
         ds,
         hl.tstruct(
             id=hl.tstr,
@@ -521,31 +238,14 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     notes=hl.tstr,
                 )
             ),
-            reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
+            main_reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
+            reference_regions=hl.tarray(
+                hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint)
+            ),
             reference_repeat_unit=hl.tstr,
             repeat_units=hl.tarray(hl.tstruct(repeat_unit=hl.tstr, classification=hl.tstr)),
-            allele_size_distribution=hl.tstruct(
-                distribution=hl.tarray(hl.tarray(hl.tint)),
-                populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                repeat_units=hl.tarray(
-                    hl.tstruct(
-                        repeat_unit=hl.tstr,
-                        distribution=hl.tarray(hl.tarray(hl.tint)),
-                        populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                    )
-                ),
-            ),
-            genotype_distribution=hl.tstruct(
-                distribution=hl.tarray(hl.tarray(hl.tint)),
-                populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                repeat_units=hl.tarray(
-                    hl.tstruct(
-                        repeat_units=hl.tarray(hl.tstr),
-                        distribution=hl.tarray(hl.tarray(hl.tint)),
-                        populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                    )
-                ),
-            ),
+            allele_size_distribution=allele_size_distribution_schema,
+            genotype_distribution=genotype_distribution_schema,
             age_distribution=hl.tarray(
                 hl.tstruct(age_range=hl.tarray(hl.tint), distribution=hl.tarray(hl.tarray(hl.tint)))
             ),
@@ -556,32 +256,8 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                     reference_region=hl.tstruct(reference_genome=hl.tstr, chrom=hl.tstr, start=hl.tint, stop=hl.tint),
                     reference_repeat_unit=hl.tstr,
                     repeat_units=hl.tarray(hl.tstr),
-                    allele_size_distribution=hl.tstruct(
-                        distribution=hl.tarray(hl.tarray(hl.tint)),
-                        populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                        repeat_units=hl.tarray(
-                            hl.tstruct(
-                                repeat_unit=hl.tstr,
-                                distribution=hl.tarray(hl.tarray(hl.tint)),
-                                populations=hl.tarray(
-                                    hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))
-                                ),
-                            )
-                        ),
-                    ),
-                    genotype_distribution=hl.tstruct(
-                        distribution=hl.tarray(hl.tarray(hl.tint)),
-                        populations=hl.tarray(hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))),
-                        repeat_units=hl.tarray(
-                            hl.tstruct(
-                                repeat_units=hl.tarray(hl.tstr),
-                                distribution=hl.tarray(hl.tarray(hl.tint)),
-                                populations=hl.tarray(
-                                    hl.tstruct(id=hl.tstr, distribution=hl.tarray(hl.tarray(hl.tint)))
-                                ),
-                            )
-                        ),
-                    ),
+                    allele_size_distribution=allele_size_distribution_schema,
+                    genotype_distribution=genotype_distribution_schema,
                     age_distribution=hl.tarray(
                         hl.tstruct(age_range=hl.tarray(hl.tint), distribution=hl.tarray(hl.tarray(hl.tint)))
                     ),
@@ -590,3 +266,4 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         ),
         n_partitions=1,
     )
+    return ds
