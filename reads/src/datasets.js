@@ -45,8 +45,8 @@ const shortTandemRepeatDatasets = {
     publicPath: '/reads/gnomad_r3/short_tandem_repeats',
   },
   gnomad_r4: {
-    dbPath: '/readviz/datasets/gnomad_r3_short_tandem_repeats/str_reads.db',
-    publicPath: '/reads/gnomad_r3/short_tandem_repeats',
+    dbPath: './v4_str_reads.db',
+    publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
 }
 
