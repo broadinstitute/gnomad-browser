@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Input, Select } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import Delayed from '../Delayed'
@@ -43,7 +43,7 @@ type ShortTandemRepeatReadProps = {
         lower: number
       }
     }[]
-    population: string
+    population: PopulationId
     sex: string
     age?: string
     pcr_protocol: string
@@ -58,7 +58,6 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
     <div>
       <AttributeList style={{ marginBottom: '1em' }}>
         <AttributeListItem label="Population">
-          {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
           {GNOMAD_POPULATION_NAMES[read.population]}
         </AttributeListItem>
         <AttributeListItem label="Sex">{read.sex}</AttributeListItem>
@@ -117,11 +116,10 @@ const ShortTandemRepeatReadContainer = ({
     )
   }
 
-  if (error) {
+  if (error || !read) {
     return <StatusMessage>Unable to load read</StatusMessage>
   }
 
-  // @ts-expect-error TS(2322) FIXME: Type 'null' is not assignable to type '{ alleles: ... Remove this comment to see the full error message
   return <ShortTandemRepeatRead read={read} />
 }
 
@@ -194,15 +192,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
 type ShortTandemRepeatReadsProps = {
   datasetId: string
   shortTandemRepeat: ShortTandemRepeat
-  filter: {
-    population?: string
-    sex?: string
-    alleles?: {
-      repeat_unit?: string
-      min_repeats?: number
-      max_repeat?: number
-    }[]
-  }
+  filter: Filters
 }
 
 const ShortTandemRepeatReads = ({
@@ -210,12 +200,12 @@ const ShortTandemRepeatReads = ({
   shortTandemRepeat,
   filter,
 }: ShortTandemRepeatReadsProps) => {
-  const fetchReadsTimer = useRef(null)
+  const fetchReadsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fetchNumReadsMemoized = useCallback(() => {
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-    clearTimeout(fetchReadsTimer.current)
+    if (fetchReadsTimer.current) {
+      clearTimeout(fetchReadsTimer.current)
+    }
     return new Promise((resolve: any, reject: any) => {
-      // @ts-expect-error TS(2322) FIXME: Type 'Timeout' is not assignable to type 'null'.
       fetchReadsTimer.current = setTimeout(() => {
         fetchNumReads({ datasetId, shortTandemRepeatId: shortTandemRepeat.id, filter }).then(
           resolve,
@@ -224,8 +214,7 @@ const ShortTandemRepeatReads = ({
       }, 300)
     })
   }, [datasetId, shortTandemRepeat, filter])
-  const { isLoading, response: numReads, error } = useRequest(fetchNumReadsMemoized)
-
+  const { isLoading, response, error } = useRequest(fetchNumReadsMemoized)
   const readsStore = useRef(new Map())
   const [readIndex, setReadIndex] = useState(0)
 
@@ -283,6 +272,8 @@ const ShortTandemRepeatReads = ({
     return <StatusMessage>Unable to load read data</StatusMessage>
   }
 
+  const numReads: number = response as unknown as number
+
   if (numReads === 0) {
     return <StatusMessage>No matching samples found</StatusMessage>
   }
@@ -307,18 +298,15 @@ const ShortTandemRepeatReads = ({
             min={1}
             max={numReads}
             onChange={(e: any) => {
-              // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-              setReadIndex(Math.max(0, Math.min(numReads - 1, Number(e.target.value) - 1)))
+              setReadIndex(Math.max(0, Math.min(numReads! - 1, Number(e.target.value) - 1)))
             }}
             style={{ width: '10ch' }}
           />{' '}
-          {/* @ts-expect-error TS(2531) FIXME: Object is possibly 'null'. */}
-          of {numReads.toLocaleString()}
+          of {numReads!.toLocaleString()}
         </span>
 
         <Button
           onClick={() => {
-            // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
             if (readIndex < numReads - 1) {
               setReadIndex((previousReadIndex) => previousReadIndex + 1)
             }
@@ -347,66 +335,68 @@ const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
     width: 12ch;
   }
 `
+const Label = styled.label`
+  padding-right: 1em;
+`
 
 type ShortTandemRepeatReadsAllelesFilterControlsProps = {
   shortTandemRepeat: ShortTandemRepeat
   value: {
-    repeat_unit?: string
-    min_repeats?: number
-    max_repeats?: number
+    repeat_unit: string | null
+    min_repeats: number | null
+    max_repeats: number | null
   }[]
+  maxRepeats: number
   onChange: (...args: any[]) => any
+  alleleSizeDistributionRepeatUnits: string[]
 }
 
 const ShortTandemRepeatReadsAllelesFilterControls = ({
-  shortTandemRepeat,
   value,
+  maxRepeats,
   onChange,
+  alleleSizeDistributionRepeatUnits,
 }: ShortTandemRepeatReadsAllelesFilterControlsProps) => {
-  const maxNumRepeats =
-    shortTandemRepeat.allele_size_distribution.distribution[
-      shortTandemRepeat.allele_size_distribution.distribution.length - 1
-    ][0]
-
   return (
     <ShortTandemRepeatReadsAllelesFilterControlsWrapper>
       {[0, 1].map((alleleIndex) => (
         <ShortTandemRepeatReadsAllelesFilterControlWrapper key={`${alleleIndex}`}>
-          Allele {alleleIndex + 1}: {/* eslint-disable jsx-a11y/label-has-associated-control */}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
-            Repeat unit {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-            <Select
-              id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
-              value={value[alleleIndex].repeat_unit || ''}
-              onChange={(e: any) => {
-                const newRepeatUnit = e.target.value
-                onChange(
-                  value.map((v, i) =>
-                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+          Allele {alleleIndex + 1}: &nbsp;{' '}
+          {/* eslint-disable jsx-a11y/label-has-associated-control */}
+          {alleleSizeDistributionRepeatUnits.length > 1 && (
+            <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
+              Repeat unit {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              <Select
+                id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
+                value={value[alleleIndex].repeat_unit || ''}
+                onChange={(e: any) => {
+                  const newRepeatUnit = e.target.value
+                  onChange(
+                    value.map((v, i) =>
+                      i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+                    )
                   )
-                )
-              }}
-            >
-              {shortTandemRepeat.allele_size_distribution.repeat_units.length > 1 && (
-                <option value="">Any</option>
-              )}
-              {shortTandemRepeat.allele_size_distribution.repeat_units.map((repeatUnit) => (
-                <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                  {repeatUnit.repeat_unit}
-                </option>
-              ))}
-            </Select>
-          </label>{' '}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
+                }}
+              >
+                {alleleSizeDistributionRepeatUnits.length > 1 && <option value="">Any</option>}
+                {alleleSizeDistributionRepeatUnits.map((repeatUnit) => (
+                  <option key={repeatUnit} value={repeatUnit}>
+                    {repeatUnit}
+                  </option>
+                ))}
+              </Select>
+            </Label>
+          )}
+          <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
             Min repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               type="number"
               id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}
               min={0}
-              max={maxNumRepeats}
+              max={maxRepeats}
               value={value[alleleIndex].min_repeats}
               onChange={(e: any) => {
-                const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
+                const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
                 onChange(
                   value.map((v, i) =>
                     i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
@@ -414,17 +404,17 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 )
               }}
             />
-          </label>{' '}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
+          </Label>{' '}
+          <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
             Max repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               type="number"
               id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}
               min={0}
-              max={maxNumRepeats}
+              max={maxRepeats}
               value={value[alleleIndex].max_repeats}
               onChange={(e: any) => {
-                const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxNumRepeats), 0)
+                const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
                 onChange(
                   value.map((v, i) =>
                     i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
@@ -432,7 +422,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 )
               }}
             />
-          </label>
+          </Label>
           {/* eslint-enable jsx-a11y/label-has-associated-control */}
         </ShortTandemRepeatReadsAllelesFilterControlWrapper>
       ))}
@@ -440,54 +430,56 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
   )
 }
 
+type Filters = {
+  population: string | null
+  sex: string | null
+  alleles:
+    | {
+        repeat_unit: string | null
+        min_repeats: number | null
+        max_repeats: number | null
+      }[]
+    | null
+}
+
 type ShortTandemRepeatReadsContainerProps = {
   datasetId: string
   shortTandemRepeat: ShortTandemRepeat
-  filter: {
-    population?: string
-    sex?: string
-    alleles?: {
-      repeat_unit?: string
-      min_repeats?: number
-      max_repeats?: number
-    }[]
-  }
+  filter: Omit<Filters, 'alleles'>
+  maxRepeats: number
+  alleleSizeDistributionRepeatUnits: string[]
 }
 
 const ShortTandemRepeatReadsContainer = ({
   datasetId,
   shortTandemRepeat,
+  maxRepeats,
+  alleleSizeDistributionRepeatUnits,
   filter: baseFilter,
 }: ShortTandemRepeatReadsContainerProps) => {
-  const maxNumRepeats =
-    shortTandemRepeat.allele_size_distribution.distribution[
-      shortTandemRepeat.allele_size_distribution.distribution.length - 1
-    ][0]
-
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<Filters>({
     ...baseFilter,
     alleles: [
       {
         repeat_unit:
-          shortTandemRepeat.allele_size_distribution.repeat_units.length > 1
+          alleleSizeDistributionRepeatUnits.length > 1
             ? null
-            : shortTandemRepeat.allele_size_distribution.repeat_units[0].repeat_unit,
+            : alleleSizeDistributionRepeatUnits[0],
         min_repeats: 0,
-        max_repeats: maxNumRepeats,
+        max_repeats: maxRepeats,
       },
       {
         repeat_unit:
-          shortTandemRepeat.allele_size_distribution.repeat_units.length > 1
+          alleleSizeDistributionRepeatUnits.length > 1
             ? null
-            : shortTandemRepeat.allele_size_distribution.repeat_units[0].repeat_unit,
+            : alleleSizeDistributionRepeatUnits[0],
         min_repeats: 0,
-        max_repeats: maxNumRepeats,
+        max_repeats: maxRepeats,
       },
     ],
   })
 
   if (baseFilter.population !== filter.population || baseFilter.sex !== filter.sex) {
-    // @ts-expect-error TS(2345) FIXME: Argument of type '{ population?: string | undefine... Remove this comment to see the full error message
     setFilter({
       ...filter,
       ...baseFilter,
@@ -498,16 +490,16 @@ const ShortTandemRepeatReadsContainer = ({
     <>
       <ShortTandemRepeatReadsAllelesFilterControls
         shortTandemRepeat={shortTandemRepeat}
-        // @ts-expect-error TS(2322) FIXME: Type '{ repeat_unit: string | null; min_repeats: n... Remove this comment to see the full error message
-        value={filter.alleles}
+        value={filter.alleles || []}
         onChange={(newAllelesFilter) => {
           setFilter((prevFilter) => ({ ...prevFilter, alleles: newAllelesFilter }))
         }}
+        maxRepeats={maxRepeats}
+        alleleSizeDistributionRepeatUnits={alleleSizeDistributionRepeatUnits}
       />
       <ShortTandemRepeatReads
         datasetId={datasetId}
         shortTandemRepeat={shortTandemRepeat}
-        // @ts-expect-error TS(2322) FIXME: Type '{ alleles: { repeat_unit: string | null; min... Remove this comment to see the full error message
         filter={filter}
       />
     </>
