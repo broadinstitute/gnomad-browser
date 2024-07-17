@@ -2,13 +2,22 @@ import React from 'react'
 
 import { List, ListItem } from '@gnomad/ui'
 
-import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
+import {
+  ShortTandemRepeat,
+  ShortTandemRepeatAdjacentRepeat,
+  GenotypeDistributionItem,
+} from './ShortTandemRepeatPage'
+
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
+
+import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedPopulationId: string
-  selectedRepeatUnits: string
+  selectedPopulation: string | ''
+  selectedSex: Sex | ''
+  selectedRepeatUnits: string[] | ''
+  repeatUnitPairs: string[][]
   bin: {
     label: string
     xRange: number[]
@@ -18,71 +27,88 @@ type Props = {
 
 const ShortTandemRepeatGenotypeDistributionBinDetails = ({
   shortTandemRepeatOrAdjacentRepeat,
-  selectedPopulationId,
+  selectedPopulation,
+  selectedSex,
   selectedRepeatUnits,
+  repeatUnitPairs,
   bin,
 }: Props) => {
   const genotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-    selectedPopulationId,
+    selectedPopulation,
     selectedRepeatUnits,
+    selectedSex,
   })
 
-  const isInBin = (d: any) =>
-    bin.xRange[0] <= d[0] && d[0] <= bin.xRange[1] && bin.yRange[0] <= d[1] && d[1] <= bin.yRange[1]
+  const isInBin = (item: GenotypeDistributionItem) =>
+    bin.xRange[0] <= item.long_allele_repunit_count &&
+    item.long_allele_repunit_count <= bin.xRange[1] &&
+    bin.yRange[0] <= item.short_allele_repunit_count &&
+    item.short_allele_repunit_count <= bin.yRange[1]
 
   return (
     <>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
-        {/* @ts-expect-error TS(7031) FIXME: Binding element 'x' implicitly has an 'any' type. */}
-        {genotypeDistribution.filter(isInBin).map(([x, y, n]) => (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-          <ListItem key={`${x}/${y}`}>
-            {x} repeats / {y} repeats: {n} individuals
-          </ListItem>
-        ))}
+        {genotypeDistribution
+          .filter(isInBin)
+          .map(({ long_allele_repunit_count, short_allele_repunit_count, frequency }) => (
+            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+            <ListItem key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}>
+              {long_allele_repunit_count} repeats / {short_allele_repunit_count} repeats:{' '}
+              {frequency} individuals
+            </ListItem>
+          ))}
       </List>
       {!selectedRepeatUnits && (
         <>
           <h3>Repeat Units</h3>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <List>
-            {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units
-              .map((repeatUnitsDistribution) => repeatUnitsDistribution.repeat_units)
+            {repeatUnitPairs
               .map((repeatUnits) => ({
                 repeatUnits,
                 distribution: getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-                  selectedPopulationId,
-                  selectedRepeatUnits: repeatUnits.join(' / '),
+                  selectedPopulation,
+                  selectedSex,
+                  selectedRepeatUnits: repeatUnits,
                 }),
               }))
-              .flatMap(({ repeatUnits, distribution }: any) => [
+              .flatMap(({ repeatUnits, distribution }) => [
                 {
                   repeatUnits,
-                  distribution: distribution.filter((d: any) => d[0] >= d[1]).filter(isInBin),
+                  distribution: distribution
+                    .filter((d) => d.long_allele_repunit_count >= d.short_allele_repunit_count)
+                    .filter(isInBin),
                 },
                 {
                   repeatUnits: [...repeatUnits].reverse(),
                   distribution: distribution
-                    .filter((d: any) => d[0] < d[1])
-                    .map((d: any) => [d[1], d[0], d[2]])
+                    .filter((d) => d.long_allele_repunit_count < d.short_allele_repunit_count)
+                    .map((d) => ({
+                      ...d,
+                      long_allele_repunit_count: d.short_allele_repunit_count,
+                      short_allele_repunit_count: d.long_allele_repunit_count,
+                    }))
                     .filter(isInBin),
                 },
               ])
-              .filter(({ distribution }: any) => distribution.length > 0)
-              .map(({ repeatUnits, distribution }: any) => (
+              .map(({ repeatUnits, distribution }) => (
                 // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={repeatUnits.join('/')}>
                   {repeatUnits.join(' / ')}
                   {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <List>
-                    {/* @ts-expect-error TS(7031) FIXME: Binding element 'x' implicitly has an 'any' type. */}
-                    {distribution.map(([x, y, n]) => (
-                      // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-                      <ListItem key={`${x}/${y}`}>
-                        {x} repeats / {y} repeats: {n} individuals
-                      </ListItem>
-                    ))}
+                    {distribution.map(
+                      ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => (
+                        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+                        <ListItem
+                          key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}
+                        >
+                          {long_allele_repunit_count} repeats / {short_allele_repunit_count}{' '}
+                          repeats: {frequency} individuals
+                        </ListItem>
+                      )
+                    )}
                   </List>
                 </ListItem>
               ))}

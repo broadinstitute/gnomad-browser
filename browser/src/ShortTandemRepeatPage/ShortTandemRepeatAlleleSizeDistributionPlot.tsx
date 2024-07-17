@@ -1,12 +1,16 @@
 import { max } from 'd3-array'
-import { scaleBand, scaleLinear, scaleLog } from 'd3-scale'
-import PropTypes from 'prop-types'
+import { scaleBand, scaleLinear, scaleLog, scaleOrdinal } from 'd3-scale'
 import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
+import { BarStack, Bar } from '@visx/shape'
+import { AnyD3Scale } from '@visx/scale'
+import { LegendOrdinal } from '@visx/legend'
 
 import { TooltipAnchor } from '@gnomad/ui'
+import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { colorByLabels } from './ShortTandemRepeatColorBySelect'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -16,15 +20,140 @@ const GraphWrapper = styled.div`
   height: 100%; /* stylelint-disable-line unit-whitelist */
 `
 
-const TooltipTrigger = styled.rect`
+const BarWithHoverEffect = styled(Bar)`
   pointer-events: visible;
 
   &:hover {
-    fill: rgba(0, 0, 0, 0.05);
+    fill-opacity: 0.7;
   }
 `
 
-const tickFormat = (n: any) => {
+export type ScaleType =
+  | 'linear'
+  | 'linear-truncated-50'
+  | 'linear-truncated-200'
+  | 'linear-truncated-1000'
+  | 'log'
+
+export const genotypeQualityKeys = [
+  'low',
+  'medium-low',
+  'medium',
+  'medium-high',
+  'high',
+  'not-reviewed',
+] as const
+
+export type GenotypeQuality = (typeof genotypeQualityKeys)[number]
+
+export const qScoreKeys = [
+  '0',
+  '0.1',
+  '0.2',
+  '0.3',
+  '0.4',
+  '0.5',
+  '0.6',
+  '0.7',
+  '0.8',
+  '0.9',
+  '1',
+] as const
+
+export type QScoreBin = (typeof qScoreKeys)[number]
+export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
+
+export type AlleleSizeDistributionItem = {
+  repunit_count: number
+  frequency: number
+  colorByValue: ColorByValue
+}
+
+export type Sex = 'XX' | 'XY'
+
+export type ColorBy = 'quality_description' | 'q_score' | 'population' | 'sex'
+
+const defaultColor = '#73ab3d'
+const colorMap: Record<ColorBy | '', Record<string, string>> = {
+  '': {
+    '': defaultColor,
+  },
+  quality_description: {
+    low: '#d73027',
+    'medium-low': '#fc8d59',
+    medium: '#fee08b',
+    'medium-high': '#d9ef8b',
+    high: '#1a9850',
+    'not-reviewed': '#aaaaaa',
+  },
+  q_score: {
+    '0': '#ff0000',
+    '0.1': '#ff3300',
+    '0.2': '#ff6600',
+    '0.3': '#ff9900',
+    '0.4': '#ffcc00',
+    '0.5': '#ffff00',
+    '0.6': '#ccff33',
+    '0.7': '#99ff66',
+    '0.8': '#66ff99',
+    '0.9': '#33ffcc',
+    '1': '#00ff00',
+  },
+  sex: {
+    XX: '#F7C3CC',
+    XY: '#6AA6CE',
+  },
+  population: {
+    nfe: '#6AA6CE',
+    afr: '#941494',
+    fin: '#012F6C',
+    amr: '#EF1E24',
+    ami: '#ff7f00',
+    asj: '#FF7E4F',
+    eas: '#128B44',
+    mid: '#f781bf',
+    oth: '#ABB8B9',
+    sas: '#FE9A10',
+  },
+} as const
+
+const qualityDescriptionLabels: Record<GenotypeQuality, string> = {
+  low: 'Low',
+  'medium-low': 'Medium-low',
+  medium: 'Medium',
+  'medium-high': 'Medium-high',
+  high: 'High',
+  'not-reviewed': 'Not reviewed',
+}
+
+const qScoreLabels: Record<QScoreBin, string> = {
+  '0': '0 to 0.05',
+  '0.1': '0.05 to 0.15',
+  '0.2': '0.15 to 0.25',
+  '0.3': '0.25 to 0.35',
+  '0.4': '0.35 to 0.45',
+  '0.5': '0.45 to 0.55',
+  '0.6': '0.55 to 0.65',
+  '0.7': '0.65 to 0.75',
+  '0.8': '0.75 to 0.85',
+  '0.9': '0.85 to 0.95',
+  '1': '0.95 to 1',
+}
+
+const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
+  quality_description: qualityDescriptionLabels,
+  q_score: qScoreLabels,
+  population: GNOMAD_POPULATION_NAMES,
+}
+
+const legendLabel = (colorBy: ColorBy, key: string) => fixedLegendLabels[colorBy]?.[key] || key
+
+const legendLabels = (colorBy: ColorBy, keys: string[]) =>
+  keys.map((key) => legendLabel(colorBy, key))
+
+const colorForValue = (colorBy: ColorBy | '', value: string) =>
+  colorMap[colorBy]?.[value] || defaultColor
+const tickFormat = (n: number) => {
   if (n >= 1e9) {
     return `${(n / 1e9).toPrecision(3)}B`
   }
@@ -40,23 +169,71 @@ const tickFormat = (n: any) => {
 const labelProps = {
   fontSize: 14,
   textAnchor: 'middle',
+} as const
+
+type Range = { start: number; stop: number; label: string }
+
+type Props = {
+  maxRepeats: number
+  alleleSizeDistribution: AlleleSizeDistributionItem[]
+  colorBy: ColorBy | ''
+  repeatUnitLength: number | null
+  scaleType: ScaleType
+  ranges?: Range[]
+  size: { width: number }
+}
+
+type Bin = Partial<Record<ColorByValue, number>> & {
+  index: number
+  label: string
+  fullFrequency: number
+}
+
+const legendKeys: Record<ColorBy, string[]> = {
+  quality_description: [...genotypeQualityKeys],
+  q_score: [...qScoreKeys],
+  sex: ['XX', 'XY'],
+  population: ['nfe', 'afr', 'fin', 'amr', 'ami', 'asj', 'eas', 'mid', 'oth', 'sas'],
+}
+
+const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
+  if (colorBy === '') {
+    return null
+  }
+
+  const keys = legendKeys[colorBy]
+  const labels = legendLabels(colorBy, [...keys])
+  const colors = keys.map((key) => colorMap[colorBy][key])
+  const scale = scaleOrdinal().domain(labels).range(colors)
+  return (
+    <LegendOrdinal
+      scale={scale}
+      shapeMargin="0 7px 20px 0px"
+      labelMargin="0 10px 20px 0px"
+      direction="row"
+    />
+  )
+}
+
+const tooltipContent = (data: Bin, colorBy: ColorBy | '', key: ColorByValue | ''): string => {
+  const repeatText = data.label === '1' ? '1 repeat' : `${data.label} repeats`
+  const alleles = data[key] || 0
+  const alleleText = alleles === 1 ? '1 allele' : `${alleles} alleles`
+  const colorByText =
+    colorBy === '' ? '' : `, ${colorByLabels[colorBy]} is ${legendLabel(colorBy, key)}`
+  return `${repeatText}${colorByText}: ${alleleText}`
 }
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
   ({
-    // @ts-expect-error TS(2339) FIXME: Property 'maxRepeats' does not exist on type '{}'.
     maxRepeats,
-    // @ts-expect-error TS(2339) FIXME: Property 'alleleSizeDistribution' does not exist o... Remove this comment to see the full error message
     alleleSizeDistribution,
-    // @ts-expect-error TS(2339) FIXME: Property 'repeatUnitLength' does not exist on type... Remove this comment to see the full error message
+    colorBy,
     repeatUnitLength,
-    // @ts-expect-error TS(2339) FIXME: Property 'size' does not exist on type '{}'.
     size: { width },
-    // @ts-expect-error TS(2339) FIXME: Property 'scaleType' does not exist on type '{}'.
-    scaleType,
-    // @ts-expect-error TS(2339) FIXME: Property 'ranges' does not exist on type '{}'.
-    ranges,
-  }) => {
+    scaleType = 'linear',
+    ranges = [],
+  }: Props) => {
     const height = 300
 
     const margin = {
@@ -72,37 +249,64 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const binSize = Math.max(1, Math.ceil(maxRepeats / (plotWidth / 10)))
     const nBins = Math.floor(maxRepeats / binSize) + 1
 
-    const data = useMemo(() => {
-      const d = Array.from(Array(nBins).keys()).map((n: any) => ({
-        binIndex: n,
-        label: binSize === 1 ? `${n}` : `${n * binSize} - ${n * binSize + binSize - 1}`,
-        count: 0,
-      }))
+    const binLabels: string[] = [...Array(nBins).keys()].map((binIndex) =>
+      binSize === 1 ? `${binIndex}` : `${binIndex * binSize} - ${binIndex * binSize + binSize - 1}`
+    )
 
-      // @ts-expect-error TS(7031) FIXME: Binding element 'repeatCount' implicitly has an 'a... Remove this comment to see the full error message
-      alleleSizeDistribution.forEach(([repeatCount, nAlleles]) => {
-        const binIndex = Math.floor(repeatCount / binSize)
-        d[binIndex].count += nAlleles
-      })
+    const emptyBins: Bin[] = Array.from(Array(nBins)).map((_, binIndex) => ({
+      label: binLabels[binIndex],
+      index: binIndex,
+      fullFrequency: 0,
+    }))
 
-      return d
-    }, [alleleSizeDistribution, nBins, binSize])
+    const data: Bin[] = useMemo(() => {
+      const binsByColorByValue = alleleSizeDistribution.reduce((acc, item) => {
+        const binIndex = Math.floor(item.repunit_count / binSize)
+        const oldBin: Bin = acc[binIndex]
+        const oldFrequency = oldBin[item.colorByValue] || 0
+        const newFrequency = oldFrequency + item.frequency
+        const newBin: Bin = {
+          ...oldBin,
+          [item.colorByValue]: newFrequency,
+          fullFrequency: oldBin.fullFrequency + item.frequency,
+        }
+        return { ...acc, [binIndex]: newBin }
+      }, emptyBins)
+      return Object.values(binsByColorByValue)
+    }, [alleleSizeDistribution, binSize, emptyBins])
 
-    const xScale = scaleBand()
-      .domain(data.map((d: any) => d.binIndex))
+    const keys = useMemo(() => {
+      const keySet: Record<string, boolean> = data
+        .flatMap((bin) => Object.keys(bin))
+        .reduce((acc, key) => ({ ...acc, [key]: true }), {})
+      return Object.keys(keySet).filter(
+        (key) => key !== 'index' && key !== 'label' && key !== 'fullFrequency'
+      )
+    }, [data])
+    // maps binIndex and colorByValue to a y and y start
+
+    const xScale = scaleBand<number>()
+      .domain(data.map((d) => d.index))
       .range([0, plotWidth])
 
     const xBandwidth = xScale.bandwidth()
 
-    let yScale: any
+    let yScale: AnyD3Scale
     if (scaleType === 'log') {
-      const maxLog = Math.ceil(Math.log10(max(data, (d: any) => d.count) || 1))
+      const maxLog = Math.ceil(Math.log10(max(data, (d) => d.fullFrequency) || 1))
       yScale = scaleLog()
         .domain([1, 10 ** maxLog])
-        .range([plotHeight - 10, 0])
+        .range([plotHeight, 0])
+        .clamp(true)
+    } else if (scaleType === 'linear-truncated-50') {
+      yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0]).clamp(true)
+    } else if (scaleType === 'linear-truncated-200') {
+      yScale = scaleLinear().domain([0, 200]).range([plotHeight, 0]).clamp(true)
+    } else if (scaleType === 'linear-truncated-1000') {
+      yScale = scaleLinear().domain([0, 1000]).range([plotHeight, 0]).clamp(true)
     } else {
       yScale = scaleLinear()
-        .domain([0, max(data, (d: any) => d.count) || 1])
+        .domain([0, max(data, (d) => d.fullFrequency) || 1])
         .range([plotHeight, 0])
     }
 
@@ -117,8 +321,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
         const readLengthBinIndex = Math.floor(readLengthInRepeats / binSize)
         // Read length line should be drawn at the center of the range for its value.
         readLengthX =
-          // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-          xScale(readLengthBinIndex) +
+          (xScale(readLengthBinIndex) || 0) +
           ((readLengthInRepeats - readLengthBinIndex * binSize) / binSize) * xBandwidth +
           xBandwidth / binSize / 2
       }
@@ -126,18 +329,17 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
+        <LegendFromColorBy colorBy={colorBy} />
         <svg height={binSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
             label="Repeats"
             labelOffset={binSize === 1 ? 10 : 30}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
             stroke="#333"
-            tickFormat={(binIndex) =>
-              // @ts-expect-error TS(7015) FIXME: Element implicitly has an 'any' type because index... Remove this comment to see the full error message
-              (binIndex as any) % labelInterval === 0 ? data[binIndex].label : ''
+            tickFormat={(binIndex: number) =>
+              binIndex % labelInterval === 0 ? binLabels[binIndex] : ''
             }
             tickLabelProps={
               binSize === 1
@@ -157,8 +359,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                       fontSize: 10,
                       textAnchor: 'end',
                       transform: `translate(0, 0), rotate(-40 ${
-                        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                        xScale(binIndex) + xBandwidth / 2
+                        (xScale(binIndex) || 0) + xBandwidth / 2
                       }, 0)`,
                     }
                   }
@@ -168,7 +369,6 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
           <AxisLeft
             label="Alleles"
             labelOffset={40}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             numTicks={scaleType === 'log' ? 10 : Math.min(10, yScale.domain()[1])}
@@ -176,9 +376,9 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             stroke="#333"
             tickFormat={
               scaleType === 'log'
-                ? // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to pa... Remove this comment to see the full error message
-                  (n) => (Number.isInteger(Math.log10(n)) ? tickFormat(n) : '')
-                : tickFormat
+                ? (n: unknown) =>
+                    Number.isInteger(Math.log10(n as number)) ? tickFormat(n as number) : ''
+                : (n: unknown) => tickFormat(n as number)
             }
             tickLabelProps={() => ({
               dx: '-0.25em',
@@ -200,54 +400,57 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             />
           )}
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {data.map((d: any) => {
-              const y = d.count === 0 ? plotHeight : yScale(d.count)
-              return (
-                <React.Fragment key={`${d.binIndex}`}>
-                  <rect
-                    x={xScale(d.binIndex)}
-                    y={y}
-                    height={plotHeight - y}
-                    width={xBandwidth}
-                    fill="#73ab3d"
-                    stroke="#333"
-                  />
-                  <TooltipAnchor
-                    // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message
-                    tooltip={`${d.label} repeat${
-                      d.label === '1' ? '' : 's'
-                    }: ${d.count.toLocaleString()} allele${d.count === 1 ? '' : 's'}`}
-                  >
-                    <TooltipTrigger
-                      x={xScale(d.binIndex)}
-                      y={0}
-                      height={plotHeight}
-                      width={xBandwidth}
-                      fill="none"
-                      style={{ pointerEvents: 'visible' }}
-                    />
-                  </TooltipAnchor>
-                </React.Fragment>
-              )
-            })}
+            <BarStack
+              data={data}
+              keys={keys}
+              xScale={xScale}
+              yScale={yScale}
+              stroke="black"
+              color={(key) => colorForValue(colorBy, key.toString())}
+              x={(bin) => bin.index}
+              y0={(point) => point[0] || 0}
+              y1={(point) => point[1] || 0}
+            >
+              {(stacks) =>
+                stacks.map((stack) =>
+                  stack.bars.map((bar) => {
+                    const tooltip = tooltipContent(
+                      bar.bar.data,
+                      colorBy,
+                      bar.key as ColorByValue | ''
+                    )
+                    return (
+                      <React.Fragment key={`bar-stack-${bar.x}-${bar.y}`}>
+                        <TooltipAnchor
+                          // @ts-expect-error
+                          tooltip={tooltip}
+                        >
+                          <g>
+                            <BarWithHoverEffect {...bar} stroke="black" fill={bar.color} />
+                          </g>
+                        </TooltipAnchor>
+                      </React.Fragment>
+                    )
+                  })
+                )
+              }
+            </BarStack>
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
             {ranges
-              .filter((range: any) => range.start !== range.stop)
-              .filter((range: any) => range.start <= maxRepeats)
-              .map((range: any, rangeIndex: any) => {
+              .filter((range) => range.start !== range.stop)
+              .filter((range) => range.start <= maxRepeats)
+              .map((range, rangeIndex) => {
                 const startBinIndex = Math.floor(range.start / binSize)
                 const startX =
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                  xScale(startBinIndex) +
+                  (xScale(startBinIndex) || 0) +
                   ((range.start - startBinIndex * binSize) / binSize) * xBandwidth
                 let stopX
                 if (range.stop <= maxRepeats) {
                   const stopBinIndex = Math.floor(range.stop / binSize)
                   stopX =
-                    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                    xScale(stopBinIndex) +
+                    (xScale(stopBinIndex) || 0) +
                     ((range.stop - stopBinIndex * binSize) / binSize) * xBandwidth
                 } else {
                   stopX = plotWidth
@@ -349,26 +552,5 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
 ShortTandemRepeatAlleleSizeDistributionPlot.displayName =
   'ShortTandemRepeatAlleleSizeDistributionPlot'
-
-ShortTandemRepeatAlleleSizeDistributionPlot.propTypes = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ maxRepeats: PropTypes.Validator<number>; a... Remove this comment to see the full error message
-  maxRepeats: PropTypes.number.isRequired,
-  alleleSizeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  repeatUnitLength: PropTypes.number,
-  scaleType: PropTypes.oneOf(['linear', 'log']),
-  ranges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      stop: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
-}
-
-ShortTandemRepeatAlleleSizeDistributionPlot.defaultProps = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ scaleType: string; ranges: never[]; }' is ... Remove this comment to see the full error message
-  scaleType: 'linear',
-  ranges: [],
-}
 
 export default ShortTandemRepeatAlleleSizeDistributionPlot
