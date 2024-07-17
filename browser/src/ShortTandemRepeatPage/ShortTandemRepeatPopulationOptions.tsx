@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  AncestryGroupId,
+  GNOMAD_ANCESTRY_GROUP_NAMES,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
+
+import { Sex } from './ShortTandemRepeatPage'
 
 const Wrapper = styled.div`
   @media (max-width: 600px) {
@@ -19,28 +24,24 @@ const Wrapper = styled.div`
 
 type Props = {
   id: string
-  populationIds: string[]
-  selectedPopulationId: string
-  onSelectPopulationId: (...args: any[]) => any
+  ancestryGroups: AncestryGroupId[]
+  selectedAncestryGroup: AncestryGroupId
+  selectedSex: string
+  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId>>
+  setSelectedSex: Dispatch<SetStateAction<Sex>>
 }
 
 const ShortTandemRepeatPopulationOptions = ({
   id,
-  populationIds,
-  selectedPopulationId,
-  onSelectPopulationId,
+  ancestryGroups,
+  selectedAncestryGroup,
+  selectedSex,
+  setSelectedAncestryGroup,
+  setSelectedSex,
 }: Props) => {
-  const selectedAncestralPopulation =
-    selectedPopulationId === 'XX' || selectedPopulationId === 'XY'
-      ? ''
-      : selectedPopulationId.split('_')[0]
-
-  let selectedSex = ''
-  if (selectedPopulationId.endsWith('XX')) {
-    selectedSex = 'XX'
-  } else if (selectedPopulationId.endsWith('XY')) {
-    selectedSex = 'XY'
-  }
+  const ancestryGroupsSortedByName = ancestryGroups.sort((group1, group2) =>
+    GNOMAD_ANCESTRY_GROUP_NAMES[group1].localeCompare(GNOMAD_ANCESTRY_GROUP_NAMES[group2])
+  )
 
   return (
     <Wrapper>
@@ -49,36 +50,24 @@ const ShortTandemRepeatPopulationOptions = ({
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
-          value={selectedAncestralPopulation}
-          onChange={(e: any) => {
-            onSelectPopulationId([e.target.value, selectedSex].filter(Boolean).join('_'))
-          }}
+          value={selectedAncestryGroup}
+          onChange={setSelectedAncestryGroup}
         >
           <option value="">Global</option>
-          {populationIds
-            .filter((popId) => !(popId.endsWith('XX') || popId.endsWith('XY')))
-            .sort((pop1, pop2) =>
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-              GNOMAD_POPULATION_NAMES[pop1].localeCompare(GNOMAD_POPULATION_NAMES[pop2])
-            )
-            .map((popId) => (
-              <option key={popId} value={popId}>
-                {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                {GNOMAD_POPULATION_NAMES[popId]}
-              </option>
-            ))}
+          {ancestryGroupsSortedByName.map((ancestryGroup) => (
+            <option key={ancestryGroup} value={ancestryGroup}>
+              {GNOMAD_ANCESTRY_GROUP_NAMES[ancestryGroup]}
+            </option>
+          ))}
         </Select>
-      </label>{' '}
+      </label>
+
       <label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
         Sex: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex}
-          onChange={(e: any) => {
-            onSelectPopulationId(
-              [selectedAncestralPopulation, e.target.value].filter(Boolean).join('_')
-            )
-          }}
+          onChange={setSelectedSex}
         >
           <option value="">All</option>
           <option value="XX">XX</option>
