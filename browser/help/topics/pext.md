@@ -5,7 +5,7 @@ title: 'Proportion expressed across transcripts (pext) score'
 
 The pext score, presented in ["Transcript expression-aware annotation improves rare variant interpretation"](https://broad.io/tx_annotation), summarizes isoform expression values across tissues to allow for quick visualization of the expression status of exonic regions across tissues.
 
-Here, we have integrated pext values from the GTEx v7 dataset. To do so, we first compute the median expression of a transcript for GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
+Here, we have integrated pext values from the GTEx v10 dataset. To do so, we first compute the median expression of a transcript for GTEx tissue samples, and define the expression of a given base as the sum of the expression of all transcripts that touch that base as seen in the visualization below:
 ![visualization of pext score computation](pext.png)
 
 We do this for every GTEx tissue, and then normalize the value by the expression of the gene in the tissue. This is the base-level pext, which can be interpreted as a measure of the proportion of the total transcriptional output from a gene that would be affected by the position in question. It can also be thought of as an exon-usage type metric.
@@ -35,4 +35,8 @@ We note that the pext values are derived from isoform quantifications using the 
 Also note that for the browser, we have only added expression values for protein-coding (CDS) regions. While UTRs do have expression in transcriptome datasets, we do not include this information for the visualization.
 
 ### More information
-Check out our paper for details on development, validation and utility of pext values for interpretation. We also have a detailed [GitHub page](https://github.com/macarthur-lab/tx_annotation/) that outlines the commands to create these files, and includes steps to annotate your own variant file with pext values with any isoform expression matrix.
+
+#### GTEx versions
+gnomAD v4 used GTEx v10 to calculate pext scores. gnomAD v2 used GTEx v7 data.
+
+Check our [paper](https://broad.io/tx_annotation) for details on development, validation and utility of pext values for interpretation. We also have [utility functions](https://github.com/broadinstitute/gnomad_methods/blob/main/gnomad/utils/transcript_annotation.py) in the gnomAD Hail utilities GitHub repository and a detailed [GitHub repository](https://github.com/macarthur-lab/tx_annotation/) that outlines the commands to create these files, and includes steps to annotate your own variant file with pext values with any isoform expression matrix.
