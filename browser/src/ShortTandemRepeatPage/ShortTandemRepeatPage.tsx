@@ -66,6 +66,11 @@ type GenotypeDistributionCohort = {
   distribution: GenotypeDistributionItem[]
 }
 
+export type AgeDistributionItem = {
+  age_range: [number | null, number | null]
+  distribution: number[][]
+}
+
 export type ShortTandemRepeatAdjacentRepeat = {
   id: string
   reference_region: ShortTandemRepeatReferenceRegion
@@ -73,6 +78,12 @@ export type ShortTandemRepeatAdjacentRepeat = {
   repeat_units: string[]
   allele_size_distribution: AlleleSizeDistributionCohort[]
   genotype_distribution: GenotypeDistributionCohort[]
+}
+
+export type PlotRange = {
+  label: string
+  start: number
+  stop: number
 }
 
 export type ShortTandemRepeat = {
@@ -104,6 +115,7 @@ export type ShortTandemRepeat = {
   }[]
   allele_size_distribution: AlleleSizeDistributionCohort[]
   genotype_distribution: GenotypeDistributionCohort[]
+  age_distribution: AgeDistributionItem[]
   adjacent_repeats: ShortTandemRepeatAdjacentRepeat[]
 }
 
@@ -209,7 +221,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     ? diseaseToPlot.repeat_size_classifications
     : []
 
-  const plotRanges = repeatSizeClassificationsToPlot.map((classification) => {
+  const plotRanges: PlotRange[] = repeatSizeClassificationsToPlot.map((classification) => {
     return {
       label: classification.classification,
       start: classification.min !== null ? classification.min : 0,
@@ -553,7 +565,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Age Distribution <InfoButton topic="str-age-distribution" />
         </h2>
         <ShortTandemRepeatAgeDistributionPlot
-          ageDistribution={(shortTandemRepeat as any).age_distribution}
+          ageDistribution={shortTandemRepeat.age_distribution}
           maxRepeats={maxAlleleSizeDistributionRepeats}
           ranges={allRepeatUnitsFoundInGnomadArePathogenic ? plotRanges : []}
         />
