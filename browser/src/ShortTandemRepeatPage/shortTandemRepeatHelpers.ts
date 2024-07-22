@@ -31,6 +31,7 @@ export const getSelectedAlleleSizeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat,
   { selectedAncestryGroup, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
 ): AlleleSizeDistributionItem[] => {
+  // TK figure out what's up with classification
   const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
       if (selectedAncestryGroup !== '' && cohort.ancestry_group !== selectedAncestryGroup) {

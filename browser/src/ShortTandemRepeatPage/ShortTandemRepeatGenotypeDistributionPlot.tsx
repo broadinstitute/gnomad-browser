@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
+import { GenotypeDistributionItem } from './ShortTandemRepeatPage'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -24,8 +25,8 @@ type PlotRange = { start: number; stop: number; label: string }
 
 type Props = {
   axisLabels: string[]
-  maxRepeats: number[]
-  genotypeDistribution: never
+  maxRepeats: [number, number]
+  genotypeDistribution: GenotypeDistributionItem[]
   xRanges: PlotRange[]
   yRanges: PlotRange[]
   onSelectBin: (bin: Bin) => void
@@ -69,7 +70,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     const yBinSize = Math.max(1, Math.ceil(maxRepeats[1] / (plotHeight / 10)))
     const yNumBins = Math.floor(maxRepeats[1] / yBinSize) + 1
 
-    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n: any) => {
+    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n) => {
       const xBinIndex = Math.floor(n / yNumBins)
       const yBinIndex = n % yNumBins
 
@@ -102,11 +103,13 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       return result
     })
 
-    genotypeDistribution.forEach(([repeats1, repeats2, nAlleles]) => {
-      const xBinIndex = Math.floor(repeats1 / xBinSize)
-      const yBinIndex = Math.floor(repeats2 / yBinSize)
-      data[xBinIndex * yNumBins + yBinIndex].count += nAlleles
-    })
+    genotypeDistribution.forEach(
+      ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => {
+        const xBinIndex = Math.floor(short_allele_repunit_count / xBinSize)
+        const yBinIndex = Math.floor(long_allele_repunit_count / yBinSize)
+        data[xBinIndex * yNumBins + yBinIndex].count += frequency
+      }
+    )
 
     const xScale = scaleBand<number>()
       .domain(Array.from(Array(xNumBins).keys()))
@@ -121,7 +124,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     const xMaxNumLabels = Math.floor(plotWidth / 20)
     const xLabelInterval = Math.max(Math.round(xNumBins / xMaxNumLabels), 1)
 
-    const xTickFormat = (binIndex: any) => {
+    const xTickFormat = (binIndex: number) => {
       if (binIndex % xLabelInterval !== 0) {
         return ''
       }
@@ -133,7 +136,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       return `${binIndex * xBinSize} - ${binIndex * xBinSize + xBinSize - 1}`
     }
 
-    const yTickFormat = (binIndex: any) => {
+    const yTickFormat = (binIndex: number) => {
       if (yBinSize === 1) {
         return `${binIndex}`
       }
@@ -142,7 +145,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     }
 
     const opacityScale = scaleLog()
-      .domain([1, max(genotypeDistribution, (d: any) => d[2])])
+      .domain([1, max(genotypeDistribution, (d) => d.frequency) || 2])
       .range([0.1, 1])
 
     return (
@@ -201,8 +204,8 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left},${margin.top})`}>
             {data
-              .filter((d: any) => d.count !== 0)
-              .map((d: any) => {
+              .filter((d) => d.count !== 0)
+              .map((d) => {
                 return (
                   <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
                     <TooltipAnchor
@@ -237,9 +240,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left}, 0)`}>
             {xRanges
-              .filter((range: any) => range.start !== range.stop)
-              .filter((range: any) => range.start <= maxRepeats[0])
-              .map((range: any, rangeIndex: any, ranges: any) => {
+              .filter((range) => range.start !== range.stop)
+              .filter((range) => range.start <= maxRepeats[0])
+              .map((range, rangeIndex, ranges) => {
                 const startBinIndex = Math.floor(range.start / xBinSize)
                 const startX =
                   (xScale(startBinIndex) || 0) +
@@ -324,9 +327,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             {yRanges
-              .filter((range: any) => range.start !== range.stop)
-              .filter((range: any) => range.start <= maxRepeats[1])
-              .map((range: any, rangeIndex: any, ranges: any) => {
+              .filter((range) => range.start !== range.stop)
+              .filter((range) => range.start <= maxRepeats[1])
+              .map((range, rangeIndex, ranges) => {
                 const startBinIndex = Math.floor(range.start / yBinSize)
                 const startY =
                   (yScale(startBinIndex) || 0) +

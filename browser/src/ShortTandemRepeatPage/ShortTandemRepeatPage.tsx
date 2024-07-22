@@ -1,4 +1,3 @@
-import { max, min } from 'd3-array'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
@@ -51,7 +50,7 @@ export type AlleleSizeDistributionCohort = {
   distribution: AlleleSizeDistributionItem[]
 }
 
-type GenotypeDistributionItem = {
+export type GenotypeDistributionItem = {
   short_allele_repunit_count: number
   long_allele_repunit_count: number
   frequency: number
@@ -123,21 +122,6 @@ const FlexWrapper = styled.div`
   width: 100%;
 `
 
-const parseCombinedPopulationId = (combinedPopulationId: any) => {
-  let population
-  let sex
-  if (combinedPopulationId.includes('_')) {
-    ;[population, sex] = combinedPopulationId.split('_')
-  } else if (combinedPopulationId === 'XX' || combinedPopulationId === 'XY') {
-    population = null
-    sex = combinedPopulationId
-  } else {
-    population = combinedPopulationId
-    sex = null
-  }
-  return { population, sex }
-}
-
 type ShortTandemRepeatPageProps = {
   datasetId: DatasetId
   shortTandemRepeat: ShortTandemRepeat
@@ -148,12 +132,16 @@ export type ScaleType = 'linear' | 'log'
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
   const { allele_size_distribution, genotype_distribution } = shortTandemRepeat
 
-  const alleleSizeDistributionRepunits = allele_size_distribution
-    .map((cohort) => cohort.repunit)
-    .sort()
-  const genotypeDistributionRepunitPairs = genotype_distribution
-    .map((cohort) => [cohort.short_allele_repunit, cohort.long_allele_repunit].join(', '))
-    .sort()
+  const alleleSizeDistributionRepunits = [
+    ...new Set(allele_size_distribution.map((cohort) => cohort.repunit)),
+  ].sort()
+  const genotypeDistributionRepunitPairs = [
+    ...new Set(
+      genotype_distribution.map((cohort) =>
+        [cohort.short_allele_repunit, cohort.long_allele_repunit].join(' / ')
+      )
+    ),
+  ].sort()
 
   const defaultAlleleSizeRepunit =
     alleleSizeDistributionRepunits.length === 1 ? alleleSizeDistributionRepunits[0] : ''
@@ -166,7 +154,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
     useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
-    useState<string>(defaultGenotypeDistributionRepunits)
+    useState<string | ''>(defaultGenotypeDistributionRepunits)
   const [selectedDisease, setSelectedDisease] = useState<string>(defaultDisease)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
   const [showAdjacentRepeats, setShowAdjacentRepeats] = useState<boolean>(false)
@@ -180,6 +168,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
       cohort.distribution.map((item) => item.repunit_count)
     )
   )
+
+  const maxGenotypeDistributionShortAlleleRepeats = 0 // TK
+  const maxGenotypeDistributionLongAlleleRepeats = 0 // TK
 
   const allRepeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
@@ -447,17 +438,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Genotype Distribution <InfoButton topic="str-genotype-distribution" />
         </h2>
         <ShortTandemRepeatGenotypeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ axisLabels: any; maxRepeats: (string | und... Remove this comment to see the full error message
           axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
             selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
           })}
           maxRepeats={[
-            max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              max(d.slice(0, 2))
-            ),
-            max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              min(d.slice(0, 2))
-            ),
+            maxGenotypeDistributionLongAlleleRepeats,
+            maxGenotypeDistributionShortAlleleRepeats,
           ]}
           genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
             selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
@@ -498,6 +484,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           />
           <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
             shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
+            repunitPairs={genotypeDistributionRepunitPairs}
             value={selectedGenotypeDistributionRepeatUnits}
             onChange={setSelectedGenotypeDistributionRepeatUnits}
           />
@@ -566,7 +553,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Age Distribution <InfoButton topic="str-age-distribution" />
         </h2>
         <ShortTandemRepeatAgeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ ageDistribution: any; maxRepeats: number; ... Remove this comment to see the full error message
           ageDistribution={(shortTandemRepeat as any).age_distribution}
           maxRepeats={maxAlleleSizeDistributionRepeats}
           ranges={allRepeatUnitsFoundInGnomadArePathogenic ? plotRanges : []}
@@ -589,7 +575,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                 <ShortTandemRepeatAdjacentRepeatSection
                   key={adjacentRepeat.id}
                   adjacentRepeat={adjacentRepeat}
-                  populationIds={populationIds}
                   selectedPopulationId={selectedAncestryGroup}
                   onSelectPopulationId={setSelectedAncestryGroup}
                   selectedScaleType={selectedScaleType}
