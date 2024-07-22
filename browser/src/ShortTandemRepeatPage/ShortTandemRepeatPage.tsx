@@ -15,7 +15,9 @@ import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssocia
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
-import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionPlot, {
+  Bin as GenotypeBin,
+} from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
 import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatReads from './ShortTandemRepeatReads'
@@ -33,14 +35,14 @@ type ShortTandemRepeatReferenceRegion = {
   stop: number
 }
 
-type AlleleSizeDistributionItem = {
+export type AlleleSizeDistributionItem = {
   repunit_count: number
   frequency: number
 }
 
-export type Sex = '' | 'XX' | 'XY'
+export type Sex = 'XX' | 'XY'
 
-type AlleleSizeDistributionCohort = {
+export type AlleleSizeDistributionCohort = {
   ancestry_group: AncestryGroupId
   sex: Sex
   repunit: string
@@ -141,7 +143,7 @@ type ShortTandemRepeatPageProps = {
   shortTandemRepeat: ShortTandemRepeat
 }
 
-type ScaleType = 'linear' | 'log'
+export type ScaleType = 'linear' | 'log'
 
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
   const { allele_size_distribution, genotype_distribution } = shortTandemRepeat
@@ -159,8 +161,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     genotypeDistributionRepunitPairs.length === 1 ? genotypeDistributionRepunitPairs[0] : ''
   const defaultDisease = shortTandemRepeat.associated_diseases[0].name
 
-  const [selectedAncestryGroup, setSelectedAncestryGroup] = useState<string>('')
-  const [selectedSex, setSelectedSex] = useState<Sex>('')
+  const [selectedAncestryGroup, setSelectedAncestryGroup] = useState<AncestryGroupId | ''>('')
+  const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
   const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
     useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
@@ -224,7 +226,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     }
   })
 
-  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
+  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] =
+    useState<GenotypeBin | null>(null)
 
   return (
     <>
@@ -274,10 +277,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
         </h2>
         <ShortTandemRepeatAlleleSizeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ maxRepeats: number; alleleSizeDistribution... Remove this comment to see the full error message
           maxRepeats={maxAlleleSizeDistributionRepeats}
           alleleSizeDistribution={getSelectedAlleleSizeDistribution(shortTandemRepeat, {
             selectedAncestryGroup,
+            selectedSex,
             selectedRepeatUnit: selectedAlleleSizeRepeatUnit,
           })}
           repeatUnitLength={
@@ -478,7 +481,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               ? plotRanges
               : []
           }
-          onSelectBin={(bin: any) => {
+          onSelectBin={(bin: GenotypeBin) => {
             if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
               setSelectedGenotypeDistributionBin(bin)
             }
@@ -487,11 +490,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         <ControlSection style={{ marginTop: '0.5em' }}>
           <ShortTandemRepeatPopulationOptions
             id={`${shortTandemRepeat.id}-genotype-distribution`}
-            populationIds={populationIds}
-            selectedPopulationId={selectedAncestryGroup}
-            onSelectPopulationId={setSelectedAncestryGroup}
+            ancestryGroups={ancestryGroups}
+            selectedAncestryGroup={selectedAncestryGroup}
+            selectedSex={selectedSex}
+            setSelectedAncestryGroup={setSelectedAncestryGroup}
+            setSelectedSex={setSelectedSex}
           />
-
           <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
             shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
             value={selectedGenotypeDistributionRepeatUnits}
@@ -619,10 +623,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         </h2>
         <ControlSection style={{ marginBottom: '1em' }}>
           <ShortTandemRepeatPopulationOptions
-            id={`${shortTandemRepeat.id}-read-data`}
-            populationIds={populationIds}
-            selectedPopulationId={selectedAncestryGroup}
-            onSelectPopulationId={setSelectedAncestryGroup}
+            id={`${shortTandemRepeat.id}-genotype-distribution`}
+            ancestryGroups={ancestryGroups}
+            selectedAncestryGroup={selectedAncestryGroup}
+            selectedSex={selectedSex}
+            setSelectedAncestryGroup={setSelectedAncestryGroup}
+            setSelectedSex={setSelectedSex}
           />
         </ControlSection>
         <ShortTandemRepeatReads

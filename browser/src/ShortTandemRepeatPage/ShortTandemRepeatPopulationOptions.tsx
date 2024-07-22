@@ -25,10 +25,10 @@ const Wrapper = styled.div`
 type Props = {
   id: string
   ancestryGroups: AncestryGroupId[]
-  selectedAncestryGroup: AncestryGroupId
-  selectedSex: string
-  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId>>
-  setSelectedSex: Dispatch<SetStateAction<Sex>>
+  selectedAncestryGroup: AncestryGroupId | ''
+  selectedSex: Sex | ''
+  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId | ''>>
+  setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
 }
 
 const ShortTandemRepeatPopulationOptions = ({

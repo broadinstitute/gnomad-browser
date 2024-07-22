@@ -1,25 +1,57 @@
-const sumDistributions = (distributions: any) => {
-  const nByKey = distributions.flat().reduce((acc: any, d: any) => {
-    const key = d.slice(0, d.length - 1).join('/')
-    return {
-      ...acc,
-      [key]: (acc[key] || 0) + d[d.length - 1],
-    }
-  }, {})
-  return Object.entries(nByKey).map(([key, n]) => [...key.split('/').map(Number), n])
+import {
+  Sex,
+  ShortTandemRepeat,
+  AlleleSizeDistributionItem,
+  AlleleSizeDistributionCohort,
+} from './ShortTandemRepeatPage'
+import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
+
+type AlleleSizeDistributionFilters = {
+  selectedAncestryGroup: AncestryGroupId | ''
+  selectedSex: Sex | ''
+  selectedRepeatUnit: string
 }
 
+const addCohortToDistribution = (
+  cohort: AlleleSizeDistributionCohort,
+  distribution: Record<number, AlleleSizeDistributionItem>
+): Record<number, AlleleSizeDistributionItem> =>
+  cohort.distribution.reduce((acc, distributionItem) => {
+    const { repunit_count } = distributionItem
+    const existingItem = acc[repunit_count]
+    const countSoFar = existingItem ? existingItem.frequency : 0
+    const newItem: AlleleSizeDistributionItem = {
+      repunit_count: repunit_count,
+      frequency: countSoFar + distributionItem.frequency,
+    }
+    return { ...acc, [repunit_count]: newItem }
+  }, distribution)
+
 export const getSelectedAlleleSizeDistribution = (
-  shortTandemRepeatOrAdjacentRepeat: any,
-  { selectedRepeatUnit, selectedPopulationId }: any
-) => {
-  if (selectedRepeatUnit) {
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat,
+  { selectedAncestryGroup, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
+): AlleleSizeDistributionItem[] => {
+  const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
+    shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
+      if (selectedAncestryGroup !== '' && cohort.ancestry_group !== selectedAncestryGroup) {
+        return acc
+      }
+      if (selectedSex !== '' && cohort.sex !== selectedSex) {
+        return acc
+      }
+      if (cohort.repunit !== selectedRepeatUnit) {
+        return acc
+      }
+      return addCohortToDistribution(cohort, acc)
+    }, {} as Record<number, AlleleSizeDistributionItem>)
+  return Object.values(itemsByRepunitCount)
+}
+/*  if (selectedRepeatUnit) {
     // Repeat units grouped by classification are not valid for adjacent repeats.
     if (selectedRepeatUnit.startsWith('classification')) {
       const selectedClassification = selectedRepeatUnit.slice(15)
 
       const repeatUnitClassification = shortTandemRepeatOrAdjacentRepeat.repeat_units.reduce(
-        // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
         (acc, repeatUnit) => ({
           ...acc,
           [repeatUnit.repeat_unit]: repeatUnit.classification,
@@ -58,7 +90,7 @@ export const getSelectedAlleleSizeDistribution = (
   }
 
   return shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.distribution
-}
+}*/
 
 export const getSelectedGenotypeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: any,

@@ -1,6 +1,5 @@
 import { max } from 'd3-array'
 import { scaleBand, scaleLog } from 'd3-scale'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
@@ -19,25 +18,39 @@ const GraphWrapper = styled.div`
 const labelProps = {
   fontSize: 14,
   textAnchor: 'middle',
+} as const
+
+type PlotRange = { start: number; stop: number; label: string }
+
+type Props = {
+  axisLabels: string[]
+  maxRepeats: number[]
+  genotypeDistribution: never
+  xRanges: PlotRange[]
+  yRanges: PlotRange[]
+  onSelectBin: (bin: Bin) => void
+  size: { width: number }
+}
+
+export type Bin = {
+  label: string
+  xBinIndex: number
+  yBinIndex: number
+  xRange: number[]
+  yRange: number[]
+  count: number
 }
 
 const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
   ({
-    // @ts-expect-error TS(2339) FIXME: Property 'axisLabels' does not exist on type '{}'.
     axisLabels,
-    // @ts-expect-error TS(2339) FIXME: Property 'maxRepeats' does not exist on type '{}'.
     maxRepeats,
-    // @ts-expect-error TS(2339) FIXME: Property 'genotypeDistribution' does not exist on ... Remove this comment to see the full error message
     genotypeDistribution,
-    // @ts-expect-error TS(2339) FIXME: Property 'size' does not exist on type '{}'.
     size: { width },
-    // @ts-expect-error TS(2339) FIXME: Property 'xRanges' does not exist on type '{}'.
-    xRanges,
-    // @ts-expect-error TS(2339) FIXME: Property 'yRanges' does not exist on type '{}'.
-    yRanges,
-    // @ts-expect-error TS(2339) FIXME: Property 'onSelectBin' does not exist on type '{}'... Remove this comment to see the full error message
-    onSelectBin,
-  }) => {
+    xRanges = [],
+    yRanges = [],
+    onSelectBin = () => {},
+  }: Props) => {
     const height = Math.min(width, 500)
 
     const margin = {
@@ -78,7 +91,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           ? `${yBinIndex}`
           : `${yBinIndex * yBinSize} - ${yBinIndex * yBinSize + yBinSize - 1}`
 
-      return {
+      const result: Bin = {
         label: `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
         xBinIndex,
         yBinIndex,
@@ -86,23 +99,21 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
         yRange,
         count: 0,
       }
+      return result
     })
 
-    // @ts-expect-error TS(7031) FIXME: Binding element 'repeats1' implicitly has an 'any'... Remove this comment to see the full error message
     genotypeDistribution.forEach(([repeats1, repeats2, nAlleles]) => {
       const xBinIndex = Math.floor(repeats1 / xBinSize)
       const yBinIndex = Math.floor(repeats2 / yBinSize)
       data[xBinIndex * yNumBins + yBinIndex].count += nAlleles
     })
 
-    const xScale = scaleBand()
-      // @ts-expect-error TS(2345) FIXME: Argument of type 'number[]' is not assignable to p... Remove this comment to see the full error message
+    const xScale = scaleBand<number>()
       .domain(Array.from(Array(xNumBins).keys()))
       .range([0, plotWidth])
     const xBandwidth = xScale.bandwidth()
 
-    const yScale = scaleBand()
-      // @ts-expect-error TS(2345) FIXME: Argument of type 'number[]' is not assignable to p... Remove this comment to see the full error message
+    const yScale = scaleBand<number>()
       .domain(Array.from(Array(yNumBins).keys()))
       .range([plotHeight, 0])
     const yBandwidth = yScale.bandwidth()
@@ -131,7 +142,6 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     }
 
     const opacityScale = scaleLog()
-      // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number | undefined)[]'... Remove this comment to see the full error message
       .domain([1, max(genotypeDistribution, (d: any) => d[2])])
       .range([0.1, 1])
 
@@ -141,7 +151,6 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           <AxisBottom
             label={`Repeats in ${axisLabels[0]}`}
             labelOffset={xBinSize === 1 ? 10 : 30}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
@@ -165,8 +174,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                       fontSize: 10,
                       textAnchor: 'end',
                       transform: `translate(0, 0), rotate(-40 ${
-                        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                        xScale(binIndex) + xBandwidth / 2
+                        (xScale(binIndex) || 0) + xBandwidth / 2
                       }, 0)`,
                     }
                   }
@@ -176,7 +184,6 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           <AxisLeft
             label={`Repeats in ${axisLabels[1]}`}
             labelOffset={60}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             scale={yScale}
@@ -235,16 +242,14 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
               .map((range: any, rangeIndex: any, ranges: any) => {
                 const startBinIndex = Math.floor(range.start / xBinSize)
                 const startX =
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                  xScale(startBinIndex) +
+                  (xScale(startBinIndex) || 0) +
                   ((range.start - startBinIndex * xBinSize) / xBinSize) * xBandwidth
 
                 let stopX
                 if (range.stop <= maxRepeats[0]) {
                   const stopBinIndex = Math.floor(range.stop / xBinSize)
                   stopX =
-                    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                    xScale(stopBinIndex) +
+                    (xScale(stopBinIndex) || 0) +
                     ((range.stop - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
                 } else {
                   stopX = plotWidth
@@ -324,16 +329,14 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
               .map((range: any, rangeIndex: any, ranges: any) => {
                 const startBinIndex = Math.floor(range.start / yBinSize)
                 const startY =
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                  yScale(startBinIndex) +
+                  (yScale(startBinIndex) || 0) +
                   (1 - (range.start - startBinIndex * yBinSize) / yBinSize) * yBandwidth
 
                 let stopY
                 if (range.stop <= maxRepeats[1]) {
                   const stopBinIndex = Math.floor(range.stop / yBinSize)
                   stopY =
-                    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                    yScale(stopBinIndex) +
+                    (yScale(stopBinIndex) || 0) +
                     (1 - (range.stop - stopBinIndex * yBinSize) / yBinSize) * yBandwidth
                 } else {
                   stopY = 0
@@ -403,30 +406,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
 ShortTandemRepeatGenotypeDistributionPlot.displayName = 'ShortTandemRepeatGenotypeDistributionPlot'
 
-ShortTandemRepeatGenotypeDistributionPlot.propTypes = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ axisLabels: PropTypes.Validator<(string | ... Remove this comment to see the full error message
-  axisLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  maxRepeats: PropTypes.arrayOf(PropTypes.number).isRequired,
-  genotypeDistribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  xRanges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      stop: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
-  yRanges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      stop: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
-  onSelectBin: PropTypes.func,
-}
-
 ShortTandemRepeatGenotypeDistributionPlot.defaultProps = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ xRanges: never[]; yRanges: never[]; onSele... Remove this comment to see the full error message
   xRanges: [],
   yRanges: [],
   onSelectBin: () => {},
