@@ -47,7 +47,7 @@ type Range = { start: number; stop: number; label: string }
 type Props = {
   maxRepeats: number
   alleleSizeDistribution: AlleleSizeDistributionItem[]
-  repeatUnitLength: number
+  repeatUnitLength: number | null
   scaleType: ScaleType
   ranges: Range[]
   size: { width: number }
