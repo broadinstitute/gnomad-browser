@@ -22,7 +22,7 @@ Row fields:
   - `all`: An array containing colocated variants that are present in the entire exome dataset.
   - `non_ukb`: An array containing colocated variants that are present in the non-UK Biobank (UKB) subset of the dataset.
   - `subsets`: A set containing the subsets this variant is seen in.
-  - `flags`: A set containing the flags of this variant.
+  - `flags`: A set containing the flags about the region this variant falls in.
   - `freq`: A struct containing variant frequency information for each subset.
   - `all`: Struct containing variant frequency information calculated across all samples.
     - `ac`: The alternate allele count for this variant calculated across high-quality genotypes (genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes).
@@ -31,7 +31,7 @@ Row fields:
     - `hemizygote_count`: Number of hemizygous alternate individuals.
     - `homozygote_count`: Number of homozygous alternate individuals.
     - `ancestry_groups`: Array containing variant frequency information stratified per genetic ancestry group.
-      - `id`: Three letter identifier for this genetic ancestry group, i.e. `amr`.
+      - `id`: Three letter identifier for this genetic ancestry group, e.g. `amr` or `sas`.
       - `ac`: Alternate allele count for this variant in this genetic ancestry group.
       - `an`: Total number of alleles for this locus for this genetic ancestry group.
       - `hemizygote_count`: Number of hemizygous alternate individuals in this genetic ancestry group.
@@ -42,7 +42,7 @@ Row fields:
     - `grpmax_gen_anc`: Genetic ancestry group associated with groupmax FAF.
   - `faf99`: Struct containing information about the FAF (99% CI). Contains same subfields as above (`faf95`).
   - `fafmax`: Struct containing information about the maximum FAF.
-    - `gnomad`: Struct containing information about the fafmax for all of gnomad.
+    - `gnomad`: Struct containing information about the fafmax for all of gnomad for the joint exome and genome data.
       - `faf95_max`: Max FAF value for the (95% CI).
       - `faf95_max_gen_anc`: Genetic ancestry group associated with the grpmax FAF (95% CI).
       - `faf99_max`: Max FAF(99% CI).f
@@ -58,8 +58,8 @@ Row fields:
   - `filters`: Set containing variant QC filters.
   - `quality_metrics`: Struct containing variant quality metric histograms information.
     - `allele_balance`: Struct containing variant allele balance histograms information.
-      - `alt_adj`: Struct containing variant allele balance information calculated across high-quality genotypes. Structureded to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `alt_raw`: Struct containing variant allele balance information calculated across unadjusted genotypes.. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
+      - `alt_adj`: Struct containing variant allele balance information calculated across high-quality genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`). This data is displayed in the "Allele balance for heterozygotes" histogram in the browser's variant page.
+      - `alt_raw`: Struct containing variant allele balance information calculated across unadjusted genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
     - `genotype_depth`: Struct containing information used to display genotype depth (DP) histograms.
       - `all_adj`: Struct containing DP information calculated using high-quality genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
       - `all_raw`: Struct containing DP information calculated across unadjusted genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
@@ -111,7 +111,7 @@ Row fields:
   - `hgvsc`: HGVS coding sequence notation for variant.
   - `hgvsp`: HGVS protein notation for variant.
   - `is_canonical`: Whether transcript is the canonical transcript.
-  - `lof_filter`: Whether transcript passed LOFTEE's LoF filter.
+  - `lof_filter`: Variant LoF filters (from [LOFTEE](https://github.com/konradjk/loftee)).
   - `lof_flags`: LOFTEE flags.
   - `lof`: Variant LOFTEE status (high confidence [HC] or low confidence [LC]).
   - `major_consequence`: Primary consequence associated with transcript.
@@ -119,7 +119,7 @@ Row fields:
   - `transcript_version`: Transcript version.
   - `gene_version`: Gene version.
   - `is_mane_select`: Whether transcript is the MANE select transcript.
-  - `is_mane_select_version`: MANE Select version.
+  - `is_mane_select_version`: MANE Select version, has a value if this transcript is the MANE select transcript.
   - `refseq_id`: RefSeq ID associated with transcript.
   - `refseq_version`: RefSeq version.
 
