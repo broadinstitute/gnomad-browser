@@ -2,13 +2,16 @@ import React from 'react'
 
 import { List, ListItem } from '@gnomad/ui'
 
-import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
+import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat, Sex } from './ShortTandemRepeatPage'
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
+import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedPopulationId: string
-  selectedRepeatUnits: string
+  selectedAncestryGroup: AncestryGroupId | ''
+  selectedSex: Sex | ''
+  selectedRepeatUnits: string[] | ''
+  repeatUnitPairs: string[][]
   bin: {
     label: string
     xRange: number[]
@@ -18,13 +21,16 @@ type Props = {
 
 const ShortTandemRepeatGenotypeDistributionBinDetails = ({
   shortTandemRepeatOrAdjacentRepeat,
-  selectedPopulationId,
+  selectedAncestryGroup,
+  selectedSex,
   selectedRepeatUnits,
+  repeatUnitPairs,
   bin,
 }: Props) => {
   const genotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-    selectedPopulationId,
+    selectedAncestryGroup,
     selectedRepeatUnits,
+    selectedSex,
   })
 
   const isInBin = (d: any) =>
@@ -47,13 +53,13 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
           <h3>Repeat Units</h3>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <List>
-            {shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units
-              .map((repeatUnitsDistribution) => repeatUnitsDistribution.repeat_units)
+            {repeatUnitPairs
               .map((repeatUnits) => ({
                 repeatUnits,
                 distribution: getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-                  selectedPopulationId,
-                  selectedRepeatUnits: repeatUnits.join(' / '),
+                  selectedAncestryGroup,
+                  selectedSex,
+                  selectedRepeatUnits: repeatUnits,
                 }),
               }))
               .flatMap(({ repeatUnits, distribution }: any) => [

@@ -49,7 +49,7 @@ type Props = {
   alleleSizeDistribution: AlleleSizeDistributionItem[]
   repeatUnitLength: number | null
   scaleType: ScaleType
-  ranges: Range[]
+  ranges?: Range[]
   size: { width: number }
 }
 
