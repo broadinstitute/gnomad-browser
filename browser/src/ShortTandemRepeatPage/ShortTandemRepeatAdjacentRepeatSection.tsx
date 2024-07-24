@@ -1,12 +1,11 @@
-import { max, min } from 'd3-array'
-import React, { useState } from 'react'
+import React, { SetStateAction, useState, Dispatch } from 'react'
 
 import { Modal, Select } from '@gnomad/ui'
 
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import { ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
+import { ShortTandemRepeatAdjacentRepeat, ScaleType, Sex } from './ShortTandemRepeatPage'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
@@ -16,35 +15,40 @@ import {
   getSelectedAlleleSizeDistribution,
   getSelectedGenotypeDistribution,
   getGenotypeDistributionPlotAxisLabels,
+  maxAlleleSizeDistributionRepeats,
+  maxGenotypeDistributionRepeats,
 } from './shortTandemRepeatHelpers'
+import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { Bin as GenotypeBin } from './ShortTandemRepeatGenotypeDistributionPlot'
 
 type Props = {
   adjacentRepeat: ShortTandemRepeatAdjacentRepeat
-  populationIds: string[]
-  selectedPopulationId: string
-  onSelectPopulationId: (...args: any[]) => any
-  selectedScaleType: string
-  onSelectScaleType: (...args: any[]) => any
+  selectedScaleType: ScaleType
+  selectedAncestryGroup: AncestryGroupId | ''
+  selectedSex: Sex | ''
+  ancestryGroups: AncestryGroupId[]
+  selectedGenotypeDistributionBin: GenotypeBin | null
+  setSelectedGenotypeDistributionBin: Dispatch<SetStateAction<GenotypeBin | null>>
+  setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
+  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId | ''>>
+  setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
 }
 
 const ShortTandemRepeatAdjacentRepeatSection = ({
   adjacentRepeat,
-  populationIds,
-  selectedPopulationId,
-  onSelectPopulationId,
+  ancestryGroups,
   selectedScaleType,
-  onSelectScaleType,
+  selectedAncestryGroup,
+  selectedSex,
+  setSelectedScaleType,
+  setSelectedAncestryGroup,
+  setSelectedSex,
 }: Props) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
   )
-
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
-    useState(
-      adjacentRepeat.genotype_distribution.repeat_units.length === 1
-        ? adjacentRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
-        : ''
-    )
+    useState<string>(defaultGenotypeDistributionRepeatUnits)
 
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
@@ -55,14 +59,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
 
       <h4 style={{ marginBottom: '0.66em' }}>Allele Size Distribution</h4>
       <ShortTandemRepeatAlleleSizeDistributionPlot
-        // @ts-expect-error TS(2322) FIXME: Type '{ maxRepeats: number; alleleSizeDistribution... Remove this comment to see the full error message
-        maxRepeats={
-          adjacentRepeat.allele_size_distribution.distribution[
-            adjacentRepeat.allele_size_distribution.distribution.length - 1
-          ][0]
-        }
+        maxRepeats={maxAlleleSizeDistributionRepeats(adjacentRepeat)}
         alleleSizeDistribution={getSelectedAlleleSizeDistribution(adjacentRepeat, {
-          selectedPopulationId,
+          selectedAncestryGroup,
+          selectedSex,
           selectedRepeatUnit,
         })}
         repeatUnitLength={selectedRepeatUnit ? selectedRepeatUnit.length : null}
@@ -71,9 +71,11 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-repeat-counts`}
-          populationIds={populationIds}
-          selectedPopulationId={selectedPopulationId}
-          onSelectPopulationId={onSelectPopulationId}
+          ancestryGroups={ancestryGroups}
+          selectedAncestryGroup={selectedAncestryGroup}
+          selectedSex={selectedSex}
+          setSelectedAncestryGroup={setSelectedAncestryGroup}
+          setSelectedSex={setSelectedSex}
         />
 
         <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}>
@@ -103,7 +105,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
             value={selectedScaleType}
             onChange={(e: any) => {
-              onSelectScaleType(e.target.value)
+              setSelectedScaleType(e.target.value)
             }}
           >
             <option value="linear">Linear</option>
@@ -114,17 +116,12 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
 
       <h4 style={{ marginBottom: '0.66em' }}>Genotype Distribution</h4>
       <ShortTandemRepeatGenotypeDistributionPlot
-        // @ts-expect-error TS(2322) FIXME: Type '{ axisLabels: any; maxRepeats: (string | und... Remove this comment to see the full error message
         axisLabels={getGenotypeDistributionPlotAxisLabels(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
         })}
-        maxRepeats={[
-          max(adjacentRepeat.genotype_distribution.distribution, (d: any) => max(d.slice(0, 2))),
-          max(adjacentRepeat.genotype_distribution.distribution, (d: any) => min(d.slice(0, 2))),
-        ]}
+        maxRepeats={maxGenotypeDistributionRepeats(adjacentRepeat)}
         genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-          selectedPopulationId,
         })}
         onSelectBin={(bin: any) => {
           if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
@@ -136,9 +133,11 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-genotype-distribution`}
-          populationIds={populationIds}
-          selectedPopulationId={selectedPopulationId}
-          onSelectPopulationId={onSelectPopulationId}
+          ancestryGroups={ancestryGroups}
+          selectedAncestryGroup={selectedAncestryGroup}
+          selectedSex={selectedSex}
+          setSelectedAncestryGroup={setSelectedAncestryGroup}
+          setSelectedSex={setSelectedSex}
         />
 
         <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
@@ -160,7 +159,6 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         >
           <ShortTandemRepeatGenotypeDistributionBinDetails
             shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
-            selectedPopulationId={selectedPopulationId}
             selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
           />

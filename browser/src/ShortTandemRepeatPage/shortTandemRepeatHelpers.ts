@@ -3,6 +3,9 @@ import {
   ShortTandemRepeat,
   AlleleSizeDistributionItem,
   AlleleSizeDistributionCohort,
+  GenotypeDistributionCohort,
+  GenotypeDistributionItem,
+  ShortTandemRepeatAdjacentRepeat,
 } from './ShortTandemRepeatPage'
 import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -12,7 +15,7 @@ type AlleleSizeDistributionFilters = {
   selectedRepeatUnit: string
 }
 
-const addCohortToDistribution = (
+const addCohortToAlleleSizeDistribution = (
   cohort: AlleleSizeDistributionCohort,
   distribution: Record<number, AlleleSizeDistributionItem>
 ): Record<number, AlleleSizeDistributionItem> =>
@@ -28,7 +31,7 @@ const addCohortToDistribution = (
   }, distribution)
 
 export const getSelectedAlleleSizeDistribution = (
-  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat,
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
   { selectedAncestryGroup, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
 ): AlleleSizeDistributionItem[] => {
   // TK figure out what's up with classification
@@ -43,7 +46,7 @@ export const getSelectedAlleleSizeDistribution = (
       if (cohort.repunit !== selectedRepeatUnit) {
         return acc
       }
-      return addCohortToDistribution(cohort, acc)
+      return addCohortToAlleleSizeDistribution(cohort, acc)
     }, {} as Record<number, AlleleSizeDistributionItem>)
   return Object.values(itemsByRepunitCount)
 }
@@ -93,10 +96,56 @@ export const getSelectedAlleleSizeDistribution = (
   return shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.distribution
 }*/
 
+const addCohortToGenotypeDistribution = (
+  cohort: GenotypeDistributionCohort,
+  distribution: Record<string, GenotypeDistributionItem>
+): Record<number, GenotypeDistributionItem> =>
+  cohort.distribution.reduce((acc, distributionItem) => {
+    const { short_allele_repunit_count, long_allele_repunit_count } = distributionItem
+    const key = [short_allele_repunit_count, long_allele_repunit_count].join(' / ')
+    const existingItem = acc[key]
+    const countSoFar = existingItem ? existingItem.frequency : 0
+    const newItem: GenotypeDistributionItem = {
+      short_allele_repunit_count: short_allele_repunit_count,
+      long_allele_repunit_count: long_allele_repunit_count,
+      frequency: countSoFar + distributionItem.frequency,
+    }
+    return { ...acc, [key]: newItem }
+  }, distribution)
+
 export const getSelectedGenotypeDistribution = (
-  shortTandemRepeatOrAdjacentRepeat: any,
-  { selectedRepeatUnits, selectedPopulationId }: any
-) => {
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
+  {
+    selectedRepeatUnits,
+    selectedAncestryGroup,
+    selectedSex,
+  }: {
+    selectedRepeatUnits: string[] | ''
+    selectedAncestryGroup: AncestryGroupId | ''
+    selectedSex: Sex | ''
+  }
+): GenotypeDistributionItem[] => {
+  const itemsByRepunitCounts: Record<string, GenotypeDistributionItem> =
+    shortTandemRepeatOrAdjacentRepeat.genotype_distribution.reduce((acc, cohort) => {
+      if (selectedAncestryGroup !== '' && cohort.ancestry_group !== selectedAncestryGroup) {
+        return acc
+      }
+      if (selectedSex !== '' && cohort.sex !== selectedSex) {
+        return acc
+      }
+      if (
+        selectedRepeatUnits !== '' &&
+        (cohort.short_allele_repunit !== selectedRepeatUnits[0] ||
+          cohort.long_allele_repunit !== selectedRepeatUnits[1])
+      ) {
+        return acc
+      }
+      return addCohortToGenotypeDistribution(cohort, acc)
+    }, {})
+  return Object.values(itemsByRepunitCounts)
+}
+
+/* {
   const baseDistribution = selectedRepeatUnits
     ? shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units.find(
         (repeatUnit: any) => repeatUnit.repeat_units.join(' / ') === selectedRepeatUnits
@@ -113,7 +162,7 @@ export const getSelectedGenotypeDistribution = (
     selectedRepeatUnits.split(' / ')[0] === selectedRepeatUnits.split(' / ')[1]
     ? selectedDistribution.map((d: any) => (d[0] >= d[1] ? d : [d[1], d[0], d[2]]))
     : selectedDistribution
-}
+}*/
 
 export const getGenotypeDistributionPlotAxisLabels = (
   shortTandemRepeatOrAdjacentRepeat: any,
@@ -129,4 +178,43 @@ export const getGenotypeDistributionPlotAxisLabels = (
     return repeatUnits.map((repeatUnit: any) => `${repeatUnit} allele`)
   }
   return ['longer allele', 'shorter allele']
+}
+
+export const maxAlleleSizeDistributionRepeats = (
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
+) =>
+  Math.max(
+    ...shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.flatMap((cohort) =>
+      cohort.distribution.map((item) => item.repunit_count)
+    )
+  )
+
+export const maxGenotypeDistributionRepeats = (
+  shortTandemRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
+): [number, number] => {
+  const { genotype_distribution } = shortTandemRepeat
+  const longAlleleCounts = genotype_distribution.flatMap((cohort) =>
+    cohort.distribution.map((item) => item.long_allele_repunit_count)
+  )
+  const shortAlleleCounts = genotype_distribution.flatMap((cohort) =>
+    cohort.distribution.map((item) => item.short_allele_repunit_count)
+  )
+  return [Math.max(...longAlleleCounts), Math.max(...shortAlleleCounts)]
+}
+
+export const genotypeRepunitPairs = (
+  shortTandemRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
+): string[][] => {
+  // Lists being pass-by-reference rather than by value, we can't just get the distinct pairs by the trick of turning a list into a Set back into a list, as we do for allele-size distribution repunits. Hence this implementation.
+  const pairsByKey: Record<string, string[]> = shortTandemRepeat.genotype_distribution.reduce(
+    (acc, { short_allele_repunit, long_allele_repunit }) => {
+      const pair = [short_allele_repunit, long_allele_repunit]
+      const key = pair.join(' / ')
+      return { ...acc, [key]: pair }
+    },
+    {} as Record<string, string[]>
+  )
+  return Object.values(pairsByKey).sort(
+    (a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1])
+  )
 }

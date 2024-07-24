@@ -1,29 +1,35 @@
 import React, { Dispatch, SetStateAction } from 'react'
 
 import { Select } from '@gnomad/ui'
-import { ShortTandemRepeat } from './ShortTandemRepeatPage'
+import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
+import { genotypeRepunitPairs } from './shortTandemRepeatHelpers'
 
 type Props = {
-  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat
-  repunitPairs: string[]
-  value: string
-  onChange: Dispatch<SetStateAction<string>>
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
+  selectedRepeatUnits: string[] | ''
+  setSelectedRepeatUnits: Dispatch<SetStateAction<string[] | ''>>
 }
+
+const isAdjacentRepeat = (
+  obj: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
+): obj is ShortTandemRepeatAdjacentRepeat => !obj.hasOwnProperty('associated_diseases')
 
 const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
   shortTandemRepeatOrAdjacentRepeat,
-  value,
-  repunitPairs,
-  onChange,
+  selectedRepeatUnits,
+  setSelectedRepeatUnits,
 }: Props) => {
   // Adjacent repeats do not have classifications for repeat units.
-  const isAdjacentRepeat = !shortTandemRepeatOrAdjacentRepeat.associated_diseases
-  const repeatUnitClassifications: Record<string, string> = isAdjacentRepeat
+  const repeatUnitClassifications: Record<string, string> = isAdjacentRepeat(
+    shortTandemRepeatOrAdjacentRepeat
+  )
     ? {}
     : shortTandemRepeatOrAdjacentRepeat.repeat_units.reduce(
         (acc, repeatUnit) => ({ ...acc, [repeatUnit.repeat_unit]: repeatUnit.classification }),
         {}
       )
+
+  const repunitPairs = genotypeRepunitPairs(shortTandemRepeatOrAdjacentRepeat)
 
   return (
     <label
@@ -32,18 +38,18 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
       Repeat units: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         id={`short-tandem-repeat-${shortTandemRepeatOrAdjacentRepeat.id}-genotype-distribution-repeat-units`}
-        value={value}
-        onChange={(e: { target: { value: string } }) => {
-          onChange(e.target.value)
+        value={selectedRepeatUnits === '' ? '' : selectedRepeatUnits.join(' / ')}
+        onChange={({ target: { value } }: { target: { value: string } }) => {
+          const newPair: string[] | '' = value === '' ? '' : value.split(' / ')
+          setSelectedRepeatUnits(newPair)
         }}
       >
         {repunitPairs.length > 1 && <option value="">All</option>}
         <optgroup label="Repeat unit pairs (only pairs found in gnomAD are listed here)">
           {repunitPairs.map((pair) => {
             return (
-              <option key={pair} value={pair}>
+              <option key={pair.join(' / ')} value={pair.join(' / ')}>
                 {pair
-                  .split(' / ')
                   .map((repeatUnit) => {
                     const notes = []
                     if (repeatUnitClassifications[repeatUnit]) {
