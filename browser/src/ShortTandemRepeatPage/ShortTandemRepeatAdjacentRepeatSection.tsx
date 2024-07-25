@@ -15,6 +15,7 @@ import {
   getSelectedAlleleSizeDistribution,
   getSelectedGenotypeDistribution,
   getGenotypeDistributionPlotAxisLabels,
+  genotypeRepunitPairs,
   maxAlleleSizeDistributionRepeats,
   maxGenotypeDistributionRepeats,
 } from './shortTandemRepeatHelpers'
@@ -47,8 +48,12 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
   )
+
+  const genotypeDistributionPairs = genotypeRepunitPairs(adjacentRepeat)
+  const defaultGenotypeDistributionRepeatUnits =
+    genotypeDistributionPairs.length === 1 ? genotypeDistributionPairs[0] : ''
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
-    useState<string>(defaultGenotypeDistributionRepeatUnits)
+    useState<string[] | ''>(defaultGenotypeDistributionRepeatUnits)
 
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
 
@@ -122,12 +127,16 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         maxRepeats={maxGenotypeDistributionRepeats(adjacentRepeat)}
         genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
+          selectedAncestryGroup: selectedAncestryGroup,
+          selectedSex: selectedSex,
         })}
         onSelectBin={(bin: any) => {
           if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
             setSelectedGenotypeDistributionBin(bin)
           }
         }}
+        xRanges={[]}
+        yRanges={[]}
       />
 
       <ControlSection>
@@ -142,8 +151,8 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
 
         <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
           shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
-          value={selectedGenotypeDistributionRepeatUnits}
-          onChange={setSelectedGenotypeDistributionRepeatUnits}
+          selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
+          setSelectedRepeatUnits={setSelectedGenotypeDistributionRepeatUnits}
         />
       </ControlSection>
 
@@ -161,6 +170,9 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
             selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
+            selectedAncestryGroup={selectedAncestryGroup}
+            selectedSex={selectedSex}
+            repeatUnitPairs={genotypeDistributionPairs}
           />
         </Modal>
       )}

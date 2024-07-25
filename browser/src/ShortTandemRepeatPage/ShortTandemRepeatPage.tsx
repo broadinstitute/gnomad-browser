@@ -221,6 +221,18 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     useState<GenotypeBin | null>(null)
 
   const maxAlleleRepeats = maxAlleleSizeDistributionRepeats(shortTandemRepeat)
+
+  const isRepunitSelectionPathogenic = (
+    selectedRepeatUnits: string[] | '',
+    allRepeatUnitsFoundInGnomadArePathogenic: boolean,
+    allRepeatUnitsByClassification: Record<string, string[]>,
+    selectionIndex: number
+  ) =>
+    (selectedRepeatUnits === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
+    (allRepeatUnitsByClassification.pathogenic || []).includes(
+      selectedGenotypeDistributionRepeatUnits[selectionIndex]
+    )
+
   return (
     <>
       <FlexWrapper style={{ marginBottom: '3em' }}>
@@ -449,19 +461,21 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             selectedSex,
           })}
           xRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' &&
-              allRepeatUnitsFoundInGnomadArePathogenic) ||
-            ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits[0]
+            isRepunitSelectionPathogenic(
+              selectedGenotypeDistributionRepeatUnits,
+              allRepeatUnitsFoundInGnomadArePathogenic,
+              allRepeatUnitsByClassification,
+              0
             )
               ? plotRanges
               : []
           }
           yRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' &&
-              allRepeatUnitsFoundInGnomadArePathogenic) ||
-            ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits[1]
+            isRepunitSelectionPathogenic(
+              selectedGenotypeDistributionRepeatUnits,
+              allRepeatUnitsFoundInGnomadArePathogenic,
+              allRepeatUnitsByClassification,
+              1
             )
               ? plotRanges
               : []
