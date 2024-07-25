@@ -11,14 +11,11 @@ type ShortTandemRepeatRepeatUnitsProps = {
 }
 
 const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRepeatUnitsProps) => {
-  const repeatUnitsByClassification = {}
+  const repeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       repeatUnitsByClassification[repeatUnit.classification] = []
     }
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
   })
 
@@ -132,10 +129,11 @@ const ShortTandemRepeatAttributes = ({ shortTandemRepeat }: ShortTandemRepeatAtt
       <AttributeListItem label="Gene region">{shortTandemRepeat.gene.region}</AttributeListItem>
       <AttributeListItem label="Reference region">
         <Link
-          to={`/region/${shortTandemRepeat.reference_region.chrom}-${shortTandemRepeat.reference_region.start}-${shortTandemRepeat.reference_region.stop}`}
+          to={`/region/${shortTandemRepeat.main_reference_region.chrom}-${shortTandemRepeat.main_reference_region.start}-${shortTandemRepeat.main_reference_region.stop}`}
         >
-          {shortTandemRepeat.reference_region.chrom}-{shortTandemRepeat.reference_region.start}-
-          {shortTandemRepeat.reference_region.stop}
+          {shortTandemRepeat.main_reference_region.chrom}-
+          {shortTandemRepeat.main_reference_region.start}-
+          {shortTandemRepeat.main_reference_region.stop}
         </Link>
       </AttributeListItem>
       <ShortTandemRepeatRepeatUnits shortTandemRepeat={shortTandemRepeat} />
