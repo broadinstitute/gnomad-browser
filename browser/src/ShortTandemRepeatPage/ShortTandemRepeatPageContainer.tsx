@@ -15,23 +15,21 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
   short_tandem_repeat(id: $strId, dataset: $datasetId) {
     id
     gene {
-      ensembl_id
       symbol
-      region
     }
     associated_diseases {
-      name
-      symbol
       omim_id
-      inheritance_mode
-      repeat_size_classifications {
-        classification
-        min
-        max
-      }
       notes
     }
-    reference_region {
+    stripy_id
+    main_reference_region {
+      reference_genome
+      chrom
+      start
+      stop
+    }
+    reference_regions {
+      reference_genome
       chrom
       start
       stop
@@ -42,79 +40,71 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       classification
     }
     allele_size_distribution {
-      distribution
-      populations {
-        id
-        distribution
-      }
-      repeat_units {
-        repeat_unit
-        distribution
-        populations {
-          id
-          distribution
-        }
+      ancestry_group
+      sex
+      repunit
+      quality_description
+      q_score
+      distribution {
+        repunit_count
+        frequency
       }
     }
     genotype_distribution {
-      distribution
-      populations {
-        id
-        distribution
-      }
-      repeat_units {
-        repeat_units
-        distribution
-        populations {
-          id
-          distribution
-        }
+      ancestry_group
+      sex
+      short_allele_repunit
+      long_allele_repunit
+      quality_description
+      q_score
+      distribution {
+        short_allele_repunit_count
+        long_allele_repunit_count
+        frequency
       }
     }
     age_distribution {
       age_range
       distribution
     }
-    stripy_id
     adjacent_repeats {
       id
       reference_region {
+        reference_genome
         chrom
         start
         stop
       }
       reference_repeat_unit
       repeat_units
-      allele_size_distribution {
-        distribution
-        populations {
-          id
-          distribution
-        }
-        repeat_units {
-          repeat_unit
-          distribution
-          populations {
-            id
-            distribution
-          }
-        }
+    }
+    allele_size_distribution {
+      ancestry_group
+      sex
+      repunit
+      quality_description
+      q_score
+      distribution {
+        repunit_count
+        frequency
       }
-      genotype_distribution {
-        distribution
-        populations {
-          id
-          distribution
-        }
-        repeat_units {
-          repeat_units
-          distribution
-          populations {
-            id
-            distribution
-          }
-        }
+    }
+    genotype_distribution {
+      ancestry_group
+      sex
+      short_allele_repunit
+      long_allele_repunit
+      quality_description
+      q_score
+      distribution {
+        short_allele_repunit_count
+        long_allele_repunit_count
+        frequency
       }
+    }
+    age_distribution {
+      age_range
+      distribution
     }
   }
 }
