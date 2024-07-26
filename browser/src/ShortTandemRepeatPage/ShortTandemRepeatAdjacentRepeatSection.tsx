@@ -55,7 +55,8 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
     useState<string[] | ''>(defaultGenotypeDistributionRepeatUnits)
 
-  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
+  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] =
+    useState<GenotypeBin | null>(null)
 
   return (
     <section style={{ marginBottom: '3em' }}>
@@ -88,7 +89,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
           <Select
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}
             value={selectedRepeatUnit}
-            onChange={(e: any) => {
+            onChange={(e: { target: { value: string } }) => {
               setSelectedRepeatUnit(e.target.value)
             }}
           >
@@ -109,7 +110,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
           <Select
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
             value={selectedScaleType}
-            onChange={(e: any) => {
+            onChange={(e: { target: { value: ScaleType } }) => {
               setSelectedScaleType(e.target.value)
             }}
           >
@@ -130,7 +131,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
           selectedAncestryGroup: selectedAncestryGroup,
           selectedSex: selectedSex,
         })}
-        onSelectBin={(bin: any) => {
+        onSelectBin={(bin: GenotypeBin) => {
           if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
             setSelectedGenotypeDistributionBin(bin)
           }
@@ -158,7 +159,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
 
       {selectedGenotypeDistributionBin && (
         <Modal
-          title={(selectedGenotypeDistributionBin as any).label}
+          title={selectedGenotypeDistributionBin.label}
           size="large"
           // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; title: any; size: "larg... Remove this comment to see the full error message
           initialFocusOnButton={false}

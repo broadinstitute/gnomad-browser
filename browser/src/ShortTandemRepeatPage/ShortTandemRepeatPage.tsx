@@ -190,7 +190,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   Object.keys(allRepeatUnitsByClassification).forEach((classification) => {
     repeatUnitsFoundInGnomadByClassification[classification] = allRepeatUnitsByClassification[
       classification
-    ].filter((repeatUnit: any) => repeatUnitsFoundInGnomad.has(repeatUnit))
+    ].filter((repeatUnit) => repeatUnitsFoundInGnomad.has(repeatUnit))
   })
 
   const allRepeatUnitsFoundInGnomadArePathogenic = Object.keys(
@@ -319,7 +319,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
               value={selectedAlleleSizeRepeatUnit}
-              onChange={(e: any) => {
+              onChange={(e: { target: { value: string } }) => {
                 setSelectedAlleleSizeRepeatUnit(e.target.value)
               }}
             >
@@ -367,7 +367,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                           1
                         )}`}
                       >
-                        {allRepeatUnitsByClassification[classification].map((repeatUnit: any) => {
+                        {allRepeatUnitsByClassification[classification].map((repeatUnit) => {
                           const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
                           const notes = []
                           if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
@@ -397,7 +397,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
               value={selectedScaleType}
-              onChange={(e: any) => {
+              onChange={(e: { target: { value: ScaleType } }) => {
                 setSelectedScaleType(e.target.value)
               }}
             >
@@ -416,7 +416,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
                 value={selectedDisease}
-                onChange={(e: any) => {
+                onChange={(e: { target: { value: string } }) => {
                   setSelectedDisease(e.target.value)
                 }}
               >
@@ -511,7 +511,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
                 value={selectedDisease}
-                onChange={(e: any) => {
+                onChange={(e: { target: { value: string } }) => {
                   setSelectedDisease(e.target.value)
                 }}
               >
@@ -541,7 +541,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
       {selectedGenotypeDistributionBin && (
         <Modal
-          title={(selectedGenotypeDistributionBin as any).label}
+          title={selectedGenotypeDistributionBin.label}
           size="large"
           // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; title: any; size: "larg... Remove this comment to see the full error message
           initialFocusOnButton={false}

@@ -75,7 +75,9 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
               .flatMap(({ repeatUnits, distribution }) => [
                 {
                   repeatUnits,
-                  distribution: distribution.filter((d: any) => d[0] >= d[1]).filter(isInBin),
+                  distribution: distribution
+                    .filter((d) => d.long_allele_repunit_count >= d.short_allele_repunit_count)
+                    .filter(isInBin),
                 },
                 {
                   repeatUnits: [...repeatUnits].reverse(),

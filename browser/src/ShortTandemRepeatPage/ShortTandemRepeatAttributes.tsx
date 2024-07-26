@@ -28,7 +28,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
         label={`Repeat unit${(repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''}`}
       >
         <InlineList
-          items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: any) => (
+          items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: string) => (
             <span>
               {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
               shortTandemRepeat.repeat_units.length > 1
@@ -52,7 +52,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           tooltip="These repeat units have been reported in the literature as pathogenic when they expand beyond a certain threshold."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).pathogenic.map((repeatUnit: any) => (
+            items={(repeatUnitsByClassification as any).pathogenic.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1
@@ -74,7 +74,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           tooltip="These repeat units are regarded in the literature as benign, even when expanded."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).benign.map((repeatUnit: any) => (
+            items={(repeatUnitsByClassification as any).benign.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1
@@ -96,7 +96,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           tooltip="These are the other repeat units detected at this locus within gnomAD samples by the call_non_ref_pathogenic_motifs.py script."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: any) => (
+            items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1

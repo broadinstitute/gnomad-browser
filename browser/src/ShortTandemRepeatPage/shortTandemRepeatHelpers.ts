@@ -165,17 +165,16 @@ export const getSelectedGenotypeDistribution = (
 }*/
 
 export const getGenotypeDistributionPlotAxisLabels = (
-  shortTandemRepeatOrAdjacentRepeat: any,
-  { selectedRepeatUnits }: any
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
+  { selectedRepeatUnits }: { selectedRepeatUnits: string[] | '' }
 ) => {
-  if (selectedRepeatUnits) {
-    const repeatUnits = selectedRepeatUnits.split(' / ')
-    if (repeatUnits[0] === repeatUnits[1]) {
-      return shortTandemRepeatOrAdjacentRepeat.genotype_distribution.repeat_units.length === 1
+  if (selectedRepeatUnits !== '') {
+    if (selectedRepeatUnits[0] === selectedRepeatUnits[1]) {
+      return genotypeRepunitPairs(shortTandemRepeatOrAdjacentRepeat).length === 1
         ? ['longer allele', 'shorter allele']
-        : [`longer ${repeatUnits[0]} allele`, `shorter ${repeatUnits[1]} allele`]
+        : [`longer ${selectedRepeatUnits[0]} allele`, `shorter ${selectedRepeatUnits[1]} allele`]
     }
-    return repeatUnits.map((repeatUnit: any) => `${repeatUnit} allele`)
+    return selectedRepeatUnits.map((repeatUnit) => `${repeatUnit} allele`)
   }
   return ['longer allele', 'shorter allele']
 }
