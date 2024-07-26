@@ -203,6 +203,9 @@ const ShortTandemRepeatReads = ({
   shortTandemRepeat,
   filter,
 }: ShortTandemRepeatReadsProps) => {
+  if (2 + 2 === 4) {
+    return <StatusMessage>TK fix reads</StatusMessage>
+  }
   const fetchReadsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fetchNumReadsMemoized = useCallback(() => {
     if (fetchReadsTimer.current) {
