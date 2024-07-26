@@ -78,7 +78,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const nBins = Math.floor(maxRepeats / binSize) + 1
 
     const data = useMemo(() => {
-      const d = Array.from(Array(nBins).keys()).map((n: any) => ({
+      const d = Array.from(Array(nBins).keys()).map((n) => ({
         binIndex: n,
         label: binSize === 1 ? `${n}` : `${n * binSize} - ${n * binSize + binSize - 1}`,
         count: 0,
@@ -93,20 +93,20 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     }, [alleleSizeDistribution, nBins, binSize])
 
     const xScale = scaleBand<number>()
-      .domain(data.map((d: any) => d.binIndex))
+      .domain(data.map((d) => d.binIndex))
       .range([0, plotWidth])
 
     const xBandwidth = xScale.bandwidth()
 
     let yScale: any
     if (scaleType === 'log') {
-      const maxLog = Math.ceil(Math.log10(max(data, (d: any) => d.count) || 1))
+      const maxLog = Math.ceil(Math.log10(max(data, (d) => d.count) || 1))
       yScale = scaleLog()
         .domain([1, 10 ** maxLog])
         .range([plotHeight - 10, 0])
     } else {
       yScale = scaleLinear()
-        .domain([0, max(data, (d: any) => d.count) || 1])
+        .domain([0, max(data, (d) => d.count) || 1])
         .range([plotHeight, 0])
     }
 
@@ -199,7 +199,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             />
           )}
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {data.map((d: any) => {
+            {data.map((d) => {
               const y = d.count === 0 ? plotHeight : yScale(d.count)
               return (
                 <React.Fragment key={`${d.binIndex}`}>
@@ -233,9 +233,9 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left}, 0)`}>
             {ranges
-              .filter((range: any) => range.start !== range.stop)
-              .filter((range: any) => range.start <= maxRepeats)
-              .map((range: any, rangeIndex: any) => {
+              .filter((range) => range.start !== range.stop)
+              .filter((range) => range.start <= maxRepeats)
+              .map((range, rangeIndex) => {
                 const startBinIndex = Math.floor(range.start / binSize)
                 const startX =
                   (xScale(startBinIndex) || 0) +

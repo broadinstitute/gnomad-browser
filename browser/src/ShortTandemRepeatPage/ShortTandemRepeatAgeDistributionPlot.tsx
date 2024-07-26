@@ -59,7 +59,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
     const yNumBins = ageDistribution.length
 
-    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n: any) => {
+    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n) => {
       const xBinIndex = Math.floor(n / yNumBins)
       const yBinIndex = n % yNumBins
 
@@ -102,7 +102,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
     const xMaxNumLabels = Math.floor(plotWidth / 20)
     const xLabelInterval = Math.max(Math.round(xNumBins / xMaxNumLabels), 1)
 
-    const xTickFormat = (binIndex: any) => {
+    const xTickFormat = (binIndex: number) => {
       if (binIndex % xLabelInterval !== 0) {
         return ''
       }
@@ -114,12 +114,12 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
       return `${binIndex * xBinSize} - ${binIndex * xBinSize + xBinSize - 1}`
     }
 
-    const yTickFormat = (binIndex: any) => {
+    const yTickFormat = (binIndex: number) => {
       return ageRangeLabel(ageDistribution[binIndex].age_range)
     }
 
     const opacityScale = scaleLog()
-      .domain([1, max(ageDistribution, (ageBin) => max(ageBin.distribution, (d: any) => d[1]))])
+      .domain([1, max(ageDistribution, (ageBin) => max(ageBin.distribution, (d) => d[1])) || 2])
       .range([0.1, 1])
 
     return (
@@ -178,8 +178,8 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left},${margin.top})`}>
             {data
-              .filter((d: any) => d.count !== 0)
-              .map((d: any) => {
+              .filter((d) => d.count !== 0)
+              .map((d) => {
                 return (
                   <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
                     <TooltipAnchor
