@@ -2,17 +2,13 @@ import React, { Dispatch, SetStateAction } from 'react'
 
 import { Select } from '@gnomad/ui'
 import { ShortTandemRepeat, ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
-import { genotypeRepunitPairs } from './shortTandemRepeatHelpers'
+import { genotypeRepunitPairs, isAdjacentRepeat } from './shortTandemRepeatHelpers'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
   selectedRepeatUnits: string[] | ''
   setSelectedRepeatUnits: Dispatch<SetStateAction<string[] | ''>>
 }
-
-const isAdjacentRepeat = (
-  obj: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-): obj is ShortTandemRepeatAdjacentRepeat => !obj.hasOwnProperty('associated_diseases')
 
 const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
   shortTandemRepeatOrAdjacentRepeat,

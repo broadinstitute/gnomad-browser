@@ -263,7 +263,6 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
   }
 }
 `
-// TK check
 type Props = {
   datasetId: DatasetId
   geneIdOrSymbol: string
