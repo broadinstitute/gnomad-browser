@@ -15,13 +15,22 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
   short_tandem_repeat(id: $strId, dataset: $datasetId) {
     id
     gene {
+      ensembl_id
       symbol
+      region
     }
     associated_diseases {
+      name
+      symbol
       omim_id
+      inheritance_mode
+      repeat_size_classifications {
+        classification
+        min
+        max
+      }
       notes
     }
-    stripy_id
     main_reference_region {
       reference_genome
       chrom
@@ -67,6 +76,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       age_range
       distribution
     }
+    stripy_id
     adjacent_repeats {
       id
       reference_region {
@@ -101,10 +111,6 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
         long_allele_repunit_count
         frequency
       }
-    }
-    age_distribution {
-      age_range
-      distribution
     }
   }
 }
