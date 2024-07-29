@@ -51,7 +51,9 @@ const ShortTandemRepeatPopulationOptions = ({
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
           value={selectedAncestryGroup}
-          onChange={setSelectedAncestryGroup}
+          onChange={(e: { target: { value: AncestryGroupId | '' } }) =>
+            setSelectedAncestryGroup(e.target.value)
+          }
         >
           <option value="">Global</option>
           {ancestryGroupsSortedByName.map((ancestryGroup) => (
@@ -67,7 +69,7 @@ const ShortTandemRepeatPopulationOptions = ({
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex}
-          onChange={setSelectedSex}
+          onChange={(e: { target: { value: Sex | '' } }) => setSelectedSex(e.target.value)}
         >
           <option value="">All</option>
           <option value="XX">XX</option>
