@@ -59,7 +59,7 @@ export const getSelectedAlleleSizeDistribution = (
         return acc
       }
 
-      if (!matchingRepunits.has(cohort.repunit)) {
+      if (selectedRepeatUnit !== '' && !matchingRepunits.has(cohort.repunit)) {
         return acc
       }
       return addCohortToAlleleSizeDistribution(cohort, acc)
