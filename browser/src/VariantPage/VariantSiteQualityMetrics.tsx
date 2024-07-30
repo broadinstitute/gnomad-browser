@@ -18,6 +18,7 @@ import { DatasetId, isV2, isV3, isV4, isExac } from '@gnomad/dataset-metadata/me
 import Legend from '../Legend'
 import ControlSection from './ControlSection'
 import { Variant, SequencingType } from './VariantPage'
+import { logButtonClick } from '../analytics'
 
 // ================================================================================================
 // Metric descriptions
@@ -985,6 +986,10 @@ const VariantSiteQualityMetricsDistribution = ({
   variant,
 }: VariantSiteQualityMetricsDistributionProps) => {
   const [selectedMetric, setSelectedMetric] = useState('SiteQuality')
+  const setSelectedMetricAndLogButtonClick = (metric: string) => {
+    logButtonClick(`User selected site quality metric ${metric} from the dropdown`)
+    setSelectedMetric(metric)
+  }
   const [selectedSequencingType, setSelectedSequencingType] = useState(
     getDefaultSelectedSequencingType(variant)
   )
@@ -1058,8 +1063,8 @@ const VariantSiteQualityMetricsDistribution = ({
           Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id="site-quality-metrics-metric"
-            onChange={(e: any) => {
-              setSelectedMetric(e.target.value)
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setSelectedMetricAndLogButtonClick(e.target.value)
             }}
             value={selectedMetric}
           >
@@ -1208,10 +1213,19 @@ const VariantSiteQualityMetricsTable = ({
 
 const VariantSiteQualityMetrics = ({ datasetId, variant }: VariantSiteQualityMetricsProps) => {
   const [currentTab, setCurrentTab] = useState('distribution')
+  const setCurrentTabAndLogButtonClick = (tabId: string) => {
+    if (tabId === 'values') {
+      logButtonClick(
+        "User clicked 'All metric values' for site quality metrics on Variant or Mito Variant page"
+      )
+    }
+    setCurrentTab(tabId)
+  }
 
   return (
     <Tabs
       activeTabId={currentTab}
+      onChange={setCurrentTabAndLogButtonClick}
       tabs={[
         {
           id: 'distribution',
@@ -1226,7 +1240,6 @@ const VariantSiteQualityMetrics = ({ datasetId, variant }: VariantSiteQualityMet
           render: () => <VariantSiteQualityMetricsTable datasetId={datasetId} variant={variant} />,
         },
       ]}
-      onChange={setCurrentTab}
     />
   )
 }
