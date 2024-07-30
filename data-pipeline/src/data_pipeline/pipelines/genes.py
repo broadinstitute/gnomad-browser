@@ -5,6 +5,13 @@ from data_pipeline.pipeline import Pipeline, run_pipeline
 from data_pipeline.helpers import annotate_table
 
 from data_pipeline.data_types.gene import prepare_genes, prepare_gene_table_for_release
+
+from data_pipeline.data_types.gtex_tissue_expression import (
+    prepare_gtex_expression_data,
+    reshape_gtex_data_to_tissue_array,
+)
+from data_pipeline.data_types.pext import reshape_pext_data_to_tissue_array
+
 from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
 from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
 from data_pipeline.data_types.transcript import (
@@ -158,6 +165,8 @@ pipeline.add_task(
 #
 # ---
 
+# GTEx and pext - GRCh37
+# ---
 
 # pipeline.add_download_task(
 #     "download_gtex_v7_tpm_data",
@@ -191,6 +200,72 @@ pipeline.add_task(
 #         "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
 #     },
 # )
+
+
+pipeline.add_task(
+    "reshape_gtex_v7_data_to_tissue_array",
+    reshape_gtex_data_to_tissue_array,
+    "/gtex/gtext_v7_tissue_expression_array.ht",
+    {
+        "gtex_struct_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht",
+    },
+)
+
+pipeline.add_task(
+    "reshape_pext_v2_data_to_tissue_array",
+    reshape_pext_data_to_tissue_array,
+    "/pext/pext_v2_tissue_array",
+    {
+        "pext_struct_path": "gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/",
+    },
+)
+
+
+# GTEx and pext - GRCh38
+# ---
+pipeline.add_download_task(
+    "download_gtex_v10_tpm_data",
+    "https://storage.googleapis.com/adult-gtex/bulk-gex/v10/rna-seq/GTEx_Analysis_v10_RSEMv1.3.3_transcripts_tpm.txt.gz",
+    f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_v10_RSEMv1.3.3_transcripts_tpm.txt.gz",
+)
+
+pipeline.add_download_task(
+    "download_gtex_v10_sample_attributes",
+    "https://storage.googleapis.com/adult-gtex/annotations/v10/metadata-files/GTEx_Analysis_v10_Annotations_SampleAttributesDS.txt",
+    f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_v10_Annotations_SampleAttributesDS.txt",
+)
+
+pipeline.add_task(
+    "prepare_gtex_v10_expression_data",
+    prepare_gtex_expression_data,
+    "/gtex/gtex_v10_tissue_expression.ht",
+    {
+        "transcript_tpms_path": "gs://gnomad-v4-data-pipeline/output/external_sources/gtex/v10/GTEx_Analysis_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
+        "sample_annotations_path": pipeline.get_task("download_gtex_v10_sample_attributes"),
+    },
+    {
+        "tmp_path": "/tmp",
+        "recompress": False,
+    },
+)
+
+pipeline.add_task(
+    "reshape_gtex_v10_data_to_tissue_array",
+    reshape_gtex_data_to_tissue_array,
+    "/gtex/gtext_v10_tissue_expression_array.ht",
+    {
+        "gtex_struct_path": pipeline.get_task("prepare_gtex_v10_expression_data"),
+    },
+)
+
+pipeline.add_task(
+    "reshape_pext_v4_data_to_tissue_array",
+    reshape_pext_data_to_tissue_array,
+    "/pext/pext_v4_tissue_array",
+    {
+        "pext_struct_path": "gs://gnomad-v4-data-pipeline/output/external_sources/pext/gnomad.pext.gtex_v10.browser.ht",
+    },
+)
 
 ###############################################
 # Constraint
@@ -256,7 +331,7 @@ pipeline.add_task(
     {
         "table_path": pipeline.get_task("prepare_grch37_genes"),
         "canonical_transcript": pipeline.get_task("get_grch37_canonical_transcripts"),
-        "pext": "gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/",
+        "pext": pipeline.get_task("reshape_pext_v2_data_to_tissue_array"),
     },
 )
 
@@ -266,7 +341,7 @@ pipeline.add_task(
     f"/{genes_subdir}/genes_grch37_annotated_2.ht",
     {
         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
-        "gtex_tissue_expression_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/",
+        "gtex_tissue_expression_path": pipeline.get_task("reshape_gtex_v7_data_to_tissue_array"),
     },
 )
 
@@ -343,24 +418,36 @@ pipeline.add_task(
         "table_path": pipeline.get_task("prepare_grch38_genes"),
         "canonical_transcript": pipeline.get_task("get_grch38_canonical_transcripts"),
         "mane_select_transcript": pipeline.get_task("import_mane_select_transcripts"),
+        "pext": pipeline.get_task("reshape_pext_v4_data_to_tissue_array"),
     },
 )
 
 pipeline.add_task(
     "annotate_grch38_genes_step_2",
-    annotate_gene_transcripts_with_refseq_id,
+    annotate_gene_transcripts_with_tissue_expression,
     f"/{genes_subdir}/genes_grch38_annotated_2.ht",
     {
         "table_path": pipeline.get_task("annotate_grch38_genes_step_1"),
+        "gtex_tissue_expression_path": pipeline.get_task("reshape_gtex_v10_data_to_tissue_array"),
+    },
+)
+
+
+pipeline.add_task(
+    "annotate_grch38_genes_step_3",
+    annotate_gene_transcripts_with_refseq_id,
+    f"/{genes_subdir}/genes_grch38_annotated_3.ht",
+    {
+        "table_path": pipeline.get_task("annotate_grch38_genes_step_2"),
         "mane_select_transcripts_path": pipeline.get_task("import_mane_select_transcripts"),
     },
 )
 
 pipeline.add_task(
-    "annotate_grch38_genes_step_3",
+    "annotate_grch38_genes_step_4",
     annotate_with_preferred_transcript,
-    f"/{genes_subdir}/genes_grch38_annotated_3.ht",
-    {"table_path": pipeline.get_task("annotate_grch38_genes_step_2")},
+    f"/{genes_subdir}/genes_grch38_annotated_4.ht",
+    {"table_path": pipeline.get_task("annotate_grch38_genes_step_3")},
 )
 
 
@@ -371,21 +458,21 @@ def annotate_with_constraint(genes_path, constraint_path):
 
 
 pipeline.add_task(
-    "annotate_grch38_genes_step_4",
+    "annotate_grch38_genes_step_5",
     annotate_with_constraint,
-    f"/{genes_subdir}/genes_grch38_annotated_4.ht",
+    f"/{genes_subdir}/genes_grch38_annotated_5.ht",
     {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_3"),
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
         "constraint_path": pipeline.get_task("prepare_gnomad_v4_constraint"),
     },
 )
 
 pipeline.add_task(
-    "annotate_grch38_genes_step_5",
+    "annotate_grch38_genes_step_6",
     reject_par_y_genes,
-    f"/{genes_subdir}/genes_grch38_annotated_5.ht",
+    f"/{genes_subdir}/genes_grch38_annotated_6.ht",
     {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
     },
 )
 
@@ -426,7 +513,7 @@ pipeline.add_task(
     "extract_grch38_transcripts",
     extract_transcripts,
     f"/{genes_subdir}/transcripts_grch38_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_5")},
+    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_6")},
 )
 
 ###############################################
@@ -461,7 +548,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_5",
+        "genes_grch38": "annotate_grch38_genes_step_6",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
