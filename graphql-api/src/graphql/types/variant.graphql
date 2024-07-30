@@ -1,19 +1,53 @@
-type VariantPopulation {
+type VariantAncestryGroup {
   id: String!
   ac: Int!
   an: Int!
   homozygote_count: Int!
   hemizygote_count: Int
-
-  # Deprecated - replaced by homozygote/hemizygote count
-  ac_hom: Int!
-  ac_hemi: Int
+  ac_hom: Int! @deprecated(reason: "Use homozygote_count")
+  ac_hemi: Int @deprecated(reason: "Use hemizygote_count")
 }
 
-type VariantLocalAncestryPopulation {
+type VariantLocalAncestryGroup {
   id: String!
   ac: Int!
   an: Int!
+}
+
+type VariantLocalAncestryPopulation {
+  id: String! @deprecated(reason: "Use VariantLocalAncestryGroup.id")
+  ac: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.ac")
+  an: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.an")
+}
+
+type VariantAlleleBalance {
+  alt: Histogram
+}
+
+type VariantGenotypeDepth {
+  all: Histogram
+}
+
+type VariantPopulation {
+  id: String! @deprecated(reason: "Use VariantAncestryGroup.id")
+  ac: Int! @deprecated(reason: "Use VariantAncestryGroup.ac")
+  an: Int! @deprecated(reason: "Use VariantAncestryGroup.an")
+  homozygote_count: Int! @deprecated(reason: "Use VariantAncestryGroup.homozygote_count")
+  hemizygote_count: Int @deprecated(reason: "Use VariantAncestryGroup.heterozygote_count")
+  ac_hom: Int! @deprecated(reason: "Use VariantAncestryGroup.homozygote_count")
+  ac_hemi: Int @deprecated(reason: "Use VariantAncestryGroup.hemizygote_count")
+}
+
+type VariantLocalAncestryGroup {
+  id: String!
+  ac: Int!
+  an: Int!
+}
+
+type VariantLocalAncestryPopulation {
+  id: String! @deprecated(reason: "Use VariantLocalAncestryGroup.id")
+  ac: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.ac")
+  an: Int! @deprecated(reason: "Use VariantLocalAncestryGroup.an")
 }
 
 type VariantAlleleBalance {
@@ -49,8 +83,10 @@ type VariantQualityMetrics {
 }
 
 type VariantFilteringAlleleFrequency {
-  popmax: Float
-  popmax_population: String
+  grpmax: Float
+  popmax: Float @deprecated(reason: "Use grpmax")
+  grpmax_ancestry_group: String
+  popmax_population: String @deprecated(reason: "Use grpmax_ancestry_group")
 }
 
 type VariantAgeDistribution {
@@ -112,7 +148,8 @@ type VariantSequencingTypeData {
   homozygote_count: Int
   hemizygote_count: Int
   filters: [String!]
-  populations: [VariantPopulation]
+  ancestry_groups: [VariantAncestryGroup]
+  populations: [VariantPopulation] @deprecated(reason: "Use ancestry_groups")
   faf95: VariantFilteringAlleleFrequency
   fafmax: Fafmax
 
@@ -222,8 +259,11 @@ type VariantDetailsSequencingTypeData {
   faf95: VariantFilteringAlleleFrequency
   faf99: VariantFilteringAlleleFrequency
   filters: [String!]
-  populations: [VariantPopulation]
-  local_ancestry_populations: [VariantLocalAncestryPopulation]!
+  ancestry_groups: [VariantAncestryGroup]
+  local_ancestry_groups: [VariantLocalAncestryGroup]
+  populations: [VariantPopulation] @deprecated(reason: "Use ancestry_groups")
+  local_ancestry_populations: [VariantLocalAncestryPopulation]
+    @deprecated(reason: "Use local_ancestry_groups")
   age_distribution: VariantAgeDistribution
   quality_metrics: VariantQualityMetrics
 
