@@ -10,6 +10,7 @@ import { BaseTable, Select, Tabs, TooltipAnchor } from '@gnomad/ui'
 import gnomadV3MitochondrialVariantSiteQualityMetricDistributions from '@gnomad/dataset-metadata/datasets/gnomad-v3-mitochondria/gnomadV3MitochondrialVariantSiteQualityMetricDistributions.json'
 
 import { MitochondrialVariant } from './MitochondrialVariantPage'
+import { logButtonClick } from '../analytics'
 
 const formatMetricValue = (value: any) => {
   if (Math.abs(value) < 0.001) {
@@ -259,6 +260,10 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
   variant,
 }: MitochondrialVariantSiteQualityMetricsDistributionProps) => {
   const [selectedMetricName, setSelectedMetricName] = useState<Metric>('Mean Depth')
+  const setSelectedMetricAndLogButtonClick = (metric: Metric) => {
+    logButtonClick(`User selected site quality metric ${metric} from the dropdown`)
+    setSelectedMetricName(metric)
+  }
 
   const selectedMetric = variant.site_quality_metrics.find(
     ({ name }) => name === selectedMetricName
@@ -293,8 +298,11 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
             Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Select
               id="mt-site-quality-metrics-metric"
-              onChange={(e: any) => {
-                setSelectedMetricName(e.target.value)
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSelectedMetricAndLogButtonClick(e.target.value as Metric)
+                logButtonClick(
+                  `User selected metric ${e.target.value} from the dropdown of Site Quality Metrics`
+                )
               }}
               value={selectedMetricName}
             >
@@ -356,10 +364,20 @@ const MitochondrialVariantSiteQualityMetrics = ({
   variant,
 }: MitochondrialVariantSiteQualityMetricsProps) => {
   const [selectedTab, setSelectedTab] = useState('distribution')
+
+  const setSelectedTabAndLogButtonClick = (tabId: string) => {
+    if (tabId === 'values') {
+      logButtonClick(
+        "User clicked 'All metric values' for site quality metrics on Variant or Mito Variant page"
+      )
+    }
+    setSelectedTab(tabId)
+  }
+
   return (
     <Tabs
       activeTabId={selectedTab}
-      onChange={setSelectedTab}
+      onChange={setSelectedTabAndLogButtonClick}
       tabs={[
         {
           id: 'distribution',

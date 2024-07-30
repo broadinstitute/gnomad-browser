@@ -15,6 +15,7 @@ import Link from '../Link'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
 import { Variant, VariantQualityMetrics } from './VariantPage'
+import { logButtonClick } from '../analytics'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -88,7 +89,7 @@ const createTab = (
   xLabel: string,
   yLabel: string,
   secondaryYLabel: string,
-  legendSwatchId: string,
+  legendSwatchId: string
 ): Tab => {
   return {
     id,
@@ -147,7 +148,7 @@ const createTab = (
           secondaryYLabel={secondaryYLabel}
           barColors={['#428bca', '#73ab3d']}
           formatTooltip={(bin: any, variantCarriersInBin: any, allIndividualsInBin: any) => {
-            const nVariantCarriers = sum(variantCarriersInBin);
+            const nVariantCarriers = sum(variantCarriersInBin)
 
             if (id === 'allele_balance') {
               return `${nVariantCarriers.toLocaleString()} heterozygous variant carrier${
@@ -157,27 +158,26 @@ const createTab = (
 
             let tooltipText = `${nVariantCarriers.toLocaleString()} variant carrier${
               nVariantCarriers !== 1 ? 's' : ''
-            }`;
+            }`
 
             if (showAllIndividuals) {
-              const nTotalIndividuals = sum(allIndividualsInBin);
+              const nTotalIndividuals = sum(allIndividualsInBin)
               tooltipText += ` and ${nTotalIndividuals.toLocaleString()} total individual${
                 nTotalIndividuals !== 1 ? 's' : ''
-              }`;
+              }`
             }
-  
+
             tooltipText += ` ${
               nVariantCarriers === 1 && !showAllIndividuals ? 'has' : 'have'
-            } ${xLabel.toLowerCase()} in the ${bin} range`;
-  
-            return tooltipText;
-            }
-          }
+            } ${xLabel.toLowerCase()} in the ${bin} range`
+
+            return tooltipText
+          }}
         />
       </>
     ),
-  };
-};
+  }
+}
 
 type QualityMetricKey = keyof Omit<VariantQualityMetrics, 'site_quality_metrics'>
 
@@ -186,6 +186,12 @@ const VariantGenotypeQualityMetrics = ({
   variant,
 }: VariantGenotypeQualityMetricsProps) => {
   const [selectedMetric, setSelectedMetric] = useState<QualityMetricKey>('genotype_quality')
+  const setSelectedMetricAndLogButtonClick = (metric: QualityMetricKey) => {
+    if (metric === 'genotype_depth' || metric === 'allele_balance') {
+      logButtonClick(`User selected metric genotype quality metric ${metric}`)
+    }
+    setSelectedMetric(metric)
+  }
 
   const [showAllIndividuals, setShowAllIndividuals] = useState(true)
 
@@ -223,7 +229,7 @@ const VariantGenotypeQualityMetrics = ({
 
   // @ts-ignore
   const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
-  
+
   const tabs: Tab[] = [
     createTab(
       showAllIndividuals,
@@ -236,7 +242,7 @@ const VariantGenotypeQualityMetrics = ({
       'Genotype quality',
       'Variant carriers',
       'All individuals',
-      'genotype-quality-legend-swatch',
+      'genotype-quality-legend-swatch'
     ),
     createTab(
       showAllIndividuals,
@@ -249,9 +255,9 @@ const VariantGenotypeQualityMetrics = ({
       'Depth',
       'Variant carriers',
       'All individuals',
-      'depth-legend-swatch',
-    )
-  ];
+      'depth-legend-swatch'
+    ),
+  ]
 
   if (hasAlleleBalance(datasetId)) {
     tabs.push(
@@ -266,14 +272,18 @@ const VariantGenotypeQualityMetrics = ({
         'Allele balance',
         'Heterozygous variant carriers',
         '', // No secondaryYLabel
-        '', // No legendSwatchId
+        '' // No legendSwatchId
       )
     )
-  };
+  }
 
   return (
     <div>
-      <Tabs activeTabId={selectedMetric} tabs={tabs} onChange={setSelectedMetric as any} />
+      <Tabs
+        activeTabId={selectedMetric}
+        tabs={tabs}
+        onChange={setSelectedMetricAndLogButtonClick as any}
+      />
 
       <ControlSection>
         <Checkbox
