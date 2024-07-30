@@ -4,6 +4,10 @@ from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.helpers import annotate_table
 
+
+from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
+from data_pipeline.data_types.pext import prepare_pext_data
+
 from data_pipeline.data_types.gene import prepare_genes
 from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
 from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
@@ -155,6 +159,8 @@ pipeline.add_task(
 #
 # ---
 
+# GTEx and pext - GRCh37
+# ---
 
 # pipeline.add_download_task(
 #     "download_gtex_v7_tpm_data",
@@ -186,6 +192,46 @@ pipeline.add_task(
 #     {
 #         "base_level_pext_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/gnomad_browser/all.baselevel.021620.ht",
 #         "low_max_pext_genes_path": "gs://gcp-public-data--gnomad/papers/2019-tx-annotation/data/GRCH37_hg19/max_pext_low_genes.021520.tsv",
+#     },
+# )
+
+
+# GTEx and pext - GRCh38
+# ---
+
+pipeline.add_download_task(
+    "download_gtex_v10_tpm_data",
+    # TODO: this is v8, pext was performed on the methods team getting early access to v10
+    "https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz"
+    f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz",
+)
+
+pipeline.add_download_task(
+    "download_gtex_v10_sample_attributes",
+    # TODO: this is v8, pext was performed on the methods team getting early access to v10
+    "https://storage.googleapis.com/adult-gtex/annotations/v8/metadata-files/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
+    f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
+)
+
+pipeline.add_task(
+    "prepare_gtex_v10_expression_data",
+    prepare_gtex_expression_data,
+    "/gtex/gtex_v10_tissue_expression.ht",
+    {
+        "transcript_tpms_path": pipeline.get_task("download_gtex_v10_tpm_data"),
+        "sample_annotations_path": pipeline.get_task("download_gtex_v10_sample_attributes"),
+    },
+    {"tmp_path": "/tmp"},
+)
+
+# TODO: not needed -- methods team now owns this portion, we just ingest the output table
+# pipeline.add_task(
+#     "prepare_pext_grch38",
+#     prepare_pext_data,
+#     "/pext_grch38.ht",
+#     {
+#         "base_level_pext_path": "gs://gnomad/v4.1/pext/gnomad.v4.1.pext.annotationlevel.ht/",
+#         "low_max_pext_genes_path": "gs://gnomad/v4.1/pext/gnomad.v4.1.pext.baselevel.ht/",
 #     },
 # )
 
@@ -327,6 +373,7 @@ pipeline.add_task(
         "table_path": pipeline.get_task("prepare_grch38_genes"),
         "canonical_transcript": pipeline.get_task("get_grch38_canonical_transcripts"),
         "mane_select_transcript": pipeline.get_task("import_mane_select_transcripts"),
+        "pext": "gs://gnomad/v4.1/pext/gnomad.v4.1.pext.regionlevel.for_browser.ht",
     },
 )
 
