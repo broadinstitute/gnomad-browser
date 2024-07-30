@@ -11,6 +11,7 @@
 !browser/help
 !browser/package.json
 !browser/src
+!browser/start.sh
 !browser/webpack.config.js
 !dataset-metadata
 !deploy/dockerfiles/browser/browser.nginx.conf
