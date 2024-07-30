@@ -44,8 +44,13 @@ fi
 if [ $with_browser ]; then
   compose_config="$compose_config --file=development/browser.docker-compose.yaml"
 
-  export GNOMAD_API_URL="https://gnomad.broadinstitute.org/api"
-  export READS_API_URL="https://gnomad.broadinstitute.org/reads"
+  if [ -z ${GNOMAD_API_URL:-} ]; then
+    export GNOMAD_API_URL="https://gnomad.broadinstitute.org/api"
+  fi
+
+  if [ -z ${READS_API_URL:-} ]; then
+    export READS_API_URL="https://gnomad.broadinstitute.org/reads"
+  fi
 
   if [ $with_api ]; then
     export GNOMAD_API_URL="http://api:8000/api"
