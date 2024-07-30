@@ -13,7 +13,7 @@ def prepare_coverage(coverage_path: str, filter_intervals: Optional[List[str]] =
 
     # Specific to v4, the data is contained in a coverage_stats field and we take the first element
     if "coverage_stats" in coverage_fields:
-        if type(coverage.coverage_stats) == hl.expr.expressions.typed_expressions.ArrayStructExpression:
+        if type(coverage.coverage_stats) is hl.expr.expressions.typed_expressions.ArrayStructExpression:
             coverage = coverage.annotate(**coverage.coverage_stats[0])
 
     # Median field name is different in v3.0.1 vs v2

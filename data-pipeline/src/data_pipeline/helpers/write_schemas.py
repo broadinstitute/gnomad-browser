@@ -31,7 +31,7 @@ def write_schemas(pipelines: List[Pipeline], schema_dir: str = DEFAULT_SCHEMA_DI
             for task_name in all_task_names:
                 if task_name in task_names:
                     task = pipeline.get_task(task_name)
-                    if type(task) != DownloadTask:
+                    if type(task) is not DownloadTask:
                         inputs = task.get_inputs()
                         output_path = task.get_output_path()
 
