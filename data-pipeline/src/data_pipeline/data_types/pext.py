@@ -178,3 +178,15 @@ def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
     )
 
     return ds
+
+
+def reshape_pext_data_to_tissue_array(pext_struct_path):
+    ds = hl.read_table(pext_struct_path)
+    ds = ds.annotate(
+        regions=ds.regions.map(
+            lambda region: region.annotate(
+                tissues=hl.array([hl.struct(tissue=tissue, value=region.tissues[tissue]) for tissue in region.tissues])
+            )
+        )
+    )
+    return ds
