@@ -7,7 +7,6 @@ from data_pipeline.helpers import annotate_table
 from data_pipeline.data_types.gene import prepare_genes, prepare_gene_table_for_release
 
 from data_pipeline.data_types.gtex_tissue_expression import prepare_gtex_expression_data
-from data_pipeline.data_types.pext import prepare_pext_data
 
 from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
 from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
