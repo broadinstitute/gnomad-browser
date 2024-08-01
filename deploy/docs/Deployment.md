@@ -49,7 +49,9 @@ After creating the cluster, store the password in a secret so that Dataproc jobs
 
 ## Deploy Redis
 
-Run kubectl apply -k . in the deploy/manifests/redis folder
+Run kubectl apply -k . in the appropriate environment folder in [gnomad-deployments/redis](https://github.com/broadinstitute/gnomad-deployments/tree/main/redis)
+
+Note: Argo manages the production deployment for redis. There is a much smaller configuration appropriate for dev environments in the `dev` subfolder of that deployment.
 
 ## Http Cache
 
