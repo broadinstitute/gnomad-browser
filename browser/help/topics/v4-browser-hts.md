@@ -183,7 +183,7 @@ Row fields:
   - `refseq_version`: RefSeq version.
 - `preferred_transcript_id`: Transcript shown on the gene page by default. Field containsMANE Select transcript ID if it exists, otherwise contains Ensemblcanonical transcript ID.
 - `preferred_transcript_source`: Source of transcript ID used for `preferred_transcript_id` field; either "`mane_select`" or "`ensemble_canonical`".
-- `gnomad_constraint`: Struct containing gnomAD constraint information for gene.
+- `gnomad_constraint`: Struct containing gnomAD constraint information for gene. Struct is only present on the GRCh37 Hail Table.
   - `gene`: Gene name.
   - `transcript`: Transcript ID.
   - `mane_select`: Whether transcript is the MANE Select transcript.
