@@ -43,3 +43,9 @@ def prepare_gnomad_v4_constraint(path):
     ds = ds.key_by("transcript_id")
 
     return ds
+
+
+def remove_gnomad_v4_constraint(genes_path):
+    ds = hl.read_table(genes_path)
+    ds = ds.drop("gnomad_constraint")
+    return ds

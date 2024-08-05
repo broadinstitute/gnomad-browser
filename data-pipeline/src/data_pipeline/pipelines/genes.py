@@ -27,7 +27,10 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
 )
 from data_pipeline.data_types.gene import reject_par_y_genes
 
-from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import prepare_gnomad_v4_constraint
+from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import (
+    prepare_gnomad_v4_constraint,
+    remove_gnomad_v4_constraint,
+)
 
 pipeline = Pipeline()
 
@@ -370,6 +373,15 @@ pipeline.add_task(
     f"/{genes_subdir}/genes_grch38_annotated_5.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
+    },
+)
+
+pipeline.add_task(
+    "remove_constraint_for_release",
+    remove_gnomad_v4_constraint,
+    f"/{genes_subdir}/genes_grch38_annotate_5_no_constraint",
+    {
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
     },
 )
 
