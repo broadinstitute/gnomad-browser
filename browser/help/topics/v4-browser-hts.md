@@ -129,6 +129,13 @@ Row fields:
   - `is_mane_select_version`: MANE Select version; has a value if this transcript is the MANE select transcript.
   - `refseq_id`: RefSeq ID associated with transcript.
   - `refseq_version`: RefSeq version.
+- `caid`: The ClinGen Allele id associated with this variant
+- `vrs`: Struct containing information about this variant in accordance with the [Variant Representation (VRS)](https://vrs.ga4gh.org/en/stable/) standard
+  - `ref`: Struct containing information about the reference allele
+    - `allele_id`: The unique Allele ID
+    - `start`: The start position of the Allele
+    - `end`: The end position of the Allele
+    - `state`: A VRS Sequence Expression that corresponds to the nucleotide or amino acid sequence of the Allele
 
 #### gnomAD v4.1. browser gene models Hail Table annotations
 
