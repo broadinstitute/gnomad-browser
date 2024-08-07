@@ -226,6 +226,12 @@ def import_hgnc(path):
     return ds
 
 
+def prepare_table_for_release(genes_path):
+    ds = hl.import_table(genes_path)
+    ds = ds.select_globals()
+    return ds
+
+
 def prepare_genes(gencode_path, hgnc_path, reference_genome):
     genes = import_gencode(gencode_path, reference_genome)
 

@@ -4,7 +4,7 @@ from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.helpers import annotate_table
 
-from data_pipeline.data_types.gene import prepare_genes
+from data_pipeline.data_types.gene import prepare_genes, prepare_table_for_release
 from data_pipeline.data_types.canonical_transcript import get_canonical_transcripts
 from data_pipeline.data_types.mane_select_transcript import import_mane_select_transcripts
 from data_pipeline.data_types.transcript import (
@@ -323,6 +323,15 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
+    "prepare_grch37_genes_table_for_public_release",
+    prepare_table_for_release,
+    f"/{genes_subdir}/genes_grch37_public_release.ht",
+    {
+        "genes_path": pipeline.get_task("annotate_grch37_genes_step_5"),
+    },
+)
+
+pipeline.add_task(
     "annotate_grch38_genes_step_1",
     annotate_table,
     f"/{genes_subdir}/genes_grch38_annotated_1.ht",
@@ -382,6 +391,16 @@ pipeline.add_task(
     f"/{genes_subdir}/genes_grch38_annotate_5_no_constraint",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
+    },
+)
+
+
+pipeline.add_task(
+    "prepare_grch38_genes_table_for_public_release",
+    prepare_table_for_release,
+    f"/{genes_subdir}/genes_grch38_public_release.ht",
+    {
+        "genes_path": pipeline.get_task("remove_constraint_for_release"),
     },
 )
 
