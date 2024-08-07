@@ -3,7 +3,7 @@ id: v4-browser-hts
 title: 'gnomAD v4 Browser Hail Tables'
 ---
 
-In addition to our [variants tables](https://gnomad.broadinstitute.org/downloads#v4-variants), we release two data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
+In addition to our [variants tables](/downloads#v4-variants), we release two data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
 
 ## gnomAD v4.1 exome/genome/joint variant table
 
@@ -25,21 +25,21 @@ The script for how this table is created can be found [here](https://github.com/
 
 Global fields:
 
-- `mane_transcripts_version`: MANE Select version used to annotate variants.
+- `mane_select_version`: MANE Select version used to annotate variants.
 
 Row fields:
 
 - `locus`: Variant locus. Contains contig and position information.
 - `alleles`: Variant alleles.
 - `exome`: Struct containing information about variant from exome data.
-  - `colocated_variants`: Struct containing arrays of colocated variants.
-  - `all`: An array containing colocated variants that are present in the entire exome dataset.
-  - `non_ukb`: An array containing colocated variants that are present in the non-UK Biobank (UKB) subset of the dataset.
+  - `colocated_variants`: Struct containing array of variants located at ths same Locus as this variant, e.g. for the variant `1-55051215-G-GA`, the variants `1-55051215-G-A` and `1-55051215-G-T` are colocated.
+    - `all`: An array containing colocated variants that are present in the entire exome dataset.
+    - `non_ukb`: An array containing colocated variants that are present in the non-UK Biobank (UKB) sbset of the dataset.
   - `subsets`: A set containing the subsets this variant is seen in.
-  - `flags`: A set containing the flags about the region this variant falls in.
+  - `flags`: A set containing the flags about the region this variant falls in. See `region_flags` description on the v4 Hail Tables [help page](v4-hts#region-flags).
   - `freq`: A struct containing variant frequency information for each subset.
   - `all`: Struct containing variant frequency information calculated across all samples.
-    - `ac`: The alternate allele count for this variant calculated across high-quality genotypes (genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes).
+    - `ac`: The alternate allele count for this variant calculated across high-quality genotypes (genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes). This is the allele count displayed in the gnomAD browser (not `ac_raw` below).
     - `ac_raw`: The alternate allele count for this variant calculated across unadjusted genotypes.
     - `an`: Total number of alleles for this locus.
     - `hemizygote_count`: Number of hemizygous alternate individuals.
@@ -52,16 +52,16 @@ Row fields:
       - `homozygote_count`: Number of homozygous alternate individuals in this genetic ancestry group.
     - `non_ukb`: Struct containing variant frequency information from the non-UKB subset. Includes same fields as above struct (`all`).
   - `faf95`: Struct containing information about the filtered allele frequency (FAF; 95% confidence interval [CI]).
-    - `grpmax`: Genetic ancestry group maximum (groupmax) FAF.
-    - `grpmax_gen_anc`: Genetic ancestry group associated with groupmax FAF.
+    - `grpmax`: Genetic ancestry group maximum (grpmax) FAF.
+    - `grpmax_gen_anc`: Genetic ancestry group associated with grpmax FAF.
   - `faf99`: Struct containing information about the FAF (99% CI). Contains same subfields as above (`faf95`).
   - `fafmax`: Struct containing information about the maximum FAF.
-    - `gnomad`: Struct containing information about the fafmax for all of gnomad for the joint exome and genome data.
+    - `gnomad`: Struct containing information about the fafmax for all of gnomad for the exome data.
       - `faf95_max`: Max FAF value for the (95% CI).
       - `faf95_max_gen_anc`: Genetic ancestry group associated with the grpmax FAF (95% CI).
-      - `faf99_max`: Max FAF(99% CI).f
+      - `faf99_max`: Max FAF(99% CI).
       - `faf99_max_gen_anc`: Genetic ancestry group associated with the max FAF (99% CI).
-    - `non_ukb`: Struct containing fafmax information for non-UKB subset.
+    - `non_ukb`: Struct containing fafmax information for non-UKB subset (exome data only).
   - `age_distribution`: Struct containing age distribution information for variant.
     - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
       - `bin_edges`: Array containing the edges of each bin of the histogram.
@@ -69,55 +69,48 @@ Row fields:
       - `n_smaller`: Number of individuals with lower age than the lowest bin.
       - `n_larger`: Number of individuals with a higher age than the highest bin.
     - `hom`: Struct containing age distribution information for individuals homozygous for this variant. Structured to allow easy histogram creation. Contains same fields as `het` above.
-  - `filters`: Set containing variant QC filters.
+  - `filters`: Set containing variant QC filters. See `filters` description on the v4 Hail Tables [help page](v4-hts#filters)
   - `quality_metrics`: Struct containing variant quality metric histograms information.
     - `allele_balance`: Struct containing variant allele balance histograms information.
-      - `alt_adj`: Struct containing variant allele balance information calculated across high-quality genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`). This data is displayed in the "Allele balance for heterozygotes" histogram in the browser's variant page.
-      - `alt_raw`: Struct containing variant allele balance information calculated across unadjusted genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
+      - `alt_adj`: Struct containing variant allele balance information calculated across high-quality genotypes. Contains same fields as other histogram structs. This data is displayed in the "Allele balance for heterozygotes" histogram in the browser's variant page.
+      - `alt_raw`: Struct containing variant allele balance information calculated across unadjusted genotypes. Contains same fields as other histogram structs.
     - `genotype_depth`: Struct containing information used to display genotype depth (DP) histograms.
-      - `all_adj`: Struct containing DP information calculated using high-quality genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `all_raw`: Struct containing DP information calculated across unadjusted genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `alt_adj`: Struct containing DP information calculated using high-quality genotypes (variant carriers only). Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `alt_raw`: Struct containing DP information calculated across unadjusted genotypes (variant carriers only). Structured to allow ease of creating histograms. Contains same fields as other histogram structs (e.g. `het`)
+      - `all_adj`: Struct containing DP information calculated using high-quality genotypes. Contains same fields as other histogram structs.
+      - `all_raw`: Struct containing DP information calculated across unadjusted genotypes. Contains same fields as other histogram structs.
+      - `alt_adj`: Struct containing DP information calculated using high-quality genotypes (variant carriers only). Contains same fields as other histogram structs.
+      - `alt_raw`: Struct containing DP information calculated across unadjusted genotypes (variant carriers only). Contains same fields as other histogram structs.
     - `genotype_quality`: Struct containing information used to display genotype quality (GQ) histograms.
-      - `all_adj`: Struct containing GQ information calculated using high-quality genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `all_raw`: Struct containing GQ information calculated across unadjusted genotypes. Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `alt_adj`: Struct containing GQ information calculated using high-quality genotypes (variant carriers only). Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
-      - `alt_raw`: Struct containing GQ information calculated across unadjusted genotypes (variant carriers only). Structured to allow easy histogram creation. Contains same fields as other histogram structs (e.g., `het`).
+      - `all_adj`: Struct containing GQ information calculated using high-quality genotypes. Contains same fields as other histogram structs.
+      - `all_raw`: Struct containing GQ information calculated across unadjusted genotypes. Contains same fields as other histogram structs.
+      - `alt_adj`: Struct containing GQ information calculated using high-quality genotypes (variant carriers only). Contains same fields as other histogram structs.
+      - `alt_raw`: Struct containing GQ information calculated across unadjusted genotypes (variant carriers only). Contains same fields as other histogram structs.
   - `site quality metrics`: Array containing site quality metric information.
     - `metric`: Metric name.
     - `value`: Metric value.
 - `genome`: Struct containing information about this variant from genome data. Contains all the same fields as the exome data, with the exception that the subsets are (`all` `hgdp`, `tgp`) instead of (`all`, `non_ukb`).
 - `rsids`: dbSNP reference SNP identification (rsID) numbers.
-- `in_silico_predictors`: Variant prediction annotations. Struct contains prediction scores from multiple in silico predictors for variants that are predicted to be missense, impacting protein function, evolutionarily conserved, or splice-altering. We chose scores for either MANE Select or canonical transcripts if a prediction score was available for multiple transcripts.
-  - `cadd`: [Score](https://academic.oup.com/nar/article/47/D1/D886/5146191) used to predict deleteriousness of SNVs and indels.
-  - `phred`: CADD Phred-like scaled C-scores ranging from 1 to 99 based on the rank of each variant relative to all possible 8.6 billion substitutions in the human reference genome. Larger values indicate increased predicted deleteriousness.
-  - `raw_score`: Unscaled CADD scores indicating whether a variant is likely to be "observed" (negative values) vs "simulated" (positive values). Larger values indicate increased predicted deleteriousness.
-  - `revel_max`: An ensemble [score](<https://www.cell.com/ajhg/fulltext/S0002-9297(16)30370-6>) for predicting the pathogenicity of missense variants (based on 13 other variant predictors). Score ranges from 0 to 1, and larger values are predicted to be more likely to be deleterious. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
-  - `spliceai_ds_max`: Maximum delta [score](https://linkinghub.elsevier./) across 4 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant was predicted to fall within multiple genes, score is across all relevant genes. Score ranges from 0 to 1. In the SpliceAI paper, a detailed characterization of the delta scores is provided for 0.2 (high recall), 0.5 (recommended), and 0.8 (high precision) cutoffs.
-  - `pangolin_largest_ds`: Largest delta [score](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02664-4) across 2 splicing consequences, which reflects the probability of the variant being splice-altering. If a variant is predicted to fall within multiple genes, score is across all relevant genes. Note that there is different behavior from spliceAI: splice gain is noted as the increase in splice usage (scores range from 0 to 1) and splice loss as the decrease in splice usage (scores range from 0 to -1). The Pangolin authors proposed a cutoff of >|0.2| for the predicted increase or decrease in splice site usage.
-  - `phylop`: Base-wise conservation [score](https://pubmed.ncbi.nlm.nih.gov/37104612/) across the 241 placental mammals in the Zoonomia project. Score ranges from -20 to 9.28, and reflects acceleration (faster evolution than expected under neutral drift, assigned negative scores) as well as conservation (slower than expected evolution, assigned positive scores).
-  - `sift_max`: [Score](https://www.nature.com/articles/nprot.2009.86) reflecting the scaled probability of the amino acid substitution being tolerated, ranging from 0 to 1. Scores below 0.05 are predicted to impact protein function. We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
-  - `polyphen_max`: [Score](https://www.nature.com/articles/nmeth0410-248) that predicts the possible impact of an amino acid substitution on the structure and function of a human protein, ranging from 0.0 (tolerated) to 1.0 (deleterious). We prioritize max scores for MANE Select transcripts where possible and otherwise report a score for the canonical transcript.
-- `variant_id`: gnomAD variant ID.- `faf95_joint`: A struct containing joint (exome + genome) FAF information (95% CI).
+- `in_silico_predictors`: Variant prediction annotations. Struct contains prediction scores from multiple in silico predictors. See `in_silico_predictors` description on the v4 Hail Tables [help page](v4-hts#in-silico-predictors)
+- `variant_id`: gnomAD variant ID.
+- `faf95_joint`: A struct containing joint (exome + genome) FAF information (95% CI).
   - `grpmax`: Groupmax FAF value for all genetic ancestry groups across exomes + genomes.
   - `grpmax_gen_anc`: Genetic ancestry group associated with the value `grpmax` above.
-- `faf99_joint`: A struct containing joint (exome + genome) FAF (99% CI). - `colocated_variants`: Array containing variants that are located at the same locus as this variant.
+- `faf99_joint`: A struct containing joint (exome + genome) FAF (99% CI).
+- `colocated_variants`: Array containing variants that are located at the same locus as this variant.
 - `coverage`: Struct containing coverage information for locus.
   - `exome`: Struct containing exome coverage information.
-  - `mean`: Mean depth of coverage at this locus.
-  - `median`: Median depth of coverage at this locus.
-  - `over_1`: Percentage of samples with a coverage greater than 1 at this locus.
-  - `over_5`: TPercentage of samples with a coverage greater than 5 at this locus
-  - `over_10`: Percentage of samples with a coverage greater than 10 at this locus
-  - `over_15`: Percentage of samples with a coverage greater than 15 at this locus.
-  - `over_20`: Percentage of samples with a coverage greater than 20 at this locus
-  - `over_25`: Percentage of samples with a coverage greater than 25 at this locus.
-  - `over_30`: Percentage of samples with a coverage greater than 30 at this locus.
-  - `over_50`: Percentage of samples with a coverage greater than 50 at this locus.
-  - `over_100`: Percentage of samples with a coverage greater than 100 at this locus.
+    - `mean`: Mean depth of coverage at this locus.
+    - `median`: Median depth of coverage at this locus.
+    - `over_1`: Percentage of samples with a coverage greater than 1 at this locus.
+    - `over_5`: Percentage of samples with a coverage greater than 5 at this locus
+    - `over_10`: Percentage of samples with a coverage greater than 10 at this locus
+    - `over_15`: Percentage of samples with a coverage greater than 15 at this locus.
+    - `over_20`: Percentage of samples with a coverage greater than 20 at this locus
+    - `over_25`: Percentage of samples with a coverage greater than 25 at this locus.
+    - `over_30`: Percentage of samples with a coverage greater than 30 at this locus.
+    - `over_50`: Percentage of samples with a coverage greater than 50 at this locus.
+    - `over_100`: Percentage of samples with a coverage greater than 100 at this locus.
   - `genome`: Struct containing genome coverage information. Contains the same fields as `exome` above.
-  - `transcript_consequences`: Array containing variant transcript consequence information.
+- `transcript_consequences`: Array containing variant transcript consequence information.
   - `biotype`: Transcript biotype.
   - `consequence_terms`: Array of predicted functional consequences.
   - `domains`: Sset containing protein domains affected by variant.
@@ -133,7 +126,7 @@ Row fields:
   - `transcript_version`: Transcript version.
   - `gene_version`: Gene version.
   - `is_mane_select`: Whether transcript is the MANE select transcript.
-  - `is_mane_select_version`: MANE Select version, has a value if this transcript is the MANE select transcript.
+  - `is_mane_select_version`: MANE Select version; has a value if this transcript is the MANE select transcript.
   - `refseq_id`: RefSeq ID associated with transcript.
   - `refseq_version`: RefSeq version.
 
@@ -142,13 +135,14 @@ Row fields:
 Row fields:
 
 - `interval`: Struct representing start and end positions of gene.
-- `gene_id`: Unique gene ID.
+- `gene_id`: Unique ensembl gene ID.
 - `gene_version`: Gene version.
 - `gencode_symbol`: GENCODE gene symbol.
 - `chrom`: Chromosome in which gene is located.
 - `strand`:Gene strand.
 - `start`: Gene genomic start position (position only).
-- `stop`: Gene genomic stop position (position only.- `xstart`: Gene genomic start position (format: chromosomeposition).Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `stop`: Gene genomic stop position (position only).
+- `xstart`: Gene genomic start position (format: chromosomeposition). xpos can be calculated with ((chrom \* 10<sup>9</sup>) + pos), note that chrX is encoded as 23, chrY as 24, and chrM as 25. e.g. `1-55051215` becomes `1055051215`, and `X:9786429` becomes `23009786429`
 - `xstop`: Gene genomic stop position (format: chromosomeposition).
 - `exons`: Array containing exon information for gene.
   - `feature_type`: Exon type (e.g., CDS).
@@ -177,7 +171,7 @@ Row fields:
   - `reference_genome`: Reference genome associated with this transcript.
   - `refseq_id`: Transcript RefSeq identifier.
   - `refseq_version`: RefSeq version.
-- `hgnc_id`: GeneHGNC identifier.
+- `hgnc_id`: HGNC gene identifier.
 - `symbol`: Gene symbol.
 - `name`: Gene name.
 - `previous_symbols`: Set containing previous gene symbols.
@@ -195,8 +189,8 @@ Row fields:
   - `ensembl_version`: Ensembl version.
   - `refseq_id`: Transcript RefSeq ID.
   - `refseq_version`: RefSeq version.
-- `preferred_transcript_id`: Transcript shown on the gene page by default. Field containsMANE Select transcript ID if it exists, otherwise contains Ensemblcanonical transcript ID.
-- `preferred_transcript_source`: Source of transcript ID used for `preferred_transcript_id` field; either "`mane_select`" or "`ensemble_canonical`".
+- `preferred_transcript_id`: Transcript shown on the gene page by default. Field contains MANE Select transcript ID if it exists, otherwise contains Ensembl canonical transcript ID.
+- `preferred_transcript_source`: Source of transcript ID used for `preferred_transcript_id` field; either "`mane_select`" or "`ensembl_canonical`".
 - `gnomad_constraint`: Struct containing gnomAD constraint information for gene. Struct is only present on the GRCh37 Hail Table.
   - `gene`: Gene name.
   - `transcript`: Transcript ID.
@@ -222,7 +216,7 @@ Row fields:
   - `syn_z`: Z-score for rare synonymous variants.
   - `pli`: Probability of being loss-of-function intolerant (pLI) score.
   - `flags`: Set containing constraint flags for transcript.
-- `heterozygous_variant_cooccurrence_counts`: Array containing information about heterozygous variant co-occurrence counts.
+- `heterozygous_variant_cooccurrence_counts`: Array containing information about heterozygous variant co-occurrence counts. Struct is only present on GRCh37 Hail Table.
   - `csq`: Variant consequence.
   - `af_cutoff`: Allele frequency cutoff.
   - `data`: Struct containing variant co-occurrence data.
@@ -230,7 +224,7 @@ Row fields:
   - `in_trans`: Count of variants in trans.
   - `unphased`: Count of unphased variants.
   - `two_het_total`: Total count of two heterozygous variants.
-- `homozygous_variant_cooccurrence_counts`: Array containing information about homozygous variant co-occurrence counts.
+- `homozygous_variant_cooccurrence_counts`: Array containing information about homozygous variant co-occurrence counts. Struct is only present on GRCh37 Hail Table.
   - `csq`: Variant consequence.
   - `af_cutoff`: Allele frequency cutoff.
   - `data`: Struct containing variant co-occurrence data.
