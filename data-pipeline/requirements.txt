@@ -5,6 +5,6 @@ loguru
 attrs
 cattrs
 pytest
-ruff
-black
+ruff==0.5.5
+black==24.3.0   # This should be kept in sync with the version in .pre-commit-config.yml
 pyright
