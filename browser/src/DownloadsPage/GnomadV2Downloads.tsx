@@ -15,6 +15,8 @@ import {
   StyledParagraph,
 } from './downloadsPageStyles'
 
+import Link from '../Link'
+
 const exomeChromosomeVcfs = [
   { chrom: '1', size: '5.77 GiB', md5: '9817acdf1d9600efb3355e4cb4b7ee1f' },
   { chrom: '2', size: '4.2 GiB', md5: 'c2822d7a914d06ede28d1078970336ac' },
@@ -282,6 +284,30 @@ const GnomadV2Downloads = () => {
             </FileList>
           </Column>
         </ColumnsWrapper>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-browser-tables">Browser Tables</SectionTitle>
+
+        <p>
+          For more information about these files, see our{' '}
+          <Link to="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables">
+            changelog entry
+          </Link>{' '}
+          on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
+        </p>
+
+        <h3>Browser gene models</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser GRCh37 gene models Hail Table"
+              path="/resources/grch37/genes/gnomad.genes.GRCh37.GENCODEv19.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
       </DownloadsSection>
 
       <DownloadsSection>
