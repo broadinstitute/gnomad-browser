@@ -266,6 +266,42 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-browser-tables">Browser Tables</SectionTitle>
+
+        <p>
+          For more information about these files, see our{' '}
+          <Link to="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables">
+            changelog entry
+          </Link>{' '}
+          on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
+        </p>
+
+        <h3>Browser variants</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser variants Hail Table"
+              path="/release/4.1/ht/browser/gnomad.browser.v4.1.sites.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+
+        <h3>Browser gene models</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser GRCh38 gene models Hail Table"
+              path="/resources/grch38/genes/gnomad.genes.GRCh38.GENCODEv39.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-coverage">Coverage</SectionTitle>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
