@@ -7322,6 +7322,122 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c8 c9"
+            href="#v4-browser-tables"
+            id="v4-browser-tables"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Browser Tables
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see our
+         
+        <a
+          className="-Link c13"
+          href="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables"
+          onClick={[Function]}
+        >
+          changelog entry
+        </a>
+         
+        on the browser tables, and the 
+        <a
+          className="-Link c13"
+          href="/help/v4-browser-hts"
+          onClick={[Function]}
+        >
+          help text
+        </a>
+        .
+      </p>
+      <h3>
+        Browser variants
+      </h3>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Browser variants Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Browser variants Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Browser variants Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+      </ul>
+      <h3>
+        Browser gene models
+      </h3>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Browser GRCh38 gene models Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Browser GRCh38 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Browser GRCh38 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
             href="#v4-coverage"
             id="v4-coverage"
           >
@@ -24425,6 +24541,88 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           </ul>
         </div>
       </div>
+    </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
+            href="#v2-browser-tables"
+            id="v2-browser-tables"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Browser Tables
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see our
+         
+        <a
+          className="-Link c13"
+          href="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables"
+          onClick={[Function]}
+        >
+          changelog entry
+        </a>
+         
+        on the browser tables, and the 
+        <a
+          className="-Link c13"
+          href="/help/v4-browser-hts"
+          onClick={[Function]}
+        >
+          help text
+        </a>
+        .
+      </p>
+      <h3>
+        Browser gene models
+      </h3>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Browser GRCh37 gene models Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Browser GRCh37 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Browser GRCh37 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+      </ul>
     </section>
     <section
       className="c15"
