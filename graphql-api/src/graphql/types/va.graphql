@@ -96,7 +96,6 @@ type VAQualityMeasures {
   lowComplexityRegion: Boolean
   lowConfidenceLossOfFunctionError: Boolean
   lossOfFunctionWarning: Boolean
-  noncodingTranscriptError: Boolean
   heterozygousSkewedAlleleCount: Int
 }
 
