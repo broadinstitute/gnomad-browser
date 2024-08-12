@@ -1,3 +1,0 @@
-*
-!deploy/dockerfiles/blog/auth.py
-!deploy/dockerfiles/blog/auth-requirements.txt
