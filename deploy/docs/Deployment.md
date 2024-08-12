@@ -367,57 +367,6 @@ Update Reads Deployment
   ./deployctl reads-deployments delete <old-deployment-name>
   ```
 
-## Create and Update Blog Deployment
-
-Create Blog Deployment
-
-- Create secrets.
-
-  Fill in values from GitHub application.
-
-  ```
-  cat <<EOF > oauth-secrets.env
-  client-id=
-  client-secret=
-  EOF
-  ```
-
-  ```
-  kubectl create secret generic blog-oauth-secrets --from-env-file oauth-secrets.env
-  ```
-
-- Build Docker images and push to GCR.
-
-  ```
-  ./deployctl blog-images build --push
-  ```
-
-- Create deployment manifests.
-
-  ```
-  ./deployctl blog-deployment update
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl blog-deployment apply
-  ```
-
-Update Blog Deployment
-
-- Update deployment manifests.
-
-  ```
-  ./deployctl blog-deployment update
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl blog-deployment apply
-  ```
-
 ## Create ingress
 
 - Create NodePort services for browser and reads, Ingress, and FrontendConfig.
