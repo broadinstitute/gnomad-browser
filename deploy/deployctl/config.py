@@ -96,13 +96,5 @@ class Configuration:
     def reads_api_image_repository(self):
         return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-reads-api"
 
-    @property
-    def blog_image_repository(self):
-        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-blog"
-
-    @property
-    def blog_auth_image_repository(self):
-        return f"us-docker.pkg.dev/{self.project}/gnomad/gnomad-blog-auth"
-
 
 config = Configuration(_CONFIG_PATH)  # pylint: disable=invalid-name
