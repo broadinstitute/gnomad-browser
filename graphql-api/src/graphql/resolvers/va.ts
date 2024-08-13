@@ -199,7 +199,7 @@ type Subset = {
   homozygote_count: number
   grpMax?: GrpMaxFAF95
   jointGrpMax?: GrpMaxFAF95
-  meanDepth: number
+  qualityMeasures: QualityMeasures
 }
 
 const GNOMAD_V4_DERIVATION = {
@@ -281,18 +281,6 @@ const resolveVACohortAlleleFrequency = (
     hemizygotes: subset.hemizygote_count !== undefined ? subset.hemizygote_count : null,
   }
 
-  // const coverage = obj.coverage.exome && obj.coverage.exome
-  const qualityMeasures = {
-    meanDepth: subset.meanDepth,
-    fractionCoverage20x: null, // TK
-    qcFilters: null, // TK
-    monoallelic: null, // TK
-    lowComplexityRegion: null, // TK
-    lowConfidenceLossOfFunctionError: null, // TK
-    lossOfFunctionWarning: null, // TK
-    heterozygousSkewedAlleleCount: null, // TK
-  }
-
   return {
     id,
     label,
@@ -304,7 +292,7 @@ const resolveVACohortAlleleFrequency = (
     alleleFrequency: subset.ac / subset.an,
     cohort,
     ancillaryResults,
-    qualityMeasures,
+    qualityMeasures: subset.qualityMeasures,
   }
 }
 
@@ -410,6 +398,17 @@ const resolveVACohortAlleleFrequencies = async (
   }
   const coverage = obj.coverage[frequencyField]
 
+  const qualityMeasures = {
+    meanDepth: coverage && coverage.mean ? coverage.mean : null,
+    fractionCoverage20x: coverage && coverage.over_20 ? coverage.over_20 : null,
+    monoallelic: null,
+    qcFilters: null,
+    lowComplexityRegion: null,
+    lowConfidenceLossOfFunctionError: null,
+    lossOfFunctionWarning: null,
+    heterozygousSkewedAlleleCount: null,
+  }
+
   const fullSet: Subset = {
     ac: frequencies.ac,
     an: frequencies.an,
@@ -428,7 +427,7 @@ const resolveVACohortAlleleFrequencies = async (
             confidenceInterval: 0.95,
           }
         : undefined,
-    meanDepth: coverage && coverage.mean ? coverage.mean : null,
+    qualityMeasures,
   }
   const subsets = [fullSet, ...(frequencies.ancestry_groups as Subset[])]
   const cohortsWithoutSubcohorts = subsets.map((subset) =>

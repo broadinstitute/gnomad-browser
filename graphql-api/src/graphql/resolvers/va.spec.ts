@@ -76,7 +76,7 @@ describe('resolveVACohortAlleleFrequency', () => {
     exome: exomeEsDocument,
     genome: genomeEsDocument,
     joint: { fafmax: { faf95_max: 0.234, faf95_max_gen_anc: 'amr' } },
-    coverage: { exome: { mean: 0.345 }, genome: { mean: 0.456 } },
+    coverage: { exome: { mean: 0.345, over_20: 0.456 }, genome: { mean: 0.111, over_20: 0.222 } },
   }
 
   test('parses a single CohortAlleleFrequency exome correctly', async () => {
@@ -106,7 +106,7 @@ describe('resolveVACohortAlleleFrequency', () => {
         subcohortFrequency: [],
         qualityMeasures: {
           meanDepth: 0.345,
-          fractionCoverage20x: null,
+          fractionCoverage20x: 0.456,
           monoallelic: null,
           qcFilters: null,
           lowComplexityRegion: null,
@@ -146,8 +146,8 @@ describe('resolveVACohortAlleleFrequency', () => {
         },
         subcohortFrequency: [],
         qualityMeasures: {
-          meanDepth: 0.456,
-          fractionCoverage20x: null,
+          meanDepth: 0.111,
+          fractionCoverage20x: 0.222,
           monoallelic: null,
           qcFilters: null,
           lowComplexityRegion: null,
