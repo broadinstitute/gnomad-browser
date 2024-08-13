@@ -59,6 +59,7 @@ describe('resolveVACohortAlleleFrequency', () => {
     homozygote_count: 3,
     faf95: { popmax: 0.123, popmax_population: 'afr' },
     ancestry_groups: [],
+    filters: ['AC0'],
   }
 
   const genomeEsDocument = {
@@ -107,8 +108,8 @@ describe('resolveVACohortAlleleFrequency', () => {
         qualityMeasures: {
           meanDepth: 0.345,
           fractionCoverage20x: 0.456,
+          qcFilters: ['AC0'],
           monoallelic: null,
-          qcFilters: null,
           lowComplexityRegion: null,
           lowConfidenceLossOfFunctionError: null,
           lossOfFunctionWarning: null,

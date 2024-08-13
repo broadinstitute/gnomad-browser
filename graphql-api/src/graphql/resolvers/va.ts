@@ -401,8 +401,8 @@ const resolveVACohortAlleleFrequencies = async (
   const qualityMeasures = {
     meanDepth: coverage && coverage.mean ? coverage.mean : null,
     fractionCoverage20x: coverage && coverage.over_20 ? coverage.over_20 : null,
+    qcFilters: frequencies.filters,
     monoallelic: null,
-    qcFilters: null,
     lowComplexityRegion: null,
     lowConfidenceLossOfFunctionError: null,
     lossOfFunctionWarning: null,
