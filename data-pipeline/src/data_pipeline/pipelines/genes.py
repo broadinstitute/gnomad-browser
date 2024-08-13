@@ -201,32 +201,33 @@ pipeline.add_task(
 # GTEx and pext - GRCh38
 # ---
 
-pipeline.add_download_task(
-    "download_gtex_v10_tpm_data",
-    # TODO: this is v8, pext was performed on the methods team getting early access to v10
-    "https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz"
-    f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz",
-)
+# TODO: get access to the input data for these, for now just make demo with pext
+# pipeline.add_download_task(
+#     "download_gtex_v10_tpm_data",
+#     # TODO: this is v8, pext was performed on the methods team getting early access to v10
+#     "https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz"
+#     f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz",
+# )
+#
+# pipeline.add_download_task(
+#     "download_gtex_v10_sample_attributes",
+#     # TODO: this is v8, pext was performed on the methods team getting early access to v10
+#     "https://storage.googleapis.com/adult-gtex/annotations/v8/metadata-files/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
+#     f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
+# )
+#
+# pipeline.add_task(
+#     "prepare_gtex_v10_expression_data",
+#     prepare_gtex_expression_data,
+#     "/gtex/gtex_v10_tissue_expression.ht",
+#     {
+#         "transcript_tpms_path": pipeline.get_task("download_gtex_v10_tpm_data"),
+#         "sample_annotations_path": pipeline.get_task("download_gtex_v10_sample_attributes"),
+#     },
+#     {"tmp_path": "/tmp"},
+# )
 
-pipeline.add_download_task(
-    "download_gtex_v10_sample_attributes",
-    # TODO: this is v8, pext was performed on the methods team getting early access to v10
-    "https://storage.googleapis.com/adult-gtex/annotations/v8/metadata-files/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
-    f"/{external_sources_subdir}/gtex/v8/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
-)
-
-pipeline.add_task(
-    "prepare_gtex_v10_expression_data",
-    prepare_gtex_expression_data,
-    "/gtex/gtex_v10_tissue_expression.ht",
-    {
-        "transcript_tpms_path": pipeline.get_task("download_gtex_v10_tpm_data"),
-        "sample_annotations_path": pipeline.get_task("download_gtex_v10_sample_attributes"),
-    },
-    {"tmp_path": "/tmp"},
-)
-
-# TODO: not needed -- methods team now owns this portion, we just ingest the output table
+# FIXME: not needed -- methods team now owns this portion, we just ingest the output table
 # pipeline.add_task(
 #     "prepare_pext_grch38",
 #     prepare_pext_data,
@@ -389,6 +390,19 @@ pipeline.add_task(
         "pext": "gs://gnomad/v4.1/pext/gnomad.v4.1.pext.regionlevel.for_browser.ht",
     },
 )
+
+# TODO: add this step later once we have gtex
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_N",
+#     annotate_gene_transcripts_with_tissue_expression,
+#     f"/{genes_subdir}/genes_grch38_annotated_N.ht",
+#     {
+#         "table_path": pipeline.get_task("annotate_grch37_genes_step_N"),
+#         # FIXME: use correct new path
+#         "gtex_tissue_expression_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/",
+#     },
+# )
+
 
 pipeline.add_task(
     "annotate_grch38_genes_step_2",
