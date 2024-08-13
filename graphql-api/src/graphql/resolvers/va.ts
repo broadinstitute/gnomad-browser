@@ -402,10 +402,10 @@ const resolveVACohortAlleleFrequencies = async (
     meanDepth: coverage && coverage.mean ? coverage.mean : null,
     fractionCoverage20x: coverage && coverage.over_20 ? coverage.over_20 : null,
     qcFilters: frequencies.filters,
-    monoallelic: null,
-    lowComplexityRegion: null,
-    lowConfidenceLossOfFunctionError: null,
-    lossOfFunctionWarning: null,
+    monoallelic: frequencies.flags.includes('monoallelic'),
+    lowComplexityRegion: obj.flags.includes('lcr'),
+    lowConfidenceLossOfFunctionError: obj.flags.includes('lc_lof'),
+    lossOfFunctionWarning: obj.flags.includes('lof_flag'),
     heterozygousSkewedAlleleCount: null,
   }
 

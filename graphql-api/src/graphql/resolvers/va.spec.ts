@@ -60,6 +60,7 @@ describe('resolveVACohortAlleleFrequency', () => {
     faf95: { popmax: 0.123, popmax_population: 'afr' },
     ancestry_groups: [],
     filters: ['AC0'],
+    flags: ['monoallelic'],
   }
 
   const genomeEsDocument = {
@@ -68,7 +69,9 @@ describe('resolveVACohortAlleleFrequency', () => {
     hemizygote_count: 4,
     homozygote_count: 5,
     faf95: { popmax: 0.234, popmax_population: 'eas' },
+    filters: ['AC0'],
     ancestry_groups: [],
+    flags: ['monoallelic'],
   }
 
   const variantESDocument = {
@@ -78,6 +81,7 @@ describe('resolveVACohortAlleleFrequency', () => {
     genome: genomeEsDocument,
     joint: { fafmax: { faf95_max: 0.234, faf95_max_gen_anc: 'amr' } },
     coverage: { exome: { mean: 0.345, over_20: 0.456 }, genome: { mean: 0.111, over_20: 0.222 } },
+    flags: ['lcr', 'lc_lof', 'lof_flag'],
   }
 
   test('parses a single CohortAlleleFrequency exome correctly', async () => {
@@ -109,10 +113,10 @@ describe('resolveVACohortAlleleFrequency', () => {
           meanDepth: 0.345,
           fractionCoverage20x: 0.456,
           qcFilters: ['AC0'],
-          monoallelic: null,
-          lowComplexityRegion: null,
-          lowConfidenceLossOfFunctionError: null,
-          lossOfFunctionWarning: null,
+          monoallelic: true,
+          lowComplexityRegion: true,
+          lowConfidenceLossOfFunctionError: true,
+          lossOfFunctionWarning: true,
           heterozygousSkewedAlleleCount: null,
         },
       },
@@ -149,11 +153,11 @@ describe('resolveVACohortAlleleFrequency', () => {
         qualityMeasures: {
           meanDepth: 0.111,
           fractionCoverage20x: 0.222,
-          monoallelic: null,
-          qcFilters: null,
-          lowComplexityRegion: null,
-          lowConfidenceLossOfFunctionError: null,
-          lossOfFunctionWarning: null,
+          monoallelic: true,
+          qcFilters: ['AC0'],
+          lowComplexityRegion: true,
+          lowConfidenceLossOfFunctionError: true,
+          lossOfFunctionWarning: true,
           heterozygousSkewedAlleleCount: null,
         },
       },
