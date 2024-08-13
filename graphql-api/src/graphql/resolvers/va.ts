@@ -93,6 +93,17 @@ type AncillaryResults = {
   hemizygotes: number | null
 }
 
+type QualityMeasures = {
+  meanDepth: number | null
+  fractionCoverage20x: number | null
+  qcFilters: string[] | null
+  monoallelic: boolean | null
+  lowComplexityRegion: boolean | null
+  lowConfidenceLossOfFunctionError: boolean | null
+  lossOfFunctionWarning: boolean | null
+  heterozygousSkewedAlleleCount: number | null
+}
+
 export type CohortAlleleFrequency = {
   id: string
   type: string
@@ -104,6 +115,7 @@ export type CohortAlleleFrequency = {
   alleleFrequency: number
   cohort: Cohort
   ancillaryResults: AncillaryResults | null
+  qualityMeasures: QualityMeasures | null
   subcohortFrequency: CohortAlleleFrequency[]
 }
 
@@ -187,6 +199,7 @@ type Subset = {
   homozygote_count: number
   grpMax?: GrpMaxFAF95
   jointGrpMax?: GrpMaxFAF95
+  meanDepth: number
 }
 
 const GNOMAD_V4_DERIVATION = {
@@ -268,6 +281,18 @@ const resolveVACohortAlleleFrequency = (
     hemizygotes: subset.hemizygote_count !== undefined ? subset.hemizygote_count : null,
   }
 
+  // const coverage = obj.coverage.exome && obj.coverage.exome
+  const qualityMeasures = {
+    meanDepth: subset.meanDepth,
+    fractionCoverage20x: null, // TK
+    qcFilters: null, // TK
+    monoallelic: null, // TK
+    lowComplexityRegion: null, // TK
+    lowConfidenceLossOfFunctionError: null, // TK
+    lossOfFunctionWarning: null, // TK
+    heterozygousSkewedAlleleCount: null, // TK
+  }
+
   return {
     id,
     label,
@@ -279,6 +304,7 @@ const resolveVACohortAlleleFrequency = (
     alleleFrequency: subset.ac / subset.an,
     cohort,
     ancillaryResults,
+    qualityMeasures,
   }
 }
 
@@ -382,6 +408,7 @@ const resolveVACohortAlleleFrequencies = async (
   if (!frequencies) {
     return null
   }
+  const coverage = obj.coverage[frequencyField]
 
   const fullSet: Subset = {
     ac: frequencies.ac,
@@ -401,6 +428,7 @@ const resolveVACohortAlleleFrequencies = async (
             confidenceInterval: 0.95,
           }
         : undefined,
+    meanDepth: coverage && coverage.mean ? coverage.mean : null,
   }
   const subsets = [fullSet, ...(frequencies.ancestry_groups as Subset[])]
   const cohortsWithoutSubcohorts = subsets.map((subset) =>
