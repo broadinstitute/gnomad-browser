@@ -381,6 +381,25 @@ const addSubcohorts = (
   return Object.values(subcohortMap)
 }
 
+type ESFrequencies = {
+  quality_metrics: {
+    allele_balance: {
+      alt?: {
+        bin_freq: number[]
+      }
+    }
+  }
+}
+
+const calculateHeterozygousSkewedAlleleCount = (frequencies: ESFrequencies): number | null => {
+  const { alt } = frequencies.quality_metrics.allele_balance
+  if (!alt) {
+    return null
+  }
+
+  return alt.bin_freq[18] + alt.bin_freq[19]
+}
+
 const resolveVACohortAlleleFrequencies = async (
   obj: any,
   args: any,
@@ -406,7 +425,7 @@ const resolveVACohortAlleleFrequencies = async (
     lowComplexityRegion: obj.flags.includes('lcr'),
     lowConfidenceLossOfFunctionError: obj.flags.includes('lc_lof'),
     lossOfFunctionWarning: obj.flags.includes('lof_flag'),
-    heterozygousSkewedAlleleCount: null,
+    heterozygousSkewedAlleleCount: calculateHeterozygousSkewedAlleleCount(frequencies),
   }
 
   const fullSet: Subset = {

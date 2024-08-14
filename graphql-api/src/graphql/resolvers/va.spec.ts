@@ -61,6 +61,11 @@ describe('resolveVACohortAlleleFrequency', () => {
     ancestry_groups: [],
     filters: ['AC0'],
     flags: ['monoallelic'],
+    quality_metrics: {
+      allele_balance: {
+        alt: { bin_freq: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
+      },
+    },
   }
 
   const genomeEsDocument = {
@@ -72,6 +77,16 @@ describe('resolveVACohortAlleleFrequency', () => {
     filters: ['AC0'],
     ancestry_groups: [],
     flags: ['monoallelic'],
+    quality_metrics: {
+      allele_balance: {
+        alt: {
+          bin_freq: [
+            100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116,
+            117, 118, 119,
+          ],
+        },
+      },
+    },
   }
 
   const variantESDocument = {
@@ -117,7 +132,7 @@ describe('resolveVACohortAlleleFrequency', () => {
           lowComplexityRegion: true,
           lowConfidenceLossOfFunctionError: true,
           lossOfFunctionWarning: true,
-          heterozygousSkewedAlleleCount: null,
+          heterozygousSkewedAlleleCount: 37,
         },
       },
     ]
@@ -158,7 +173,7 @@ describe('resolveVACohortAlleleFrequency', () => {
           lowComplexityRegion: true,
           lowConfidenceLossOfFunctionError: true,
           lossOfFunctionWarning: true,
-          heterozygousSkewedAlleleCount: null,
+          heterozygousSkewedAlleleCount: 237,
         },
       },
     ]
