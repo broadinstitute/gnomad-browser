@@ -128,6 +128,11 @@
       "headshotSource": "blank_profile.jpg"
     },
     {
+      "name": "Josh Nadeau",
+      "bio": "(he/him) is a senior software engineer with a focus on data engineering. He has worked at tech companies of various sizes and stages on data platform and infrastructure teams.",
+      "headshotSource": "joshua_nadeau.jpg"
+    },
+    {
       "name": "Riley Grant",
       "bio": "is an Associate Software Engineer at the Broad Institute, where he works on the gnomAD Browser. He's interested in encouraging collaboration through open source software and open access datasets.",
       "headshotSource": "riley_grant.jpg"
@@ -181,11 +186,6 @@
       "name": "Wenhan Lu, MS,",
       "bio": "is a Computational Associate at the Broad Institute. She works on developing methods and pipelines to process large-scale sequencing callsets, including gnomAD and CCDG. Her work also focuses on developing statistical methods to help interpret the mechanisms of rare variants.",
       "headshotSource": "wenhan_lu.jpg"
-    },
-    {
-      "name": "Tim Poterba, BS,",
-      "bio": "is a Principal Software Engineer on the Hail Team at the Broad Institute. He works on distributed data processing systems necessary to create, store, and productively analyze data resources as large as gnomAD.",
-      "headshotSource": "tim_poterba.jpg"
     },
     {
       "name": "Chris Vittal",
