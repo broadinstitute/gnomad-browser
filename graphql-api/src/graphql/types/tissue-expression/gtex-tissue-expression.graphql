@@ -21,7 +21,8 @@ type GtexTissueExpression {
   brain_substantia_nigra: Float!
   breast_mammary_tissue: Float!
   cells_ebv_transformed_lymphocytes: Float!
-  cells_transformed_fibroblasts: Float!
+  cells_transformed_fibroblasts: Float
+  cells_cultured_fibroblasts: Float
   cervix_ectocervix: Float!
   cervix_endocervix: Float!
   colon_sigmoid: Float!
