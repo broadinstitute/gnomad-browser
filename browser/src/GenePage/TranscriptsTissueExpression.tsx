@@ -58,7 +58,8 @@ export type GtexTissueExpression = {
   brain_substantia_nigra: number
   breast_mammary_tissue: number
   cells_ebv_transformed_lymphocytes: number
-  cells_transformed_fibroblasts: number
+  cells_transformed_fibroblasts?: number
+  cells_cultured_fibroblasts?: number
   cervix_ectocervix: number
   cervix_endocervix: number
   colon_sigmoid: number

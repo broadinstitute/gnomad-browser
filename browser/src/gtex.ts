@@ -22,6 +22,7 @@ export const GTEX_TISSUE_NAMES = {
   breast_mammary_tissue: 'Breast - Mammary Tissue',
   cells_ebv_transformed_lymphocytes: 'Cells - EBV-transformed lymphocytes',
   cells_transformed_fibroblasts: 'Cells - Transformed fibroblasts',
+  cells_cultured_fibroblasts: 'Cells - Cultured fibroblasts',
   cervix_ectocervix: 'Cervix - Ectocervix',
   cervix_endocervix: 'Cervix - Endocervix',
   colon_sigmoid: 'Colon - Sigmoid',

@@ -121,6 +121,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         breast_mammary_tissue
         cells_ebv_transformed_lymphocytes
         cells_transformed_fibroblasts
+        cells_cultured_fibroblasts
         cervix_ectocervix
         cervix_endocervix
         colon_sigmoid
@@ -182,6 +183,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
           breast_mammary_tissue
           cells_ebv_transformed_lymphocytes
           cells_transformed_fibroblasts
+          cells_cultured_fibroblasts
           cervix_ectocervix
           cervix_endocervix
           colon_sigmoid
