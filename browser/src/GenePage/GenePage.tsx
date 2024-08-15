@@ -50,7 +50,7 @@ import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
 import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
-import TissueExpressionTrack from './TissueExpressionTrack'
+import TissueExpressionTrack, { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
 
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
@@ -71,6 +71,7 @@ import {
   LegendSwatch,
 } from '../ChartStyles'
 import { logButtonClick } from '../analytics'
+import { GtexTissueExpression } from './TranscriptsTissueExpression'
 
 export type Strand = '+' | '-'
 
@@ -88,6 +89,30 @@ export type GeneMetadata = {
   flags: string[]
 }
 
+export type GeneTranscript = {
+  transcript_id: string
+  transcript_version: string
+  exons: {
+    feature_type: string
+    start: number
+    stop: number
+  }[]
+  gtex_tissue_expression: GtexTissueExpression | null
+}
+
+export type Pext = {
+  regions: {
+    start: number
+    stop: number
+    mean: number
+    tissues: {
+      tissue: string
+      value: number
+    }[]
+  }[]
+  flags: string[]
+}
+
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
   name?: string
@@ -100,29 +125,11 @@ export type Gene = GeneMetadata & {
     start: number
     stop: number
   }[]
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
-    }[]
-  }[]
+  transcripts: GeneTranscript[]
   flags: string[]
   gnomad_constraint?: GnomadConstraint
   exac_constraint?: ExacConstraint
-  pext?: {
-    regions: {
-      start: number
-      stop: number
-      mean: number
-      tissues: {
-        [key: string]: number
-      }
-    }[]
-    flags: string[]
-  }
+  pext?: Pext
   short_tandem_repeats?: {
     id: string
   }[]
@@ -517,6 +524,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <TrackWrapper>
             <GeneTranscriptsTrack
               datasetId={datasetId}
+              isTissueExpressionAvailable={!!gene.pext}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
@@ -531,7 +539,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             exons={cdsCompositeExons}
             expressionRegions={gene.pext.regions}
             flags={gene.pext.flags}
-            transcripts={gene.transcripts}
+            transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}
           />
@@ -563,7 +571,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <VariantsInGene
             datasetId={datasetId}
             gene={gene}
-            // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; gene: { gene_id: string... Remove this comment to see the full error message
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
             zoomRegion={zoomRegion}
