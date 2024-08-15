@@ -1048,6 +1048,37 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c8"
             >
               <img
+                alt="Headshot of Josh Nadeau"
+                className="c9"
+              />
+            </div>
+            <div
+              className="c10"
+            >
+              <span
+                className="c11"
+              >
+                Josh Nadeau
+              </span>
+              <span
+                className="c12"
+              >
+                 
+                (he/him) is a senior software engineer with a focus on data engineering. He has worked at tech companies of various sizes and stages on data platform and infrastructure teams.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c6"
+        >
+          <div
+            className="c7"
+          >
+            <div
+              className="c8"
+            >
+              <img
                 alt="Headshot of Riley Grant"
                 className="c9"
               />
@@ -1390,37 +1421,6 @@ exports[`Team Page has no unexpected changes 1`] = `
               >
                  
                 is a Computational Associate at the Broad Institute. She works on developing methods and pipelines to process large-scale sequencing callsets, including gnomAD and CCDG. Her work also focuses on developing statistical methods to help interpret the mechanisms of rare variants.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c6"
-        >
-          <div
-            className="c7"
-          >
-            <div
-              className="c8"
-            >
-              <img
-                alt="Headshot of Tim Poterba, BS,"
-                className="c9"
-              />
-            </div>
-            <div
-              className="c10"
-            >
-              <span
-                className="c11"
-              >
-                Tim Poterba, BS,
-              </span>
-              <span
-                className="c12"
-              >
-                 
-                is a Principal Software Engineer on the Hail Team at the Broad Institute. He works on distributed data processing systems necessary to create, store, and productively analyze data resources as large as gnomAD.
               </span>
             </div>
           </div>
@@ -1812,6 +1812,24 @@ exports[`Team Page has no unexpected changes 1`] = `
                 }
               }
             />
+            <br />
+            <h3
+              id="tandem-repeats-contributors"
+            >
+              Tandem Repeats
+            </h3>
+            <div
+              aria-labelledby="tandem-repeats-contributors"
+              className="c16"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "- **Ben Weisburd**
+- Nehir Edibe Kurtas
+- Grace VanNoy
+",
+                }
+              }
+            />
           </div>
         </div>
       </div>
@@ -1849,6 +1867,7 @@ exports[`Team Page has no unexpected changes 1`] = `
 - Monkol Lek (production and analysis)
 - Eric Minikel (analysis)
 - William Phu (production and analysis)
+- Tim Poterba (production)
 - Dan Rhodes (production and analysis)
 - Nareh Sahakian (data generation)
 - Cotton Seed (production/Hail)

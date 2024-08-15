@@ -11,6 +11,7 @@
 - Monkol Lek (production and analysis)
 - Eric Minikel (analysis)
 - William Phu (production and analysis)
+- Tim Poterba (production)
 - Dan Rhodes (production and analysis)
 - Nareh Sahakian (data generation)
 - Cotton Seed (production/Hail)
