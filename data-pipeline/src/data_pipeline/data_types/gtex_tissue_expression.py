@@ -7,15 +7,20 @@ def format_tissue_name(tissue_name):
     return re.sub(r"[-\(\)_ ]+", "_", tissue_name).rstrip("_").lower()
 
 
-def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, tmp_path):
-    # Recompress tpms file with block gzip so that import_matrix_table will read the file
-    ds = hl.import_table(transcript_tpms_path, force=True)
-    tmp_transcript_tpms_path = tmp_path + "/" + transcript_tpms_path.split("/")[-1].replace(".gz", ".bgz")
-    ds.export(tmp_transcript_tpms_path)
+def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, tmp_path, recompress=True):
+
+    bgz_compressed_transcript_tpms_path = transcript_tpms_path
+
+    if recompress:
+        # Recompress tpms file with block gzip so that import_matrix_table will read the file
+        ds = hl.import_table(transcript_tpms_path, force=True)
+        tmp_transcript_tpms_path = tmp_path + "/" + transcript_tpms_path.split("/")[-1].replace(".gz", ".bgz")
+        ds.export(tmp_transcript_tpms_path)
+        bgz_compressed_transcript_tpms_path = tmp_transcript_tpms_path
 
     # Import data
     ds = hl.import_matrix_table(
-        tmp_transcript_tpms_path,
+        bgz_compressed_transcript_tpms_path,
         row_fields={"transcript_id": hl.tstr, "gene_id": hl.tstr},
         entry_type=hl.tfloat,
     )
@@ -27,9 +32,9 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, 
     # Separate version numbers from transcript and gene IDs
     ds = ds.annotate_rows(
         transcript_id=ds.transcript_id.split(r"\.")[0],
-        transcript_version=hl.int(ds.transcript_id.split(r"\.")[1]),
+        transcript_version=ds.transcript_id.split(r"\.")[1],
         gene_id=ds.gene_id.split(r"\.")[0],
-        gene_version=hl.int(ds.gene_id.split(r"\.")[1]),
+        gene_version=ds.gene_id.split(r"\.")[1],
     )
 
     # Annotate columns with the tissue the sample came from
