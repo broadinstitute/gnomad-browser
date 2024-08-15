@@ -2,7 +2,7 @@ type TranscriptGene {
   reference_genome: ReferenceGenomeId!
   gene_id: String!
   gene_version: String!
-  symbol: String !
+  symbol: String!
   hgnc_id: String
   ncbi_id: String
   omim_id: String
@@ -38,7 +38,7 @@ type Transcript {
   gene_id: String!
   gene: TranscriptGene!
 
-  gtex_tissue_expression: GtexTissueExpression
+  gtex_tissue_expression: [GtexTissue]
 
   gnomad_constraint: GnomadConstraint
   exac_constraint: ExacConstraint
