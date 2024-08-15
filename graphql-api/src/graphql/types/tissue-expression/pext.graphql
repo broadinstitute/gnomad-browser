@@ -1,64 +1,13 @@
-type PextRegionTissueValues {
-  adipose_subcutaneous: Float!
-  adipose_visceral_omentum: Float!
-  adrenal_gland: Float!
-  artery_aorta: Float!
-  artery_coronary: Float!
-  artery_tibial: Float!
-  bladder: Float!
-  brain_amygdala: Float!
-  brain_anterior_cingulate_cortex_ba24: Float!
-  brain_caudate_basal_ganglia: Float!
-  brain_cerebellar_hemisphere: Float!
-  brain_cerebellum: Float!
-  brain_cortex: Float!
-  brain_frontal_cortex_ba9: Float!
-  brain_hippocampus: Float!
-  brain_hypothalamus: Float!
-  brain_nucleus_accumbens_basal_ganglia: Float!
-  brain_putamen_basal_ganglia: Float!
-  brain_spinal_cord_cervical_c_1: Float!
-  brain_substantia_nigra: Float!
-  breast_mammary_tissue: Float!
-  cells_ebv_transformed_lymphocytes: Float!
-  cells_transformed_fibroblasts: Float!
-  cervix_ectocervix: Float!
-  cervix_endocervix: Float!
-  colon_sigmoid: Float!
-  colon_transverse: Float!
-  esophagus_gastroesophageal_junction: Float!
-  esophagus_mucosa: Float!
-  esophagus_muscularis: Float!
-  fallopian_tube: Float!
-  heart_atrial_appendage: Float!
-  heart_left_ventricle: Float!
-  kidney_cortex: Float!
-  liver: Float!
-  lung: Float!
-  minor_salivary_gland: Float!
-  muscle_skeletal: Float!
-  nerve_tibial: Float!
-  ovary: Float!
-  pancreas: Float!
-  pituitary: Float!
-  prostate: Float!
-  skin_not_sun_exposed_suprapubic: Float!
-  skin_sun_exposed_lower_leg: Float!
-  small_intestine_terminal_ileum: Float!
-  spleen: Float!
-  stomach: Float!
-  testis: Float!
-  thyroid: Float!
-  uterus: Float!
-  vagina: Float!
-  whole_blood: Float!
+type PextRegionTissue {
+  tissue: String
+  value: Float
 }
 
 type PextRegion {
   start: Int!
   stop: Int!
   mean: Float!
-  tissues: PextRegionTissueValues
+  tissues: [PextRegionTissue!]!
 }
 
 type Pext {
