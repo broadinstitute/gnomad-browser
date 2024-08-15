@@ -1,24 +1,38 @@
 import { mean } from 'd3-array'
 
-const sortedTranscripts = (transcripts: any, firstTranscriptId: any) => {
+interface GenericTranscript {
+  transcript_id: string
+  gtex_tissue_expression:
+    | {
+        tissue: string
+        value: number
+      }[]
+    | null
+}
+
+const sortedTranscripts = (
+  transcripts: GenericTranscript[],
+  firstTranscriptId: string | undefined
+) => {
   return [...transcripts].sort((t1, t2) => {
     // Sort specified transcript first
     // Then sort transcripts by mean expression and transcript ID
-    if (t1.transcript_id === firstTranscriptId) {
-      return -1
-    }
-    if (t2.transcript_id === firstTranscriptId) {
-      return 1
+
+    if (firstTranscriptId) {
+      if (t1.transcript_id === firstTranscriptId) {
+        return -1
+      }
+      if (t2.transcript_id === firstTranscriptId) {
+        return 1
+      }
     }
 
-    const t1Mean = mean(Object.values(t1.gtex_tissue_expression || {}))
-    const t2Mean = mean(Object.values(t2.gtex_tissue_expression || {}))
+    const t1Mean = mean(t1.gtex_tissue_expression!.map((tissue) => tissue.value)) || 0
+    const t2Mean = mean(t2.gtex_tissue_expression!.map((tissue) => tissue.value)) || 0
 
     if (t1Mean === t2Mean) {
       return t1.transcript_id.localeCompare(t2.transcript_id)
     }
-
-    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
     return t2Mean - t1Mean
   })
 }
