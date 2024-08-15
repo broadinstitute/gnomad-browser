@@ -1,111 +1,242 @@
-export const GTEX_TISSUE_NAMES = {
-  adipose_subcutaneous: 'Adipose - Subcutaneous',
-  adipose_visceral_omentum: 'Adipose - Visceral (Omentum)',
-  adrenal_gland: 'Adrenal Gland',
-  artery_aorta: 'Artery - Aorta',
-  artery_coronary: 'Artery - Coronary',
-  artery_tibial: 'Artery - Tibial',
-  bladder: 'Bladder',
-  brain_amygdala: 'Brain - Amygdala',
-  brain_anterior_cingulate_cortex_ba24: 'Brain - Anterior cingulate cortex (BA24)',
-  brain_caudate_basal_ganglia: 'Brain - Caudate (basal ganglia)',
-  brain_cerebellar_hemisphere: 'Brain - Cerebellar Hemisphere',
-  brain_cerebellum: 'Brain - Cerebellum',
-  brain_cortex: 'Brain - Cortex',
-  brain_frontal_cortex_ba9: 'Brain - Frontal Cortex (BA9)',
-  brain_hippocampus: 'Brain - Hippocampus',
-  brain_hypothalamus: 'Brain - Hypothalamus',
-  brain_nucleus_accumbens_basal_ganglia: 'Brain - Nucleus accumbens (basal ganglia)',
-  brain_putamen_basal_ganglia: 'Brain - Putamen (basal ganglia)',
-  brain_spinal_cord_cervical_c_1: 'Brain - Spinal cord (cervical c-1)',
-  brain_substantia_nigra: 'Brain - Substantia nigra',
-  breast_mammary_tissue: 'Breast - Mammary Tissue',
-  cells_ebv_transformed_lymphocytes: 'Cells - EBV-transformed lymphocytes',
-  cells_transformed_fibroblasts: 'Cells - Transformed fibroblasts',
-  cervix_ectocervix: 'Cervix - Ectocervix',
-  cervix_endocervix: 'Cervix - Endocervix',
-  colon_sigmoid: 'Colon - Sigmoid',
-  colon_transverse: 'Colon - Transverse',
-  esophagus_gastroesophageal_junction: 'Esophagus - Gastroesophageal Junction',
-  esophagus_mucosa: 'Esophagus - Mucosa',
-  esophagus_muscularis: 'Esophagus - Muscularis',
-  fallopian_tube: 'Fallopian Tube',
-  heart_atrial_appendage: 'Heart - Atrial Appendage',
-  heart_left_ventricle: 'Heart - Left Ventricle',
-  kidney_cortex: 'Kidney - Cortex',
-  liver: 'Liver',
-  lung: 'Lung',
-  minor_salivary_gland: 'Minor Salivary Gland',
-  muscle_skeletal: 'Muscle - Skeletal',
-  nerve_tibial: 'Nerve - Tibial',
-  ovary: 'Ovary',
-  pancreas: 'Pancreas',
-  pituitary: 'Pituitary',
-  prostate: 'Prostate',
-  skin_not_sun_exposed_suprapubic: 'Skin - Not Sun Exposed (Suprapubic)',
-  skin_sun_exposed_lower_leg: 'Skin - Sun Exposed (Lower leg)',
-  small_intestine_terminal_ileum: 'Small Intestine - Terminal Ileum',
-  spleen: 'Spleen',
-  stomach: 'Stomach',
-  testis: 'Testis',
-  thyroid: 'Thyroid',
-  uterus: 'Uterus',
-  vagina: 'Vagina',
-  whole_blood: 'Whole Blood',
+const SHARED_GTEX_TISSUES = {
+  adipose_subcutaneous: {
+    fullName: 'Adipose - Subcutaneous',
+    color: '#FF6600',
+  },
+  adipose_visceral_omentum: {
+    fullName: 'Adipose - Visceral (Omentum)',
+    color: '#FFAA00',
+  },
+  adrenal_gland: {
+    fullName: 'Adrenal Gland',
+    color: '#33DD33',
+  },
+  artery_aorta: {
+    fullName: 'Artery - Aorta',
+    color: '#FF5555',
+  },
+  artery_coronary: {
+    fullName: 'Artery - Coronary',
+    color: '#FFAA99',
+  },
+  artery_tibial: {
+    fullName: 'Artery - Tibial',
+    color: '#FF0000',
+  },
+  brain_amygdala: {
+    fullName: 'Brain - Amygdala',
+    color: '#EEEE00',
+  },
+  brain_anterior_cingulate_cortex_ba24: {
+    fullName: 'Brain - Anterior cingulate cortex (BA24)',
+    color: '#EEEE00',
+  },
+  brain_caudate_basal_ganglia: {
+    fullName: 'Brain - Caudate (basal ganglia)',
+    color: '#EEEE00',
+  },
+  brain_cerebellar_hemisphere: {
+    fullName: 'Brain - Cerebellar Hemisphere',
+    color: '#EEEE00',
+  },
+  brain_cerebellum: {
+    fullName: 'Brain - Cerebellum',
+    color: '#EEEE00',
+  },
+  brain_cortex: {
+    fullName: 'Brain - Cortex',
+    color: '#EEEE00',
+  },
+  brain_frontal_cortex_ba9: {
+    fullName: 'Brain - Frontal Cortex (BA9)',
+    color: '#EEEE00',
+  },
+  brain_hippocampus: {
+    fullName: 'Brain - Hippocampus',
+    color: '#EEEE00',
+  },
+  brain_hypothalamus: {
+    fullName: 'Brain - Hypothalamus',
+    color: '#EEEE00',
+  },
+  brain_nucleus_accumbens_basal_ganglia: {
+    fullName: 'Brain - Nucleus accumbens (basal ganglia)',
+    color: '#EEEE00',
+  },
+  brain_putamen_basal_ganglia: {
+    fullName: 'Brain - Putamen (basal ganglia)',
+    color: '#EEEE00',
+  },
+  brain_spinal_cord_cervical_c_1: {
+    fullName: 'Brain - Spinal cord (cervical c-1)',
+    color: '#EEEE00',
+  },
+  brain_substantia_nigra: {
+    fullName: 'Brain - Substantia nigra',
+    color: '#EEEE00',
+  },
+  breast_mammary_tissue: {
+    fullName: 'Breast - Mammary Tissue',
+    color: '#33CCCC',
+  },
+  cells_ebv_transformed_lymphocytes: {
+    fullName: 'Cells - EBV-transformed lymphocytes',
+    color: '#CC66FF',
+  },
+  colon_sigmoid: {
+    fullName: 'Colon - Sigmoid',
+    color: '#EEBB77',
+  },
+  colon_transverse: {
+    fullName: 'Colon - Transverse',
+    color: '#CC9955',
+  },
+  esophagus_gastroesophageal_junction: {
+    fullName: 'Esophagus - Gastroesophageal Junction',
+    color: '#8B7355',
+  },
+  esophagus_mucosa: {
+    fullName: 'Esophagus - Mucosa',
+    color: '#552200',
+  },
+  esophagus_muscularis: {
+    fullName: 'Esophagus - Muscularis',
+    color: '#BB9988',
+  },
+  heart_atrial_appendage: {
+    fullName: 'Heart - Atrial Appendage',
+    color: '#9900FF',
+  },
+  heart_left_ventricle: {
+    fullName: 'Heart - Left Ventricle',
+    color: '#660099',
+  },
+  kidney_cortex: {
+    fullName: 'Kidney - Cortex',
+    color: '#22FFDD',
+  },
+  liver: {
+    fullName: 'Liver',
+    color: '#AABB66',
+  },
+  lung: {
+    fullName: 'Lung',
+    color: '#99FF00',
+  },
+  minor_salivary_gland: {
+    fullName: 'Minor Salivary Gland',
+    color: '#99BB88',
+  },
+  muscle_skeletal: {
+    fullName: 'Muscle - Skeletal',
+    color: '#AAAAFF',
+  },
+  nerve_tibial: {
+    fullName: 'Nerve - Tibial',
+    color: '#FFD700',
+  },
+  ovary: {
+    fullName: 'Ovary',
+    color: '#FFAAFF',
+  },
+  pancreas: {
+    fullName: 'Pancreas',
+    color: '#995522',
+  },
+  pituitary: {
+    fullName: 'Pituitary',
+    color: '#AAFF99',
+  },
+  prostate: {
+    fullName: 'Prostate',
+    color: '#DDDDDD',
+  },
+  skin_not_sun_exposed_suprapubic: {
+    fullName: 'Skin - Not Sun Exposed (Suprapubic)',
+    color: '#0000FF',
+  },
+  skin_sun_exposed_lower_leg: {
+    fullName: 'Skin - Sun Exposed (Lower leg)',
+    color: '#7777FF',
+  },
+  small_intestine_terminal_ileum: {
+    fullName: 'Small Intestine - Terminal Ileum',
+    color: '#555522',
+  },
+  spleen: {
+    fullName: 'Spleen',
+    color: '#778855',
+  },
+  stomach: {
+    fullName: 'Stomach',
+    color: '#FFDD99',
+  },
+  testis: {
+    fullName: 'Testis',
+    color: '#AAAAAA',
+  },
+  thyroid: {
+    fullName: 'Thyroid',
+    color: '#006600',
+  },
+  uterus: {
+    fullName: 'Uterus',
+    color: '#FF66FF',
+  },
+  vagina: {
+    fullName: 'Vagina',
+    color: '#FF5599',
+  },
+  whole_blood: {
+    fullName: 'Whole Blood',
+    color: '#FF00BB',
+  },
 }
 
-export const GTEX_TISSUE_COLORS = {
-  adipose_subcutaneous: '#FF6600',
-  adipose_visceral_omentum: '#FFAA00',
-  adrenal_gland: '#33DD33',
-  artery_aorta: '#FF5555',
-  artery_coronary: '#FFAA99',
-  artery_tibial: '#FF0000',
-  bladder: '#AA0000',
-  brain_amygdala: '#EEEE00',
-  brain_anterior_cingulate_cortex_ba24: '#EEEE00',
-  brain_caudate_basal_ganglia: '#EEEE00',
-  brain_cerebellar_hemisphere: '#EEEE00',
-  brain_cerebellum: '#EEEE00',
-  brain_cortex: '#EEEE00',
-  brain_frontal_cortex_ba9: '#EEEE00',
-  brain_hippocampus: '#EEEE00',
-  brain_hypothalamus: '#EEEE00',
-  brain_nucleus_accumbens_basal_ganglia: '#EEEE00',
-  brain_putamen_basal_ganglia: '#EEEE00',
-  brain_spinal_cord_cervical_c_1: '#EEEE00',
-  brain_substantia_nigra: '#EEEE00',
-  breast_mammary_tissue: '#33CCCC',
-  cells_ebv_transformed_lymphocytes: '#CC66FF',
-  cells_transformed_fibroblasts: '#AAEEFF',
-  cervix_ectocervix: '#FFCCCC',
-  cervix_endocervix: '#CCAADD',
-  colon_sigmoid: '#EEBB77',
-  colon_transverse: '#CC9955',
-  esophagus_gastroesophageal_junction: '#8B7355',
-  esophagus_mucosa: '#552200',
-  esophagus_muscularis: '#BB9988',
-  fallopian_tube: '#FFCCCC',
-  heart_atrial_appendage: '#9900FF',
-  heart_left_ventricle: '#660099',
-  kidney_cortex: '#22FFDD',
-  liver: '#AABB66',
-  lung: '#99FF00',
-  minor_salivary_gland: '#99BB88',
-  muscle_skeletal: '#AAAAFF',
-  nerve_tibial: '#FFD700',
-  ovary: '#FFAAFF',
-  pancreas: '#995522',
-  pituitary: '#AAFF99',
-  prostate: '#DDDDDD',
-  skin_not_sun_exposed_suprapubic: '#0000FF',
-  skin_sun_exposed_lower_leg: '#7777FF',
-  small_intestine_terminal_ileum: '#555522',
-  spleen: '#778855',
-  stomach: '#FFDD99',
-  testis: '#AAAAAA',
-  thyroid: '#006600',
-  uterus: '#FF66FF',
-  vagina: '#FF5599',
-  whole_blood: '#FF00BB',
+const V2_SPECIFIC_GTEX_TISSUES = {
+  bladder: {
+    fullName: 'Bladder',
+    color: '#AA0000',
+  },
+  cells_transformed_fibroblasts: {
+    fullName: 'Cells - Transformed fibroblasts',
+    color: '#AAEEFF',
+  },
+  cervix_ectocervix: {
+    fullName: 'Cervix - Ectocervix',
+    color: '#FFCCCC',
+  },
+  cervix_endocervix: {
+    fullName: 'Cervix - Endocervix',
+    color: '#CCAADD',
+  },
+  fallopian_tube: {
+    fullName: 'Fallopian Tube',
+    color: '#FFCCCC',
+  },
+}
+
+const V4_SPECIFIC_GTEX_TISSUES = {
+  cells_cultured_fibroblasts: {
+    fullName: 'Cells - Cultured fibroblasts',
+    color: '#AAEEFF',
+  },
+}
+
+export type GtexTissueName =
+  | keyof typeof SHARED_GTEX_TISSUES
+  | keyof typeof V2_SPECIFIC_GTEX_TISSUES
+  | keyof typeof V4_SPECIFIC_GTEX_TISSUES
+
+export type TissueDetail = {
+  fullName: string
+  color: string
+}
+
+export type GtexTissues = Record<GtexTissueName, TissueDetail>
+
+export const ALL_GTEX_TISSUES: GtexTissues = {
+  ...SHARED_GTEX_TISSUES,
+  ...V2_SPECIFIC_GTEX_TISSUES,
+  ...V4_SPECIFIC_GTEX_TISSUES,
 }

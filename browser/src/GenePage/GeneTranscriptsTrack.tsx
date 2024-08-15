@@ -8,13 +8,14 @@ import { Track } from '@gnomad/region-viewer'
 import TranscriptsTrack from '@gnomad/track-transcripts'
 import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUE_NAMES } from '../gtex'
+import { ALL_GTEX_TISSUES, GtexTissueName } from '../gtex'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 import { Gene } from './GenePage'
-import { hasStructuralVariants } from '../../../dataset-metadata/metadata'
+import { DatasetId, hasStructuralVariants } from '../../../dataset-metadata/metadata'
+import { GtexTissueDetail, TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
 const TranscriptsInfoWrapper = styled.div`
   display: flex;
@@ -34,8 +35,9 @@ const RightPanel = styled.div`
   padding: 0.375em;
 `
 
-type OwnProps = {
-  datasetId: string
+type GeneTranscriptsTrack = {
+  datasetId: DatasetId
+  isTissueExpressionAvailable: boolean
   gene: Gene
   includeNonCodingTranscripts: boolean
   includeUTRs: boolean
@@ -43,27 +45,36 @@ type OwnProps = {
   preferredTranscriptDescription?: string | React.ReactNode
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof GeneTranscriptsTrack.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GeneTranscriptsTrack' implicitly has type 'any' b... Remove this comment to see the full error message
 const GeneTranscriptsTrack = ({
   datasetId,
+  isTissueExpressionAvailable,
   gene,
   includeNonCodingTranscripts,
   includeUTRs,
   preferredTranscriptId,
   preferredTranscriptDescription,
-}: Props) => {
+}: GeneTranscriptsTrack) => {
   const transcriptsTrack = useRef(null)
-
-  const isTissueExpressionAvailable = gene.reference_genome === 'GRCh37'
   const [showTissueExpressionModal, setShowTissueExpressionModal] = useState(false)
+
+  const gtexTissues: Partial<Record<GtexTissueName, GtexTissueDetail>> = {}
+  if (isTissueExpressionAvailable) {
+    const preferredTranscript = (gene.transcripts as TranscriptWithTissueExpression[]).find(
+      (transcript) => transcript.transcript_id === preferredTranscriptId
+    )
+    preferredTranscript!.gtex_tissue_expression.forEach((tissue) => {
+      gtexTissues[tissue.tissue as GtexTissueName] = {
+        fullName: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].fullName || tissue.tissue,
+        color: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].color || '#888888',
+        value: tissue.value,
+      }
+    })
+  }
 
   const maxMeanExpression = isTissueExpressionAvailable
     ? max(
-        gene.transcripts.map((transcript: any) =>
-          mean(Object.values(transcript.gtex_tissue_expression))
+        (gene.transcripts as TranscriptWithTissueExpression[]).map(
+          (transcript) => mean(transcript.gtex_tissue_expression.map((tissue) => tissue.value))!
         )
       )
     : undefined
@@ -129,15 +140,36 @@ const GeneTranscriptsTrack = ({
         renderTranscriptRightPanel={
           !isTissueExpressionAvailable
             ? null
-            : ({ transcript, width }: any) => {
+            : ({
+                transcript,
+                width,
+              }: {
+                transcript: TranscriptWithTissueExpression
+                width: number
+              }) => {
                 if (width < 36) {
                   return null
                 }
 
-                const meanExpression = mean(Object.values(transcript.gtex_tissue_expression))
-                const maxExpression = max(Object.values(transcript.gtex_tissue_expression))
-                const tissueMostExpressedIn = Object.keys(transcript.gtex_tissue_expression).find(
-                  (tissue: any) => transcript.gtex_tissue_expression[tissue] === maxExpression
+                const meanExpression = mean(
+                  transcript.gtex_tissue_expression.map(
+                    (tissueExpression) => tissueExpression.value
+                  )
+                )!
+                const maxExpression = max(
+                  transcript.gtex_tissue_expression.map(
+                    (tissueExpression) => tissueExpression.value
+                  )
+                )!
+                const tissueMostExpressedIn = transcript.gtex_tissue_expression.find(
+                  (tissue) => tissue.value === maxExpression
+                )!.tissue
+
+                const circleRadiusMeanContribution = meanExpression === 0 ? 0 : 0.25
+                const circleRadiusMaxMeanContribution =
+                  maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression!
+                const circleRadius = Math.sqrt(
+                  circleRadiusMeanContribution + 23.75 * circleRadiusMaxMeanContribution
                 )
 
                 return (
@@ -147,12 +179,8 @@ const GeneTranscriptsTrack = ({
                       tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
                         2
                       )} TPM\nMost expressed in ${
-                        // @ts-expect-error TS(2538) FIXME: Type 'undefined' cannot be used as an index type.
-                        GTEX_TISSUE_NAMES[tissueMostExpressedIn]
-                      } (${
-                        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                        maxExpression.toFixed(2)
-                      } TPM)`}
+                        gtexTissues[tissueMostExpressedIn as GtexTissueName]!.fullName
+                      } (${maxExpression.toFixed(2)} TPM)`}
                     >
                       <rect
                         x={0}
@@ -163,20 +191,7 @@ const GeneTranscriptsTrack = ({
                         pointerEvents="visible"
                       />
                     </TooltipAnchor>
-                    <circle
-                      cx={15}
-                      cy={5}
-                      r={Math.sqrt(
-                        meanExpression === 0
-                          ? 0
-                          : 0.25 +
-                              23.75 *
-                                // @ts-expect-error TS(2367) FIXME: This condition will always return 'false' since th... Remove this comment to see the full error message
-                                (maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression)
-                      )}
-                      fill="#333"
-                      pointerEvents="none"
-                    />
+                    <circle cx={15} cy={5} r={circleRadius} fill="#333" pointerEvents="none" />
                   </svg>
                 )
               }
@@ -195,7 +210,8 @@ const GeneTranscriptsTrack = ({
           }}
         >
           <TranscriptsTissueExpression
-            transcripts={gene.transcripts}
+            gtexTissues={gtexTissues}
+            transcripts={gene.transcripts as TranscriptWithTissueExpression[]}
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}
