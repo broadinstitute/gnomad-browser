@@ -41,11 +41,11 @@ First install the operator with the steps as documented: [Elastic Cloud on Kuber
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
 
-If you are using a custom cluster (e.g. `gnomad-myname`) ensure `environment_tag` in `deployctl_config.json` is set to `myname`.
-
 To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
-After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
+Run `kubectl apply -k .` in the appropriate environment folder in [gnomad-deployments/elasticsearch](https://github.com/broadinstitute/gnomad-deployments/tree/main/elasticsearch).
+
+After creating the cluster, store the password in a secret so that Dataproc jobs can access it. The `prod` kustomization includes a [PushSecret](https://github.com/broadinstitute/gnomad-deployments/blob/main/elasticsearch/prod/pushsecret.yaml) manifest that will update the secret in in the GCP secret manager for you.
 
 ## Deploy Redis
 
