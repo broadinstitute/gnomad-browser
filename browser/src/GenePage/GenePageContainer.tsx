@@ -120,7 +120,6 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         brain_substantia_nigra
         breast_mammary_tissue
         cells_ebv_transformed_lymphocytes
-        cells_transformed_fibroblasts
         cells_cultured_fibroblasts
         cervix_ectocervix
         cervix_endocervix
@@ -182,7 +181,6 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
           brain_substantia_nigra
           breast_mammary_tissue
           cells_ebv_transformed_lymphocytes
-          cells_transformed_fibroblasts
           cells_cultured_fibroblasts
           cervix_ectocervix
           cervix_endocervix
@@ -265,6 +263,9 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
   }
 }
 `
+
+// cells_transformed_fibroblasts
+// cells_transformed_fibroblasts
 
 type Props = {
   datasetId: DatasetId
