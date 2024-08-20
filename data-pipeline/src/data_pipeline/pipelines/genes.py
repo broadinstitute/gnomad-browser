@@ -375,7 +375,7 @@ pipeline.add_task(
         "table_path": pipeline.get_task("prepare_grch38_genes"),
         "canonical_transcript": pipeline.get_task("get_grch38_canonical_transcripts"),
         "mane_select_transcript": pipeline.get_task("import_mane_select_transcripts"),
-        "pext": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gnomad.v4.1.pext.regionlevel.for_browser.ht/",
+        "pext": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gnomad.pext.gtex_v10.browser.ht/",
     },
 )
 
