@@ -1,8 +1,18 @@
-type VariantCooccurrenceInPopulation {
+type VariantCooccurrenceInAncestryGroup {
   id: String!
   genotype_counts: [Int!]!
   haplotype_counts: [Float!]!
   p_compound_heterozygous: Float
+}
+
+type VariantCooccurrenceInPopulation {
+  id: String! @deprecated(reason: "Use VariantCooccurrenceInAncestryGroup.id")
+  genotype_counts: [Int!]!
+    @deprecated(reason: "Use VariantCooccurrenceInAncestryGroup.genotype_counts")
+  haplotype_counts: [Float!]!
+    @deprecated(reason: "Use VariantCooccurrenceInAncestryGroup.haplotype_counts")
+  p_compound_heterozygous: Float
+    @deprecated(reason: "Use VariantCooccurrenceInAncestryGroup.p_compound_heterozygous")
 }
 
 type VariantCooccurrence {
@@ -10,5 +20,6 @@ type VariantCooccurrence {
   genotype_counts: [Int!]!
   haplotype_counts: [Float!]!
   p_compound_heterozygous: Float
-  populations: [VariantCooccurrenceInPopulation!]!
+  ancestry_groups: [VariantCooccurrenceInAncestryGroup!]!
+  populations: [VariantCooccurrenceInPopulation!]! @deprecated(reason: "Use ancestry_groups")
 }

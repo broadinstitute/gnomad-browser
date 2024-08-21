@@ -26,12 +26,21 @@ type MitochondrialVariantAgeDistribution {
   hom: Histogram
 }
 
-type MitochondrialVariantPopulation {
+type MitochondrialVariantAncestryGroup {
   id: String!
   an: Int!
   ac_het: Int!
   ac_hom: Int!
   heteroplasmy_distribution: Histogram!
+}
+
+type MitochondrialVariantPopulation {
+  id: String! @deprecated(reason: "Use MitochondrialVariantAncestryGroup.id")
+  an: Int! @deprecated(reason: "Use MitochondrialVariantAncestryGroup.an")
+  ac_het: Int! @deprecated(reason: "Use MitochondrialVariantAncestryGroup.ac_het")
+  ac_hom: Int! @deprecated(reason: "Use MitochondrialVariantAncestryGroup.ac_hom")
+  heteroplasmy_distribution: Histogram!
+    @deprecated(reason: "Use MitochondrialVariantAncestryGroup.heteroplasmy_distribution")
 }
 
 type MitochondrialVariantHaplogroup {
@@ -79,7 +88,8 @@ type MitochondrialVariantDetails {
   mitotip_trna_prediction: String
   pon_ml_probability_of_pathogenicity: Float
   pon_mt_trna_prediction: String
-  populations: [MitochondrialVariantPopulation!]!
+  ancestry_groups: [MitochondrialVariantAncestryGroup!]!
+  populations: [MitochondrialVariantPopulation!]! @deprecated(reason: "Use ancestry_groups")
   pos: Int!
   ref: String!
   reference_genome: ReferenceGenomeId!
