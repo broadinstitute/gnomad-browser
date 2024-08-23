@@ -1,0 +1,25 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-server:$SHORT_SHA',
+        '-f',
+        'deploy/dockerfiles/reads/reads-server.dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:$SHORT_SHA',
+        '-f',
+        'deploy/dockerfiles/reads/auth.dockerfile',
+        '.',
+      ]
+# TODO: commented out for testing without push
+# images:
+#   - 'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-server:$SHORT_SHA'
+#   - 'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:$SHORT_SHA'
