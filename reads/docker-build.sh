@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -euo pipefail
 
 # This is kind of strange, but we do this to ensure the script runs with the right
 # working directory without you having to worry about where you run the script from.
@@ -22,11 +22,12 @@ if [ -n "$GIT_STATUS" ]; then
   IMAGE_TAG="${IMAGE_TAG}-modified"
 fi
 
+AR_REPO="us-docker.pkg.dev/exac-gnomad/gnomad/gnomad-reads"
 docker build -f deploy/dockerfiles/reads/reads-server.dockerfile . \
-  --tag "us-docker.pkg.dev/exac-gnomad/gnomad/gnomad-reads-server:${IMAGE_TAG}"
+  --tag "${AR_REPO}-server:dev-${IMAGE_TAG}"
 
 docker build -f deploy/dockerfiles/reads/reads-api.dockerfile . \
-  --tag "us-docker.pkg.dev/exac-gnomad/gnomad/gnomad-reads-api:${IMAGE_TAG}"
+  --tag "${AR_REPO}-api:dev-${IMAGE_TAG}"
 
-echo "us-docker.pkg.dev/exac-gnomad/gnomad/gnomad-reads-server:${IMAGE_TAG}"
-echo "us-docker.pkg.dev/exac-gnomad/gnomad/gnomad-reads-api:${IMAGE_TAG}"
+echo "${AR_REPO}-server:dev-${IMAGE_TAG}"
+echo "${AR_REPO}-api:dev-${IMAGE_TAG}"
