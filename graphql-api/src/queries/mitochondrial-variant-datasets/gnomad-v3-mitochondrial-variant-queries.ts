@@ -2,7 +2,7 @@ import { omit } from 'lodash'
 import { isRsId } from '@gnomad/identifiers'
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
-import { getFlagsForContext } from '../variant-datasets/shared/flags'
+import { getLofteeFlagsForContext } from '../variant-datasets/shared/flags'
 import { getConsequenceForContext } from '../variant-datasets/shared/transcriptConsequence'
 
 const GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX = 'gnomad_v3_mitochondrial_variants'
@@ -33,7 +33,7 @@ const fetchMitochondrialVariantById = async (esClient: any, variantIdOrRsid: any
   const variant = response.body.hits.hits[0]._source.value
 
   // Remove nc_transcript flag due to issues with LOFTEE on mitochondrial variants
-  const flags = getFlagsForContext({ type: 'region' })(variant).filter(
+  const flags = getLofteeFlagsForContext({ type: 'region' })(variant).filter(
     (f: any) => f !== 'nc_transcript'
   )
 
@@ -73,7 +73,7 @@ const FIELDS_TO_FETCH = [
 
 const shapeMitochondrialVariantSummary = (context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
+  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}

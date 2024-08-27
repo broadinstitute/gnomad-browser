@@ -8,7 +8,7 @@ import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-querie
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
-import { getFlagsForContext } from './shared/flags'
+import { getLofteeFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 
 const GNOMAD_V3_VARIANT_INDEX = 'gnomad_v3_variants'
@@ -84,7 +84,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     filters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
 
   let { populations } = variant.genome.freq[subset]
 
@@ -196,7 +196,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (subset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
+  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}

@@ -12,7 +12,7 @@ import {
   fetchLofCurationResultsByRegion,
 } from '../lof-curation-result-queries'
 
-import { getFlagsForContext } from './shared/flags'
+import { getLofteeFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 
 const GNOMAD_V2_VARIANT_INDEX = 'gnomad_v2_variants'
@@ -116,7 +116,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     genomeFilters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -154,7 +154,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
+  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}

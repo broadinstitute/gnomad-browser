@@ -9,7 +9,7 @@ const LOF_CONSEQUENCE_TERMS = new Set([
 const isLofOnNonCodingTranscript = (transcriptConsequence: any) =>
   LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) && !transcriptConsequence.lof
 
-const getFlagsForGeneContext = (variant: any, geneId: any) => {
+const getLofteeFlagsForGeneContext = (variant: any, geneId: any) => {
   const flags = variant.flags || []
 
   const allConsequences = variant.transcript_consequences || []
@@ -48,7 +48,7 @@ const getFlagsForGeneContext = (variant: any, geneId: any) => {
   return flags
 }
 
-const getFlagsForRegionContext = (variant: any) => {
+const getLofteeFlagsForRegionContext = (variant: any) => {
   const flags = variant.flags || []
 
   const allConsequences = variant.transcript_consequences || []
@@ -85,7 +85,7 @@ const getFlagsForRegionContext = (variant: any) => {
   return flags
 }
 
-const getFlagsForTranscriptContext = (variant: any, transcriptId: any) => {
+const getLofteeFlagsForTranscriptContext = (variant: any, transcriptId: any) => {
   const flags = variant.flags || []
 
   const allConsequences = variant.transcript_consequences || []
@@ -114,14 +114,14 @@ const getFlagsForTranscriptContext = (variant: any, transcriptId: any) => {
   return flags
 }
 
-export const getFlagsForContext = (context: any) => {
+export const getLofteeFlagsForContext = (context: any) => {
   switch (context.type) {
     case 'gene':
-      return (variant: any) => getFlagsForGeneContext(variant, context.geneId)
+      return (variant: any) => getLofteeFlagsForGeneContext(variant, context.geneId)
     case 'region':
-      return getFlagsForRegionContext
+      return getLofteeFlagsForRegionContext
     case 'transcript':
-      return (variant: any) => getFlagsForTranscriptContext(variant, context.transcriptId)
+      return (variant: any) => getLofteeFlagsForTranscriptContext(variant, context.transcriptId)
     default:
       throw Error(`Invalid context for getFlags: ${context.type}`)
   }

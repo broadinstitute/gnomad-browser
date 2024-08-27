@@ -8,7 +8,7 @@ import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-querie
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
-import { getFlagsForContext } from './shared/flags'
+import { getLofteeFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
 
@@ -111,7 +111,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     genomeFilters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
@@ -276,7 +276,7 @@ const createInSilicoPredictorsList = (variant: any) => {
 
 const shapeVariantSummary = (subset: Subset, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
+  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
