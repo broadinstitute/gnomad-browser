@@ -10,7 +10,7 @@ import {
   fetchLofCurationResultsByRegion,
 } from '../lof-curation-result-queries'
 
-import { getFlagsForContext } from './shared/flags'
+import { getLofteeFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 
 const EXAC_VARIANT_INDEX = 'exac_variants'
@@ -75,7 +75,7 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -111,7 +111,7 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
 
 const shapeVariantSummary = (context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
+  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}

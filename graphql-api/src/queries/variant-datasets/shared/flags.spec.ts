@@ -1,6 +1,6 @@
 import { describe, it, expect } from '@jest/globals'
 
-const { getFlagsForContext } = require('./flags')
+const { getLofteeFlagsForContext } = require('./flags')
 
 describe('LOFTEE', () => {
   describe('lc_lof', () => {
@@ -41,16 +41,16 @@ describe('LOFTEE', () => {
       ])(
         'should be included only if there are LOFTEE annotated consequences in the specified gene, none of them are annotated HC, the highest ranked transcript is LOFTEE annotated, and the highest ranked transcript is not OS',
         (geneId, expected) => {
-          expect(getFlagsForContext({ type: 'gene', geneId })(variant).includes('lc_lof')).toBe(
-            expected
-          )
+          expect(
+            getLofteeFlagsForContext({ type: 'gene', geneId })(variant).includes('lc_lof')
+          ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
-        expect(getFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('lc_lof')).toBe(
-          false
-        )
+        expect(
+          getLofteeFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('lc_lof')
+        ).toBe(false)
       })
     })
 
@@ -108,7 +108,9 @@ describe('LOFTEE', () => {
       ])(
         'should be included only if there are LOFTEE annotated consequences, none of them are annotated HC, the highest ranked transcript is LOFTEE annotated, and the highest ranked transcript is not OS',
         (variant, expected) => {
-          expect(getFlagsForContext({ type: 'region' })(variant).includes('lc_lof')).toBe(expected)
+          expect(getLofteeFlagsForContext({ type: 'region' })(variant).includes('lc_lof')).toBe(
+            expected
+          )
         }
       )
     })
@@ -133,14 +135,18 @@ describe('LOFTEE', () => {
         'should be included only if the consequence in the specified transcript is LOFTEE annotated LC',
         (transcriptId, expected) => {
           expect(
-            getFlagsForContext({ type: 'transcript', transcriptId })(variant).includes('lc_lof')
+            getLofteeFlagsForContext({ type: 'transcript', transcriptId })(variant).includes(
+              'lc_lof'
+            )
           ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
         expect(
-          getFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes('lc_lof')
+          getLofteeFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes(
+            'lc_lof'
+          )
         ).toBe(false)
       })
     })
@@ -174,16 +180,16 @@ describe('LOFTEE', () => {
       ])(
         'should be included only if there are LOFTEE annotated consequences in the specified gene and all of them are LOFTEE flagged',
         (geneId, expected) => {
-          expect(getFlagsForContext({ type: 'gene', geneId })(variant).includes('lof_flag')).toBe(
-            expected
-          )
+          expect(
+            getLofteeFlagsForContext({ type: 'gene', geneId })(variant).includes('lof_flag')
+          ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
-        expect(getFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('lof_flag')).toBe(
-          false
-        )
+        expect(
+          getLofteeFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('lof_flag')
+        ).toBe(false)
       })
     })
 
@@ -231,7 +237,7 @@ describe('LOFTEE', () => {
       ])(
         'should be included only if there are LOFTEE annotated consequences and all of them are LOFTEE flagged',
         (variant, expected) => {
-          expect(getFlagsForContext({ type: 'region' })(variant).includes('lof_flag')).toBe(
+          expect(getLofteeFlagsForContext({ type: 'region' })(variant).includes('lof_flag')).toBe(
             expected
           )
         }
@@ -256,14 +262,18 @@ describe('LOFTEE', () => {
         'should be included only if the consequence in the specified transcript is LOFTEE annotated and LOFTEE flagged',
         (transcriptId, expected) => {
           expect(
-            getFlagsForContext({ type: 'transcript', transcriptId })(variant).includes('lof_flag')
+            getLofteeFlagsForContext({ type: 'transcript', transcriptId })(variant).includes(
+              'lof_flag'
+            )
           ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
         expect(
-          getFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes('lof_flag')
+          getLofteeFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes(
+            'lof_flag'
+          )
         ).toBe(false)
       })
     })
@@ -292,14 +302,14 @@ describe('LOFTEE', () => {
         'it should be included only if the most severe consequence in the specified gene is pLoF according to VEP but not LOFTEE annotated',
         (geneId, expected) => {
           expect(
-            getFlagsForContext({ type: 'gene', geneId })(variant).includes('nc_transcript')
+            getLofteeFlagsForContext({ type: 'gene', geneId })(variant).includes('nc_transcript')
           ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
         expect(
-          getFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('nc_transcript')
+          getLofteeFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('nc_transcript')
         ).toBe(false)
       })
     })
@@ -337,9 +347,9 @@ describe('LOFTEE', () => {
       ])(
         'it should be included only if the most severe consequence is pLoF according to VEP but not LOFTEE annotated',
         (variant, expected) => {
-          expect(getFlagsForContext({ type: 'region' })(variant).includes('nc_transcript')).toBe(
-            expected
-          )
+          expect(
+            getLofteeFlagsForContext({ type: 'region' })(variant).includes('nc_transcript')
+          ).toBe(expected)
         }
       )
     })
@@ -377,7 +387,7 @@ describe('LOFTEE', () => {
         'it should be included only if the consequence in the specified transcript is pLoF according to VEP but not LOFTEE annotated',
         (transcriptId, expected) => {
           expect(
-            getFlagsForContext({ type: 'transcript', transcriptId })(variant).includes(
+            getLofteeFlagsForContext({ type: 'transcript', transcriptId })(variant).includes(
               'nc_transcript'
             )
           ).toBe(expected)
@@ -386,7 +396,7 @@ describe('LOFTEE', () => {
 
       it('should not be included for variants without consequences', () => {
         expect(
-          getFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes(
+          getLofteeFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes(
             'nc_transcript'
           )
         ).toBe(false)
@@ -419,16 +429,16 @@ describe('LOFTEE', () => {
       ])(
         'it should be included only if the most severe consequence in the specified gene is LOFTEE annotated OS',
         (geneId, expected) => {
-          expect(getFlagsForContext({ type: 'gene', geneId })(variant).includes('os_lof')).toBe(
-            expected
-          )
+          expect(
+            getLofteeFlagsForContext({ type: 'gene', geneId })(variant).includes('os_lof')
+          ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
-        expect(getFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('os_lof')).toBe(
-          false
-        )
+        expect(
+          getLofteeFlagsForContext({ type: 'gene', geneId: 'G1' })({}).includes('os_lof')
+        ).toBe(false)
       })
     })
 
@@ -457,7 +467,9 @@ describe('LOFTEE', () => {
       ])(
         'it should be included only if the most severe consequence is LOFTEE annotated OS',
         (variant, expected) => {
-          expect(getFlagsForContext({ type: 'region' })(variant).includes('os_lof')).toBe(expected)
+          expect(getLofteeFlagsForContext({ type: 'region' })(variant).includes('os_lof')).toBe(
+            expected
+          )
         }
       )
     })
@@ -482,14 +494,18 @@ describe('LOFTEE', () => {
         'it should be included only if the consequence in the specified transcript is LOFTEE annotated OS',
         (transcriptId, expected) => {
           expect(
-            getFlagsForContext({ type: 'transcript', transcriptId })(variant).includes('os_lof')
+            getLofteeFlagsForContext({ type: 'transcript', transcriptId })(variant).includes(
+              'os_lof'
+            )
           ).toBe(expected)
         }
       )
 
       it('should not be included for variants without consequences', () => {
         expect(
-          getFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes('os_lof')
+          getLofteeFlagsForContext({ type: 'transcript', transcriptId: 'T1' })({}).includes(
+            'os_lof'
+          )
         ).toBe(false)
       })
     })
