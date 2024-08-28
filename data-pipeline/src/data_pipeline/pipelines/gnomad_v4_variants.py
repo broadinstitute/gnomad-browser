@@ -8,6 +8,7 @@ from data_pipeline.helpers.write_schemas import write_schemas
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
     prepare_gnomad_v4_variants,
+    prepare_table_for_release,
 )
 
 
@@ -99,6 +100,17 @@ pipeline.add_task(
         "variants_path": pipeline.get_task("annotate_gnomad_v4_caids"),
         "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
         "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht",
+    },
+)
+
+# removes several duplicated values, as well as constraint to prepare for release to the general public
+#   naming scheme follows methods naming scheme for consistency
+pipeline.add_task(
+    name="prepare_table_for_release",
+    task_function=prepare_table_for_release,
+    output_path=f"{output_sub_dir}/gnomad.browser.v4.1.sites.ht",
+    inputs={
+        "variants_table_path": pipeline.get_task("annotate_vrs_ids"),
     },
 )
 
