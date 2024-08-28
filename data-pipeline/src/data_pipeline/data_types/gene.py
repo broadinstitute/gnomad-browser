@@ -226,6 +226,16 @@ def import_hgnc(path):
     return ds
 
 
+def prepare_gene_table_for_release(genes_path, keep_mane_version_global_annotation):
+    ds = hl.read_table(genes_path)
+    if keep_mane_version_global_annotation:
+        globals_dict = ds.index_globals()
+        ds = ds.select_globals(mane_select_version=globals_dict["annotations"]["mane_select_transcript"]["version"])
+    else:
+        ds = ds.select_globals()
+    return ds
+
+
 def prepare_genes(gencode_path, hgnc_path, reference_genome):
     genes = import_gencode(gencode_path, reference_genome)
 
