@@ -205,6 +205,7 @@ export type SequencingType = BaseSequencingType & {
   ac_hom: number
   ac_hemi: number
   af?: number
+  flags: string[] | null
 }
 
 export type JointSequencingType = BaseSequencingType & {

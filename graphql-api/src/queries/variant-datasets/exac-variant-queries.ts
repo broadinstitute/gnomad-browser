@@ -97,6 +97,7 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
         },
         site_quality_metrics: variant.exome.quality_metrics.site_quality_metrics,
       },
+      flags: variant.exome.flags || [],
     },
     genome: null,
     flags,
