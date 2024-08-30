@@ -85,6 +85,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
   }
 
   const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
+  const genomeFlags = variant.genome.flags || []
 
   let { populations } = variant.genome.freq[subset]
 
@@ -180,6 +181,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
         ),
       },
       local_ancestry_populations: localAncestryPopulations.genome,
+      flags: genomeFlags,
     },
     flags,
     // TODO: Include RefSeq transcripts once the browser supports them.
@@ -201,6 +203,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
     const flags = getFlags(variant)
+    const genomeFlags = variant.genome.flags || []
 
     const filters = variant.genome.filters || []
 
@@ -223,6 +226,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
           (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
         ),
         filters,
+        flags: genomeFlags,
       },
       flags,
       transcript_consequence: transcriptConsequence,
@@ -264,6 +268,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
     _source: [
       `value.genome.freq.${subset}`,
       'value.genome.filters',
+      'value.genome.flags',
       'value.alleles',
       'value.caid',
       'value.locus',
