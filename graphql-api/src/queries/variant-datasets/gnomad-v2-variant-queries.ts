@@ -117,6 +117,8 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
   }
 
   const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
+  const exomeFlags = variant.exome.flags || []
+  const genomeFlags = variant.genome.flags || []
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -131,6 +133,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           quality_metrics: formatVariantQualityMetrics(variant.exome.quality_metrics),
           age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
+          flags: exomeFlags,
         }
       : null,
     genome: variant.genome.freq[genomeSubset].ac_raw
@@ -140,6 +143,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           quality_metrics: formatVariantQualityMetrics(variant.genome.quality_metrics),
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
+          flags: genomeFlags,
         }
       : null,
     flags,
@@ -162,6 +166,8 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
+    const exomeFlags = variant.exome.flags || []
+    const genomeFlags = variant.genome.flags || []
 
     if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
@@ -181,6 +187,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
+            flags: exomeFlags,
           }
         : null,
       genome: variant.genome.freq[genomeSubset].ac_raw
@@ -191,6 +198,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: genomeFilters,
+            flags: genomeFlags,
           }
         : null,
       flags,
@@ -238,6 +246,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
       `value.genome.freq.${genomeSubset}`,
       'value.exome.filters',
       'value.genome.filters',
+      'value.exome.flags',
+      'value.genome.flags',
       'value.alt',
       'value.caid',
       'value.chrom',

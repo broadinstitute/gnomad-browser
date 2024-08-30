@@ -154,6 +154,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.exome,
       ...variant.exome.freq[subset],
       filters: exomeFilters,
+      flags: variant.exome.flags || [],
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
@@ -185,6 +186,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.genome,
       ...subsetGenomeFreq,
       filters: genomeFilters,
+      flags: variant.genome.flags || [],
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
@@ -285,6 +287,8 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
     const jointFilters = variant.joint.filter || []
+    const exomeFlags = variant.exome.flags || []
+    const genomeFlags = variant.genome.flags || []
 
     const subsetGenomeFreq = variant.genome.freq.all || {}
     const subsetJointFreq = variant.joint.freq[subset] || {}
@@ -322,6 +326,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
+            flags: exomeFlags,
             fafmax: variant.exome.fafmax[subset],
           }
         : null,
@@ -344,6 +349,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
             ),
             filters: jointFilters,
             fafmax: variant.joint.fafmax,
+            flags: genomeFlags,
           }
         : null,
       flags,
@@ -363,8 +369,10 @@ const getMultiVariantSourceFields = (
     `value.genome.freq.${genomeSubset}`,
     `value.joint.freq.${jointSubset}`,
     'value.exome.filters',
+    'value.exome.flags',
     'value.exome.fafmax',
     'value.genome.filters',
+    'value.genome.flags',
     'value.joint.filters',
     'value.alleles',
     // 'value.caid',
