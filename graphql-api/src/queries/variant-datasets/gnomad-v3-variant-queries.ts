@@ -8,7 +8,7 @@ import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-querie
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
-import { getLofteeFlagsForContext } from './shared/flags'
+import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 
 const GNOMAD_V3_VARIANT_INDEX = 'gnomad_v3_variants'
@@ -84,8 +84,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     filters.push('AC0')
   }
 
-  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
-  const genomeFlags = variant.genome.flags || []
+  const { variantFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   let { populations } = variant.genome.freq[subset]
 
@@ -183,7 +182,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
       local_ancestry_populations: localAncestryPopulations.genome,
       flags: genomeFlags,
     },
-    flags,
+    flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
       csq.gene_id.startsWith('ENSG')
@@ -198,12 +197,10 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (subset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
-    const genomeFlags = variant.genome.flags || []
+    const { variantFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const filters = variant.genome.filters || []
 
@@ -228,7 +225,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
         filters,
         flags: genomeFlags,
       },
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
     }
   }

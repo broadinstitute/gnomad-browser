@@ -12,7 +12,7 @@ import {
   fetchLofCurationResultsByRegion,
 } from '../lof-curation-result-queries'
 
-import { getLofteeFlagsForContext } from './shared/flags'
+import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 
 const GNOMAD_V2_VARIANT_INDEX = 'gnomad_v2_variants'
@@ -116,9 +116,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     genomeFilters.push('AC0')
   }
 
-  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
-  const exomeFlags = variant.exome.flags || []
-  const genomeFlags = variant.genome.flags || []
+  const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -146,7 +144,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           flags: genomeFlags,
         }
       : null,
-    flags,
+    flags: variantFlags,
     lof_curations: lofCurationResults,
     transcript_consequences: variant.transcript_consequences || [],
   }
@@ -158,16 +156,13 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
-    const exomeFlags = variant.exome.flags || []
-    const genomeFlags = variant.genome.flags || []
 
     if (variant.exome.freq[exomeSubset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
@@ -201,7 +196,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
             flags: genomeFlags,
           }
         : null,
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
     }
   }

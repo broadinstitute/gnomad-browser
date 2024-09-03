@@ -10,7 +10,7 @@ const isLofOnNonCodingTranscript = (transcriptConsequence: any) =>
   LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) && !transcriptConsequence.lof
 
 const getLofteeFlagsForGeneContext = (variant: any, geneId: any) => {
-  const flags = variant.flags || []
+  const flags = [...(variant.flags || [])]
 
   const allConsequences = variant.transcript_consequences || []
   const consequencesInGene = allConsequences.filter((csq: any) => csq.gene_id === geneId)
@@ -49,7 +49,7 @@ const getLofteeFlagsForGeneContext = (variant: any, geneId: any) => {
 }
 
 const getLofteeFlagsForRegionContext = (variant: any) => {
-  const flags = variant.flags || []
+  const flags = [...(variant.flags || [])]
 
   const allConsequences = variant.transcript_consequences || []
   const lofConsequences = allConsequences.filter((csq: any) => csq.lof)
@@ -86,7 +86,7 @@ const getLofteeFlagsForRegionContext = (variant: any) => {
 }
 
 const getLofteeFlagsForTranscriptContext = (variant: any, transcriptId: any) => {
-  const flags = variant.flags || []
+  const flags = [...(variant.flags || [])]
 
   const allConsequences = variant.transcript_consequences || []
   const consequenceInTranscript = allConsequences.find(
@@ -114,7 +114,7 @@ const getLofteeFlagsForTranscriptContext = (variant: any, transcriptId: any) => 
   return flags
 }
 
-export const getLofteeFlagsForContext = (context: any) => {
+const getLofteeFlagsForContext = (context: any) => {
   switch (context.type) {
     case 'gene':
       return (variant: any) => getLofteeFlagsForGeneContext(variant, context.geneId)
@@ -125,4 +125,23 @@ export const getLofteeFlagsForContext = (context: any) => {
     default:
       throw Error(`Invalid context for getFlags: ${context.type}`)
   }
+}
+
+export const getFlagsForContext = (context: any, variant: any) => {
+  const baseVariantFlags = getLofteeFlagsForContext(context)(variant)
+  const baseExomeFlags = variant.exome?.flags || []
+  const baseGenomeFlags = variant.genome?.flags || []
+
+  const regionalFlags = ['par', 'segdup', 'lcr'].filter(
+    (regionalFlag) =>
+      baseExomeFlags.includes(regionalFlag) || baseGenomeFlags.includes(regionalFlag)
+  )
+  const variantFlags = [...baseVariantFlags, ...regionalFlags]
+  const exomeFlags = baseExomeFlags.filter(
+    (exomeFlag: string) => !regionalFlags.includes(exomeFlag)
+  )
+  const genomeFlags = baseGenomeFlags.filter(
+    (genomeFlag: string) => !regionalFlags.includes(genomeFlag)
+  )
+  return { variantFlags, exomeFlags, genomeFlags }
 }
