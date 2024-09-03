@@ -283,7 +283,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Browser variants Hail Table"
               path="/release/4.1/ht/browser/gnomad.browser.v4.1.sites.ht"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -295,7 +294,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Browser GRCh38 gene models Hail Table"
               path="/resources/grch38/genes/gnomad.genes.GRCh38.GENCODEv39.ht"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
