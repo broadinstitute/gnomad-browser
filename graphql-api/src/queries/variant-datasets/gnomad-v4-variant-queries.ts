@@ -8,7 +8,7 @@ import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-querie
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
-import { getLofteeFlagsForContext } from './shared/flags'
+import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
 
@@ -111,7 +111,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     genomeFilters.push('AC0')
   }
 
-  const flags = getLofteeFlagsForContext({ type: 'region' })(variant)
+  const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
@@ -154,7 +154,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.exome,
       ...variant.exome.freq[subset],
       filters: exomeFilters,
-      flags: variant.exome.flags || [],
+      flags: exomeFlags,
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
@@ -186,7 +186,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.genome,
       ...subsetGenomeFreq,
       filters: genomeFilters,
-      flags: variant.genome.flags || [],
+      flags: genomeFlags,
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
@@ -224,7 +224,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
         popmax: variant.joint.fafmax.faf95_max,
       },
     },
-    flags,
+    flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
       csq.gene_id.startsWith('ENSG')
@@ -278,17 +278,14 @@ const createInSilicoPredictorsList = (variant: any) => {
 
 const shapeVariantSummary = (subset: Subset, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getLofteeFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
     const jointFilters = variant.joint.filter || []
-    const exomeFlags = variant.exome.flags || []
-    const genomeFlags = variant.genome.flags || []
 
     const subsetGenomeFreq = variant.genome.freq.all || {}
     const subsetJointFreq = variant.joint.freq[subset] || {}
@@ -352,7 +349,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
             flags: genomeFlags,
           }
         : null,
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
       in_silico_predictors: inSilicoPredictorsList,
     }
