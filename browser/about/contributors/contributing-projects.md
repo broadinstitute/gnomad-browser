@@ -81,7 +81,7 @@
   - SCHEMA - Spain
 - Schizophrenia Trios from Taiwan
 - Sequencing Initiative Suomi (SiSu)
-- SHARE
+- SHARE: Translational Studies in Inflammatory Bowel Disease
 - SIGMA-T2D
 - SubPopulations and InteRmediate Outcome Measures In COPD Study (SPIROMICS)
 - SUPER Study – “A Finnish study of hereditary mechanisms of psychosis disorders”
