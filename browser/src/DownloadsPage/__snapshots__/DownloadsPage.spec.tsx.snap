@@ -7389,6 +7389,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
           >
             Amazon
           </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Browser variants Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
       </ul>
       <h3>
@@ -7422,6 +7431,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Browser GRCh38 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
       </ul>
@@ -24620,6 +24638,15 @@ exports[`Downloads Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Browser GRCh37 gene models Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
       </ul>
