@@ -49,13 +49,13 @@ constraint_subdir = "constraint"
 GENCODE_V19_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz"
 GENCODE_V39_URL = "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.annotation.gtf.gz"
 
-pipeline.add_download_task(
-    "download_gencode_v19_gtf", GENCODE_V19_URL, f"/{external_sources_subdir}/" + GENCODE_V19_URL.split("/")[-1]
-)
+# pipeline.add_download_task(
+#     "download_gencode_v19_gtf", GENCODE_V19_URL, f"/{external_sources_subdir}/" + GENCODE_V19_URL.split("/")[-1]
+# )
 
-pipeline.add_download_task(
-    "download_gencode_v39_gtf", GENCODE_V39_URL, f"/{external_sources_subdir}/" + GENCODE_V39_URL.split("/")[-1]
-)
+# pipeline.add_download_task(
+#     "download_gencode_v39_gtf", GENCODE_V39_URL, f"/{external_sources_subdir}/" + GENCODE_V39_URL.split("/")[-1]
+# )
 
 HGNC_COLUMNS = [
     "gd_hgnc_id",
@@ -69,28 +69,28 @@ HGNC_COLUMNS = [
     "md_ensembl_id",
     "md_mim_id",
 ]
+#
+# pipeline.add_download_task(
+#     "download_hgnc",
+#     f"https://www.genenames.org/cgi-bin/download/custom?{'&'.join('col=' + column for column in HGNC_COLUMNS)}&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",  # noqa
+#     f"/{external_sources_subdir}/hgnc.tsv",
+# )
 
-pipeline.add_download_task(
-    "download_hgnc",
-    f"https://www.genenames.org/cgi-bin/download/custom?{'&'.join('col=' + column for column in HGNC_COLUMNS)}&status=Approved&hgnc_dbtag=on&order_by=gd_app_sym_sort&format=text&submit=submit",  # noqa
-    f"/{external_sources_subdir}/hgnc.tsv",
-)
+# pipeline.add_task(
+#     "prepare_grch37_genes",
+#     prepare_genes,
+#     f"/{genes_subdir}/genes_grch37_base.ht",
+#     {"gencode_path": pipeline.get_task("download_gencode_v19_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
+#     {"reference_genome": "GRCh37"},
+# )
 
-pipeline.add_task(
-    "prepare_grch37_genes",
-    prepare_genes,
-    f"/{genes_subdir}/genes_grch37_base.ht",
-    {"gencode_path": pipeline.get_task("download_gencode_v19_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
-    {"reference_genome": "GRCh37"},
-)
-
-pipeline.add_task(
-    "prepare_grch38_genes",
-    prepare_genes,
-    f"/{genes_subdir}/genes_grch38_base.ht",
-    {"gencode_path": pipeline.get_task("download_gencode_v39_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
-    {"reference_genome": "GRCh38"},
-)
+# pipeline.add_task(
+#     "prepare_grch38_genes",
+#     prepare_genes,
+#     f"/{genes_subdir}/genes_grch38_base.ht",
+#     {"gencode_path": pipeline.get_task("download_gencode_v39_gtf"), "hgnc_path": pipeline.get_task("download_hgnc")},
+#     {"reference_genome": "GRCh38"},
+# )
 
 ###############################################
 # MANE Select transcripts
@@ -122,15 +122,15 @@ pipeline.add_task(
 # Canonical transcripts
 ###############################################
 
-pipeline.add_task(
-    "get_grch37_canonical_transcripts",
-    get_canonical_transcripts,
-    f"/{genes_subdir}/canonical_transcripts_grch37.ht",
-    {
-        "exomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
-        "genomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
-    },
-)
+# pipeline.add_task(
+#     "get_grch37_canonical_transcripts",
+#     get_canonical_transcripts,
+#     f"/{genes_subdir}/canonical_transcripts_grch37.ht",
+#     {
+#         "exomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht",
+#         "genomes": "gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht",
+#     },
+# )
 
 pipeline.add_task(
     "get_grch38_canonical_transcripts",
@@ -200,29 +200,29 @@ pipeline.add_task(
 
 # GTEx and pext - GRCh38
 # ---
-pipeline.add_download_task(
-    "download_gtex_v10_tpm_data",
-    "gs://gnomad/resources/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
-    f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
-)
-
-pipeline.add_download_task(
-    "download_gtex_v10_sample_attributes",
-    "gs://gnomad/resources/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
-    f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
-)
-
-pipeline.add_task(
-    "prepare_gtex_v10_expression_data",
-    prepare_gtex_expression_data,
-    "/gtex/gtex_v10_tissue_expression.ht",
-    {
-        "transcript_tpms_path": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
-        "sample_annotations_path": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
-        "tmp_path": "/tmp",
-        "recompress": False,
-    },
-)
+# pipeline.add_download_task(
+#     "download_gtex_v10_tpm_data",
+#     "gs://gnomad/resources/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
+#     f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
+# )
+#
+# pipeline.add_download_task(
+#     "download_gtex_v10_sample_attributes",
+#     "gs://gnomad/resources/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
+#     f"/{external_sources_subdir}/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
+# )
+#
+# pipeline.add_task(
+#     "prepare_gtex_v10_expression_data",
+#     prepare_gtex_expression_data,
+#     "/gtex/gtex_v10_tissue_expression.ht",
+#     {
+#         "transcript_tpms_path": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gtex/v10/GTEx_Analysis_2022-06-06_v10_RSEMv1.3.3_transcripts_tpm.txt.bgz",
+#         "sample_annotations_path": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gtex/v10/GTEx_Analysis_v10_Open_Access_Reduced_Annotations_SampleAttributesDS.txt.bgz",
+#         "tmp_path": "/tmp",
+#         "recompress": False,
+#     },
+# )
 
 # pext is now a formatted table handed off by the production team, we do not reshape the pext table
 
@@ -230,28 +230,28 @@ pipeline.add_task(
 # Constraint
 ###############################################
 
-pipeline.add_task(
-    "prepare_exac_constraint",
-    prepare_exac_constraint,
-    f"/{constraint_subdir}/exac_constraint.ht",
-    {
-        "path": "gs://gcp-public-data--gnomad/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"
-    },
-)
+# pipeline.add_task(
+#     "prepare_exac_constraint",
+#     prepare_exac_constraint,
+#     f"/{constraint_subdir}/exac_constraint.ht",
+#     {
+#         "path": "gs://gcp-public-data--gnomad/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz"
+#     },
+# )
 
-pipeline.add_task(
-    "prepare_exac_regional_missense_constraint",
-    prepare_exac_regional_missense_constraint,
-    f"/{constraint_subdir}/exac_regional_missense_constraint.ht",
-    {"path": "gs://gcp-public-data--gnomad/legacy/exac_browser/regional_missense_constraint.tsv"},
-)
+# pipeline.add_task(
+#     "prepare_exac_regional_missense_constraint",
+#     prepare_exac_regional_missense_constraint,
+#     f"/{constraint_subdir}/exac_regional_missense_constraint.ht",
+#     {"path": "gs://gcp-public-data--gnomad/legacy/exac_browser/regional_missense_constraint.tsv"},
+# )
 
-pipeline.add_task(
-    "prepare_gnomad_v2_constraint",
-    prepare_gnomad_v2_constraint,
-    f"/{constraint_subdir}/gnomad_v2_constraint.ht",
-    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
-)
+# pipeline.add_task(
+#     "prepare_gnomad_v2_constraint",
+#     prepare_gnomad_v2_constraint,
+#     f"/{constraint_subdir}/gnomad_v2_constraint.ht",
+#     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"},
+# )
 
 pipeline.add_task(
     "prepare_gnomad_v4_constraint",
@@ -260,49 +260,49 @@ pipeline.add_task(
     {"path": "gs://gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"},
 )
 
-pipeline.add_task(
-    "prepare_grch37_heterozygous_variant_cooccurrence_counts",
-    prepare_heterozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/genes_grch37_heterozygous_variant_cooccurrence_counts.ht",
-)
+# pipeline.add_task(
+#     "prepare_grch37_heterozygous_variant_cooccurrence_counts",
+#     prepare_heterozygous_variant_cooccurrence_counts,
+#     f"/{genes_subdir}/genes_grch37_heterozygous_variant_cooccurrence_counts.ht",
+# )
 
-pipeline.add_task(
-    "prepare_grch37_homozygous_variant_cooccurrence_counts",
-    prepare_homozygous_variant_cooccurrence_counts,
-    f"/{genes_subdir}/genes_grch37_homozygous_variant_cooccurrence_counts.ht",
-)
+# pipeline.add_task(
+#     "prepare_grch37_homozygous_variant_cooccurrence_counts",
+#     prepare_homozygous_variant_cooccurrence_counts,
+#     f"/{genes_subdir}/genes_grch37_homozygous_variant_cooccurrence_counts.ht",
+# )
 
-pipeline.add_task(
-    "prepare_gnomad_v2_regional_missense_constraint",
-    prepare_gnomad_v2_regional_missense_constraint,
-    f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint.ht",
-    {"path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"},
-)
+# pipeline.add_task(
+#     "prepare_gnomad_v2_regional_missense_constraint",
+#     prepare_gnomad_v2_regional_missense_constraint,
+#     f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint.ht",
+#     {"path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"},
+# )
 
 ###############################################
 # Annotate genes
 ###############################################
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_1",
-    annotate_table,
-    f"/{genes_subdir}/genes_grch37_annotated_1.ht",
-    {
-        "table_path": pipeline.get_task("prepare_grch37_genes"),
-        "canonical_transcript": pipeline.get_task("get_grch37_canonical_transcripts"),
-        "pext": "gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/",
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_1",
+#     annotate_table,
+#     f"/{genes_subdir}/genes_grch37_annotated_1.ht",
+#     {
+#         "table_path": pipeline.get_task("prepare_grch37_genes"),
+#         "canonical_transcript": pipeline.get_task("get_grch37_canonical_transcripts"),
+#         "pext": "gs://gcp-public-data--gnomad/resources/grch37/pext/pext_grch37.ht/",
+#     },
+# )
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_2",
-    annotate_gene_transcripts_with_tissue_expression,
-    f"/{genes_subdir}/genes_grch37_annotated_2.ht",
-    {
-        "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
-        "gtex_tissue_expression_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/",
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_2",
+#     annotate_gene_transcripts_with_tissue_expression,
+#     f"/{genes_subdir}/genes_grch37_annotated_2.ht",
+#     {
+#         "table_path": pipeline.get_task("annotate_grch37_genes_step_1"),
+#         "gtex_tissue_expression_path": "gs://gcp-public-data--gnomad/resources/grch37/gtex/gtex_v7_tissue_expression.ht/",
+#     },
+# )
 
 
 def annotate_with_preferred_transcript(table_path):
@@ -320,41 +320,41 @@ def annotate_with_preferred_transcript(table_path):
     )
 
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_3",
-    annotate_with_preferred_transcript,
-    f"/{genes_subdir}/genes_grch37_annotated_3.ht",
-    {"table_path": pipeline.get_task("annotate_grch37_genes_step_2")},
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_3",
+#     annotate_with_preferred_transcript,
+#     f"/{genes_subdir}/genes_grch37_annotated_3.ht",
+#     {"table_path": pipeline.get_task("annotate_grch37_genes_step_2")},
+# )
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_4",
-    annotate_table,
-    f"/{genes_subdir}/genes_grch37_annotated_4.ht",
-    {
-        "table_path": pipeline.get_task("annotate_grch37_genes_step_3"),
-        "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
-        "exac_regional_missense_constraint": pipeline.get_task("prepare_exac_regional_missense_constraint"),
-        "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
-        "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
-    },
-    {"join_on": "preferred_transcript_id"},
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_4",
+#     annotate_table,
+#     f"/{genes_subdir}/genes_grch37_annotated_4.ht",
+#     {
+#         "table_path": pipeline.get_task("annotate_grch37_genes_step_3"),
+#         "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
+#         "exac_regional_missense_constraint": pipeline.get_task("prepare_exac_regional_missense_constraint"),
+#         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
+#         "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
+#     },
+#     {"join_on": "preferred_transcript_id"},
+# )
 
-pipeline.add_task(
-    "annotate_grch37_genes_step_5",
-    annotate_table_with_variant_cooccurrence_counts,
-    f"/{genes_subdir}/genes_grch37_annotated_5.ht",
-    {
-        "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
-        "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_grch37_heterozygous_variant_cooccurrence_counts"
-        ),
-        "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
-            "prepare_grch37_homozygous_variant_cooccurrence_counts"
-        ),
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch37_genes_step_5",
+#     annotate_table_with_variant_cooccurrence_counts,
+#     f"/{genes_subdir}/genes_grch37_annotated_5.ht",
+#     {
+#         "genes_path": pipeline.get_task("annotate_grch37_genes_step_4"),
+#         "heterozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_grch37_heterozygous_variant_cooccurrence_counts"
+#         ),
+#         "homozygous_variant_cooccurrence_counts_path": pipeline.get_task(
+#             "prepare_grch37_homozygous_variant_cooccurrence_counts"
+#         ),
+#     },
+# )
 
 # naming scheme follows methods naming scheme for consistency
 pipeline.add_task(
@@ -372,10 +372,12 @@ pipeline.add_task(
     annotate_table,
     f"/{genes_subdir}/genes_grch38_annotated_1.ht",
     {
-        "table_path": pipeline.get_task("prepare_grch38_genes"),
+        # "table_path": pipeline.get_task("prepare_grch38_genes"),
+        "table_path": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/genes/genes_grch38_base.ht",
         "canonical_transcript": pipeline.get_task("get_grch38_canonical_transcripts"),
         "mane_select_transcript": pipeline.get_task("import_mane_select_transcripts"),
-        "pext": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gnomad.pext.gtex_v10.browser.ht/",
+        # "pext": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gnomad.pext.gtex_v10.browser.ht/",
+        "pext": "gs://gnomad-v4-data-pipeline/20240813_rhg_test/output/external_sources/gnomad.v4.1.pext.regionlevel.for_browser.ht",
     },
 )
 
@@ -459,12 +461,12 @@ pipeline.add_task(
 # Extract transcripts
 ###############################################
 
-pipeline.add_task(
-    "extract_grch37_transcripts",
-    extract_transcripts,
-    f"/{genes_subdir}/transcripts_grch37_base.ht",
-    {"genes_path": pipeline.get_task("annotate_grch37_genes_step_4")},
-)
+# pipeline.add_task(
+#     "extract_grch37_transcripts",
+#     extract_transcripts,
+#     f"/{genes_subdir}/transcripts_grch37_base.ht",
+#     {"genes_path": pipeline.get_task("annotate_grch37_genes_step_4")},
+# )
 
 pipeline.add_task(
     "extract_grch38_transcripts",
@@ -477,16 +479,16 @@ pipeline.add_task(
 # Annotate transcripts
 ###############################################
 
-pipeline.add_task(
-    "annotate_grch37_transcripts",
-    annotate_table,
-    f"/{genes_subdir}/transcripts_grch37_annotated_1.ht",
-    {
-        "table_path": pipeline.get_task("extract_grch37_transcripts"),
-        "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
-        "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
-    },
-)
+# pipeline.add_task(
+#     "annotate_grch37_transcripts",
+#     annotate_table,
+#     f"/{genes_subdir}/transcripts_grch37_annotated_1.ht",
+#     {
+#         "table_path": pipeline.get_task("extract_grch37_transcripts"),
+#         "exac_constraint": pipeline.get_task("prepare_exac_constraint"),
+#         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v2_constraint"),
+#     },
+# )
 
 pipeline.add_task(
     "annotate_grch38_transcripts",
@@ -504,13 +506,13 @@ pipeline.add_task(
 
 pipeline.set_outputs(
     {
-        "genes_grch37": "annotate_grch37_genes_step_5",
+        # "genes_grch37": "annotate_grch37_genes_step_5",
         "genes_grch38": "annotate_grch38_genes_step_6",
-        "base_transcripts_grch37": "extract_grch37_transcripts",
+        # "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
-        "transcripts_grch37": "annotate_grch37_transcripts",
+        # "transcripts_grch37": "annotate_grch37_transcripts",
         "transcripts_grch38": "annotate_grch38_transcripts",
-        "mane_select_transcripts": "import_mane_select_transcripts",
+        # "mane_select_transcripts": "import_mane_select_transcripts",
     }
 )
 
