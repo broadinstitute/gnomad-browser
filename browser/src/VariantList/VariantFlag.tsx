@@ -8,6 +8,17 @@ type Flag = {
   formatTooltip: (input: any) => string
 }
 
+const formatMonoallelicFlag = (variant: any) => {
+  if (variant.exome && variant.exome.flags && variant.exome.flags.includes('monoallelic')) {
+    if (variant.genome && variant.genome.flags && variant.genome.flags.includes('monoallelic')) {
+      return 'All samples are homozygous alternate for the variant in both the exome and genome data'
+    }
+    return 'All samples are homozygous alternate for the variant in the exome data'
+  }
+
+  return 'All samples are homozygous alternate for the variant in the genome data'
+}
+
 export const FLAGS_CONFIG: Record<string, Flag> = {
   lcr: {
     label: 'LCR',
@@ -46,7 +57,7 @@ export const FLAGS_CONFIG: Record<string, Flag> = {
   monoallelic: {
     label: 'Monoallelic',
     level: 'info',
-    formatTooltip: () => 'All samples are homozygous alternate for the variant',
+    formatTooltip: formatMonoallelicFlag,
   },
   // Mitochondrial variants
   common_low_heteroplasmy: {
