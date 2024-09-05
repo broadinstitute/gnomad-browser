@@ -586,6 +586,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
           value
         }
       }
+      flags
     }
     genome {
       ac
@@ -665,6 +666,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
           value
         }
       }
+      flags
     }
     joint {
       ac
