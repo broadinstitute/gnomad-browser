@@ -46,6 +46,15 @@ const getConsequenceDescription = (contextType: any) => {
       return ' for consequence in this transcript'
   }
 }
+
+const consolidatedFlags = (row: any) => {
+  const variantFlags = row.flags || []
+  const exomeFlags = row.exome?.flags || []
+  const genomeFlags = row.genome?.flags || []
+  const allFlags = Array.from(new Set([...variantFlags, ...exomeFlags, ...genomeFlags]))
+  return allFlags.sort()
+}
+
 export type VariantTableColumn = {
   key: string
   heading: string
@@ -163,11 +172,16 @@ const variantTableColumns: VariantTableColumn[] = [
     description: 'Flags that may affect annotation and/or confidence',
     grow: 0,
     minWidth: 140,
-    compareFunction: makeNumericCompareFunction((variant: any) => variant.flags.length || null),
-    render: (row: any, key: any) =>
-      row[key]
-        .filter((flag: any) => flag !== 'segdup' && flag !== 'par')
-        .map((flag: any) => <VariantFlag key={flag} type={flag} variant={row} />),
+    compareFunction: makeNumericCompareFunction(
+      (variant: any) => consolidatedFlags(variant).length || null
+    ),
+    render: (row: any) => (
+      <>
+        {consolidatedFlags(row).map((flag: any) => (
+          <VariantFlag key={flag} type={flag} variant={row} />
+        ))}
+      </>
+    ),
   },
 
   {
@@ -208,7 +222,7 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvs'),
     getSearchTerms: (variant: any) => [variant.hgvs],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
       </Cell>
@@ -225,7 +239,7 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvsc'),
     getSearchTerms: (variant: any) => [variant.hgvsc],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -246,7 +260,7 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvsp'),
     getSearchTerms: (variant: any) => [variant.hgvsp],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -315,7 +329,7 @@ const variantTableColumns: VariantTableColumn[] = [
       rsids1[0].localeCompare(rsids2[0])
     ),
     getSearchTerms: (variant: any) => variant.rsids || [],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -366,7 +380,7 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 1,
     compareFunction: makeNumericCompareFunction('pos'),
     getSearchTerms: (variant: any) => [variant.variant_id].concat(variant.rsids || []),
-    render: (row: any, key: any, { highlightWords }: any) => (
+    render: (row: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Link target="_blank" to={`/variant/${row.variant_id}`}>
           <Highlighter autoEscape searchWords={highlightWords} textToHighlight={row.variant_id} />
@@ -409,7 +423,7 @@ export const getColumnsForContext = (context: any) => {
       : context.canonical_transcript_id
 
     // @ts-expect-error TS(2339) Property 'hgvs' does not exist on type '{}'.
-    columns.hgvs.render = (variant: any, key: any, { highlightWords }: any) => (
+    columns.hgvs.render = (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
         {primaryTranscriptId && variant.transcript_id !== primaryTranscriptId && ' †'}

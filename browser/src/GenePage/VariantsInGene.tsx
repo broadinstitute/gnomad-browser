@@ -246,6 +246,7 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
           faf99_max
           faf99_max_gen_anc
         }
+	flags
       }
       genome {
         ac
@@ -265,6 +266,7 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
           ac_hemi
           ac_hom
         }
+	flags
       }
       joint {
         ac
