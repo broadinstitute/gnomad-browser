@@ -139,13 +139,13 @@ async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int =
 
             # Get list of VCF partitions.
             all_part_urls = [
-                await f.url() async for f in await fs.listfiles(sharded_vcf_url) if f.name().startswith("part-")
+                await f.url() async for f in await fs.listfiles(sharded_vcf_url) if f.basename().startswith("part-")
             ]
 
             # Get list of parts in output.
             try:
                 completed_part_urls = [
-                    await f.url() async for f in await fs.listfiles(output_url) if f.name().startswith("part-")
+                    await f.url() async for f in await fs.listfiles(output_url) if f.basename().startswith("part-")
                 ]
             except FileNotFoundError:
                 completed_part_urls = []
