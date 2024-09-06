@@ -625,6 +625,10 @@ const SiteQualityMetricsHistogram = ({
 }: SiteQualityMetricsHistogramProps) => {
   const isLogScale = metric === 'SiteQuality' || metric === 'AS_QUALapprox' || metric === 'DP'
 
+  const logLabels = ['AS_VarDP', 'QUALapprox', 'AS_QUALapprox']
+
+  const xLabelRenamed = logLabels.includes(xLabel) ? `log(${xLabel})` : xLabel
+
   const primaryValues = exomeBinValues || genomeBinValues
   const secondaryValues = exomeBinValues ? genomeBinValues : null
 
@@ -777,7 +781,7 @@ const SiteQualityMetricsHistogram = ({
         stroke="#333"
       />
       <AxisBottom
-        label={xLabel}
+        label={xLabelRenamed}
         labelOffset={30}
         // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
         labelProps={labelProps}
