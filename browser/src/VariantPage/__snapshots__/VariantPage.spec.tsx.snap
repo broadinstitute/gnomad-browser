@@ -9828,7 +9828,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -19751,7 +19751,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -29674,7 +29674,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -39597,7 +39597,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -49520,7 +49520,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -59443,7 +59443,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </span>
                   </th>
                   <td>
-                    1
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -67153,7 +67153,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -77153,7 +77153,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -87201,7 +87201,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -97249,7 +97249,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -107297,7 +107297,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>
@@ -117345,7 +117345,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                     </span>
                   </th>
                   <td>
-                    1.000e+0
+                    0.0000
                   </td>
                 </tr>
                 <tr>

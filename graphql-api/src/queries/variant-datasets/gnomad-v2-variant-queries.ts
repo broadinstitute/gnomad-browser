@@ -116,7 +116,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     genomeFilters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -131,6 +131,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           quality_metrics: formatVariantQualityMetrics(variant.exome.quality_metrics),
           age_distribution: variant.exome.age_distribution[exomeSubset],
           filters: exomeFilters,
+          flags: exomeFlags,
         }
       : null,
     genome: variant.genome.freq[genomeSubset].ac_raw
@@ -140,9 +141,10 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
           quality_metrics: formatVariantQualityMetrics(variant.genome.quality_metrics),
           age_distribution: variant.genome.age_distribution[genomeSubset],
           filters: genomeFilters,
+          flags: genomeFlags,
         }
       : null,
-    flags,
+    flags: variantFlags,
     lof_curations: lofCurationResults,
     transcript_consequences: variant.transcript_consequences || [],
   }
@@ -154,11 +156,10 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
@@ -181,6 +182,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
+            flags: exomeFlags,
           }
         : null,
       genome: variant.genome.freq[genomeSubset].ac_raw
@@ -191,9 +193,10 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: genomeFilters,
+            flags: genomeFlags,
           }
         : null,
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
     }
   }
@@ -238,6 +241,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
       `value.genome.freq.${genomeSubset}`,
       'value.exome.filters',
       'value.genome.filters',
+      'value.exome.flags',
+      'value.genome.flags',
       'value.alt',
       'value.caid',
       'value.chrom',

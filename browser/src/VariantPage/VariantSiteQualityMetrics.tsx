@@ -571,7 +571,15 @@ const yTickFormat = (n: any) => {
   return `${n}`
 }
 
-const formatMetricValue = (value: any, metric: any) => {
+const logScaleMetrics = (selectedMetric: string) => {
+  const logMetrics = ['DP', 'AS_VarDP']
+  return logMetrics.includes(selectedMetric)
+}
+
+const formatMetricValue = (value: number, metric: string, isLog: boolean) => {
+  if (isLog) {
+    return `${Math.log10(value).toPrecision(5)}`
+  }
   if (value === 0) {
     return '0'
   }
@@ -623,17 +631,28 @@ const SiteQualityMetricsHistogram = ({
   height,
   width,
 }: SiteQualityMetricsHistogramProps) => {
+  // We can't use the logScaleMetrics helper here because isLogScale is regarding the bins and plotting while logScaleMetrics is related to the labeling of the plot's metrics
   const isLogScale = metric === 'SiteQuality' || metric === 'AS_QUALapprox' || metric === 'DP'
 
-  const logLabels = ['AS_VarDP', 'QUALapprox', 'AS_QUALapprox']
-
-  const xLabelRenamed = logLabels.includes(xLabel) ? `log(${xLabel})` : xLabel
+  const xLabelRenamed = logScaleMetrics(metric) ? `log(${xLabel})` : xLabel
 
   const primaryValues = exomeBinValues || genomeBinValues
   const secondaryValues = exomeBinValues ? genomeBinValues : null
 
-  const primaryMetricValue = exomeMetricValue !== null ? exomeMetricValue : genomeMetricValue
-  const secondaryMetricValue = exomeMetricValue !== null ? genomeMetricValue : null
+  const originalPrimaryMetricValue =
+    exomeMetricValue !== null ? exomeMetricValue : genomeMetricValue
+
+  const primaryMetricValue =
+    logScaleMetrics(metric) && originalPrimaryMetricValue > 0
+      ? Math.log10(originalPrimaryMetricValue)
+      : originalPrimaryMetricValue
+
+  const originalSecondaryMetricValue = exomeMetricValue !== null ? genomeMetricValue : null
+
+  const secondaryMetricValue =
+    logScaleMetrics(metric) && originalSecondaryMetricValue > 0
+      ? Math.log10(originalSecondaryMetricValue)
+      : originalSecondaryMetricValue
 
   const primaryYLabel = exomeBinValues ? 'Exome variants' : 'Genome variants'
   const secondaryYLabel = 'Genome variants'
@@ -874,7 +893,7 @@ const SiteQualityMetricsHistogram = ({
               fontSize={12}
               textAnchor={secondaryLabelOnLeft ? 'end' : 'start'}
             >
-              {formatMetricValue(secondaryMetricValue, metric)}
+              {formatMetricValue(originalSecondaryMetricValue, metric, logScaleMetrics(metric))}
             </text>
           </>
         )}
@@ -902,7 +921,8 @@ const SiteQualityMetricsHistogram = ({
               fontSize={12}
               textAnchor={primaryLabelOnLeft ? 'end' : 'start'}
             >
-              {formatMetricValue(primaryMetricValue, metric)}
+              {/* {formattedLabel} */}
+              {formatMetricValue(originalPrimaryMetricValue, metric, logScaleMetrics(metric))}
             </text>
           </>
         )}
@@ -985,6 +1005,22 @@ const getDefaultSelectedSequencingType = (variant: any) => {
   return 'g'
 }
 
+const exomeLegendText = (exomeMetricValue: number, selectedMetric: string) => {
+  return `${
+    exomeMetricValue === null
+      ? '–'
+      : formatMetricValue(exomeMetricValue, selectedMetric, logScaleMetrics(selectedMetric))
+  } (exome samples)`
+}
+
+const genomeLegendText = (genomeMetricValue: number, selectedMetric: string) => {
+  return `${
+    genomeMetricValue === null
+      ? '–'
+      : formatMetricValue(genomeMetricValue, selectedMetric, logScaleMetrics(selectedMetric))
+  } (genome samples)`
+}
+
 const VariantSiteQualityMetricsDistribution = ({
   datasetId,
   variant,
@@ -1022,19 +1058,14 @@ const VariantSiteQualityMetricsDistribution = ({
 
   let values
   if (variant.exome && variant.genome) {
-    values = `${
-      exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
-    } (exome samples), ${
-      genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
-    } (genome samples)`
+    values = `${exomeLegendText(exomeMetricValue, selectedMetric)}, ${genomeLegendText(
+      genomeMetricValue,
+      selectedMetric
+    )}`
   } else if (variant.exome) {
-    values = `${
-      exomeMetricValue === null ? '–' : formatMetricValue(exomeMetricValue, selectedMetric)
-    } (exome samples)`
+    values = exomeLegendText(exomeMetricValue, selectedMetric)
   } else {
-    values = `${
-      genomeMetricValue === null ? '–' : formatMetricValue(genomeMetricValue, selectedMetric)
-    } (genome samples)`
+    values = genomeLegendText(genomeMetricValue, selectedMetric)
   }
 
   return (
@@ -1196,14 +1227,18 @@ const VariantSiteQualityMetricsTable = ({
               {exomeMetricValues && metric in exomeMetricValues && isVariantInExomes && (
                 <td>
                   {exomeMetricValues![metric] != null
-                    ? formatMetricValue(exomeMetricValues![metric], metric)
+                    ? formatMetricValue(exomeMetricValues![metric], metric, logScaleMetrics(metric))
                     : '–'}
                 </td>
               )}
               {genomeMetricValues && metric in genomeMetricValues && isVariantInGenomes && (
                 <td>
                   {genomeMetricValues && ![metric] != null
-                    ? formatMetricValue(genomeMetricValues![metric], metric)
+                    ? formatMetricValue(
+                        genomeMetricValues![metric],
+                        metric,
+                        logScaleMetrics(metric)
+                      )
                     : '–'}
                 </td>
               )}
