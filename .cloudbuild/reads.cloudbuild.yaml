@@ -4,7 +4,9 @@ steps:
       [
         'build',
         '-t',
-        'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-server:$SHORT_SHA',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:${_BUILD_TAG}',
         '-f',
         'deploy/dockerfiles/reads/reads-server.dockerfile',
         '.',
@@ -14,12 +16,21 @@ steps:
       [
         'build',
         '-t',
-        'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:$SHORT_SHA',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:${_BUILD_TAG}',
         '-f',
-        'deploy/dockerfiles/reads/auth.dockerfile',
+        'deploy/dockerfiles/reads/reads-api.dockerfile',
         '.',
       ]
-# TODO: commented out for testing without push
-# images:
-#   - 'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-server:$SHORT_SHA'
-#   - 'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:$SHORT_SHA'
+options:
+  dynamicSubstitutions: true
+substitutions:
+  _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
+
+# push tag with the short sha, and also a branch-based UUID
+images:
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:$SHORT_SHA'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:${_BUILD_TAG}'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:$SHORT_SHA'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:${_BUILD_TAG}'
