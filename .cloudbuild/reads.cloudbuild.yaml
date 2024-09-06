@@ -1,3 +1,7 @@
+# Submitting a cloud build using this config from your local machine can be done as:
+# gcloud builds submit --config .cloudbuild/reads.cloudbuild.yaml \
+#                      --substitutions=_BRANCH_FOR_IMAGE_NAME="my-branch-name",SHORT_SHA="6f3f419" .
+
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
