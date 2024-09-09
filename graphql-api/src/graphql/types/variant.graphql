@@ -192,7 +192,7 @@ type Variant {
   hgvs: String
 
   # GA4GH-format data
-  va: [VACohortAlleleFrequency!]
+  va: VACohortAlleleFrequency!
   vrs: VAAllele
 }
 
@@ -322,7 +322,7 @@ type VariantDetails {
   multiNucleotideVariants: [MultiNucleotideVariantSummary!]
   sortedTranscriptConsequences: [TranscriptConsequence!]
 
-  va: [VACohortAlleleFrequency!]
+  va: VACohortAlleleFrequency!
   vrs: VAAllele
 }
 
