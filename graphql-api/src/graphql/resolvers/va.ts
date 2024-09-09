@@ -142,6 +142,8 @@ const generateSequenceId = (sequence: string) => {
   return hashWithSha512t24u(sequence)
 }
 
+const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
+
 export const resolveVAAllele = async (obj: any, _args: any, _ctx: any): Promise<Allele | null> => {
   const vrsData = obj.vrs
 
@@ -199,9 +201,12 @@ const getAncestryAndSexIds = (subsetId: string): [string | undefined, string | u
   return first === 'XX' || first === 'XY' ? [undefined, first] : [first, second]
 }
 
-const cohortDescription = (subsetId: string | undefined): string => {
+const cohortDescription = (
+  subsetId: string | undefined,
+  frequencyField: 'exome' | 'genome'
+): string => {
   if (subsetId === undefined) {
-    return 'Overall Cohort'
+    return `${capitalize(frequencyField)} Cohort`
   }
 
   const [ancestryGroupId, sexId] = getAncestryAndSexIds(subsetId)
@@ -209,16 +214,16 @@ const cohortDescription = (subsetId: string | undefined): string => {
   if (ancestryGroupId) {
     const ancestryGroupName = POPULATION_NAMES[ancestryGroupId]
     if (sexId) {
-      return `${ancestryGroupName} ${sexId} Ancestry Group`
+      return `${capitalize(frequencyField)} ${ancestryGroupName} ${sexId} Ancestry Group`
     }
-    return `${ancestryGroupName} Ancestry Group`
+    return `${capitalize(frequencyField)} ${ancestryGroupName} Ancestry Group`
   }
   return sexId!
 }
 
-const cohortForSubset = (subset: Subset): Cohort => {
+const cohortForSubset = (subset: Subset, frequencyField: 'exome' | 'genome'): Cohort => {
   if (!subset.id) {
-    return { id: 'ALL', label: 'Overall', characteristics: null }
+    return { id: 'ALL', label: capitalize(frequencyField), characteristics: null }
   }
 
   const [ancestryGroupId, sexId] = getAncestryAndSexIds(subset.id)
@@ -237,19 +242,24 @@ const cohortForSubset = (subset: Subset): Cohort => {
       : []
   const characteristics = [...sexCharacteristics, ...ancestryCharacteristics]
 
-  return { id: subset.id || 'ALL', label: cohortDescription(subset.id), characteristics }
+  return {
+    id: subset.id || 'ALL',
+    label: cohortDescription(subset.id, frequencyField),
+    characteristics,
+  }
 }
 
 const resolveVACohortAlleleFrequency = (
   focusAllele: Allele,
   variant_id: string,
-  subset: Subset
+  subset: Subset,
+  frequencyField: 'exome' | 'genome'
 ): CohortAlleleFrequencyWithoutSubcohorts => {
   const idSuffix = subset.id ? `.${subset.id}` : ''
   const id = `gnomad4:${variant_id}${idSuffix}`
-  const label = `${cohortDescription(subset.id)} Allele Frequency for ${variant_id}`
+  const label = `${cohortDescription(subset.id, frequencyField)} Allele Frequency for ${variant_id}`
 
-  const cohort = cohortForSubset(subset)
+  const cohort = cohortForSubset(subset, frequencyField)
 
   const ancillaryResults = {
     grpMaxFAF95: subset.grpMax || null,
@@ -357,17 +367,22 @@ const addSubcohorts = (
   return Object.values(subcohortMap)
 }
 
-export const resolveVACohortAlleleFrequencies = async (
+const resolveVACohortAlleleFrequencies = async (
   obj: any,
   args: any,
-  ctx: any
+  ctx: any,
+  frequencyField: 'exome' | 'genome'
 ): Promise<CohortAlleleFrequency[] | null> => {
   const focusAllele = await resolveVAAllele(obj, args, ctx)
   if (focusAllele === null) {
     return null
   }
 
-  const frequencies = obj.exome || obj.genome
+  const frequencies = obj[frequencyField]
+  if (!frequencies) {
+    return null
+  }
+
   const fullSet: Subset = {
     ac: frequencies.ac,
     an: frequencies.an,
@@ -389,8 +404,14 @@ export const resolveVACohortAlleleFrequencies = async (
   }
   const subsets = [fullSet, ...(frequencies.ancestry_groups as Subset[])]
   const cohortsWithoutSubcohorts = subsets.map((subset) =>
-    resolveVACohortAlleleFrequency(focusAllele, obj.variant_id, subset)
+    resolveVACohortAlleleFrequency(focusAllele, obj.variant_id, subset, frequencyField)
   )
 
   return addSubcohorts(cohortsWithoutSubcohorts)
 }
+
+export const resolveVAExome = async (obj: any, args: any, ctx: any) =>
+  resolveVACohortAlleleFrequencies(obj, args, ctx, 'exome')
+
+export const resolveVAGenome = async (obj: any, args: any, ctx: any) =>
+  resolveVACohortAlleleFrequencies(obj, args, ctx, 'genome')
