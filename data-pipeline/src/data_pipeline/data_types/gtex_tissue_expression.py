@@ -51,3 +51,9 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, 
     ds = ds.key_by("transcript_id").drop("row_id")
 
     return ds
+
+
+def reshape_gtex_data_to_tissue_array(gtex_struct_path):
+    ds = hl.read_table(gtex_struct_path)
+    ds = ds.annotate(tissues=hl.array([hl.struct(tissue=tissue, value=ds.tissues[tissue]) for tissue in ds.tissues]))
+    return ds
