@@ -3,9 +3,10 @@ import { withCache } from '../cache'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const GENE_INDICES = {
-  GRCh37: 'genes_grch37',
+  // GRCh37: 'genes_grch37',
   // GRCh38: 'genes_grch38',
-  GRCh38: 'genes_grch38-2024-08-30--21-03',
+  GRCh37: 'genes_grch37-2024-09-12--17-47',
+  GRCh38: 'genes_grch38-2024-09-12--17-44',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
