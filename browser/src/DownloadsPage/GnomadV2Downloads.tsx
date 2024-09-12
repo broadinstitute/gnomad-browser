@@ -303,7 +303,7 @@ const GnomadV2Downloads = () => {
           <ListItem>
             <GetUrlButtons
               label="Browser GRCh37 gene models Hail Table"
-              path="/resources/grch37/genes/gnomad.genes.GRCh37.GENCODEv19.ht"
+              path="/resources/grch37/browser/gnomad.genes.GRCh37.GENCODEv19.ht"
             />
           </ListItem>
         </FileList>
