@@ -123,7 +123,7 @@ type VACohortAlleleFrequencyData {
   This creates a recursive relationship and subcohorts can be further subdivided into more subcohorts.
   This enables, for example, the description of different ancestry groups and sexes among those ancestry groups.
   """
-  subcohortFrequency: [VACohortAlleleFrequencyData]
+  subcohortFrequency: [VACohortAlleleFrequencyData!]
 }
 
 "A measure of the frequency of an Allele in a cohort."
