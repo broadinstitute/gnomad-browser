@@ -335,25 +335,21 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
 ## Create and Update Reads Deployment
 
-Create Reads Deployment
+### Production
+
+Docker images are built after merging to main. Once the build succeeds, and you have a new tag, update the reads deployment in [gnomad-deployments/reads](https://github.com/broadinstitute/gnomad-deployments/tree/main/reads). See the instructions in the deployment repo to create a new blue/green version, and deploy it to the cluster.
+
+### Development / Demo
 
 - Build Docker images and push to GCR.
 
   ```
-  ./deployctl reads-images build --push
+  ./reads/docker-build.sh
   ```
 
 - Create deployment manifests.
 
-  ```
-  ./deployctl reads-deployments create
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl reads-deployments apply <deployment-name>
-  ```
+  Follow the instructions in the [gnomad-deployments/reads](https://github.com/broadinstitute/gnomad-deployments/tree/main/reads) repo to create and apply a new demo deployment.
 
 Update Reads Deployment
 
