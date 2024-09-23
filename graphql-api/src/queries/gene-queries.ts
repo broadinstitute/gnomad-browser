@@ -1,4 +1,4 @@
-import { withCache } from '../cache'
+// import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
