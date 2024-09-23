@@ -54,14 +54,6 @@ const TranscriptsTissueExpression = ({
   defaultSortTissuesBy,
 }: TranscriptsTissueExpressionProps) => {
   const [sortTranscriptsBy, setSortTranscriptsBy] = useState('default')
-
-  // TODO: really I should calc this ONCE early on (like at the top level of all these components, and just pass it down to everywhere
-  //
-  //
-  console.log('wha')
-  console.log(datasetId)
-  console.log(getTopLevelDataset(datasetId))
-
   const gtexTissuesForDataset = GTEX_TISSUES[getTopLevelDataset(datasetId)]
 
   let renderedTranscripts =

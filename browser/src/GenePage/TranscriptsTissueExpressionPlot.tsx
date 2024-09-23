@@ -137,11 +137,6 @@ const TranscriptsTissueExpressionPlot = ({
   starredTranscriptId,
 }: TranscriptsTissueExpressionPlotProps) => {
   const renderedTissues: (AllGtexTissues | 'Mean' | 'Median')[] = ['Mean', 'Median', ...tissues!]
-
-  console.log('hmmm')
-  console.log(datasetId)
-  console.log(getTopLevelDataset(datasetId))
-
   const gtexTissuesForDataset = GTEX_TISSUES[getTopLevelDataset(datasetId)]
 
   const transcriptsWithMeanAndMedianExpression = transcripts.map((transcript) => {
@@ -294,7 +289,6 @@ const TranscriptsTissueExpressionPlot = ({
         stroke="#333"
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         tickFormat={(t) => {
-          console.log(t)
           return gtexTissuesForDataset[t] ? gtexTissuesForDataset[t].fullName : t
         }}
         tickLabelProps={(value) => ({
