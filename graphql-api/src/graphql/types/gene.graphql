@@ -7,8 +7,7 @@ type GeneTranscript {
   stop: Int!
   exons: [Exon!]!
   strand: String!
-
-  gtex_tissue_expression: [GtexTissue]
+  gtex_tissue_expression: [GtexTissue!]
 }
 
 type ManeSelectTranscript {
