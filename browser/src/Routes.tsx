@@ -12,7 +12,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
-const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
+const DataPage = lazy(() => import('./DataPage/DataPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
@@ -169,7 +169,10 @@ const Routes = () => {
 
       <Route exact path="/team" component={TeamPage} />
 
-      <Route exact path="/downloads" component={DownloadsPage} />
+      {/* /downloads is the legacy path to the data page, which we still support here because there are lots of extant links to fragments within /downloads, and those get stripped if you use a redirect. */}
+      <Route exact path="/downloads" component={DataPage} />
+
+      <Route exact path="/data" component={DataPage} />
 
       <Redirect from="/terms" to="/policies" />
 
