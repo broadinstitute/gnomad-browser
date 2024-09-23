@@ -389,10 +389,10 @@ exports[`NavBar has no unexpected changes 1`] = `
     </li>
     <li>
       <a
-        href="/downloads"
+        href="/data"
         onClick={[Function]}
       >
-        Downloads
+        Data
       </a>
     </li>
     <li>

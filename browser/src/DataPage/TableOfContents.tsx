@@ -24,7 +24,7 @@ const TableOfContentsStyledItem = styled.div<{
   }
 `
 
-const DownloadsPageTableOfContents = () => {
+const DataPageTableOfContents = () => {
   const [headings, setHeadings] = useState([])
   const { activeId } = useHeadsObserver()
   const [activeSection, setActiveSection] = useState('')
@@ -118,4 +118,4 @@ const DownloadsPageTableOfContents = () => {
   )
 }
 
-export default DownloadsPageTableOfContents
+export default DataPageTableOfContents
