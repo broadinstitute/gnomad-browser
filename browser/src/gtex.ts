@@ -1,5 +1,3 @@
-import { TopLevelDataset } from '@gnomad/dataset-metadata/metadata'
-
 const SHARED_GTEX_TISSUES = {
   adipose_subcutaneous: {
     fullName: 'Adipose - Subcutaneous',
