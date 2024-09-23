@@ -3,9 +3,12 @@ import { scaleBand, scaleLinear, scaleOrdinal } from 'd3-scale'
 import React from 'react'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
+import { Transcript } from '../TranscriptPage/TranscriptPage'
+
 import { TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUE_NAMES } from '../gtex'
+import { AllGtexTissues, GTEX_TISSUES } from '../gtex'
+import { DatasetId, getTopLevelDataset } from '@gnomad/dataset-metadata/metadata'
 
 const mergeOverlappingRegions = (regions: any) => {
   if (regions.length === 0) {
@@ -120,46 +123,49 @@ const margin = {
   top: 45,
 }
 
-type OwnTranscriptsTissueExpressionPlotProps = {
-  tissues?: string[]
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-    gtex_tissue_expression: {
-      [key: string]: number
-    }
-  }[]
+type TranscriptsTissueExpressionPlotProps = {
+  datasetId: DatasetId
+  tissues?: AllGtexTissues[]
+  transcripts: Transcript[]
   starredTranscriptId?: string
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'TranscriptsTissueExpressionPlotProps' ... Remove this comment to see the full error message
-type TranscriptsTissueExpressionPlotProps = OwnTranscriptsTissueExpressionPlotProps &
-  typeof TranscriptsTissueExpressionPlot.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'TranscriptsTissueExpressionPlot' implicitly has t... Remove this comment to see the full error message
 const TranscriptsTissueExpressionPlot = ({
+  datasetId,
   tissues,
   transcripts,
   starredTranscriptId,
 }: TranscriptsTissueExpressionPlotProps) => {
-  const renderedTissues = ['Mean', 'Median', ...tissues]
+  const renderedTissues: (AllGtexTissues | 'Mean' | 'Median')[] = ['Mean', 'Median', ...tissues!]
 
-  const transcriptsWithMeanAndMedianExpresion = transcripts.map((transcript: any) => {
-    const expressionValues = Object.values(transcript.gtex_tissue_expression)
+  console.log('hmmm')
+  console.log(datasetId)
+  console.log(getTopLevelDataset(datasetId))
+
+  const gtexTissuesForDataset = GTEX_TISSUES[getTopLevelDataset(datasetId)]
+
+  const transcriptsWithMeanAndMedianExpression = transcripts.map((transcript) => {
+    const gtexTissueExpressionObject = transcript.gtex_tissue_expression!.reduce((acc, tissue) => {
+      acc[tissue.tissue] = tissue.value
+      return acc
+    }, {} as Record<string, number>)
+
+    const expressionValues = transcript.gtex_tissue_expression!.map((tissue) => tissue.value)
+
     return {
       ...transcript,
       gtex_tissue_expression: {
-        ...transcript.gtex_tissue_expression,
-        // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown[]' is not assignable to ... Remove this comment to see the full error message
+        ...gtexTissueExpressionObject,
         Mean: mean(expressionValues),
-        // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown[]' is not assignable to ... Remove this comment to see the full error message
         Median: median(expressionValues),
       },
     }
   })
 
   const maxTissueExpression = max(
-    transcripts.flatMap((transcript: any) => Object.values(transcript.gtex_tissue_expression))
+    transcripts.flatMap((transcript: Transcript) =>
+      transcript.gtex_tissue_expression!.map((tissue) => tissue.value)
+    )
   )
 
   // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number | undefined)[]'... Remove this comment to see the full error message
@@ -201,7 +207,7 @@ const TranscriptsTissueExpressionPlot = ({
     )
 
   const yScale = scaleBand()
-    .domain(transcriptsWithMeanAndMedianExpresion.map((t: any) => t.transcript_id))
+    .domain(transcriptsWithMeanAndMedianExpression.map((t: any) => t.transcript_id))
     .range([0, plotHeight])
     .padding(padding)
 
@@ -210,7 +216,6 @@ const TranscriptsTissueExpressionPlot = ({
   const halfYPadding = (yScale.step() * yScale.paddingInner()) / 2
 
   const transcriptLabels = transcripts.reduce(
-    // @ts-expect-error TS(7006) FIXME: Parameter 'acc' implicitly has an 'any' type.
     (acc, transcript) => ({
       ...acc,
       [transcript.transcript_id]: `${transcript.transcript_id}.${transcript.transcript_version}`,
@@ -288,7 +293,10 @@ const TranscriptsTissueExpressionPlot = ({
         scale={xAxisScale}
         stroke="#333"
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        tickFormat={(t) => GTEX_TISSUE_NAMES[t] || t}
+        tickFormat={(t) => {
+          console.log(t)
+          return gtexTissuesForDataset[t] ? gtexTissuesForDataset[t].fullName : t
+        }}
         tickLabelProps={(value) => ({
           dx: '-0.25em',
           dy: '0.25em',
@@ -301,7 +309,7 @@ const TranscriptsTissueExpressionPlot = ({
         tickLength={3}
       />
       <g transform={`translate(${margin.left},${margin.top})`}>
-        {transcriptsWithMeanAndMedianExpresion.map((transcript: any) => (
+        {transcriptsWithMeanAndMedianExpression.map((transcript) => (
           <g
             key={transcript.transcript_id}
             transform={`translate(0, ${yScale(transcript.transcript_id)})`}
@@ -311,13 +319,12 @@ const TranscriptsTissueExpressionPlot = ({
               if (tissueId === 'Mean' || tissueId === 'Median') {
                 tooltipText = `${
                   transcript.transcript_id
-                } ${tissueId} expression: ${transcript.gtex_tissue_expression[tissueId].toFixed(
+                } ${tissueId} expression: ${transcript.gtex_tissue_expression[tissueId]!.toFixed(
                   2
                 )} TPM`
               } else {
                 tooltipText = `${transcript.transcript_id} expression in ${
-                  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                  GTEX_TISSUE_NAMES[tissueId]
+                  gtexTissuesForDataset[tissueId].fullName
                 } tissues: ${transcript.gtex_tissue_expression[tissueId].toFixed(2)} TPM`
               }
 
@@ -361,11 +368,11 @@ const TranscriptsTissueExpressionPlot = ({
   )
 }
 
-TranscriptsTissueExpressionPlot.defaultProps = {
-  tissues: Object.entries(GTEX_TISSUE_NAMES)
-    .sort((t1: any, t2: any) => t1[1].localeCompare(t2[1]))
-    .map((t: any) => t[0]),
-  starredTranscriptId: null,
-}
+// TranscriptsTissueExpressionPlot.defaultProps = {
+//   tissues: Object.entries(GTEX_TISSUE_NAMES)
+//     .sort((t1: any, t2: any) => t1[1].localeCompare(t2[1]))
+//     .map((t: any) => t[0]),
+//   starredTranscriptId: null,
+// }
 
 export default TranscriptsTissueExpressionPlot

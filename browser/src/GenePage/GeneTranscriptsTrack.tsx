@@ -8,13 +8,18 @@ import { Track } from '@gnomad/region-viewer'
 import TranscriptsTrack from '@gnomad/track-transcripts'
 import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUE_NAMES } from '../gtex'
+import { GTEX_TISSUES } from '../gtex'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 import { Gene } from './GenePage'
-import { hasStructuralVariants } from '../../../dataset-metadata/metadata'
+import {
+  DatasetId,
+  getTopLevelDataset,
+  hasStructuralVariants,
+} from '../../../dataset-metadata/metadata'
+import { Transcript } from '../TranscriptPage/TranscriptPage'
 
 const TranscriptsInfoWrapper = styled.div`
   display: flex;
@@ -34,8 +39,8 @@ const RightPanel = styled.div`
   padding: 0.375em;
 `
 
-type OwnProps = {
-  datasetId: string
+type GeneTranscriptsTrack = {
+  datasetId: DatasetId
   gene: Gene
   includeNonCodingTranscripts: boolean
   includeUTRs: boolean
@@ -43,10 +48,6 @@ type OwnProps = {
   preferredTranscriptDescription?: string | React.ReactNode
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
-type Props = OwnProps & typeof GeneTranscriptsTrack.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GeneTranscriptsTrack' implicitly has type 'any' b... Remove this comment to see the full error message
 const GeneTranscriptsTrack = ({
   datasetId,
   gene,
@@ -54,16 +55,19 @@ const GeneTranscriptsTrack = ({
   includeUTRs,
   preferredTranscriptId,
   preferredTranscriptDescription,
-}: Props) => {
+}: GeneTranscriptsTrack) => {
   const transcriptsTrack = useRef(null)
+
+  const gtexTissues = GTEX_TISSUES[getTopLevelDataset(datasetId)]
 
   const isTissueExpressionAvailable = gene.reference_genome === 'GRCh37'
   const [showTissueExpressionModal, setShowTissueExpressionModal] = useState(false)
 
   const maxMeanExpression = isTissueExpressionAvailable
     ? max(
-        gene.transcripts.map((transcript: any) =>
-          mean(Object.values(transcript.gtex_tissue_expression))
+        // @ts-ignore
+        gene.transcripts.map((transcript: Transcript) =>
+          mean(transcript.gtex_tissue_expression!.map((tissue) => tissue.value))
         )
       )
     : undefined
@@ -146,10 +150,7 @@ const GeneTranscriptsTrack = ({
                       // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message
                       tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
                         2
-                      )} TPM\nMost expressed in ${
-                        // @ts-expect-error TS(2538) FIXME: Type 'undefined' cannot be used as an index type.
-                        GTEX_TISSUE_NAMES[tissueMostExpressedIn]
-                      } (${
+                      )} TPM\nMost expressed in ${gtexTissues[tissueMostExpressedIn].fullName} (${
                         // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
                         maxExpression.toFixed(2)
                       } TPM)`}

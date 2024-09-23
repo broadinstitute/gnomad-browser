@@ -528,6 +528,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
           <TissueExpressionTrack
+            datasetId={datasetId}
             exons={cdsCompositeExons}
             expressionRegions={gene.pext.regions}
             flags={gene.pext.flags}
