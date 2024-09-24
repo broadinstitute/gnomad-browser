@@ -209,9 +209,9 @@ const SHARED_GTEX_TISSUES = {
   },
 }
 
-type SharedTissues = keyof typeof SHARED_GTEX_TISSUES
+type SharedGtexTissueNames = keyof typeof SHARED_GTEX_TISSUES
 
-type TissueDetail = {
+export type TissueDetail = {
   fullName: string
   color: string
 }
@@ -223,9 +223,9 @@ const V2_SPECIFIC_GTEX_TISSUES = {
   },
 }
 
-type V2GtexTissues = SharedTissues | keyof typeof V2_SPECIFIC_GTEX_TISSUES
+type V2GtexTissueNames = SharedGtexTissueNames | keyof typeof V2_SPECIFIC_GTEX_TISSUES
 
-const V2_GTEX_TISSUES: Record<V2GtexTissues, TissueDetail> = {
+const V2_GTEX_TISSUES: Record<V2GtexTissueNames, TissueDetail> = {
   ...SHARED_GTEX_TISSUES,
   ...V2_SPECIFIC_GTEX_TISSUES,
 }
@@ -297,24 +297,26 @@ const V4_SPECIFIC_GTEX_TISSUES = {
   },
 }
 
-type V4GtexTissues = SharedTissues | keyof typeof V4_SPECIFIC_GTEX_TISSUES
+type V4GtexTissueNames = SharedGtexTissueNames | keyof typeof V4_SPECIFIC_GTEX_TISSUES
 
-export type AllGtexTissues =
-  | SharedTissues
+export type AllGtexTissueNames =
+  | SharedGtexTissueNames
   | keyof typeof V2_SPECIFIC_GTEX_TISSUES
   | keyof typeof V4_SPECIFIC_GTEX_TISSUES
 
-const V4_GTEX_TISSUES: Record<V4GtexTissues, TissueDetail> = {
+export type AllGtexTissues = Record<AllGtexTissueNames, TissueDetail>
+
+const V4_GTEX_TISSUES: Record<V4GtexTissueNames, TissueDetail> = {
   ...SHARED_GTEX_TISSUES,
   ...V4_SPECIFIC_GTEX_TISSUES,
 }
 
 export const GTEX_TISSUES: {
-  v2: Record<V2GtexTissues, TissueDetail>
-  v4: Record<V4GtexTissues, TissueDetail>
-  default: Record<SharedTissues, TissueDetail>
-  v3: Record<SharedTissues, TissueDetail>
-  ExAC: Record<SharedTissues, TissueDetail>
+  v2: Record<V2GtexTissueNames, TissueDetail>
+  v4: Record<V4GtexTissueNames, TissueDetail>
+  default: Record<SharedGtexTissueNames, TissueDetail>
+  v3: Record<SharedGtexTissueNames, TissueDetail>
+  ExAC: Record<SharedGtexTissueNames, TissueDetail>
 } = {
   v2: V2_GTEX_TISSUES,
   v4: V4_GTEX_TISSUES,

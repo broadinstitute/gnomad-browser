@@ -8,18 +8,14 @@ import { Track } from '@gnomad/region-viewer'
 import TranscriptsTrack from '@gnomad/track-transcripts'
 import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUES } from '../gtex'
+import { AllGtexTissues, TissueDetail } from '../gtex'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 import { Gene } from './GenePage'
-import {
-  DatasetId,
-  getTopLevelDataset,
-  hasStructuralVariants,
-} from '../../../dataset-metadata/metadata'
-import { Transcript } from '../TranscriptPage/TranscriptPage'
+import { DatasetId, hasStructuralVariants } from '../../../dataset-metadata/metadata'
+import { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
 const TranscriptsInfoWrapper = styled.div`
   display: flex;
@@ -41,6 +37,8 @@ const RightPanel = styled.div`
 
 type GeneTranscriptsTrack = {
   datasetId: DatasetId
+  isTissueExpressionAvailable: boolean
+  gtexTissues: Partial<AllGtexTissues> & { [key: string]: TissueDetail | undefined }
   gene: Gene
   includeNonCodingTranscripts: boolean
   includeUTRs: boolean
@@ -50,6 +48,8 @@ type GeneTranscriptsTrack = {
 
 const GeneTranscriptsTrack = ({
   datasetId,
+  isTissueExpressionAvailable,
+  gtexTissues,
   gene,
   includeNonCodingTranscripts,
   includeUTRs,
@@ -57,17 +57,12 @@ const GeneTranscriptsTrack = ({
   preferredTranscriptDescription,
 }: GeneTranscriptsTrack) => {
   const transcriptsTrack = useRef(null)
-
-  const gtexTissues = GTEX_TISSUES[getTopLevelDataset(datasetId)]
-
-  const isTissueExpressionAvailable = gene.reference_genome === 'GRCh37'
   const [showTissueExpressionModal, setShowTissueExpressionModal] = useState(false)
 
   const maxMeanExpression = isTissueExpressionAvailable
     ? max(
-        // @ts-ignore
-        gene.transcripts.map((transcript: Transcript) =>
-          mean(transcript.gtex_tissue_expression!.map((tissue) => tissue.value))
+        (gene.transcripts as TranscriptWithTissueExpression[]).map(
+          (transcript) => mean(transcript.gtex_tissue_expression.map((tissue) => tissue.value))!
         )
       )
     : undefined
@@ -133,15 +128,36 @@ const GeneTranscriptsTrack = ({
         renderTranscriptRightPanel={
           !isTissueExpressionAvailable
             ? null
-            : ({ transcript, width }: any) => {
+            : ({
+                transcript,
+                width,
+              }: {
+                transcript: TranscriptWithTissueExpression
+                width: number
+              }) => {
                 if (width < 36) {
                   return null
                 }
 
-                const meanExpression = mean(Object.values(transcript.gtex_tissue_expression))
-                const maxExpression = max(Object.values(transcript.gtex_tissue_expression))
-                const tissueMostExpressedIn = Object.keys(transcript.gtex_tissue_expression).find(
-                  (tissue: any) => transcript.gtex_tissue_expression[tissue] === maxExpression
+                const meanExpression = mean(
+                  transcript.gtex_tissue_expression.map(
+                    (tissueExpression) => tissueExpression.value
+                  )
+                )!
+                const maxExpression = max(
+                  transcript.gtex_tissue_expression.map(
+                    (tissueExpression) => tissueExpression.value
+                  )
+                )!
+                const tissueMostExpressedIn = transcript.gtex_tissue_expression.find(
+                  (tissue) => tissue.value === maxExpression
+                )!.tissue
+
+                const circleRadiusMeanContribution = meanExpression === 0 ? 0 : 0.25
+                const circleRadiusMaxMeanContribution =
+                  maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression! // if the right panel render, maxMean is defined
+                const circleRadius = Math.sqrt(
+                  circleRadiusMeanContribution + 23.75 * circleRadiusMaxMeanContribution
                 )
 
                 return (
@@ -150,10 +166,9 @@ const GeneTranscriptsTrack = ({
                       // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message
                       tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
                         2
-                      )} TPM\nMost expressed in ${gtexTissues[tissueMostExpressedIn].fullName} (${
-                        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                        maxExpression.toFixed(2)
-                      } TPM)`}
+                      )} TPM\nMost expressed in ${
+                        gtexTissues[tissueMostExpressedIn]!.fullName
+                      } (${maxExpression.toFixed(2)} TPM)`}
                     >
                       <rect
                         x={0}
@@ -164,20 +179,7 @@ const GeneTranscriptsTrack = ({
                         pointerEvents="visible"
                       />
                     </TooltipAnchor>
-                    <circle
-                      cx={15}
-                      cy={5}
-                      r={Math.sqrt(
-                        meanExpression === 0
-                          ? 0
-                          : 0.25 +
-                              23.75 *
-                                // @ts-expect-error TS(2367) FIXME: This condition will always return 'false' since th... Remove this comment to see the full error message
-                                (maxMeanExpression === 0 ? 0 : meanExpression / maxMeanExpression)
-                      )}
-                      fill="#333"
-                      pointerEvents="none"
-                    />
+                    <circle cx={15} cy={5} r={circleRadius} fill="#333" pointerEvents="none" />
                   </svg>
                 )
               }
@@ -196,7 +198,8 @@ const GeneTranscriptsTrack = ({
           }}
         >
           <TranscriptsTissueExpression
-            transcripts={gene.transcripts}
+            gtexTissues={gtexTissues}
+            transcripts={gene.transcripts as TranscriptWithTissueExpression[]}
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}

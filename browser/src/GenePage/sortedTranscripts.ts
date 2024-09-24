@@ -1,7 +1,19 @@
 import { mean } from 'd3-array'
-import { Transcript } from '../TranscriptPage/TranscriptPage'
 
-const sortedTranscripts = (transcripts: Transcript[], firstTranscriptId: string | undefined) => {
+interface GenericTranscript {
+  transcript_id: string
+  gtex_tissue_expression:
+    | {
+        tissue: string
+        value: number
+      }[]
+    | null
+}
+
+const sortedTranscripts = (
+  transcripts: GenericTranscript[],
+  firstTranscriptId: string | undefined
+) => {
   return [...transcripts].sort((t1, t2) => {
     // Sort specified transcript first
     // Then sort transcripts by mean expression and transcript ID

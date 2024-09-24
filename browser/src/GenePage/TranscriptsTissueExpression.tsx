@@ -4,11 +4,11 @@ import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
 
-import { GTEX_TISSUES } from '../gtex'
+import { AllGtexTissues } from '../gtex'
 
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpressionPlot from './TranscriptsTissueExpressionPlot'
-import { DatasetId, getTopLevelDataset } from '@gnomad/dataset-metadata/metadata'
+import { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
 const ScrollWrapper = styled.div`
   display: inline-block;
@@ -21,17 +21,8 @@ const isTranscriptCoding = (transcript: any) =>
   transcript.exons.some((exon: any) => exon.feature_type === 'CDS')
 
 type TranscriptsTissueExpressionProps = {
-  datasetId: DatasetId
-  transcripts: Transcript[]
-  // transcripts: {
-  //   transcript_id: string
-  //   transcript_version: string
-  //   exons: {
-  //     feature_type: string
-  //     start: number
-  //     stop: number
-  //   }[]
-  // }[]
+  gtexTissues: Partial<AllGtexTissues>
+  transcripts: TranscriptWithTissueExpression[]
   includeNonCodingTranscripts: boolean
   preferredTranscriptId?: string
   preferredTranscriptDescription?: string | React.ReactNode
@@ -46,7 +37,7 @@ export type TissueExpression = {
 export type GtexTissueExpression = TissueExpression[]
 
 const TranscriptsTissueExpression = ({
-  datasetId,
+  gtexTissues,
   transcripts,
   includeNonCodingTranscripts,
   preferredTranscriptId,
@@ -54,7 +45,6 @@ const TranscriptsTissueExpression = ({
   defaultSortTissuesBy,
 }: TranscriptsTissueExpressionProps) => {
   const [sortTranscriptsBy, setSortTranscriptsBy] = useState('default')
-  const gtexTissuesForDataset = GTEX_TISSUES[getTopLevelDataset(datasetId)]
 
   let renderedTranscripts =
     sortTranscriptsBy === 'default'
@@ -63,11 +53,11 @@ const TranscriptsTissueExpression = ({
           const t1Expression =
             t1.gtex_tissue_expression.find(
               (tissue: TissueExpression) => tissue.tissue === sortTranscriptsBy
-            ).value || 0
+            )!.value || 0
           const t2Expression =
             t2.gtex_tissue_expression.find(
               (tissue: TissueExpression) => tissue.tissue === sortTranscriptsBy
-            ).value || 0
+            )!.value || 0
 
           if (t1Expression === t2Expression) {
             return t1.transcript_id.localeCompare(t2.transcript_id)
@@ -79,9 +69,7 @@ const TranscriptsTissueExpression = ({
   const [sortTissuesBy, setSortTissuesBy] = useState(defaultSortTissuesBy)
   let tissues
   if (sortTissuesBy === 'mean-expression') {
-    const meanExpressionByTissue: Record<string, number> = Object.keys(
-      gtexTissuesForDataset
-    ).reduce(
+    const meanExpressionByTissue: Record<string, number> = Object.keys(gtexTissues).reduce(
       (acc, tissueId) => ({
         ...acc,
         [tissueId]: mean(
@@ -95,7 +83,7 @@ const TranscriptsTissueExpression = ({
       }),
       {}
     )
-    tissues = Object.entries(gtexTissuesForDataset)
+    tissues = Object.entries(gtexTissues)
       .sort((t1, t2) => {
         const t1Expression = meanExpressionByTissue[t1[0]]
         const t2Expression = meanExpressionByTissue[t2[0]]
@@ -106,7 +94,7 @@ const TranscriptsTissueExpression = ({
       })
       .map((t: any) => t[0])
   } else {
-    tissues = Object.entries(gtexTissuesForDataset)
+    tissues = Object.entries(gtexTissues)
       .sort((t1, t2) => t1[1].fullName.localeCompare(t2[1].fullName))
       .map((t) => t[0])
   }
@@ -128,7 +116,7 @@ const TranscriptsTissueExpression = ({
           >
             <option value="default">Default</option>
             <optgroup label="Expression in tissue">
-              {Object.entries(gtexTissuesForDataset).map(([tissueId, tissueDetails]) => {
+              {Object.entries(gtexTissues).map(([tissueId, tissueDetails]) => {
                 return (
                   <option key={tissueId} value={tissueId}>
                     {tissueDetails.fullName}
@@ -155,9 +143,9 @@ const TranscriptsTissueExpression = ({
       {preferredTranscriptDescription && <p>* {preferredTranscriptDescription}</p>}
       <ScrollWrapper>
         <TranscriptsTissueExpressionPlot
-          datasetId={datasetId}
+          gtexTissues={gtexTissues}
           tissues={tissues}
-          transcripts={renderedTranscripts}
+          transcripts={renderedTranscripts as TranscriptWithTissueExpression[]}
           starredTranscriptId={preferredTranscriptId}
         />
       </ScrollWrapper>
