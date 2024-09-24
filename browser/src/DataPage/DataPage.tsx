@@ -106,8 +106,8 @@ const DataPage = () => {
             The API used by the gnomAD browser is also open to the public. In use cases involving
             querying a relatively small number of records with low latency, using the API to request
             records as needed may be more suitable than working with downloaded gnomAD data. If
-            you're unsure which would be better for your use case, please reach out to the browser
-            team.
+            you&apos;re unsure which would be better for your use case, please reach out to the
+            browser team.
           </StyledParagraph>
           <h2>Download Overview</h2>
           <h3>Google Cloud Public Datasets</h3>
