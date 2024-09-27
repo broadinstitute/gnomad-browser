@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`local ancestry populations table has no unexpected changes 1`] = `
+<div>
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+  >
+    <thead>
+      <tr>
+        <th
+          aria-sort="none"
+          colSpan={2}
+          scope="col"
+        >
+          <button
+            onClick={[Function]}
+            type="button"
+          >
+            Genetic Ancestry Group
+          </button>
+        </th>
+        <th
+          aria-sort="none"
+          className="right-align"
+          scope="col"
+        >
+          <button
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              Allele Count
+            </span>
+          </button>
+        </th>
+        <th
+          aria-sort="none"
+          className="right-align"
+          scope="col"
+        >
+          <button
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              Allele Number
+            </span>
+          </button>
+        </th>
+        <th
+          aria-sort="descending"
+          scope="col"
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          <button
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              Allele Frequency
+            </span>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          colSpan={1}
+          rowSpan={4}
+          scope="row"
+        >
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            onClick={[Function]}
+            type="button"
+          >
+            Admixed American
+          </button>
+        </th>
+        <td>
+          Overall
+        </td>
+        <td
+          className="right-align"
+        >
+          8
+        </td>
+        <td
+          className="right-align"
+        >
+          11
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.7273
+        </td>
+      </tr>
+      <tr
+        className="border"
+      >
+        <td>
+          European
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          className="right-align"
+        >
+          5
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.8000
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Amerindigenous
+        </td>
+        <td
+          className="right-align"
+        >
+          3
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.7500
+        </td>
+      </tr>
+      <tr>
+        <td>
+          African
+        </td>
+        <td
+          className="right-align"
+        >
+          1
+        </td>
+        <td
+          className="right-align"
+        >
+          2
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.5000
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr
+        className="border"
+      >
+        <th
+          colSpan={2}
+          scope="row"
+        >
+          Total
+        </th>
+        <td
+          className="right-align"
+        >
+          8
+        </td>
+        <td
+          className="right-align"
+        >
+          11
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.7273
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <p>
+    <span
+      className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+    >
+      Note
+    </span>
+     Local ancestry is not available for all gnomAD genetic ancestry groups.
+  </p>
+</div>
+`;
