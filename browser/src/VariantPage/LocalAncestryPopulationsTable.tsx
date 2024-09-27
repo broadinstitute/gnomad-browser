@@ -2,39 +2,44 @@ import React from 'react'
 
 import { Badge } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  GNOMAD_POPULATION_NAMES,
+  LOCAL_ANCESTRY_NAMES,
+  PopulationId,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import { PopulationsTable } from './PopulationsTable'
 
-const LOCAL_ANCESTRY_NAMES = {
-  african: 'African',
-  amerindigenous: 'Amerindigenous',
-  european: 'European',
+import { LocalAncestryPopulation } from './VariantPage'
+
+type PopulationWithLocalAncestryPopulations = {
+  id: PopulationId
+  ac: number
+  an: number
+  subpopulations: LocalAncestryPopulation[]
 }
 
-const addPopulationNames = (populations: any) => {
-  return populations.map((pop: any) => ({
+const addPopulationNames = (populations: PopulationWithLocalAncestryPopulations[]) => {
+  return populations.map((pop) => ({
     ...pop,
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     name: GNOMAD_POPULATION_NAMES[pop.id] || pop.id,
 
-    subpopulations: pop.subpopulations.map((subPop: any) => ({
+    subpopulations: pop.subpopulations.map((subPop) => ({
       ...subPop,
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      name: LOCAL_ANCESTRY_NAMES[subPop.id.split('_')[1]] || subPop.id,
+      name: (LOCAL_ANCESTRY_NAMES as Record<string, string>)[subPop.id.split('_')[1]] || subPop.id,
     })),
   }))
 }
 
-const groupPopulations = (populations: any) => {
-  const populationsById = {}
+const groupPopulations = (
+  populations: LocalAncestryPopulation[]
+): PopulationWithLocalAncestryPopulations[] => {
+  const populationsById: Partial<Record<PopulationId, PopulationWithLocalAncestryPopulations>> = {}
 
-  populations.forEach((pop: any) => {
-    const popId = pop.id.split('_')[0]
+  populations.forEach((pop) => {
+    const popId = pop.id.split('_')[0] as PopulationId
 
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     if (!populationsById[popId]) {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       populationsById[popId] = {
         id: popId,
         ac: 0,
@@ -43,23 +48,16 @@ const groupPopulations = (populations: any) => {
       }
     }
 
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    populationsById[popId].ac += pop.ac
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    populationsById[popId].an += pop.an
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    populationsById[popId].subpopulations.push(pop)
+    populationsById[popId]!.ac += pop.ac
+    populationsById[popId]!.an += pop.an
+    populationsById[popId]!.subpopulations.push(pop)
   })
 
   return Object.values(populationsById)
 }
 
 type LocalAncestryPopulationsTableProps = {
-  populations: {
-    id: string
-    ac: number
-    an: number
-  }[]
+  populations: LocalAncestryPopulation[]
 }
 
 const LocalAncestryPopulationsTable = ({ populations }: LocalAncestryPopulationsTableProps) => {
