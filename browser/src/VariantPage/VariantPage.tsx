@@ -44,7 +44,10 @@ import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 import { URLBuilder } from '../DatasetSelector'
-import { PopulationIdAndChromosome } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  PopulationIdAndChromosome,
+  FullLocalAncestryPopulationId,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 
 const Section = styled.section`
@@ -153,7 +156,7 @@ export type Population = {
 }
 
 export type LocalAncestryPopulation = {
-  id: string
+  id: FullLocalAncestryPopulationId
   ac: number
   an: number
 }
