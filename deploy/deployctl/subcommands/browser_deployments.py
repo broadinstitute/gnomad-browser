@@ -85,6 +85,26 @@ DEMO_DEPLOYMENT_KUSTOMIZATION = """
                 operator: "Equal"
                 value: "true"
                 effect: "NoSchedule"
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'demo-pool'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'demo-pool'
 """
 
 
