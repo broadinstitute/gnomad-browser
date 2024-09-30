@@ -157,8 +157,10 @@ There exist several Python scripts in the `deployctl` package that make this pro
 2. Create a local manifest file that describes the deployment with:
 
    ```
-   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
+   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG> --demo
    ```
+
+   Note the `--demo` flag is optional, but it will cause your deployment to run on an autoscaling demo pool, so that you don't have to ensure capacity on the prod pool.
 
 - 'Apply' the deployment, assigning pods to run it in the [Google Kubernetes Engine](https://console.cloud.google.com/kubernetes/workload/overview?project=exac-gnomad):
 
