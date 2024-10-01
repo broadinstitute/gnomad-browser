@@ -112,7 +112,6 @@ def apply_ingress(name: str, browser_deployment: str = None, reads_service: str 
 
 def delete_ingress_and_services(name: str) -> None:
     kubectl(["delete", f"ingress/gnomad-ingress-demo-{name}"])
-    kubectl(["delete", f"service/gnomad-reads-demo-{name}"])
     kubectl(["delete", f"service/gnomad-browser-demo-{name}"])
 
 
