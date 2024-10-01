@@ -97,10 +97,11 @@ def apply_services(name: str, browser_deployment: str = None) -> None:
     kubectl(["apply", "-f", "-"], input=manifest)
 
 
-def apply_ingress(
-    name: str, browser_deployment: str = None, reads_service: str = "reads-bluegreen-active-prod"
-) -> None:
+def apply_ingress(name: str, browser_deployment: str = None, reads_service: str = None) -> None:
     apply_services(name, browser_deployment)
+
+    if not reads_service:
+        reads_service = "reads-bluegreen-active-prod"
 
     manifest = INGRESS_MANIFEST_TEMPLATE.format(name=name, reads_service=reads_service)
 
@@ -111,7 +112,6 @@ def apply_ingress(
 
 def delete_ingress_and_services(name: str) -> None:
     kubectl(["delete", f"ingress/gnomad-ingress-demo-{name}"])
-    kubectl(["delete", f"service/gnomad-reads-demo-{name}"])
     kubectl(["delete", f"service/gnomad-browser-demo-{name}"])
 
 
