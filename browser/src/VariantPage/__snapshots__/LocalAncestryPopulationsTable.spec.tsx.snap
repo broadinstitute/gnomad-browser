@@ -83,6 +83,95 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
       <tr>
         <th
           colSpan={1}
+          rowSpan={3}
+          scope="row"
+        >
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
+        </th>
+        <td>
+          Overall
+        </td>
+        <td
+          className="right-align"
+        >
+          12
+        </td>
+        <td
+          className="right-align"
+        >
+          14
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.8571
+        </td>
+      </tr>
+      <tr
+        className="border"
+      >
+        <td>
+          European
+        </td>
+        <td
+          className="right-align"
+        >
+          7
+        </td>
+        <td
+          className="right-align"
+        >
+          8
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.8750
+        </td>
+      </tr>
+      <tr>
+        <td>
+          African
+        </td>
+        <td
+          className="right-align"
+        >
+          5
+        </td>
+        <td
+          className="right-align"
+        >
+          6
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.8333
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <th
+          colSpan={1}
           rowSpan={4}
           scope="row"
         >
@@ -205,12 +294,12 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         <td
           className="right-align"
         >
-          8
+          20
         </td>
         <td
           className="right-align"
         >
-          11
+          25
         </td>
         <td
           style={
@@ -219,7 +308,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
             }
           }
         >
-          0.7273
+          0.8000
         </td>
       </tr>
     </tfoot>
