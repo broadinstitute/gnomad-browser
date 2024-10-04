@@ -225,7 +225,7 @@ type VariantDetailsSequencingTypeData {
   filters: [String!]
   flags: [String!]
   populations: [VariantPopulation]
-  local_ancestry_populations: [VariantLocalAncestryPopulation]!
+  local_ancestry_populations: [VariantLocalAncestryPopulation]
   age_distribution: VariantAgeDistribution
   quality_metrics: VariantQualityMetrics
 
