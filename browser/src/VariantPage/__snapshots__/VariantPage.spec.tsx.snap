@@ -1428,7 +1428,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
             }
           >
             <p>
-              Local ancestry is not available for this variant. Local ancestry is only available for bi-allelic variants with high call rates and with an allele frequency &gt; 0.1% within the Latino/Admixed American gnomAD population.
+              Local ancestry is not available for this variant. Local ancestry is only available for bi-allelic variants with high call rates and with an allele frequency &gt; 0.1% within the Latino/Admixed American or African/African-American gnomAD ancestry groups.
             </p>
           </div>
         </div>
