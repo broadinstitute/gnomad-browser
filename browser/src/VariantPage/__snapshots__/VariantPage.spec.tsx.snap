@@ -898,7 +898,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -906,7 +908,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -939,7 +941,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -947,7 +951,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -980,7 +984,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -988,7 +994,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1021,7 +1027,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1029,7 +1037,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1062,7 +1070,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1070,7 +1080,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1103,7 +1113,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1111,7 +1123,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1144,7 +1156,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1152,7 +1166,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1185,7 +1199,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1193,7 +1209,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1226,7 +1242,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1234,7 +1252,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -1267,7 +1285,9 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -1275,7 +1295,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -10818,7 +10838,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -10826,7 +10848,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -10859,7 +10881,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -10867,7 +10891,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -10900,7 +10924,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -10908,7 +10934,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -10941,7 +10967,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -10949,7 +10977,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -10982,7 +11010,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -10990,7 +11020,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -11023,7 +11053,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -11031,7 +11063,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -11064,7 +11096,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -11072,7 +11106,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -11105,7 +11139,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -11113,7 +11149,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -11146,7 +11182,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -11154,7 +11192,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -11187,7 +11225,9 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -11195,7 +11235,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20741,7 +20781,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20749,7 +20791,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20782,7 +20824,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20790,7 +20834,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20823,7 +20867,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20831,7 +20877,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20864,7 +20910,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20872,7 +20920,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20905,7 +20953,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20913,7 +20963,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20946,7 +20996,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20954,7 +21006,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -20987,7 +21039,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -20995,7 +21049,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -21028,7 +21082,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -21036,7 +21092,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -21069,7 +21125,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -21077,7 +21135,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -21110,7 +21168,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -21118,7 +21178,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30664,7 +30724,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30672,7 +30734,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30705,7 +30767,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30713,7 +30777,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30746,7 +30810,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30754,7 +30820,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30787,7 +30853,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30795,7 +30863,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30828,7 +30896,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30836,7 +30906,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30869,7 +30939,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30877,7 +30949,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30910,7 +30982,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30918,7 +30992,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30951,7 +31025,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -30959,7 +31035,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -30992,7 +31068,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -31000,7 +31078,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -31033,7 +31111,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -31041,7 +31121,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40587,7 +40667,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40595,7 +40677,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40628,7 +40710,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40636,7 +40720,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40669,7 +40753,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40677,7 +40763,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40710,7 +40796,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40718,7 +40806,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40751,7 +40839,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40759,7 +40849,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40792,7 +40882,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40800,7 +40892,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40833,7 +40925,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40841,7 +40935,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40874,7 +40968,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40882,7 +40978,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40915,7 +41011,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40923,7 +41021,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -40956,7 +41054,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -40964,7 +41064,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50510,7 +50610,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50518,7 +50620,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50551,7 +50653,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50559,7 +50663,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50592,7 +50696,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50600,7 +50706,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50633,7 +50739,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50641,7 +50749,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50674,7 +50782,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50682,7 +50792,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50715,7 +50825,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50723,7 +50835,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50756,7 +50868,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50764,7 +50878,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50797,7 +50911,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50805,7 +50921,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50838,7 +50954,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50846,7 +50964,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -50879,7 +50997,9 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     </td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody
+                  className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+                >
                   <tr>
                     <th
                       colSpan={2}
@@ -50887,7 +51007,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                       scope="row"
                     >
                       <button
-                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                        className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                         onClick={[Function]}
                         type="button"
                       >
@@ -60261,7 +60381,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60269,7 +60391,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60302,7 +60424,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60310,7 +60434,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60343,7 +60467,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60351,7 +60477,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60384,7 +60510,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60392,7 +60520,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60425,7 +60553,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60433,7 +60563,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60466,7 +60596,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60474,7 +60606,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -60507,7 +60639,9 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -60515,7 +60649,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68218,7 +68352,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68226,7 +68362,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68259,7 +68395,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68267,7 +68405,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68300,7 +68438,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68308,7 +68448,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68341,7 +68481,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68349,7 +68491,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68382,7 +68524,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68390,7 +68534,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68423,7 +68567,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68431,7 +68577,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68464,7 +68610,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68472,7 +68620,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -68505,7 +68653,9 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -68513,7 +68663,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78266,7 +78416,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78274,7 +78426,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78307,7 +78459,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78315,7 +78469,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78348,7 +78502,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78356,7 +78512,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78389,7 +78545,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78397,7 +78555,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78430,7 +78588,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78438,7 +78598,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78471,7 +78631,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78479,7 +78641,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78512,7 +78674,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78520,7 +78684,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -78553,7 +78717,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -78561,7 +78727,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88314,7 +88480,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88322,7 +88490,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88355,7 +88523,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88363,7 +88533,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88396,7 +88566,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88404,7 +88576,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88437,7 +88609,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88445,7 +88619,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88478,7 +88652,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88486,7 +88662,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88519,7 +88695,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88527,7 +88705,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88560,7 +88738,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88568,7 +88748,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -88601,7 +88781,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -88609,7 +88791,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98362,7 +98544,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98370,7 +98554,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98403,7 +98587,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98411,7 +98597,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98444,7 +98630,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98452,7 +98640,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98485,7 +98673,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98493,7 +98683,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98526,7 +98716,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98534,7 +98726,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98567,7 +98759,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98575,7 +98769,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98608,7 +98802,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98616,7 +98812,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -98649,7 +98845,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -98657,7 +98855,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108410,7 +108608,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108418,7 +108618,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108451,7 +108651,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108459,7 +108661,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108492,7 +108694,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108500,7 +108704,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108533,7 +108737,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108541,7 +108747,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108574,7 +108780,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108582,7 +108790,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108615,7 +108823,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108623,7 +108833,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108656,7 +108866,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108664,7 +108876,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
@@ -108697,7 +108909,9 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <tbody
+            className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+          >
             <tr>
               <th
                 colSpan={2}
@@ -108705,7 +108919,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                 scope="row"
               >
                 <button
-                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 cLiTNU"
+                  className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
                   onClick={[Function]}
                   type="button"
                 >
