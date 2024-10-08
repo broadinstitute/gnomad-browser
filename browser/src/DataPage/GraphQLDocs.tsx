@@ -24,7 +24,7 @@ const GraphQLDocs = () => (
       The gnomAD browser gets its data through a{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://graphql.org">GraphQL</ExternalLink> API which is open to the
-      public. Access to the API is rate-limited to 10 requests per 60-second period.
+      public. Access to the API is rate-limited to 10 requests per IP address per 60-second period.
     </StyledParagraph>
     <StyledParagraph>
       The API can be queried programatically by making an HTTP request to{' '}
