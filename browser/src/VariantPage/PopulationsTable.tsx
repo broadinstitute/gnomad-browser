@@ -21,6 +21,10 @@ const Table = styled(BaseTable)`
   }
 `
 
+const PopulationSection = styled.tbody`
+  border-top: 2px solid #333;
+`
+
 const TogglePopulationButton = styled(TextButton)`
   display: inline-flex;
   flex-direction: row;
@@ -304,7 +308,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
           </tr>
         </thead>
         {renderedPopulations.map((pop, i) => (
-          <tbody key={(pop as any).id}>
+          <PopulationSection key={(pop as any).id}>
             <tr
               className={
                 i > 0 &&
@@ -347,7 +351,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
                   <td style={{ paddingLeft: '25px' }}>{renderPopAF(subPop.af)}</td>
                 </tr>
               ))}
-          </tbody>
+          </PopulationSection>
         ))}
         <tfoot>
           <tr className="border">

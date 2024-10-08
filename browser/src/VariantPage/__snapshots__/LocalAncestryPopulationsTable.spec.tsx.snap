@@ -79,7 +79,9 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
       <tr>
         <th
           colSpan={1}
@@ -87,7 +89,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 gHtnWT"
             onClick={[Function]}
             type="button"
           >
@@ -168,7 +170,9 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </td>
       </tr>
     </tbody>
-    <tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
       <tr>
         <th
           colSpan={1}
@@ -176,7 +180,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 gHtnWT"
             onClick={[Function]}
             type="button"
           >
