@@ -1,0 +1,40 @@
+# Submitting a cloud build using this config from your local machine can be done as:
+# gcloud builds submit --config .cloudbuild/reads.cloudbuild.yaml \
+#                      --substitutions=_BRANCH_FOR_IMAGE_NAME="my-branch-name",SHORT_SHA="6f3f419" .
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:${_BUILD_TAG}',
+        '-f',
+        'deploy/dockerfiles/reads/reads-server.dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:${_BUILD_TAG}',
+        '-f',
+        'deploy/dockerfiles/reads/reads-api.dockerfile',
+        '.',
+      ]
+options:
+  dynamicSubstitutions: true
+substitutions:
+  _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
+
+# push tag with the short sha, and also a branch-based UUID
+images:
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:$SHORT_SHA'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-server:${_BUILD_TAG}'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:$SHORT_SHA'
+  - 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-reads-api:${_BUILD_TAG}'

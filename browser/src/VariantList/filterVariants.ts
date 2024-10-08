@@ -92,7 +92,7 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
   filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
 
   if (filter.searchText && !filter.includeContext) {
-    filteredVariants = getFilteredVariants(filter, variants, selectedColumns)
+    filteredVariants = getFilteredVariants(filter, filteredVariants, selectedColumns)
   }
 
   // Indel and Snp filters.

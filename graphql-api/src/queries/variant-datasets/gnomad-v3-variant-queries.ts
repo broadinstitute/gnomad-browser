@@ -84,7 +84,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
     filters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const { variantFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   let { populations } = variant.genome.freq[subset]
 
@@ -180,8 +180,9 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
         ),
       },
       local_ancestry_populations: localAncestryPopulations.genome,
+      flags: genomeFlags,
     },
-    flags,
+    flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
       csq.gene_id.startsWith('ENSG')
@@ -196,11 +197,10 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
 const shapeVariantSummary = (subset: any, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const filters = variant.genome.filters || []
 
@@ -223,8 +223,9 @@ const shapeVariantSummary = (subset: any, context: any) => {
           (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
         ),
         filters,
+        flags: genomeFlags,
       },
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
     }
   }
@@ -264,6 +265,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
     _source: [
       `value.genome.freq.${subset}`,
       'value.genome.filters',
+      'value.genome.flags',
       'value.alleles',
       'value.caid',
       'value.locus',

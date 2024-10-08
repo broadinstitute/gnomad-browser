@@ -41,15 +41,17 @@ First install the operator with the steps as documented: [Elastic Cloud on Kuber
 
 To check if the operator is ready, run `kubectl -n elastic-system get statefulset.apps/elastic-operator`.
 
-If you are using a custom cluster (e.g. `gnomad-myname`) ensure `environment_tag` in `deployctl_config.json` is set to `myname`.
-
 To create an Elasticsearch cluster, run `./deployctl elasticsearch apply`.
 
-After creating the cluster, store the password in a secret so that Dataproc jobs can access it.
+Run `kubectl apply -k .` in the appropriate environment folder in [gnomad-deployments/elasticsearch](https://github.com/broadinstitute/gnomad-deployments/tree/main/elasticsearch).
+
+After creating the cluster, store the password in a secret so that Dataproc jobs can access it. The `prod` kustomization includes a [PushSecret](https://github.com/broadinstitute/gnomad-deployments/blob/main/elasticsearch/prod/pushsecret.yaml) manifest that will update the secret in in the GCP secret manager for you.
 
 ## Deploy Redis
 
-Run kubectl apply -k . in the deploy/manifests/redis folder
+Run kubectl apply -k . in the appropriate environment folder in [gnomad-deployments/redis](https://github.com/broadinstitute/gnomad-deployments/tree/main/redis)
+
+Note: Argo manages the production deployment for redis. There is a much smaller configuration appropriate for dev environments in the `dev` subfolder of that deployment.
 
 ## Http Cache
 
@@ -155,8 +157,10 @@ There exist several Python scripts in the `deployctl` package that make this pro
 2. Create a local manifest file that describes the deployment with:
 
    ```
-   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG>
+   ./deployctl deployments create --name <DEPLOYMENT_NAME> --browser-tag <BROWSER_IMAGE_TAG> --api-tag <API_IMAGE_TAG> --demo
    ```
+
+   Note the `--demo` flag is optional, but it will cause your deployment to run on an autoscaling demo pool, so that you don't have to ensure capacity on the prod pool.
 
 - 'Apply' the deployment, assigning pods to run it in the [Google Kubernetes Engine](https://console.cloud.google.com/kubernetes/workload/overview?project=exac-gnomad):
 
@@ -333,25 +337,21 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
 ## Create and Update Reads Deployment
 
-Create Reads Deployment
+### Production
+
+Docker images are built after merging to main. Once the build succeeds, and you have a new tag, update the reads deployment in [gnomad-deployments/reads](https://github.com/broadinstitute/gnomad-deployments/tree/main/reads). See the instructions in the deployment repo to create a new blue/green version, and deploy it to the cluster.
+
+### Development / Demo
 
 - Build Docker images and push to GCR.
 
   ```
-  ./deployctl reads-images build --push
+  ./reads/docker-build.sh
   ```
 
 - Create deployment manifests.
 
-  ```
-  ./deployctl reads-deployments create
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl reads-deployments apply <deployment-name>
-  ```
+  Follow the instructions in the [gnomad-deployments/reads](https://github.com/broadinstitute/gnomad-deployments/tree/main/reads) repo to create and apply a new demo deployment.
 
 Update Reads Deployment
 
@@ -365,57 +365,6 @@ Update Reads Deployment
 
   ```
   ./deployctl reads-deployments delete <old-deployment-name>
-  ```
-
-## Create and Update Blog Deployment
-
-Create Blog Deployment
-
-- Create secrets.
-
-  Fill in values from GitHub application.
-
-  ```
-  cat <<EOF > oauth-secrets.env
-  client-id=
-  client-secret=
-  EOF
-  ```
-
-  ```
-  kubectl create secret generic blog-oauth-secrets --from-env-file oauth-secrets.env
-  ```
-
-- Build Docker images and push to GCR.
-
-  ```
-  ./deployctl blog-images build --push
-  ```
-
-- Create deployment manifests.
-
-  ```
-  ./deployctl blog-deployment update
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl blog-deployment apply
-  ```
-
-Update Blog Deployment
-
-- Update deployment manifests.
-
-  ```
-  ./deployctl blog-deployment update
-  ```
-
-- Apply deployment.
-
-  ```
-  ./deployctl blog-deployment apply
   ```
 
 ## Create ingress

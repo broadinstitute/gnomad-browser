@@ -111,7 +111,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     genomeFilters.push('AC0')
   }
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
@@ -154,6 +154,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.exome,
       ...variant.exome.freq[subset],
       filters: exomeFilters,
+      flags: exomeFlags,
       populations: variant.exome.freq[subset].ancestry_groups,
       faf95: hasExomeVariant &&
         variant.exome.faf95 && {
@@ -185,6 +186,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       ...variant.genome,
       ...subsetGenomeFreq,
       filters: genomeFilters,
+      flags: genomeFlags,
       populations: genome_ancestry_groups,
       faf95: hasGenomeVariant &&
         variant.genome.faf95 && {
@@ -222,7 +224,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
         popmax: variant.joint.fafmax.faf95_max,
       },
     },
-    flags,
+    flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
       csq.gene_id.startsWith('ENSG')
@@ -276,11 +278,10 @@ const createInSilicoPredictorsList = (variant: any) => {
 
 const shapeVariantSummary = (subset: Subset, context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const exomeFilters = variant.exome.filters || []
     const genomeFilters = variant.genome.filters || []
@@ -322,6 +323,7 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
             filters: exomeFilters,
+            flags: exomeFlags,
             fafmax: variant.exome.fafmax[subset],
           }
         : null,
@@ -344,9 +346,10 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
             ),
             filters: jointFilters,
             fafmax: variant.joint.fafmax,
+            flags: genomeFlags,
           }
         : null,
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
       in_silico_predictors: inSilicoPredictorsList,
     }
@@ -363,8 +366,10 @@ const getMultiVariantSourceFields = (
     `value.genome.freq.${genomeSubset}`,
     `value.joint.freq.${jointSubset}`,
     'value.exome.filters',
+    'value.exome.flags',
     'value.exome.fafmax',
     'value.genome.filters',
+    'value.genome.flags',
     'value.joint.filters',
     'value.alleles',
     // 'value.caid',

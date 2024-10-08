@@ -24,21 +24,6 @@ spec:
   ports:
     - port: 80
       targetPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gnomad-reads
-  labels:
-    tier: production
-spec:
-  type: NodePort
-  selector:
-    name: gnomad-reads
-    deployment: '{reads_deployment}'
-  ports:
-    - port: 80
-      targetPort: 80
 """
 
 
@@ -51,20 +36,13 @@ def get_current_browser_deployment() -> str:
     return browser_manifest["spec"]["selector"]["deployment"]
 
 
-def get_current_reads_deployment() -> str:
-    reads_manifest = json.loads(kubectl(["get", "service", "gnomad-reads", "--output=json"]))
-    return reads_manifest["spec"]["selector"]["deployment"]
-
-
 def describe_services() -> None:
     browser_deployment = get_current_browser_deployment()
-    reads_deployment = get_current_reads_deployment()
 
     print("active browser deployment:", browser_deployment)
-    print("active reads deployment:", reads_deployment)
 
 
-def apply_services(browser_deployment: str = None, reads_deployment: str = None) -> None:
+def apply_services(browser_deployment: str = None) -> None:
     if browser_deployment:
         if not k8s_deployment_exists(f"gnomad-browser-{browser_deployment}"):
             raise RuntimeError(f"browser deployment {browser_deployment} not found")
@@ -74,26 +52,15 @@ def apply_services(browser_deployment: str = None, reads_deployment: str = None)
         except Exception:  # pylint: disable=broad-except; FIXME: Use a more specific exception class
             browser_deployment = get_most_recent_k8s_deployment("component=gnomad-browser")[len("gnomad-browser-") :]
 
-    if reads_deployment:
-        if not k8s_deployment_exists(f"gnomad-reads-{reads_deployment}"):
-            raise RuntimeError(f"reads deployment {reads_deployment} not found")
-    else:
-        try:
-            reads_deployment = get_current_reads_deployment()
-        except Exception:  # pylint: disable=broad-except; FIXME: Use a more specific exception class
-            reads_deployment = get_most_recent_k8s_deployment("component=gnomad-reads")[len("gnomad-reads-") :]
-
-    manifest = SERVICES_MANIFEST_TEMPLATE.format(
-        browser_deployment=browser_deployment, reads_deployment=reads_deployment
-    )
+    manifest = SERVICES_MANIFEST_TEMPLATE.format(browser_deployment=browser_deployment)
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
-    print(f"Updated production ingresses. browser: '{browser_deployment}', reads: '{reads_deployment}' ")
+    print(f"Updated production ingresses. browser: '{browser_deployment}' ")
 
 
-def apply_ingress(browser_deployment: str = None, reads_deployment: str = None, quiet: bool = False) -> None:
-    apply_services(browser_deployment, reads_deployment)
+def apply_ingress(browser_deployment: str = None, quiet: bool = False) -> None:
+    apply_services(browser_deployment)
 
     if quiet or input("Apply changes to production ingress (y/n) ").lower() == "y":
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.backendconfig.yaml")])
@@ -112,12 +79,10 @@ def main(argv: typing.List[str]) -> None:
     apply_services_parser = subparsers.add_parser("update")
     apply_services_parser.set_defaults(action=apply_services)
     apply_services_parser.add_argument("--browser-deployment")
-    apply_services_parser.add_argument("--reads-deployment")
 
     apply_ingress_parser = subparsers.add_parser("apply-ingress")
     apply_ingress_parser.set_defaults(action=apply_ingress)
     apply_ingress_parser.add_argument("--browser-deployment")
-    apply_ingress_parser.add_argument("--reads-deployment")
     apply_ingress_parser.add_argument("--quiet", action="store_true")
 
     args = parser.parse_args(argv)

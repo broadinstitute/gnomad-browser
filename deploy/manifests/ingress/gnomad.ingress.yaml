@@ -15,17 +15,31 @@ spec:
         paths:
           - backend:
               service:
-                name: gnomad-reads
+                name: reads-bluegreen-active-prod
                 port:
                   number: 80
             path: /reads
             pathType: ImplementationSpecific
           - backend:
               service:
-                name: gnomad-reads
+                name: reads-bluegreen-active-prod
                 port:
                   number: 80
             path: /reads/*
+            pathType: ImplementationSpecific
+          - backend:
+              service:
+                name: reads-bluegreen-preview-prod
+                port:
+                  number: 80
+            path: /preview-reads
+            pathType: ImplementationSpecific
+          - backend:
+              service:
+                name: reads-bluegreen-preview-prod
+                port:
+                  number: 80
+            path: /preview-reads/*
             pathType: ImplementationSpecific
           - backend:
               service:

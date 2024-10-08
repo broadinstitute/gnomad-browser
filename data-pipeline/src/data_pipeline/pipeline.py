@@ -100,7 +100,7 @@ class DownloadTask:
 
             stop = time.perf_counter()
             elapsed = stop - start
-            logger.info("Finished %s in %dm%02ds", self._name, elapsed // 60, elapsed % 60)
+            logger.info("Finished %s in %.0fm%02.2fs", self._name, elapsed // 60, elapsed % 60)
         else:
             logger.info(f"Skipping {self._name}")
 
@@ -184,7 +184,7 @@ class Task:
             result.write(output_path, overwrite=True)  # pylint: disable=unexpected-keyword-arg
             stop = time.perf_counter()
             elapsed = stop - start
-            logger.info(f"Finished {self._name} in {elapsed // 60}m{elapsed % 60:02}s")
+            logger.info(f"Finished {self._name} in {int(elapsed // 60)}m{elapsed % 60:.2f}s")
         else:
             logger.info(f"Skipping {self._name}")
 

@@ -58,6 +58,55 @@ patches:
                     value: 'gs://{cluster_name}-gene-cache/2024-04-24'
 """
 
+DEMO_DEPLOYMENT_KUSTOMIZATION = """
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            tolerations:
+              - key: "volatile"
+                operator: "Equal"
+                value: "true"
+                effect: "NoSchedule"
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            tolerations:
+              - key: "volatile"
+                operator: "Equal"
+                value: "true"
+                effect: "NoSchedule"
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'demo-pool'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              cloud.google.com/gke-nodepool: 'demo-pool'
+"""
+
 
 def deployments_directory() -> str:
     path = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../manifests/browser/deployments"))
@@ -81,7 +130,7 @@ def list_deployments() -> None:
         print(deployment[len("gnomad-browser-") :])
 
 
-def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -> None:
+def create_deployment(name: str, browser_tag: str = None, api_tag: str = None, demo: bool = False) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
@@ -123,6 +172,9 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None) -
             project=config.project,
             cluster_name=config.gke_cluster_name,
         )
+
+        if demo:
+            kustomization = kustomization + DEMO_DEPLOYMENT_KUSTOMIZATION
 
         kustomization_file.write(kustomization)
 
@@ -174,6 +226,7 @@ def main(argv: typing.List[str]) -> None:
     create_parser.add_argument("--name")
     create_parser.add_argument("--browser-tag")
     create_parser.add_argument("--api-tag")
+    create_parser.add_argument("--demo", action="store_true")
 
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_deployment)

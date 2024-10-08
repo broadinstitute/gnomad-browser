@@ -137,6 +137,7 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht"
+                  logClicks
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -148,6 +149,7 @@ const GnomadV4Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
+                    logClicks
                   />
                 </ListItem>
               ))}
@@ -162,6 +164,7 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/"
+                  logClicks
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -173,6 +176,7 @@ const GnomadV4Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
+                    logClicks
                   />
                 </ListItem>
               ))}
@@ -189,6 +193,7 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Joint sites Hail Table"
               path="/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
+              logClicks
             />
           </ListItem>
           {jointChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -200,6 +205,7 @@ const GnomadV4Downloads = () => {
                 size={size}
                 md5={md5}
                 associatedFileType="TBI"
+                logClicks
               />
             </ListItem>
           ))}
@@ -217,6 +223,7 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Exomes all site allele number Hail Table"
                   path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.allele_number_all_sites.ht"
+                  logClicks
                 />
               </ListItem>
 
@@ -227,6 +234,7 @@ const GnomadV4Downloads = () => {
                   path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.allele_number_all_sites.tsv.bgz"
                   md5="ee71ce1ccfa5c1d9dd86e1ee1b1d11e2"
                   size="1.07 GiB"
+                  logClicks
                 />
               </ListItem>
             </FileList>
@@ -255,6 +263,40 @@ const GnomadV4Downloads = () => {
             </FileList>
           </Column>
         </ColumnsWrapper>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v4-browser-tables">Browser Tables</SectionTitle>
+
+        <p>
+          For more information about these files, see our{' '}
+          <Link to="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables">
+            changelog entry
+          </Link>{' '}
+          on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
+        </p>
+
+        <h3>Browser variants</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser variants Hail Table"
+              path="/release/4.1/ht/browser/gnomad.browser.v4.1.sites.ht"
+            />
+          </ListItem>
+        </FileList>
+
+        <h3>Browser gene models</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser GRCh38 gene models Hail Table"
+              path="/resources/grch38/browser/gnomad.genes.GRCh38.GENCODEv39.ht"
+            />
+          </ListItem>
+        </FileList>
       </DownloadsSection>
 
       <DownloadsSection>
@@ -325,13 +367,14 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <DownloadLinks label="README" path="/release/4.1/constraint/README.txt" />
+            <DownloadLinks label="README" path="/release/4.1/constraint/README.txt" logClicks />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
               path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"
+              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -339,6 +382,7 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Constraint metrics TSV"
               path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
+              logClicks
             />
           </ListItem>
         </FileList>

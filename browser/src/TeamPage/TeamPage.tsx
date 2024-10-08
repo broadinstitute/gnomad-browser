@@ -22,6 +22,8 @@ import mitochondrialVariantsContributors from '../../about/contributors/mitochon
 import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
 // @ts-expect-error
 import ethicsContributors from '../../about/contributors/ethics.md'
+// @ts-expect-error
+import tandemRepeatContributors from '../../about/contributors/tandem-repeats.md'
 
 // Members of the 'Alumni' Section
 // @ts-expect-error
@@ -297,6 +299,12 @@ const TeamPage = () => {
                 <Contributors
                   aria-labelledby="ethics-contributors"
                   dangerouslySetInnerHTML={{ __html: ethicsContributors.html }}
+                />
+                <br />
+                <h3 id="tandem-repeats-contributors">Tandem Repeats</h3>
+                <Contributors
+                  aria-labelledby="tandem-repeats-contributors"
+                  dangerouslySetInnerHTML={{ __html: tandemRepeatContributors.html }}
                 />
               </ResponsiveColumn>
             </ColumnList>

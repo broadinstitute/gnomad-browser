@@ -75,7 +75,7 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
 
   const variant = response.body.hits.hits[0]._source.value
 
-  const flags = getFlagsForContext({ type: 'region' })(variant)
+  const { variantFlags, exomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(esClient, variant.variant_id)
 
@@ -97,9 +97,10 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
         },
         site_quality_metrics: variant.exome.quality_metrics.site_quality_metrics,
       },
+      flags: exomeFlags,
     },
     genome: null,
-    flags,
+    flags: variantFlags,
     lof_curations: lofCurationResults,
     transcript_consequences: variant.transcript_consequences || [],
   }
@@ -111,16 +112,15 @@ export const fetchVariantById = async (esClient: any, variantIdOrRsid: any) => {
 
 const shapeVariantSummary = (context: any) => {
   const getConsequence = getConsequenceForContext(context)
-  const getFlags = getFlagsForContext(context)
 
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
-    const flags = getFlags(variant)
+    const { variantFlags } = getFlagsForContext(context, variant)
 
     return {
       ...variant,
       reference_genome: 'GRCh37',
-      flags,
+      flags: variantFlags,
       transcript_consequence: transcriptConsequence,
     }
   }

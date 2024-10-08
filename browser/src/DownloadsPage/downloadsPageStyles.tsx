@@ -281,6 +281,7 @@ export const DownloadLinks = ({
   includeAWS = true,
   includeAzure = true,
   associatedFileType,
+  logClicks = false,
 }: DownloadLinksProps) => {
   return (
     <>
@@ -311,6 +312,11 @@ export const DownloadLinks = ({
               key="gcp"
               aria-label={`Download ${label} from Google`}
               href={`https://storage.googleapis.com/${gcsBucket}${path}`}
+              onClick={() => {
+                if (logClicks) {
+                  logButtonClick(`User downloaded ${label} from Google`)
+                }
+              }}
             >
               Google
             </ExternalLink>
@@ -321,6 +327,11 @@ export const DownloadLinks = ({
               key="aws"
               aria-label={`Download ${label} from Amazon`}
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
+              onClick={() => {
+                if (logClicks) {
+                  logButtonClick(`User downloaded ${label} from Amazon`)
+                }
+              }}
             >
               Amazon
             </ExternalLink>
@@ -331,6 +342,11 @@ export const DownloadLinks = ({
               key="azure"
               aria-label={`Download ${label} from Microsoft`}
               href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
+              onClick={() => {
+                if (logClicks) {
+                  logButtonClick(`User downloaded ${label} from Microsoft`)
+                }
+              }}
             >
               Microsoft
             </ExternalLink>

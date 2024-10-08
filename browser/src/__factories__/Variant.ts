@@ -190,9 +190,11 @@ export const variantTableVariantFactory = Factory.define<VariantTableVariant>(
     const {
       exome = {
         filters: [],
+        flags: [],
       },
       genome = {
         filters: [],
+        flags: [],
       },
     } = associations
 
@@ -228,6 +230,7 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
     homozygote_count = 0,
     hemizygote_count = 0,
     filters = [],
+    flags = [],
     populations = [],
     local_ancestry_populations = [],
     ac_hemi = 1,
@@ -256,6 +259,7 @@ export const sequencingFactory = Factory.define<SequencingType>(({ params, assoc
     homozygote_count,
     hemizygote_count,
     filters,
+    flags,
     populations,
     local_ancestry_populations,
     age_distribution,

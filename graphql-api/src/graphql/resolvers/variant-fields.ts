@@ -1,14 +1,20 @@
-import { resolveVACohortAlleleFrequencies, resolveVAAllele } from './va'
+import { resolveVAExome, resolveVAGenome, resolveVAAllele } from './va'
 
 const resolvers = {
   Variant: {
     rsids: (obj: any) => obj.rsids || [],
-    va: resolveVACohortAlleleFrequencies,
+    va: (obj: any, ctx: any, args: any) => ({
+      exome: resolveVAExome(obj, ctx, args),
+      genome: resolveVAGenome(obj, ctx, args),
+    }),
     vrs: resolveVAAllele,
   },
   VariantDetails: {
     rsids: (obj: any) => obj.rsids || [],
-    va: resolveVACohortAlleleFrequencies,
+    va: (obj: any, ctx: any, args: any) => ({
+      exome: resolveVAExome(obj, ctx, args),
+      genome: resolveVAGenome(obj, ctx, args),
+    }),
     vrs: resolveVAAllele,
   },
 }

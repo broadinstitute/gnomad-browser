@@ -115,6 +115,7 @@ type VariantSequencingTypeData {
   populations: [VariantPopulation]
   faf95: VariantFilteringAlleleFrequency
   fafmax: Fafmax
+  flags: [String!]
 
   # Deprecated - calculate from AC and AN
   # Preserved for compatibility with existing browser queries
@@ -191,7 +192,7 @@ type Variant {
   hgvs: String
 
   # GA4GH-format data
-  va: [VACohortAlleleFrequency!]
+  va: VACohortAlleleFrequency!
   vrs: VAAllele
 }
 
@@ -222,6 +223,7 @@ type VariantDetailsSequencingTypeData {
   faf95: VariantFilteringAlleleFrequency
   faf99: VariantFilteringAlleleFrequency
   filters: [String!]
+  flags: [String!]
   populations: [VariantPopulation]
   local_ancestry_populations: [VariantLocalAncestryPopulation]!
   age_distribution: VariantAgeDistribution
@@ -320,7 +322,7 @@ type VariantDetails {
   multiNucleotideVariants: [MultiNucleotideVariantSummary!]
   sortedTranscriptConsequences: [TranscriptConsequence!]
 
-  va: [VACohortAlleleFrequency!]
+  va: VACohortAlleleFrequency!
   vrs: VAAllele
 }
 

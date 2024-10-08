@@ -155,6 +155,7 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
           faf99_max
           faf99_max_gen_anc
         }
+	flags
       }
       genome {
         ac
@@ -174,6 +175,7 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
           ac_hemi
           ac_hom
         }
+	flags
       }
       joint {
         ac

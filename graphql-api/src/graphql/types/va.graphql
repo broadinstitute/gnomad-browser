@@ -100,8 +100,7 @@ type VAQualityMeasures {
   heterozygousSkewedAlleleCount: Int
 }
 
-"A measure of the frequency of an Allele in a cohort."
-type VACohortAlleleFrequency {
+type VACohortAlleleFrequencyData {
   id: String!
   type: String!
   label: String
@@ -124,10 +123,11 @@ type VACohortAlleleFrequency {
   This creates a recursive relationship and subcohorts can be further subdivided into more subcohorts.
   This enables, for example, the description of different ancestry groups and sexes among those ancestry groups.
   """
-  subcohortFrequency: [VACohortAlleleFrequency]
+  subcohortFrequency: [VACohortAlleleFrequencyData!]
 }
 
-type VA {
-  va: [VACohortAlleleFrequency!]
-  vrs: [VAAllele!]
+"A measure of the frequency of an Allele in a cohort."
+type VACohortAlleleFrequency {
+  exome: [VACohortAlleleFrequencyData!]
+  genome: [VACohortAlleleFrequencyData!]
 }

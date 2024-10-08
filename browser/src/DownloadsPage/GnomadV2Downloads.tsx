@@ -15,6 +15,8 @@ import {
   StyledParagraph,
 } from './downloadsPageStyles'
 
+import Link from '../Link'
+
 const exomeChromosomeVcfs = [
   { chrom: '1', size: '5.77 GiB', md5: '9817acdf1d9600efb3355e4cb4b7ee1f' },
   { chrom: '2', size: '4.2 GiB', md5: 'c2822d7a914d06ede28d1078970336ac' },
@@ -202,6 +204,7 @@ const GnomadV2Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
+                  logClicks
                 />
               </ListItem>
 
@@ -213,6 +216,7 @@ const GnomadV2Downloads = () => {
                   size="58.81 GiB"
                   md5="f034173bf6e57fbb5e8ce680e95134f2"
                   associatedFileType="TBI"
+                  logClicks
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -224,6 +228,7 @@ const GnomadV2Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
+                    logClicks
                   />
                 </ListItem>
               ))}
@@ -238,6 +243,7 @@ const GnomadV2Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht"
+                  logClicks
                 />
               </ListItem>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -248,6 +254,7 @@ const GnomadV2Downloads = () => {
                   size="460.93 GiB"
                   md5="e6eadf5ac7b2821b40f350da6e1279a2"
                   associatedFileType="TBI"
+                  logClicks
                 />
               </ListItem>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -258,6 +265,7 @@ const GnomadV2Downloads = () => {
                   size="9.7 GiB"
                   md5="e5bd69a0f89468149bc3afca78cd5acc"
                   associatedFileType="TBI"
+                  logClicks
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -269,12 +277,36 @@ const GnomadV2Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
+                    logClicks
                   />
                 </ListItem>
               ))}
             </FileList>
           </Column>
         </ColumnsWrapper>
+      </DownloadsSection>
+
+      <DownloadsSection>
+        <SectionTitle id="v2-browser-tables">Browser Tables</SectionTitle>
+
+        <p>
+          For more information about these files, see our{' '}
+          <Link to="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables">
+            changelog entry
+          </Link>{' '}
+          on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
+        </p>
+
+        <h3>Browser gene models</h3>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Browser GRCh37 gene models Hail Table"
+              path="/resources/grch37/browser/gnomad.genes.GRCh37.GENCODEv19.ht"
+            />
+          </ListItem>
+        </FileList>
       </DownloadsSection>
 
       <DownloadsSection>
@@ -513,6 +545,7 @@ const GnomadV2Downloads = () => {
             <GetUrlButtons
               label="pLoF Metrics by Transcript Hail Table"
               path="/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"
+              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -520,6 +553,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="pLoF Metrics by Transcript TSV"
               path="/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.txt.bgz"
+              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -527,6 +561,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="pLoF Metrics by Gene TSV"
               path="/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz"
+              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -534,6 +569,7 @@ const GnomadV2Downloads = () => {
             <DownloadLinks
               label="pLoF Metrics Downsamplings TSV"
               path="/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.downsamplings.txt.bgz"
+              logClicks
             />
           </ListItem>
         </FileList>
