@@ -1,4 +1,8 @@
-const content = `# GQL is one popular Python GraphQL client library, but there are others.
+const content = `# This example uses the GQL GraphQL client library.
+#
+# To install: pip3 install gql
+#
+# GQL is one popular Python GraphQL client, but there are others.
 # See https://graphql.org/community/tools-and-libraries/?tags=python_client
 
 from gql import gql, Client
@@ -31,8 +35,7 @@ query = gql(
 )
 
 # Execute the query on the transport
-result = client.execute(query)
-print(result)
-`
+result = await client.execute_async(query)
+print(result)`
 
 export default content

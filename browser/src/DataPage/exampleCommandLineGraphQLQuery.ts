@@ -1,4 +1,7 @@
-const content = `# Lines beginning with a "#" character are comments that are ignored by the API.
+const content = `curl https://gnomad.broadinstitute.org/api \
+-H 'Content-Type: application/graphql; charset=utf-8' \
+--data-binary @- << END_OF_QUERY
+# Lines beginning with a "#" character are comments that are ignored by the API.
 #
 # "VariantsInGene" is the operation name for the query. This is optional but
 # recommended.
@@ -121,6 +124,7 @@ query VariantsInGene {
     }
   }
 }
+END_OF_QUERY
 `
 
 export default content

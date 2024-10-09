@@ -5,7 +5,7 @@ import { CodeBlock, SectionTitle, StyledParagraph } from './downloadsPageStyles'
 import styled from 'styled-components'
 
 import { ExternalLink, Tabs } from '@gnomad/ui'
-import exampleRawQuery from './exampleRawGraphQLQuery'
+import exampleCommandLineQuery from './exampleCommandLineGraphQLQuery'
 import examplePythonQuery from './examplePythonGraphQLQuery'
 import exampleJSQuery from './exampleJSGraphQLQuery'
 
@@ -46,17 +46,18 @@ const GraphQLDocs = () => (
       explore the API schema interactively.
     </StyledParagraph>
     <StyledParagraph>
-      The following is an annotated GraphQL query, with some small example programs for a subset of
-      that query in Python and JavaScript. This query gets similar data to the CSV export of all
-      variants for gene <a href="/gene/ENSG00000012048?dataset=gnomad_r4">BRCA1</a>.
+      The following is an annotated GraphQL query that can be run from the command line, with some
+      small example programs for a subset of that query in Python and JavaScript. This query gets
+      similar data to the CSV export of all variants for gene{' '}
+      <a href="/gene/ENSG00000012048?dataset=gnomad_r4">BRCA1</a>.
     </StyledParagraph>
     {/* @ts-expect-error TS(2741) FIXME: Property 'onChange' is missing in type '{ tabs: { ... Remove this comment to see the full error message */}
     <Tabs
       tabs={[
         {
-          id: 'rawQuery',
-          label: 'Raw Query',
-          render: () => <GraphQLCodeBlock>{exampleRawQuery}</GraphQLCodeBlock>,
+          id: 'commandLineQuery',
+          label: 'Command Line',
+          render: () => <GraphQLCodeBlock>{exampleCommandLineQuery}</GraphQLCodeBlock>,
         },
         {
           id: 'pythonQuery',

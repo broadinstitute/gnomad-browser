@@ -30280,7 +30280,8 @@ exports[`Data Page has no unexpected changes 1`] = `
     <p
       className="c10"
     >
-      The following is an annotated GraphQL query, with some small example programs for a subset of that query in Python and JavaScript. This query gets similar data to the CSV export of all variants for gene 
+      The following is an annotated GraphQL query that can be run from the command line, with some small example programs for a subset of that query in Python and JavaScript. This query gets similar data to the CSV export of all variants for gene
+       
       <a
         href="/gene/ENSG00000012048?dataset=gnomad_r4"
       >
@@ -30297,10 +30298,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           <li>
             <div
-              aria-controls="rawQuery-panel"
+              aria-controls="commandLineQuery-panel"
               aria-selected={true}
               className="c26"
-              id="rawQuery"
+              id="commandLineQuery"
               onFocus={[Function]}
               role="tab"
               tabIndex={0}
@@ -30308,7 +30309,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               <div
                 className="c27"
               >
-                Raw Query
+                Command Line
               </div>
             </div>
           </li>
@@ -30350,10 +30351,10 @@ exports[`Data Page has no unexpected changes 1`] = `
       </div>
       <div>
         <div
-          aria-describedby="rawQuery"
+          aria-describedby="commandLineQuery"
           aria-hidden={false}
           className="c29"
-          id="rawQuery-panel"
+          id="commandLineQuery-panel"
           onKeyDown={[Function]}
           role="tabpanel"
           style={{}}
@@ -30361,7 +30362,8 @@ exports[`Data Page has no unexpected changes 1`] = `
           <code
             className="c30"
           >
-            # Lines beginning with a "#" character are comments that are ignored by the API.
+            curl https://gnomad.broadinstitute.org/api -H 'Content-Type: application/graphql; charset=utf-8' --data-binary @- &lt;&lt; END_OF_QUERY
+# Lines beginning with a "#" character are comments that are ignored by the API.
 #
 # "VariantsInGene" is the operation name for the query. This is optional but
 # recommended.
@@ -30484,6 +30486,7 @@ query VariantsInGene {
     }
   }
 }
+END_OF_QUERY
 
           </code>
         </div>
@@ -30503,7 +30506,11 @@ query VariantsInGene {
           <code
             className="c30"
           >
-            # GQL is one popular Python GraphQL client library, but there are others.
+            # This example uses the GQL GraphQL client library.
+#
+# To install: pip3 install gql
+#
+# GQL is one popular Python GraphQL client, but there are others.
 # See https://graphql.org/community/tools-and-libraries/?tags=python_client
 
 from gql import gql, Client
@@ -30536,9 +30543,8 @@ query = gql(
 )
 
 # Execute the query on the transport
-result = client.execute(query)
+result = await client.execute_async(query)
 print(result)
-
           </code>
         </div>
         <div
