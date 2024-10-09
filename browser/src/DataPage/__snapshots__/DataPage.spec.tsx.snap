@@ -30372,11 +30372,11 @@ query VariantsInGene {
   # We could alternatively look up the gene by Ensembl ID by using the
   # "gene_id" argument rather than "gene_symbol".
   #
-  # The gene symbol is given with quotes, but not the reference genome or
-  # dataset. This is because the gene symbol is defined in the API schema as a
-  # string, but the reference genome is an enumerated type that can have only
-  # the value GRCh37 or GRCh38, and the dataset argument is constrained
-  # similarly. See
+  # In this query, the gene symbol must be provided with quotes ("BRCA1"). This
+  # does not apply to the reference genome build or gnomAD dataset version
+  # because the gene symbol is defined as a string, but the reference genome
+  # and dataset version are defined as enumerated types that only have specific
+  # values (e.g., reference genome can only be one of GRCh37 or GRCh38). See
   # https://graphql.org/learn/schema/#enumeration-types.
   #
   gene(gene_symbol: "BRCA1", reference_genome: GRCh38) {
@@ -30404,11 +30404,11 @@ query VariantsInGene {
       flags
 
       # The API separates the frequency data into exome data, genome data, and
-      # joint-frequency data. Which of these are available depends on the
+      # joint frequency data. Which of these are available depends on the
       # dataset used, and not all variants in a dataset necessarily have all
       # of the possible kinds.
       #
-      # Note that the exome and genome data have the same schema, but joint-
+      # Note that the exome and genome data have the same schema, but joint
       # frequency data is slightly different.
       #
       exome {
