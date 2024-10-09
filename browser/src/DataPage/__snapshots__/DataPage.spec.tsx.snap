@@ -484,6 +484,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           Azure Open Datasets
         </a>
         . We recommend using
+         
         <a
           className="c11"
           href="https://hail.is/"
@@ -533,7 +534,17 @@ exports[`Data Page has no unexpected changes 1`] = `
       <p
         className="c10"
       >
-        The API used by the gnomAD browser is also open to the public. In use cases involving querying a relatively small number of records with low latency, using the API to request records as needed may be more suitable than working with downloaded gnomAD data. If you're unsure which would be better for your use case, please reach out to the browser team.
+        The API used by the gnomAD browser is also open to the public. In use cases involving querying a relatively small number of records with low latency, using the API to request records as needed may be more suitable than working with downloaded gnomAD data. If you're unsure which would be better for your use case, please reach out to the browser team on the
+         
+        <a
+          className="c11"
+          href="https://discuss.gnomad.broadinstitute.org/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          gnomAD forum
+        </a>
+        .
       </p>
       <h2>
         Download Overview
@@ -30221,7 +30232,7 @@ exports[`Data Page has no unexpected changes 1`] = `
       >
         GraphQL
       </a>
-       API which is open to the public. Access to the API is rate-limited to 10 requests per 60-second period.
+       API which is open to the public. Access to the API is rate-limited to 10 requests per IP address per 60-second period.
     </p>
     <p
       className="c10"

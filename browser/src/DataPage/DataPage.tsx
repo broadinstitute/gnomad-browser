@@ -83,7 +83,7 @@ const DataPage = () => {
             <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
               Azure Open Datasets
             </ExternalLink>
-            . We recommend using
+            . We recommend using{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -107,7 +107,12 @@ const DataPage = () => {
             querying a relatively small number of records with low latency, using the API to request
             records as needed may be more suitable than working with downloaded gnomAD data. If
             you&apos;re unsure which would be better for your use case, please reach out to the
-            browser team.
+            browser team on the{' '}
+            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+            <ExternalLink href="https://discuss.gnomad.broadinstitute.org/">
+              gnomAD forum
+            </ExternalLink>
+            .
           </StyledParagraph>
           <h2>Download Overview</h2>
           <h3>Google Cloud Public Datasets</h3>
