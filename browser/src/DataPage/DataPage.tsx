@@ -8,35 +8,19 @@ import Link from '../Link'
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
 
-import { SectionTitle, StyledParagraph } from './downloadsPageStyles'
+import { SectionTitle, StyledParagraph, CodeBlock } from './downloadsPageStyles'
 
-import DownloadsPageTableOfContents from './TableOfContents'
+import DataPageTableOfContents from './TableOfContents'
 
 // @ts-expect-error
-import styles from './DownloadsPage.module.css'
+import styles from './DataPage.module.css'
 
 import GnomadV4Downloads from './GnomadV4Downloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
 import GnomadV2Downloads from './GnomadV2Downloads'
 import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
 import ExacDownloads from './ExacDownloads'
-
-const CodeBlock = styled.code`
-  display: inline-block;
-  box-sizing: border-box;
-  max-width: 100%;
-  padding: 0.5em 1em;
-  border-radius: 0.25em;
-  background: #333;
-  color: #fafafa;
-  font-family: monospace;
-  line-height: 1.6;
-  white-space: nowrap;
-
-  &::before {
-    content: '$ ';
-  }
-`
+import GraphQLDocs from './GraphQLDocs'
 
 const TextSection = styled.div`
   width: 70%;
@@ -65,17 +49,17 @@ const BottomSpacer = styled.div`
   margin-bottom: 40rem;
 `
 
-const DownloadsPage = () => {
+const DataPage = () => {
   // Load stylesheet to make smooth scroll behavior active
   const _style = styles.html
 
   return (
     <InfoPage>
-      <DocumentTitle title="Downloads" />
-      <PageHeading>Downloads</PageHeading>
+      <DocumentTitle title="Data" />
+      <PageHeading>Data</PageHeading>
 
       <TableOfContentsSection>
-        <DownloadsPageTableOfContents />
+        <DataPageTableOfContents />
       </TableOfContentsSection>
 
       <TextSection>
@@ -83,7 +67,7 @@ const DownloadsPage = () => {
           <SectionTitle id="summary" theme={{ type: 'datasets' }}>
             Summary
           </SectionTitle>
-          <p>
+          <StyledParagraph>
             gnomAD data is available for download through{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://cloud.google.com/public-datasets">
@@ -99,19 +83,15 @@ const DownloadsPage = () => {
             <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
               Azure Open Datasets
             </ExternalLink>
-            .
-          </p>
-
-          <p>
+            . We recommend using{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
+            <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
               Hail utilities for gnomAD
             </ExternalLink>{' '}
-            to work with the data.
-          </p>
-
+            to work with this data.
+          </StyledParagraph>
           <StyledParagraph>
             In addition to the files listed below,{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -122,9 +102,20 @@ const DownloadsPage = () => {
             </ExternalLink>
             .
           </StyledParagraph>
-
+          <StyledParagraph>
+            The API used by the gnomAD browser is also open to the public. In use cases involving
+            querying a relatively small number of records with low latency, using the API to request
+            records as needed may be more suitable than working with downloaded gnomAD data. If
+            you&apos;re unsure which would be better for your use case, please reach out to the
+            browser team on the{' '}
+            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+            <ExternalLink href="https://discuss.gnomad.broadinstitute.org/">
+              gnomAD forum
+            </ExternalLink>
+            .
+          </StyledParagraph>
+          <h2>Download Overview</h2>
           <h3>Google Cloud Public Datasets</h3>
-
           <p>
             Files can be browsed and downloaded using{' '}
             {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -233,10 +224,12 @@ const DownloadsPage = () => {
 
         <ExacDownloads />
 
+        <GraphQLDocs />
+
         <BottomSpacer />
       </TextSection>
     </InfoPage>
   )
 }
 
-export default DownloadsPage
+export default DataPage

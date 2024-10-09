@@ -12,7 +12,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
-const DownloadsPage = lazy(() => import('./DownloadsPage/DownloadsPage'))
+const DataPage = lazy(() => import('./DataPage/DataPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
@@ -169,7 +169,9 @@ const Routes = () => {
 
       <Route exact path="/team" component={TeamPage} />
 
-      <Route exact path="/downloads" component={DownloadsPage} />
+      <Redirect from="/downloads" to="/data" />
+
+      <Route exact path="/data" component={DataPage} />
 
       <Redirect from="/terms" to="/policies" />
 
