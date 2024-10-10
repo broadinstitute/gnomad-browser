@@ -30,7 +30,15 @@ export const GNOMAD_POPULATION_NAMES = {
   nfe_swe: 'Swedish',
 } as const
 
+export const LOCAL_ANCESTRY_NAMES = {
+  african: 'African',
+  amerindigenous: 'Amerindigenous',
+  european: 'European',
+} as const
+
 export type PopulationId = keyof typeof GNOMAD_POPULATION_NAMES
+export type LocalAncestryPopulationId = keyof typeof LOCAL_ANCESTRY_NAMES
+export type FullLocalAncestryPopulationId = `${PopulationId}_${LocalAncestryPopulationId}`
 
 export type PopulationIdAndChromosome =
   | PopulationId

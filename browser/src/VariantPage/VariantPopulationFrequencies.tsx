@@ -37,7 +37,6 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
     const tgpPopulations = genome.populations
       .filter((pop) => pop.id.startsWith('1kg:'))
       .map((pop) => ({ ...pop, id: pop.id.slice(4) })) // Remove 1kg: prefix
-
     const localAncestryPopulations = genome.local_ancestry_populations || []
 
     return (
@@ -121,7 +120,8 @@ const VariantPopulationFrequencies = ({ datasetId, variant }: Props) => {
                   <p>
                     Local ancestry is not available for this variant. Local ancestry is only
                     available for bi-allelic variants with high call rates and with an allele
-                    frequency &gt; 0.1% within the Latino/Admixed American gnomAD population.
+                    frequency &gt; 0.1% within the Latino/Admixed American or
+                    African/African-American gnomAD ancestry groups.
                   </p>
                 )
               }

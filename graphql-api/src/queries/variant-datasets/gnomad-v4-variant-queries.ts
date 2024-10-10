@@ -212,7 +212,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
           Number.isFinite(m.value)
         ),
       },
-      local_ancestry_populations: localAncestryPopulations.genome,
+      local_ancestry_populations: localAncestryPopulations?.genome || null,
     },
     joint: hasJointFrequencyData && {
       ...variant.joint,
