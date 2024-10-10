@@ -360,6 +360,20 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-local-ancestry">Local ancestry</SectionTitle>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Sites VCF"
+              path="/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-constraint">Constraint</SectionTitle>
         <p>
           For information on constraint, see our <Link to="/help/constraint">help text</Link>
