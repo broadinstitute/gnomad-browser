@@ -91,7 +91,6 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
       return d
     }, [alleleSizeDistribution, nBins, binSize])
-
     const xScale = scaleBand<number>()
       .domain(data.map((d) => d.binIndex))
       .range([0, plotWidth])

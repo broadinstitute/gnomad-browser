@@ -258,12 +258,20 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                     STRipy
                   </ExternalLink>
                 </ListItem>
+                <ListItem>
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink
+                    href={`https://strchive.org/database/${shortTandemRepeat.stripy_id}.html`}
+                  >
+                    STRchive
+                  </ExternalLink>
+                </ListItem>
               </List>
             </>
           )}
-          <h2>Related Loci</h2>
+          <h2>TRs in gnomAD</h2>
           <p>
-            <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
+            <Link to="/short-tandem-repeats">Known disease-associated TRs </Link>
           </p>
         </ResponsiveSection>
       </FlexWrapper>
@@ -314,81 +322,70 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             setSelectedSex={setSelectedSex}
           />
 
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
-            Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
-              value={selectedAlleleSizeRepeatUnit}
-              onChange={(e: { target: { value: string } }) => {
-                setSelectedAlleleSizeRepeatUnit(e.target.value)
-              }}
-            >
-              {alleleSizeDistributionRepunits.length === 1 ? (
-                <option
-                  key={alleleSizeDistributionRepunits[0]}
-                  value={alleleSizeDistributionRepunits[0]}
-                >
-                  {alleleSizeDistributionRepunits[0]}
-                </option>
-              ) : (
-                <>
-                  <option value="">All</option>
-                  {Object.keys(allRepeatUnitsByClassification).length > 1 && (
-                    <>
-                      <optgroup label="Grouped by classification">
-                        {['pathogenic', 'benign', 'unknown'].map((classification) => {
-                          const foundInGnomad =
-                            (repeatUnitsFoundInGnomadByClassification[classification] || [])
-                              .length > 0
-                          return (
-                            <option
-                              key={classification}
-                              value={`classification/${classification}`}
-                              disabled={!foundInGnomad}
-                            >
-                              {foundInGnomad
-                                ? `All ${classification}`
-                                : `All ${classification} (not found in gnomAD)`}
-                            </option>
-                          )
-                        })}
-                      </optgroup>
-                    </>
-                  )}
-                  {['pathogenic', 'benign', 'unknown']
-                    .filter(
-                      (classification) =>
-                        (allRepeatUnitsByClassification[classification] || []).length > 0
-                    )
-                    .map((classification) => (
-                      <optgroup
-                        key={classification}
-                        label={`${classification.charAt(0).toUpperCase()}${classification.slice(
-                          1
-                        )}`}
-                      >
-                        {allRepeatUnitsByClassification[classification].map((repeatUnit) => {
-                          const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
-                          const notes = []
-                          if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
-                            notes.push('reference')
-                          }
-                          if (!foundInGnomad) {
-                            notes.push('not found in gnomAD')
-                          }
-                          return (
-                            <option key={repeatUnit} value={repeatUnit} disabled={!foundInGnomad}>
-                              {repeatUnit}
-                              {notes.length > 0 && ` (${notes.join(', ')})`}
-                            </option>
-                          )
-                        })}
-                      </optgroup>
-                    ))}
-                </>
-              )}
-            </Select>
-          </label>
+          {alleleSizeDistributionRepunits.length > 1 && (
+            <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
+              Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              <Select
+                id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
+                value={selectedAlleleSizeRepeatUnit}
+                onChange={(e: { target: { value: string } }) => {
+                  setSelectedAlleleSizeRepeatUnit(e.target.value)
+                }}
+              >
+                <option value="">All</option>
+                {Object.keys(allRepeatUnitsByClassification).length > 1 && (
+                  <>
+                    <optgroup label="Grouped by classification">
+                      {['pathogenic', 'benign', 'unknown'].map((classification) => {
+                        const foundInGnomad =
+                          (repeatUnitsFoundInGnomadByClassification[classification] || []).length >
+                          0
+                        return (
+                          <option
+                            key={classification}
+                            value={`classification/${classification}`}
+                            disabled={!foundInGnomad}
+                          >
+                            {foundInGnomad
+                              ? `All ${classification}`
+                              : `All ${classification} (not found in gnomAD)`}
+                          </option>
+                        )
+                      })}
+                    </optgroup>
+                  </>
+                )}
+                {['pathogenic', 'benign', 'unknown']
+                  .filter(
+                    (classification) =>
+                      (allRepeatUnitsByClassification[classification] || []).length > 0
+                  )
+                  .map((classification) => (
+                    <optgroup
+                      key={classification}
+                      label={`${classification.charAt(0).toUpperCase()}${classification.slice(1)}`}
+                    >
+                      {allRepeatUnitsByClassification[classification].map((repeatUnit) => {
+                        const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
+                        const notes = []
+                        if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
+                          notes.push('reference')
+                        }
+                        if (!foundInGnomad) {
+                          notes.push('not found in gnomAD')
+                        }
+                        return (
+                          <option key={repeatUnit} value={repeatUnit} disabled={!foundInGnomad}>
+                            {repeatUnit}
+                            {notes.length > 0 && ` (${notes.join(', ')})`}
+                          </option>
+                        )
+                      })}
+                    </optgroup>
+                  ))}
+              </Select>
+            </label>
+          )}
 
           <label
             htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}

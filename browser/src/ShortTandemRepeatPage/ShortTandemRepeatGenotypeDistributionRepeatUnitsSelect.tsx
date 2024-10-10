@@ -27,6 +27,9 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
 
   const repunitPairs = genotypeRepunitPairs(shortTandemRepeatOrAdjacentRepeat)
 
+  if (repunitPairs.length == 1) {
+    return null
+  }
   return (
     <label
       htmlFor={`short-tandem-repeat-${shortTandemRepeatOrAdjacentRepeat.id}-genotype-distribution-repeat-units`}
@@ -40,7 +43,7 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
           setSelectedRepeatUnits(newPair)
         }}
       >
-        {repunitPairs.length > 1 && <option value="">All</option>}
+        <option value="">All</option>
         <optgroup label="Repeat unit pairs (only pairs found in gnomAD are listed here)">
           {repunitPairs.map((pair) => {
             return (

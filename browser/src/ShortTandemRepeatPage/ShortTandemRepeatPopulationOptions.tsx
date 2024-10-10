@@ -22,6 +22,10 @@ const Wrapper = styled.div`
   }
 `
 
+const Label = styled.label`
+  padding-right: 1em;
+`
+
 type Props = {
   id: string
   ancestryGroups: AncestryGroupId[]
@@ -45,8 +49,8 @@ const ShortTandemRepeatPopulationOptions = ({
 
   return (
     <Wrapper>
-      <label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
-        Genetic ancestry group:{' '}
+      <Label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
+        Genetic ancestry group: &nbsp;
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
@@ -62,9 +66,9 @@ const ShortTandemRepeatPopulationOptions = ({
             </option>
           ))}
         </Select>
-      </label>
+      </Label>
 
-      <label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
+      <Label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
         Sex: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
@@ -75,7 +79,7 @@ const ShortTandemRepeatPopulationOptions = ({
           <option value="XX">XX</option>
           <option value="XY">XY</option>
         </Select>
-      </label>
+      </Label>
     </Wrapper>
   )
 }

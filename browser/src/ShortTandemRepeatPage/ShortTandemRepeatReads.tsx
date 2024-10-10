@@ -340,6 +340,9 @@ const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
     width: 12ch;
   }
 `
+const Label = styled.label`
+  padding-right: 1em;
+`
 
 type ShortTandemRepeatReadsAllelesFilterControlsProps = {
   shortTandemRepeat: ShortTandemRepeat
@@ -363,30 +366,33 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
     <ShortTandemRepeatReadsAllelesFilterControlsWrapper>
       {[0, 1].map((alleleIndex) => (
         <ShortTandemRepeatReadsAllelesFilterControlWrapper key={`${alleleIndex}`}>
-          Allele {alleleIndex + 1}: {/* eslint-disable jsx-a11y/label-has-associated-control */}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
-            Repeat unit {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-            <Select
-              id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
-              value={value[alleleIndex].repeat_unit || ''}
-              onChange={(e: any) => {
-                const newRepeatUnit = e.target.value
-                onChange(
-                  value.map((v, i) =>
-                    i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+          Allele {alleleIndex + 1}: &nbsp;{' '}
+          {/* eslint-disable jsx-a11y/label-has-associated-control */}
+          {alleleSizeDistributionRepeatUnits.length > 1 && (
+            <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
+              Repeat unit {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              <Select
+                id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
+                value={value[alleleIndex].repeat_unit || ''}
+                onChange={(e: any) => {
+                  const newRepeatUnit = e.target.value
+                  onChange(
+                    value.map((v, i) =>
+                      i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
+                    )
                   )
-                )
-              }}
-            >
-              {alleleSizeDistributionRepeatUnits.length > 1 && <option value="">Any</option>}
-              {alleleSizeDistributionRepeatUnits.map((repeatUnit) => (
-                <option key={repeatUnit} value={repeatUnit}>
-                  {repeatUnit}
-                </option>
-              ))}
-            </Select>
-          </label>{' '}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
+                }}
+              >
+                {alleleSizeDistributionRepeatUnits.length > 1 && <option value="">Any</option>}
+                {alleleSizeDistributionRepeatUnits.map((repeatUnit) => (
+                  <option key={repeatUnit} value={repeatUnit}>
+                    {repeatUnit}
+                  </option>
+                ))}
+              </Select>
+            </Label>
+          )}
+          <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
             Min repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               type="number"
@@ -403,8 +409,8 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 )
               }}
             />
-          </label>{' '}
-          <label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
+          </Label>{' '}
+          <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
             Max repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               type="number"
@@ -421,7 +427,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 )
               }}
             />
-          </label>
+          </Label>
           {/* eslint-enable jsx-a11y/label-has-associated-control */}
         </ShortTandemRepeatReadsAllelesFilterControlWrapper>
       ))}
