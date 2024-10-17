@@ -5,8 +5,8 @@ import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 const GENE_INDICES = {
   // GRCh37: 'genes_grch37',
   // GRCh38: 'genes_grch38',
-  GRCh37: 'genes_grch37-2024-09-30--20-56',
-  GRCh38: 'genes_grch38-2024-09-30--20-53',
+  GRCh37: 'genes_grch37-2024-09-30--21-33',
+  GRCh38: 'genes_grch38-2024-10-01--19-16',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
