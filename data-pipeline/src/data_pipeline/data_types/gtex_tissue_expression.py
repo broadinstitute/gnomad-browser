@@ -53,7 +53,42 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, 
     return ds
 
 
-def reshape_gtex_data_to_tissue_array(gtex_struct_path):
+def reshape_gtex_data_to_tissue_array(gtex_struct_path, exclude_v10_tissues=False):
     ds = hl.read_table(gtex_struct_path)
-    ds = ds.annotate(tissues=hl.array([hl.struct(tissue=tissue, value=ds.tissues[tissue]) for tissue in ds.tissues]))
+
+    tissues_to_exclude = (
+        {
+            "bladder",
+            "colon_transverse_mixed_cell",
+            "colon_transverse_mucosa",
+            "colon_transverse_muscularis",
+            "kidney_medulla",
+            "liver_hepatocyte",
+            "liver_mixed_cell",
+            "liver_portal_tract",
+            "pancreas_acini",
+            "pancreas_islets",
+            "pancreas_mixed_cell",
+            "small_intestine_terminal_ileum_lymphoid_aggregate",
+            "small_intestine_terminal_ileum_mixed_cell",
+            "stomach_mixed_cell",
+            "stomach_mucosa",
+            "stomach_muscularis",
+            "cervix_ectocervix",
+            "cervix_endocervix",
+            "fallopian_tube",
+        }
+        if exclude_v10_tissues
+        else {}
+    )
+
+    ds = ds.annotate(
+        tissues=hl.array(
+            [
+                hl.struct(tissue=tissue, value=ds.tissues[tissue])
+                for tissue in ds.tissues
+                if tissue not in tissues_to_exclude
+            ]
+        )
+    )
     return ds

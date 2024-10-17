@@ -182,6 +182,12 @@ def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
 
 def reshape_pext_data_to_tissue_array(pext_struct_path):
     ds = hl.read_table(pext_struct_path)
+
+    # include empty 'flags' array if none exists to allow
+    # the 'annotate_table' helper to function as expected
+    if "flags" not in ds.row:
+        ds = ds.annotate(flags=hl.empty_array(hl.tstr))
+
     ds = ds.annotate(
         regions=ds.regions.map(
             lambda region: region.annotate(
