@@ -2,7 +2,7 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState, Dispatch, SetStateAction } from 'react'
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -527,7 +527,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             <GeneTranscriptsTrack
               datasetId={datasetId}
               isTissueExpressionAvailable={!!gene.pext}
-              gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
@@ -539,7 +538,9 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
           <TissueExpressionTrack
-            gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
+            datasetId={datasetId}
+            // gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
+            // gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
             exons={cdsCompositeExons}
             expressionRegions={gene.pext.regions}
             flags={gene.pext.flags}

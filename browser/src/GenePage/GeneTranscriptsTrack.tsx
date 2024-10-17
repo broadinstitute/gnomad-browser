@@ -1,5 +1,5 @@
 import { max, mean } from 'd3-array'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -8,13 +8,17 @@ import { Track } from '@gnomad/region-viewer'
 import TranscriptsTrack from '@gnomad/track-transcripts'
 import { Button, Modal, TooltipAnchor } from '@gnomad/ui'
 
-import { AllGtexTissues, TissueDetail } from '../gtex'
+import { AllGtexTissues, GTEX_TISSUES, TissueDetail } from '../gtex'
 import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import sortedTranscripts from './sortedTranscripts'
 import TranscriptsTissueExpression from './TranscriptsTissueExpression'
 import { Gene } from './GenePage'
-import { DatasetId, hasStructuralVariants } from '../../../dataset-metadata/metadata'
+import {
+  DatasetId,
+  getTopLevelDataset,
+  hasStructuralVariants,
+} from '../../../dataset-metadata/metadata'
 import { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
 const TranscriptsInfoWrapper = styled.div`
@@ -49,7 +53,6 @@ type GeneTranscriptsTrack = {
 const GeneTranscriptsTrack = ({
   datasetId,
   isTissueExpressionAvailable,
-  gtexTissues,
   gene,
   includeNonCodingTranscripts,
   includeUTRs,
@@ -58,6 +61,18 @@ const GeneTranscriptsTrack = ({
 }: GeneTranscriptsTrack) => {
   const transcriptsTrack = useRef(null)
   const [showTissueExpressionModal, setShowTissueExpressionModal] = useState(false)
+
+  const gtexTissues = GTEX_TISSUES[getTopLevelDataset(datasetId)]
+
+  // const [gtexTissues, setGtexTissues] = useState<Partial<AllGtexTissues> & { [key: string]: TissueDetail | undefined }>([])
+  //
+  // useEffect(() => {
+  //   const newGtexTissues = GTEX_TISSUES[getTopLevelDataset(datasetId)]
+  //   setGtexTissues(newGtexTissues)
+  // }, [datasetId])
+  //
+  //
+  //
 
   const maxMeanExpression = isTissueExpressionAvailable
     ? max(
@@ -159,6 +174,10 @@ const GeneTranscriptsTrack = ({
                 const circleRadius = Math.sqrt(
                   circleRadiusMeanContribution + 23.75 * circleRadiusMaxMeanContribution
                 )
+
+                console.log('Hellooo!!!')
+                console.log('Gtex tissues:', gtexTissues)
+                console.log('Tissue most expressed in', tissueMostExpressedIn)
 
                 return (
                   <svg width={width} height={10}>

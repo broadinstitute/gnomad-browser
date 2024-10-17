@@ -23,10 +23,6 @@ const SHARED_GTEX_TISSUES = {
     fullName: 'Artery - Tibial',
     color: '#FF0000',
   },
-  bladder: {
-    fullName: 'Bladder',
-    color: '#AA0000',
-  },
   brain_amygdala: {
     fullName: 'Brain - Amygdala',
     color: '#EEEE00',
@@ -87,14 +83,6 @@ const SHARED_GTEX_TISSUES = {
     fullName: 'Cells - EBV-transformed lymphocytes',
     color: '#CC66FF',
   },
-  cervix_ectocervix: {
-    fullName: 'Cervix - Ectocervix',
-    color: '#FFCCCC',
-  },
-  cervix_endocervix: {
-    fullName: 'Cervix - Endocervix',
-    color: '#CCAADD',
-  },
   colon_sigmoid: {
     fullName: 'Colon - Sigmoid',
     color: '#EEBB77',
@@ -114,10 +102,6 @@ const SHARED_GTEX_TISSUES = {
   esophagus_muscularis: {
     fullName: 'Esophagus - Muscularis',
     color: '#BB9988',
-  },
-  fallopian_tube: {
-    fullName: 'Fallopian Tube',
-    color: '#FFCCCC',
   },
   heart_atrial_appendage: {
     fullName: 'Heart - Atrial Appendage',
@@ -217,9 +201,25 @@ export type TissueDetail = {
 }
 
 const V2_SPECIFIC_GTEX_TISSUES = {
+  bladder: {
+    fullName: 'Bladder',
+    color: '#AA0000',
+  },
   cells_transformed_fibroblasts: {
     fullName: 'Cells - Transformed fibroblasts',
     color: '#AAEEFF',
+  },
+  cervix_ectocervix: {
+    fullName: 'Cervix - Ectocervix',
+    color: '#FFCCCC',
+  },
+  cervix_endocervix: {
+    fullName: 'Cervix - Endocervix',
+    color: '#CCAADD',
+  },
+  fallopian_tube: {
+    fullName: 'Fallopian Tube',
+    color: '#FFCCCC',
   },
 }
 
@@ -235,66 +235,66 @@ const V4_SPECIFIC_GTEX_TISSUES = {
     fullName: 'Cells - Cultured fibroblasts',
     color: '#AAEEFF',
   },
-  colon_transverse_mixed_cell: {
-    fullName: 'Colon - Transverse mixed cell',
-    color: '#CC9955',
-  },
-  colon_transverse_mucosa: {
-    fullName: 'Colon - Transverse mucosa',
-    color: '#CC9955',
-  },
-  colon_transverse_muscularis: {
-    fullName: 'Colon - Transverse muscularis',
-    color: '#CC9955',
-  },
-  kidney_medulla: {
-    fullName: 'Kidney - Medulla',
-    color: '#33FFC2',
-  },
-  liver_hepatocyte: {
-    fullName: 'Liver - Hepatocyte',
-    color: '#AABB66',
-  },
-  liver_mixed_cell: {
-    fullName: 'Liver - Mixed cell',
-    color: '#AABB66',
-  },
-  liver_portal_tract: {
-    fullName: 'Liver - Portal tract',
-    color: '#AABB66',
-  },
-  pancreas_acini: {
-    fullName: 'Pancreas - Acini',
-    color: '#995522',
-  },
-  pancreas_islets: {
-    fullName: 'Pancreas - Islets',
-    color: '#995522',
-  },
-  pancreas_mixed_cell: {
-    fullName: 'Pancreas - Mixed cell',
-    color: '#995522',
-  },
-  small_intestine_terminal_ileum_lymphoid_aggregate: {
-    fullName: 'Small Intestine - Terminal ileum lymphoid aggregate',
-    color: '#555522',
-  },
-  small_intestine_terminal_ileum_mixed_cell: {
-    fullName: 'Small intestine - Terminal ileum mixed cell',
-    color: '#555522',
-  },
-  stomach_mixed_cell: {
-    fullName: 'Stomach - Mixed cell',
-    color: '#FFDD99',
-  },
-  stomach_mucosa: {
-    fullName: 'Stomach - Mucosa',
-    color: '#FFDD99',
-  },
-  stomach_muscularis: {
-    fullName: 'Stomach - Muscularis',
-    color: '#FFDD99',
-  },
+  // colon_transverse_mixed_cell: {
+  //   fullName: 'Colon - Transverse mixed cell',
+  //   color: '#CC9955',
+  // },
+  // colon_transverse_mucosa: {
+  //   fullName: 'Colon - Transverse mucosa',
+  //   color: '#CC9955',
+  // },
+  // colon_transverse_muscularis: {
+  //   fullName: 'Colon - Transverse muscularis',
+  //   color: '#CC9955',
+  // },
+  // kidney_medulla: {
+  //   fullName: 'Kidney - Medulla',
+  //   color: '#33FFC2',
+  // },
+  // liver_hepatocyte: {
+  //   fullName: 'Liver - Hepatocyte',
+  //   color: '#AABB66',
+  // },
+  // liver_mixed_cell: {
+  //   fullName: 'Liver - Mixed cell',
+  //   color: '#AABB66',
+  // },
+  // liver_portal_tract: {
+  //   fullName: 'Liver - Portal tract',
+  //   color: '#AABB66',
+  // },
+  // pancreas_acini: {
+  //   fullName: 'Pancreas - Acini',
+  //   color: '#995522',
+  // },
+  // pancreas_islets: {
+  //   fullName: 'Pancreas - Islets',
+  //   color: '#995522',
+  // },
+  // pancreas_mixed_cell: {
+  //   fullName: 'Pancreas - Mixed cell',
+  //   color: '#995522',
+  // },
+  // small_intestine_terminal_ileum_lymphoid_aggregate: {
+  //   fullName: 'Small Intestine - Terminal ileum lymphoid aggregate',
+  //   color: '#555522',
+  // },
+  // small_intestine_terminal_ileum_mixed_cell: {
+  //   fullName: 'Small intestine - Terminal ileum mixed cell',
+  //   color: '#555522',
+  // },
+  // stomach_mixed_cell: {
+  //   fullName: 'Stomach - Mixed cell',
+  //   color: '#FFDD99',
+  // },
+  // stomach_mucosa: {
+  //   fullName: 'Stomach - Mucosa',
+  //   color: '#FFDD99',
+  // },
+  // stomach_muscularis: {
+  //   fullName: 'Stomach - Muscularis',
+  //   color: '#FFDD99',
+  // },
 }
 
 type V4GtexTissueNames = SharedGtexTissueNames | keyof typeof V4_SPECIFIC_GTEX_TISSUES
