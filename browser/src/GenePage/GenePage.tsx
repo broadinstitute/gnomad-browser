@@ -2,7 +2,7 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState, Dispatch, SetStateAction } from 'react'
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -22,6 +22,7 @@ import {
   isExac,
   hasCopyNumberVariants,
   isV2,
+  getTopLevelDataset,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import VariantCooccurrenceCountsTable, {
@@ -50,7 +51,7 @@ import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
 import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
-import TissueExpressionTrack from './TissueExpressionTrack'
+import TissueExpressionTrack, { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 import VariantsInGene from './VariantsInGene'
 
 import { GnomadConstraint } from '../ConstraintTable/GnomadConstraintTable'
@@ -71,6 +72,8 @@ import {
   LegendSwatch,
 } from '../ChartStyles'
 import { logButtonClick } from '../analytics'
+import { GtexTissueExpression } from './TranscriptsTissueExpression'
+import { GTEX_TISSUES } from '../gtex'
 
 export type Strand = '+' | '-'
 
@@ -88,6 +91,30 @@ export type GeneMetadata = {
   flags: string[]
 }
 
+export type GeneTranscript = {
+  transcript_id: string
+  transcript_version: string
+  exons: {
+    feature_type: string
+    start: number
+    stop: number
+  }[]
+  gtex_tissue_expression: GtexTissueExpression | null
+}
+
+export type Pext = {
+  regions: {
+    start: number
+    stop: number
+    mean: number
+    tissues: {
+      tissue: string
+      value: number
+    }[]
+  }[]
+  flags: string[]
+}
+
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
   name?: string
@@ -100,29 +127,11 @@ export type Gene = GeneMetadata & {
     start: number
     stop: number
   }[]
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
-    }[]
-  }[]
+  transcripts: GeneTranscript[]
   flags: string[]
   gnomad_constraint?: GnomadConstraint
   exac_constraint?: ExacConstraint
-  pext?: {
-    regions: {
-      start: number
-      stop: number
-      mean: number
-      tissues: {
-        [key: string]: number
-      }
-    }[]
-    flags: string[]
-  }
+  pext?: Pext
   short_tandem_repeats?: {
     id: string
   }[]
@@ -517,6 +526,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <TrackWrapper>
             <GeneTranscriptsTrack
               datasetId={datasetId}
+              isTissueExpressionAvailable={!!gene.pext}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
@@ -528,10 +538,14 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
           <TissueExpressionTrack
+            datasetId={datasetId}
+            // gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
+            // gtexTissues={GTEX_TISSUES[getTopLevelDataset(datasetId)]}
             exons={cdsCompositeExons}
             expressionRegions={gene.pext.regions}
             flags={gene.pext.flags}
-            transcripts={gene.transcripts}
+            // if a gene has pext, it also has GTEx
+            transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext,
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}
           />
@@ -563,7 +577,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           <VariantsInGene
             datasetId={datasetId}
             gene={gene}
-            // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; gene: { gene_id: string... Remove this comment to see the full error message
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
             zoomRegion={zoomRegion}

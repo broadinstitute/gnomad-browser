@@ -1,6 +1,6 @@
 import { max, mean } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -9,12 +9,14 @@ import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
 import { Badge, Button, Modal, SearchInput, Select, TooltipAnchor } from '@gnomad/ui'
 
-import { GTEX_TISSUE_COLORS, GTEX_TISSUE_NAMES } from '../gtex'
+import { AllGtexTissues, GTEX_TISSUES } from '../gtex'
 import InfoButton from '../help/InfoButton'
 
 import { logButtonClick } from '../analytics'
 
-import TranscriptsTissueExpression from './TranscriptsTissueExpression'
+import TranscriptsTissueExpression, { GtexTissueExpression } from './TranscriptsTissueExpression'
+import { GeneTranscript } from './GenePage'
+import { DatasetId, getTopLevelDataset } from '@gnomad/dataset-metadata/metadata'
 
 const getPlotRegions = (expressionRegions: any, getValueForRegion: any) => {
   const roundedRegions = expressionRegions.map((region: any) => ({
@@ -67,6 +69,8 @@ const TRACK_HEIGHT = 20
 const heightScale = scaleLinear().domain([0, 1]).range([0, TRACK_HEIGHT]).clamp(true)
 
 type PextRegionsPlotProps = {
+  // datasetId: DatasetId
+  gtexTissues: Partial<AllGtexTissues>
   color: string
   regions: {
     start: number
@@ -145,8 +149,14 @@ const NotExpressedMessage = styled.div`
   color: gray;
   font-size: 10px;
 `
+type ExpressedTissue = {
+  tissue: string
+  value: number
+}
 
-type OwnIndividualTissueTrackProps = {
+type IndividualTissueTrackProps = {
+  // datasetId: DatasetId
+  gtexTissues: Partial<AllGtexTissues>
   exons: {
     start: number
     stop: number
@@ -155,26 +165,20 @@ type OwnIndividualTissueTrackProps = {
     start: number
     stop: number
     mean?: number
-    tissues: {
-      [key: string]: number
-    }
+    tissues: ExpressedTissue[]
   }[]
   maxTranscriptExpressionInTissue: number
   maxMeanTranscriptExpressionInAnyTissue: number
   meanTranscriptExpressionInTissue: number
   tissue: string
-  transcriptWithMaxExpressionInTissue?: {
+  transcriptWithMaxExpressionInTissue: {
     transcript_id: string
     transcript_version: string
-  }
+  } | null
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'IndividualTissueTrackProps' circularly... Remove this comment to see the full error message
-type IndividualTissueTrackProps = OwnIndividualTissueTrackProps &
-  typeof IndividualTissueTrack.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'IndividualTissueTrack' implicitly has type 'any' ... Remove this comment to see the full error message
 const IndividualTissueTrack = ({
+  gtexTissues,
   exons,
   expressionRegions,
   maxTranscriptExpressionInTissue,
@@ -183,11 +187,19 @@ const IndividualTissueTrack = ({
   tissue,
   transcriptWithMaxExpressionInTissue,
 }: IndividualTissueTrackProps) => {
-  const isExpressed = expressionRegions.some((region: any) => region.tissues[tissue] !== 0)
+  const isExpressed = expressionRegions.some(
+    (region: any) =>
+      region.tissues.find((tissueObject: ExpressedTissue) => tissueObject.tissue === tissue)
+        ?.value !== 0
+  )
+
+  console.log('ok in individual tissue track')
+  console.log('tissue:', tissue)
+
   return (
     <Track
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      renderLeftPanel={() => <TissueName>{GTEX_TISSUE_NAMES[tissue]}</TissueName>}
+      renderLeftPanel={() => <TissueName>{gtexTissues[tissue].fullName}</TissueName>}
       renderRightPanel={({ width }: any) =>
         width > 36 && (
           <svg width={width} height={31}>
@@ -212,11 +224,11 @@ const IndividualTissueTrack = ({
                       2
                     )} TPM\nMax transcript expression in this tissue = ${maxTranscriptExpressionInTissue.toFixed(
                       2
-                    )} (${transcriptWithMaxExpressionInTissue.transcript_id}.${
-                      transcriptWithMaxExpressionInTissue.transcript_version
+                    )} (${transcriptWithMaxExpressionInTissue!.transcript_id}.${
+                      transcriptWithMaxExpressionInTissue!.transcript_version
                     })`
                   : // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                    `Gene is not expressed in ${GTEX_TISSUE_NAMES[tissue]}`
+                    `Gene is not expressed in ${gtexTissues[tissue].fullName}`
               }
             >
               <rect x={12} y={2} width={25} height={27} fill="none" pointerEvents="visible" />
@@ -249,9 +261,15 @@ const IndividualTissueTrack = ({
         return (
           <PlotWrapper key={tissue}>
             <PextRegionsPlot
+              gtexTissues={gtexTissues}
               // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-              color={GTEX_TISSUE_COLORS[tissue]}
-              regions={getPlotRegions(expressionRegions, (r: any) => r.tissues[tissue])}
+              color={gtexTissues[tissue].color}
+              regions={getPlotRegions(
+                expressionRegions,
+                (r: any) =>
+                  r.tissues.find((tissueObject: ExpressedTissue) => tissueObject.tissue === tissue)
+                    ?.value || 0
+              )}
               scalePosition={scalePosition}
               width={width}
             />
@@ -310,7 +328,14 @@ const RightPanel = styled.div`
   margin-top: 1.25em;
 `
 
-type OwnTissueExpressionTrackProps = {
+// Omit gtex then re-include to remove the possible null, as this component only renders if gtex and pext are non null
+export type TranscriptWithTissueExpression = Omit<GeneTranscript, 'gtex_tissue_expression'> & {
+  gtex_tissue_expression: GtexTissueExpression
+}
+
+type TissueExpressionTrackProps = {
+  datasetId: DatasetId
+  // gtexTissues: Partial<AllGtexTissues>
   exons: {
     start: number
     stop: number
@@ -320,29 +345,19 @@ type OwnTissueExpressionTrackProps = {
     stop: number
     mean?: number
     tissues: {
-      [key: string]: number
-    }
-  }[]
-  flags: string[]
-  transcripts: {
-    transcript_id: string
-    transcript_version: string
-    exons: {
-      feature_type: string
-      start: number
-      stop: number
+      tissue: string
+      value: number
     }[]
   }[]
+  flags: string[]
+  transcripts: TranscriptWithTissueExpression[]
   preferredTranscriptId?: string
   preferredTranscriptDescription?: string | React.ReactNode
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'TissueExpressionTrackProps' circularly... Remove this comment to see the full error message
-type TissueExpressionTrackProps = OwnTissueExpressionTrackProps &
-  typeof TissueExpressionTrack.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'TissueExpressionTrack' implicitly has type 'any' ... Remove this comment to see the full error message
 const TissueExpressionTrack = ({
+  // gtexTissues,
+  datasetId,
   exons,
   expressionRegions,
   flags,
@@ -355,57 +370,115 @@ const TissueExpressionTrack = ({
     useState(false)
   const [tissueFilterText, setTissueFilterText] = useState('')
   const mainTrack = useRef()
-
-  const [sortTissuesBy, setSortTissuesBy] = useState('alphabetical')
-
-  const expressionByTissue = Object.keys(GTEX_TISSUE_NAMES).reduce((acc, tissueId) => {
-    let maxTranscriptExpressionInTissue = 0
-    let transcriptWithMaxExpressionInTissue = null
-    transcripts.forEach((transcript: any) => {
-      const expressionInTissue = transcript.gtex_tissue_expression[tissueId]
-      if (expressionInTissue > maxTranscriptExpressionInTissue) {
-        maxTranscriptExpressionInTissue = expressionInTissue
-        transcriptWithMaxExpressionInTissue = transcript
-      }
-    })
-
-    const meanTranscriptExpressionInTissue = mean(
-      transcripts.map((transcript: any) => transcript.gtex_tissue_expression[tissueId])
-    )
-
-    return {
-      ...acc,
-      [tissueId]: {
-        maxTranscriptExpressionInTissue,
-        meanTranscriptExpressionInTissue,
-        transcriptWithMaxExpressionInTissue,
-      },
-    }
-  }, {})
-
-  const maxMeanTranscriptExpressionInAnyTissue = max(
-    Object.values(expressionByTissue).map((v: any) => v.meanTranscriptExpressionInTissue)
+  const [sortTissuesBy, setSortTissuesBy] = useState<'alphabetical' | 'mean-expression'>(
+    'alphabetical'
   )
 
-  let tissues
-  if (sortTissuesBy === 'mean-expression') {
-    tissues = Object.entries(GTEX_TISSUE_NAMES)
-      .sort((t1: any, t2: any) => {
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        const t1Expression = expressionByTissue[t1[0]].meanTranscriptExpressionInTissue
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        const t2Expression = expressionByTissue[t2[0]].meanTranscriptExpressionInTissue
-        if (t1Expression === t2Expression) {
-          return t1[1].localeCompare(t2[1])
-        }
-        return t2Expression - t1Expression
-      })
-      .map((t: any) => t[0])
-  } else {
-    tissues = Object.entries(GTEX_TISSUE_NAMES)
-      .sort((t1: any, t2: any) => t1[1].localeCompare(t2[1]))
-      .map((t: any) => t[0])
+  // useEffect(() => {
+  //   console.log("i got called!")
+  //   setIsExpanded(false)
+  // }, [datasetId])
+
+  // console.log("what the heck state!")
+  // console.log(datasetId)
+  const gtexTissues = GTEX_TISSUES[getTopLevelDataset(datasetId)]
+  // console.log(Object.keys(gtexTissues).length)
+
+  type ExpressionByTissueDetails = {
+    maxTranscriptExpressionInTissue: number
+    meanTranscriptExpressionInTissue: number
+    transcriptWithMaxExpressionInTissue: {
+      transcript_id: string
+      transcript_version: string
+    } | null
   }
+  type ExpressionByTissue = Record<string, ExpressionByTissueDetails>
+
+  // console.log(gtexTissues)
+  const expressionByTissue: ExpressionByTissue = Object.keys(gtexTissues).reduce(
+    (acc, tissueId) => {
+      // console.log(tissueId)
+
+      let maxTranscriptExpressionInTissue = 0
+      let transcriptWithMaxExpressionInTissue = null
+
+      transcripts.forEach((transcript) => {
+        const expressionInTissue = transcript.gtex_tissue_expression.find(
+          (tissue) => tissue.tissue === tissueId
+        )
+
+        // const expressionInTissueValue = expressionInTissue ? expressionInTissue.value : 0
+
+        // console.log(transcript)
+        // console.log(expressionInTissue)
+
+        if (expressionInTissue && expressionInTissue.value > maxTranscriptExpressionInTissue) {
+          maxTranscriptExpressionInTissue = expressionInTissue.value
+          transcriptWithMaxExpressionInTissue = {
+            transcript_id: transcript.transcript_id,
+            transcript_version: transcript.transcript_version,
+          }
+        }
+      })
+
+      const meanTranscriptExpressionInTissue = mean(
+        transcripts
+          .map(
+            (transcript) =>
+              transcript.gtex_tissue_expression.find((tissue) => tissue.tissue === tissueId)?.value
+          )
+          .filter((value): value is number => value != undefined)
+      )
+
+      return {
+        ...acc,
+        [tissueId]: {
+          maxTranscriptExpressionInTissue,
+          meanTranscriptExpressionInTissue,
+          transcriptWithMaxExpressionInTissue,
+        },
+      }
+    },
+    {}
+  )
+
+  const maxMeanTranscriptExpressionInAnyTissue = max(
+    Object.values(expressionByTissue).map((v) => v.meanTranscriptExpressionInTissue)
+  )!
+
+  const tissues =
+    sortTissuesBy === 'mean-expression'
+      ? Object.entries(gtexTissues)
+          .sort((t1, t2) => {
+            const t1Expression = expressionByTissue[t1[0]].meanTranscriptExpressionInTissue
+            const t2Expression = expressionByTissue[t2[0]].meanTranscriptExpressionInTissue
+            if (t1Expression === t2Expression) {
+              return t1[1].fullName.localeCompare(t2[1].fullName)
+            }
+            return t2Expression - t1Expression
+          })
+          .map((t: any) => t[0])
+      : Object.entries(gtexTissues)
+          .sort((t1, t2) => t1[1].fullName.localeCompare(t2[1].fullName))
+          .map((t) => t[0])
+
+  // let tissues
+  // if (sortTissuesBy === 'mean-expression') {
+  //   tissues = Object.entries(gtexTissues)
+  //     .sort((t1, t2) => {
+  //       const t1Expression = expressionByTissue[t1[0]].meanTranscriptExpressionInTissue
+  //       const t2Expression = expressionByTissue[t2[0]].meanTranscriptExpressionInTissue
+  //       if (t1Expression === t2Expression) {
+  //         return t1[1].fullName.localeCompare(t2[1].fullName)
+  //       }
+  //       return t2Expression - t1Expression
+  //     })
+  //     .map((t: any) => t[0])
+  // } else {
+  // tissues = Object.entries(gtexTissues)
+  //   .sort((t1, t2) => t1[1].fullName.localeCompare(t2[1].fullName))
+  //   .map((t) => t[0])
+  // }
 
   const isExpressed = expressionRegions.some((region: any) => region.mean !== 0)
 
@@ -471,6 +544,7 @@ const TissueExpressionTrack = ({
               return (
                 <PlotWrapper>
                   <PextRegionsPlot
+                    gtexTissues={gtexTissues}
                     color="#428bca"
                     regions={getPlotRegions(expressionRegions, (r: any) => r.mean)}
                     scalePosition={scalePosition}
@@ -547,27 +621,28 @@ const TissueExpressionTrack = ({
               }}
             </Track>
             {(tissueFilterText ? tissues.filter(tissuePredicate(tissueFilterText)) : tissues).map(
-              (tissue: any) => (
-                <IndividualTissueTrack
-                  key={tissue}
-                  exons={exons}
-                  expressionRegions={expressionRegions}
-                  maxTranscriptExpressionInTissue={
-                    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                    expressionByTissue[tissue].maxTranscriptExpressionInTissue
-                  }
-                  maxMeanTranscriptExpressionInAnyTissue={maxMeanTranscriptExpressionInAnyTissue}
-                  meanTranscriptExpressionInTissue={
-                    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                    expressionByTissue[tissue].meanTranscriptExpressionInTissue
-                  }
-                  transcriptWithMaxExpressionInTissue={
-                    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-                    expressionByTissue[tissue].transcriptWithMaxExpressionInTissue
-                  }
-                  tissue={tissue}
-                />
-              )
+              (tissue: any) => {
+                console.log(tissue)
+                return (
+                  <IndividualTissueTrack
+                    gtexTissues={gtexTissues}
+                    key={`${tissue}-${datasetId}`}
+                    exons={exons}
+                    expressionRegions={expressionRegions}
+                    maxTranscriptExpressionInTissue={
+                      expressionByTissue[tissue].maxTranscriptExpressionInTissue
+                    }
+                    maxMeanTranscriptExpressionInAnyTissue={maxMeanTranscriptExpressionInAnyTissue}
+                    meanTranscriptExpressionInTissue={
+                      expressionByTissue[tissue].meanTranscriptExpressionInTissue
+                    }
+                    transcriptWithMaxExpressionInTissue={
+                      expressionByTissue[tissue].transcriptWithMaxExpressionInTissue
+                    }
+                    tissue={tissue}
+                  />
+                )
+              }
             )}
             <span>
               <Button
@@ -595,6 +670,7 @@ const TissueExpressionTrack = ({
           }}
         >
           <TranscriptsTissueExpression
+            gtexTissues={gtexTissues}
             transcripts={transcripts}
             includeNonCodingTranscripts
             preferredTranscriptId={preferredTranscriptId}
