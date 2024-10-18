@@ -243,7 +243,7 @@ type VariantDetailsSequencingTypeData {
 
 type ContingencyTableTest {
   p_value: Float
-  odds_ratio: Float
+  odds_ratio: String
 }
 
 type CochranMantelHaenszelTest {

@@ -703,14 +703,6 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
         }
       }
       freq_comparison_stats {
-        contingency_table_test {
-          p_value
-          odds_ratio
-        }
-        cochran_mantel_haenszel_test {
-          p_value
-          chisq
-        }
         stat_union {
           p_value
           stat_test_name
