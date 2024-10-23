@@ -1,5 +1,62 @@
 import { Factory } from 'fishery'
 import { GtexTissueExpression } from '../GenePage/TranscriptsTissueExpression'
+import { Pext } from '../GenePage/GenePage'
+
+type PextParams = {
+  tissues?: string[]
+  regions?: {
+    start: number
+    stop: number
+  }[]
+}
+
+export const pextFactory = Factory.define<Pext>(({ params }) => {
+  const defaultTissues = ['adipose_subcutaneous', 'adipose_visceral_omentum', 'adrenal_gland']
+
+  const { tissues: paramTissues, regions: paramRegions } = params as PextParams
+
+  const tissues = [...defaultTissues, ...(paramTissues ?? [])]
+
+  const defaultRegions = [
+    {
+      start: 10,
+      stop: 20,
+    },
+    {
+      start: 20,
+      stop: 30,
+    },
+    {
+      start: 40,
+      stop: 60,
+    },
+  ]
+
+  const regions = [...defaultRegions, ...(paramRegions ?? [])]
+
+  const pextObject: Pext = {
+    regions: regions.map((region, i) => {
+      const dummyValue = i / Object.keys(tissues).length
+
+      const tissueObjects = tissues.map((tissue) => {
+        return {
+          tissue,
+          value: dummyValue,
+        }
+      })
+
+      return {
+        start: region.start,
+        stop: region.stop,
+        mean: dummyValue,
+        tissues: tissueObjects,
+      }
+    }),
+    flags: [],
+  }
+
+  return pextObject
+})
 
 export const gtexTissueExpressionFactory = Factory.define<GtexTissueExpression>(({ params }) => {
   const defaultTissues = {
