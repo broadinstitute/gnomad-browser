@@ -6,6 +6,7 @@ import {
   HeterozygousVariantCooccurrenceCountsPerSeverityAndAfFactory,
   HomozygousVariantCooccurrenceCountsPerSeverityAndAfFactory,
 } from './VariantCooccurrenceCountsPerSeverityAndAf'
+import { pextFactory } from './TissueExpression'
 
 const geneFactory = Factory.define<Gene>(({ params, associations }) => {
   const {
@@ -50,6 +51,8 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
         ]
       : []
 
+  const pext = pextFactory.build()
+
   return {
     gene_id,
     gene_version,
@@ -69,6 +72,7 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     structural_variants,
     clinvar_variants,
     copy_number_variants,
+    pext,
   }
 })
 
