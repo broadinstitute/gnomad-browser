@@ -370,6 +370,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
   it('returns just genome populations if only genome data is present, but no dataset', () => {
     const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -487,6 +488,7 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
   it('preferentially uses joint populations if both exome and joint are present, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -533,7 +535,13 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData({ variants: [testExomeAndJointVariant] })
+    const includeExomes = true
+    const includeGenomes = true
+
+    const result = mergeExomeAndGenomeData({
+      variants: [testExomeAndJointVariant],
+      preferJointData: includeExomes && includeGenomes,
+    })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -561,6 +569,84 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
+  it('Falls back to exome populations if both exome and joint are present, but user toggled off genome', () => {
+    const exomeGeneticAncestryGroupObjects = [
+      { ac: 1, ac_hemi: 2, ac_hom: 3, an: 10, id: 'afr' },
+      { ac: 2, ac_hemi: 3, ac_hom: 4, an: 20, id: 'remaining' },
+      { ac: 4, ac_hemi: 5, ac_hom: 6, an: 40, id: 'eur' },
+    ]
+
+    const jointGeneticAncestryGroupObjects = [
+      { ac: 1, hemizygote_count: 2, homozygote_count: 3, an: 10, id: 'afr' },
+      { ac: 2, hemizygote_count: 3, homozygote_count: 4, an: 20, id: 'remaining' },
+      { ac: 3, hemizygote_count: 4, homozygote_count: 5, an: 30, id: 'eur' },
+      { ac: 4, hemizygote_count: 5, homozygote_count: 6, an: 40, id: 'mid' },
+    ]
+
+    const testExomeAndJointVariant = variantFactory.build({
+      variant_id: 'test_variant',
+      exome: {
+        ac: 1,
+        ac_hemi: 2,
+        ac_hom: 3,
+        faf95: {
+          popmax: null,
+          popmax_population: null,
+        },
+        an: 4,
+        af: 5,
+        filters: ['RF'],
+        populations: exomeGeneticAncestryGroupObjects as Population[],
+      },
+      joint: {
+        ac: 10,
+        hemizygote_count: 20,
+        homozygote_count: 30,
+        faf95: {
+          popmax: null,
+          popmax_population: null,
+        },
+        an: 40,
+        filters: ['discrepant_frequencies'],
+        populations: jointGeneticAncestryGroupObjects as Population[],
+      },
+    })
+
+    const includeExomes = true
+    const includeGenomes = false
+
+    const result = mergeExomeAndGenomeData({
+      variants: [testExomeAndJointVariant],
+      preferJointData: includeExomes && includeGenomes,
+    })
+
+    const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 1 },
+        { id: 'remaining', value: 2 },
+        { id: 'eur', value: 4 },
+      ],
+      false
+    )
+
+    const expected = [
+      {
+        ...testExomeAndJointVariant,
+        ac: 1,
+        ac_hemi: 2,
+        ac_hom: 3,
+        an: 4,
+        af: 0.25,
+        allele_freq: 0.25,
+        filters: ['RF'],
+        populations: expectedJointGeneticAncestryGroupObjects,
+      },
+    ]
+
+    expect(result).toStrictEqual(expected)
+  })
+
   it('preferentially uses joint populations if both genome and joint are present, but no dataset', () => {
     const genomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -607,7 +693,13 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData({ variants: [testGenomeAndJointVariant] })
+    const includeExomes = true
+    const includeGenomes = true
+
+    const result = mergeExomeAndGenomeData({
+      variants: [testGenomeAndJointVariant],
+      preferJointData: includeExomes && includeGenomes,
+    })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -634,6 +726,85 @@ describe('mergeExomeAndGenomeData', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
+  it('Falls back to genome frequencies if both genome and joint are present, but user toggled off exome', () => {
+    const genomeGeneticAncestryGroupObjects = [
+      { ac: 8, ac_hemi: 9, ac_hom: 10, an: 80, id: 'afr' },
+      { ac: 16, ac_hemi: 17, ac_hom: 18, an: 160, id: 'remaining' },
+      { ac: 32, ac_hemi: 33, ac_hom: 34, an: 320, id: 'eur' },
+      { ac: 64, ac_hemi: 65, ac_hom: 66, an: 640, id: 'mid' },
+    ]
+
+    const jointGeneticAncestryGroupObjects = [
+      { ac: 1, hemizygote_count: 2, homozygote_count: 3, an: 10, id: 'afr' },
+      { ac: 2, hemizygote_count: 3, homozygote_count: 4, an: 20, id: 'remaining' },
+      { ac: 4, hemizygote_count: 5, homozygote_count: 6, an: 40, id: 'eur' },
+    ]
+
+    const testGenomeAndJointVariant = variantFactory.build({
+      variant_id: 'test_variant',
+      genome: {
+        ac: 1,
+        ac_hemi: 2,
+        ac_hom: 3,
+        faf95: {
+          popmax: null,
+          popmax_population: null,
+        },
+        an: 4,
+        af: 5,
+        filters: ['RF'],
+        populations: genomeGeneticAncestryGroupObjects as Population[],
+      },
+      joint: {
+        ac: 10,
+        hemizygote_count: 20,
+        homozygote_count: 30,
+        faf95: {
+          popmax: null,
+          popmax_population: null,
+        },
+        an: 40,
+        filters: ['discrepant_frequencies'],
+        populations: jointGeneticAncestryGroupObjects as Population[],
+      },
+    })
+
+    const includeExomes = false
+    const includeGenomes = true
+
+    const result = mergeExomeAndGenomeData({
+      variants: [testGenomeAndJointVariant],
+      preferJointData: includeExomes && includeGenomes,
+    })
+
+    const expectedGenomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
+      [
+        { id: 'afr', value: 8 },
+        { id: 'remaining', value: 16 },
+        { id: 'eur', value: 32 },
+        { id: 'mid', value: 64 },
+      ],
+      false
+    )
+
+    const expected = [
+      {
+        ...testGenomeAndJointVariant,
+        ac: 1,
+        ac_hemi: 2,
+        ac_hom: 3,
+        an: 4,
+        af: 0.25,
+        allele_freq: 0.25,
+        filters: ['RF'],
+        populations: expectedGenomeGeneticAncestryGroupObjects,
+      },
+    ]
+
+    expect(result).toStrictEqual(expected)
+  })
+
   it('preferentially uses joint populations if exome, genome and joint are present, but no dataset', () => {
     const exomeGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [
@@ -703,7 +874,13 @@ describe('mergeExomeAndGenomeData', () => {
       },
     })
 
-    const result = mergeExomeAndGenomeData({ variants: [testExomeGenomeAndJointVariant] })
+    const includeExomes = true
+    const includeGenomes = true
+
+    const result = mergeExomeAndGenomeData({
+      variants: [testExomeGenomeAndJointVariant],
+      preferJointData: includeExomes && includeGenomes,
+    })
 
     const expectedJointGeneticAncestryGroupObjects = createAncestryGroupObjects(
       [

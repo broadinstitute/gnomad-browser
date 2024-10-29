@@ -164,6 +164,7 @@ const Variants = ({
     return mergeExomeAndGenomeData({
       datasetId,
       variants: filterVariants(variants, filter, renderedTableColumns),
+      preferJointData: filter.includeExomes && filter.includeGenomes,
     })
   }, [datasetId, variants, filter, renderedTableColumns])
 
