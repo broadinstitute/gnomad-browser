@@ -177,7 +177,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
                             hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}_adj"]].faf95, population=pop)
                             for pop in faf_populations
                         ]
-                    ),
+                    ).filter(lambda f: f.faf > 0),
                     key=lambda f: (-f.faf, f.population),
                 ),
                 lambda fafs: hl.if_else(
@@ -193,7 +193,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
                             hl.struct(faf=ds.faf[g.faf_index_dict[f"{pop}_adj"]].faf99, population=pop)
                             for pop in faf_populations
                         ]
-                    ),
+                    ).filter(lambda f: f.faf > 0),
                     key=lambda f: (-f.faf, f.population),
                 ),
                 lambda fafs: hl.if_else(
