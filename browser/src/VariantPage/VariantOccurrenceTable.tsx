@@ -109,12 +109,11 @@ const FilteringAlleleFrequency = ({
   popmax,
   popmax_population: popmaxPopulation,
 }: FilteringAlleleFrequencyProps) => {
-  if (popmax === null) {
+  // popmax (now called fafmax) of 0 is filtered out of the faf array of candidates
+  //   instead, now display '-' rather than 0 to match the logic in the pipeline
+  //   and in the method team's release process
+  if (popmax === null || popmax === 0) {
     return <span>—</span>
-  }
-
-  if (popmax === 0) {
-    return <span>0</span>
   }
 
   return (
