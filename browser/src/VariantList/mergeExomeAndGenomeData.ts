@@ -125,14 +125,16 @@ type MergedVariant = Variant & {
 export const mergeExomeAndGenomeData = ({
   datasetId,
   variants,
+  preferJointData = false,
 }: {
   datasetId?: DatasetId
   variants: Variant[]
+  preferJointData?: boolean
 }): MergedVariant[] => {
   const mergedVariants = variants.map((variant: Variant) => {
     const { exome, genome, joint } = variant
 
-    if (joint) {
+    if (joint && preferJointData) {
       const exomeFilters = exome ? exome.filters : []
       const genomeFilters = genome ? genome.filters : []
       const jointFilters = exomeFilters.concat(genomeFilters, joint.filters)
