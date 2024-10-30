@@ -2,7 +2,7 @@ import { DATASET_LABELS } from '../datasets'
 import { UserVisibleError } from '../errors'
 
 const LOCAL_ANCESTRY_INDICES = {
-  gnomad_r3: 'gnomad_v3_local_ancestry',
+  gnomad_r3: 'gnomad_v3_local_ancestry-2024-10-11--20-51',
 }
 
 export const fetchLocalAncestryPopulationsByVariant = async (

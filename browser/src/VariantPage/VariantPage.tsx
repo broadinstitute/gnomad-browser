@@ -44,7 +44,10 @@ import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
 import { URLBuilder } from '../DatasetSelector'
-import { PopulationIdAndChromosome } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  PopulationIdAndChromosome,
+  FullLocalAncestryPopulationId,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 
 const Section = styled.section`
@@ -153,7 +156,7 @@ export type Population = {
 }
 
 export type LocalAncestryPopulation = {
-  id: string
+  id: FullLocalAncestryPopulationId
   ac: number
   an: number
 }
@@ -700,14 +703,6 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
         }
       }
       freq_comparison_stats {
-        contingency_table_test {
-          p_value
-          odds_ratio
-        }
-        cochran_mantel_haenszel_test {
-          p_value
-          chisq
-        }
         stat_union {
           p_value
           stat_test_name

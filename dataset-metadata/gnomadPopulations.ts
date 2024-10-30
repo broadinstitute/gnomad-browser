@@ -1,7 +1,7 @@
 import { textOrMissingTextWarning } from '../browser/src/missingContent'
 import { DatasetId, getTopLevelDataset } from './metadata'
 
-export const GNOMAD_ANCESTRY_GROUP_NAMES = {
+export const GNOMAD_POPULATION_NAMES = {
   afr: 'African/African American',
   ami: 'Amish',
   amr: 'Admixed American',
@@ -30,12 +30,15 @@ export const GNOMAD_ANCESTRY_GROUP_NAMES = {
   nfe_swe: 'Swedish',
 } as const
 
-export type AncestryGroupId = keyof typeof GNOMAD_ANCESTRY_GROUP_NAMES
+export const LOCAL_ANCESTRY_NAMES = {
+  african: 'African',
+  amerindigenous: 'Amerindigenous',
+  european: 'European',
+} as const
 
-// Temporary definitions so we can use the new names in new code without having
-// to immediately update all uses of the old (deprecated) names.
-export type PopulationId = AncestryGroupId
-export const GNOMAD_POPULATION_NAMES = GNOMAD_ANCESTRY_GROUP_NAMES
+export type PopulationId = keyof typeof GNOMAD_POPULATION_NAMES
+export type LocalAncestryPopulationId = keyof typeof LOCAL_ANCESTRY_NAMES
+export type FullLocalAncestryPopulationId = `${PopulationId}_${LocalAncestryPopulationId}`
 
 export type PopulationIdAndChromosome =
   | PopulationId
