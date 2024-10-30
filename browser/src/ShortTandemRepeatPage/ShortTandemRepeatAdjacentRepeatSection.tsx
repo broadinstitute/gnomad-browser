@@ -19,30 +19,30 @@ import {
   maxAlleleSizeDistributionRepeats,
   maxGenotypeDistributionRepeats,
 } from './shortTandemRepeatHelpers'
-import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Bin as GenotypeBin } from './ShortTandemRepeatGenotypeDistributionPlot'
 
 type Props = {
   adjacentRepeat: ShortTandemRepeatAdjacentRepeat
   selectedScaleType: ScaleType
-  selectedAncestryGroup: AncestryGroupId | ''
+  selectedPopulation: PopulationId | ''
   selectedSex: Sex | ''
-  ancestryGroups: AncestryGroupId[]
+  populations: PopulationId[]
   selectedGenotypeDistributionBin: GenotypeBin | null
   setSelectedGenotypeDistributionBin: Dispatch<SetStateAction<GenotypeBin | null>>
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
-  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId | ''>>
+  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
   setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
 }
 
 const ShortTandemRepeatAdjacentRepeatSection = ({
   adjacentRepeat,
-  ancestryGroups,
+  populations,
   selectedScaleType,
-  selectedAncestryGroup,
+  selectedPopulation,
   selectedSex,
   setSelectedScaleType,
-  setSelectedAncestryGroup,
+  setSelectedPopulation,
   setSelectedSex,
 }: Props) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
@@ -67,7 +67,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
       <ShortTandemRepeatAlleleSizeDistributionPlot
         maxRepeats={maxAlleleSizeDistributionRepeats(adjacentRepeat)}
         alleleSizeDistribution={getSelectedAlleleSizeDistribution(adjacentRepeat, {
-          selectedAncestryGroup,
+          selectedPopulation,
           selectedSex,
           selectedRepeatUnit,
         })}
@@ -77,10 +77,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-repeat-counts`}
-          ancestryGroups={ancestryGroups}
-          selectedAncestryGroup={selectedAncestryGroup}
+          populations={populations}
+          selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
-          setSelectedAncestryGroup={setSelectedAncestryGroup}
+          setSelectedPopulation={setSelectedPopulation}
           setSelectedSex={setSelectedSex}
         />
 
@@ -128,7 +128,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         maxRepeats={maxGenotypeDistributionRepeats(adjacentRepeat)}
         genotypeDistribution={getSelectedGenotypeDistribution(adjacentRepeat, {
           selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-          selectedAncestryGroup: selectedAncestryGroup,
+          selectedPopulation: selectedPopulation,
           selectedSex: selectedSex,
         })}
         onSelectBin={(bin: GenotypeBin) => {
@@ -143,10 +143,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
       <ControlSection>
         <ShortTandemRepeatPopulationOptions
           id={`${adjacentRepeat.id}-genotype-distribution`}
-          ancestryGroups={ancestryGroups}
-          selectedAncestryGroup={selectedAncestryGroup}
+          populations={populations}
+          selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
-          setSelectedAncestryGroup={setSelectedAncestryGroup}
+          setSelectedPopulation={setSelectedPopulation}
           setSelectedSex={setSelectedSex}
         />
 
@@ -171,7 +171,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             shortTandemRepeatOrAdjacentRepeat={adjacentRepeat}
             selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
-            selectedAncestryGroup={selectedAncestryGroup}
+            selectedPopulation={selectedPopulation}
             selectedSex={selectedSex}
             repeatUnitPairs={genotypeDistributionPairs}
           />

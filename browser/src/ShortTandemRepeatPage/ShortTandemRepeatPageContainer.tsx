@@ -56,7 +56,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       q_score
       distribution {
         repunit_count
-        frequency
+        allele_count
       }
     }
     genotype_distribution {
@@ -69,7 +69,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       distribution {
         short_allele_repunit_count
         long_allele_repunit_count
-        frequency
+        genotype_count
       }
     }
     age_distribution {
@@ -96,7 +96,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       q_score
       distribution {
         repunit_count
-        frequency
+        allele_count
       }
     }
     genotype_distribution {
@@ -109,7 +109,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       distribution {
         short_allele_repunit_count
         long_allele_repunit_count
-        frequency
+        genotype_count
       }
     }
   }

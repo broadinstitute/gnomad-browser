@@ -9,11 +9,11 @@ import {
   GenotypeDistributionItem,
 } from './ShortTandemRepeatPage'
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
-import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedAncestryGroup: AncestryGroupId | ''
+  selectedPopulation: PopulationId | ''
   selectedSex: Sex | ''
   selectedRepeatUnits: string[] | ''
   repeatUnitPairs: string[][]
@@ -26,14 +26,14 @@ type Props = {
 
 const ShortTandemRepeatGenotypeDistributionBinDetails = ({
   shortTandemRepeatOrAdjacentRepeat,
-  selectedAncestryGroup,
+  selectedPopulation,
   selectedSex,
   selectedRepeatUnits,
   repeatUnitPairs,
   bin,
 }: Props) => {
   const genotypeDistribution = getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-    selectedAncestryGroup,
+    selectedPopulation,
     selectedRepeatUnits,
     selectedSex,
   })
@@ -50,11 +50,11 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
       <List>
         {genotypeDistribution
           .filter(isInBin)
-          .map(({ long_allele_repunit_count, short_allele_repunit_count, frequency }) => (
+          .map(({ long_allele_repunit_count, short_allele_repunit_count, genotype_count }) => (
             // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             <ListItem key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}>
               {long_allele_repunit_count} repeats / {short_allele_repunit_count} repeats:{' '}
-              {frequency} individuals
+              {genotype_count} individuals
             </ListItem>
           ))}
       </List>
@@ -67,7 +67,7 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
               .map((repeatUnits) => ({
                 repeatUnits,
                 distribution: getSelectedGenotypeDistribution(shortTandemRepeatOrAdjacentRepeat, {
-                  selectedAncestryGroup,
+                  selectedPopulation,
                   selectedSex,
                   selectedRepeatUnits: repeatUnits,
                 }),
@@ -98,13 +98,17 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
                   {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <List>
                     {distribution.map(
-                      ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => (
+                      ({
+                        short_allele_repunit_count,
+                        long_allele_repunit_count,
+                        genotype_count,
+                      }) => (
                         // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                         <ListItem
                           key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}
                         >
                           {long_allele_repunit_count} repeats / {short_allele_repunit_count}{' '}
-                          repeats: {frequency} individuals
+                          repeats: {genotype_count} individuals
                         </ListItem>
                       )
                     )}

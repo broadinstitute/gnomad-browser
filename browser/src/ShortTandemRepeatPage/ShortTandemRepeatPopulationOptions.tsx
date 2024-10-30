@@ -3,10 +3,7 @@ import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
 
-import {
-  AncestryGroupId,
-  GNOMAD_ANCESTRY_GROUP_NAMES,
-} from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId, GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import { Sex } from './ShortTandemRepeatPage'
 
@@ -28,41 +25,41 @@ const Label = styled.label`
 
 type Props = {
   id: string
-  ancestryGroups: AncestryGroupId[]
-  selectedAncestryGroup: AncestryGroupId | ''
+  populations: PopulationId[]
+  selectedPopulation: PopulationId | ''
   selectedSex: Sex | ''
-  setSelectedAncestryGroup: Dispatch<SetStateAction<AncestryGroupId | ''>>
+  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
   setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
 }
 
 const ShortTandemRepeatPopulationOptions = ({
   id,
-  ancestryGroups,
-  selectedAncestryGroup,
+  populations,
+  selectedPopulation,
   selectedSex,
-  setSelectedAncestryGroup,
+  setSelectedPopulation,
   setSelectedSex,
 }: Props) => {
-  const ancestryGroupsSortedByName = ancestryGroups.sort((group1, group2) =>
-    GNOMAD_ANCESTRY_GROUP_NAMES[group1].localeCompare(GNOMAD_ANCESTRY_GROUP_NAMES[group2])
+  const populationsSortedByName = populations.sort((group1, group2) =>
+    GNOMAD_POPULATION_NAMES[group1].localeCompare(GNOMAD_POPULATION_NAMES[group2])
   )
 
   return (
     <Wrapper>
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
-        Genetic ancestry group: &nbsp;
+        Population: &nbsp;
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
-          value={selectedAncestryGroup}
-          onChange={(e: { target: { value: AncestryGroupId | '' } }) =>
-            setSelectedAncestryGroup(e.target.value)
+          value={selectedPopulation}
+          onChange={(e: { target: { value: PopulationId | '' } }) =>
+            setSelectedPopulation(e.target.value)
           }
         >
           <option value="">Global</option>
-          {ancestryGroupsSortedByName.map((ancestryGroup) => (
-            <option key={ancestryGroup} value={ancestryGroup}>
-              {GNOMAD_ANCESTRY_GROUP_NAMES[ancestryGroup]}
+          {populationsSortedByName.map((population) => (
+            <option key={population} value={population}>
+              {GNOMAD_POPULATION_NAMES[population]}
             </option>
           ))}
         </Select>

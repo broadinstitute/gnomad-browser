@@ -104,10 +104,10 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     })
 
     genotypeDistribution.forEach(
-      ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => {
+      ({ short_allele_repunit_count, long_allele_repunit_count, genotype_count }) => {
         const xBinIndex = Math.floor(short_allele_repunit_count / xBinSize)
         const yBinIndex = Math.floor(long_allele_repunit_count / yBinSize)
-        data[xBinIndex * yNumBins + yBinIndex].count += frequency
+        data[xBinIndex * yNumBins + yBinIndex].count += genotype_count
       }
     )
 
@@ -145,7 +145,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     }
 
     const opacityScale = scaleLog()
-      .domain([1, max(genotypeDistribution, (d) => d.frequency) || 2])
+      .domain([1, max(genotypeDistribution, (d) => d.genotype_count) || 2])
       .range([0.1, 1])
 
     return (
