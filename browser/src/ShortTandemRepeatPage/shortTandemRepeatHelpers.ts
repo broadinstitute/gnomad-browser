@@ -7,10 +7,10 @@ import {
   GenotypeDistributionItem,
   ShortTandemRepeatAdjacentRepeat,
 } from './ShortTandemRepeatPage'
-import { AncestryGroupId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 type AlleleSizeDistributionFilters = {
-  selectedAncestryGroup: AncestryGroupId | ''
+  selectedPopulation: PopulationId | ''
   selectedSex: Sex | ''
   selectedRepeatUnit: string
 }
@@ -22,10 +22,11 @@ const addCohortToAlleleSizeDistribution = (
   cohort.distribution.reduce((acc, distributionItem) => {
     const { repunit_count } = distributionItem
     const existingItem = acc[repunit_count]
-    const countSoFar = existingItem ? existingItem.frequency : 0
+    const countSoFar = existingItem ? existingItem.allele_count : 0
     const newItem: AlleleSizeDistributionItem = {
       repunit_count: repunit_count,
-      frequency: countSoFar + distributionItem.frequency,
+      allele_count: countSoFar + distributionItem.allele_count,
+      manual_genotype_quality: distributionItem.manual_genotype_quality,
     }
     return { ...acc, [repunit_count]: newItem }
   }, distribution)
@@ -42,7 +43,7 @@ const repunitsWithClassification = (
 
 export const getSelectedAlleleSizeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
-  { selectedAncestryGroup, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
+  { selectedPopulation, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
 ): AlleleSizeDistributionItem[] => {
   const matchingRepunits: Set<string> =
     selectedRepeatUnit.startsWith('classification') &&
@@ -50,9 +51,13 @@ export const getSelectedAlleleSizeDistribution = (
       ? repunitsWithClassification(shortTandemRepeatOrAdjacentRepeat, selectedRepeatUnit.slice(15))
       : new Set([selectedRepeatUnit])
 
+  console.log(
+    'shortTandemRepeatOrAdjacentRepeat.allele_size_distribution',
+    shortTandemRepeatOrAdjacentRepeat.allele_size_distribution
+  )
   const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
-      if (selectedAncestryGroup !== '' && cohort.ancestry_group !== selectedAncestryGroup) {
+      if (selectedPopulation !== '' && cohort.ancestry_group !== selectedPopulation) {
         return acc
       }
       if (selectedSex !== '' && cohort.sex !== selectedSex) {
@@ -64,6 +69,7 @@ export const getSelectedAlleleSizeDistribution = (
       }
       return addCohortToAlleleSizeDistribution(cohort, acc)
     }, {} as Record<number, AlleleSizeDistributionItem>)
+  console.log('itemsByRepunitCount', itemsByRepunitCount)
   return Object.values(itemsByRepunitCount)
 }
 
@@ -75,11 +81,11 @@ const addCohortToGenotypeDistribution = (
     const { short_allele_repunit_count, long_allele_repunit_count } = distributionItem
     const key = [short_allele_repunit_count, long_allele_repunit_count].join(' / ')
     const existingItem = acc[key]
-    const countSoFar = existingItem ? existingItem.frequency : 0
+    const countSoFar = existingItem ? existingItem.genotype_count : 0
     const newItem: GenotypeDistributionItem = {
       short_allele_repunit_count: short_allele_repunit_count,
       long_allele_repunit_count: long_allele_repunit_count,
-      frequency: countSoFar + distributionItem.frequency,
+      genotype_count: countSoFar + distributionItem.genotype_count,
     }
     return { ...acc, [key]: newItem }
   }, distribution)
@@ -88,17 +94,17 @@ export const getSelectedGenotypeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
   {
     selectedRepeatUnits,
-    selectedAncestryGroup,
+    selectedPopulation,
     selectedSex,
   }: {
     selectedRepeatUnits: string[] | ''
-    selectedAncestryGroup: AncestryGroupId | ''
+    selectedPopulation: PopulationId | ''
     selectedSex: Sex | ''
   }
 ): GenotypeDistributionItem[] => {
   const itemsByRepunitCounts: Record<string, GenotypeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.genotype_distribution.reduce((acc, cohort) => {
-      if (selectedAncestryGroup !== '' && cohort.ancestry_group !== selectedAncestryGroup) {
+      if (selectedPopulation !== '' && cohort.ancestry_group !== selectedPopulation) {
         return acc
       }
       if (selectedSex !== '' && cohort.sex !== selectedSex) {

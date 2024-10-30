@@ -3,10 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Input, Select } from '@gnomad/ui'
 
-import {
-  GNOMAD_POPULATION_NAMES,
-  AncestryGroupId,
-} from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import Delayed from '../Delayed'
@@ -46,7 +43,7 @@ type ShortTandemRepeatReadProps = {
         lower: number
       }
     }[]
-    population: AncestryGroupId
+    population: PopulationId
     sex: string
     age?: string
     pcr_protocol: string
