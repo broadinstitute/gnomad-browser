@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, it } from '@jest/globals'
+import { beforeEach, describe, expect, jest, it, test } from '@jest/globals'
 
 import { fetchSearchResults } from './search'
 
@@ -149,5 +149,75 @@ describe('fetchSearchResults', () => {
           '/variant-cooccurrence?dataset=gnomad_r2_1&variant=1-55505647-G-T&variant=1-55523855-G-A',
       },
     ])
+  })
+
+  describe('looking up a query formatted like a CAID', () => {
+    test('returns links to any genes with matching symbols as well as the presumptive CAID, disambiguating if needed', async () => {
+      // @ts-expect-error TS(2339) FIXME: Property 'mockReturnValue' does not exist on type ... Remove this comment to see the full error message
+      global.fetch.mockReturnValue(
+        Promise.resolve({
+          json: () =>
+            Promise.resolve({
+              data: {
+                gene_search: [
+                  { ensembl_id: 'ENSG000004', symbol: 'CA327' },
+                  { ensembl_id: 'ENSG000001', symbol: 'CA321' },
+                  { ensembl_id: 'ENSG000005', symbol: 'CA3213' },
+                  { ensembl_id: 'ENSG000006', symbol: 'CA32' },
+                  { ensembl_id: 'ENSG000003', symbol: 'CA325' },
+                ],
+              },
+            }),
+        })
+      )
+
+      expect(await fetchSearchResults('gnomad_r4', 'CA3')).toEqual([
+        { label: 'CA3', value: `/variant/CA3?dataset=gnomad_r4` },
+        {
+          label: 'CA32',
+          value: '/gene/ENSG000006?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA321',
+          value: '/gene/ENSG000001?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA3213',
+          value: '/gene/ENSG000005?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA325',
+          value: '/gene/ENSG000003?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA327',
+          value: '/gene/ENSG000004?dataset=gnomad_r4',
+        },
+      ])
+
+      expect(await fetchSearchResults('gnomad_r4', 'CA32')).toEqual([
+        { label: 'CA32 (variant)', value: `/variant/CA32?dataset=gnomad_r4` },
+        {
+          label: 'CA32 (ENSG000006)',
+          value: '/gene/ENSG000006?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA321',
+          value: '/gene/ENSG000001?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA3213',
+          value: '/gene/ENSG000005?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA325',
+          value: '/gene/ENSG000003?dataset=gnomad_r4',
+        },
+        {
+          label: 'CA327',
+          value: '/gene/ENSG000004?dataset=gnomad_r4',
+        },
+      ])
+    })
   })
 })
