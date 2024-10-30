@@ -84,9 +84,9 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
         count: 0,
       }))
 
-      alleleSizeDistribution.forEach(({ repunit_count, allele_count }) => {
+      alleleSizeDistribution.forEach(({ repunit_count, frequency }) => {
         const binIndex = Math.floor(repunit_count / binSize)
-        d[binIndex].count += allele_count
+        d[binIndex].count += frequency
       })
 
       return d

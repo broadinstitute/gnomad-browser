@@ -41,11 +41,14 @@ export type GenotypeQuality = 'low' | 'medium-low' | 'medium' | 'medium-high' | 
 
 export type AlleleSizeDistributionItem = {
   repunit_count: number
-  allele_count: number
-  manual_genotype_quality: GenotypeQuality
+  frequency: number
+  quality_description: GenotypeQuality
+  q_score: number
 }
 
 export type Sex = 'XX' | 'XY'
+
+export type ColorBy = 'ManualGenoypeQuality' | 'QScore' | 'Population' | 'Sex'
 
 export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId
@@ -59,7 +62,7 @@ export type AlleleSizeDistributionCohort = {
 export type GenotypeDistributionItem = {
   short_allele_repunit_count: number
   long_allele_repunit_count: number
-  genotype_count: number
+  frequency: number
 }
 
 export type GenotypeDistributionCohort = {
@@ -163,6 +166,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | ''>('')
   const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
+  const [selectedColorBy, setColorBy] = useState<ColorBy | ''>('')
   const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
     useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
@@ -577,7 +581,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         )}
       </section>
 
-      {shortTandemRepeat.adjacent_repeats.length > 0 && (
+      {false && (
         <section style={{ marginBottom: '3em' }}>
           <h2>
             Adjacent Repeats <InfoButton topic="str-adjacent-repeats" />

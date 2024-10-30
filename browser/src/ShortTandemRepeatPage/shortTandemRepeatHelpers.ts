@@ -20,13 +20,15 @@ const addCohortToAlleleSizeDistribution = (
   distribution: Record<number, AlleleSizeDistributionItem>
 ): Record<number, AlleleSizeDistributionItem> =>
   cohort.distribution.reduce((acc, distributionItem) => {
-    const { repunit_count } = distributionItem
+    const { repunit_count, quality_description, q_score } = distributionItem
     const existingItem = acc[repunit_count]
-    const countSoFar = existingItem ? existingItem.allele_count : 0
+    const countSoFar = existingItem ? existingItem.frequency : 0
     const newItem: AlleleSizeDistributionItem = {
       repunit_count: repunit_count,
-      allele_count: countSoFar + distributionItem.allele_count,
-      manual_genotype_quality: distributionItem.manual_genotype_quality,
+      quality_description: quality_description,
+      q_score: q_score,
+
+      frequency: countSoFar + distributionItem.frequency,
     }
     return { ...acc, [repunit_count]: newItem }
   }, distribution)
@@ -81,11 +83,11 @@ const addCohortToGenotypeDistribution = (
     const { short_allele_repunit_count, long_allele_repunit_count } = distributionItem
     const key = [short_allele_repunit_count, long_allele_repunit_count].join(' / ')
     const existingItem = acc[key]
-    const countSoFar = existingItem ? existingItem.genotype_count : 0
+    const countSoFar = existingItem ? existingItem.frequency : 0
     const newItem: GenotypeDistributionItem = {
       short_allele_repunit_count: short_allele_repunit_count,
       long_allele_repunit_count: long_allele_repunit_count,
-      genotype_count: countSoFar + distributionItem.genotype_count,
+      frequency: countSoFar + distributionItem.frequency,
     }
     return { ...acc, [key]: newItem }
   }, distribution)
