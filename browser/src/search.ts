@@ -6,10 +6,80 @@ import {
   isRsId,
 } from '@gnomad/identifiers'
 
-import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  ReferenceGenome,
+  referenceGenome as getReferenceGenome,
+} from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
-export const fetchSearchResults = (datasetId: DatasetId, query: string) => {
+const fetchGeneSymbolSearchResults = (query: string, referenceGenome: ReferenceGenome) => {
+  return fetch('/api/', {
+    body: JSON.stringify({
+      query: `
+          query GeneSearch($query: String!, $referenceGenome: ReferenceGenomeId!) {
+            gene_search(query: $query, reference_genome: $referenceGenome) {
+              ensembl_id
+              symbol
+            }
+          }
+        `,
+      variables: { query, referenceGenome },
+    }),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  }).then((response) => response.json())
+}
+
+type GeneSearchResult = { data: { gene_search: { ensembl_id: string; symbol: string }[] } }
+
+const parseGeneSearchResults = (
+  response: GeneSearchResult,
+  query: string,
+  datasetId: DatasetId,
+  startingGeneSymbolCounts: Record<string, number> = {}
+): [SearchResultItem[], Record<string, number>] => {
+  const genes = response.data.gene_search
+  const geneSymbolCounts = { ...startingGeneSymbolCounts }
+
+  genes.forEach((gene) => {
+    if (geneSymbolCounts[gene.symbol] === undefined) {
+      geneSymbolCounts[gene.symbol] = 0
+    }
+    geneSymbolCounts[gene.symbol] += 1
+  })
+
+  const formattedGenes = genes
+    .sort((gene1, gene2) => {
+      const symbolPrefix = query.toUpperCase()
+      const symbol1 = gene1.symbol.toUpperCase()
+      const symbol2 = gene2.symbol.toUpperCase()
+
+      if (symbol1.startsWith(symbolPrefix) && !symbol2.startsWith(symbolPrefix)) {
+        return -1
+      }
+
+      if (!symbol1.startsWith(symbolPrefix) && symbol2.startsWith(symbolPrefix)) {
+        return 1
+      }
+      return symbol1.localeCompare(symbol2)
+    })
+    .map((gene) => ({
+      label:
+        geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
+
+      value: `/gene/${gene.ensembl_id}?dataset=${datasetId}`,
+    }))
+
+  return [formattedGenes, geneSymbolCounts]
+}
+
+type SearchResultItem = { label: string; value: string }
+
+export const fetchSearchResults = (
+  datasetId: DatasetId,
+  query: string
+): Promise<SearchResultItem[]> => {
   if (datasetId.startsWith('gnomad_sv')) {
     // ==============================================================================================
     // Structural Variants
@@ -49,14 +119,26 @@ export const fetchSearchResults = (datasetId: DatasetId, query: string) => {
       ])
     }
 
+    // Some gene symbols also match the format for variant CAIDs, so we have
+    // to cover that as a special case
     if (/^CA[0-9]+$/i.test(query)) {
       const caid = query.toUpperCase()
-      return Promise.resolve([
-        {
-          label: caid,
-          value: `/variant/${caid}?dataset=${datasetId}`,
-        },
-      ])
+      return fetchGeneSymbolSearchResults(query, getReferenceGenome(datasetId))
+        .then((response) => {
+          if (!response?.data?.gene_search) {
+            return []
+          }
+          return response
+        })
+        .then((response) => parseGeneSearchResults(response, query, datasetId, { [caid]: 1 }))
+        .then(([geneSearchResults, geneSymbolCounts]) => {
+          const variantItem = {
+            label: geneSymbolCounts[caid] > 1 ? `${caid} (variant)` : caid,
+            value: `/variant/${caid}?dataset=${datasetId}`,
+          }
+
+          return [variantItem, ...geneSearchResults]
+        })
     }
 
     if (/^[0-9]+$/.test(query)) {
@@ -132,60 +214,16 @@ export const fetchSearchResults = (datasetId: DatasetId, query: string) => {
   // ==============================================================================================
 
   if (/^[A-Z][A-Z0-9-]*$/.test(upperCaseQuery)) {
-    return fetch('/api/', {
-      body: JSON.stringify({
-        query: `
-          query GeneSearch($query: String!, $referenceGenome: ReferenceGenomeId!) {
-            gene_search(query: $query, reference_genome: $referenceGenome) {
-              ensembl_id
-              symbol
-            }
-          }
-        `,
-        variables: { query, referenceGenome: referenceGenome(datasetId) },
-      }),
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
+    return fetchGeneSymbolSearchResults(query, getReferenceGenome(datasetId))
       .then((response) => {
-        if (!response.data.gene_search) {
+        if (!response?.data?.gene_search) {
           throw new Error('Unable to retrieve search results')
         }
-
-        const genes = response.data.gene_search as { ensembl_id: string; symbol: string }[]
-
-        const geneSymbolCounts: Record<string, number> = {}
-        genes.forEach((gene) => {
-          if (geneSymbolCounts[gene.symbol] === undefined) {
-            geneSymbolCounts[gene.symbol] = 0
-          }
-          geneSymbolCounts[gene.symbol] += 1
-        })
-
-        return genes
-          .sort((gene1, gene2) => {
-            const symbolPrefix = query.toUpperCase()
-            const symbol1 = gene1.symbol.toUpperCase()
-            const symbol2 = gene2.symbol.toUpperCase()
-
-            if (symbol1.startsWith(symbolPrefix) && !symbol2.startsWith(symbolPrefix)) {
-              return -1
-            }
-
-            if (!symbol1.startsWith(symbolPrefix) && symbol2.startsWith(symbolPrefix)) {
-              return 1
-            }
-            return symbol1.localeCompare(symbol2)
-          })
-          .map((gene) => ({
-            label:
-              geneSymbolCounts[gene.symbol] > 1
-                ? `${gene.symbol} (${gene.ensembl_id})`
-                : gene.symbol,
-
-            value: `/gene/${gene.ensembl_id}?dataset=${datasetId}`,
-          }))
+        return response
+      })
+      .then((response) => {
+        const [geneSearchResults] = parseGeneSearchResults(response, query, datasetId)
+        return geneSearchResults
       })
   }
 
