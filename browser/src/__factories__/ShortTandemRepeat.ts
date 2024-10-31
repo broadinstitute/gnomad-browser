@@ -35,10 +35,10 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
         sex: 'XY',
         repunit: 'ACCA',
         quality_description: 'medium-low',
-        q_score: 0.6,
+        q_score: '0.6',
         distribution: [
-          { repunit_count: 3, frequency: 12 },
-          { repunit_count: 4, frequency: 123 },
+          { repunit_count: 3, frequency: 12, colorByValue: 'low' },
+          { repunit_count: 4, frequency: 123, colorByValue: 'high' },
         ],
       },
     ],
@@ -49,7 +49,7 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
         short_allele_repunit: 'ACCA',
         long_allele_repunit: 'GATA',
         quality_description: 'high',
-        q_score: 1.0,
+        q_score: '1.0',
         distribution: [
           { short_allele_repunit_count: 8, long_allele_repunit_count: 9, frequency: 15 },
           { short_allele_repunit_count: 8, long_allele_repunit_count: 10, frequency: 19 },
