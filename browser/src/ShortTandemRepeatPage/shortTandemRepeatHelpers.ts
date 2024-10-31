@@ -1,4 +1,6 @@
 import {
+  ColorBy,
+  GenotypeQuality,
   Sex,
   ShortTandemRepeat,
   AlleleSizeDistributionItem,
@@ -6,32 +8,45 @@ import {
   GenotypeDistributionCohort,
   GenotypeDistributionItem,
   ShortTandemRepeatAdjacentRepeat,
+  ColorByValue,
 } from './ShortTandemRepeatPage'
-import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-type AlleleSizeDistributionFilters = {
-  selectedPopulation: PopulationId | ''
+type AlleleSizeDistributionParams = {
+  selectedPopulation: string | ''
   selectedSex: Sex | ''
+  selectedColorBy: ColorBy | ''
   selectedRepeatUnit: string
 }
 
 const addCohortToAlleleSizeDistribution = (
   cohort: AlleleSizeDistributionCohort,
-  distribution: Record<number, AlleleSizeDistributionItem>
-): Record<number, AlleleSizeDistributionItem> =>
-  cohort.distribution.reduce((acc, distributionItem) => {
-    const { repunit_count, quality_description, q_score } = distributionItem
-    const existingItem = acc[repunit_count]
+  colorBy: ColorBy | '',
+  distribution: Record<string, AlleleSizeDistributionItem>
+): Record<string, AlleleSizeDistributionItem> => {
+  let colorByValue: ColorByValue = ''
+  if (colorBy === 'quality_description') {
+    colorByValue = cohort.quality_description
+  } else if (colorBy === 'q_score') {
+    colorByValue = cohort.q_score
+  } else if (colorBy === 'sex') {
+    colorByValue = cohort.sex
+  } else if (colorBy === 'population') {
+    colorByValue = cohort.ancestry_group
+  }
+
+  return cohort.distribution.reduce((acc, distributionItem) => {
+    const { repunit_count } = distributionItem
+    const key = `${repunit_count}/${colorByValue}`
+    const existingItem = acc[key]
     const countSoFar = existingItem ? existingItem.frequency : 0
     const newItem: AlleleSizeDistributionItem = {
       repunit_count: repunit_count,
-      quality_description: quality_description,
-      q_score: q_score,
-
+      colorByValue: colorByValue,
       frequency: countSoFar + distributionItem.frequency,
     }
-    return { ...acc, [repunit_count]: newItem }
+    return { ...acc, [key]: newItem }
   }, distribution)
+}
 
 const repunitsWithClassification = (
   shortTandemRepeat: ShortTandemRepeat,
@@ -45,7 +60,12 @@ const repunitsWithClassification = (
 
 export const getSelectedAlleleSizeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
-  { selectedPopulation, selectedSex, selectedRepeatUnit }: AlleleSizeDistributionFilters
+  {
+    selectedPopulation,
+    selectedSex,
+    selectedColorBy,
+    selectedRepeatUnit,
+  }: AlleleSizeDistributionParams
 ): AlleleSizeDistributionItem[] => {
   const matchingRepunits: Set<string> =
     selectedRepeatUnit.startsWith('classification') &&
@@ -53,10 +73,6 @@ export const getSelectedAlleleSizeDistribution = (
       ? repunitsWithClassification(shortTandemRepeatOrAdjacentRepeat, selectedRepeatUnit.slice(15))
       : new Set([selectedRepeatUnit])
 
-  console.log(
-    'shortTandemRepeatOrAdjacentRepeat.allele_size_distribution',
-    shortTandemRepeatOrAdjacentRepeat.allele_size_distribution
-  )
   const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
       if (selectedPopulation !== '' && cohort.ancestry_group !== selectedPopulation) {
@@ -69,9 +85,11 @@ export const getSelectedAlleleSizeDistribution = (
       if (selectedRepeatUnit !== '' && !matchingRepunits.has(cohort.repunit)) {
         return acc
       }
-      return addCohortToAlleleSizeDistribution(cohort, acc)
+      return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, acc)
     }, {} as Record<number, AlleleSizeDistributionItem>)
-  console.log('itemsByRepunitCount', itemsByRepunitCount)
+
+  //console.log('itemsByRepunitCount', itemsByRepunitCount)
+
   return Object.values(itemsByRepunitCount)
 }
 
@@ -100,7 +118,7 @@ export const getSelectedGenotypeDistribution = (
     selectedSex,
   }: {
     selectedRepeatUnits: string[] | ''
-    selectedPopulation: PopulationId | ''
+    selectedPopulation: string | ''
     selectedSex: Sex | ''
   }
 ): GenotypeDistributionItem[] => {

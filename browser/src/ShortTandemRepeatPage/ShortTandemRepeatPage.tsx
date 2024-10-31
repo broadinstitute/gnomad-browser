@@ -13,6 +13,7 @@ import ShortTandemRepeatAgeDistributionPlot from './ShortTandemRepeatAgeDistribu
 import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssociatedDiseasesTable'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
+import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot, {
   Bin as GenotypeBin,
@@ -38,24 +39,35 @@ type ShortTandemRepeatReferenceRegion = {
 }
 
 export type GenotypeQuality = 'low' | 'medium-low' | 'medium' | 'medium-high' | 'high'
-
+export type QScoreBin =
+  | '0.0'
+  | '0.1'
+  | '0.2'
+  | '0.3'
+  | '0.4'
+  | '0.5'
+  | '0.6'
+  | '0.7'
+  | '0.8'
+  | '0.9'
+  | '1.0'
+export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
 export type AlleleSizeDistributionItem = {
   repunit_count: number
   frequency: number
-  quality_description: GenotypeQuality
-  q_score: number
+  colorByValue: ColorByValue
 }
 
 export type Sex = 'XX' | 'XY'
 
-export type ColorBy = 'ManualGenoypeQuality' | 'QScore' | 'Population' | 'Sex'
+export type ColorBy = 'quality_description' | 'q_score' | 'population' | 'sex'
 
 export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId
   sex: Sex
   repunit: string
-  quality_description: string
-  q_score: number
+  quality_description: GenotypeQuality
+  q_score: QScoreBin
   distribution: AlleleSizeDistributionItem[]
 }
 
@@ -70,8 +82,8 @@ export type GenotypeDistributionCohort = {
   sex: Sex
   short_allele_repunit: string
   long_allele_repunit: string
-  quality_description: string
-  q_score: number
+  quality_description: GenotypeQuality
+  q_score: QScoreBin
   distribution: GenotypeDistributionItem[]
 }
 
@@ -166,7 +178,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | ''>('')
   const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
-  const [selectedColorBy, setColorBy] = useState<ColorBy | ''>('')
+  const [selectedColorBy, setSelectedColorBy] = useState<ColorBy | ''>('')
   const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
     useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
@@ -301,8 +313,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           alleleSizeDistribution={getSelectedAlleleSizeDistribution(shortTandemRepeat, {
             selectedPopulation,
             selectedSex,
+            selectedColorBy,
             selectedRepeatUnit: selectedAlleleSizeRepeatUnit,
           })}
+          colorBy={selectedColorBy}
           repeatUnitLength={
             selectedAlleleSizeRepeatUnit &&
             !selectedAlleleSizeRepeatUnit.startsWith('classification')
@@ -328,6 +342,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             selectedSex={selectedSex}
             setSelectedPopulation={setSelectedPopulation}
             setSelectedSex={setSelectedSex}
+          />
+          <ShortTandemRepeatColorBySelect
+            id={`${shortTandemRepeat.id}-color-by`}
+            selectedColorBy={selectedColorBy}
+            setSelectedColorBy={setSelectedColorBy}
           />
 
           {alleleSizeDistributionRepunits.length > 1 && (
@@ -595,10 +614,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                   populations={populations}
                   selectedPopulation={selectedPopulation}
                   selectedSex={selectedSex}
+                  selectedColorBy={selectedColorBy}
                   selectedScaleType={selectedScaleType}
                   selectedGenotypeDistributionBin={selectedGenotypeDistributionBin}
                   setSelectedPopulation={setSelectedPopulation}
                   setSelectedSex={setSelectedSex}
+                  setSelectedColorBy={setSelectedColorBy}
                   setSelectedScaleType={setSelectedScaleType}
                   setSelectedGenotypeDistributionBin={setSelectedGenotypeDistributionBin}
                 />

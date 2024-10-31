@@ -5,7 +5,7 @@ import { Modal, Select } from '@gnomad/ui'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import { ShortTandemRepeatAdjacentRepeat, ScaleType, Sex } from './ShortTandemRepeatPage'
+import { ShortTandemRepeatAdjacentRepeat, ScaleType, Sex, ColorBy } from './ShortTandemRepeatPage'
 import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
@@ -27,12 +27,14 @@ type Props = {
   selectedScaleType: ScaleType
   selectedPopulation: PopulationId | ''
   selectedSex: Sex | ''
+  selectedColorBy: ColorBy | ''
   populations: PopulationId[]
   selectedGenotypeDistributionBin: GenotypeBin | null
   setSelectedGenotypeDistributionBin: Dispatch<SetStateAction<GenotypeBin | null>>
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
   setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
   setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
+  setSelectedColorBy: Dispatch<SetStateAction<ColorBy | ''>>
 }
 
 const ShortTandemRepeatAdjacentRepeatSection = ({
@@ -41,9 +43,11 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
   selectedScaleType,
   selectedPopulation,
   selectedSex,
+  selectedColorBy,
   setSelectedScaleType,
   setSelectedPopulation,
   setSelectedSex,
+  setSelectedColorBy,
 }: Props) => {
   const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
     adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
@@ -69,8 +73,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         alleleSizeDistribution={getSelectedAlleleSizeDistribution(adjacentRepeat, {
           selectedPopulation,
           selectedSex,
+          selectedColorBy,
           selectedRepeatUnit,
         })}
+        colorBy={selectedColorBy}
         repeatUnitLength={selectedRepeatUnit ? selectedRepeatUnit.length : null}
         scaleType={selectedScaleType}
       />

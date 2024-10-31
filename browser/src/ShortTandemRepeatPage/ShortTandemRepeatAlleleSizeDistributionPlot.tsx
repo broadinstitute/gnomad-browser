@@ -6,7 +6,15 @@ import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
-import { AlleleSizeDistributionItem, ScaleType } from './ShortTandemRepeatPage'
+import {
+  AlleleSizeDistributionItem,
+  ColorBy,
+  GenotypeQuality,
+  QScoreBin,
+  ScaleType,
+  Sex,
+} from './ShortTandemRepeatPage'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -23,6 +31,49 @@ const TooltipTrigger = styled.rect`
     fill: rgba(0, 0, 0, 0.05);
   }
 `
+
+const colorMap: Record<string, Record<string, string>> = {
+  '': {
+    '': '#73ab3d',
+  },
+  quality_description: {
+    low: '#d73027',
+    'low-medium': '#fc8d59',
+    medium: '#fee08b',
+    'medium-high': '#d9ef8b',
+    high: '#1a9850',
+    'not-reviewed': '#aaaaaa',
+  },
+  q_score: {
+    '0.0': '#ff0000',
+    '0.1': '#ff3300',
+    '0.2': '#ff6600',
+    '0.3': '#ff9900',
+    '0.4': '#ffcc00',
+    '0.5': '#ffff00',
+    '0.6': '#ccff33',
+    '0.7': '#99ff66',
+    '0.8': '#66ff99',
+    '0.9': '#33ffcc',
+    '1.0': '#00ff00',
+  },
+  sex: {
+    XX: '#73ab3d',
+    XY: '#ff7f0e',
+  },
+  population: {
+    nfe: '#377eb8',
+    afr: '#4daf4a',
+    fin: '#e41a1c',
+    amr: '#984ea3',
+    ami: '#ff7f00',
+    asj: '#ffff33',
+    eas: '#a65628',
+    mid: '#f781bf',
+    oth: '#999999',
+    sas: '#a6cee3',
+  },
+}
 
 const tickFormat = (n: number) => {
   if (n >= 1e9) {
@@ -47,6 +98,7 @@ type Range = { start: number; stop: number; label: string }
 type Props = {
   maxRepeats: number
   alleleSizeDistribution: AlleleSizeDistributionItem[]
+  colorBy: ColorBy | ''
   repeatUnitLength: number | null
   scaleType: ScaleType
   ranges?: Range[]
@@ -57,6 +109,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
   ({
     maxRepeats,
     alleleSizeDistribution,
+    colorBy,
     repeatUnitLength,
     size: { width },
     scaleType = 'linear',
@@ -91,6 +144,55 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
       return d
     }, [alleleSizeDistribution, nBins, binSize])
+
+    // maps binIndex and colorByValue to a y and y start
+    const dataWithColor = useMemo(() => {
+      //sort by ColorBy value
+      alleleSizeDistribution.sort((a, b) => {
+        if (a.colorByValue < b.colorByValue) {
+          return 1
+        }
+        if (a.colorByValue > b.colorByValue) {
+          return -1
+        }
+        return 0
+      })
+
+      const d: Record<
+        string,
+        { binIndex: number; label: string; count: number; startCount: number; color: string }
+      > = {}
+
+      alleleSizeDistribution.forEach(({ repunit_count, colorByValue, frequency }) => {
+        const n = Math.floor(repunit_count / binSize)
+        const key = `${n}/${colorByValue}`
+        const labelPrefix = colorByValue ? `${colorByValue}: ` : ''
+        if (!d[key]) {
+          d[key] = {
+            binIndex: n,
+            label:
+              binSize === 1
+                ? `${labelPrefix} ${n}`
+                : `${labelPrefix} ${n * binSize} - ${n * binSize + binSize - 1}`,
+            count: 0,
+            startCount: 0,
+            color: colorMap[colorBy] ? colorMap[colorBy][colorByValue] : '#73ab3d',
+          }
+        }
+
+        d[key].count += frequency
+      })
+
+      return Object.values(d)
+    }, [alleleSizeDistribution, nBins, binSize])
+
+    const binCountCache = Array(nBins).fill(0)
+    dataWithColor.forEach((d) => {
+      d.startCount = binCountCache[d.binIndex]
+      console.log('data point:', d)
+      binCountCache[d.binIndex] += d.count
+    })
+
     const xScale = scaleBand<number>()
       .domain(data.map((d) => d.binIndex))
       .range([0, plotWidth])
@@ -198,16 +300,17 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             />
           )}
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {data.map((d) => {
-              const y = d.count === 0 ? plotHeight : yScale(d.count)
+            {dataWithColor.map((d) => {
+              const y = d.count === 0 ? 0 : yScale(d.count)
+              const yStart = d.startCount === 0 ? 0 : plotHeight - yScale(d.startCount)
               return (
-                <React.Fragment key={`${d.binIndex}`}>
+                <React.Fragment key={`${d.binIndex}-${d.color}`}>
                   <rect
                     x={xScale(d.binIndex)}
-                    y={y}
+                    y={y - yStart}
                     height={plotHeight - y}
                     width={xBandwidth}
-                    fill="#73ab3d"
+                    fill={d.color}
                     stroke="#333"
                   />
                   <TooltipAnchor
@@ -218,8 +321,8 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                   >
                     <TooltipTrigger
                       x={xScale(d.binIndex)}
-                      y={0}
-                      height={plotHeight}
+                      y={y - yStart}
+                      height={plotHeight - y}
                       width={xBandwidth}
                       fill="none"
                       style={{ pointerEvents: 'visible' }}

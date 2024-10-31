@@ -9,11 +9,10 @@ import {
   GenotypeDistributionItem,
 } from './ShortTandemRepeatPage'
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
-import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedPopulation: PopulationId | ''
+  selectedPopulation: string | ''
   selectedSex: Sex | ''
   selectedRepeatUnits: string[] | ''
   repeatUnitPairs: string[][]
