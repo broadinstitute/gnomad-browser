@@ -1,0 +1,11 @@
+steps:
+  - name: 'us-central1-docker.pkg.dev/${PROJECT_ID}/tgg-sre-images/tgg-deploykit:testing-4'
+    entrypoint: 'bash'
+    args: ['./bluegreen-flip.sh']
+    dir: '.cloudbuild'
+    secretEnv:
+      - 'DEPLOY_KEY'
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/GITHUB_DEPLOY_KEY/versions/latest
+      env: 'DEPLOY_KEY'
