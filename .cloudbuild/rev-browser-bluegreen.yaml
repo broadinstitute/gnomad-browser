@@ -1,11 +1,11 @@
 steps:
-  - name: 'us-central1-docker.pkg.dev/${PROJECT_ID}/tgg-sre-images/tgg-deploykit:testing-4'
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:testing-4'
     entrypoint: 'bash'
     args: ['./bluegreen-update.sh', '$SHORT_SHA']
     dir: '.cloudbuild'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-b'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=gnomad-sj'
+      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gnomad-v4'
     secretEnv:
       - 'DEPLOY_KEY'
 availableSecrets:

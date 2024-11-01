@@ -17,7 +17,7 @@ chmod 400 /root/.ssh/id_rsa
 ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
 git clone git@github.com:broadinstitute/gnomad-deployments.git
 
-cd gnomad-deployments/browser-test/prod-deflector
+cd gnomad-deployments/gnomad-browser/prod-deflector
 
 CURRENT_DEPLOYMENT=$(yq '.spec.selector.deployment' < gnomad-bluegreen.service.yaml)
 

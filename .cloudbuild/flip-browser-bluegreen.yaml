@@ -1,5 +1,5 @@
 steps:
-  - name: 'us-central1-docker.pkg.dev/${PROJECT_ID}/tgg-sre-images/tgg-deploykit:testing-4'
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:testing-4'
     entrypoint: 'bash'
     args: ['./bluegreen-flip.sh']
     dir: '.cloudbuild'
