@@ -684,22 +684,28 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -708,7 +714,7 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -893,22 +899,28 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
           rowSpan={1}
           scope="row"
         >
-          Remaining
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            Remaining
+          </button>
         </th>
         <td
           className="right-align"
         >
-          2
+          0
         </td>
         <td
           className="right-align"
         >
-          20
+          0
         </td>
         <td
           className="right-align"
         >
-          4
+          0
         </td>
         <td
           style={
@@ -917,83 +929,7 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
             }
           }
         >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -1010,17 +946,17 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           className="right-align"
         >
-          30
+          0
         </td>
         <td
           className="right-align"
         >
-          7
+          0
         </td>
         <td
           style={
@@ -1029,7 +965,7 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -2371,9 +2307,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
       htmlFor="includeExomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeExomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -2385,9 +2321,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
       htmlFor="includeGenomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeGenomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -3177,22 +3113,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -3201,7 +3143,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -3420,82 +3362,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -3509,17 +3375,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -3528,7 +3394,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -4348,22 +4214,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -4372,7 +4244,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -4591,82 +4463,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -4680,17 +4476,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -4699,7 +4495,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -5519,22 +5315,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -5543,7 +5345,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -5762,82 +5564,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -5851,17 +5577,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -5870,7 +5596,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -6690,22 +6416,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -6714,7 +6446,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -6933,82 +6665,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -7022,17 +6678,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -7041,7 +6697,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -7861,22 +7517,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -7885,7 +7547,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -8104,82 +7766,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -8193,17 +7779,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -8212,7 +7798,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -9287,22 +8873,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -9311,7 +8903,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -9444,82 +9036,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -9533,17 +9049,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -9552,7 +9068,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -10627,22 +10143,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -10651,7 +10173,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -10784,82 +10306,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -10873,17 +10319,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -10892,7 +10338,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -11967,22 +11413,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -11991,7 +11443,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -12124,82 +11576,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -12213,17 +11589,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -12232,7 +11608,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -13307,22 +12683,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -13331,7 +12713,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -13464,82 +12846,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -13553,17 +12859,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -13572,7 +12878,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -14647,22 +13953,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -14671,7 +13983,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -14804,82 +14116,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -14893,17 +14129,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -14912,7 +14148,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -15987,22 +15223,28 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
           rowSpan={1}
           scope="row"
         >
-          African/African American
+          <button
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
+            onClick={[Function]}
+            type="button"
+          >
+            African/African American
+          </button>
         </th>
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -16011,7 +15253,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
             }
           }
         >
-          0.1000
+          -
         </td>
       </tr>
     </tbody>
@@ -16144,82 +15386,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr
-        className="border"
-      >
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -16233,17 +15399,17 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
         <td
           className="right-align"
         >
-          1
+          0
         </td>
         <td
           className="right-align"
         >
-          10
+          0
         </td>
         <td
           className="right-align"
         >
-          3
+          0
         </td>
         <td
           style={
@@ -16252,7 +15418,7 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
             }
           }
         >
-          0.1000
+          0.000
         </td>
       </tr>
     </tfoot>
@@ -17594,9 +16760,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
       htmlFor="includeExomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeExomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -17608,9 +16774,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
       htmlFor="includeGenomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeGenomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -18922,9 +18088,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
       htmlFor="includeExomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeExomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -18936,9 +18102,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
       htmlFor="includeGenomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeGenomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -19290,80 +18456,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r2_1 has no unexpect
         </th>
       </tr>
     </thead>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -19778,80 +18870,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r2_1_controls has no
         </th>
       </tr>
     </thead>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -20266,80 +19284,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r2_1_non_neuro has n
         </th>
       </tr>
     </thead>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XX
-        </th>
-        <td
-          className="right-align"
-        >
-          8
-        </td>
-        <td
-          className="right-align"
-        >
-          80
-        </td>
-        <td
-          className="right-align"
-        >
-          10
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          XY
-        </th>
-        <td
-          className="right-align"
-        >
-          16
-        </td>
-        <td
-          className="right-align"
-        >
-          160
-        </td>
-        <td
-          className="right-align"
-        >
-          18
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
     <tfoot>
       <tr
         className="border"
@@ -21714,9 +20658,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
       htmlFor="includeExomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeExomePopulations"
         onChange={[Function]}
         type="checkbox"
@@ -21728,9 +20672,9 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
       htmlFor="includeGenomePopulations"
     >
       <input
-        checked={false}
+        checked={true}
         className="Checkbox__CheckboxInput-sc-hrpa6b-1 lmKUES"
-        disabled={true}
+        disabled={false}
         id="includeGenomePopulations"
         onChange={[Function]}
         type="checkbox"

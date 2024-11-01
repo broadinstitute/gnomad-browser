@@ -97,8 +97,8 @@ export class GnomadPopulationsTable extends Component<
     super(props)
 
     this.state = {
-      includeExomes: props.exomePopulations.length !== 0,
-      includeGenomes: props.genomePopulations.length !== 0,
+      includeExomes: props.exomePopulations.length !== 0 || !!props.jointPopulations,
+      includeGenomes: props.genomePopulations.length !== 0 || !!props.jointPopulations,
     }
   }
 
@@ -118,13 +118,7 @@ export class GnomadPopulationsTable extends Component<
       exomePopulations: includeExomes ? exomePopulations : [],
       genomePopulations: includeGenomes ? genomePopulations : [],
       jointPopulations:
-        // if theres joint data, but no variant present in genomes, still use joint
-        (includeExomes || exomePopulations.length === 0) &&
-        // if theres joint data, but no variant present in exomes, still use joint
-        (includeGenomes || genomePopulations.length === 0) &&
-        jointPopulations
-          ? jointPopulations
-          : null,
+        includeExomes && includeGenomes && jointPopulations ? jointPopulations : null,
     }).filter((mergedAncestry) => (mergedAncestry.id as string) !== '')
 
     const mergedPopulationsWithNames = addPopulationNames(mergedPopulations)
@@ -159,6 +153,32 @@ export class GnomadPopulationsTable extends Component<
       })
     }
 
+    // If there's Joint and Exome data, allow users to toggle off Genome data to see just the Exome contribution to the Joint data, but do not allow toggling off of Exome data
+    const hasOnlyJointAndExomeData =
+      jointPopulations && exomePopulations.length !== 0 && genomePopulations.length === 0
+
+    // If there's no Exome or Joint data, don't allow users to toggle on the (non existent) Exome data
+    const doesNotHaveJointOrExomeData = !jointPopulations && exomePopulations.length === 0
+
+    // If there's both Exome and Genome Data, only allow users to toggle off one of the data sources at a time
+    const preventUnselectingExomeDataIfGenomeUnselected = includeExomes && !includeGenomes
+
+    const disableExomesCheckbox =
+      hasOnlyJointAndExomeData ||
+      doesNotHaveJointOrExomeData ||
+      preventUnselectingExomeDataIfGenomeUnselected
+
+    // Invert the logic above for Genomes
+    const hasOnlyJointAndGenomeData =
+      jointPopulations && exomePopulations.length === 0 && genomePopulations.length !== 0
+    const doesNotHaveJointOrGenomeData = !jointPopulations && genomePopulations.length === 0
+    const preventUnselectingGenomeDataIfExomeUnselected = !includeExomes && includeGenomes
+
+    const disableGenomesCheckbox =
+      hasOnlyJointAndGenomeData ||
+      doesNotHaveJointOrGenomeData ||
+      preventUnselectingGenomeDataIfExomeUnselected
+
     return (
       <>
         <PopulationsTable
@@ -177,7 +197,7 @@ export class GnomadPopulationsTable extends Component<
           Include:
           <Checkbox
             checked={includeExomes}
-            disabled={exomePopulations.length === 0 || (includeExomes && !includeGenomes)}
+            disabled={disableExomesCheckbox}
             id="includeExomePopulations"
             label="Exomes"
             onChange={(value) => {
@@ -186,7 +206,7 @@ export class GnomadPopulationsTable extends Component<
           />
           <Checkbox
             checked={includeGenomes}
-            disabled={genomePopulations.length === 0 || (!includeExomes && includeGenomes)}
+            disabled={disableGenomesCheckbox}
             id="includeGenomePopulations"
             label="Genomes"
             onChange={(value) => {
