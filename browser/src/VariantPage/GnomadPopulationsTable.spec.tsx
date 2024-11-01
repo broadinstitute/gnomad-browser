@@ -3,7 +3,7 @@ import { describe, expect, test } from '@jest/globals'
 import renderer from 'react-test-renderer'
 
 import { GnomadPopulationsTable } from './GnomadPopulationsTable'
-import { allDatasetIds } from '@gnomad/dataset-metadata/metadata'
+import { allDatasetIds, getTopLevelDataset } from '@gnomad/dataset-metadata/metadata'
 import { createAncestryGroupObjects } from '../__factories__/Variant'
 
 describe('GnomadPopulationsTable', () => {
@@ -44,16 +44,19 @@ describe('GnomadPopulationsTable', () => {
       expect(tree).toMatchSnapshot()
     })
     test('has no unexpected changes when missing genetic ancestry groups are filled in', () => {
-      const jointGeneticAncestryGroupObjects = createAncestryGroupObjects(
-        [
-          { id: 'afr', value: 1 },
-          { id: 'remaining', value: 2 },
-          { id: 'eur', value: 4 },
-          { id: 'XX', value: 8 },
-          { id: 'XY', value: 16 },
-        ],
-        true
-      )
+      const jointGeneticAncestryGroupObjects =
+        getTopLevelDataset(dataset) === 'v4'
+          ? createAncestryGroupObjects(
+              [
+                { id: 'afr', value: 1 },
+                { id: 'remaining', value: 2 },
+                { id: 'eur', value: 4 },
+                { id: 'XX', value: 8 },
+                { id: 'XY', value: 16 },
+              ],
+              true
+            )
+          : null
 
       const tree = renderer.create(
         <GnomadPopulationsTable
