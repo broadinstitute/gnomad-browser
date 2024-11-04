@@ -45,21 +45,25 @@ const SEX_IDENTIFIERS = ['XX', 'XY']
 const isSexSpecificPopulation = (pop: any) =>
   SEX_IDENTIFIERS.includes(pop.id) || SEX_IDENTIFIERS.some((id) => pop.id.endsWith(`_${id}`))
 
-// if the allele number (denominator) is 0, return a non-number
-//   to signal to users that there is no information to be displayed about
-//   the frequency, rather than artificially calling it 0
-const calculatePopAF = (ac: number, an: number) => {
+// if the allele number (denominator) is 0, return a sentinel value of -1
+//   this sorts this grp to the end of the table, and can be used to render
+//   a special symbol
+const calculatePopAF = (ac: number, an: number): number => {
   if (an === 0) {
-    return '-'
+    return -1
   }
   return ac / an
 }
 
-const renderPopAF = (af: number | string) => {
-  if (typeof af === 'number') {
-    return af.toPrecision(4)
+// When rendering AFs, the sentinel value of -1 denotes grps with an AN of 0
+//   in this case, render a '-' character to communicate to users that
+//   there is no data to be displayed
+const renderPopAF = (af: number) => {
+  if (af === -1) {
+    return '-'
   }
-  return af
+
+  return af.toPrecision(4)
 }
 
 type OwnPopulationsTableProps = {
