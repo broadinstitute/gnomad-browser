@@ -106,6 +106,80 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          66
+        </td>
+        <td
+          className="right-align"
+        >
+          660
+        </td>
+        <td
+          className="right-align"
+        >
+          70
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -137,43 +211,6 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -346,43 +383,6 @@ exports[`GnomadPopulationsTable with a dataset of exac has no unexpected changes
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          66
-        </td>
-        <td
-          className="right-align"
-        >
-          660
-        </td>
-        <td
-          className="right-align"
-        >
-          70
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -1149,6 +1149,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          66
+        </td>
+        <td
+          className="right-align"
+        >
+          660
+        </td>
+        <td
+          className="right-align"
+        >
+          70
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -1481,43 +1518,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          66
-        </td>
-        <td
-          className="right-align"
-        >
-          660
-        </td>
-        <td
-          className="right-align"
-        >
-          70
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -1813,6 +1813,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          2
+        </td>
+        <td
+          className="right-align"
+        >
+          20
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -2151,43 +2188,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_cnv_r4 has no unexpecte
     <tbody
       className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
     >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          2
-        </td>
-        <td
-          className="right-align"
-        >
-          20
-        </td>
-        <td
-          className="right-align"
-        >
-          4
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
       <tr
         className="border"
       >
@@ -2440,6 +2440,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -2514,43 +2551,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1 has no unexpected 
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -3541,6 +3541,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -3615,43 +3652,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_controls has no un
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -4642,6 +4642,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -4716,43 +4753,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_cancer has no 
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -5743,6 +5743,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -5817,43 +5854,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_neuro has no u
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -6844,6 +6844,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -6918,43 +6955,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r2_1_non_topmed has no 
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -7945,6 +7945,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -8191,43 +8228,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3 has no unexpected ch
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -9215,6 +9215,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -9461,43 +9498,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_controls_and_biobank
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -10485,6 +10485,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -10731,43 +10768,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_cancer has no un
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -11755,6 +11755,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -12001,43 +12038,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_neuro has no une
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -13025,6 +13025,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -13271,43 +13308,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_topmed has no un
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -14295,6 +14295,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
           rowSpan={1}
           scope="row"
         >
+          African/African American
+        </th>
+        <td
+          className="right-align"
+        >
+          33
+        </td>
+        <td
+          className="right-align"
+        >
+          330
+        </td>
+        <td
+          className="right-align"
+        >
+          37
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -14541,43 +14578,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r3_non_v2 has no unexpe
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          African/African American
-        </th>
-        <td
-          className="right-align"
-        >
-          33
-        </td>
-        <td
-          className="right-align"
-        >
-          330
-        </td>
-        <td
-          className="right-align"
-        >
-          37
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -15602,6 +15602,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          66
+        </td>
+        <td
+          className="right-align"
+        >
+          660
+        </td>
+        <td
+          className="right-align"
+        >
+          70
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -15934,43 +15971,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          66
-        </td>
-        <td
-          className="right-align"
-        >
-          660
-        </td>
-        <td
-          className="right-align"
-        >
-          70
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -16266,6 +16266,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          2
+        </td>
+        <td
+          className="right-align"
+        >
+          20
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -16598,43 +16635,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4 has no unexpected ch
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          2
-        </td>
-        <td
-          className="right-align"
-        >
-          20
-        </td>
-        <td
-          className="right-align"
-        >
-          4
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -16930,6 +16930,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          66
+        </td>
+        <td
+          className="right-align"
+        >
+          660
+        </td>
+        <td
+          className="right-align"
+        >
+          70
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -17262,43 +17299,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          66
-        </td>
-        <td
-          className="right-align"
-        >
-          660
-        </td>
-        <td
-          className="right-align"
-        >
-          70
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -17594,6 +17594,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          2
+        </td>
+        <td
+          className="right-align"
+        >
+          20
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -17926,43 +17963,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_r4_non_ukb has no unexp
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          2
-        </td>
-        <td
-          className="right-align"
-        >
-          20
-        </td>
-        <td
-          className="right-align"
-        >
-          4
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -19500,6 +19500,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          66
+        </td>
+        <td
+          className="right-align"
+        >
+          660
+        </td>
+        <td
+          className="right-align"
+        >
+          70
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -19832,43 +19869,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          66
-        </td>
-        <td
-          className="right-align"
-        >
-          660
-        </td>
-        <td
-          className="right-align"
-        >
-          70
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
@@ -20164,6 +20164,43 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
           rowSpan={1}
           scope="row"
         >
+          Remaining
+        </th>
+        <td
+          className="right-align"
+        >
+          2
+        </td>
+        <td
+          className="right-align"
+        >
+          20
+        </td>
+        <td
+          className="right-align"
+        >
+          4
+        </td>
+        <td
+          style={
+            {
+              "paddingLeft": "25px",
+            }
+          }
+        >
+          0.1000
+        </td>
+      </tr>
+    </tbody>
+    <tbody
+      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
+    >
+      <tr>
+        <th
+          colSpan={2}
+          rowSpan={1}
+          scope="row"
+        >
           <button
             className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 cdNMTw"
             onClick={[Function]}
@@ -20496,43 +20533,6 @@ exports[`GnomadPopulationsTable with a dataset of gnomad_sv_r4 has no unexpected
           }
         >
           -
-        </td>
-      </tr>
-    </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
-        <th
-          colSpan={2}
-          rowSpan={1}
-          scope="row"
-        >
-          Remaining
-        </th>
-        <td
-          className="right-align"
-        >
-          2
-        </td>
-        <td
-          className="right-align"
-        >
-          20
-        </td>
-        <td
-          className="right-align"
-        >
-          4
-        </td>
-        <td
-          style={
-            {
-              "paddingLeft": "25px",
-            }
-          }
-        >
-          0.1000
         </td>
       </tr>
     </tbody>
