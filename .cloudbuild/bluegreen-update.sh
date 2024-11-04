@@ -10,8 +10,6 @@ for cmd in git yq kubectl gcloud kustomize curl; do
     fi
 done
 
-SHORT_SHA=$1
-
 ####
 # Retrieve current active blue/green and verify that it matches what's currently defined in git
 ####
@@ -58,11 +56,11 @@ echo "target/inactive deployment is $TARGET_DEPLOYMENT"
 # Update image tags in the inactive deployment and push
 ####
 pushd $TARGET_DEPLOYMENT
-kustomize --stack-trace edit set image "gnomad-api-nginx=nginx:${SHORT_SHA}"
-kustomize --stack-trace edit set image "gnomad-browser-nginx=nginx:${SHORT_SHA}"
+kustomize --stack-trace edit set image "gnomad-api=us-docker.pkg.dev/${REPO_PROJECT}/gnomad/gnomad-api:${DOCKER_TAG}"
+kustomize --stack-trace edit set image "gnomad-browser-us-docker.pkg.dev/${REPO_PROJECT}/gnomad/gnomad-browser:${DOCKER_TAG}"
 popd
 
 git add $TARGET_DEPLOYMENT
-git -c user.name="TGG Automation" -c user.email="tgg-automation@broadinstitute.org" commit -m "Updating gnomad-browser $TARGET_DEPLOYMENT deployment to image tags: $SHORT_SHA"
+git -c user.name="TGG Automation" -c user.email="tgg-automation@broadinstitute.org" commit -m "Updating gnomad-browser $TARGET_DEPLOYMENT deployments to image tag: $DOCKER_TAG"
 git show
 git push origin main
