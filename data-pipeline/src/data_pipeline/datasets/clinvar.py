@@ -1,11 +1,11 @@
 import csv
-import datetime
 import gzip
 import json
 import os
 import subprocess
 import sys
 from xml.etree import ElementTree
+from xml.sax.saxutils import quoteattr
 
 import hail as hl
 from tqdm import tqdm
@@ -17,8 +17,7 @@ from data_pipeline.data_types.locus import normalized_contig
 from data_pipeline.data_types.variant import variant_id
 
 
-CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variation/weekly_release/ClinVarVariationRelease_00-latest_weekly.xml.gz"
-
+CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/ClinVarVCVRelease_00-latest.xml.gz"
 
 CLINVAR_GOLD_STARS = {
     None: 0,
@@ -37,77 +36,110 @@ CLINVAR_GOLD_STARS = {
 }
 
 
-class SkipVariant(Exception):
-    pass
+def find_mapping_elements_by_xref(trait_element, submission_element, trait_mapping_list_element):
+    if trait_mapping_list_element is None:
+        return None
+
+    xref_elements = trait_element.findall("XRef")
+    for xref_element in xref_elements:
+        selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue={quoteattr(xref_element.attrib['ID'])}]"  # noqa
+        mapping_element = trait_mapping_list_element.find(selector)
+        if mapping_element is not None:
+            return mapping_element
+    return None
+
+
+def find_mapping_elements_by_preferred_name(trait_element, submission_element, trait_mapping_list_element):
+    preferred_name_element = trait_element.find("./Name/ElementValue[@Type='Preferred']")
+
+    if preferred_name_element is not None and trait_mapping_list_element is not None:
+        selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue={quoteattr(preferred_name_element.text)}]"  # noqa
+        mapping_element = trait_mapping_list_element.find(selector)
+        return mapping_element, preferred_name_element
+
+    return None, preferred_name_element
+
+
+def find_mapping_elements_by_name(trait_element, submission_element, trait_mapping_list_element):
+    name_elements = trait_element.findall("./Name/ElementValue")
+    preferred_name_element = None
+
+    for name_element in name_elements:
+        if preferred_name_element is None:
+            preferred_name_element = name_element
+
+        if trait_mapping_list_element is not None:
+            selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue={quoteattr(name_element.text)}]"  # noqa
+            mapping_element = trait_mapping_list_element.find(selector)
+            if mapping_element:
+                return mapping_element, preferred_name_element
+
+    return None, preferred_name_element
+
+
+def _determine_mapping_and_preferred_name_element(trait_element, submission_element, trait_mapping_list_element):
+    preferred_name_element = None
+    mapping_element = find_mapping_elements_by_xref(trait_element, submission_element, trait_mapping_list_element)
+
+    if mapping_element is None:
+        mapping_element, preferred_name_element = find_mapping_elements_by_preferred_name(
+            trait_element, submission_element, trait_mapping_list_element
+        )
+
+    if mapping_element is None:
+        mapping_element, preferred_name_element = find_mapping_elements_by_name(
+            trait_element, submission_element, trait_mapping_list_element
+        )
+
+    return (mapping_element, preferred_name_element)
+
+
+def _associate_condition_with_medgen_id(submission_element, trait_mapping_list_element, trait_element):
+    (mapping_element, preferred_name_element) = _determine_mapping_and_preferred_name_element(
+        trait_element, submission_element, trait_mapping_list_element
+    )
+
+    if mapping_element is not None:
+        medgen_element = mapping_element.find("./MedGen")
+        return {"name": medgen_element.attrib["Name"], "medgen_id": medgen_element.attrib["CUI"]}
+
+    elif preferred_name_element is not None:
+        return {"name": preferred_name_element.text, "medgen_id": None}
 
 
 def _parse_submission(submission_element, trait_mapping_list_element):
     submission = {}
 
     submission["id"] = submission_element.find("./ClinVarAccession").attrib["Accession"]
-
     submission["submitter_name"] = submission_element.find("./ClinVarAccession").attrib["SubmitterName"]
 
-    submission["clinical_significance"] = None
-    interpretation_element = submission_element.find("./Interpretation")
-    interpretation_description_element = interpretation_element.find("./Description")
-    if interpretation_description_element is not None:
-        submission["clinical_significance"] = interpretation_description_element.text
+    classification_element = submission_element.find("./Classification")
+    germline_classification_element = classification_element.find("./GermlineClassification")
+    if germline_classification_element is not None:
+        submission["clinical_significance"] = germline_classification_element.text
 
-    submission["last_evaluated"] = interpretation_element.attrib.get("DateLastEvaluated", None)
-    submission["review_status"] = submission_element.find("./ReviewStatus").text
+    submission["last_evaluated"] = classification_element.attrib.get("DateLastEvaluated", None)
+    submission["review_status"] = classification_element.find("./ReviewStatus").text
 
     submission["conditions"] = []
     trait_elements = submission_element.findall("./TraitSet/Trait")
     for trait_element in trait_elements:
-        preferred_name_element = None
-        mapping_element = None
-
-        if trait_mapping_list_element is not None:
-            xref_elements = trait_element.findall("XRef")
-            for xref_element in xref_elements:
-                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='XRef'][@MappingValue='{xref_element.attrib['ID']}']"  # noqa
-                mapping_element = trait_mapping_list_element.find(selector)
-                if mapping_element is not None:
-                    break
-
-        if mapping_element is None:
-            preferred_name_element = trait_element.find("./Name/ElementValue[@Type='Preferred']")
-            if preferred_name_element is not None and trait_mapping_list_element is not None:
-                selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{preferred_name_element.text}\"]"  # noqa
-                mapping_element = trait_mapping_list_element.find(selector)
-
-        if mapping_element is None:
-            name_elements = trait_element.findall("./Name/ElementValue")
-            for name_element in name_elements:
-                if preferred_name_element is None:
-                    preferred_name_element = name_element
-
-                if trait_mapping_list_element is not None:
-                    selector = f"./TraitMapping[@ClinicalAssertionID='{submission_element.attrib['ID']}'][@TraitType='{trait_element.attrib['Type']}'][@MappingType='Name'][@MappingValue=\"{name_element.text}\"]"  # noqa
-                    mapping_element = trait_mapping_list_element.find(selector)
-                    if mapping_element:
-                        break
-
-        if mapping_element is not None:
-            medgen_element = mapping_element.find("./MedGen")
-            submission["conditions"].append(
-                {"name": medgen_element.attrib["Name"], "medgen_id": medgen_element.attrib["CUI"]}
-            )
-        elif preferred_name_element is not None:
-            submission["conditions"].append({"name": preferred_name_element.text, "medgen_id": None})
+        condition_medgen_mapping = _associate_condition_with_medgen_id(
+            submission_element, trait_mapping_list_element, trait_element
+        )
+        submission["conditions"].append(condition_medgen_mapping)
 
     return submission
 
 
-def _parse_variant(variant_element):
+def _parse_variant(variant_element, tqdm_pbar=None):
     variant = {}
 
-    if variant_element.find("./InterpretedRecord") is None:
-        raise SkipVariant
+    if variant_element.find("./ClassifiedRecord") is None:
+        return None
 
     variant["locations"] = {}
-    location_elements = variant_element.findall("./InterpretedRecord/SimpleAllele/Location/SequenceLocation")
+    location_elements = variant_element.findall("./ClassifiedRecord/SimpleAllele/Location/SequenceLocation")
     for element in location_elements:
         try:
             chromosome = element.attrib["Chr"]
@@ -115,11 +147,11 @@ def _parse_variant(variant_element):
             #   which caused failure of this pipeline when compared to the reference genome
             if chromosome == "Un":
                 variant["locations"] = {}
-                allele_element = variant_element.findall("./InterpretedRecord/SimpleAllele")
-                print(
-                    f' Skipping variant with Allele ID: {allele_element[0].attrib["AlleleID"]} due to anomalous Chromosome value of "Un"'  # noqa
-                )
+                allele_element = variant_element.findall("./ClassifiedRecord/SimpleAllele")
+                if tqdm_pbar is not None:
+                    tqdm_pbar.set_postfix_str(f'Skipped AlleleID: {allele_element[0].attrib["AlleleID"]} (Chr: Un)')
                 break
+
             variant["locations"][element.attrib["Assembly"]] = {
                 "locus": chromosome + ":" + element.attrib["positionVCF"],
                 "alleles": [element.attrib["referenceAlleleVCF"], element.attrib["alternateAlleleVCF"]],
@@ -128,40 +160,27 @@ def _parse_variant(variant_element):
             pass
 
     if not variant["locations"]:
-        raise SkipVariant
+        return None
 
     variant["clinvar_variation_id"] = variant_element.attrib["VariationID"]
 
     variant["rsid"] = None
-    rsid_element = variant_element.find("./InterpretedRecord/SimpleAllele/XRefList/XRef[@DB='dbSNP']")
+    rsid_element = variant_element.find("./ClassifiedRecord/SimpleAllele/XRefList/XRef[@DB='dbSNP']")
     if rsid_element is not None:
         variant["rsid"] = rsid_element.attrib["ID"]
 
-    review_status_element = variant_element.find("./InterpretedRecord/ReviewStatus")
-    variant["review_status"] = review_status_element.text
+    germline_classification_element = variant_element.find("./ClassifiedRecord/Classifications/GermlineClassification")
+    if germline_classification_element is None:
+        return None
+    variant["review_status"] = germline_classification_element.find("./ReviewStatus").text
     variant["gold_stars"] = CLINVAR_GOLD_STARS[variant["review_status"]]
 
-    variant["clinical_significance"] = None
-    clinical_significance_elements = variant_element.findall(
-        "./InterpretedRecord/Interpretations/Interpretation[@Type='Clinical significance']"
-    )
-    if clinical_significance_elements:
-        variant["clinical_significance"] = ", ".join(
-            el.find("Description").text for el in clinical_significance_elements
-        )
+    variant["clinical_significance"] = germline_classification_element.find("./Description").text
 
-    variant["last_evaluated"] = None
-    evaluated_dates = [el.attrib.get("DateLastEvaluated", None) for el in clinical_significance_elements]
-    evaluated_dates = [date for date in evaluated_dates if date]
-    if evaluated_dates:
-        variant["last_evaluated"] = sorted(
-            evaluated_dates,
-            key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"),
-            reverse=True,
-        )[0]
+    variant["last_evaluated"] = germline_classification_element.attrib.get("DateLastEvaluated")
 
-    submission_elements = variant_element.findall("./InterpretedRecord/ClinicalAssertionList/ClinicalAssertion")
-    trait_mapping_list_element = variant_element.find("./InterpretedRecord/TraitMappingList")
+    submission_elements = variant_element.findall("./ClassifiedRecord/ClinicalAssertionList/ClinicalAssertion")
+    trait_mapping_list_element = variant_element.find("./ClassifiedRecord/TraitMappingList")
     variant["submissions"] = [_parse_submission(el, trait_mapping_list_element) for el in submission_elements]
 
     return variant
@@ -182,7 +201,7 @@ def parse_clinvar_xml_to_tsv(
         with open_function(input_xml_path, "r") as xml_file:
             # The exact number of variants in the XML file is unknown.
             # Approximate it to show a progress bar.
-            progress = tqdm(total=1_100_000, mininterval=5)
+            progress = tqdm(total=3_100_000, mininterval=5)
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
                 if element.tag == "ClinVarVariationRelease":
@@ -191,6 +210,9 @@ def parse_clinvar_xml_to_tsv(
                 if element.tag == "VariationArchive":
                     try:
                         variant = parse_variant_function(element)
+                        if variant is None:
+                            element.clear()
+                            continue
                         locations = variant.pop("locations")
                         writer.writerow(
                             [
@@ -207,8 +229,6 @@ def parse_clinvar_xml_to_tsv(
                         )
                         progress.update(1)
 
-                    except SkipVariant:
-                        pass
                     except Exception:
                         print(
                             f"Failed to parse variant {element.attrib['VariationID']}",
@@ -219,9 +239,9 @@ def parse_clinvar_xml_to_tsv(
                     # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
                     element.clear()
 
-                progress.close()
+        progress.close()
 
-            return release_date
+    return release_date
 
 
 def import_clinvar_xml(clinvar_xml_path):
