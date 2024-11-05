@@ -7,10 +7,24 @@ import { logButtonClick } from '../analytics'
 const Table = styled(BaseTable)`
   min-width: 100%;
 
+  tr.strong-border {
+    td,
+    th {
+      border-top: 2px solid #333;
+    }
+  }
+
   tr.border {
     td,
     th {
-      border-top: 2px solid #aaa;
+      border-top: 2px solid #888;
+    }
+  }
+
+  tr.subtle-border {
+    td,
+    th {
+      border-top: 2px solid #bbb;
     }
   }
 
@@ -19,10 +33,6 @@ const Table = styled(BaseTable)`
     padding-right: 25px;
     text-align: right;
   }
-`
-
-const PopulationSection = styled.tbody`
-  border-top: 2px solid #333;
 `
 
 const TogglePopulationButton = styled(TextButton)`
@@ -66,34 +76,35 @@ const renderPopAF = (af: number) => {
   return af.toPrecision(4)
 }
 
-type OwnPopulationsTableProps = {
-  columnLabels?: {
-    ac?: string
-    an?: string
-    af?: string
-  }
-  populations: {
+type Population = {
+  id: string
+  name: string
+  ac: number
+  an: number
+  ac_hemi?: number
+  ac_hom?: number
+  subpopulations?: {
     name: string
     ac: number
     an: number
     ac_hemi?: number
     ac_hom?: number
-    subpopulations?: {
-      name: string
-      ac: number
-      an: number
-      ac_hemi?: number
-      ac_hom?: number
-    }[]
   }[]
+}
+
+type PopulationsTableProps = {
+  columnLabels?: {
+    ac?: string
+    an?: string
+    af?: string
+  }
+  populations: Population[]
   showHemizygotes?: boolean
   showHomozygotes?: boolean
   initiallyExpandRows?: boolean
 }
 
 type PopulationsTableState = any
-
-type PopulationsTableProps = OwnPopulationsTableProps & typeof PopulationsTable.defaultProps
 
 export class PopulationsTable extends Component<PopulationsTableProps, PopulationsTableState> {
   static defaultProps = {
@@ -258,6 +269,23 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
 
     const { showHemizygotes, showHomozygotes } = this.props
 
+    const getBorderThickness = (i: number, pop: Population, pops: Population[]) => {
+      // First item gets a strong border to make header stand out
+      if (i === 0) {
+        return 'strong-border'
+      }
+
+      const isPreviousRowSexSpecific = i > 0 && isSexSpecificPopulation(pops[i - 1])
+      const isCurrentRowSexSpecific = isSexSpecificPopulation(pop)
+
+      // Don't render border in between total XX/XY rows
+      if (isPreviousRowSexSpecific && isCurrentRowSexSpecific) {
+        return undefined
+      }
+
+      return 'border'
+    }
+
     return (
       <Table>
         <thead>
@@ -269,7 +297,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
             })}
             {this.renderColumnHeader({
               key: 'ac',
-              label: columnLabels.ac || 'Allele Count',
+              label: columnLabels?.ac || 'Allele Count',
               tooltip: 'Alternate allele count in high quality genotypes',
               props: {
                 className: 'right-align',
@@ -277,7 +305,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
             })}
             {this.renderColumnHeader({
               key: 'an',
-              label: columnLabels.an || 'Allele Number',
+              label: columnLabels?.an || 'Allele Number',
               tooltip: 'Total number of called high quality genotypes',
               props: {
                 className: 'right-align',
@@ -303,7 +331,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
               })}
             {this.renderColumnHeader({
               key: 'af',
-              label: columnLabels.af || 'Allele Frequency',
+              label: columnLabels?.af || 'Allele Frequency',
               tooltip: 'Alternate allele frequency in high quality genotypes',
               props: {
                 style: { paddingLeft: '25px' },
@@ -312,16 +340,8 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
           </tr>
         </thead>
         {renderedPopulations.map((pop, i) => (
-          <PopulationSection key={(pop as any).id}>
-            <tr
-              className={
-                i > 0 &&
-                isSexSpecificPopulation(pop) &&
-                !isSexSpecificPopulation(renderedPopulations[i - 1])
-                  ? 'border'
-                  : undefined
-              }
-            >
+          <tbody key={pop.id}>
+            <tr className={getBorderThickness(i, pop, renderedPopulations)}>
               {this.renderPopulationRowHeader(pop)}
               {expandedPopulations[pop.name] && <td>Overall</td>}
               <td className="right-align">{pop.ac}</td>
@@ -339,7 +359,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
                     j === 0 ||
                     (isSexSpecificPopulation(subPop) &&
                       !isSexSpecificPopulation(pop.subpopulations[j - 1]))
-                      ? 'border'
+                      ? 'subtle-border'
                       : undefined
                   }
                 >
@@ -355,10 +375,10 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
                   <td style={{ paddingLeft: '25px' }}>{renderPopAF(subPop.af)}</td>
                 </tr>
               ))}
-          </PopulationSection>
+          </tbody>
         ))}
         <tfoot>
-          <tr className="border">
+          <tr className="strong-border">
             <th colSpan={2} scope="row">
               Total
             </th>

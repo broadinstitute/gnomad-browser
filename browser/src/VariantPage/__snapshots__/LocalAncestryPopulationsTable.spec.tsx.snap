@@ -3,7 +3,7 @@
 exports[`local ancestry populations table has no unexpected changes 1`] = `
 <div>
   <table
-    className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+    className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
   >
     <thead>
       <tr>
@@ -79,17 +79,17 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </th>
       </tr>
     </thead>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
+    <tbody>
+      <tr
+        className="strong-border"
+      >
         <th
           colSpan={1}
           rowSpan={3}
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 gHtnWT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
             onClick={[Function]}
             type="button"
           >
@@ -120,7 +120,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </td>
       </tr>
       <tr
-        className="border"
+        className="subtle-border"
       >
         <td>
           European
@@ -170,17 +170,17 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </td>
       </tr>
     </tbody>
-    <tbody
-      className="PopulationsTable__PopulationSection-sc-sijbl0-1 doztxS"
-    >
-      <tr>
+    <tbody>
+      <tr
+        className="border"
+      >
         <th
           colSpan={1}
           rowSpan={4}
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-2 gHtnWT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
             onClick={[Function]}
             type="button"
           >
@@ -211,7 +211,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
         </td>
       </tr>
       <tr
-        className="border"
+        className="subtle-border"
       >
         <td>
           European
@@ -287,7 +287,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
     </tbody>
     <tfoot>
       <tr
-        className="border"
+        className="strong-border"
       >
         <th
           colSpan={2}
