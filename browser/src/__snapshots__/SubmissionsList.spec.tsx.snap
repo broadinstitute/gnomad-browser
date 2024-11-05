@@ -19,7 +19,7 @@ exports[`SubmissionsList has no unexpected changes 1`] = `
         </Link__ExternalLink>
       </AttributeListItem>
       <AttributeListItem
-        label="Clinical significance"
+        label="Germline classification"
       >
         Benign
       </AttributeListItem>
@@ -52,7 +52,7 @@ exports[`SubmissionsList has no unexpected changes 1`] = `
         </Link__ExternalLink>
       </AttributeListItem>
       <AttributeListItem
-        label="Clinical significance"
+        label="Germline classification"
       >
         Benign
       </AttributeListItem>
