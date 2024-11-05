@@ -403,7 +403,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -499,7 +499,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -1012,7 +1012,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -1108,7 +1108,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -1621,7 +1621,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -1717,7 +1717,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -2212,7 +2212,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -2308,7 +2308,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -2803,7 +2803,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -2899,7 +2899,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -3392,7 +3392,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -3488,7 +3488,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -3983,7 +3983,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -4079,7 +4079,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -4574,7 +4574,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -4652,7 +4652,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -5752,7 +5752,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -5848,7 +5848,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -6361,7 +6361,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -6457,7 +6457,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -6970,7 +6970,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -7066,7 +7066,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -7561,7 +7561,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -7657,7 +7657,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -8152,7 +8152,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -8248,7 +8248,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -8741,7 +8741,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -8837,7 +8837,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -9332,7 +9332,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -9428,7 +9428,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -9923,7 +9923,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -10001,7 +10001,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -11101,7 +11101,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -11197,7 +11197,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -11710,7 +11710,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -11806,7 +11806,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -12319,7 +12319,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -12415,7 +12415,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -12910,7 +12910,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -13006,7 +13006,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -13501,7 +13501,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -13597,7 +13597,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -14090,7 +14090,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -14186,7 +14186,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -14681,7 +14681,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -14777,7 +14777,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
@@ -15272,7 +15272,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       Genetic Ancestry Group Frequencies
     </h2>
     <table
-      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 ggAkBv"
+      className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
     >
       <thead>
         <tr>
@@ -15350,7 +15350,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       </thead>
       <tfoot>
         <tr
-          className="border"
+          className="strong-border"
         >
           <th
             colSpan={2}
