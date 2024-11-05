@@ -21,14 +21,19 @@ CLINVAR_XML_URL = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/clinvar_variatio
 
 
 CLINVAR_GOLD_STARS = {
+    None: 0,
+    "no classification for the single variant": 0,
+    "no interpretation for the single variant": 0,
+    "no classification provided": 0,
+    "no assertion provided": 0,
+    "no classifications from unflagged records": 0,
+    "no assertion criteria provided": 0,
+    "criteria provided, single submitter": 1,
+    "criteria provided, conflicting classifications": 1,
     "criteria provided, conflicting interpretations": 1,
     "criteria provided, multiple submitters, no conflicts": 2,
-    "criteria provided, single submitter": 1,
-    "no assertion criteria provided": 0,
-    "no assertion provided": 0,
-    "no interpretation for the single variant": 0,
-    "practice guideline": 4,
     "reviewed by expert panel": 3,
+    "practice guideline": 4,
 }
 
 
