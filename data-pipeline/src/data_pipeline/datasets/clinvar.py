@@ -162,25 +162,22 @@ def _parse_variant(variant_element):
     return variant
 
 
-def import_clinvar_xml(clinvar_xml_path):
-    release_date = None
+def parse_clinvar_xml_to_tsv(
+    input_xml_path,
+    output_tsv_path,
+    parse_variant_function,
+):
+    release_date = ""
 
-    clinvar_xml_local_path = os.path.join("/tmp", os.path.basename(clinvar_xml_path))
-    print("Copying ClinVar XML")
-    if not os.path.exists(clinvar_xml_local_path):
-        subprocess.check_call(["gsutil", "cp", clinvar_xml_path, clinvar_xml_local_path])
-
-    print("Parsing XML file")
-    with open("/tmp/clinvar_variants.tsv", "w", newline="") as output_file:
+    with open(output_tsv_path, "w", newline="") as output_file:
         writer = csv.writer(output_file, delimiter="\t", quotechar="", quoting=csv.QUOTE_NONE)
         writer.writerow(["locus_GRCh37", "alleles_GRCh37", "locus_GRCh38", "alleles_GRCh38", "variant"])
 
-        open_file = gzip.open if clinvar_xml_local_path.endswith(".gz") else open
-        with open_file(clinvar_xml_local_path, "r") as xml_file:
+        open_function = gzip.open if str(input_xml_path).endswith(".gz") else open
+        with open_function(input_xml_path, "r") as xml_file:
             # The exact number of variants in the XML file is unknown.
             # Approximate it to show a progress bar.
             progress = tqdm(total=1_100_000, mininterval=5)
-
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
                 if element.tag == "ClinVarVariationRelease":
@@ -188,8 +185,7 @@ def import_clinvar_xml(clinvar_xml_path):
 
                 if element.tag == "VariationArchive":
                     try:
-                        variant = _parse_variant(element)
-
+                        variant = parse_variant_function(element)
                         locations = variant.pop("locations")
                         writer.writerow(
                             [
@@ -204,7 +200,6 @@ def import_clinvar_xml(clinvar_xml_path):
                                 json.dumps(variant),
                             ]
                         )
-
                         progress.update(1)
 
                     except SkipVariant:
@@ -219,7 +214,24 @@ def import_clinvar_xml(clinvar_xml_path):
                     # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
                     element.clear()
 
-            progress.close()
+                progress.close()
+
+            return release_date
+
+
+def import_clinvar_xml(clinvar_xml_path):
+    release_date = None
+
+    clinvar_xml_local_path = os.path.join("/tmp", os.path.basename(clinvar_xml_path))
+    print("Copying ClinVar XML")
+    if not os.path.exists(clinvar_xml_local_path):
+        subprocess.check_call(["gsutil", "cp", clinvar_xml_path, clinvar_xml_local_path])
+
+    print("Parsing XML file")
+    output_file = "/tmp/clinvar_variants.tsv"
+    release_date = parse_clinvar_xml_to_tsv(
+        input_xml_path=clinvar_xml_local_path, output_tsv_path=output_file, parse_variant_function=_parse_variant
+    )
 
     subprocess.check_call(["hdfs", "dfs", "-cp", "-f", "file:///tmp/clinvar_variants.tsv", "/tmp/clinvar_variants.tsv"])
 
