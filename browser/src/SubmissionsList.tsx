@@ -45,7 +45,7 @@ const SubmissionsList = ({ submissions }: SubmissionsListProps) => (
               // @ts-expect-error TS(2769) FIXME: No overload matches this call.
               .reduce((acc, el, i) => (i === 0 ? [...acc, el] : [...acc, ', ', el]), [])}
           </AttributeListItem>
-          <AttributeListItem label="Clinical significance">
+          <AttributeListItem label="Germline classification">
             {submission.clinical_significance || '–'}
           </AttributeListItem>
           <AttributeListItem label="Review status">{submission.review_status}</AttributeListItem>

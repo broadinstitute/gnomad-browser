@@ -72,7 +72,7 @@ const ClinvarVariantTooltip = ({ variant }: ClinvarVariantTooltipProps) => (
     <strong>{variant.variant_id}</strong>
     <ClinvarVariantAttributeList>
       <div>
-        <dt>Clinical significance</dt>
+        <dt>Germline classification</dt>
         <dd>{variant.clinical_significance}</dd>
       </div>
       <div>

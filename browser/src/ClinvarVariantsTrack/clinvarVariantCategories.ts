@@ -13,6 +13,7 @@ const CLINICAL_SIGNIFICANCE_GROUPS = {
   uncertain: new Set([
     'Uncertain significance',
     'Conflicting interpretations of pathogenicity',
+    'Conflicting classifications of pathogenicity',
     'conflicting data from submitters',
   ]),
   benign: new Set(['Benign', 'Likely benign', 'Benign/Likely benign']),
@@ -22,6 +23,7 @@ const CLINICAL_SIGNIFICANCE_GROUPS = {
     'Affects',
     'protective',
     'no interpretation for the single variant',
+    'no classification for the single variant',
     'not provided',
     'association not found',
   ]),
