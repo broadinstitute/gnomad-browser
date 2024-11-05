@@ -50,7 +50,7 @@ const VariantClinvarInfo = ({ clinvar }: VariantClinvarInfoProps) => {
               []
             )}
         </AttributeListItem>
-        <AttributeListItem label="Clinical significance">
+        <AttributeListItem label="Germline classification">
           {clinvar.clinical_significance}
         </AttributeListItem>
         <AttributeListItem label="Review status">

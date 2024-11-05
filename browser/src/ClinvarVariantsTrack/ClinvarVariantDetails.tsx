@@ -137,7 +137,7 @@ const ClinvarVariantDetails = ({
               []
             )}
         </AttributeListItem>
-        <AttributeListItem label="Clinical significance">
+        <AttributeListItem label="Germline classification">
           {clinvarVariant.clinical_significance}
         </AttributeListItem>
         <AttributeListItem label="Review status">
