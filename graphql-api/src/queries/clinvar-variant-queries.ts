@@ -9,8 +9,12 @@ import { getConsequenceForContext } from './variant-datasets/shared/transcriptCo
 import largeGenes from './helpers/large-genes'
 
 const CLINVAR_VARIANT_INDICES = {
-  GRCh37: 'clinvar_grch37_variants',
-  GRCh38: 'clinvar_grch38_variants',
+  // GRCh37: 'clinvar_grch37_variants',
+  // GRCh38: 'clinvar_grch38_variants',
+  // TODO: revert back to using alias'ed indexes once we are confident this is
+  //   stable in production
+  GRCh37: 'clinvar_grch37_variants-2024-11-08--19-22',
+  GRCh38: 'clinvar_grch38_variants-2024-11-08--13-08',
 }
 
 // ================================================================================================
