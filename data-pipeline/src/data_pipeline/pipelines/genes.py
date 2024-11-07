@@ -329,6 +329,8 @@ pipeline.add_task(
     f"/{genes_subdir}/gnomad.browser.GRCh37.GENCODEv19.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch37_genes_step_5"),
+    },
+    {
         "keep_mane_version_global_annotation": False,
     },
 )
@@ -396,7 +398,6 @@ pipeline.add_task(
     },
 )
 
-
 # naming scheme follows methods naming scheme for consistency
 pipeline.add_task(
     "prepare_grch38_genes_table_for_public_release",
@@ -404,6 +405,8 @@ pipeline.add_task(
     f"/{genes_subdir}/gnomad.browser.GRCh38.GENCODEv39.ht",
     {
         "genes_path": pipeline.get_task("remove_grch38_genes_constraint_for_release"),
+    },
+    {
         "keep_mane_version_global_annotation": True,
     },
 )
