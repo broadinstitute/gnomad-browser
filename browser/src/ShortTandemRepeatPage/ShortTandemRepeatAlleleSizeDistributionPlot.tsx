@@ -189,7 +189,6 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const binCountCache = Array(nBins).fill(0)
     dataWithColor.forEach((d) => {
       d.startCount = binCountCache[d.binIndex]
-      console.log('data point:', d)
       binCountCache[d.binIndex] += d.count
     })
 
@@ -205,6 +204,8 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       yScale = scaleLog()
         .domain([1, 10 ** maxLog])
         .range([plotHeight - 10, 0])
+    } else if (scaleType === 'linear-truncated') {
+      yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0])
     } else {
       yScale = scaleLinear()
         .domain([0, max(data, (d) => d.count) || 1])
