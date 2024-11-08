@@ -26,7 +26,9 @@ const _fetchClinvarReleaseDate = async (esClient: any) => {
   const releaseDates = metadata.map((m) => m.table_globals.clinvar_release_date)
 
   if (releaseDates[0] !== releaseDates[1]) {
-    logger.error({ message: 'ClinVar release dates do not match' })
+    logger.error({
+      message: `ClinVar release dates do not match. GRCh38: ${releaseDates[1]}, GRCh37: ${releaseDates[0]}`,
+    })
   }
 
   return releaseDates[0]
