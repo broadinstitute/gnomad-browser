@@ -174,7 +174,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     alleleSizeDistributionRepunits.length === 1 ? alleleSizeDistributionRepunits[0] : ''
   const defaultGenotypeDistributionRepunits =
     genotypeDistributionRepunitPairs.length === 1 ? genotypeDistributionRepunitPairs[0] : ''
-  const defaultDisease = shortTandemRepeat.associated_diseases[0].name
+  const defaultDisease =
+    shortTandemRepeat.associated_diseases.length > 0
+      ? shortTandemRepeat.associated_diseases[0].name
+      : ''
 
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | ''>('')
   const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
