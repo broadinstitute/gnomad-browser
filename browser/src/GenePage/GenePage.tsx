@@ -338,7 +338,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 <Link to={`/short-tandem-repeat/${gene.short_tandem_repeats[0].id}`}>
                   tandem repeat locus
                 </Link>{' '}
-                in this gene.
+                in this gene
               </p>
             )}
           </GeneInfoColumn>
