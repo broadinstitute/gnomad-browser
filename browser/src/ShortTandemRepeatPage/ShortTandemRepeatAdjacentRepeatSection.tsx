@@ -112,7 +112,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         </label>
 
         <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
-          Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          y-scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
             value={selectedScaleType}
@@ -121,6 +121,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             }}
           >
             <option value="linear">Linear</option>
+            <option value="linear-truncated">Linear: Truncated</option>
             <option value="log">Log</option>
           </Select>
         </label>

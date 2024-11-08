@@ -160,7 +160,7 @@ type ShortTandemRepeatPageProps = {
   shortTandemRepeat: ShortTandemRepeat
 }
 
-export type ScaleType = 'linear' | 'log'
+export type ScaleType = 'linear' | 'linear-truncated' | 'log'
 
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
   const { allele_size_distribution } = shortTandemRepeat
@@ -347,6 +347,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             id={`${shortTandemRepeat.id}-color-by`}
             selectedColorBy={selectedColorBy}
             setSelectedColorBy={setSelectedColorBy}
+            setSelectedScaleType={setSelectedScaleType}
           />
 
           {alleleSizeDistributionRepunits.length > 1 && (
@@ -417,7 +418,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           <label
             htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
           >
-            Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            y-Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
               value={selectedScaleType}
@@ -426,6 +427,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               }}
             >
               <option value="linear">Linear</option>
+              <option value="linear-truncated">Linear: Truncated</option>
               <option value="log">Log</option>
             </Select>
           </label>
