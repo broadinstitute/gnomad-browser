@@ -1,5 +1,5 @@
 elasticsearch~=7.17
-hail==0.2.127
+hail==0.2.128
 tqdm
 loguru
 attrs
