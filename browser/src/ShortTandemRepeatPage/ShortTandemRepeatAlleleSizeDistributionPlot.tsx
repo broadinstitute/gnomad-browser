@@ -203,7 +203,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       const maxLog = Math.ceil(Math.log10(max(data, (d) => d.count) || 1))
       yScale = scaleLog()
         .domain([1, 10 ** maxLog])
-        .range([plotHeight - 10, 0])
+        .range([plotHeight, 0])
     } else if (scaleType === 'linear-truncated') {
       yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0])
     } else {
