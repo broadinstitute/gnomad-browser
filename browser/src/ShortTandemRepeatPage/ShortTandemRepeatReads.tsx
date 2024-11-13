@@ -200,9 +200,6 @@ const ShortTandemRepeatReads = ({
   shortTandemRepeat,
   filter,
 }: ShortTandemRepeatReadsProps) => {
-  if (2 + 2 === 4) {
-    return <StatusMessage>TK fix reads</StatusMessage>
-  }
   const fetchReadsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fetchNumReadsMemoized = useCallback(() => {
     if (fetchReadsTimer.current) {
@@ -218,7 +215,6 @@ const ShortTandemRepeatReads = ({
     })
   }, [datasetId, shortTandemRepeat, filter])
   const { isLoading, response, error } = useRequest(fetchNumReadsMemoized)
-  const numReads: number = (response as unknown as { numReads: number }).numReads
   const readsStore = useRef(new Map())
   const [readIndex, setReadIndex] = useState(0)
 
@@ -275,6 +271,8 @@ const ShortTandemRepeatReads = ({
   if (error) {
     return <StatusMessage>Unable to load read data</StatusMessage>
   }
+
+  const numReads: number = response as unknown as number
 
   if (numReads === 0) {
     return <StatusMessage>No matching samples found</StatusMessage>
