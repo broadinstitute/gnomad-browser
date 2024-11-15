@@ -164,11 +164,15 @@ const TranscriptsTissueExpressionPlot = ({
   const opacityScale = scaleLinear().domain([0, maxTissueExpression]).range([0, 1])
 
   const transcriptsWidth = 150
-  const cellSize = 18
+  // hacky way to change width per GRCh37, or GRCh38. To properly do this, we
+  //   should pass the dataset ID to this component, change the Modal from
+  //   GBTK to be responsive, then change this component to also be responsive
+  const cellWidth = renderedTissues.length === 51 ? 20 : 18
+  const cellHeight = 18
   const padding = 0.2
   const gutterWidth = 9
-  const plotWidth = 1 + renderedTissues.length * cellSize + gutterWidth
-  const plotHeight = transcripts.length * cellSize * (1 + padding)
+  const plotWidth = 1 + renderedTissues.length * cellWidth + gutterWidth
+  const plotHeight = transcripts.length * cellHeight * (1 + padding)
 
   const height = plotHeight + margin.top + margin.bottom
   const width = plotWidth + margin.left + margin.right + transcriptsWidth
@@ -279,6 +283,7 @@ const TranscriptsTissueExpressionPlot = ({
         // @ts-expect-error TS(2322) FIXME: Type 'ScaleOrdinal<string, unknown, never>' is not... Remove this comment to see the full error message
         scale={xAxisScale}
         stroke="#333"
+        numTicks={renderedTissues.length}
         tickFormat={(tissue: GtexTissueName) => {
           return gtexTissues[tissue] ? gtexTissues[tissue]!.fullName : tissue
         }}
