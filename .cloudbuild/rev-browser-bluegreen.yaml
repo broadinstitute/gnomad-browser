@@ -1,4 +1,12 @@
 steps:
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo $$GNOMAD_BUILD_ENV > browser/build.env
+    secretEnv:
+      - 'GNOMAD_BUILD_ENV'
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -33,7 +41,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:${_BUILD_TAG}']
 
-  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:1.0.0'
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:testing-4'
     entrypoint: 'bash'
     args: ['./bluegreen-update.sh']
     dir: '.cloudbuild'
@@ -48,6 +56,8 @@ availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_ID/secrets/GITHUB_DEPLOY_KEY/versions/latest
       env: 'DEPLOY_KEY'
+    - versionName: projects/$PROJECT_ID/secrets/GNOMAD_BUILD_ENV/versions/1
+      env: 'GNOMAD_BUILD_ENV'
 options:
   dynamicSubstitutions: true
 substitutions:

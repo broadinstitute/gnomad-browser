@@ -14,7 +14,7 @@ done
 # Retrieve current active blue/green and verify that it matches what's currently defined in git
 ####
 
-gcloud container clusters get-credentials --zone $CLOUDSDK_COMPUTE_ZONE $CLOUDSDK_CONTAINER_CLUSTER
+gcloud container clusters get-credentials --dns-endpoint --zone $CLOUDSDK_COMPUTE_ZONE $CLOUDSDK_CONTAINER_CLUSTER
 
 CURRENT_DEPLOYMENT=$(kubectl get service gnomad-browser-bluegreen -o jsonpath='{.spec.selector.deployment}')
 
@@ -57,7 +57,7 @@ echo "target/inactive deployment is $TARGET_DEPLOYMENT"
 ####
 pushd $TARGET_DEPLOYMENT
 kustomize --stack-trace edit set image "gnomad-api=us-docker.pkg.dev/${REPO_PROJECT}/gnomad/gnomad-api:${DOCKER_TAG}"
-kustomize --stack-trace edit set image "gnomad-browser-us-docker.pkg.dev/${REPO_PROJECT}/gnomad/gnomad-browser:${DOCKER_TAG}"
+kustomize --stack-trace edit set image "gnomad-browser=us-docker.pkg.dev/${REPO_PROJECT}/gnomad/gnomad-browser:${DOCKER_TAG}"
 popd
 
 git add $TARGET_DEPLOYMENT
