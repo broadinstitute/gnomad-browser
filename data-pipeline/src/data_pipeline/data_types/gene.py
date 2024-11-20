@@ -233,6 +233,8 @@ def prepare_gene_table_for_release(genes_path, keep_mane_version_global_annotati
         ds = ds.select_globals(mane_select_version=globals_dict["annotations"]["mane_select_transcript"]["version"])
     else:
         ds = ds.select_globals()
+
+    ds = ds.repartition(50)
     return ds
 
 
