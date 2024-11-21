@@ -1,3 +1,5 @@
+import { CLINICAL_SIGNIFICANCE_SORT_PRIORITY } from '../ClinvarVariantsTrack/clinvarVariantCategories'
+
 export const isEmpty = (val: any) => val === undefined || val === null || val === ''
 
 export const makeCompareFunction =
@@ -29,3 +31,11 @@ export const makeStringCompareFunction = (key: any) =>
 
 export const makeNumericCompareFunction = (key: any) =>
   makeCompareFunction(key, (v1: any, v2: any) => v1 - v2)
+
+export const makeClinvarCompareFunction = (key: any) =>
+  makeCompareFunction(key, (v1: string, v2: string) => {
+    return (
+      (CLINICAL_SIGNIFICANCE_SORT_PRIORITY[v2] ?? 999) -
+      (CLINICAL_SIGNIFICANCE_SORT_PRIORITY[v1] ?? 999)
+    )
+  })
