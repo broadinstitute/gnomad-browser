@@ -78,7 +78,7 @@ const MitochondrialVariants = ({
     if ((columnsForContext as any).clinical_significance) {
       ;(
         columnsForContext as any
-      ).clinical_significance.description = `ClinVar clinical significance, based on ClinVar's ${formatClinvarDate(
+      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
         clinvarReleaseDate
       )} release`
     }

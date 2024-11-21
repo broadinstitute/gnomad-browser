@@ -7,7 +7,11 @@ import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import SampleSourceIcon from '../VariantList/SampleSourceIcon'
-import { makeNumericCompareFunction, makeStringCompareFunction } from '../VariantList/sortUtilities'
+import {
+  makeClinvarCompareFunction,
+  makeNumericCompareFunction,
+  makeStringCompareFunction,
+} from '../VariantList/sortUtilities'
 import VariantCategoryMarker from '../VariantList/VariantCategoryMarker'
 import VariantFlag from '../VariantList/VariantFlag'
 
@@ -97,11 +101,11 @@ const mitochondrialVariantTableColumns = [
 
   {
     key: 'clinical_significance',
-    heading: 'Clinical Significance',
-    description: 'ClinVar clinical significance',
+    heading: 'Germline classification',
+    description: 'ClinVar germline classification, formerly called clinical significance',
     grow: 1,
     minWidth: 150,
-    compareFunction: makeStringCompareFunction('clinical_significance'),
+    compareFunction: makeClinvarCompareFunction('clinical_significance'),
     getSearchTerms: (variant: any) => [variant.clinical_significance],
     render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
