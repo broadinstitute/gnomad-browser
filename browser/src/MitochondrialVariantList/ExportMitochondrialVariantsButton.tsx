@@ -26,7 +26,7 @@ const BASE_COLUMNS = [
       variant.consequence ? getLabelForConsequenceTerm(variant.consequence) : '',
   },
   {
-    label: 'ClinVar Clinical Significance',
+    label: 'ClinVar Germline Classification',
     getValue: (variant: any) => variant.clinical_significance || '',
   },
   {
