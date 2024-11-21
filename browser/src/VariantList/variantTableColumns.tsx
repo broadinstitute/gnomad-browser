@@ -123,8 +123,8 @@ const variantTableColumns: VariantTableColumn[] = [
 
   {
     key: 'clinical_significance',
-    heading: 'Clinical Significance',
-    description: 'ClinVar clinical significance',
+    heading: 'Germline classification',
+    description: 'ClinVar germline classification, formerly called clinical significance',
     grow: 1,
     minWidth: 150,
     compareFunction: makeClinvarCompareFunction('clinical_significance'),

@@ -313,7 +313,7 @@ const exportVariantsToCsv = (
       getValue: (variant: VariantTableVariant) => variant.consequence || '',
     },
     {
-      label: 'ClinVar Clinical Significance',
+      label: 'ClinVar Germline Classification',
       getValue: (variant: VariantTableVariant) => variant.clinical_significance || '',
     },
     {
