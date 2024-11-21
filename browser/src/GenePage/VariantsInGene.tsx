@@ -11,6 +11,7 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import { Gene } from './GenePage'
 
 type TranscriptsModalProps = {
   gene: {
@@ -324,19 +325,7 @@ const annotateVariantsWithPext = (variants: any, pext: any) => {
 
 type ConnectedVariantsInGeneProps = {
   datasetId: DatasetId
-  gene: {
-    gene_id: string
-    pext?: {
-      regions: {
-        start: number
-        stop: number
-        mean: number
-        tissues: {
-          [key: string]: number
-        }
-      }[]
-    }
-  }
+  gene: Gene
 }
 
 const ConnectedVariantsInGene = ({

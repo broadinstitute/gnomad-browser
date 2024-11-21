@@ -7,3 +7,4 @@
 !pnpm-lock.yaml
 !pnpm-workspace-api-docker.yaml
 !package.json
+!graphql-api/static_data
