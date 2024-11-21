@@ -8568,6 +8568,173 @@ exports[`Data Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c8 c9"
+            href="#v4-pext"
+            id="v4-pext"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Proportion expressed across transcripts (pext)
+        </h2>
+      </span>
+      <p>
+        For information on pext, see
+         
+        <a
+          className="c11"
+          href="https://doi.org/10.1038/s41586-020-2329-2"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <em>
+            Transcript expression-aware annotation improves rare variant interpretation.
+          </em>
+           
+          Nature 581, 452–458 (2020)
+        </a>
+      </p>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Annotation-level pext for all possible SNVs Hail table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Annotation-level pext for all possible SNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Annotation-level pext for all possible SNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Annotation-level pext for all possible SNVs TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Annotation-level pext for all possible SNVs TSV from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Annotation-level pext for all possible SNVs TSV from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Base-level pext Hail table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Base-level pext Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Base-level pext Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Base-level pext TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Base-level pext TSV from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/pext/gnomad.pext.gtex_v10.base_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Base-level pext TSV from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/pext/gnomad.pext.gtex_v10.base_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
             href="#v4-resources"
             id="v4-resources"
           >

@@ -488,6 +488,52 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-pext">Proportion expressed across transcripts (pext)</SectionTitle>
+        <p>
+          For information on pext, see{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+            <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
+            Nature 581, 452–458 (2020)
+          </ExternalLink>
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Annotation-level pext for all possible SNVs Hail table"
+              path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Annotation-level pext for all possible SNVs TSV"
+              path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Base-level pext Hail table"
+              path="/release/4.1/pext/gnomad.pext.gtex_v10.base_level.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Base-level pext TSV"
+              path="/release/4.1/pext/gnomad.pext.gtex_v10.base_level.tsv.gz"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-resources">Resources</SectionTitle>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
