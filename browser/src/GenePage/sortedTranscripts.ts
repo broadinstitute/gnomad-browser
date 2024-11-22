@@ -27,8 +27,12 @@ const sortedTranscripts = (
       }
     }
 
-    const t1Mean = mean(t1.gtex_tissue_expression!.map((tissue) => tissue.value)) || 0
-    const t2Mean = mean(t2.gtex_tissue_expression!.map((tissue) => tissue.value)) || 0
+    const t1Mean = t1.gtex_tissue_expression
+      ? mean(t1.gtex_tissue_expression.map((tissue) => tissue.value)) || 0
+      : 0
+    const t2Mean = t2.gtex_tissue_expression
+      ? mean(t2.gtex_tissue_expression.map((tissue) => tissue.value)) || 0
+      : 0
 
     if (t1Mean === t2Mean) {
       return t1.transcript_id.localeCompare(t2.transcript_id)
