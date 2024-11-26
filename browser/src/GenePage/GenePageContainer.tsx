@@ -122,7 +122,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
-    gnomad_v2_regional_missense_constraint {
+    gnomad_regional_missense_constraint {
       passed_qc
       has_no_rmc_evidence
       regions {
