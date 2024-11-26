@@ -1,4 +1,4 @@
-import { withCache } from '../cache'
+// import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
@@ -31,11 +31,12 @@ const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) 
   }
 }
 
-export const fetchGeneById = withCache(
-  _fetchGeneById,
-  (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
-  { expiration: 86400 }
-)
+// export const fetchGeneById = withCache(
+//   _fetchGeneById,
+//   (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
+//   { expiration: 86400 }
+// )
+export const fetchGeneById = _fetchGeneById
 
 export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenceGenome: any) => {
   const response = await esClient.search({
