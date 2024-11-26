@@ -1,5 +1,6 @@
+# Note: You can find a definition for the deploykit image in https://github.com/broadinstitute/tgg-sre/tree/main/dockerfiles/deployment-toolkit
 steps:
-  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:testing-4'
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:v1.0.0'
     entrypoint: 'bash'
     args: ['./bluegreen-flip.sh']
     dir: '.cloudbuild'
