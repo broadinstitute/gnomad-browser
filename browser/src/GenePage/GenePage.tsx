@@ -24,6 +24,7 @@ import {
   isExac,
   hasCopyNumberVariants,
   isV2,
+  isV4,
   getTopLevelDataset,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
@@ -170,10 +171,10 @@ export type Gene = GeneMetadata & {
   exac_constraint: ExacConstraint | null
   pext: Pext | null
   short_tandem_repeats:
-    | {
-        id: string
-      }[]
-    | null
+  | {
+    id: string
+  }[]
+  | null
   exac_regional_missense_constraint_regions: any | null
   gnomad_v2_regional_missense_constraint: RegionalMissenseConstraint | null
   variants: Variant[]
@@ -338,22 +339,22 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const regionViewerRegions = !hasExons(datasetId)
     ? [
-        {
-          start: Math.max(1, gene.start - 75),
-          stop: gene.stop + 75,
-        },
-      ]
+      {
+        start: Math.max(1, gene.start - 75),
+        stop: gene.stop + 75,
+      },
+    ]
     : gene.exons
-        .filter(
-          (exon) =>
-            exon.feature_type === 'CDS' ||
-            (exon.feature_type === 'UTR' && includeUTRs) ||
-            (exon.feature_type === 'exon' && includeNonCodingTranscripts)
-        )
-        .map((exon) => ({
-          start: Math.max(1, exon.start - 75),
-          stop: exon.stop + 75,
-        }))
+      .filter(
+        (exon) =>
+          exon.feature_type === 'CDS' ||
+          (exon.feature_type === 'UTR' && includeUTRs) ||
+          (exon.feature_type === 'exon' && includeNonCodingTranscripts)
+      )
+      .map((exon) => ({
+        start: Math.max(1, exon.start - 75),
+        stop: exon.stop + 75,
+      }))
 
   const [zoomRegion, setZoomRegion] = useState(null)
 
@@ -479,7 +480,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                   checked={hasCodingExons}
                   disabled
                   id="include-cds-regions"
-                  onChange={() => {}}
+                  onChange={() => { }}
                 />
                 Coding regions (CDS)
                 <LegendSwatch
@@ -612,9 +613,9 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {isV2(datasetId) && (
+        {(isV2(datasetId) || isV4(datasetId)) && (
           <RegionalMissenseConstraintTrack
-            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
+            regionalMissenseConstraint={gene.gnomad_regional_missense_constraint}
             gene={gene}
           />
         )}
@@ -623,20 +624,20 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         {hasStructuralVariants(datasetId) ? (
           <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
         ) : // eslint-disable-next-line no-nested-ternary
-        hasCopyNumberVariants(datasetId) ? (
-          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : (
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            zoomRegion={zoomRegion}
-            hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
-          />
-        )}
+          hasCopyNumberVariants(datasetId) ? (
+            <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+          ) : gene.chrom === 'M' ? (
+            <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+          ) : (
+            <VariantsInGene
+              datasetId={datasetId}
+              gene={gene}
+              includeNonCodingTranscripts={includeNonCodingTranscripts}
+              includeUTRs={includeUTRs}
+              zoomRegion={zoomRegion}
+              hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
+            />
+          )}
       </RegionViewer>
     </TrackPage>
   )
