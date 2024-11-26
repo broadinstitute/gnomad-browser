@@ -1,7 +1,7 @@
 import hail as hl
 
 
-def prepare_gnomad_v2_regional_missense_constraint(path):
+def prepare_gnomad_regional_missense_constraint(path):
     ds = hl.read_table(path)
 
     # rename key field transcript_id to transcript to allow merging in genes pipeline
