@@ -52,6 +52,7 @@ export type QScoreBin =
   | '0.9'
   | '1.0'
 export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
+
 export type AlleleSizeDistributionItem = {
   repunit_count: number
   frequency: number

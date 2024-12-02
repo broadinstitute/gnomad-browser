@@ -4,11 +4,14 @@ import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
+import { BarStack } from '@visx/shape'
+import { AnyD3Scale } from '@visx/scale'
 
 import { TooltipAnchor } from '@gnomad/ui'
 import {
   AlleleSizeDistributionItem,
   ColorBy,
+  ColorByValue,
   GenotypeQuality,
   QScoreBin,
   ScaleType,
@@ -32,9 +35,10 @@ const TooltipTrigger = styled.rect`
   }
 `
 
+const defaultColor = '#73ab3d'
 const colorMap: Record<string, Record<string, string>> = {
   '': {
-    '': '#73ab3d',
+    '': defaultColor,
   },
   quality_description: {
     low: '#d73027',
@@ -75,6 +79,9 @@ const colorMap: Record<string, Record<string, string>> = {
   },
 }
 
+const colorForValue = (colorBy: ColorBy | '', value: string) =>
+  colorMap[colorBy]?.[value] || defaultColor
+
 const tickFormat = (n: number) => {
   if (n >= 1e9) {
     return `${(n / 1e9).toPrecision(3)}B`
@@ -105,6 +112,12 @@ type Props = {
   size: { width: number }
 }
 
+type Bin = Partial<Record<ColorByValue, number>> & {
+  index: number
+  label: string
+  fullFrequency: number
+}
+
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
   ({
     maxRepeats,
@@ -130,85 +143,60 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const binSize = Math.max(1, Math.ceil(maxRepeats / (plotWidth / 10)))
     const nBins = Math.floor(maxRepeats / binSize) + 1
 
-    const data = useMemo(() => {
-      const d = Array.from(Array(nBins).keys()).map((n) => ({
-        binIndex: n,
-        label: binSize === 1 ? `${n}` : `${n * binSize} - ${n * binSize + binSize - 1}`,
-        count: 0,
-      }))
+    const binLabels: string[] = [...Array(nBins).keys()].map((binIndex) =>
+      binSize === 1 ? `${binIndex}` : `${binIndex * binSize} - ${binIndex * binSize + binSize - 1}`
+    )
 
-      alleleSizeDistribution.forEach(({ repunit_count, frequency }) => {
-        const binIndex = Math.floor(repunit_count / binSize)
-        d[binIndex].count += frequency
-      })
+    const emptyBins: Bin[] = Array.from(Array(nBins)).map((_, binIndex) => ({
+      label: binLabels[binIndex],
+      index: binIndex,
+      fullFrequency: 0,
+    }))
 
-      return d
+    const data: Bin[] = useMemo(() => {
+      const binsByColorByValue = alleleSizeDistribution.reduce((acc, item) => {
+        const binIndex = Math.floor(item.repunit_count / binSize)
+        const oldBin: Bin = acc[binIndex]
+        const oldFrequency = oldBin[item.colorByValue] || 0
+        const newFrequency = oldFrequency + item.frequency
+        const newBin: Bin = {
+          ...oldBin,
+          [item.colorByValue]: newFrequency,
+          fullFrequency: oldBin.fullFrequency + item.frequency,
+        }
+        return { ...acc, [binIndex]: newBin }
+      }, emptyBins)
+      return Object.values(binsByColorByValue)
     }, [alleleSizeDistribution, nBins, binSize])
 
+    const keys = useMemo(() => {
+      const keySet: Record<string, boolean> = data
+        .flatMap((bin) => Object.keys(bin))
+        .reduce((acc, key) => ({ ...acc, [key]: true }), {})
+      return Object.keys(keySet).filter(
+        (key) => key !== 'index' && key !== 'label' && key !== 'fullFrequency'
+      )
+    }, [data])
     // maps binIndex and colorByValue to a y and y start
-    const dataWithColor = useMemo(() => {
-      //sort by ColorBy value
-      alleleSizeDistribution.sort((a, b) => {
-        if (a.colorByValue < b.colorByValue) {
-          return 1
-        }
-        if (a.colorByValue > b.colorByValue) {
-          return -1
-        }
-        return 0
-      })
-
-      const d: Record<
-        string,
-        { binIndex: number; label: string; count: number; startCount: number; color: string }
-      > = {}
-
-      alleleSizeDistribution.forEach(({ repunit_count, colorByValue, frequency }) => {
-        const n = Math.floor(repunit_count / binSize)
-        const key = `${n}/${colorByValue}`
-        const labelPrefix = colorByValue ? `${colorByValue}: ` : ''
-        if (!d[key]) {
-          d[key] = {
-            binIndex: n,
-            label:
-              binSize === 1
-                ? `${labelPrefix} ${n}`
-                : `${labelPrefix} ${n * binSize} - ${n * binSize + binSize - 1}`,
-            count: 0,
-            startCount: 0,
-            color: colorMap[colorBy] ? colorMap[colorBy][colorByValue] : '#73ab3d',
-          }
-        }
-
-        d[key].count += frequency
-      })
-
-      return Object.values(d)
-    }, [alleleSizeDistribution, nBins, binSize])
-
-    const binCountCache = Array(nBins).fill(0)
-    dataWithColor.forEach((d) => {
-      d.startCount = binCountCache[d.binIndex]
-      binCountCache[d.binIndex] += d.count
-    })
 
     const xScale = scaleBand<number>()
-      .domain(data.map((d) => d.binIndex))
+      .domain(data.map((d) => d.index))
       .range([0, plotWidth])
 
     const xBandwidth = xScale.bandwidth()
 
-    let yScale: any
+    let yScale: AnyD3Scale
     if (scaleType === 'log') {
-      const maxLog = Math.ceil(Math.log10(max(data, (d) => d.count) || 1))
+      const maxLog = Math.ceil(Math.log10(max(data, (d) => d.fullFrequency) || 1))
       yScale = scaleLog()
         .domain([1, 10 ** maxLog])
         .range([plotHeight, 0])
+        .clamp(true)
     } else if (scaleType === 'linear-truncated') {
-      yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0])
+      yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0]).clamp(true)
     } else {
       yScale = scaleLinear()
-        .domain([0, max(data, (d) => d.count) || 1])
+        .domain([0, max(data, (d) => d.fullFrequency) || 1])
         .range([plotHeight, 0])
     }
 
@@ -240,7 +228,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             scale={xScale}
             stroke="#333"
             tickFormat={(binIndex: number) =>
-              binIndex % labelInterval === 0 ? data[binIndex].label : ''
+              binIndex % labelInterval === 0 ? binLabels[binIndex] : ''
             }
             tickLabelProps={
               binSize === 1
@@ -301,37 +289,17 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             />
           )}
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {dataWithColor.map((d) => {
-              const y = d.count === 0 ? 0 : yScale(d.count)
-              const yStart = d.startCount === 0 ? 0 : plotHeight - yScale(d.startCount)
-              return (
-                <React.Fragment key={`${d.binIndex}-${d.color}`}>
-                  <rect
-                    x={xScale(d.binIndex)}
-                    y={y - yStart}
-                    height={plotHeight - y}
-                    width={xBandwidth}
-                    fill={d.color}
-                    stroke="#333"
-                  />
-                  <TooltipAnchor
-                    // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message
-                    tooltip={`${d.label} repeat${
-                      d.label === '1' ? '' : 's'
-                    }: ${d.count.toLocaleString()} allele${d.count === 1 ? '' : 's'}`}
-                  >
-                    <TooltipTrigger
-                      x={xScale(d.binIndex)}
-                      y={y - yStart}
-                      height={plotHeight - y}
-                      width={xBandwidth}
-                      fill="none"
-                      style={{ pointerEvents: 'visible' }}
-                    />
-                  </TooltipAnchor>
-                </React.Fragment>
-              )
-            })}
+            <BarStack
+              data={data}
+              keys={keys}
+              xScale={xScale}
+              yScale={yScale}
+              stroke="black"
+              color={(key) => colorForValue(colorBy, key.toString())}
+              x={(bin) => bin.index}
+              y0={(point) => point[0] || 0}
+              y1={(point) => point[1] || 0}
+            />{' '}
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
