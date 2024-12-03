@@ -38,7 +38,13 @@ type ShortTandemRepeatReferenceRegion = {
   stop: number
 }
 
-export type GenotypeQuality = 'low' | 'medium-low' | 'medium' | 'medium-high' | 'high'
+export type GenotypeQuality =
+  | 'low'
+  | 'medium-low'
+  | 'medium'
+  | 'medium-high'
+  | 'high'
+  | 'not-reviewed'
 export type QScoreBin =
   | '0.0'
   | '0.1'
@@ -51,6 +57,7 @@ export type QScoreBin =
   | '0.8'
   | '0.9'
   | '1.0'
+  | ''
 export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
 
 export type AlleleSizeDistributionItem = {
