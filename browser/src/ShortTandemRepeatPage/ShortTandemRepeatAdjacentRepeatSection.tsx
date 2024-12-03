@@ -34,7 +34,7 @@ type Props = {
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
   setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
   setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
-  setSelectedColorBy: Dispatch<SetStateAction<ColorBy | ''>>
+  setSelectedColorBy: (newColorBy: ColorBy | '') => void
 }
 
 const ShortTandemRepeatAdjacentRepeatSection = ({

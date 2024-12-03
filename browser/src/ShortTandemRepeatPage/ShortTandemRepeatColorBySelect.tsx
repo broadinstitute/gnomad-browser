@@ -11,7 +11,7 @@ const Label = styled.label`
 type Props = {
   id: string
   selectedColorBy: ColorBy | ''
-  setSelectedColorBy: Dispatch<SetStateAction<ColorBy | ''>>
+  setSelectedColorBy: (newColorBy: ColorBy | '') => void
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
 }
 

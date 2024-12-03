@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SetStateAction, useState, Dispatch } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
@@ -163,6 +163,11 @@ type ShortTandemRepeatPageProps = {
 
 export type ScaleType = 'linear' | 'linear-truncated' | 'log'
 
+// Stacked bar plots only make sense when the y scale factor stays constant
+// throughout, so log scale is only allowed when there's only one bar per
+// column, that is, when not breaking down the data into subsets.
+const logScaleAllowed = (colorBy: ColorBy | '') => colorBy === ''
+
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
   const { allele_size_distribution } = shortTandemRepeat
 
@@ -182,13 +187,21 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | ''>('')
   const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
-  const [selectedColorBy, setSelectedColorBy] = useState<ColorBy | ''>('')
+  const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
+  const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | ''>('')
+
+  const setSelectedColorBy = (newColorBy: ColorBy | '') => {
+    if (selectedScaleType === 'log' && !logScaleAllowed(newColorBy)) {
+      setSelectedScaleType('linear')
+    }
+    rawSetSelectedColorBy(newColorBy)
+  }
+
   const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
     useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
     useState<string[] | ''>(defaultGenotypeDistributionRepunits)
   const [selectedDisease, setSelectedDisease] = useState<string>(defaultDisease)
-  const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
   const [showAdjacentRepeats, setShowAdjacentRepeats] = useState<boolean>(false)
 
   const populations = [
@@ -432,7 +445,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             >
               <option value="linear">Linear</option>
               <option value="linear-truncated">Linear: Truncated</option>
-              <option value="log">Log</option>
+              {logScaleAllowed(selectedColorBy) && <option value="log">Log</option>}
             </Select>
           </label>
         </ControlSection>
