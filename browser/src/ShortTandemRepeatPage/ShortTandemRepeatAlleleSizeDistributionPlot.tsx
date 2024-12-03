@@ -1,11 +1,12 @@
 import { max } from 'd3-array'
-import { scaleBand, scaleLinear, scaleLog } from 'd3-scale'
+import { scaleBand, scaleLinear, scaleLog, scaleOrdinal, scaleThreshold } from 'd3-scale'
 import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { BarStack } from '@visx/shape'
 import { AnyD3Scale } from '@visx/scale'
+import { LegendOrdinal, LegendThreshold } from '@visx/legend'
 
 import { TooltipAnchor } from '@gnomad/ui'
 import {
@@ -17,7 +18,7 @@ import {
   ScaleType,
   Sex,
 } from './ShortTandemRepeatPage'
-import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -36,13 +37,13 @@ const TooltipTrigger = styled.rect`
 `
 
 const defaultColor = '#73ab3d'
-const colorMap: Record<string, Record<string, string>> = {
+const colorMap: Record<ColorBy | '', Record<string, string>> = {
   '': {
     '': defaultColor,
   },
   quality_description: {
     low: '#d73027',
-    'low-medium': '#fc8d59',
+    'medium-low': '#fc8d59',
     medium: '#fee08b',
     'medium-high': '#d9ef8b',
     high: '#1a9850',
@@ -60,6 +61,7 @@ const colorMap: Record<string, Record<string, string>> = {
     '0.8': '#66ff99',
     '0.9': '#33ffcc',
     '1.0': '#00ff00',
+    '': defaultColor,
   },
   sex: {
     XX: '#F7C3CC',
@@ -77,7 +79,40 @@ const colorMap: Record<string, Record<string, string>> = {
     oth: '#ABB8B9',
     sas: '#FE9A10',
   },
+} as const
+
+const qualityDescriptionLabels: Record<GenotypeQuality, string> = {
+  low: 'Low',
+  'medium-low': 'Medium-low',
+  medium: 'Medium',
+  'medium-high': 'Medium-high',
+  high: 'High',
+  'not-reviewed': 'Not reviewed',
 }
+
+const qScoreLabels: Record<QScoreBin, string> = {
+  '0.0': '0',
+  '0.1': '0 < q ≤ 0.1',
+  '0.2': '0.1 < q ≤ 0.2',
+  '0.3': '0.2 < q ≤ 0.3',
+  '0.4': '0.3 < q ≤ 0.4',
+  '0.5': '0.4 < q ≤ 0.5',
+  '0.6': '0.5 < q ≤ 0.6',
+  '0.7': '0.6 < q ≤ 0.7',
+  '0.8': '0.7 < q ≤ 0.8',
+  '0.9': '0.8 < q ≤ 0.9',
+  '1.0': '0.9 < q ≤ 1.0',
+  '': 'Not reviewed',
+}
+
+const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
+  quality_description: qualityDescriptionLabels,
+  q_score: qScoreLabels,
+  population: GNOMAD_POPULATION_NAMES,
+}
+
+const legendLabels = (colorBy: ColorBy, keys: string[]) =>
+  keys.map((key) => fixedLegendLabels[colorBy]?.[key] || key)
 
 const colorForValue = (colorBy: ColorBy | '', value: string) =>
   colorMap[colorBy]?.[value] || defaultColor
@@ -116,6 +151,18 @@ type Bin = Partial<Record<ColorByValue, number>> & {
   index: number
   label: string
   fullFrequency: number
+}
+
+const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
+  if (colorBy === '') {
+    return null
+  }
+
+  const keys = Object.keys(colorMap[colorBy])
+  const labels = legendLabels(colorBy, keys)
+  const colors = keys.map((key) => colorMap[colorBy][key])
+  const scale = scaleOrdinal().domain(labels).range(colors)
+  return <LegendOrdinal scale={scale} direction="row" />
 }
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
@@ -219,6 +266,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
+        <LegendFromColorBy colorBy={colorBy} />
         <svg height={binSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
             label="Repeats"

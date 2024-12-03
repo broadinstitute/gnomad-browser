@@ -183,6 +183,9 @@ importers:
       '@visx/axis':
         specifier: ^3.0.0
         version: 3.5.0(react@17.0.2)
+      '@visx/legend':
+        specifier: ^3.12.0
+        version: 3.12.0(react@17.0.2)
       '@visx/scale':
         specifier: ^3.12.0
         version: 3.12.0
@@ -4535,6 +4538,19 @@ packages:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/react': 17.0.74
+      classnames: 2.3.2
+      prop-types: 15.8.1
+      react: 17.0.2
+    dev: false
+
+  /@visx/legend@3.12.0(react@17.0.2):
+    resolution: {integrity: sha512-Tr6hdauEDXRXVNeNgIQ9JtCCrxn8Fbr8UCVlO9XsSxenk2hBC/2PIY5QPzpnKFEEEuH/C8vhj8T0JfFZV+D9zQ==}
+    peerDependencies:
+      react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
+    dependencies:
+      '@types/react': 17.0.74
+      '@visx/group': 3.12.0(react@17.0.2)
+      '@visx/scale': 3.12.0
       classnames: 2.3.2
       prop-types: 15.8.1
       react: 17.0.2
