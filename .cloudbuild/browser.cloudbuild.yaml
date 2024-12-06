@@ -1,4 +1,8 @@
+# Submitting a cloud build using this config from your local machine could be done as:
+# gcloud builds submit --config .cloudbuild/browser.cloudbuild.yaml \
+#                      --substitutions=_BRANCH_FOR_IMAGE_NAME="my-branch-name",SHORT_SHA="6f3f419" .
 steps:
+  # API image build
   - name: 'ubuntu'
     entrypoint: 'bash'
     args:
@@ -24,6 +28,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-api:${_BUILD_TAG}']
 
+  # Browser / frontend image build
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -47,7 +52,7 @@ steps:
     args: ['./bluegreen-update.sh']
     dir: '.cloudbuild'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-c'
       - 'CLOUDSDK_CONTAINER_CLUSTER=gnomad-v4'
       - 'REPO_PROJECT=$PROJECT_ID'
       - 'DOCKER_TAG=$SHORT_SHA'
@@ -62,4 +67,5 @@ availableSecrets:
 options:
   dynamicSubstitutions: true
 substitutions:
+  # branch_for_image_name should be set on the build trigger
   _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
