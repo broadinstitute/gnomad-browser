@@ -1,0 +1,71 @@
+# Submitting a cloud build using this config from your local machine could be done as:
+# gcloud builds submit --config .cloudbuild/browser.cloudbuild.yaml \
+#                      --substitutions=_BRANCH_FOR_IMAGE_NAME="my-branch-name",SHORT_SHA="6f3f419" .
+steps:
+  # API image build
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo $$GNOMAD_BUILD_ENV > browser/build.env
+    secretEnv:
+      - 'GNOMAD_BUILD_ENV'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-api:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-api:${_BUILD_TAG}',
+        '-f',
+        'deploy/dockerfiles/browser/api.dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-api:$SHORT_SHA']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-api:${_BUILD_TAG}']
+
+  # Browser / frontend image build
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:$SHORT_SHA',
+        '-t',
+        'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:${_BUILD_TAG}',
+        '-f',
+        'deploy/dockerfiles/browser/browser.dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:$SHORT_SHA']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:${_BUILD_TAG}']
+
+  # Note: You can find a definition for the deploykit image in https://github.com/broadinstitute/tgg-sre/tree/main/dockerfiles/deployment-toolkit
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:v1.0.0'
+    entrypoint: 'bash'
+    args: ['./bluegreen-update.sh']
+    dir: '.cloudbuild'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gnomad-v4'
+      - 'REPO_PROJECT=$PROJECT_ID'
+      - 'DOCKER_TAG=$SHORT_SHA'
+    secretEnv:
+      - 'DEPLOY_KEY'
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/GITHUB_DEPLOY_KEY/versions/latest
+      env: 'DEPLOY_KEY'
+    - versionName: projects/$PROJECT_ID/secrets/GNOMAD_BUILD_ENV/versions/1
+      env: 'GNOMAD_BUILD_ENV'
+options:
+  dynamicSubstitutions: true
+substitutions:
+  # branch_for_image_name should be set on the build trigger
+  _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'

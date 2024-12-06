@@ -1,0 +1,12 @@
+# Note: You can find a definition for the deploykit image in https://github.com/broadinstitute/tgg-sre/tree/main/dockerfiles/deployment-toolkit
+steps:
+  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:v1.0.0'
+    entrypoint: 'bash'
+    args: ['./bluegreen-flip.sh']
+    dir: '.cloudbuild'
+    secretEnv:
+      - 'DEPLOY_KEY'
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/GITHUB_DEPLOY_KEY/versions/latest
+      env: 'DEPLOY_KEY'
