@@ -1,12 +1,12 @@
 import { max } from 'd3-array'
-import { scaleBand, scaleLinear, scaleLog, scaleOrdinal, scaleThreshold } from 'd3-scale'
+import { scaleBand, scaleLinear, scaleLog, scaleOrdinal } from 'd3-scale'
 import React, { useMemo } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
-import { BarStack } from '@visx/shape'
+import { BarStack, Bar } from '@visx/shape'
 import { AnyD3Scale } from '@visx/scale'
-import { LegendOrdinal, LegendThreshold } from '@visx/legend'
+import { LegendOrdinal } from '@visx/legend'
 
 import { TooltipAnchor } from '@gnomad/ui'
 import {
@@ -16,9 +16,8 @@ import {
   GenotypeQuality,
   QScoreBin,
   ScaleType,
-  Sex,
 } from './ShortTandemRepeatPage'
-import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -28,11 +27,11 @@ const GraphWrapper = styled.div`
   height: 100%; /* stylelint-disable-line unit-whitelist */
 `
 
-const TooltipTrigger = styled.rect`
+const BarWithHoverEffect = styled(Bar)`
   pointer-events: visible;
 
   &:hover {
-    fill: rgba(0, 0, 0, 0.05);
+    fill-opacity: 0.7;
   }
 `
 
@@ -163,6 +162,13 @@ const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
   const colors = keys.map((key) => colorMap[colorBy][key])
   const scale = scaleOrdinal().domain(labels).range(colors)
   return <LegendOrdinal scale={scale} direction="row" />
+}
+
+const tooltipContent = (data: Bin, key: ColorByValue | ''): string => {
+  const repeatText = data.label === '1' ? '1 repeat' : data.label.toString() + ' repeats'
+  const alleles = data[key] || 0
+  const alleleText = alleles === 1 ? '1 allele' : alleles.toString() + ' alleles'
+  return `${repeatText}: ${alleleText}`
 }
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
@@ -347,7 +353,27 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
               x={(bin) => bin.index}
               y0={(point) => point[0] || 0}
               y1={(point) => point[1] || 0}
-            />{' '}
+            >
+              {(stacks) =>
+                stacks.map((stack) =>
+                  stack.bars.map((bar) => {
+                    const tooltip = tooltipContent(bar.bar.data, bar.key as ColorByValue | '')
+                    return (
+                      <React.Fragment key={'bar-stack-' + bar.x + '-' + bar.y}>
+                        <TooltipAnchor
+                          // @ts-expect-error
+                          tooltip={tooltip}
+                        >
+                          <g>
+                            <BarWithHoverEffect {...bar} stroke="black" fill={bar.color} />
+                          </g>
+                        </TooltipAnchor>
+                      </React.Fragment>
+                    )
+                  })
+                )
+              }
+            </BarStack>
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>
