@@ -5,7 +5,7 @@ import { Select } from '@gnomad/ui'
 
 import { PopulationId, GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import { Sex } from './ShortTandemRepeatPage'
+import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 const Wrapper = styled.div`
   @media (max-width: 600px) {

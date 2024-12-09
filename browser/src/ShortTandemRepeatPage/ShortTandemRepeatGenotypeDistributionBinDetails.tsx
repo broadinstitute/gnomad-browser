@@ -5,10 +5,12 @@ import { List, ListItem } from '@gnomad/ui'
 import {
   ShortTandemRepeat,
   ShortTandemRepeatAdjacentRepeat,
-  Sex,
   GenotypeDistributionItem,
 } from './ShortTandemRepeatPage'
+
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
+
+import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
