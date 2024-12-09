@@ -14,7 +14,14 @@ import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssocia
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
-import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
+import ShortTandemRepeatAlleleSizeDistributionPlot, {
+  ColorBy,
+  GenotypeQuality,
+  QScoreBin,
+  Sex,
+  ScaleType,
+  AlleleSizeDistributionItem,
+} from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot, {
   Bin as GenotypeBin,
 } from './ShortTandemRepeatGenotypeDistributionPlot'
@@ -37,38 +44,6 @@ type ShortTandemRepeatReferenceRegion = {
   start: number
   stop: number
 }
-
-export type GenotypeQuality =
-  | 'low'
-  | 'medium-low'
-  | 'medium'
-  | 'medium-high'
-  | 'high'
-  | 'not-reviewed'
-export type QScoreBin =
-  | '0.0'
-  | '0.1'
-  | '0.2'
-  | '0.3'
-  | '0.4'
-  | '0.5'
-  | '0.6'
-  | '0.7'
-  | '0.8'
-  | '0.9'
-  | '1.0'
-  | ''
-export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
-
-export type AlleleSizeDistributionItem = {
-  repunit_count: number
-  frequency: number
-  colorByValue: ColorByValue
-}
-
-export type Sex = 'XX' | 'XY'
-
-export type ColorBy = 'quality_description' | 'q_score' | 'population' | 'sex'
 
 export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId
@@ -167,8 +142,6 @@ type ShortTandemRepeatPageProps = {
   datasetId: DatasetId
   shortTandemRepeat: ShortTandemRepeat
 }
-
-export type ScaleType = 'linear' | 'linear-truncated' | 'log'
 
 // Stacked bar plots only make sense when the y scale factor stays constant
 // throughout, so log scale is only allowed when there's only one bar per

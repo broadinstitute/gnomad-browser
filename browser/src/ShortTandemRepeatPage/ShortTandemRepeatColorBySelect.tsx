@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
-import { ColorBy, ScaleType } from './ShortTandemRepeatPage'
+import { ColorBy, ScaleType } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 const Label = styled.label`
   padding-right: 1em;

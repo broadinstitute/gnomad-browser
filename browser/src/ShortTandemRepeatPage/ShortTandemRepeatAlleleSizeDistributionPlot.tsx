@@ -9,15 +9,8 @@ import { AnyD3Scale } from '@visx/scale'
 import { LegendOrdinal } from '@visx/legend'
 
 import { TooltipAnchor } from '@gnomad/ui'
-import {
-  AlleleSizeDistributionItem,
-  ColorBy,
-  ColorByValue,
-  GenotypeQuality,
-  QScoreBin,
-  ScaleType,
-} from './ShortTandemRepeatPage'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -34,6 +27,46 @@ const BarWithHoverEffect = styled(Bar)`
     fill-opacity: 0.7;
   }
 `
+
+export type ScaleType = 'linear' | 'linear-truncated' | 'log'
+
+export const genotypeQualityKeys = [
+  'low',
+  'medium-low',
+  'medium',
+  'medium-high',
+  'high',
+  'not-reviewed',
+] as const
+
+export type GenotypeQuality = (typeof genotypeQualityKeys)[number]
+
+export const qScoreKeys = [
+  '0.0',
+  '0.1',
+  '0.2',
+  '0.3',
+  '0.4',
+  '0.5',
+  '0.6',
+  '0.7',
+  '0.8',
+  '0.9',
+  '1',
+] as const
+
+export type QScoreBin = (typeof qScoreKeys)[number]
+export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
+
+export type AlleleSizeDistributionItem = {
+  repunit_count: number
+  frequency: number
+  colorByValue: ColorByValue
+}
+
+export type Sex = 'XX' | 'XY'
+
+export type ColorBy = 'quality_description' | 'q_score' | 'population' | 'sex'
 
 const defaultColor = '#73ab3d'
 const colorMap: Record<ColorBy | '', Record<string, string>> = {
@@ -59,8 +92,7 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
     '0.7': '#99ff66',
     '0.8': '#66ff99',
     '0.9': '#33ffcc',
-    '1.0': '#00ff00',
-    '': defaultColor,
+    '1': '#00ff00',
   },
   sex: {
     XX: '#F7C3CC',
@@ -100,8 +132,7 @@ const qScoreLabels: Record<QScoreBin, string> = {
   '0.7': '0.6 < q ≤ 0.7',
   '0.8': '0.7 < q ≤ 0.8',
   '0.9': '0.8 < q ≤ 0.9',
-  '1.0': '0.9 < q ≤ 1.0',
-  '': 'Not reviewed',
+  '1': '0.9 < q ≤ 1',
 }
 
 const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
@@ -152,13 +183,20 @@ type Bin = Partial<Record<ColorByValue, number>> & {
   fullFrequency: number
 }
 
+const legendKeys: Record<ColorBy, string[]> = {
+  quality_description: [...genotypeQualityKeys],
+  q_score: [...qScoreKeys],
+  sex: ['XX', 'XY'],
+  population: ['nfe', 'afr', 'fin', 'amr', 'ami', 'asj', 'eas', 'mid', 'oth', 'sas'],
+}
+
 const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
   if (colorBy === '') {
     return null
   }
 
-  const keys = Object.keys(colorMap[colorBy])
-  const labels = legendLabels(colorBy, keys)
+  const keys = legendKeys[colorBy]
+  const labels = legendLabels(colorBy, [...keys])
   const colors = keys.map((key) => colorMap[colorBy][key])
   const scale = scaleOrdinal().domain(labels).range(colors)
   return <LegendOrdinal scale={scale} direction="row" />

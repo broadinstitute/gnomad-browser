@@ -1,15 +1,17 @@
 import {
-  ColorBy,
-  GenotypeQuality,
-  Sex,
   ShortTandemRepeat,
-  AlleleSizeDistributionItem,
   AlleleSizeDistributionCohort,
   GenotypeDistributionCohort,
   GenotypeDistributionItem,
   ShortTandemRepeatAdjacentRepeat,
-  ColorByValue,
 } from './ShortTandemRepeatPage'
+
+import {
+  ColorBy,
+  Sex,
+  ColorByValue,
+  AlleleSizeDistributionItem,
+} from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 type AlleleSizeDistributionParams = {
   selectedPopulation: string | ''
