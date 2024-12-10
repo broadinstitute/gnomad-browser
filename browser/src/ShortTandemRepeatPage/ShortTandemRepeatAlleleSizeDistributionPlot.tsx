@@ -122,17 +122,17 @@ const qualityDescriptionLabels: Record<GenotypeQuality, string> = {
 }
 
 const qScoreLabels: Record<QScoreBin, string> = {
-  '0.0': '0',
-  '0.1': '0 < q ≤ 0.1',
-  '0.2': '0.1 < q ≤ 0.2',
-  '0.3': '0.2 < q ≤ 0.3',
-  '0.4': '0.3 < q ≤ 0.4',
-  '0.5': '0.4 < q ≤ 0.5',
-  '0.6': '0.5 < q ≤ 0.6',
-  '0.7': '0.6 < q ≤ 0.7',
-  '0.8': '0.7 < q ≤ 0.8',
-  '0.9': '0.8 < q ≤ 0.9',
-  '1': '0.9 < q ≤ 1',
+  '0.0': '0 to 0.05',
+  '0.1': '0.05 to 0.15',
+  '0.2': '0.15 to 0.25',
+  '0.3': '0.25 to 0.35',
+  '0.4': '0.35 to 0.45',
+  '0.5': '0.45 to 0.55',
+  '0.6': '0.55 to 0.65',
+  '0.7': '0.65 to 0.75',
+  '0.8': '0.75 to 0.85',
+  '0.9': '0.85 to 0.95',
+  '1': '0.95 to 1',
 }
 
 const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
@@ -199,7 +199,14 @@ const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
   const labels = legendLabels(colorBy, [...keys])
   const colors = keys.map((key) => colorMap[colorBy][key])
   const scale = scaleOrdinal().domain(labels).range(colors)
-  return <LegendOrdinal scale={scale} direction="row" />
+  return (
+    <LegendOrdinal
+      scale={scale}
+      shapeMargin="0 7px 20px 0px"
+      labelMargin="0 10px 20px 0px"
+      direction="row"
+    />
+  )
 }
 
 const tooltipContent = (data: Bin, key: ColorByValue | ''): string => {
