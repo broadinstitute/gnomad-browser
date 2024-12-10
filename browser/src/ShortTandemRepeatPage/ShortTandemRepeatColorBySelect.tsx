@@ -30,7 +30,7 @@ const ShortTandemRepeatColorBySelect = ({
         onChange={(e: { target: { value: ColorBy | '' } }) => {
           setSelectedColorBy(e.target.value)
           if (e.target.value === 'quality_description') {
-            setSelectedScaleType('linear-truncated')
+            setSelectedScaleType('linear-truncated-50')
           }
         }}
       >
