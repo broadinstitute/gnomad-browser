@@ -209,14 +209,14 @@ const cohortDescription = (
     return `${capitalize(frequencyField)} Cohort`
   }
 
-  const [ancestryGroupId, sexId] = getAncestryAndSexIds(subsetId)
+  const [populationId, sexId] = getAncestryAndSexIds(subsetId)
 
-  if (ancestryGroupId) {
-    const ancestryGroupName = POPULATION_NAMES[ancestryGroupId]
+  if (populationId) {
+    const populationName = POPULATION_NAMES[populationId]
     if (sexId) {
-      return `${capitalize(frequencyField)} ${ancestryGroupName} ${sexId} Ancestry Group`
+      return `${capitalize(frequencyField)} ${populationName} ${sexId} Population`
     }
-    return `${capitalize(frequencyField)} ${ancestryGroupName} Ancestry Group`
+    return `${capitalize(frequencyField)} ${populationName} Population`
   }
   return sexId!
 }
@@ -226,17 +226,17 @@ const cohortForSubset = (subset: Subset, frequencyField: 'exome' | 'genome'): Co
     return { id: 'ALL', label: capitalize(frequencyField), characteristics: null }
   }
 
-  const [ancestryGroupId, sexId] = getAncestryAndSexIds(subset.id)
+  const [populationId, sexId] = getAncestryAndSexIds(subset.id)
 
   const sexCharacteristics: CohortCharacteristic[] = sexId
     ? [{ name: 'biological sex', value: sexId }]
     : []
   const ancestryCharacteristics: CohortCharacteristic[] =
-    ancestryGroupId && POPULATION_NAMES[ancestryGroupId]
+    populationId && POPULATION_NAMES[populationId]
       ? [
           {
             name: 'genetic ancestry',
-            value: POPULATION_NAMES[ancestryGroupId],
+            value: POPULATION_NAMES[populationId],
           },
         ]
       : []

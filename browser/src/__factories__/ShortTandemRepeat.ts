@@ -27,24 +27,59 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
         notes: 'hello world',
       },
     ],
-    reference_region = { chrom: '1', start: 10000000, stop: 15000000 },
-    allele_size_distribution = {
-      distribution: [[1, 1]],
-      populations: [],
-      repeat_units: [],
-    },
-    genotype_distribution = { distribution: [], populations: [], repeat_units: [] },
+    main_reference_region = { chrom: '1', start: 10000000, stop: 15000000 },
+    reference_regions = [{ chrom: '1', start: 10000000, stop: 15000000 }],
+    allele_size_distribution = [
+      {
+        ancestry_group: 'asj',
+        sex: 'XY',
+        repunit: 'ACCA',
+        quality_description: 'medium-low',
+        q_score: '0.6',
+        distribution: [
+          { repunit_count: 3, frequency: 12, colorByValue: 'low' },
+          { repunit_count: 4, frequency: 123, colorByValue: 'high' },
+        ],
+      },
+    ],
+    genotype_distribution = [
+      {
+        ancestry_group: 'asj',
+        sex: 'XY',
+        short_allele_repunit: 'ACCA',
+        long_allele_repunit: 'GATA',
+        quality_description: 'high',
+        q_score: '1',
+        distribution: [
+          { short_allele_repunit_count: 8, long_allele_repunit_count: 9, frequency: 15 },
+          { short_allele_repunit_count: 8, long_allele_repunit_count: 10, frequency: 19 },
+          { short_allele_repunit_count: 9, long_allele_repunit_count: 10, frequency: 17 },
+        ],
+      },
+    ],
+    age_distribution = [
+      {
+        age_range: [null, 18],
+        distribution: [
+          [8, 6],
+          [9, 3],
+          [10, 9],
+        ],
+      },
+    ],
   } = associations
 
   return {
     id,
     gene,
     associated_diseases,
-    reference_region,
+    main_reference_region,
+    reference_regions,
     reference_repeat_unit,
     repeat_units,
     allele_size_distribution,
     genotype_distribution,
+    age_distribution,
     stripy_id,
     adjacent_repeats,
   }

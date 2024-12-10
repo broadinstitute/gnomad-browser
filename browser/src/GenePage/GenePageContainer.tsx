@@ -161,7 +161,6 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
   }
 }
 `
-
 type Props = {
   datasetId: DatasetId
   geneIdOrSymbol: string

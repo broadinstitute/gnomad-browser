@@ -41,7 +41,7 @@ const config = {
       {
         context: '/reads',
         target: process.env.READS_API_URL,
-        pathRewrite: { '^/reads': '' },
+        //pathRewrite: { '^/reads': '' },
         changeOrigin: true,
       },
     ],
