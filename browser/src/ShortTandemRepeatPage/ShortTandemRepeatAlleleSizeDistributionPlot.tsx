@@ -28,7 +28,12 @@ const BarWithHoverEffect = styled(Bar)`
   }
 `
 
-export type ScaleType = 'linear' | 'linear-truncated' | 'log'
+export type ScaleType =
+  | 'linear'
+  | 'linear-truncated-50'
+  | 'linear-truncated-200'
+  | 'linear-truncated-1000'
+  | 'log'
 
 export const genotypeQualityKeys = [
   'low',
@@ -290,8 +295,12 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
         .domain([1, 10 ** maxLog])
         .range([plotHeight, 0])
         .clamp(true)
-    } else if (scaleType === 'linear-truncated') {
+    } else if (scaleType === 'linear-truncated-50') {
       yScale = scaleLinear().domain([0, 50]).range([plotHeight, 0]).clamp(true)
+    } else if (scaleType === 'linear-truncated-200') {
+      yScale = scaleLinear().domain([0, 200]).range([plotHeight, 0]).clamp(true)
+    } else if (scaleType === 'linear-truncated-1000') {
+      yScale = scaleLinear().domain([0, 1000]).range([plotHeight, 0]).clamp(true)
     } else {
       yScale = scaleLinear()
         .domain([0, max(data, (d) => d.fullFrequency) || 1])
