@@ -122,8 +122,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             }}
           >
             <option value="linear">Linear</option>
-            <option value="linear-truncated">Linear: Truncated</option>
             <option value="log">Log</option>
+            <option value="linear-truncated-50">Linear: Truncated at 50</option>
+            <option value="linear-truncated-200">Linear: Truncated at 200</option>
+            <option value="linear-truncated-1000">Linear: Truncated at 1000</option>
           </Select>
         </label>
       </ControlSection>
