@@ -11,6 +11,7 @@ import { LegendOrdinal } from '@visx/legend'
 import { TooltipAnchor } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { colorByLabels } from './ShortTandemRepeatColorBySelect'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -146,12 +147,13 @@ const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
   population: GNOMAD_POPULATION_NAMES,
 }
 
+const legendLabel = (colorBy: ColorBy, key: string) => fixedLegendLabels[colorBy]?.[key] || key
+
 const legendLabels = (colorBy: ColorBy, keys: string[]) =>
-  keys.map((key) => fixedLegendLabels[colorBy]?.[key] || key)
+  keys.map((key) => legendLabel(colorBy, key))
 
 const colorForValue = (colorBy: ColorBy | '', value: string) =>
   colorMap[colorBy]?.[value] || defaultColor
-
 const tickFormat = (n: number) => {
   if (n >= 1e9) {
     return `${(n / 1e9).toPrecision(3)}B`
@@ -214,11 +216,13 @@ const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
   )
 }
 
-const tooltipContent = (data: Bin, key: ColorByValue | ''): string => {
+const tooltipContent = (data: Bin, colorBy: ColorBy | '', key: ColorByValue | ''): string => {
   const repeatText = data.label === '1' ? '1 repeat' : data.label.toString() + ' repeats'
   const alleles = data[key] || 0
   const alleleText = alleles === 1 ? '1 allele' : alleles.toString() + ' alleles'
-  return `${repeatText}: ${alleleText}`
+  const colorByText =
+    colorBy === '' ? '' : `, ${colorByLabels[colorBy]} is ${legendLabel(colorBy, key)}`
+  return `${repeatText}${colorByText}: ${alleleText}`
 }
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
@@ -411,7 +415,11 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
               {(stacks) =>
                 stacks.map((stack) =>
                   stack.bars.map((bar) => {
-                    const tooltip = tooltipContent(bar.bar.data, bar.key as ColorByValue | '')
+                    const tooltip = tooltipContent(
+                      bar.bar.data,
+                      colorBy,
+                      bar.key as ColorByValue | ''
+                    )
                     return (
                       <React.Fragment key={'bar-stack-' + bar.x + '-' + bar.y}>
                         <TooltipAnchor
