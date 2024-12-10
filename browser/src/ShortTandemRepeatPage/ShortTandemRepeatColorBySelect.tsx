@@ -15,6 +15,13 @@ type Props = {
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
 }
 
+export const colorByLabels: Record<ColorBy, string> = {
+  quality_description: 'GQ: manual review',
+  q_score: 'GQ: Q score',
+  sex: 'Sex',
+  population: 'Population',
+}
+
 const ShortTandemRepeatColorBySelect = ({
   id,
   selectedColorBy,
@@ -35,10 +42,9 @@ const ShortTandemRepeatColorBySelect = ({
         }}
       >
         <option value="">None</option>
-        <option value="quality_description">GQ: manual review</option>
-        <option value="q_score">GQ: Q score</option>
-        <option value="sex">Sex</option>
-        <option value="population">Population</option>
+        {Object.entries(colorByLabels).map(([key, label]) => (
+          <option value={key}>{label}</option>
+        ))}
       </Select>
     </Label>
   )
