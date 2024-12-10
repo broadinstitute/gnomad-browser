@@ -47,7 +47,7 @@ export const genotypeQualityKeys = [
 export type GenotypeQuality = (typeof genotypeQualityKeys)[number]
 
 export const qScoreKeys = [
-  '0.0',
+  '0',
   '0.1',
   '0.2',
   '0.3',
@@ -87,7 +87,7 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
     'not-reviewed': '#aaaaaa',
   },
   q_score: {
-    '0.0': '#ff0000',
+    '0': '#ff0000',
     '0.1': '#ff3300',
     '0.2': '#ff6600',
     '0.3': '#ff9900',
@@ -127,7 +127,7 @@ const qualityDescriptionLabels: Record<GenotypeQuality, string> = {
 }
 
 const qScoreLabels: Record<QScoreBin, string> = {
-  '0.0': '0 to 0.05',
+  '0': '0 to 0.05',
   '0.1': '0.05 to 0.15',
   '0.2': '0.15 to 0.25',
   '0.3': '0.25 to 0.35',
