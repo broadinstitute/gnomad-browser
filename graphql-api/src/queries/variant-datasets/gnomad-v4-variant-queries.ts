@@ -391,6 +391,22 @@ const getMultiVariantSourceFields = (
 }
 
 // ================================================================================================
+// Helpers
+// ================================================================================================
+
+export type Exon = {
+  feature_type: 'CDS' | 'exon' | 'UTR'
+}
+
+export const getFilteredRegions = (exons: Exon[]) => {
+  const hasCDS = exons.some((exon) => exon.feature_type === 'CDS')
+  const filteredRegions = hasCDS
+    ? exons.filter((exon) => exon.feature_type === 'CDS')
+    : exons.filter((exon) => exon.feature_type === 'exon')
+  return filteredRegions
+}
+
+// ================================================================================================
 // Gene query
 // ================================================================================================
 
@@ -404,7 +420,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
   const pageSize = isLargeGene ? 500 : 10000
 
   try {
-    const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+    const filteredRegions = getFilteredRegions(gene.exons)
     const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
     const padding = 75
     const paddedRegions = sortedRegions.map((r: any) => ({
@@ -515,7 +531,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     )
   }
 
-  const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(transcript.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({

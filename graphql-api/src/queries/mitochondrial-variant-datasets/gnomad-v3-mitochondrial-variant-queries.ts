@@ -4,6 +4,7 @@ import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 import { getFlagsForContext } from '../variant-datasets/shared/flags'
 import { getConsequenceForContext } from '../variant-datasets/shared/transcriptConsequence'
+import { getFilteredRegions } from '../variant-datasets/gnomad-v4-variant-queries'
 
 const GNOMAD_V3_MITOCHONDRIAL_VARIANT_INDEX = 'gnomad_v3_mitochondrial_variants'
 
@@ -97,7 +98,7 @@ const shapeMitochondrialVariantSummary = (context: any) => {
 // ================================================================================================
 
 const fetchMitochondrialVariantsByGene = async (esClient: any, gene: any) => {
-  const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({
