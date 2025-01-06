@@ -275,9 +275,9 @@ export default () => (
       <Link preserveSelectedDataset={false} to="/about">
         Genome Aggregation Database
       </Link>{' '}
-      (gnomAD) is a resource developed by an international coalition of investigators, with the goal
-      of aggregating and harmonizing both exome and genome sequencing data from a wide variety of
-      large-scale sequencing projects, and making summary data available for the wider scientific
+      (gnomAD™) is a resource developed by an international coalition of investigators, with the
+      goal of aggregating and harmonizing both exome and genome sequencing data from a wide variety
+      of large-scale sequencing projects, and making summary data available for the wider scientific
       community.
     </p>
     <p>
