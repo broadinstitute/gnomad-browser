@@ -1,4 +1,4 @@
-## Terms of use
+## gnomAD™ Terms of use
 
 All data here are released openly and publicly for the benefit of the wider biomedical community. You can freely download and search the data, and we encourage the use and publication of results generated from these data. **There are absolutely no restrictions or embargoes on the publication of results derived from gnomAD data**. However, we encourage you to [contact the consortium](mailto:gnomad@broadinstitute.org) before embarking on large-scale analyses to check if your proposed analysis overlaps with work currently underway by the gnomAD consortium. All users of gnomAD data agree to not attempt to reidentify participants.
 
@@ -9,6 +9,12 @@ The primary data from the gnomAD exomes and genomes are available free of restri
 Screenshots of the website may also be used without restriction. As with any use of gnomAD data, we request that you actively acknowledge and give attribution to the gnomAD project, and link back to the relevant page, wherever possible.
 
 Some annotations may have restrictions on usage. For instance, SpliceAI annotations have been computed by Illumina and are provided with permission under a CC BY NC 4.0 license for academic and non-commercial use [SpliceAI](https://github.com/Illumina/SpliceAI). It is the responsibility of users to abide by all relevant licensing requirements.
+
+## gnomAD™ Open Science Policy
+
+The gnomAD team has a firm commitment to open science. This includes, but is not limited to, making our data and code open-source, posting pre-prints, and prioritizing publishing in journals that support open access.
+
+We request that developers integrating gnomAD data in their tools include a statement acknowledging the inclusion of gnomAD data (e.g., "This tool includes data from the gnomAD v4.1 release."). However, to avoid confusion and misattribution, we ask that you refrain from incorporating "gnomAD" or "Genome Aggregation Database'' into the name of your tool and from using the gnomAD logo without permission. gnomAD™ is a trademark owned by The Broad Institute, Inc.
 
 ## Citation in publications
 
