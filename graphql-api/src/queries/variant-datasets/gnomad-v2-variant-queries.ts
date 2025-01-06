@@ -14,6 +14,7 @@ import {
 
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
+import { getFilteredRegions } from './gnomad-v4-variant-queries'
 
 const GNOMAD_V2_VARIANT_INDEX = 'gnomad_v2_variants'
 
@@ -207,7 +208,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
 // ================================================================================================
 
 const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
-  const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({
@@ -376,7 +377,7 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
 // ================================================================================================
 
 const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: any) => {
-  const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(transcript.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({
