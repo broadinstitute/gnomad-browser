@@ -7,6 +7,7 @@ import { fetchAllSearchResults, fetchIndexMetadata } from './helpers/elasticsear
 import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { getConsequenceForContext } from './variant-datasets/shared/transcriptConsequence'
 import largeGenes from './helpers/large-genes'
+import { getFilteredRegions } from './variant-datasets/gnomad-v4-variant-queries'
 
 const CLINVAR_VARIANT_INDICES = {
   GRCh37: 'clinvar_grch37_variants',
@@ -166,7 +167,7 @@ const shapeVariantSummary = (context: any) => {
 // ================================================================================================
 
 const _fetchClinvarVariantsByGene = async (esClient: any, referenceGenome: any, gene: any) => {
-  const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({
@@ -266,7 +267,7 @@ const _fetchClinvarVariantsByTranscript = async (
   referenceGenome: any,
   transcript: any
 ) => {
-  const filteredRegions = transcript.exons.filter((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = getFilteredRegions(transcript.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
   const paddedRegions = sortedRegions.map((r: any) => ({
