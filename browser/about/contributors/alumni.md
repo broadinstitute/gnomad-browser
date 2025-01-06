@@ -7,6 +7,7 @@
 - Laurent Francioli (production and analysis)
 - Jeff Gentry (data generation)
 - Thibault Jeandet (data generation)
+- Steve Jahl (browser)
 - Diane Kaplan (data generation)
 - Monkol Lek (production and analysis)
 - Eric Minikel (analysis)
