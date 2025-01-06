@@ -703,37 +703,6 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c8"
             >
               <img
-                alt="Headshot of Cecilia Lindgren, Ph.D.,"
-                className="c9"
-              />
-            </div>
-            <div
-              className="c10"
-            >
-              <span
-                className="c11"
-              >
-                Cecilia Lindgren, Ph.D.,
-              </span>
-              <span
-                className="c12"
-              >
-                 
-                is the Director of the Big Data Institute (BDI), Li Ka Shing Centre for Health Information and Discovery at University of Oxford. Her work has contributed to a substantial furthering of our understanding of the genetic landscape of obesity and fat distribution. In line with this, she is co-chairing a range of large-scale international consortia; the central adiposity team within the GiANT consortium, the Polycystic Ovary Syndrome (PCOS) consortium and she is a co-founder of the international Common Disease Alliance (ICDA). She has been awarded numerous awards, including the “Rising Star Award” from European Association for the Study of Diabetes (2010), the “Association for the Study of Obesity’s Obesity and Cardiovascular Health Award” (2011), the inaugural “Leena Peltonen Prize for Excellence in Human Genetics” (2013), ”30th Khwarizmi International Award” (2017) and the American Society of Human Genetics Mentorship Award (2018).
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c6"
-        >
-          <div
-            className="c7"
-          >
-            <div
-              className="c8"
-            >
-              <img
                 alt="Headshot of Andrés Moreno Estrada, M.D, Ph.D.,"
                 className="c9"
               />
@@ -936,7 +905,7 @@ exports[`Team Page has no unexpected changes 1`] = `
                 className="c12"
               >
                  
-                is the Senior Medical Director and head of Human Genetics at Biogen. He is a medical geneticist and basic researcher with a mission to implement genetics at the core of future medicine. His research focus is on translating genetic discoveries into functional insights and early-stage drug development programs across all therapeutic areas. Dr. Runz has a broad interdisciplinary background that tightly integrates technological innovation and applied medicine.
+                Heiko Runz, M.D., is the Vice President for Neuroscience/Genetics at insitro. He is a medical geneticist and basic researcher with a mission to implement genetics at the core of future medicine. His research focus is on translating genetic discoveries into functional insights and early-stage drug development programs with a focus on CNS diseases. Dr. Runz has a broad interdisciplinary background that tightly integrates technological innovation and applied medicine.
               </span>
             </div>
           </div>
@@ -1095,38 +1064,7 @@ exports[`Team Page has no unexpected changes 1`] = `
                 className="c12"
               >
                  
-                is an Associate Software Engineer at the Broad Institute, where he works on the gnomAD Browser. He's interested in encouraging collaboration through open source software and open access datasets.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c6"
-        >
-          <div
-            className="c7"
-          >
-            <div
-              className="c8"
-            >
-              <img
-                alt="Headshot of Steve Jahl"
-                className="c9"
-              />
-            </div>
-            <div
-              className="c10"
-            >
-              <span
-                className="c11"
-              >
-                Steve Jahl
-              </span>
-              <span
-                className="c12"
-              >
-                 
-                is a Site Reliability Engineer working on keeping the gnomAD Browser stable, performant, and secure. Steve has worked previously as an SRE for a Boston-based fintech startup, and as a software engineer and systems administrator for research computing groups at MIT CSAIL and Harvard Medical School.
+                is a Software Engineer at the Broad Institute, where he works on the gnomAD Browser. He's interested in encouraging collaboration through open source software and open access datasets.
               </span>
             </div>
           </div>
@@ -1863,6 +1801,7 @@ exports[`Team Page has no unexpected changes 1`] = `
 - Laurent Francioli (production and analysis)
 - Jeff Gentry (data generation)
 - Thibault Jeandet (data generation)
+- Steve Jahl (browser)
 - Diane Kaplan (data generation)
 - Monkol Lek (production and analysis)
 - Eric Minikel (analysis)
