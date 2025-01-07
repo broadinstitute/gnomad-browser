@@ -1,0 +1,597 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Federation Page has no unexpected changes 1`] = `
+.c8 {
+  color: #1173bb;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c8:visited,
+.c8:active {
+  color: #1173bb;
+}
+
+.c8:focus,
+.c8:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c2 {
+  margin: 0;
+}
+
+.c0 {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto 40px;
+  font-size: 14px;
+  font-size: 16px;
+}
+
+.c0 p {
+  margin-bottom: 1em;
+  line-height: 1.4;
+}
+
+.c3 {
+  font-size: 16px;
+}
+
+.c3 h1,
+.c3 h2,
+.c3 h3 {
+  font-weight: bold;
+}
+
+.c3 h1 {
+  font-size: 2em;
+}
+
+.c3 h2 {
+  font-size: 1.5em;
+}
+
+.c3 p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.c3 a {
+  color: #428bca;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c3 img {
+  max-width: 100%;
+}
+
+.c3 blockquote {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.c3 ol,
+.c3 ul {
+  padding-left: 20px;
+  margin: 1em 0;
+}
+
+.c3 li {
+  margin-bottom: 0.5em;
+}
+
+.c3 table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c3 td {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+  text-align: left;
+}
+
+.c3 th {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-weight: bold;
+}
+
+.c5 {
+  border-collapse: collapse;
+  min-width: 400px;
+  font-size: 0.9em;
+  -webkit-letter-spacing: 0.01px;
+  -moz-letter-spacing: 0.01px;
+  -ms-letter-spacing: 0.01px;
+  letter-spacing: 0.01px;
+}
+
+.c5 th,
+.c5 td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.c6 {
+  background-color: #0e6fbf;
+  color: #fafafa;
+}
+
+.c6 th {
+  font-weight: bold;
+}
+
+.c7 tr {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.c7 tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.c7 td.rb {
+  border-right: 1px solid #bbb;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.c10 {
+  width: 200px;
+  height: auto;
+}
+
+.c11 {
+  width: 200px;
+  height: auto;
+  width: 400px;
+}
+
+@media (max-width:900px) {
+  .c1 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: none;
+  }
+}
+
+@media (max-width:900px) {
+  .c2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em;
+  }
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <h1
+      className="c2"
+    >
+      Federated gnomAD
+    </h1>
+  </div>
+  <div
+    className="c3"
+    dangerouslySetInnerHTML={
+      {
+        "__html": "The gnomAD project has demonstrated the value of aggregating diverse allele frequency reference datasets that are processed consistently and represented in a single resource. However, this centralized approach is not feasible for all datasets, as some data cannot be exported from their local environments for security, policy or legal reasons. In order to incorporate these datasets into gnomAD, we have launched the Federated gnomAD project. This project includes participating sites from across the globe (site descriptions below). All sites involved in Federated gnomAD plan to process and quality control their data according to gnomAD best practices and freely share aggregate allele frequency data with the primary gnomAD database. All of the summary data will be aggregated with the primary gnomAD data in the gnomAD browser for ease of use by the wider scientific and clinical community.
+",
+      }
+    }
+    onClick={[Function]}
+  />
+  <br />
+  <div
+    className="c4"
+  >
+    <img
+      alt="Locations of federated gnomAD data sources on a world map."
+      src="test-file-stub"
+      width="70%"
+    />
+  </div>
+  <br />
+  <div
+    className="c4"
+  >
+    <table
+      className="c5"
+    >
+      <thead>
+        <tr
+          className="c6"
+        >
+          <th>
+            Country
+          </th>
+          <th>
+            Samples
+          </th>
+          <th>
+            Source
+          </th>
+          <th>
+            Lead
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        className="c7"
+      >
+        <tr>
+          <td>
+            Africa
+          </td>
+          <td>
+            TBD
+          </td>
+          <td>
+            African Genome Variation Database
+          </td>
+          <td>
+            Nicky Mulder
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Australia
+          </td>
+          <td>
+            10,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://populationgenomics.org.au/"
+            >
+              Our DNA
+            </a>
+          </td>
+          <td>
+            Daniel MacArthur
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Brazil
+          </td>
+          <td>
+            21,000
+          </td>
+          <td>
+            Genomas SUS
+          </td>
+          <td>
+            Leandro Colli
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Canada
+          </td>
+          <td>
+            60,000
+          </td>
+          <td>
+            Canadian Genomic Data Commons
+          </td>
+          <td>
+            Jordan Lerner-Ellis
+          </td>
+        </tr>
+        <tr>
+          <td>
+            China
+          </td>
+          <td>
+            10,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://gnomad.org.cn"
+            >
+              China Kadoorie Biobank (&gt;500K)
+            </a>
+          </td>
+          <td>
+            Xiao Li
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Europe
+          </td>
+          <td>
+            TBD
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://ega-archive.org/"
+            >
+              European Genome Phenome Archive
+            </a>
+          </td>
+          <td>
+            Abeer Fadda
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Europe
+          </td>
+          <td>
+            30,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.ern-rnd.eu/"
+            >
+              European Reference Network for Rare Neurological Diseases
+            </a>
+          </td>
+          <td>
+            Holm Graessner
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Germany
+          </td>
+          <td>
+            10,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.igsb.uni-bonn.de/en"
+            >
+              Clinical sequencing
+            </a>
+          </td>
+          <td>
+            Peter Krawitz
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Germany
+          </td>
+          <td>
+            TBD
+          </td>
+          <td>
+            The German Human Genome-Phenome Archive (GHGA)
+          </td>
+          <td>
+            Drew Behrens
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Japan
+          </td>
+          <td>
+            100,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.megabank.tohoku.ac.jp/english/"
+            >
+              Tomoku Medical Megabank Organization
+            </a>
+          </td>
+          <td>
+            Soichi Ogishima
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Qatar
+          </td>
+          <td>
+            25,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.qphi.org.qa/"
+            >
+              Qatar Biobank
+            </a>
+          </td>
+          <td>
+            Chadi Saad
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Singapore
+          </td>
+          <td>
+            10,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.a-star.edu.sg/gis/our-science/precision-medicine-and-population-genomics/npm"
+            >
+              SG10K_Health data
+            </a>
+          </td>
+          <td>
+            Maxime Hebrard
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Taiwan
+          </td>
+          <td>
+            1,500
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://genomes.tw/"
+            >
+              Taiwan Biobank
+            </a>
+          </td>
+          <td>
+            Jacob Shujui Hsu
+          </td>
+        </tr>
+        <tr>
+          <td>
+            UK
+          </td>
+          <td>
+            50,000
+          </td>
+          <td>
+            <a
+              className="c8"
+              href="https://www.sanger.ac.uk/"
+            >
+              Avon Longitudinal Study of Parents and Children (ALSPC), Born in Bradford, Millennium Cohort Study (MCS), Fenland Study
+            </a>
+          </td>
+          <td>
+            Vivek Iyer
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br />
+  <br />
+  <div
+    className="c4"
+  >
+    <div
+      className="c9"
+    >
+      <img
+        alt="gnomAD Canada logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
+        alt="gnomAD China logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
+        alt="Australian Genetic Diversity Database logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
+        alt="Institute for Genomic Statics and Bioinformatics logo"
+        className="c11"
+        src="test-file-stub"
+      />
+    </div>
+  </div>
+  <div
+    className="c4"
+  >
+    <div
+      className="c9"
+    >
+      <img
+        alt="European Genome-Phenome Archive logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
+        alt="Precision Health Research Singapore logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
+        alt="Qatar Genome logo"
+        className="c11"
+        src="test-file-stub"
+      />
+    </div>
+  </div>
+</div>
+`;
