@@ -77,7 +77,7 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
     : null
 
   const ucscReferenceGenomeId = gene.reference_genome === 'GRCh37' ? 'hg19' : 'hg38'
-  const gencodeVersion = gene.reference_genome === 'GRCh37' ? '19' : '35'
+  const gencodeVersion = gene.reference_genome === 'GRCh37' ? '19' : '39'
 
   const otherTranscripts = gene.transcripts.filter(
     (transcript) =>
