@@ -397,7 +397,10 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 ownTableName="constraint"
                 setSelectedTableName={setSelectedTableName}
               >
-                Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}
+                Constraint
+                <InfoButton
+                  topic={gene.chrom === 'M' ? 'mitochondrial-constraint' : 'constraint'}
+                />
               </TableSelector>
               <TableSelector
                 selectedTableName={selectedTableName}
