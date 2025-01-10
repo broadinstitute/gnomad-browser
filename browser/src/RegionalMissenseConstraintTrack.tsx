@@ -174,6 +174,35 @@ type Props = {
   gene: Gene
 }
 
+const NoRMCConstraint = () => (
+  <Track
+    renderLeftPanel={() => (
+      <SidePanel>
+        <span>Regional missense constraint</span>
+        <InfoButton topic="regional-constraint" />
+      </SidePanel>
+    )}
+  >
+    {({ width }: { width: number }) => (
+      <>
+        <PlotWrapper>
+          <svg height={35} width={width}>
+            <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
+              <tspan>
+                This gene was not searched for evidence of regional missense constraint. See our{' '}
+              </tspan>
+              <tspan fill="#0000ff">
+                <Link to="/help">help page</Link>
+              </tspan>
+              <tspan> for additional information.</tspan>
+            </text>
+          </svg>
+        </PlotWrapper>
+      </>
+    )}
+  </Track>
+)
+
 const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: Props) => {
   if (
     !regionalMissenseConstraint ||
@@ -181,34 +210,7 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
     (regionalMissenseConstraint.passed_qc === false &&
       regionalMissenseConstraint.has_no_rmc_evidence === false)
   ) {
-    return (
-      <Track
-        renderLeftPanel={() => (
-          <SidePanel>
-            <span>Regional missense constraint</span>
-            <InfoButton topic="regional-constraint" />
-          </SidePanel>
-        )}
-      >
-        {({ width }: { width: number }) => (
-          <>
-            <PlotWrapper>
-              <svg height={35} width={width}>
-                <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our{' '}
-                  </tspan>
-                  <tspan fill="#0000ff">
-                    <Link to="/help">help page</Link>
-                  </tspan>
-                  <tspan> for additional information.</tspan>
-                </text>
-              </svg>
-            </PlotWrapper>
-          </>
-        )}
-      </Track>
-    )
+    return <NoRMCConstraint />
   }
 
   // This transcript was searched, but no RMC evidence was found
