@@ -11,7 +11,7 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
-import { Pext, Gene } from './GenePage'
+import { Gene } from './GenePage'
 
 type TranscriptsModalProps = {
   gene: {
