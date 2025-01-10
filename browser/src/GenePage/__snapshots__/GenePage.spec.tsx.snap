@@ -654,7 +654,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -2172,7 +2172,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -3679,7 +3679,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -5186,7 +5186,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -6693,7 +6693,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -8200,7 +8200,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -9741,7 +9741,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -11259,7 +11259,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -12128,7 +12128,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -12172,7 +12172,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -12895,7 +12895,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -13764,7 +13764,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -13808,7 +13808,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -14531,7 +14531,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -15400,7 +15400,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -15444,7 +15444,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -16167,7 +16167,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -17036,7 +17036,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -17080,7 +17080,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -17803,7 +17803,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -18672,7 +18672,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__SidePanel-sc-1lzrnv-4 clrqtu"
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
             >
               <span>
                 Regional missense constraint
@@ -18716,7 +18716,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             }
           >
             <div
-              className="RegionalMissenseConstraintTrack__PlotWrapper-sc-1lzrnv-1 liGyhW"
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
             >
               <svg
                 height={35}
@@ -19439,7 +19439,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -20981,7 +20981,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -22523,7 +22523,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -24065,7 +24065,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -25607,7 +25607,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -27149,7 +27149,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -28691,7 +28691,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
@@ -30232,7 +30232,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             className="sc-bdVaJa dDlceV"
             onClick={[Function]}
           >
-            Constraint 
+            Constraint
             <button
               className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
               onClick={[Function]}
