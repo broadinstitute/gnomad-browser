@@ -25,6 +25,7 @@ def build_images(tag: str = None, push: bool = False) -> None:
                 "docker",
                 "build",
                 "--pull",
+                "--provenance=false",
                 f"--file={dockerfile_path}",
                 f"--tag={image_repository}:{tag}",
                 f"--tag={image_repository}:latest",
