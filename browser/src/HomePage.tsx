@@ -10,6 +10,8 @@ import Link from './Link'
 import Searchbox from './Searchbox'
 import GnomadLogo from './GnomadLogo'
 
+import OurDNALogo from './OurDnaLogo'
+
 const HomePage = styled(InfoPage)`
   max-width: 740px;
   margin-top: 90px;
@@ -36,7 +38,8 @@ export default () => (
   <HomePage>
     <DocumentTitle />
     <HeadingContainer>
-      <GnomadLogo width="60%" />
+      {/*<GnomadLogo width="60%" />*/}
+      <OurDNALogo width="60%" />
       <Heading>Genome Aggregation Database</Heading>
     </HeadingContainer>
 
