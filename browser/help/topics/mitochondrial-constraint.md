@@ -3,7 +3,7 @@ id: mitochondrial-constraint
 title: 'Mitochondrial gene constraint'
 ---
 
-Variants in the mitochondrial genome (mtDNA) are available for 56,434 genome samples from gnomAD v4.1. Assessment of [constraint](/help/constraint) within the mtDNA requires a different approach than the nuclear genome, as its unique features make nuclear constraint models unsuitable. To measure intolerance to variation within the mtDNA, we developed a mitochondrial mutational model that predicts the level of variation expected to be seen in the gnomAD dataset for a given gene based on local sequence context. We then compare the expected values for each gene to the observed amount of variation and consider genes that are significantly depleted of their expected variation to be constrained, or intolerant of this variation. Our gene-level constraint metrics for the mtDNA are detailed below.
+Variants in the mitochondrial genome (mtDNA) are available for 56,434 genome samples from gnomAD v4.1. Assessment of constraint within the mtDNA requires a different approach than the nuclear genome, as its unique features make [nuclear constraint](/help/constraint) models unsuitable. To measure intolerance to variation within the mtDNA, we developed a mitochondrial mutational model that predicts the level of variation expected to be seen in the gnomAD dataset for a given gene based on local sequence context. We then compare the expected values for each gene to the observed amount of variation and consider genes that are significantly depleted of their expected variation to be constrained, or intolerant of this variation. Our gene-level constraint metrics for the mtDNA are detailed below.
 
 The sections below will review:
 

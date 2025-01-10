@@ -69,7 +69,7 @@ const MitochondrialConstraintRegionTrack = ({ geneSymbol, constraintRegions, exo
   return (
     <ConstraintTrack
       trackTitle={trackTitle}
-      infobuttonTopic="TK-mitochondrial-gene-constraint"
+      infobuttonTopic="mitochondrial-regional-constraint"
       legend={<Legend />}
       valueFn={formattedOE}
       colorFn={() => constraintColor}
