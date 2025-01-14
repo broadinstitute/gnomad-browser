@@ -182,12 +182,15 @@ Row fields:
   - `xstart`: Transcript genomic start position (format: chromosomeposition).
   - `xstop`: Transcript genomic stop position (format: chromosomeposition).
   - `exons`: Array containing transcript exon information.
-  - `feature_type`: Exon type (e.g., CDS).
-  - `start`: Exon genomic start position (position only).
-  - `stop`: Exon genomic stop position (position only).
-  - `xstart`: Exon genomic start position (format: chromosomeposition).
-  - `xstop`: Exon genomic start position (format: chromosomeposition).
+    - `feature_type`: Exon type (e.g., CDS).
+    - `start`: Exon genomic start position (position only).
+    - `stop`: Exon genomic stop position (position only).
+    - `xstart`: Exon genomic start position (format: chromosomeposition).
+    - `xstop`: Exon genomic start position (format: chromosomeposition).
   - `reference_genome`: Reference genome associated with this transcript.
+  - `gtex_tissue_expression`: Array containing [GTEx](https://gtexportal.org/home/) v10 information.
+    - `tissue`: The tissue type, e.g. 'brain_cerebellum'.
+    - `value`: The Transript Per Million (TPM) value associated with the tissue.
   - `refseq_id`: Transcript RefSeq ID.
   - `refseq_version`: RefSeq version.
 - `hgnc_id`: HGNC gene ID.
@@ -208,6 +211,15 @@ Row fields:
   - `ensembl_version`: Ensembl version.
   - `refseq_id`: Transcript RefSeq ID.
   - `refseq_version`: RefSeq version.
+- `pext`: Struct containing [pext](https://gnomad.broadinstitute.org/help/pext) information.
+  - `regions`: Array containing pext information by region.
+    - `chrom`: The chromosome in which the region is located.
+    - `start`: Region genomic start position (position only).
+    - `stop`: Region genomic stop position (position only).
+    - `mean`: Mean expression across all tissues for the region.
+    - `tissues`: Array containing tissue information.
+      - `tissue`: The tissue type, e.g. 'brain_cerebellum'.
+      - `value`: The pext score for the tissue in the region.
 - `preferred_transcript_id`: Transcript shown on the gene page by default. Field contains MANE Select transcript ID if it exists, otherwise contains Ensembl canonical transcript ID.
 - `preferred_transcript_source`: Source of transcript ID used for `preferred_transcript_id` field; either "`mane_select`" or "`ensembl_canonical`".
 - `gnomad_constraint`: Struct containing gnomAD constraint information for gene. Struct is only present on the GRCh37 Hail Table.
