@@ -401,7 +401,7 @@ pipeline.add_task(
 pipeline.add_task(
     "prepare_grch37_genes_table_for_public_release",
     prepare_gene_table_for_release,
-    f"/{genes_subdir}/gnomad.browser.GRCh37.GENCODEv19.ht",
+    f"/{genes_subdir}/gnomad.browser.GRCh37.GENCODEv19.pext.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch37_genes_step_5"),
     },
@@ -489,7 +489,7 @@ pipeline.add_task(
 pipeline.add_task(
     "prepare_grch38_genes_table_for_public_release",
     prepare_gene_table_for_release,
-    f"/{genes_subdir}/gnomad.browser.GRCh38.GENCODEv39.ht",
+    f"/{genes_subdir}/gnomad.browser.GRCh38.GENCODEv39.pext.ht",
     {
         "genes_path": pipeline.get_task("remove_grch38_genes_constraint_for_release"),
     },
