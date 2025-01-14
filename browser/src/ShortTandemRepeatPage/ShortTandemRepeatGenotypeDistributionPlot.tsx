@@ -105,8 +105,8 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
     genotypeDistribution.forEach(
       ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => {
-        const xBinIndex = Math.floor(short_allele_repunit_count / xBinSize)
-        const yBinIndex = Math.floor(long_allele_repunit_count / yBinSize)
+        const xBinIndex = Math.floor(long_allele_repunit_count / xBinSize)
+        const yBinIndex = Math.floor(short_allele_repunit_count / yBinSize)
         data[xBinIndex * yNumBins + yBinIndex].count += frequency
       }
     )
