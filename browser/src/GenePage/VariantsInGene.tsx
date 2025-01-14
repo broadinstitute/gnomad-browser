@@ -82,6 +82,7 @@ type OwnVariantsInGeneProps = {
     start: number
     stop: number
   }
+  hasOnlyNonCodingTranscripts?: boolean
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'VariantsInGeneProps' circularly refere... Remove this comment to see the full error message
@@ -97,6 +98,7 @@ const VariantsInGene = ({
   includeUTRs,
   variants,
   zoomRegion,
+  hasOnlyNonCodingTranscripts,
 }: VariantsInGeneProps) => {
   const datasetLabel = labelForDataset(datasetId)
 
@@ -134,9 +136,12 @@ const VariantsInGene = ({
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
             {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
           </Badge>{' '}
-          Only variants located in or within 75 base pairs of a coding exon are shown here. To see
-          variants in UTRs or introns, use the{' '}
-          <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>.
+          {hasOnlyNonCodingTranscripts && <>This gene has no coding transcripts. </>}
+          Only variants located in or within 75 base pairs of{' '}
+          {!hasOnlyNonCodingTranscripts ? <>a coding exon (CDS)</> : <>an exon</>} are shown here.
+          To see variants {!hasOnlyNonCodingTranscripts ? <>in UTRs or introns</> : <>in introns</>}
+          , use the <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>
+          .
         </p>
         <p>
           The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
