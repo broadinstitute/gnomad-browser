@@ -127,7 +127,8 @@ def _parse_submission(submission_element, trait_mapping_list_element):
         condition_medgen_mapping = _associate_condition_with_medgen_id(
             submission_element, trait_mapping_list_element, trait_element
         )
-        submission["conditions"].append(condition_medgen_mapping)
+        if condition_medgen_mapping is not None:
+            submission["conditions"].append(condition_medgen_mapping)
 
     return submission
 
