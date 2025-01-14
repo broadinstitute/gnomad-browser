@@ -234,7 +234,7 @@ def prepare_gene_table_for_release(genes_path, keep_mane_version_global_annotati
     else:
         ds = ds.select_globals()
 
-    ds = ds.repartition(50)
+    ds = ds.repartition(100)
     return ds
 
 
