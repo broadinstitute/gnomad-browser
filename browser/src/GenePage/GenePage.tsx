@@ -574,6 +574,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
             zoomRegion={zoomRegion}
+            hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
           />
         )}
       </RegionViewer>
