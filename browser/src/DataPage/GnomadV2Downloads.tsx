@@ -291,7 +291,7 @@ const GnomadV2Downloads = () => {
 
         <p>
           For more information about these files, see our{' '}
-          <Link to="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables">
+          <Link to="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables">
             changelog entry
           </Link>{' '}
           on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
