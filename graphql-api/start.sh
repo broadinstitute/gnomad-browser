@@ -14,7 +14,10 @@ export CACHE_REDIS_URL="${CACHE_REDIS_URL:-$DEFAULT_CACHE_REDIS_URL}"
 DEFAULT_RATE_LIMITER_REDIS_URL="redis://localhost:6379/2"
 export RATE_LIMITER_REDIS_URL="${RATE_LIMITER_REDIS_URL:-$DEFAULT_RATE_LIMITER_REDIS_URL}"
 
-pnpm ts-node ./src/app.ts
-# To use an interactive debugger with the API codebase, comment out the
-# command above and uncomment the following:
-# pnpm node -r ts-node/register --inspect ./src/app.ts
+if [[ -n ${DEBUG:-""} ]]; then
+	# Invoking Node with these flags allows us to attach the interactive
+	# debugger for Node that's built into Chrome.
+	pnpm node -r ts-node/register --inspect ./src/app.ts
+else
+	pnpm ts-node ./src/app.ts
+fi
