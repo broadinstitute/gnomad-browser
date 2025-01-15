@@ -7433,10 +7433,10 @@ exports[`Data Page has no unexpected changes 1`] = `
          
         <a
           className="-Link c13"
-          href="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables"
+          href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables"
           onClick={[Function]}
         >
-          changelog entry
+          https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables/ changelog entry
         </a>
          
         on the browser tables, and the 
@@ -24914,7 +24914,7 @@ exports[`Data Page has no unexpected changes 1`] = `
          
         <a
           className="-Link c13"
-          href="https://gnomad.broadinstitute.org/new/2024-08-release-gnomad-browser-tables"
+          href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables"
           onClick={[Function]}
         >
           changelog entry
