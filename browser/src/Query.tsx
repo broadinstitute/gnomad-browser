@@ -84,6 +84,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   loadData() {
     const { operationName, query, url, variables } = this.props
 
+    console.log('Loading url:', url)
     this.setState({
       loading: true,
       error: null,

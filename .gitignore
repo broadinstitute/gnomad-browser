@@ -33,3 +33,6 @@ hail-*.log
 # Playright test dirs
 /tests/playwright/
 /playwright/.cache/
+
+# Reads metadata databases
+reads/*.db

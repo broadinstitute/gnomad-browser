@@ -47,7 +47,6 @@ const query = `
     }
   }
 `
-
 type Props = {
   datasetId: DatasetId
   regionId: string

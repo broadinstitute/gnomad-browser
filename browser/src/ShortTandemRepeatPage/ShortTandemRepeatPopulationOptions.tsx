@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
 import { Select } from '@gnomad/ui'
 
-import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { PopulationId, GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
+
+import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
 const Wrapper = styled.div`
   @media (max-width: 600px) {
@@ -17,74 +19,64 @@ const Wrapper = styled.div`
   }
 `
 
+const Label = styled.label`
+  padding-right: 1em;
+`
+
 type Props = {
   id: string
-  populationIds: string[]
-  selectedPopulationId: string
-  onSelectPopulationId: (...args: any[]) => any
+  populations: PopulationId[]
+  selectedPopulation: PopulationId | ''
+  selectedSex: Sex | ''
+  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
+  setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
 }
 
 const ShortTandemRepeatPopulationOptions = ({
   id,
-  populationIds,
-  selectedPopulationId,
-  onSelectPopulationId,
+  populations,
+  selectedPopulation,
+  selectedSex,
+  setSelectedPopulation,
+  setSelectedSex,
 }: Props) => {
-  const selectedAncestralPopulation =
-    selectedPopulationId === 'XX' || selectedPopulationId === 'XY'
-      ? ''
-      : selectedPopulationId.split('_')[0]
-
-  let selectedSex = ''
-  if (selectedPopulationId.endsWith('XX')) {
-    selectedSex = 'XX'
-  } else if (selectedPopulationId.endsWith('XY')) {
-    selectedSex = 'XY'
-  }
+  const populationsSortedByName = populations.sort((group1, group2) =>
+    GNOMAD_POPULATION_NAMES[group1].localeCompare(GNOMAD_POPULATION_NAMES[group2])
+  )
 
   return (
     <Wrapper>
-      <label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
-        Genetic ancestry group:{' '}
+      <Label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
+        Population: &nbsp;
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
-          value={selectedAncestralPopulation}
-          onChange={(e: any) => {
-            onSelectPopulationId([e.target.value, selectedSex].filter(Boolean).join('_'))
-          }}
+          value={selectedPopulation}
+          onChange={(e: { target: { value: PopulationId | '' } }) =>
+            setSelectedPopulation(e.target.value)
+          }
         >
           <option value="">Global</option>
-          {populationIds
-            .filter((popId) => !(popId.endsWith('XX') || popId.endsWith('XY')))
-            .sort((pop1, pop2) =>
-              // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-              GNOMAD_POPULATION_NAMES[pop1].localeCompare(GNOMAD_POPULATION_NAMES[pop2])
-            )
-            .map((popId) => (
-              <option key={popId} value={popId}>
-                {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
-                {GNOMAD_POPULATION_NAMES[popId]}
-              </option>
-            ))}
+          {populationsSortedByName.map((population) => (
+            <option key={population} value={population}>
+              {GNOMAD_POPULATION_NAMES[population]}
+            </option>
+          ))}
         </Select>
-      </label>{' '}
-      <label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
+      </Label>
+
+      <Label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
         Sex: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex}
-          onChange={(e: any) => {
-            onSelectPopulationId(
-              [selectedAncestralPopulation, e.target.value].filter(Boolean).join('_')
-            )
-          }}
+          onChange={(e: { target: { value: Sex | '' } }) => setSelectedSex(e.target.value)}
         >
           <option value="">All</option>
           <option value="XX">XX</option>
           <option value="XY">XY</option>
         </Select>
-      </label>
+      </Label>
     </Wrapper>
   )
 }
