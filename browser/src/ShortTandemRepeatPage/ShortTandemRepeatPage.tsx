@@ -16,8 +16,6 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   ColorBy,
-  GenotypeQuality,
-  QScoreBin,
   Sex,
   ScaleType,
   AlleleSizeDistributionItem,
@@ -38,6 +36,8 @@ import {
 } from './shortTandemRepeatHelpers'
 import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentRepeatSection'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GenotypeQuality } from './qualityDescription'
+import { QScoreBin } from './qScore'
 
 type ShortTandemRepeatReferenceRegion = {
   chrom: string

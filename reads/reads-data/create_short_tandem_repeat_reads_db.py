@@ -41,7 +41,8 @@ def _format_read(read, index, locus):
         "pcr_protocol": read["PcrProtocol"],
         "filename": read["ReadvizFilename"] or None,
         "q": read["Q"],
-        "quality_description": read["ManualReviewGenotypeQualitySummary"],
+        # some quality_description values in the raw data have odd capitalization, so we lowercase it
+        "quality_description": read["ManualReviewGenotypeQualitySummary"].lower(),
     }
 
 
@@ -80,7 +81,6 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
 
     db.execute("CREATE INDEX `id_idx` ON `reads` (`id`)")
     for locus, reads in reads_data.items():
-        print(locus)
         db.executemany(
             """
             INSERT INTO `reads` VALUES (
