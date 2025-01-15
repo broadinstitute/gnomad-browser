@@ -138,29 +138,36 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q., Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J. A genomic mutational constraint map using variation in 76,156 human genomes
-           
+          Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q., Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J. A genomic mutational constraint map using variation in 76,156 human genomes. 
           <em>
             Nature
           </em>
-           625, 92–100 (2024). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41586-023-06045-0"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41586-023-06045-0
-          </a>
-           
-          <a
-            className="c6"
-            href="https://citation-needed.springer.com/v2/references/10.1038/s41586-023-06045-0?format=refman&flavour=citation"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Download citation
-          </a>
+          . 625, 92-100 (2024).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41586-023-06045-0"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41586-023-06045-0
+            </a>
+             
+          </span>
+          PMID: 
+          38057664
+          <div>
+            <a
+              className="c6"
+              href="https://citation-needed.springer.com/v2/references/10.1038/s41586-023-06045-0?format=refman&flavour=citation"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Download citation
+            </a>
+             
+          </div>
         </cite>
       </li>
       * contributed equally
@@ -177,72 +184,87 @@ exports[`Publications Page has no unexpected changes 1`] = `
       <li
         className="c4"
       >
-        <b>
-          v2
-        </b>
-        :
-         
         <cite
           className="c5"
         >
+          <b>
+            v2
+          </b>
+          :
+           
           Karczewski, K. J., Francioli, L. C., Tiao, G., Cummings, B. B., Alföldi, J., Wang, Q., Collins, R. L., Laricchia, K. M., Ganna, A., Birnbaum, D. P., Gauthier, L. D., Brand, H., Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G., Kosmicki, J. A., … MacArthur, D. G. The mutational constraint spectrum quantified from variation in 141,456 humans. 
           <em>
             Nature
           </em>
-           581, 434–443 (2020).
-           
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41586-020-2308-7"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41586-020-2308-7
-          </a>
-           
-          <a
-            className="c6"
-            href="https://citation-needed.springer.com/v2/references/10.1038/s41586-020-2308-7?format=refman&flavour=citation"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Download citation
-          </a>
+          . 581, 434-443 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41586-020-2308-7"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41586-020-2308-7
+            </a>
+             
+          </span>
+          PMID: 
+          32461654
+          <div>
+            <a
+              className="c6"
+              href="https://citation-needed.springer.com/v2/references/10.1038/s41586-020-2308-7?format=refman&flavour=citation"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Download citation
+            </a>
+             
+          </div>
         </cite>
       </li>
       <li
         className="c4"
       >
-        <b>
-          ExAC
-        </b>
-        :
-         
         <cite
           className="c5"
         >
-          Lek, M., Karczewski, K. J.*, Minikel, E. V.*, Samocha, K. E.*, Banks, E., Fennell, T., O’Donnell-Luria, A. H., Ware, J. S., Hill, A. J., Cummings, B. B., Tukiainen, T., Birnbaum, D. P., Kosmicki, J. A., Duncan, L. E., Estrada, K., Zhao, F., Zou, J., Pierce-Hoffman, E., … Daly, M. J., MacArthur, D. G. & Exome Aggregation Consortium. Analysis of protein-coding genetic variation in 60,706 humans. 
+          <b>
+            ExAC
+          </b>
+          :
+           
+          Lek, M., Karczewski, K. J.*, Minikel, E. V.*, Samocha, K. E.*, Banks, E., Fennell, T., O’Donnell-Luria, A. H., Ware, J. S., Hill, A. J., Cummings, B. B., Tukiainen, T., Birnbaum, D. P., Kosmicki, J. A., Duncan, L. E., Estrada, K., Zhao, F., Zou, J., Pierce-Hoffman, E., … Daly, M. J., MacArthur, D. G. & Exome Aggregation Consortium. Analysis of protein-coding genetic variation in 60,706 humans 
           <em>
             Nature
           </em>
-           536, 285–291 (2016). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/nature19057"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/nature19057
-          </a>
-           
-          <a
-            className="c6"
-            href="https://citation-needed.springer.com/v2/references/10.1038/nature19057?format=refman&flavour=citation"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Download citation
-          </a>
+          . 536, 285-291 (2016).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/nature19057"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/nature19057
+            </a>
+             
+          </span>
+          PMID: 
+          27535533
+          <div>
+            <a
+              className="c6"
+              href="https://citation-needed.springer.com/v2/references/10.1038/nature19057?format=refman&flavour=citation"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Download citation
+            </a>
+             
+          </div>
         </cite>
       </li>
       * contributed equally
@@ -259,20 +281,385 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Guo, M. H.†, Francioli, L. C.†, Stenton, S. L., Goodrich, J. K., Watts, N. A., Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J., O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound heterozygosity from large-scale exome sequencing data. 
+          Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M. The Scalable Variant Call Representation: Enabling Genetic Analysis Beyond One Million Genomes. 
+          <em>
+            Bioinformatics
+          </em>
+          .  (2024).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1093/bioinformatics/btae746"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1093/bioinformatics/btae746
+            </a>
+             
+          </span>
+          PMID: 
+          39718771
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Gudmundsson, S., Carlston, C. M., O'Donnell-Luria, A. Interpreting variants in genes affected by clonal hematopoiesis in population data. 
+          <em>
+            Human Genetics
+          </em>
+          . 143, 545-549 (2024).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1007/s00439-023-02526-4"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1007/s00439-023-02526-4
+            </a>
+             
+          </span>
+          PMID: 
+          36739343
+          <span>
+             PMCID: 
+            PMC10400727
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Fowler, D. M., Rehm, H. L. Will variants of uncertain significance still exist in 2030? 
+          <em>
+            American Journal of Human Genetics
+          </em>
+          . 111, 5-10 (2024).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1016/j.ajhg.2023.11.005"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1016/j.ajhg.2023.11.005
+            </a>
+             
+          </span>
+          PMID: 
+          38086381
+          <span>
+             PMCID: 
+            PMC10806733
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Guo, M. H.*, Francioli, L. C.*, Stenton, S. L., Goodrich, J. K., Watts, N. A., Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J., O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound heterozygosity from large-scale exome sequencing data. 
           <em>
             Nature Genetics
           </em>
-           (2023).
-           
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41588-023-01608-3"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41588-023-01608-3
-          </a>
+          . 56, 152-161 (2024).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41588-023-01608-3"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41588-023-01608-3
+            </a>
+             
+          </span>
+          PMID: 
+          38057443
+          <span>
+             PMCID: 
+            PMC10872287
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Lu, W., Gauthier, L. D., Poterba, T., Giacopuzzi, E., Goodrich, J. K., Stevens, C. R., King, D., Daly, M. J., Neale, B. M., Karczewski, K. J. CHARR efficiently estimates contamination from DNA sequencing data. 
+          <em>
+            American Journal of Human Genetics
+          </em>
+          . 110, 2068-2076 (2023).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1016/j.ajhg.2023.10.011"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1016/j.ajhg.2023.10.011
+            </a>
+             
+          </span>
+          PMID: 
+          38000370
+          <span>
+             PMCID: 
+            PMC10716339
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Singer-Berk, M.*, Gudmundsson, S.*, Baxter, S., Seaby, E. G., England, E., Wood, J. C., Son, R. G., Watts, N. A., Karczewski, K. J., Harrison, S. M., MacArthur, D. G., Rehm, H. L., O'Donnell-Luria, A. Advanced variant classification framework reduces the false positive rate of predicted loss-of-function variants in population sequencing data. 
+          <em>
+            American Journal of Human Genetics
+          </em>
+          . 110, 1496-1508 (2023).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1016/j.ajhg.2023.08.005"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1016/j.ajhg.2023.08.005
+            </a>
+             
+          </span>
+          PMID: 
+          37633279
+          <span>
+             PMCID: 
+            PMC10502856
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Babadi, M.*, Fu, J. M.*, Lee, S. K.*, Smirnov, A. N.*, Gauthier, L. D., Walker, M., Benjamin, D. I., Zhao, X., Karczewski, K. J., Wong, I., Collins, R. L., Sanchis-Juan, A., Brand, H., Banks, E., Talkowski, M. E. GATK-gCNV enables the discovery of rare copy number variants from exome sequencing data. 
+          <em>
+            Nature Genetics
+          </em>
+          . 55, 1589-1597 (2023).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41588-023-01449-0"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41588-023-01449-0
+            </a>
+             
+          </span>
+          PMID: 
+          37604963
+          <span>
+             PMCID: 
+            PMC10904014
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Karczewski, K. J., Gauthier, L. D., & Daly, M. J. Technical artifact drives apparent deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD. 
+          <em>
+            bioRxiv
+          </em>
+          .  (p. 784157).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1101/784157"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1101/784157
+            </a>
+             
+          </span>
+          
+          
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Atkinson, E. G.*, Artomov, M.*, Loboda, A. A., Rehm, H. L., MacArthur, D. G., Karczewski, K. J., Neale, B. M.†, Daly, M. J.†. Discordant calls across genotype discovery approaches elucidate variants with systematic errors. 
+          <em>
+            Genome Research
+          </em>
+          . 33, 999-1005 (2023).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1101/gr.277908.123"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1101/gr.277908.123
+            </a>
+             
+          </span>
+          PMID: 
+          37253541
+          <span>
+             PMCID: 
+            PMC10519400
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Seaby, E. G., Thomas, N. S., Webb, A., Brittain, H., Taylor Tavares, A. L.; Genomics England Consortium; Baralle, D., Rehm, H. L., O'Donnell-Luria, A.†, Ennis, S.†. Targeting de novo loss-of-function variants in constrained disease genes improves diagnostic rates in the 100,000 Genomes Project. 
+          <em>
+            Human Genetics
+          </em>
+          . 142, 351-362 (2023).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1007/s00439-022-02509-x"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1007/s00439-022-02509-x
+            </a>
+             
+          </span>
+          PMID: 
+          36477409
+          <span>
+             PMCID: 
+            PMC9950176
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Pejaver, V. Byrne, A. B., Feng, B. J., Pagel, K. A., Mooney, S. D., Karchin, R., O'Donnell-Luria, A., Harrison, S. M., Tavtigian, S. V., Greenblatt, M. S., Biesecker, L. G., Radivojac, P., Brenner, S. E. ClinGen Sequence Variant Interpretation Working Group. Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria. 
+          <em>
+            American Journal of Human Genetics
+          </em>
+          . 109, 2163-2177 (2022).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1016/j.ajhg.2022.10.013"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1016/j.ajhg.2022.10.013
+            </a>
+             
+          </span>
+          PMID: 
+          36413997
+          <span>
+             PMCID: 
+            PMC9748256
+          </span>
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Seaby, E.G., Smedley, D., Taylor Tavares, A. L., Brittain, H., van Jaarsveld, R. H., Baralle, D., Rehm, H. L., O'Donnell-Luria, A., Ennis, S. Genomics England Research Consortium. A gene-to-patient approach uplifts novel disease gene discovery and identifies 18 putative novel disease genes. 
+          <em>
+            Genetics Medicine
+          </em>
+          . 24, 1697-1707 (2022).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1016/j.gim.2022.04.019"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1016/j.gim.2022.04.019
+            </a>
+             
+          </span>
+          PMID: 
+          35532742
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Laricchia, K. M.*, Lake, N. J.*, Watts, N. A., Shand, M., Haessly, A., Gauthier, L. D., Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G.†, Lek, M.†, Mootha, V. K.†, Calvo, S. E.† Mitochondrial DNA variation across 56,434 individuals in gnomAD. 
+          <em>
+            Genome Research
+          </em>
+          . 32, 569-582 (2022).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1101/gr.276013.121"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1101/gr.276013.121
+            </a>
+             
+          </span>
+          PMID: 
+          35074858
         </cite>
       </li>
       <li
@@ -285,145 +672,21 @@ exports[`Publications Page has no unexpected changes 1`] = `
           <em>
             Human Mutation
           </em>
-           1-19 (2021). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1002/humu.24309"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1002/humu.24309
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Laricchia, K. M.*, Lake, N. J.*, Watts, N. A., Shand, M., Haessly, A., Gauthier, L. D., Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G.†, Lek, M.†, Mootha, V. K.†, Calvo, S. E.† Mitochondrial DNA variation across 56,434 individuals in gnomAD.
-           
-          <em>
-            Genome Res.
-          </em>
-           32, 569–582 (2022). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1101/gr.276013.121"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1101/gr.276013.121
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Collins, R. L.*, Brand, H.*, Karczewski, K. J., Zhao, X., Alföldi, J., Francioli, L. C., Khera, A. V., Lowther, C., Gauthier, L. D., Wang, H., Watts, N. A., Solomonson, M., O’Donnell-Luria, A., Baumann, A., Munshi, R., Walker, M., Whelan, C., Huang, Y., Brookings, T., … Talkowski, M. E. A structural variation reference for medical and population genetics. 
-          <em>
-            Nature
-          </em>
-           581, 444–451 (2020). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41586-020-2287-8"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41586-020-2287-8
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Cummings, B. B., Karczewski, K. J., Kosmicki, J. A., Seaby, E. G., Watts, N. A., Singer-Berk, M., Mudge, J. M., Karjalainen, J., Kyle Satterstrom, F., O’Donnell-Luria, A., Poterba, T., Seed, C., Solomonson, M., Alföldi, J., The Genome Aggregation Database Production Team, The Genome Aggregation Database Consortium, Daly, M. J., & MacArthur, D. G. Transcript expression-aware annotation improves rare variant interpretation.
-           
-          <em>
-            Nature
-          </em>
-           581, 452–458 (2020). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41586-020-2329-2"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41586-020-2329-2
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Minikel, E. V., Karczewski, K. J., Martin, H. C., Cummings, B. B., Whiffin, N., Rhodes, D., Alföldi, J., Trembath, R. C., van Heel, D. A., Daly, M. J., Genome Aggregation Database Production Team, Genome Aggregation Database Consortium, Schreiber, S. L., & MacArthur, D. G. Evaluating potential drug targets through human loss-of-function genetic variation. 
-          <em>
-            Nature
-          </em>
-           581, 459–464 (2020). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41586-020-2267-z"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41586-020-2267-z
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Wang, Q., Pierce-Hoffman, E., Cummings, B. B., Karczewski, K. J., Alföldi, J., Francioli, L. C., Gauthier, L. D., Hill, A. J., O’Donnell-Luria, A. H., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, & MacArthur, D. G. Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes. 
-          <em>
-            Nature Communications
-          </em>
-           11, 2539 (2020).
-           
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41467-019-12438-5"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41467-019-12438-5
-          </a>
-        </cite>
-      </li>
-      <li
-        className="c4"
-      >
-        <cite
-          className="c5"
-        >
-          Whiffin, N.*, Armean, I. M.*, Kleinman, A.*, Marshall, J. L., Minikel, E. V., Goodrich, J. K., Quaife, N. M., Cole, J. B., Wang, Q., Karczewski, K. J., Cummings, B. B., Francioli, L., Laricchia, K., Guan, A., Alipanahi, B., Morrison, P., Baptista, M. A. S., Merchant, K. M., Genome Aggregation Database Production Team, … Cannon, P.†, MacArthur, D. G.† The effect of LRRK2 loss-of-function variants in humans. 
-          <em>
-            Nature Medicine
-          </em>
-           
-          (2020). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41591-020-0893-5"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41591-020-0893-5
-          </a>
+          . 43, 1012-1030 (2022).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1002/humu.24309"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1002/humu.24309
+            </a>
+             
+          </span>
+          PMID: 
+          34859531
         </cite>
       </li>
       <li
@@ -436,16 +699,21 @@ exports[`Publications Page has no unexpected changes 1`] = `
           <em>
             Nature Communications
           </em>
-           11, 2523 (2020).
-           
-          <a
-            className="c6"
-            href="https://doi.org/10.1038/s41467-019-10717-9"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1038/s41467-019-10717-9
-          </a>
+          . 11, 2523 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41467-019-10717-9"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41467-019-10717-9
+            </a>
+             
+          </span>
+          PMID: 
+          32461616
         </cite>
       </li>
       <li
@@ -454,20 +722,25 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Karczewski, K. J., Gauthier, L. D., & Daly, M. J. Technical artifact drives apparent deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD
-           
+          Whiffin, N.*, Armean, I. M.*, Kleinman, A.*, Marshall, J. L., Minikel, E. V., Goodrich, J. K., Quaife, N. M., Cole, J. B., Wang, Q., Karczewski, K. J., Cummings, B. B., Francioli, L., Laricchia, K., Guan, A., Alipanahi, B., Morrison, P., Baptista, M. A. S., Merchant, K. M., Genome Aggregation Database Production Team, … Cannon, P.†, MacArthur, D. G.† The effect of LRRK2 loss-of-function variants in humans. 
           <em>
-            bioRxiv
+            Nature Medicine
           </em>
-           (p. 784157). 
-          <a
-            className="c6"
-            href="https://doi.org/10.1101/784157"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1101/784157
-          </a>
+          . 26, 869-877 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41591-020-0893-5"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41591-020-0893-5
+            </a>
+             
+          </span>
+          PMID: 
+          32461697
         </cite>
       </li>
       <li
@@ -476,19 +749,137 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Karczewski, K. J., Weisburd, B., Thomas, B., Solomonson, M., Ruderfer, D. M., Kavanagh, D., Hamamsy, T., Lek, M., Samocha, K. E., Cummings, B. B., Birnbaum, D., The Exome Aggregation Consortium, Daly, M. J., MacArthur, D. G.. The ExAC browser: displaying reference data information from over 60000 exomes. 
+          Wang, Q., Pierce-Hoffman, E., Cummings, B. B., Karczewski, K. J., Alföldi, J., Francioli, L. C., Gauthier, L. D., Hill, A. J., O’Donnell-Luria, A. H., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, & MacArthur, D. G. Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes. 
+          <em>
+            Nature Communications
+          </em>
+          . 11, 2539 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41467-019-12438-5"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41467-019-12438-5
+            </a>
+             
+          </span>
+          PMID: 
+          32461613
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Minikel, E. V., Karczewski, K. J., Martin, H. C., Cummings, B. B., Whiffin, N., Rhodes, D., Alföldi, J., Trembath, R. C., van Heel, D. A., Daly, M. J., Genome Aggregation Database Production Team, Genome Aggregation Database Consortium, Schreiber, S. L., & MacArthur, D. G. Evaluating potential drug targets through human loss-of-function genetic variation. 
+          <em>
+            Nature
+          </em>
+          . 581, 459-464 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41586-020-2267-z"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41586-020-2267-z
+            </a>
+             
+          </span>
+          PMID: 
+          32461653
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Cummings, B. B., Karczewski, K. J., Kosmicki, J. A., Seaby, E. G., Watts, N. A., Singer-Berk, M., Mudge, J. M., Karjalainen, J., Kyle Satterstrom, F., O’Donnell-Luria, A., Poterba, T., Seed, C., Solomonson, M., Alföldi, J., The Genome Aggregation Database Production Team, The Genome Aggregation Database Consortium, Daly, M. J., & MacArthur, D. G. Transcript expression-aware annotation improves rare variant interpretation. 
+          <em>
+            Nature
+          </em>
+          . 581, 452-458 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41586-020-2329-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41586-020-2329-2
+            </a>
+             
+          </span>
+          PMID: 
+          32461655
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Collins, R. L.*, Brand, H.*, Karczewski, K. J., Zhao, X., Alföldi, J., Francioli, L. C., Khera, A. V., Lowther, C., Gauthier, L. D., Wang, H., Watts, N. A., Solomonson, M., O’Donnell-Luria, A., Baumann, A., Munshi, R., Walker, M., Whelan, C., Huang, Y., Brookings, T., … Talkowski, M. E. A structural variation reference for medical and population genetics. 
+          <em>
+            Nature
+          </em>
+          . 581, 444-451 (2020).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41586-020-2287-8"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41586-020-2287-8
+            </a>
+             
+          </span>
+          PMID: 
+          32461652
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
+          Karczewski, K. J., Weisburd, B., Thomas, B., Solomonson, M., Ruderfer, D. M., Kavanagh, D., Hamamsy, T., Lek, M., Samocha, K. E., Cummings, B. B., Birnbaum, D., The Exome Aggregation Consortium, Daly, M. J., MacArthur, D. G. The ExAC browser: displaying reference data information from over 60000 exomes. 
           <em>
             Nucleic Acids Research
           </em>
-          , Volume 45, Issue D1, January 2017, Pages D840–D845, 
-          <a
-            className="c6"
-            href="https://doi.org/10.1093/nar/gkw971"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://doi.org/10.1093/nar/gkw971
-          </a>
+          . Volume 45, Issue D1, D840-D845 (2017).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1093/nar/gkw971"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1093/nar/gkw971
+            </a>
+             
+          </span>
+          PMID: 
+          27899611
+          <span>
+             PMCID: 
+            PMC5210650
+          </span>
         </cite>
       </li>
       * contributed equally
