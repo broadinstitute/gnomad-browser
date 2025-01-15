@@ -41,7 +41,8 @@ def _format_read(read, index, locus):
         "pcr_protocol": read["PcrProtocol"],
         "filename": read["ReadvizFilename"] or None,
         "q": read["Q"],
-        "quality_description": read["ManualReviewGenotypeQualitySummary"],
+        # some quality_description values in the raw data have odd capitalization, so we lowercase it
+        "quality_description": read["ManualReviewGenotypeQualitySummary"].lower(),
     }
 
 
