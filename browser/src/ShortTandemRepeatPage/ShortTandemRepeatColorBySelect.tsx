@@ -41,9 +41,13 @@ const ShortTandemRepeatColorBySelect = ({
           }
         }}
       >
-        <option value="">None</option>
+        <option key="" value="">
+          None
+        </option>
         {Object.entries(colorByLabels).map(([key, label]) => (
-          <option value={key}>{label}</option>
+          <option key={key} value={key}>
+            {label}
+          </option>
         ))}
       </Select>
     </Label>
