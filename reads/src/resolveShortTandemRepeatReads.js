@@ -21,6 +21,20 @@ const buildWhere = ({ id, filter }) => {
       params[':sex'] = filter.sex
     }
 
+    if (filter.quality_description) {
+      where += ' AND `quality_description` = :quality_description'
+      params[':quality_description'] = filter.quality_description
+    }
+
+    if (filter.q_score) {
+      // For most bins, we want reads with q-score less than the upper
+      // bound of the bin, but a read can have a q-score of 1.0, and we want
+      // those included in the 0.95-1 bin.
+      const adjusted_max = filter.q_score.max === 1 ? 1.1 : filter.q_score.max
+      where += ' AND `q` >= :min_q_score AND `q` < :max_q_score'
+      params[':min_q_score'] = filter.q_score.min
+      params[':max_q_score'] = adjusted_max
+    }
     if (filter.alleles && filter.alleles.length > 0) {
       if (filter.alleles.length > 2) {
         throw new UserVisibleError('Invalid alleles filter')
@@ -149,7 +163,9 @@ const resolveShortTandemRepeatReads = async (
       \`sex\`,
       \`age\`,
       \`pcr_protocol\`,
-      \`filename\`
+      \`filename\`,
+      \`quality_description\`,
+      \`q\`
     FROM
       \`reads\`
     WHERE
@@ -207,6 +223,8 @@ const resolveShortTandemRepeatReads = async (
       age: row.age,
       pcr_protocol: row.pcr_protocol,
       path: `${publicPath}/${id}/${row.filename}`,
+      quality_description: row.quality_description,
+      q_score: row.q,
     }
   })
 }

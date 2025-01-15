@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from 'react'
 import styled from 'styled-components'
 
 import { Button, Input, Select } from '@gnomad/ui'
@@ -10,8 +18,13 @@ import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import useRequest from '../useRequest'
 import ControlSection from '../VariantPage/ControlSection'
-
 import { ShortTandemRepeat } from './ShortTandemRepeatPage'
+import {
+  GenotypeQuality,
+  qualityDescriptionLabels,
+  genotypeQualityKeys,
+} from './qualityDescription'
+import { qScoreKeys, QScoreBin, qScoreLabels, QScoreBinBounds, qScoreBinBounds } from './qScore'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
@@ -48,6 +61,8 @@ type ShortTandemRepeatReadProps = {
     age?: string
     pcr_protocol: string
     path: string
+    quality_description: GenotypeQuality
+    q_score: number
   }
 }
 
@@ -82,6 +97,12 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
           ) : (
             'None'
           )}
+        </AttributeListItem>
+        <AttributeListItem label="Genotype quality: manual review">
+          {qualityDescriptionLabels[read.quality_description]}
+        </AttributeListItem>
+        <AttributeListItem label="Genotype quality: Q score">
+          {read.q_score.toFixed(3)}
         </AttributeListItem>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
@@ -136,7 +157,7 @@ const fetchNumReads = ({ datasetId, shortTandemRepeatId, filter }: any) => {
       variables: {
         datasetId,
         shortTandemRepeatId,
-        filter,
+        filter: parseReadsFilter(filter),
       },
     }),
     method: 'POST',
@@ -146,6 +167,15 @@ const fetchNumReads = ({ datasetId, shortTandemRepeatId, filter }: any) => {
   })
     .then((response) => response.json())
     .then((response) => response.data.short_tandem_repeat_reads.num_reads)
+}
+
+type ParsedReadsFilter = Omit<Filters, 'q_score'> & {
+  q_score: QScoreBinBounds | null
+}
+
+const parseReadsFilter = (filter: Filters): ParsedReadsFilter => {
+  const binBounds = filter.q_score ? qScoreBinBounds[filter.q_score] : null
+  return { ...filter, q_score: binBounds }
 }
 
 const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: any) => {
@@ -168,6 +198,8 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
               age
               pcr_protocol
               path
+	      quality_description
+	      q_score
             }
           }
         }
@@ -175,7 +207,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
       variables: {
         datasetId,
         shortTandemRepeatId,
-        filter,
+        filter: parseReadsFilter(filter),
         limit,
         offset,
       },
@@ -323,11 +355,11 @@ const ShortTandemRepeatReads = ({
   )
 }
 
-const ShortTandemRepeatReadsAllelesFilterControlsWrapper = styled.div`
+const ShortTandemRepeatReadsFilterControlsWrapper = styled.div`
   margin-bottom: 1em;
 `
 
-const ShortTandemRepeatReadsAllelesFilterControlWrapper = styled.div`
+const ShortTandemRepeatReadsFilterControlWrapper = styled.div`
   margin-bottom: 0.5em;
 
   input {
@@ -339,6 +371,23 @@ const Label = styled.label`
   padding-right: 1em;
 `
 
+type SharedFilters = {
+  population: string | null
+  sex: string | null
+}
+
+type Filters = SharedFilters & {
+  alleles:
+    | {
+        repeat_unit: string | null
+        min_repeats: number | null
+        max_repeats: number | null
+      }[]
+    | null
+  q_score: QScoreBin | null
+  quality_description: GenotypeQuality | null
+}
+
 type ShortTandemRepeatReadsAllelesFilterControlsProps = {
   shortTandemRepeat: ShortTandemRepeat
   value: {
@@ -347,20 +396,20 @@ type ShortTandemRepeatReadsAllelesFilterControlsProps = {
     max_repeats: number | null
   }[]
   maxRepeats: number
-  onChange: (...args: any[]) => any
+  onChangeCallback: (...args: any[]) => any
   alleleSizeDistributionRepeatUnits: string[]
 }
 
 const ShortTandemRepeatReadsAllelesFilterControls = ({
   value,
   maxRepeats,
-  onChange,
+  onChangeCallback,
   alleleSizeDistributionRepeatUnits,
 }: ShortTandemRepeatReadsAllelesFilterControlsProps) => {
   return (
-    <ShortTandemRepeatReadsAllelesFilterControlsWrapper>
+    <ShortTandemRepeatReadsFilterControlsWrapper>
       {[0, 1].map((alleleIndex) => (
-        <ShortTandemRepeatReadsAllelesFilterControlWrapper key={`${alleleIndex}`}>
+        <ShortTandemRepeatReadsFilterControlWrapper key={`${alleleIndex}`}>
           Allele {alleleIndex + 1}: &nbsp;{' '}
           {/* eslint-disable jsx-a11y/label-has-associated-control */}
           {alleleSizeDistributionRepeatUnits.length > 1 && (
@@ -371,7 +420,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
                 value={value[alleleIndex].repeat_unit || ''}
                 onChange={(e: any) => {
                   const newRepeatUnit = e.target.value
-                  onChange(
+                  onChangeCallback(
                     value.map((v, i) =>
                       i === alleleIndex ? { ...v, repeat_unit: newRepeatUnit } : v
                     )
@@ -397,7 +446,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
               value={value[alleleIndex].min_repeats}
               onChange={(e: any) => {
                 const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
-                onChange(
+                onChangeCallback(
                   value.map((v, i) =>
                     i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
                   )
@@ -415,7 +464,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
               value={value[alleleIndex].max_repeats}
               onChange={(e: any) => {
                 const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
-                onChange(
+                onChangeCallback(
                   value.map((v, i) =>
                     i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
                   )
@@ -424,28 +473,80 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
             />
           </Label>
           {/* eslint-enable jsx-a11y/label-has-associated-control */}
-        </ShortTandemRepeatReadsAllelesFilterControlWrapper>
+        </ShortTandemRepeatReadsFilterControlWrapper>
       ))}
-    </ShortTandemRepeatReadsAllelesFilterControlsWrapper>
+    </ShortTandemRepeatReadsFilterControlsWrapper>
   )
 }
 
-type Filters = {
-  population: string | null
-  sex: string | null
-  alleles:
-    | {
-        repeat_unit: string | null
-        min_repeats: number | null
-        max_repeats: number | null
-      }[]
-    | null
+type ShortTandemRepeatReadsQualityFilterControlsProps = {
+  shortTandemRepeat: ShortTandemRepeat
+  filter: Filters
+  setFilter: Dispatch<SetStateAction<Filters>>
+}
+
+const ShortTandemRepeatReadsQualityFilterControls = ({
+  filter,
+  setFilter,
+}: ShortTandemRepeatReadsQualityFilterControlsProps) => {
+  return (
+    <ShortTandemRepeatReadsFilterControlsWrapper>
+      <ShortTandemRepeatReadsFilterControlWrapper key="manual-review">
+        <Label htmlFor="short-tandem-repeat-reads-manual-review-filter">
+          Manual review: &nbsp;
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <Select
+            id="short-tandem-repeat-reads-manual-review-filter"
+            value={filter.quality_description || ''}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const newValue =
+                e.currentTarget.value === '' ? null : (e.currentTarget.value as GenotypeQuality)
+              setFilter({ ...filter, quality_description: newValue })
+            }}
+          >
+            <option key="any" value="">
+              Any
+            </option>
+            {genotypeQualityKeys.map((genotypeQualityKey) => (
+              <option key={genotypeQualityKey} value={genotypeQualityKey}>
+                {qualityDescriptionLabels[genotypeQualityKey]}
+              </option>
+            ))}
+          </Select>
+        </Label>{' '}
+      </ShortTandemRepeatReadsFilterControlWrapper>
+      <ShortTandemRepeatReadsFilterControlWrapper key="q-score">
+        <Label htmlFor="short-tandem-repeat-reads-q-score-filter">
+          Q-score: &nbsp;
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <Select
+            id="short-tandem-repeat-reads-q-score-filter"
+            value={filter.q_score || ''}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const newValue =
+                e.currentTarget.value === '' ? null : (e.currentTarget.value as QScoreBin)
+              setFilter({ ...filter, q_score: newValue })
+            }}
+          >
+            <option key="any" value="">
+              Any
+            </option>
+            {qScoreKeys.map((qScoreKey) => (
+              <option key={qScoreKey} value={qScoreKey}>
+                {qScoreLabels[qScoreKey]}
+              </option>
+            ))}
+          </Select>
+        </Label>
+      </ShortTandemRepeatReadsFilterControlWrapper>
+    </ShortTandemRepeatReadsFilterControlsWrapper>
+  )
 }
 
 type ShortTandemRepeatReadsContainerProps = {
   datasetId: string
   shortTandemRepeat: ShortTandemRepeat
-  filter: Omit<Filters, 'alleles'>
+  filter: SharedFilters
   maxRepeats: number
   alleleSizeDistributionRepeatUnits: string[]
 }
@@ -477,6 +578,8 @@ const ShortTandemRepeatReadsContainer = ({
         max_repeats: maxRepeats,
       },
     ],
+    q_score: null,
+    quality_description: null,
   })
 
   if (baseFilter.population !== filter.population || baseFilter.sex !== filter.sex) {
@@ -491,11 +594,16 @@ const ShortTandemRepeatReadsContainer = ({
       <ShortTandemRepeatReadsAllelesFilterControls
         shortTandemRepeat={shortTandemRepeat}
         value={filter.alleles || []}
-        onChange={(newAllelesFilter) => {
+        onChangeCallback={(newAllelesFilter) => {
           setFilter((prevFilter) => ({ ...prevFilter, alleles: newAllelesFilter }))
         }}
         maxRepeats={maxRepeats}
         alleleSizeDistributionRepeatUnits={alleleSizeDistributionRepeatUnits}
+      />
+      <ShortTandemRepeatReadsQualityFilterControls
+        shortTandemRepeat={shortTandemRepeat}
+        filter={filter}
+        setFilter={setFilter}
       />
       <ShortTandemRepeatReads
         datasetId={datasetId}
