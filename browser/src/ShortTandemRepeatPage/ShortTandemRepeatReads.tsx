@@ -10,8 +10,8 @@ import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import useRequest from '../useRequest'
 import ControlSection from '../VariantPage/ControlSection'
-
 import { ShortTandemRepeat } from './ShortTandemRepeatPage'
+import { GenotypeQuality, qualityDescriptionLabels } from './qualityDescription'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
@@ -48,6 +48,7 @@ type ShortTandemRepeatReadProps = {
     age?: string
     pcr_protocol: string
     path: string
+    quality_description: GenotypeQuality
   }
 }
 
@@ -82,6 +83,9 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
           ) : (
             'None'
           )}
+        </AttributeListItem>
+        <AttributeListItem label="Genotype quality: manual review">
+          {qualityDescriptionLabels[read.quality_description]}
         </AttributeListItem>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
@@ -168,6 +172,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
               age
               pcr_protocol
               path
+	      quality_description
             }
           }
         }

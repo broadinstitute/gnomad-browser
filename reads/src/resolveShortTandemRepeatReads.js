@@ -149,7 +149,8 @@ const resolveShortTandemRepeatReads = async (
       \`sex\`,
       \`age\`,
       \`pcr_protocol\`,
-      \`filename\`
+      \`filename\`,
+      \`quality_description\`
     FROM
       \`reads\`
     WHERE
@@ -207,6 +208,7 @@ const resolveShortTandemRepeatReads = async (
       age: row.age,
       pcr_protocol: row.pcr_protocol,
       path: `${publicPath}/${id}/${row.filename}`,
+      quality_description: row.quality_description,
     }
   })
 }

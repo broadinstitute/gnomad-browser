@@ -108,6 +108,7 @@ const ShortTandemRepeatReadType = new GraphQLObjectType({
     age: { type: GraphQLString },
     pcr_protocol: { type: new GraphQLNonNull(GraphQLString) },
     path: { type: new GraphQLNonNull(GraphQLString) },
+    quality_description: { type: new GraphQLNonNull(GraphQLString) },
   },
 })
 

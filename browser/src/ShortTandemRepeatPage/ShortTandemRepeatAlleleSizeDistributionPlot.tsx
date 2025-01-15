@@ -12,6 +12,11 @@ import { TooltipAnchor } from '@gnomad/ui'
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { colorByLabels } from './ShortTandemRepeatColorBySelect'
+import {
+  genotypeQualityKeys,
+  GenotypeQuality,
+  qualityDescriptionLabels,
+} from './qualityDescription'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -35,17 +40,6 @@ export type ScaleType =
   | 'linear-truncated-200'
   | 'linear-truncated-1000'
   | 'log'
-
-export const genotypeQualityKeys = [
-  'low',
-  'medium-low',
-  'medium',
-  'medium-high',
-  'high',
-  'not-reviewed',
-] as const
-
-export type GenotypeQuality = (typeof genotypeQualityKeys)[number]
 
 export const qScoreKeys = [
   '0',
@@ -117,15 +111,6 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
     sas: '#FE9A10',
   },
 } as const
-
-const qualityDescriptionLabels: Record<GenotypeQuality, string> = {
-  low: 'Low',
-  'medium-low': 'Medium-low',
-  medium: 'Medium',
-  'medium-high': 'Medium-high',
-  high: 'High',
-  'not-reviewed': 'Not reviewed',
-}
 
 const qScoreLabels: Record<QScoreBin, string> = {
   '0': '0 to 0.05',
