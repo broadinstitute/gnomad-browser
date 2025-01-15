@@ -7,6 +7,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLInputObjectType,
+  GraphQLFloat,
 } = require('graphql')
 
 const { variantDatasets, shortTandemRepeatDatasets } = require('./datasets')
@@ -109,6 +110,7 @@ const ShortTandemRepeatReadType = new GraphQLObjectType({
     pcr_protocol: { type: new GraphQLNonNull(GraphQLString) },
     path: { type: new GraphQLNonNull(GraphQLString) },
     quality_description: { type: new GraphQLNonNull(GraphQLString) },
+    q_score: { type: new GraphQLNonNull(GraphQLFloat) },
   },
 })
 

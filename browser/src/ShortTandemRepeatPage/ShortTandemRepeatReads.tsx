@@ -49,6 +49,7 @@ type ShortTandemRepeatReadProps = {
     pcr_protocol: string
     path: string
     quality_description: GenotypeQuality
+    q_score: number
   }
 }
 
@@ -86,6 +87,9 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
         </AttributeListItem>
         <AttributeListItem label="Genotype quality: manual review">
           {qualityDescriptionLabels[read.quality_description]}
+        </AttributeListItem>
+        <AttributeListItem label="Genotype quality: Q score">
+          {read.q_score.toFixed(3)}
         </AttributeListItem>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
@@ -173,6 +177,7 @@ const fetchReads = ({ datasetId, shortTandemRepeatId, filter, limit, offset }: a
               pcr_protocol
               path
 	      quality_description
+	      q_score
             }
           }
         }
