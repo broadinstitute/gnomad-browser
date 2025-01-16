@@ -35,24 +35,26 @@ def kubectl(args: typing.List[str], **kwargs) -> str:
     )
 
 
-def get_k8s_deployments(selector: str) -> typing.List[str]:
+def get_k8s_deployments(selector: str) -> typing.List[typing.Tuple[str, str]]:
     result = kubectl(
         [
             "get",
             "deployments",
             f"--selector={selector}",
             "--sort-by={.metadata.creationTimestamp}",
-            "--output=jsonpath={range .items[*]}{.metadata.name}{'\\n'}",
+            "--output=jsonpath={range .items[*]}{.metadata.name} {.spec.template.spec.nodeSelector.cloud\\.google\\.com/gke-nodepool}{'\\n'}",
         ]
     )
-    return [line for line in result.splitlines() if line]
+    return [
+        (parts[0], parts[1]) for line in result.splitlines() for parts in [line.split(maxsplit=1)] if len(parts) == 2
+    ]
 
 
 def get_most_recent_k8s_deployment(selector: str) -> str:
     deployments = get_k8s_deployments(selector)
     if not deployments:
         raise RuntimeError(f"No deployment matching '{selector}' found")
-    return deployments[len(deployments) - 1]
+    return deployments[len(deployments) - 1][0]
 
 
 def k8s_deployment_exists(k8s_deployment_name: str) -> bool:
