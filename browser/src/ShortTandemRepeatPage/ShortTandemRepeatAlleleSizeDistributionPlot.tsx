@@ -17,6 +17,7 @@ import {
   GenotypeQuality,
   qualityDescriptionLabels,
 } from './qualityDescription'
+import { qScoreLabels, QScoreBin, qScoreKeys } from './qScore'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -41,21 +42,6 @@ export type ScaleType =
   | 'linear-truncated-1000'
   | 'log'
 
-export const qScoreKeys = [
-  '0',
-  '0.1',
-  '0.2',
-  '0.3',
-  '0.4',
-  '0.5',
-  '0.6',
-  '0.7',
-  '0.8',
-  '0.9',
-  '1',
-] as const
-
-export type QScoreBin = (typeof qScoreKeys)[number]
 export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
 
 export type AlleleSizeDistributionItem = {
@@ -111,20 +97,6 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
     sas: '#FE9A10',
   },
 } as const
-
-const qScoreLabels: Record<QScoreBin, string> = {
-  '0': '0 to 0.05',
-  '0.1': '0.05 to 0.15',
-  '0.2': '0.15 to 0.25',
-  '0.3': '0.25 to 0.35',
-  '0.4': '0.35 to 0.45',
-  '0.5': '0.45 to 0.55',
-  '0.6': '0.55 to 0.65',
-  '0.7': '0.65 to 0.75',
-  '0.8': '0.75 to 0.85',
-  '0.9': '0.85 to 0.95',
-  '1': '0.95 to 1',
-}
 
 const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
   quality_description: qualityDescriptionLabels,

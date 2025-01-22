@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState, Dispatch } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
@@ -16,7 +16,6 @@ import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOpt
 import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   ColorBy,
-  QScoreBin,
   Sex,
   ScaleType,
   AlleleSizeDistributionItem,
@@ -38,6 +37,7 @@ import {
 import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentRepeatSection'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { GenotypeQuality } from './qualityDescription'
+import { QScoreBin } from './qScore'
 
 type ShortTandemRepeatReferenceRegion = {
   chrom: string
