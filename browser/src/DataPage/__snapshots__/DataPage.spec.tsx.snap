@@ -7436,7 +7436,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables"
           onClick={[Function]}
         >
-          https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables/ changelog entry
+          changelog entry
         </a>
          
         on the browser tables, and the 
