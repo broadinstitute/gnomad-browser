@@ -9,7 +9,7 @@ import StatusMessage from './StatusMessage'
 import { fetchSearchResults } from './search'
 import useRequest from './useRequest'
 
-const defaultSearchDataset = 'gnomad_r2_1'
+const defaultSearchDataset = 'gnomad_r4'
 
 type SearchRedirectProps = {
   query: string
