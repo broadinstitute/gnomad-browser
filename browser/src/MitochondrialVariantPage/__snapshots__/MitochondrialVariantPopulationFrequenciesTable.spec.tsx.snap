@@ -1,0 +1,4307 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regressions 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                2
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                5
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                1
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                3
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                4
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                15
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              2
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              5
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              1
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              3
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              4
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              15
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                2
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                5
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                1
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                3
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                4
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                15
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              2
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              5
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              1
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              3
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              4
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              15
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                2
+              </span>
+            </td>
+            <td>
+              0.02000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                5
+              </span>
+            </td>
+            <td>
+              0.05000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                1
+              </span>
+            </td>
+            <td>
+              0.01000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                3
+              </span>
+            </td>
+            <td>
+              0.03000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                4
+              </span>
+            </td>
+            <td>
+              0.04000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                500
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                15
+              </span>
+            </td>
+            <td>
+              0.03000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              2
+            </span>
+          </td>
+          <td>
+            0.02000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              5
+            </span>
+          </td>
+          <td>
+            0.05000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              1
+            </span>
+          </td>
+          <td>
+            0.01000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              3
+            </span>
+          </td>
+          <td>
+            0.03000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              4
+            </span>
+          </td>
+          <td>
+            0.04000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              500
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              15
+            </span>
+          </td>
+          <td>
+            0.03000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                5
+              </span>
+            </td>
+            <td>
+              0.05000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                4
+              </span>
+            </td>
+            <td>
+              0.04000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                3
+              </span>
+            </td>
+            <td>
+              0.03000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                2
+              </span>
+            </td>
+            <td>
+              0.02000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                100
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                1
+              </span>
+            </td>
+            <td>
+              0.01000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                500
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                15
+              </span>
+            </td>
+            <td>
+              0.03000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              5
+            </span>
+          </td>
+          <td>
+            0.05000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              4
+            </span>
+          </td>
+          <td>
+            0.04000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              3
+            </span>
+          </td>
+          <td>
+            0.03000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              2
+            </span>
+          </td>
+          <td>
+            0.02000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              100
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              1
+            </span>
+          </td>
+          <td>
+            0.01000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              500
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              15
+            </span>
+          </td>
+          <td>
+            0.03000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <table
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      >
+        <thead>
+          <tr>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                Genetic Ancestry Group
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Allele Number
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="descending"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Homoplasmic AF
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AC
+                </span>
+              </button>
+            </th>
+            <th
+              aria-sort="none"
+              scope="col"
+            >
+              <button
+                type="button"
+              >
+                <span
+                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                >
+                  Heteroplasmic AF
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th
+              scope="row"
+            >
+              European (Finnish)
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                2
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Admixed American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                5
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              South Asian
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                1
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              African/African American
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                3
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+          <tr>
+            <th
+              scope="row"
+            >
+              Ashkenazi Jewish
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                4
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr
+            class="border"
+          >
+            <th
+              scope="row"
+            >
+              Total
+            </th>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                15
+              </span>
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+            <td>
+              <span
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              >
+                0
+              </span>
+            </td>
+            <td>
+              0.000
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </body>,
+  "container": <div>
+    <table
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+    >
+      <thead>
+        <tr>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              Genetic Ancestry Group
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Allele Number
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="descending"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Homoplasmic AF
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AC
+              </span>
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              type="button"
+            >
+              <span
+                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              >
+                Heteroplasmic AF
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            European (Finnish)
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              2
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Admixed American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              5
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            South Asian
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              1
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            African/African American
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              3
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Ashkenazi Jewish
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              4
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr
+          class="border"
+        >
+          <th
+            scope="row"
+          >
+            Total
+          </th>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              15
+            </span>
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+          <td>
+            <span
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+            >
+              0
+            </span>
+          </td>
+          <td>
+            0.000
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

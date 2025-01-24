@@ -31,7 +31,8 @@ const Table = styled(BaseTable)`
   }
 `
 
-type SortKey = 'id' | 'an' | 'af_het' | 'af_hom' | 'ac_het' | 'ac_hom'
+export const sortKeys = ['id', 'an', 'af_het', 'af_hom', 'ac_het', 'ac_hom'] as const
+type SortKey = (typeof sortKeys)[number]
 
 const useSort = (
   defaultSortKey: SortKey
@@ -94,7 +95,9 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
       const [population1, population2] = sortAscending ? [a, b] : [b, a]
 
       return sortBy === 'id'
-        ? population1.id.localeCompare(population2.id)
+        ? GNOMAD_POPULATION_NAMES[population1.id].localeCompare(
+            GNOMAD_POPULATION_NAMES[population2.id]
+          )
         : population1[sortBy] - population2[sortBy]
     })
 

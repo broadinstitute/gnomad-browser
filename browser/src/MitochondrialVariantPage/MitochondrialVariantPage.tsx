@@ -82,6 +82,13 @@ export type GenotypeQualityFilter = {
   filtered: Histogram | null
 }
 
+export type MitochondrialVariantPopulation = {
+  id: PopulationId
+  an: number
+  ac_het: number
+  ac_hom: number
+}
+
 export type MitochondrialVariant = {
   alt: string
   an: number
@@ -99,12 +106,7 @@ export type MitochondrialVariant = {
     ac_het: number
   }[]
   max_heteroplasmy: number | null
-  populations: {
-    id: PopulationId
-    an: number
-    ac_het: number
-    ac_hom: number
-  }[]
+  populations: MitochondrialVariantPopulation[]
   pos: number
   ref: string
   reference_genome: string
