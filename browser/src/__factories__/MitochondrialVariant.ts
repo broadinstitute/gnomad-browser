@@ -1,5 +1,8 @@
 import { Factory } from 'fishery'
-import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
+import {
+  MitochondrialVariant,
+  MitochondrialVariantPopulation,
+} from '../MitochondrialVariantPage/MitochondrialVariantPage'
 import { defaultHistogram } from './Variant'
 
 const mitochondrialVariantFactory = Factory.define<MitochondrialVariant>(
@@ -71,4 +74,8 @@ const mitochondrialVariantFactory = Factory.define<MitochondrialVariant>(
   }
 )
 
+export const populationFactory = Factory.define<MitochondrialVariantPopulation>(({ params }) => {
+  const { id = 'afr', an = 0, ac_hom = 0, ac_het = 0 } = params
+  return { id, an, ac_hom, ac_het }
+})
 export default mitochondrialVariantFactory
