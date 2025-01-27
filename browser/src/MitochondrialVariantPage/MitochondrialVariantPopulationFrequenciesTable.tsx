@@ -34,14 +34,14 @@ const Table = styled(BaseTable)`
 export const sortKeys = ['id', 'an', 'af_het', 'af_hom', 'ac_het', 'ac_hom'] as const
 type SortKey = (typeof sortKeys)[number]
 
-const useSort = (
-  defaultSortKey: SortKey
-): [{ key: SortKey; ascending: boolean }, (key: SortKey) => void] => {
-  const [key, setKey] = useState<SortKey>(defaultSortKey)
+const useSort = <K extends string>(
+  defaultSortKey: K
+): [{ key: K; ascending: boolean }, (key: K) => void] => {
+  const [key, setKey] = useState<K>(defaultSortKey)
   const [ascending, setAscending] = useState<boolean>(false)
 
   const setSortKey = useCallback(
-    (newKey: SortKey) => {
+    (newKey: K) => {
       setKey(newKey)
       setAscending(newKey === key ? !ascending : false)
     },
@@ -55,35 +55,42 @@ type MitochondrialVariantPopulationFrequenciesTableProps = {
   variant: MitochondrialVariant
 }
 
+const renderColumnHeader = <K extends string>(
+  key: K,
+  sortBy: K,
+  setSortBy: (key: K) => void,
+  sortAscending: boolean,
+  label: string,
+  tooltip: string | null
+) => {
+  let ariaSortAttr: React.AriaAttributes['aria-sort'] = 'none'
+  if (sortBy === key) {
+    ariaSortAttr = sortAscending ? 'ascending' : 'descending'
+  }
+
+  return tooltip ? (
+    <th aria-sort={ariaSortAttr} scope="col">
+      {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
+      <TooltipAnchor tooltip={tooltip}>
+        <button type="button" onClick={() => setSortBy(key as K)}>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <TooltipHint>{label}</TooltipHint>
+        </button>
+      </TooltipAnchor>
+    </th>
+  ) : (
+    <th aria-sort={ariaSortAttr} scope="col">
+      <button type="button" onClick={() => setSortBy(key as K)}>
+        {label}
+      </button>
+    </th>
+  )
+}
+
 const MitochondrialVariantPopulationFrequenciesTable = ({
   variant,
 }: MitochondrialVariantPopulationFrequenciesTableProps) => {
-  const [{ key: sortBy, ascending: sortAscending }, setSortBy] = useSort('af_hom')
-
-  const renderColumnHeader = (key: any, label: any, tooltip: any) => {
-    let ariaSortAttr: React.AriaAttributes['aria-sort'] = 'none'
-    if (sortBy === key) {
-      ariaSortAttr = sortAscending ? 'ascending' : 'descending'
-    }
-
-    return tooltip ? (
-      <th aria-sort={ariaSortAttr} scope="col">
-        {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
-        <TooltipAnchor tooltip={tooltip}>
-          <button type="button" onClick={() => setSortBy(key)}>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-            <TooltipHint>{label}</TooltipHint>
-          </button>
-        </TooltipAnchor>
-      </th>
-    ) : (
-      <th aria-sort={ariaSortAttr} scope="col">
-        <button type="button" onClick={() => setSortBy(key)}>
-          {label}
-        </button>
-      </th>
-    )
-  }
+  const [{ key: sortBy, ascending: sortAscending }, setSortBy] = useSort<SortKey>('af_hom')
 
   const renderedPopulations = variant.populations
     .map((population) => ({
@@ -121,29 +128,51 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     <Table>
       <thead>
         <tr>
-          {renderColumnHeader('id', 'Genetic Ancestry Group', null)}
+          {renderColumnHeader(
+            'id',
+            sortBy,
+            setSortBy,
+            sortAscending,
+            'Genetic Ancestry Group',
+            null
+          )}
           {renderColumnHeader(
             'an',
+            sortBy,
+            setSortBy,
+            sortAscending,
             'Allele Number',
             'Total number of individuals in this population with high quality sequence at this position.'
           )}
           {renderColumnHeader(
             'ac_hom',
+            sortBy,
+            setSortBy,
+            sortAscending,
             'Homoplasmic AC',
             'Number of individuals in this population with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).'
           )}
           {renderColumnHeader(
             'af_hom',
+            sortBy,
+            setSortBy,
+            sortAscending,
             'Homoplasmic AF',
             'Proportion of individuals in this population with homoplasmic or near-homoplasmic variant (heteroplasmy level ≥ 0.95).'
           )}
           {renderColumnHeader(
             'ac_het',
+            sortBy,
+            setSortBy,
+            sortAscending,
             'Heteroplasmic AC',
             'Number of individuals in this population with a variant at heteroplasmy level 0.10 - 0.95.'
           )}
           {renderColumnHeader(
             'af_het',
+            sortBy,
+            setSortBy,
+            sortAscending,
             'Heteroplasmic AF',
             'Proportion of individuals in this population with a variant at heteroplasmy level 0.10 - 0.95.'
           )}
