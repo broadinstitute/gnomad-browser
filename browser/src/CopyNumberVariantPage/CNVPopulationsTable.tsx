@@ -89,18 +89,21 @@ type CNVPopulationsTableState = any
 type CNVPopulationsTableProps = OwnPopulationsTableProps & typeof CNVPopulationsTable.defaultProps
 
 export class CNVPopulationsTable extends Component<
-  CNVPopulationsTableProps & { variant: CopyNumberVariant},
+  CNVPopulationsTableProps & { variant: CopyNumberVariant },
   CNVPopulationsTableState
 > {
   static defaultProps = {
     columnLabels: {},
     initiallyExpandRows: false,
-    variant: {}
+    variant: {},
   }
 
-  constructor(props: CNVPopulationsTableProps ) {
+  constructor(props: CNVPopulationsTableProps) {
     super(props)
 
+    // If/when we change this to a functional component, we can replace the
+    // following sorting logic and some other associated code by employing
+    // useTableSort.
     this.state = {
       sortBy: 'sf',
       sortAscending: false,

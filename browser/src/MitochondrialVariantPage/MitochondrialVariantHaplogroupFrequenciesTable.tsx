@@ -51,6 +51,9 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
     sortAscending: false,
   }
 
+  // If/when we change this to a functional component, we can replace the
+  // following sorting logic and some other associated code by employing
+  // useTableSort.
   setSortBy(sortBy: any) {
     this.setState((state: any) => ({
       sortBy,
