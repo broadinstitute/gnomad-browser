@@ -117,6 +117,9 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
   constructor(props: PopulationsTableProps) {
     super(props)
 
+    // If/when we change this to a functional component, we can replace the
+    // following sorting logic and some other associated code by employing
+    // useTableSort.
     this.state = {
       sortBy: 'af',
       sortAscending: false,
