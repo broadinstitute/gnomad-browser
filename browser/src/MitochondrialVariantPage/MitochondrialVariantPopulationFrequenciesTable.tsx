@@ -1,11 +1,13 @@
-import React, { ReactNode, useCallback, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import { BaseTable, TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { BaseTable } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import { MitochondrialVariant, MitochondrialVariantPopulation } from './MitochondrialVariantPage'
+
+import useTableSort, { ColumnSpecifier, numericCompareFunction } from '../useTableSort'
 
 const CountCell = styled.span`
   display: inline-block;
@@ -31,98 +33,6 @@ const Table = styled(BaseTable)`
   }
 `
 
-type RowCompareFunction<RowData> = (a: RowData, b: RowData) => number
-
-type ColumnSpecifier<RowData> = {
-  key: keyof RowData
-  label: string
-  tooltip: string | null
-  compareValueFunction: RowCompareFunction<RowData>
-}
-
-const renderColumnHeader = <RowData,>(
-  key: keyof RowData,
-  sortBy: keyof RowData,
-  setSortBy: (key: keyof RowData) => void,
-  sortAscending: boolean,
-  label: string,
-  tooltip: string | null,
-  compareValueFunction: RowCompareFunction<RowData>
-) => {
-  let ariaSortAttr: React.AriaAttributes['aria-sort'] = 'none'
-  if (sortBy === key) {
-    ariaSortAttr = sortAscending ? 'ascending' : 'descending'
-  }
-
-  return tooltip ? (
-    <th aria-sort={ariaSortAttr} scope="col">
-      {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
-      <TooltipAnchor tooltip={tooltip}>
-        <button type="button" onClick={() => setSortBy(key)}>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-          <TooltipHint>{label}</TooltipHint>
-        </button>
-      </TooltipAnchor>
-    </th>
-  ) : (
-    <th aria-sort={ariaSortAttr} scope="col">
-      <button type="button" onClick={() => setSortBy(key)}>
-        {label}
-      </button>
-    </th>
-  )
-}
-
-//  .sort((a, b) => {
-//   const [population1, population2] = sortAscending ? [a, b] : [b, a]
-//
-//   return sortBy === 'id'
-//     ? GNOMAD_POPULATION_NAMES[population1.id].localeCompare(
-//         GNOMAD_POPULATION_NAMES[population2.id]
-//       )
-//     : population1[sortBy] - population2[sortBy]
-// }) */
-
-const useSort = <RowData,>(
-  columnSpecifiers: ColumnSpecifier<RowData>[],
-  defaultSortKey: keyof RowData,
-  rowData: RowData[]
-): { headers: ReactNode; sortedRowData: RowData[] } => {
-  const [key, setKey] = useState<keyof RowData>(defaultSortKey)
-  const [ascending, setAscending] = useState<boolean>(false)
-
-  const setSortKey = useCallback(
-    (newKey: keyof RowData) => {
-      setKey(newKey)
-      setAscending(newKey === key ? !ascending : false)
-    },
-    [key, ascending]
-  )
-
-  const { compareValueFunction } = columnSpecifiers.find((column) => column.key === key)!
-  const sortedRowData = [...rowData].sort((a, b) => {
-    const ascendingCompare = compareValueFunction(a, b)
-    return ascending ? ascendingCompare : -ascendingCompare
-  })
-
-  const headers = (
-    <>
-      {columnSpecifiers.map((columnSpecifier) =>
-        renderColumnHeader(
-          columnSpecifier.key,
-          key,
-          setSortKey,
-          ascending,
-          columnSpecifier.label,
-          columnSpecifier.tooltip,
-          columnSpecifier.compareValueFunction
-        )
-      )}
-    </>
-  )
-  return { headers, sortedRowData }
-}
-
 type MitochondrialVariantPopulationFrequenciesTableProps = {
   variant: MitochondrialVariant
 }
@@ -131,15 +41,6 @@ type MitochondrialVariantPopulationWithFrequency = MitochondrialVariantPopulatio
   af_hom: number
   af_het: number
 }
-
-type NumberHolder<Key extends string> = {
-  [K in Key]: number
-}
-
-export const numericCompareFunction =
-  <Key extends string>(key: Key) =>
-  <RowData extends NumberHolder<Key>>(a: RowData, b: RowData) =>
-    a[key] - b[key]
 
 const comparePopulationNames = (
   a: MitochondrialVariantPopulationWithFrequency,
@@ -199,7 +100,7 @@ const MitochondrialVariantPopulationFrequenciesTable = ({
     af_het: population.an !== 0 ? population.ac_het / population.an : 0,
   }))
 
-  const { headers, sortedRowData } = useSort<MitochondrialVariantPopulationWithFrequency>(
+  const { headers, sortedRowData } = useTableSort<MitochondrialVariantPopulationWithFrequency>(
     columnSpecifiers,
     'af_hom',
     populationsWithFrequencies
