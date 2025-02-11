@@ -281,3 +281,32 @@ describe.each([
     })
   }
 )
+
+describe('gene page for a mitochondrial gene', () => {
+  test("doesn't include a show-transcripts button", async () => {
+    const gene = geneFactory.build({ symbol: 'MT-ATP6', chrom: 'M' })
+    setMockApiResponses({
+      MitochondrialCoverageInGene: () => ({
+        gene: {
+          mitochondrial_coverage: [],
+        },
+      }),
+      MitochondrialCoverageInTranscript: () => ({
+        transcript: {
+          mitochondrial_coverage: [],
+        },
+      }),
+      MitochondrialVariantsInGene: () => ({
+        gene: { mitochondrial_variants: [], clinvar_variants: [] },
+        meta: { clinvar_release_date: '2022-10-31' },
+      }),
+    })
+
+    const tree = renderer.create(
+      <MemoryRouter>
+        <GenePage datasetId="gnomad_r4" gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+})
