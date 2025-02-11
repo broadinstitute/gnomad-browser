@@ -195,7 +195,7 @@ const GeneName = styled.span`
 const GeneInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 1em;
 
   @media (max-width: 1200px) {
@@ -266,6 +266,7 @@ const TrackWrapper = styled.div`
 
 const ToggleTranscriptsPanel = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
@@ -532,6 +533,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             renderLeftPanel={() => {
               return (
                 <ToggleTranscriptsPanel>
+                  <img
+                    alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
+                    src={gene.strand === '-' ? LeftArrow : RightArrow}
+                    height={20}
+                    width={20}
+                  />
                   <Button
                     onClick={() => {
                       setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
@@ -539,12 +546,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                   >
                     {showTranscripts ? 'Hide' : 'Show'} transcripts
                   </Button>
-                  <img
-                    alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
-                    src={gene.strand === '-' ? LeftArrow : RightArrow}
-                    height={20}
-                    width={20}
-                  />
                 </ToggleTranscriptsPanel>
               )
             }}
