@@ -507,7 +507,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -1461,8 +1461,14 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -1471,12 +1477,6 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -2025,7 +2025,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -2968,8 +2968,14 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -2978,12 +2984,6 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -3532,7 +3532,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -4475,8 +4475,14 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -4485,12 +4491,6 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -5039,7 +5039,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -5982,8 +5982,14 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -5992,12 +5998,6 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -6546,7 +6546,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -7489,8 +7489,14 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -7499,12 +7505,6 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -8053,7 +8053,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -9007,8 +9007,14 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -9017,12 +9023,6 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -9594,7 +9594,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -10548,8 +10548,14 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -10558,12 +10564,6 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -11112,7 +11112,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -12066,8 +12066,14 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -12076,12 +12082,6 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -12748,7 +12748,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -13702,8 +13702,14 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -13712,12 +13718,6 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -14384,7 +14384,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -15338,8 +15338,14 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -15348,12 +15354,6 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -16020,7 +16020,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -16974,8 +16974,14 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -16984,12 +16990,6 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -17656,7 +17656,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -18610,8 +18610,14 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -18620,12 +18626,6 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -19292,7 +19292,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -20247,8 +20247,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -20257,12 +20263,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -20834,7 +20834,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -21789,8 +21789,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -21799,12 +21805,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -22376,7 +22376,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -23331,8 +23331,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -23341,12 +23347,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -23918,7 +23918,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -24873,8 +24873,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -24883,12 +24889,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -25460,7 +25460,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -26415,8 +26415,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -26425,12 +26431,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -27002,7 +27002,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -27957,8 +27957,14 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -27967,12 +27973,6 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -28544,7 +28544,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -29498,8 +29498,14 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -29508,12 +29514,6 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
@@ -30085,7 +30085,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
       </div>
     </div>
     <div
-      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 fGVbuv"
+      className="GenePage__GeneInfoColumnWrapper-sc-rcxzgc-1 cmoRiz"
     >
       <div
         className="GenePage__GeneInfoColumn-sc-rcxzgc-2 kGsxrp"
@@ -31039,8 +31039,14 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 bLfCYD"
+                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 hhlEtF"
               >
+                <img
+                  alt="Positive strand"
+                  height={20}
+                  src="test-file-stub"
+                  width={20}
+                />
                 <button
                   className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 indcWT"
                   onClick={[Function]}
@@ -31049,12 +31055,6 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
                   Show
                    transcripts
                 </button>
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
               </div>
             </div>
             <div
