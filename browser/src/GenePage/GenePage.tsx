@@ -539,13 +539,15 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                     height={20}
                     width={20}
                   />
-                  <Button
-                    onClick={() => {
-                      setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
-                    }}
-                  >
-                    {showTranscripts ? 'Hide' : 'Show'} transcripts
-                  </Button>
+                  {gene.chrom !== 'M' && (
+                    <Button
+                      onClick={() => {
+                        setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
+                      }}
+                    >
+                      {showTranscripts ? 'Hide' : 'Show'} transcripts
+                    </Button>
+                  )}
                 </ToggleTranscriptsPanel>
               )
             }}
