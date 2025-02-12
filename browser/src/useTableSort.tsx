@@ -81,13 +81,21 @@ const useTableSort = <RowData,>(
   return { headers, sortedRowData }
 }
 
-type NumberHolder<Key extends string> = {
-  [K in Key]: number
+type Holder<Key extends string, Value> = {
+  [K in Key]: Value
 }
+
+type NumberHolder<Key extends string> = Holder<Key, number>
+type StringHolder<Key extends string> = Holder<Key, string>
 
 export const numericCompareFunction =
   <Key extends string>(key: Key) =>
   <RowData extends NumberHolder<Key>>(a: RowData, b: RowData) =>
     a[key] - b[key]
+
+export const stringCompareFunction =
+  <Key extends string>(key: Key) =>
+  <RowData extends StringHolder<Key>>(a: RowData, b: RowData) =>
+    b[key].toLowerCase().localeCompare(a[key].toLowerCase())
 
 export default useTableSort
