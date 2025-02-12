@@ -1,0 +1,1294 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="Page-sc-w7h773-0 kodnkv"
+      >
+        <div
+          class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+        >
+          <div
+            class="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+          >
+            <h1
+              class="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+            >
+              Tandem Repeats
+            </h1>
+          </div>
+          <div
+            class="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+          >
+            <span
+              class="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+            >
+              Dataset
+            </span>
+            <ul
+              class="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+            >
+              <li
+                class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+              >
+                <a
+                  class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                  data-item="current_short_variant"
+                  href="/?dataset=gnomad_r4"
+                >
+                  gnomAD v4.1.0
+                </a>
+              </li>
+              <li
+                class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+              >
+                <a
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="More datasets"
+                  class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                  data-item="other_short_variant"
+                  href="/"
+                  role="button"
+                >
+                  <span
+                    class="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+                  >
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </a>
+                <ul
+                  class="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+                >
+                  <li>
+                    <div
+                      class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                    >
+                      GRCh38
+                    </div>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_r4"
+                        href="/?dataset=gnomad_r4"
+                      >
+                        gnomAD v4.1.0
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          807,162 samples
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_r3"
+                        href="/?dataset=gnomad_r3"
+                      >
+                        gnomAD v3.1.2
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          76,156 samples
+                        </div>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+              >
+                <a
+                  class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                  data-item="current_sv_dataset"
+                  href="/?dataset=gnomad_sv_r4"
+                >
+                  gnomAD SVs v4.1.0
+                </a>
+              </li>
+              <li
+                class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+              >
+                <a
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="More datasets"
+                  class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                  data-item="other_structural_variant"
+                  href="/"
+                  role="button"
+                >
+                  <span
+                    class="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+                  >
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </a>
+                <ul
+                  class="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+                >
+                  <li>
+                    <div
+                      class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                    >
+                      GRCh38
+                    </div>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_sv_r4"
+                        href="/?dataset=gnomad_sv_r4"
+                      >
+                        gnomAD SVs v4.1.0
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          63,046 samples, genome
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_cnv_r4"
+                        href="/?dataset=gnomad_cnv_r4"
+                      >
+                        gnomAD CNVs v4.1.0
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          464,297 samples, exome, rare (&lt;0.01)
+                        </div>
+                      </a>
+                    </li>
+                  </li>
+                  <li>
+                    <div
+                      class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                    >
+                      GRCh37
+                    </div>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_sv_r2_1"
+                        href="/?dataset=gnomad_sv_r2_1"
+                      >
+                        gnomAD SVs v2.1
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          10,847 samples, genome
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_sv_r2_1_non_neuro"
+                        href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                      >
+                        gnomAD SVs v2.1 (non-neuro)
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          8,342 samples, genome
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                        data-item="gnomad_sv_r2_1_controls"
+                        href="/?dataset=gnomad_sv_r2_1_controls"
+                      >
+                        gnomAD SVs v2.1 (controls)
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                        >
+                          5,192 samples, genome
+                        </div>
+                      </a>
+                    </li>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <span>
+              <button
+                class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+                >
+                  More information
+                </span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <p>
+          For more information about Tandem Repeats in gnomAD, read our
+           
+          <a
+            href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/"
+          >
+            blog post
+          </a>
+          .
+        </p>
+        <div
+          class="TableWrapper-sc-1ep26r3-0 edvjZa"
+        >
+          <table
+            class="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+            style="min-width: 100%;"
+          >
+            <thead>
+              <tr>
+                <th
+                  aria-sort="descending"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    ID
+                  </button>
+                </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    Reference repeat unit
+                  </button>
+                </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    Region
+                  </button>
+                </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    Inheritance mode
+                  </button>
+                </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    Associated disease(s)
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/AFF2"
+                  >
+                    AFF2
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  GCC
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  5'-UTR
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Imaginary inheritance mode
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/309548"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    FRAXE mental retardation
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/AR"
+                  >
+                    AR
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  GCA
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  coding: polyglutamine
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  X-linked recessive
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/313200"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Spinal and bulbar muscular atrophy
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/ARX_1"
+                  >
+                    ARX_1
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  NGC
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  coding: polyalanine
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  X-linked recessive, Z-linked recessive
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/308350"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Developmental and epileptic encephalopathy-1
+                  </a>
+                  , 
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/300419"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    X-linked mental retardation with or without seizures
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/ATN1"
+                  >
+                    ATN1
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  CAG
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Made-up region
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Autosomal dominant
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/125370"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Dentatorubral-pallidoluysian atrophy
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/ATXN1"
+                  >
+                    ATXN1
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  TGC
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Ersatz region
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Autosomal miscellaneous
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/164400"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Spinocerebellar ataxia 1
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/ATXN10"
+                  >
+                    ATXN10
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  ATTCT
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  intron
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Autosomal recessive
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/603516"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Spinocerebellar ataxia 10
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th
+                  scope="row"
+                  style="white-space: nowrap;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0-Link jBvaYQ"
+                    href="/short-tandem-repeat/ATXN2"
+                  >
+                    ATXN2
+                  </a>
+                </th>
+                <td
+                  style="min-width: 18ch;"
+                >
+                  GCT
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Fake region
+                </td>
+                <td
+                  style="white-space: nowrap;"
+                >
+                  Autosomal dominant, Autosomal recessive
+                </td>
+                <td
+                  style="min-width: 30ch;"
+                >
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/183090"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Made-up disease 1
+                  </a>
+                  , 
+                  <a
+                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                    href="https://omim.org/entry/183090"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Spinocerebellar ataxia 2
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="Page-sc-w7h773-0 kodnkv"
+    >
+      <div
+        class="GnomadPageHeading__PageHeadingWrapper-sc-sgz3rr-0 gcOcdP"
+      >
+        <div
+          class="GnomadPageHeading__PageHeadingInnerWrapper-sc-sgz3rr-1 dLZzAa"
+        >
+          <h1
+            class="GnomadPageHeading__PageHeadingText-sc-sgz3rr-3 edXBqX"
+          >
+            Tandem Repeats
+          </h1>
+        </div>
+        <div
+          class="GnomadPageHeading__PageControlsWrapper-sc-sgz3rr-4 liqJpb"
+        >
+          <span
+            class="GnomadPageHeading__Label-sc-sgz3rr-5 dOhShJ"
+          >
+            Dataset
+          </span>
+          <ul
+            class="DatasetSelector__NavigationMenuWrapper-sc-1p2fxbn-0 ebZvwy"
+          >
+            <li
+              class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+            >
+              <a
+                class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                data-item="current_short_variant"
+                href="/?dataset=gnomad_r4"
+              >
+                gnomAD v4.1.0
+              </a>
+            </li>
+            <li
+              class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 ifirRc"
+            >
+              <a
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-label="More datasets"
+                class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                data-item="other_short_variant"
+                href="/"
+                role="button"
+              >
+                <span
+                  class="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+                >
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                </span>
+              </a>
+              <ul
+                class="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+              >
+                <li>
+                  <div
+                    class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                  >
+                    GRCh38
+                  </div>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_r4"
+                      href="/?dataset=gnomad_r4"
+                    >
+                      gnomAD v4.1.0
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        807,162 samples
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_r3"
+                      href="/?dataset=gnomad_r3"
+                    >
+                      gnomAD v3.1.2
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        76,156 samples
+                      </div>
+                    </a>
+                  </li>
+                </li>
+              </ul>
+            </li>
+            <li
+              class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+            >
+              <a
+                class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                data-item="current_sv_dataset"
+                href="/?dataset=gnomad_sv_r4"
+              >
+                gnomAD SVs v4.1.0
+              </a>
+            </li>
+            <li
+              class="DatasetSelector__NavigationMenuItem-sc-1p2fxbn-2 gkCApy"
+            >
+              <a
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-label="More datasets"
+                class="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
+                data-item="other_structural_variant"
+                href="/"
+                role="button"
+              >
+                <span
+                  class="DatasetSelector__MoreIcon-sc-1p2fxbn-3 hTYFQu"
+                >
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                </span>
+              </a>
+              <ul
+                class="DatasetSelector__SubNavigationMenu-sc-1p2fxbn-4 epYyTQ"
+              >
+                <li>
+                  <div
+                    class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                  >
+                    GRCh38
+                  </div>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_sv_r4"
+                      href="/?dataset=gnomad_sv_r4"
+                    >
+                      gnomAD SVs v4.1.0
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        63,046 samples, genome
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_cnv_r4"
+                      href="/?dataset=gnomad_cnv_r4"
+                    >
+                      gnomAD CNVs v4.1.0
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        464,297 samples, exome, rare (&lt;0.01)
+                      </div>
+                    </a>
+                  </li>
+                </li>
+                <li>
+                  <div
+                    class="DatasetSelector__GroupedNav-sc-1p2fxbn-7 cJJZPz"
+                  >
+                    GRCh37
+                  </div>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_sv_r2_1"
+                      href="/?dataset=gnomad_sv_r2_1"
+                    >
+                      gnomAD SVs v2.1
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        10,847 samples, genome
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_sv_r2_1_non_neuro"
+                      href="/?dataset=gnomad_sv_r2_1_non_neuro"
+                    >
+                      gnomAD SVs v2.1 (non-neuro)
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        8,342 samples, genome
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5-Link gbnrKe"
+                      data-item="gnomad_sv_r2_1_controls"
+                      href="/?dataset=gnomad_sv_r2_1_controls"
+                    >
+                      gnomAD SVs v2.1 (controls)
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 jjgqnf"
+                      >
+                        5,192 samples, genome
+                      </div>
+                    </a>
+                  </li>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <span>
+            <button
+              class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+              >
+                More information
+              </span>
+            </button>
+          </span>
+        </div>
+      </div>
+      <p>
+        For more information about Tandem Repeats in gnomAD, read our
+         
+        <a
+          href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/"
+        >
+          blog post
+        </a>
+        .
+      </p>
+      <div
+        class="TableWrapper-sc-1ep26r3-0 edvjZa"
+      >
+        <table
+          class="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+          style="min-width: 100%;"
+        >
+          <thead>
+            <tr>
+              <th
+                aria-sort="descending"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  ID
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  Reference repeat unit
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  Region
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  Inheritance mode
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  Associated disease(s)
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/AFF2"
+                >
+                  AFF2
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                GCC
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                5'-UTR
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Imaginary inheritance mode
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/309548"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  FRAXE mental retardation
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/AR"
+                >
+                  AR
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                GCA
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                coding: polyglutamine
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                X-linked recessive
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/313200"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Spinal and bulbar muscular atrophy
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/ARX_1"
+                >
+                  ARX_1
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                NGC
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                coding: polyalanine
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                X-linked recessive, Z-linked recessive
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/308350"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Developmental and epileptic encephalopathy-1
+                </a>
+                , 
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/300419"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  X-linked mental retardation with or without seizures
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/ATN1"
+                >
+                  ATN1
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                CAG
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Made-up region
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Autosomal dominant
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/125370"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Dentatorubral-pallidoluysian atrophy
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/ATXN1"
+                >
+                  ATXN1
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                TGC
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Ersatz region
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Autosomal miscellaneous
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/164400"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Spinocerebellar ataxia 1
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/ATXN10"
+                >
+                  ATXN10
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                ATTCT
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                intron
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Autosomal recessive
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/603516"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Spinocerebellar ataxia 10
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th
+                scope="row"
+                style="white-space: nowrap;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0-Link jBvaYQ"
+                  href="/short-tandem-repeat/ATXN2"
+                >
+                  ATXN2
+                </a>
+              </th>
+              <td
+                style="min-width: 18ch;"
+              >
+                GCT
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Fake region
+              </td>
+              <td
+                style="white-space: nowrap;"
+              >
+                Autosomal dominant, Autosomal recessive
+              </td>
+              <td
+                style="min-width: 30ch;"
+              >
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/183090"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Made-up disease 1
+                </a>
+                , 
+                <a
+                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                  href="https://omim.org/entry/183090"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Spinocerebellar ataxia 2
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
