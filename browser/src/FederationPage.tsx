@@ -17,6 +17,8 @@ import InstituteForGenomicsStatisticsAndBioinformaticsLogo from '../about/federa
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import PrecisionHealthResearchSingaporeLogo from '../about/federation/PrecisionHealthResearchSingaporeLogo.png'
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
+import SingaporeGnomadLogo from '../about/federation/SingaporeGnomadLogo.png'
+// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import QatarGenomeLogo from '../about/federation/QatarGenomeLogo.png'
 
 // @ts-expect-error
@@ -236,6 +238,7 @@ export default () => (
           alt="Precision Health Research Singapore logo"
           src={PrecisionHealthResearchSingaporeLogo}
         />
+        <SingleLogo alt="gnomAD Singapore logo" src={SingaporeGnomadLogo} />
         <DoubleLogo alt="Qatar Genome logo" src={QatarGenomeLogo} />
       </LogoContainer>
     </CenteredContainer>
