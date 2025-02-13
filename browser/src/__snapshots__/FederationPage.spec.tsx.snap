@@ -587,6 +587,11 @@ exports[`Federation Page has no unexpected changes 1`] = `
         src="test-file-stub"
       />
       <img
+        alt="gnomAD Singapore logo"
+        className="c10"
+        src="test-file-stub"
+      />
+      <img
         alt="Qatar Genome logo"
         className="c11"
         src="test-file-stub"
