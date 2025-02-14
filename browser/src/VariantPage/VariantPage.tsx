@@ -10,7 +10,6 @@ import {
   referenceGenome,
   ReferenceGenome,
   hasExome,
-  hasLocalAncestryPopulations,
   isLiftoverSource,
   isLiftoverTarget,
   usesGrch37,
@@ -377,28 +376,6 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <h2>
           Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
         </h2>
-        {hasLocalAncestryPopulations(datasetId) &&
-          ((variant.genome && variant.genome.local_ancestry_populations) || []).length > 0 && (
-            <div
-              style={{
-                padding: '0 1em',
-                border: '2px solid #1173bb',
-                background: '#1173bb0f',
-                borderRadius: '0.5em',
-                marginBottom: '1em',
-              }}
-            >
-              <p>
-                <Badge level="info">Note</Badge> Local ancestry data is available for this variant
-                by selecting the tab below. See our blog post on{' '}
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
-                  local ancestry inference for Admixed American samples in gnomAD
-                </ExternalLink>{' '}
-                for more information.
-              </p>
-            </div>
-          )}
         <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
       </Section>
 
