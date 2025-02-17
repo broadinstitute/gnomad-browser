@@ -183,6 +183,9 @@ importers:
       '@visx/axis':
         specifier: ^3.0.0
         version: 3.5.0(react@17.0.2)
+      '@visx/group':
+        specifier: ^3.0.0
+        version: 3.3.0(react@17.0.2)
       core-js:
         specifier: 3.5.0
         version: 3.5.0

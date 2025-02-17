@@ -10,6 +10,9 @@ import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { TranscriptPlot } from '@gnomad/track-transcripts'
 import { Badge, Button } from '@gnomad/ui'
+import MitochondrialRegionConstraintTrack, {
+  MitochondrialConstraintRegion,
+} from './MitochondrialRegionConstraintTrack'
 
 import {
   DatasetId,
@@ -73,18 +76,52 @@ import {
 import { logButtonClick } from '../analytics'
 import { GtexTissueExpression } from './TranscriptsTissueExpression'
 
+export type ProteinMitochondrialGeneConstraint = {
+  exp_lof: number
+  exp_mis: number
+  exp_syn: number
+
+  obs_lof: number
+  obs_mis: number
+  obs_syn: number
+
+  oe_lof: number
+  oe_lof_lower: number
+  oe_lof_upper: number
+
+  oe_mis: number
+  oe_mis_lower: number
+  oe_mis_upper: number
+
+  oe_syn: number
+  oe_syn_lower: number
+  oe_syn_upper: number
+}
+
+export type RNAMitochondrialGeneConstraint = {
+  observed: number
+  expected: number
+  oe: number
+  oe_upper: number
+  oe_lower: number
+}
+
+export type MitochondrialGeneConstraint =
+  | ProteinMitochondrialGeneConstraint
+  | RNAMitochondrialGeneConstraint
+
 export type Strand = '+' | '-'
 
 export type GeneMetadata = {
   gene_id: string
   gene_version: string
   symbol: string
-  mane_select_transcript?: {
+  mane_select_transcript: {
     ensembl_id: string
     ensembl_version: string
     refseq_id: string
     refseq_version: string
-  }
+  } | null
   canonical_transcript_id: string | null
   flags: string[]
 }
@@ -115,7 +152,7 @@ export type Pext = {
 
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
-  name?: string
+  name: string | null
   chrom: string
   strand: Strand
   start: number
@@ -127,20 +164,24 @@ export type Gene = GeneMetadata & {
   }[]
   transcripts: GeneTranscript[]
   flags: string[]
-  gnomad_constraint?: GnomadConstraint
-  exac_constraint?: ExacConstraint
-  pext?: Pext
-  short_tandem_repeats?: {
-    id: string
-  }[]
-  exac_regional_missense_constraint_regions?: any
-  gnomad_v2_regional_missense_constraint?: RegionalMissenseConstraint
+  gnomad_constraint: GnomadConstraint | null
+  exac_constraint: ExacConstraint | null
+  pext: Pext | null
+  short_tandem_repeats:
+    | {
+        id: string
+      }[]
+    | null
+  exac_regional_missense_constraint_regions: any | null
+  gnomad_v2_regional_missense_constraint: RegionalMissenseConstraint | null
   variants: Variant[]
   structural_variants: StructuralVariant[]
   copy_number_variants: CopyNumberVariant[]
   clinvar_variants: ClinvarVariant[]
   homozygous_variant_cooccurrence_counts: HomozygousVariantCooccurrenceCountsPerSeverityAndAf
   heterozygous_variant_cooccurrence_counts: HeterozygousVariantCooccurrenceCountsPerSeverityAndAf
+  mitochondrial_constraint: MitochondrialGeneConstraint | null
+  mitochondrial_missense_constraint_regions: MitochondrialConstraintRegion[] | null
 }
 
 const GeneName = styled.span`
@@ -154,7 +195,7 @@ const GeneName = styled.span`
 const GeneInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 1em;
 
   @media (max-width: 1200px) {
@@ -231,6 +272,7 @@ const ToggleTranscriptsPanel = styled.div`
   width: 100%;
   height: 50px;
   padding-right: 5px;
+  flex-direction: row-reverse;
 
   button {
     width: 70px;
@@ -356,7 +398,10 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 ownTableName="constraint"
                 setSelectedTableName={setSelectedTableName}
               >
-                Constraint {gene.chrom !== 'M' && <InfoButton topic="constraint" />}
+                Constraint
+                <InfoButton
+                  topic={gene.chrom === 'M' ? 'mitochondrial-constraint' : 'constraint'}
+                />
               </TableSelector>
               <TableSelector
                 selectedTableName={selectedTableName}
@@ -488,19 +533,21 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             renderLeftPanel={() => {
               return (
                 <ToggleTranscriptsPanel>
-                  <Button
-                    onClick={() => {
-                      setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
-                    }}
-                  >
-                    {showTranscripts ? 'Hide' : 'Show'} transcripts
-                  </Button>
                   <img
                     alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
                     src={gene.strand === '-' ? LeftArrow : RightArrow}
                     height={20}
                     width={20}
                   />
+                  {gene.chrom !== 'M' && (
+                    <Button
+                      onClick={() => {
+                        setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
+                      }}
+                    >
+                      {showTranscripts ? 'Hide' : 'Show'} transcripts
+                    </Button>
+                  )}
                 </ToggleTranscriptsPanel>
               )
             }}
@@ -532,6 +579,14 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               preferredTranscriptDescription={preferredTranscriptDescription}
             />
           </TrackWrapper>
+        )}
+
+        {gene.chrom.startsWith('M') && (
+          <MitochondrialRegionConstraintTrack
+            constraintRegions={gene.mitochondrial_missense_constraint_regions}
+            exons={gene.exons}
+            geneSymbol={gene.symbol}
+          />
         )}
 
         {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
