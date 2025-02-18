@@ -383,7 +383,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with ava
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -488,7 +490,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with ava
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -593,7 +597,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with ava
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -767,7 +773,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and transcript wi
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -872,7 +880,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and transcript wi
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -977,7 +987,9 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and transcript wi
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span
@@ -1328,7 +1340,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with avail
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -1433,7 +1447,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with avail
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -1538,7 +1554,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with avail
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -1712,7 +1730,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and transcript with
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -1817,7 +1837,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and transcript with
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -1922,7 +1944,9 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and transcript with
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span
@@ -2276,7 +2300,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene w
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -2381,7 +2407,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene w
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -2486,7 +2514,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene w
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -2664,7 +2694,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transc
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -2769,7 +2801,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transc
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -2874,7 +2908,9 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transc
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -3229,7 +3265,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -3334,7 +3372,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -3439,7 +3479,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -3617,7 +3659,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and tran
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -3722,7 +3766,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and tran
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -3827,7 +3873,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and tran
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -4182,7 +4230,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene 
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -4287,7 +4337,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene 
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -4392,7 +4444,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene 
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -4570,7 +4624,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and trans
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -4675,7 +4731,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and trans
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -4780,7 +4838,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and trans
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -5135,7 +5195,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -5240,7 +5302,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -5345,7 +5409,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -5523,7 +5589,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and tran
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -5628,7 +5696,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and tran
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -5733,7 +5803,9 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and tran
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -6421,7 +6493,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with availab
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -6526,7 +6600,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with availab
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -6631,7 +6707,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with availab
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -6805,7 +6883,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and transcript with a
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -6910,7 +6990,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and transcript with a
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -7015,7 +7097,9 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and transcript with a
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span
@@ -7366,7 +7450,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -7471,7 +7557,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -7576,7 +7664,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -7750,7 +7840,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and transcrip
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -7855,7 +7947,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and transcrip
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -7960,7 +8054,9 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and transcrip
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span
@@ -8311,7 +8407,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with av
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -8416,7 +8514,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with av
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -8521,7 +8621,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with av
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -8695,7 +8797,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and transcript w
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -8800,7 +8904,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and transcript w
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -8905,7 +9011,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and transcript w
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span
@@ -9259,7 +9367,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gen
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -9364,7 +9474,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gen
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -9469,7 +9581,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gen
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -9647,7 +9761,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and tra
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -9752,7 +9868,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and tra
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -9857,7 +9975,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and tra
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -10212,7 +10332,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and ge
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -10317,7 +10439,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and ge
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -10422,7 +10546,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and ge
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -10600,7 +10726,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and tr
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -10705,7 +10833,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and tr
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -10810,7 +10940,9 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and tr
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -11162,7 +11294,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with avai
               0.2
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -11267,7 +11401,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with avai
               0.3
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             Z =
              
@@ -11372,7 +11508,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with avai
               0.1
             </span>
           </td>
-          <td />
+          <td>
+            —
+          </td>
           <td>
             pLI = 
             <span
@@ -11546,7 +11684,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and transcript wit
             0.2
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -11651,7 +11791,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and transcript wit
             0.3
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           Z =
            
@@ -11756,7 +11898,9 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and transcript wit
             0.1
           </span>
         </td>
-        <td />
+        <td>
+          —
+        </td>
         <td>
           pLI = 
           <span

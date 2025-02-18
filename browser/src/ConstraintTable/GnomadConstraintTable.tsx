@@ -136,26 +136,26 @@ const CONSTRAINT_FLAG_DESCRIPTIONS = {
 }
 
 export type GnomadConstraint = {
-  exp_lof: number
+  exp_lof: number | null
   exp_mis: number
-  exp_syn: number
-  obs_lof?: number
-  obs_mis?: number
-  obs_syn?: number
-  oe_lof: number
-  oe_lof_lower: number
-  oe_lof_upper: number
+  exp_syn: number | null
+  obs_lof: number | null
+  obs_mis: number | null
+  obs_syn: number | null
+  oe_lof: number | null
+  oe_lof_lower: number | null
+  oe_lof_upper: number | null
   oe_mis: number
-  oe_mis_lower: number
-  oe_mis_upper: number
-  oe_syn: number
-  oe_syn_lower: number
-  oe_syn_upper: number
-  lof_z?: number
+  oe_mis_lower: number | null
+  oe_mis_upper: number | null
+  oe_syn: number | null
+  oe_syn_lower: number | null
+  oe_syn_upper: number | null
+  lof_z: number | null
   mis_z: number
   syn_z: number
-  pLI: number
-  flags?: string[]
+  pLI: number | null
+  flags: string[] | null
 }
 
 type ConstraintFieldWithOEMetrics = 'lof' | 'mis' | 'syn'
