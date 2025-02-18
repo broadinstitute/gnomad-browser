@@ -1,6 +1,6 @@
 type GnomadConstraint {
   exp_lof: Float
-  exp_mis: Float
+  exp_mis: Float!
   exp_syn: Float
 
   obs_lof: Int
@@ -11,7 +11,7 @@ type GnomadConstraint {
   oe_lof_lower: Float
   oe_lof_upper: Float
 
-  oe_mis: Float
+  oe_mis: Float!
   oe_mis_lower: Float
   oe_mis_upper: Float
 
@@ -20,8 +20,8 @@ type GnomadConstraint {
   oe_syn_upper: Float
 
   lof_z: Float
-  mis_z: Float
-  syn_z: Float
+  mis_z: Float!
+  syn_z: Float!
 
   pli: Float
   flags: [String!]
