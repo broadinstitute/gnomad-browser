@@ -5,14 +5,14 @@ import { BaseTable } from '@gnomad/ui'
 import { renderRoundedNumber } from './constraintMetrics'
 
 export type ExacConstraint = {
-  exp_syn: number
-  obs_syn: number
+  exp_syn: number | null
+  obs_syn: number | null
   syn_z: number
-  exp_mis: number
-  obs_mis: number
+  exp_mis: number | null
+  obs_mis: number | null
   mis_z: number
-  exp_lof: number
-  obs_lof: number
+  exp_lof: number | null
+  obs_lof: number | null
   pLI: number
 }
 

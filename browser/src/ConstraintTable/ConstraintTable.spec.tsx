@@ -44,6 +44,11 @@ const gnomadConstraintFactory = Factory.define<GnomadConstraint>(() => ({
   oe_syn: 0.912,
   oe_syn_lower: 0.8,
   oe_syn_upper: 0.95,
+  obs_lof: null,
+  obs_mis: null,
+  obs_syn: null,
+  lof_z: null,
+  flags: null,
 }))
 
 const proteinMitochondrialConstraintFactory = Factory.define<ProteinMitochondrialGeneConstraint>(

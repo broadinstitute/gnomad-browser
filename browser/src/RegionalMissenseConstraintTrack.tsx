@@ -21,12 +21,12 @@ export type RegionalMissenseConstraintRegion = {
   stop: number
   aa_start: string | null
   aa_stop: string | null
-  obs_mis: number | undefined
+  obs_mis: number | null
   exp_mis: number
   obs_exp: number
   chisq_diff_null: number | undefined
   p_value: number
-  z_score: number | undefined
+  z_score: number | null
 }
 
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
