@@ -5,11 +5,37 @@ import {
   RNAMitochondrialGeneConstraint,
 } from '../GenePage/GenePage'
 import { BaseTable, TooltipAnchor } from '@gnomad/ui'
+import { ConstraintHighlight } from './constraintMetrics'
 
 const isProteinMitochondrialGeneConstraint = (
   constraint: MitochondrialGeneConstraint
 ): constraint is ProteinMitochondrialGeneConstraint =>
   Object.prototype.hasOwnProperty.call(constraint, 'exp_lof')
+
+type Highlight = {
+  threshold: number
+  color: string
+}
+
+type ConstraintRowProps = {
+  category: string
+  expected: number
+  observed: number
+  oe: number
+  oeLower: number
+  oeUpper: number
+  highlight?: Highlight
+}
+
+const PROTEIN_GENE_HIGHLIGHT: Highlight = {
+  threshold: 0.058,
+  color: '#ff2600',
+}
+
+const RNA_GENE_HIGHLIGHT: Highlight = {
+  threshold: 0.27,
+  color: PROTEIN_GENE_HIGHLIGHT.color,
+}
 
 const ConstraintRow = ({
   category,
@@ -18,23 +44,27 @@ const ConstraintRow = ({
   oe,
   oeLower,
   oeUpper,
-}: {
-  category: string
-  expected: number
-  observed: number
-  oe: number
-  oeLower: number
-  oeUpper: number
-}) => (
-  <tr>
-    <th scope="row">{category}</th>
-    <td>{expected < 10 ? expected.toFixed(2) : expected.toFixed(1)}</td>
-    <td>{observed < 10 ? observed.toFixed(2) : observed.toFixed(1)}</td>
-    <td>
-      o/e = {oe.toFixed(2)} ({oeLower.toFixed(2)} - {oeUpper.toFixed(2)})
-    </td>
-  </tr>
-)
+  highlight,
+}: ConstraintRowProps) => {
+  const oeUpperFixed = oeUpper.toFixed(2)
+  const oeUpperContent =
+    highlight && oeUpper < highlight.threshold ? (
+      <ConstraintHighlight highlightColor={highlight.color}>{oeUpperFixed}</ConstraintHighlight>
+    ) : (
+      oeUpperFixed
+    )
+
+  return (
+    <tr>
+      <th scope="row">{category}</th>
+      <td>{expected < 10 ? expected.toFixed(2) : expected.toFixed(1)}</td>
+      <td>{observed < 10 ? observed.toFixed(2) : observed.toFixed(1)}</td>
+      <td>
+        o/e = {oe.toFixed(2)} ({oeLower.toFixed(2)} - {oeUpperContent})
+      </td>
+    </tr>
+  )
+}
 
 const ProteinConstraintMetrics = ({
   constraint,
@@ -83,6 +113,7 @@ const ProteinConstraintMetrics = ({
         oe={oe_lof}
         oeLower={oe_lof_lower}
         oeUpper={oe_lof_upper}
+        highlight={PROTEIN_GENE_HIGHLIGHT}
       />
     </tbody>
   )
@@ -99,6 +130,7 @@ const RNAConstraintMetrics = ({ constraint }: { constraint: RNAMitochondrialGene
         oe={oe}
         oeLower={oe_lower}
         oeUpper={oe_upper}
+        highlight={RNA_GENE_HIGHLIGHT}
       />
     </tbody>
   )
