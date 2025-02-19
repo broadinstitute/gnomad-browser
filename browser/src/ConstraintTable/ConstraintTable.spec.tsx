@@ -118,11 +118,43 @@ forAllDatasets('ConstraintTable with "%s" dataset selected', (datasetId) => {
       )
       expect(tree).toMatchSnapshot()
     })
+
+    test('highlights upper LOF OE CI if below 0.058', () => {
+      const constraint = proteinMitochondrialConstraintFactory.build({ oe_lof_upper: 0.057999999 })
+      const tree = renderer.create(
+        <BrowserRouter>
+          <ConstraintTable
+            datasetId={datasetId}
+            geneOrTranscript={geneFactory.build({
+              chrom: 'M',
+              mitochondrial_constraint: constraint,
+            })}
+          />
+        </BrowserRouter>
+      )
+      expect(tree).toMatchSnapshot()
+    })
   })
 
   describe('with a mitochondrial RNA gene', () => {
     test('has no unexpected changes', () => {
       const constraint = rnaMitochondrialConstraintFactory.build()
+      const tree = renderer.create(
+        <BrowserRouter>
+          <ConstraintTable
+            datasetId={datasetId}
+            geneOrTranscript={geneFactory.build({
+              chrom: 'M',
+              mitochondrial_constraint: constraint,
+            })}
+          />
+        </BrowserRouter>
+      )
+      expect(tree).toMatchSnapshot()
+    })
+
+    test('highlights upper LOF OE CI if below 0.27', () => {
+      const constraint = rnaMitochondrialConstraintFactory.build({ oe_upper: 0.2699999 })
       const tree = renderer.create(
         <BrowserRouter>
           <ConstraintTable

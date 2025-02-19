@@ -207,6 +207,77 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
 </table>
 `;
 
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -311,6 +382,121 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "exac" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -1164,6 +1350,77 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -1268,6 +1525,121 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -2121,6 +2493,77 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -2225,6 +2668,121 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -3086,6 +3644,77 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -3190,6 +3819,121 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -4051,6 +4795,77 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -4155,6 +4970,121 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -5016,6 +5946,77 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -5120,6 +6121,121 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -5981,6 +7097,77 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -6092,6 +7279,121 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
   Constraint is not available for mitochondrial transcripts
@@ -6138,7 +7440,23 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2
@@ -6194,7 +7512,23 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (controls/biobanks)
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (controls/biobanks)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
@@ -6250,7 +7584,23 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-cancer)
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-cancer)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-cancer)
@@ -6306,7 +7656,23 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-neuro)
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-neuro)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-neuro)
@@ -6362,7 +7728,23 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-TOPMed)
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-TOPMed)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
@@ -6418,7 +7800,23 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 </p>
 `;
 
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-v2)
+  .
+</p>
+`;
+
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+<p>
+  Constraint not yet available for 
+  gnomAD v3.1.2 (non-v2)
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
   Constraint not yet available for 
   gnomAD v3.1.2 (non-v2)
@@ -7274,6 +8672,77 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -7378,6 +8847,121 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -8231,6 +9815,77 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -8335,6 +9990,121 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -9188,6 +10958,77 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -9292,6 +11133,121 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -10153,6 +12109,77 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -10257,6 +12284,121 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -11118,6 +13260,77 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -11222,6 +13435,121 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
@@ -12075,6 +14403,77 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
 </table>
 `;
 
+exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        RNA variant
+      </th>
+      <td>
+        22.2
+      </td>
+      <td>
+        1.10
+      </td>
+      <td>
+        o/e = 
+        0.33
+         (
+        0.31
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.27
+        </span>
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <table
   className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
@@ -12179,6 +14578,121 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
         0.60
          - 
         0.90
+        )
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+<table
+  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Category
+      </th>
+      <th
+        scope="col"
+      >
+         
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Expected
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          Observed
+        </span>
+      </th>
+      <th
+        scope="col"
+      >
+        Constraint metrics
+      </th>
+    </tr>
+  </thead>
+   
+  <tbody>
+    <tr>
+      <th
+        scope="row"
+      >
+        Synonymous
+      </th>
+      <td>
+        0.23
+      </td>
+      <td>
+        0.22
+      </td>
+      <td>
+        o/e = 
+        0.91
+         (
+        0.80
+         - 
+        0.95
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        Missense
+      </th>
+      <td>
+        0.34
+      </td>
+      <td>
+        0.33
+      </td>
+      <td>
+        o/e = 
+        0.89
+         (
+        0.80
+         - 
+        0.99
+        )
+      </td>
+    </tr>
+    <tr>
+      <th
+        scope="row"
+      >
+        pLoF
+      </th>
+      <td>
+        0.12
+      </td>
+      <td>
+        0.11
+      </td>
+      <td>
+        o/e = 
+        0.79
+         (
+        0.60
+         - 
+        <span
+          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+        >
+          0.06
+        </span>
         )
       </td>
     </tr>
