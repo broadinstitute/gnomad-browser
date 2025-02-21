@@ -68,7 +68,12 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
 
   if (geneOrTranscript.chrom === 'M') {
     if (isGene(geneOrTranscript)) {
-      return <MitochondrialConstraintTable constraint={geneOrTranscript.mitochondrial_constraint} />
+      return (
+        <MitochondrialConstraintTable
+          constraint={geneOrTranscript.mitochondrial_constraint}
+          transcript={geneOrTranscript.transcripts[0]}
+        />
+      )
     }
     return <p>Constraint is not available for mitochondrial transcripts</p>
   }
