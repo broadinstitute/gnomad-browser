@@ -141,367 +141,415 @@ exports[`ConstraintTable with "exac" dataset selected with a minimal transcript 
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -1284,367 +1332,415 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal tr
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -2427,367 +2523,415 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal tran
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -3578,367 +3722,415 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a min
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -4729,367 +4921,415 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -5880,367 +6120,415 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -7031,367 +7319,415 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -8606,367 +8942,415 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal transc
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -9749,367 +10133,415 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a minima
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -10892,367 +11324,415 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal t
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -12043,367 +12523,415 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -13194,367 +13722,415 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
@@ -14337,367 +14913,415 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal tra
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        0.35
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        RNA variant
-      </th>
-      <td>
-        22.2
-      </td>
-      <td>
-        1.10
-      </td>
-      <td>
-        o/e = 
-        0.33
-         (
-        0.31
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.27
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        0.90
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
-<table
-  className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
->
-  <thead>
-    <tr>
-      <th
-        scope="col"
-      >
-        Category
-      </th>
-      <th
-        scope="col"
-      >
-         
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 dIBzV"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
         >
-          Expected
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        <span
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
+          Category
+        </th>
+        <th
+          scope="col"
         >
-          Observed
-        </span>
-      </th>
-      <th
-        scope="col"
-      >
-        Constraint metrics
-      </th>
-    </tr>
-  </thead>
-   
-  <tbody>
-    <tr>
-      <th
-        scope="row"
-      >
-        Synonymous
-      </th>
-      <td>
-        0.23
-      </td>
-      <td>
-        0.22
-      </td>
-      <td>
-        o/e = 
-        0.91
-         (
-        0.80
-         - 
-        0.95
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        Missense
-      </th>
-      <td>
-        0.34
-      </td>
-      <td>
-        0.33
-      </td>
-      <td>
-        o/e = 
-        0.89
-         (
-        0.80
-         - 
-        0.99
-        )
-      </td>
-    </tr>
-    <tr>
-      <th
-        scope="row"
-      >
-        pLoF
-      </th>
-      <td>
-        0.12
-      </td>
-      <td>
-        0.11
-      </td>
-      <td>
-        o/e = 
-        0.79
-         (
-        0.60
-         - 
-        <span
-          className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
         >
-          0.06
-        </span>
-        )
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 dyQDWM"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
