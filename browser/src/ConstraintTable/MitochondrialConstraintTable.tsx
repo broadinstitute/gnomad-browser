@@ -3,8 +3,10 @@ import {
   MitochondrialGeneConstraint,
   ProteinMitochondrialGeneConstraint,
   RNAMitochondrialGeneConstraint,
+  GeneTranscript,
 } from '../GenePage/GenePage'
 import { BaseTable, TooltipAnchor } from '@gnomad/ui'
+import Link from '../Link'
 import { ConstraintHighlight } from './constraintMetrics'
 
 const isProteinMitochondrialGeneConstraint = (
@@ -138,45 +140,57 @@ const RNAConstraintMetrics = ({ constraint }: { constraint: RNAMitochondrialGene
 
 const MitochondrialConstraintTable = ({
   constraint,
+  transcript,
 }: {
   constraint: MitochondrialGeneConstraint | null
+  transcript: GeneTranscript | null
 }) => {
   if (constraint === null) {
     return <p>Constraint is not available on this gene</p>
   }
 
   return (
-    // @ts-expect-error
-    <BaseTable>
-      <thead>
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">
-            {' '}
-            <>
-              {/* @ts-expect-error */}
-              <TooltipAnchor tooltip="Sum of maximum heteroplasmy of expected SNVs in gene">
-                <span>Expected</span>
-              </TooltipAnchor>
-            </>
-          </th>
-          <th scope="col">
-            <>
-              {/* @ts-expect-error */}
-              <TooltipAnchor tooltip="Sum of maximum heteroplasmy of observed SNVs in gene">
-                <span>Observed</span>
-              </TooltipAnchor>
-            </>
-          </th>
-          <th scope="col">Constraint metrics</th>
-        </tr>
-      </thead>{' '}
-      {isProteinMitochondrialGeneConstraint(constraint) ? (
-        <ProteinConstraintMetrics constraint={constraint} />
-      ) : (
-        <RNAConstraintMetrics constraint={constraint} />
+    <>
+      {/* @ts-expect-error */}
+      <BaseTable>
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">
+              {' '}
+              <>
+                {/* @ts-expect-error */}
+                <TooltipAnchor tooltip="Sum of maximum heteroplasmy of expected SNVs in gene">
+                  <span>Expected</span>
+                </TooltipAnchor>
+              </>
+            </th>
+            <th scope="col">
+              <>
+                {/* @ts-expect-error */}
+                <TooltipAnchor tooltip="Sum of maximum heteroplasmy of observed SNVs in gene">
+                  <span>Observed</span>
+                </TooltipAnchor>
+              </>
+            </th>
+            <th scope="col">Constraint metrics</th>
+          </tr>
+        </thead>
+        {isProteinMitochondrialGeneConstraint(constraint) ? (
+          <ProteinConstraintMetrics constraint={constraint} />
+        ) : (
+          <RNAConstraintMetrics constraint={constraint} />
+        )}
+      </BaseTable>
+      {transcript !== null && (
+        <>
+          Constraint metrics based on transcript{' '}
+          <Link to={`/transcript/${transcript.transcript_id}`}>
+            {transcript.transcript_id}.{transcript.transcript_version}
+          </Link>
+        </>
       )}
-    </BaseTable>
+    </>
   )
 }
 
