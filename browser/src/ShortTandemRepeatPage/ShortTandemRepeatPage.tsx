@@ -90,6 +90,8 @@ export type PlotRange = {
   stop: number
 }
 
+export type RepeatUnitClassification = 'benign' | 'pathogenic' | 'unknown'
+
 export type ShortTandemRepeat = {
   id: string
   gene: {
@@ -115,7 +117,7 @@ export type ShortTandemRepeat = {
   reference_repeat_unit: string
   repeat_units: {
     repeat_unit: string
-    classification: string
+    classification: RepeatUnitClassification
   }[]
   allele_size_distribution: AlleleSizeDistributionCohort[]
   genotype_distribution: GenotypeDistributionCohort[]

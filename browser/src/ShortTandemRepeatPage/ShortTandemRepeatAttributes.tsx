@@ -4,31 +4,32 @@ import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
-import { ShortTandemRepeat } from './ShortTandemRepeatPage'
+import { ShortTandemRepeat, RepeatUnitClassification } from './ShortTandemRepeatPage'
 
 type ShortTandemRepeatRepeatUnitsProps = {
   shortTandemRepeat: ShortTandemRepeat
 }
 
 const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRepeatUnitsProps) => {
-  const repeatUnitsByClassification: Record<string, string[]> = {}
+  const repeatUnitsByClassification: Partial<Record<RepeatUnitClassification, string[]>> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
     if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
       repeatUnitsByClassification[repeatUnit.classification] = []
     }
-    repeatUnitsByClassification[repeatUnit.classification].push(repeatUnit.repeat_unit)
+    repeatUnitsByClassification[repeatUnit.classification]!.push(repeatUnit.repeat_unit)
   })
 
   if (
-    !(repeatUnitsByClassification as any).pathogenic &&
-    !(repeatUnitsByClassification as any).benign
+    !repeatUnitsByClassification.pathogenic &&
+    !repeatUnitsByClassification.benign &&
+    repeatUnitsByClassification.unknown
   ) {
     return (
       <AttributeListItem
-        label={`Repeat unit${(repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''}`}
+        label={`Repeat unit${repeatUnitsByClassification.unknown.length > 1 ? 's' : ''}`}
       >
         <InlineList
-          items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: string) => (
+          items={repeatUnitsByClassification.unknown.map((repeatUnit: string) => (
             <span>
               {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
               shortTandemRepeat.repeat_units.length > 1
@@ -36,28 +37,26 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
                 : repeatUnit}
             </span>
           ))}
-          label={`Repeat unit${(repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''}`}
+          label={`Repeat unit${repeatUnitsByClassification.unknown.length > 1 ? 's' : ''}`}
         />
       </AttributeListItem>
     )
   }
 
   if (
-    (repeatUnitsByClassification as any).pathogenic &&
-    (repeatUnitsByClassification as any).pathogenic.length === 1 &&
-    !(repeatUnitsByClassification as any).benign &&
-    !(repeatUnitsByClassification as any).unknown
+    repeatUnitsByClassification.pathogenic &&
+    repeatUnitsByClassification.pathogenic.length === 1 &&
+    repeatUnitsByClassification.benign &&
+    repeatUnitsByClassification.unknown
   ) {
     return (
       <>
-        {(repeatUnitsByClassification as any).pathogenic && (
+        {repeatUnitsByClassification.pathogenic && (
           <AttributeListItem
-            label={`Repeat unit${
-              (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
-            }`}
+            label={`Repeat unit${repeatUnitsByClassification.pathogenic.length > 1 ? 's' : ''}`}
           >
             <InlineList
-              items={(repeatUnitsByClassification as any).pathogenic.map((repeatUnit: string) => (
+              items={repeatUnitsByClassification.pathogenic.map((repeatUnit: string) => (
                 <span>
                   {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                   shortTandemRepeat.repeat_units.length > 1
@@ -66,7 +65,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
                 </span>
               ))}
               label={`Pathogenic repeat unit${
-                (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
+                repeatUnitsByClassification.pathogenic.length > 1 ? 's' : ''
               }`}
             />
           </AttributeListItem>
@@ -77,15 +76,15 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
 
   return (
     <>
-      {(repeatUnitsByClassification as any).pathogenic && (
+      {repeatUnitsByClassification.pathogenic && (
         <AttributeListItem
           label={`Pathogenic repeat unit${
-            (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
+            repeatUnitsByClassification.pathogenic.length > 1 ? 's' : ''
           }`}
           tooltip="These repeat units have been reported in the literature as pathogenic when they expand beyond a certain threshold."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).pathogenic.map((repeatUnit: string) => (
+            items={repeatUnitsByClassification.pathogenic.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1
@@ -94,20 +93,18 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
               </span>
             ))}
             label={`Pathogenic repeat unit${
-              (repeatUnitsByClassification as any).pathogenic.length > 1 ? 's' : ''
+              repeatUnitsByClassification.pathogenic.length > 1 ? 's' : ''
             }`}
           />
         </AttributeListItem>
       )}
-      {(repeatUnitsByClassification as any).benign && (
+      {repeatUnitsByClassification.benign && (
         <AttributeListItem
-          label={`Benign repeat unit${
-            (repeatUnitsByClassification as any).benign.length > 1 ? 's' : ''
-          }`}
+          label={`Benign repeat unit${repeatUnitsByClassification.benign.length > 1 ? 's' : ''}`}
           tooltip="These repeat units are regarded in the literature as benign, even when expanded."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).benign.map((repeatUnit: string) => (
+            items={repeatUnitsByClassification.benign.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1
@@ -115,21 +112,17 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
                   : repeatUnit}
               </span>
             ))}
-            label={`Benign repeat unit${
-              (repeatUnitsByClassification as any).benign.length > 1 ? 's' : ''
-            }`}
+            label={`Benign repeat unit${repeatUnitsByClassification.benign.length > 1 ? 's' : ''}`}
           />
         </AttributeListItem>
       )}
-      {(repeatUnitsByClassification as any).unknown && (
+      {repeatUnitsByClassification.unknown && (
         <AttributeListItem
-          label={`Other repeat unit${
-            (repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''
-          }`}
+          label={`Other repeat unit${repeatUnitsByClassification.unknown.length > 1 ? 's' : ''}`}
           tooltip="These are the other repeat units detected at this locus within gnomAD samples by the call_non_ref_pathogenic_motifs.py script."
         >
           <InlineList
-            items={(repeatUnitsByClassification as any).unknown.map((repeatUnit: string) => (
+            items={repeatUnitsByClassification.unknown.map((repeatUnit: string) => (
               <span>
                 {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
                 shortTandemRepeat.repeat_units.length > 1
@@ -137,9 +130,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
                   : repeatUnit}
               </span>
             ))}
-            label={`Other repeat unit${
-              (repeatUnitsByClassification as any).unknown.length > 1 ? 's' : ''
-            }`}
+            label={`Other repeat unit${repeatUnitsByClassification.unknown.length > 1 ? 's' : ''}`}
           />
         </AttributeListItem>
       )}
