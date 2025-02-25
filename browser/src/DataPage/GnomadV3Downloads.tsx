@@ -652,6 +652,49 @@ const GnomadV3Downloads = () => (
         </ListItem>
       </FileList>
     </DownloadsSection>
+
+    <DownloadsSection>
+      <SectionTitle id="v3-mito-constraint">Mitochondrial constraint</SectionTitle>
+      <p>
+        For more information about mitochondrial constraint, see {/* @ts-expect-error */}
+        <ExternalLink href="https://doi.org/10.1038/s41586-024-08048-x">
+          <em>Quantifying constraint in the human mitochondrial genome.</em> Nature 635, 390–397
+          (2024)
+        </ExternalLink>
+        .
+      </p>
+      <FileList>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Mitochondrial gene constraint README"
+            path="/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint_README.txt"
+            includeAzure={false}
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Mitochondrial regional constraint README"
+            path="/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint_README.txt"
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Mitochondrial gene constraint TSV"
+            path="/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint.tsv"
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Mitochondrial regional constraint TSV"
+            path="/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint.tsv"
+          />
+        </ListItem>
+      </FileList>
+    </DownloadsSection>
   </>
 )
 
