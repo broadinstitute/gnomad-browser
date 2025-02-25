@@ -9,8 +9,6 @@ import AustralianGeneticDiversityDatabaseLogo from '../about/federation/Australi
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import CanadaGnomadLogo from '../about/federation/CanadaGnomadLogo.png'
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
-import ChinaGnomadLogo from '../about/federation/ChinaGnomadLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import EuropeanGenomePhenomeArchiveLogo from '../about/federation/EuropeanGenomePhenomeArchiveLogo.png'
 // @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import InstituteForGenomicsStatisticsAndBioinformaticsLogo from '../about/federation/InsituteForGenomicsStatisticsAndBioinformaticsLogo.png'
@@ -134,7 +132,7 @@ const datasets: Dataset[] = [
     samples: '25,000',
     source: 'Qatar Biobank',
     link: 'https://www.qphi.org.qa/',
-    lead: 'Chadi Saad',
+    lead: 'Hamdi Mbarek',
   },
   {
     country: 'Singapore',
@@ -183,7 +181,7 @@ export default () => (
       <StatsTable>
         <thead>
           <StatsTableHeaderRow>
-            <th>Country</th>
+            <th>Project Location</th>
             <th>Samples</th>
             <th>Source</th>
             <th>Lead</th>
@@ -217,7 +215,6 @@ export default () => (
     <CenteredContainer>
       <LogoContainer>
         <SingleLogo alt="gnomAD Canada logo" src={CanadaGnomadLogo} />
-        <SingleLogo alt="gnomAD China logo" src={ChinaGnomadLogo} />
         <SingleLogo
           alt="Australian Genetic Diversity Database logo"
           src={AustralianGeneticDiversityDatabaseLogo}
