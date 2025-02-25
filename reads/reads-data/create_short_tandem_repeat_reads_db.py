@@ -81,7 +81,6 @@ def create_short_tandem_repeat_reads_db(input_path, output_path):
 
     db.execute("CREATE INDEX `id_idx` ON `reads` (`id`)")
     for locus, reads in reads_data.items():
-        print(locus)
         db.executemany(
             """
             INSERT INTO `reads` VALUES (
