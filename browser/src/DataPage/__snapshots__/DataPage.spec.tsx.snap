@@ -15932,6 +15932,217 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
+            href="#v3-mito-constraint"
+            id="v3-mito-constraint"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Mitochondrial constraint
+        </h2>
+      </span>
+      <p>
+        For more information about mitochondrial constraint, see 
+        <a
+          className="c11"
+          href="https://doi.org/10.1038/s41586-024-08048-x"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <em>
+            Quantifying constraint in the human mitochondrial genome.
+          </em>
+           Nature 635, 390–397 (2024)
+        </a>
+        .
+      </p>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            Mitochondrial gene constraint README
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mitochondrial gene constraint README from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial gene constraint README from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Mitochondrial regional constraint README
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mitochondrial regional constraint README from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial regional constraint README from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial regional constraint README from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Mitochondrial gene constraint TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mitochondrial gene constraint TSV from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial gene constraint TSV from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial gene constraint TSV from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            Mitochondrial regional constraint TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mitochondrial regional constraint TSV from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial regional constraint TSV from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial regional constraint TSV from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/mito_constraint/mito_regional_constraint.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
     <span
       className="c6"
     >
