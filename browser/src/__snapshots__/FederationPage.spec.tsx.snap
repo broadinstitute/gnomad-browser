@@ -275,7 +275,7 @@ exports[`Federation Page has no unexpected changes 1`] = `
           className="c6"
         >
           <th>
-            Country
+            Project Location
           </th>
           <th>
             Samples
@@ -477,7 +477,7 @@ exports[`Federation Page has no unexpected changes 1`] = `
             </a>
           </td>
           <td>
-            Chadi Saad
+            Hamdi Mbarek
           </td>
         </tr>
         <tr>
@@ -550,11 +550,6 @@ exports[`Federation Page has no unexpected changes 1`] = `
     >
       <img
         alt="gnomAD Canada logo"
-        className="c10"
-        src="test-file-stub"
-      />
-      <img
-        alt="gnomAD China logo"
         className="c10"
         src="test-file-stub"
       />
