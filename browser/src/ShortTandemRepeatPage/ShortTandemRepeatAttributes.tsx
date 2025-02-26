@@ -46,8 +46,8 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
   if (
     repeatUnitsByClassification.pathogenic &&
     repeatUnitsByClassification.pathogenic.length === 1 &&
-    repeatUnitsByClassification.benign &&
-    repeatUnitsByClassification.unknown
+    !repeatUnitsByClassification.benign &&
+    !repeatUnitsByClassification.unknown
   ) {
     return (
       <>
