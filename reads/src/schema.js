@@ -7,6 +7,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLInputObjectType,
+  GraphQLFloat,
 } = require('graphql')
 
 const { variantDatasets, shortTandemRepeatDatasets } = require('./datasets')
@@ -108,6 +109,8 @@ const ShortTandemRepeatReadType = new GraphQLObjectType({
     age: { type: GraphQLString },
     pcr_protocol: { type: new GraphQLNonNull(GraphQLString) },
     path: { type: new GraphQLNonNull(GraphQLString) },
+    quality_description: { type: new GraphQLNonNull(GraphQLString) },
+    q_score: { type: new GraphQLNonNull(GraphQLFloat) },
   },
 })
 
@@ -146,12 +149,22 @@ const ShortTandemRepeatReadsAlleleFilterType = new GraphQLInputObjectType({
   },
 })
 
+const ShortTandemRepeatReadsQScoreBinFilterType = new GraphQLInputObjectType({
+  name: 'ShortTandemRepeatReadsQScoreBinFilterType',
+  fields: {
+    min: { type: GraphQLFloat },
+    max: { type: GraphQLFloat },
+  },
+})
+
 const ShortTandemRepeatReadsFilterType = new GraphQLInputObjectType({
   name: 'ShortTandemRepeatReadsFilter',
   fields: {
     population: { type: GraphQLString },
     sex: { type: GraphQLString },
     alleles: { type: new GraphQLList(new GraphQLNonNull(ShortTandemRepeatReadsAlleleFilterType)) },
+    q_score: { type: ShortTandemRepeatReadsQScoreBinFilterType },
+    quality_description: { type: GraphQLString },
   },
 })
 

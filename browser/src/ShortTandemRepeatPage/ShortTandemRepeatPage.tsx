@@ -1,4 +1,3 @@
-import { max, min } from 'd3-array'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
@@ -14,8 +13,16 @@ import ShortTandemRepeatAgeDistributionPlot from './ShortTandemRepeatAgeDistribu
 import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssociatedDiseasesTable'
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import ShortTandemRepeatAlleleSizeDistributionPlot from './ShortTandemRepeatAlleleSizeDistributionPlot'
-import ShortTandemRepeatGenotypeDistributionPlot from './ShortTandemRepeatGenotypeDistributionPlot'
+import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
+import ShortTandemRepeatAlleleSizeDistributionPlot, {
+  ColorBy,
+  Sex,
+  ScaleType,
+  AlleleSizeDistributionItem,
+} from './ShortTandemRepeatAlleleSizeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionPlot, {
+  Bin as GenotypeBin,
+} from './ShortTandemRepeatGenotypeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
 import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatReads from './ShortTandemRepeatReads'
@@ -23,51 +30,67 @@ import {
   getSelectedAlleleSizeDistribution,
   getSelectedGenotypeDistribution,
   getGenotypeDistributionPlotAxisLabels,
+  maxAlleleSizeDistributionRepeats,
+  maxGenotypeDistributionRepeats,
+  genotypeRepunitPairs,
 } from './shortTandemRepeatHelpers'
 import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentRepeatSection'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { GenotypeQuality } from './qualityDescription'
+import { QScoreBin } from './qScore'
 
-type ShortTandemRepeatRepeatUnit = {
-  repeat_unit: string
+type ShortTandemRepeatReferenceRegion = {
+  chrom: string
+  start: number
+  stop: number
+}
+
+export type AlleleSizeDistributionCohort = {
+  ancestry_group: PopulationId
+  sex: Sex
+  repunit: string
+  quality_description: GenotypeQuality
+  q_score: QScoreBin
+  distribution: AlleleSizeDistributionItem[]
+}
+
+export type GenotypeDistributionItem = {
+  short_allele_repunit_count: number
+  long_allele_repunit_count: number
+  frequency: number
+}
+
+export type GenotypeDistributionCohort = {
+  ancestry_group: string
+  sex: Sex
+  short_allele_repunit: string
+  long_allele_repunit: string
+  quality_description: GenotypeQuality
+  q_score: QScoreBin
+  distribution: GenotypeDistributionItem[]
+}
+
+export type AgeDistributionItem = {
+  age_range: [number | null, number | null]
   distribution: number[][]
-  populations: {
-    id: string
-    distribution: number[][]
-  }[]
 }
 
 export type ShortTandemRepeatAdjacentRepeat = {
   id: string
-  reference_region: {
-    chrom: string
-    start: number
-    stop: number
-  }
+  reference_region: ShortTandemRepeatReferenceRegion
   reference_repeat_unit: string
   repeat_units: string[]
-  allele_size_distribution: {
-    distribution: number[][]
-    populations: {
-      id: string
-      distribution: number[][]
-    }[]
-    repeat_units: ShortTandemRepeatRepeatUnit[]
-  }
-  genotype_distribution: {
-    distribution: number[][]
-    populations: {
-      id: string
-      distribution: number[][]
-    }[]
-    repeat_units: {
-      repeat_units: string[]
-      distribution: number[][]
-      populations: {
-        id: string
-        distribution: number[][]
-      }[]
-    }[]
-  }
+  allele_size_distribution: AlleleSizeDistributionCohort[]
+  genotype_distribution: GenotypeDistributionCohort[]
 }
+
+export type PlotRange = {
+  label: string
+  start: number
+  stop: number
+}
+
+export type RepeatUnitClassification = 'benign' | 'pathogenic' | 'unknown'
 
 export type ShortTandemRepeat = {
   id: string
@@ -89,39 +112,16 @@ export type ShortTandemRepeat = {
     notes: string | null
   }[]
   stripy_id: string | null
-  reference_region: {
-    chrom: string
-    start: number
-    stop: number
-  }
+  main_reference_region: ShortTandemRepeatReferenceRegion
+  reference_regions: ShortTandemRepeatReferenceRegion[]
   reference_repeat_unit: string
   repeat_units: {
     repeat_unit: string
-    classification: string
+    classification: RepeatUnitClassification
   }[]
-  allele_size_distribution: {
-    distribution: number[][]
-    populations: {
-      id: string
-      distribution: number[][]
-    }[]
-    repeat_units: ShortTandemRepeatRepeatUnit[]
-  }
-  genotype_distribution: {
-    distribution: number[][]
-    populations: {
-      id: string
-      distribution: number[][]
-    }[]
-    repeat_units: {
-      repeat_units: string[]
-      distribution: number[][]
-      populations: {
-        id: string
-        distribution: number[][]
-      }[]
-    }[]
-  }
+  allele_size_distribution: AlleleSizeDistributionCohort[]
+  genotype_distribution: GenotypeDistributionCohort[]
+  age_distribution: AgeDistributionItem[]
   adjacent_repeats: ShortTandemRepeatAdjacentRepeat[]
 }
 
@@ -140,50 +140,55 @@ const FlexWrapper = styled.div`
   width: 100%;
 `
 
-const parseCombinedPopulationId = (combinedPopulationId: any) => {
-  let population
-  let sex
-  if (combinedPopulationId.includes('_')) {
-    ;[population, sex] = combinedPopulationId.split('_')
-  } else if (combinedPopulationId === 'XX' || combinedPopulationId === 'XY') {
-    population = null
-    sex = combinedPopulationId
-  } else {
-    population = combinedPopulationId
-    sex = null
-  }
-  return { population, sex }
-}
-
 type ShortTandemRepeatPageProps = {
   datasetId: DatasetId
   shortTandemRepeat: ShortTandemRepeat
 }
 
+// Stacked bar plots only make sense when the y scale factor stays constant
+// throughout, so log scale is only allowed when there's only one bar per
+// column, that is, when not breaking down the data into subsets.
+const logScaleAllowed = (colorBy: ColorBy | '') => colorBy === ''
+
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
-  const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
-    shortTandemRepeat.allele_size_distribution.repeat_units.length === 1
-      ? shortTandemRepeat.allele_size_distribution.repeat_units[0].repeat_unit
+  const { allele_size_distribution } = shortTandemRepeat
+
+  const alleleSizeDistributionRepunits = [
+    ...new Set(allele_size_distribution.map((cohort) => cohort.repunit)),
+  ].sort()
+  const genotypeDistributionRepunitPairs = genotypeRepunitPairs(shortTandemRepeat)
+
+  const defaultAlleleSizeRepunit =
+    alleleSizeDistributionRepunits.length === 1 ? alleleSizeDistributionRepunits[0] : ''
+  const defaultGenotypeDistributionRepunits =
+    genotypeDistributionRepunitPairs.length === 1 ? genotypeDistributionRepunitPairs[0] : ''
+  const defaultDisease =
+    shortTandemRepeat.associated_diseases.length > 0
+      ? shortTandemRepeat.associated_diseases[0].name
       : ''
-  )
 
-  const [selectedPopulationId, setSelectedPopulationId] = useState('')
-  const [selectedScaleType, setSelectedScaleType] = useState('linear')
+  const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | ''>('')
+  const [selectedSex, setSelectedSex] = useState<Sex | ''>('')
+  const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
+  const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | ''>('')
 
+  const setSelectedColorBy = (newColorBy: ColorBy | '') => {
+    if (selectedScaleType === 'log' && !logScaleAllowed(newColorBy)) {
+      setSelectedScaleType('linear')
+    }
+    rawSetSelectedColorBy(newColorBy)
+  }
+
+  const [selectedAlleleSizeRepeatUnit, setSelectedAlleleSizeRepeatUnit] =
+    useState<string>(defaultAlleleSizeRepunit)
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
-    useState(
-      shortTandemRepeat.genotype_distribution.repeat_units.length === 1
-        ? shortTandemRepeat.genotype_distribution.repeat_units[0].repeat_units.join(' / ')
-        : ''
-    )
+    useState<string[] | ''>(defaultGenotypeDistributionRepunits)
+  const [selectedDisease, setSelectedDisease] = useState<string>(defaultDisease)
+  const [showAdjacentRepeats, setShowAdjacentRepeats] = useState<boolean>(false)
 
-  const [selectedDisease, setSelectedDisease] = useState(
-    shortTandemRepeat.associated_diseases[0].name
-  )
-
-  const [showAdjacentRepeats, setShowAdjacentRepeats] = useState(false)
-
-  const populationIds = shortTandemRepeat.allele_size_distribution.populations.map((pop) => pop.id)
+  const populations = [
+    ...new Set(shortTandemRepeat.allele_size_distribution.map((cohort) => cohort.ancestry_group)),
+  ].sort()
 
   const allRepeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
@@ -196,16 +201,14 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   // This uses repeat units from shortTandemRepeat.allele_size_distribution.repeat_units because
   // shortTandemRepeat.repeat_units may include repeat units that do not appear in gnomAD.
   const repeatUnitsFoundInGnomad = new Set(
-    shortTandemRepeat.allele_size_distribution.repeat_units.map(
-      (repeatUnit) => repeatUnit.repeat_unit
-    )
+    shortTandemRepeat.allele_size_distribution.map((cohort) => cohort.repunit)
   )
 
   const repeatUnitsFoundInGnomadByClassification: Record<string, string[]> = {}
   Object.keys(allRepeatUnitsByClassification).forEach((classification) => {
     repeatUnitsFoundInGnomadByClassification[classification] = allRepeatUnitsByClassification[
       classification
-    ].filter((repeatUnit: any) => repeatUnitsFoundInGnomad.has(repeatUnit))
+    ].filter((repeatUnit) => repeatUnitsFoundInGnomad.has(repeatUnit))
   })
 
   const allRepeatUnitsFoundInGnomadArePathogenic = Object.keys(
@@ -224,7 +227,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     ? diseaseToPlot.repeat_size_classifications
     : []
 
-  const plotRanges = repeatSizeClassificationsToPlot.map((classification) => {
+  const plotRanges: PlotRange[] = repeatSizeClassificationsToPlot.map((classification) => {
     return {
       label: classification.classification,
       start: classification.min !== null ? classification.min : 0,
@@ -232,7 +235,19 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     }
   })
 
-  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] = useState(null)
+  const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] =
+    useState<GenotypeBin | null>(null)
+
+  const maxAlleleRepeats = maxAlleleSizeDistributionRepeats(shortTandemRepeat)
+
+  const isRepunitSelectionPathogenic = (
+    selectedRepeatUnits: string[] | '',
+    selectionIndex: number
+  ) =>
+    (selectedRepeatUnits === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
+    (allRepeatUnitsByClassification.pathogenic || []).includes(
+      selectedGenotypeDistributionRepeatUnits[selectionIndex]
+    )
 
   return (
     <>
@@ -259,12 +274,21 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                     STRipy
                   </ExternalLink>
                 </ListItem>
+                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+                <ListItem>
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink
+                    href={`https://strchive.org/database/${shortTandemRepeat.stripy_id}.html`}
+                  >
+                    STRchive
+                  </ExternalLink>
+                </ListItem>
               </List>
             </>
           )}
-          <h2>Related Loci</h2>
+          <h2>TRs in gnomAD</h2>
           <p>
-            <Link to="/short-tandem-repeats">Table of tandem repeat loci in gnomAD</Link>
+            <Link to="/short-tandem-repeats">Known disease-associated TRs </Link>
           </p>
         </ResponsiveSection>
       </FlexWrapper>
@@ -282,26 +306,25 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
         </h2>
         <ShortTandemRepeatAlleleSizeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ maxRepeats: number; alleleSizeDistribution... Remove this comment to see the full error message
-          maxRepeats={
-            shortTandemRepeat.allele_size_distribution.distribution[
-              shortTandemRepeat.allele_size_distribution.distribution.length - 1
-            ][0]
-          }
+          maxRepeats={maxAlleleRepeats}
           alleleSizeDistribution={getSelectedAlleleSizeDistribution(shortTandemRepeat, {
-            selectedPopulationId,
-            selectedRepeatUnit,
+            selectedPopulation,
+            selectedSex,
+            selectedColorBy,
+            selectedRepeatUnit: selectedAlleleSizeRepeatUnit,
           })}
+          colorBy={selectedColorBy}
           repeatUnitLength={
-            selectedRepeatUnit && !selectedRepeatUnit.startsWith('classification')
-              ? selectedRepeatUnit.length
+            selectedAlleleSizeRepeatUnit &&
+            !selectedAlleleSizeRepeatUnit.startsWith('classification')
+              ? selectedAlleleSizeRepeatUnit.length
               : null
           }
           ranges={
-            (selectedRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
-            selectedRepeatUnit === 'classification/pathogenic' ||
+            (selectedAlleleSizeRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
+            selectedAlleleSizeRepeatUnit === 'classification/pathogenic' ||
             ((repeatUnitsFoundInGnomadByClassification as any).pathogenic || []).includes(
-              selectedRepeatUnit
+              selectedAlleleSizeRepeatUnit
             )
               ? plotRanges
               : []
@@ -311,101 +334,100 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         <ControlSection style={{ marginTop: '0.5em' }}>
           <ShortTandemRepeatPopulationOptions
             id={`${shortTandemRepeat.id}-repeat-counts`}
-            populationIds={populationIds}
-            selectedPopulationId={selectedPopulationId}
-            onSelectPopulationId={setSelectedPopulationId}
+            populations={populations}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            setSelectedPopulation={setSelectedPopulation}
+            setSelectedSex={setSelectedSex}
+          />
+          <ShortTandemRepeatColorBySelect
+            id={`${shortTandemRepeat.id}-color-by`}
+            selectedColorBy={selectedColorBy}
+            setSelectedColorBy={setSelectedColorBy}
+            setSelectedScaleType={setSelectedScaleType}
           />
 
-          <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
-            Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
-              value={selectedRepeatUnit}
-              onChange={(e: any) => {
-                setSelectedRepeatUnit(e.target.value)
-              }}
-            >
-              {shortTandemRepeat.allele_size_distribution.repeat_units.length === 1 ? (
-                <>
-                  {shortTandemRepeat.allele_size_distribution.repeat_units.map((repeatUnit) => (
-                    <option key={repeatUnit.repeat_unit} value={repeatUnit.repeat_unit}>
-                      {repeatUnit.repeat_unit}
-                    </option>
+          {alleleSizeDistributionRepunits.length > 1 && (
+            <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
+              Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              <Select
+                id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
+                value={selectedAlleleSizeRepeatUnit}
+                onChange={(e: { target: { value: string } }) => {
+                  setSelectedAlleleSizeRepeatUnit(e.target.value)
+                }}
+              >
+                <option value="">All</option>
+                {Object.keys(allRepeatUnitsByClassification).length > 1 && (
+                  <>
+                    <optgroup label="Grouped by classification">
+                      {['pathogenic', 'benign', 'unknown'].map((classification) => {
+                        const foundInGnomad =
+                          (repeatUnitsFoundInGnomadByClassification[classification] || []).length >
+                          0
+                        return (
+                          <option
+                            key={classification}
+                            value={`classification/${classification}`}
+                            disabled={!foundInGnomad}
+                          >
+                            {foundInGnomad
+                              ? `All ${classification}`
+                              : `All ${classification} (not found in gnomAD)`}
+                          </option>
+                        )
+                      })}
+                    </optgroup>
+                  </>
+                )}
+                {['pathogenic', 'benign', 'unknown']
+                  .filter(
+                    (classification) =>
+                      (allRepeatUnitsByClassification[classification] || []).length > 0
+                  )
+                  .map((classification) => (
+                    <optgroup
+                      key={classification}
+                      label={`${classification.charAt(0).toUpperCase()}${classification.slice(1)}`}
+                    >
+                      {allRepeatUnitsByClassification[classification].map((repeatUnit) => {
+                        const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
+                        const notes = []
+                        if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
+                          notes.push('reference')
+                        }
+                        if (!foundInGnomad) {
+                          notes.push('not found in gnomAD')
+                        }
+                        return (
+                          <option key={repeatUnit} value={repeatUnit} disabled={!foundInGnomad}>
+                            {repeatUnit}
+                            {notes.length > 0 && ` (${notes.join(', ')})`}
+                          </option>
+                        )
+                      })}
+                    </optgroup>
                   ))}
-                </>
-              ) : (
-                <>
-                  <option value="">All</option>
-                  {Object.keys(allRepeatUnitsByClassification).length > 1 && (
-                    <>
-                      <optgroup label="Grouped by classification">
-                        {['pathogenic', 'benign', 'unknown'].map((classification) => {
-                          const foundInGnomad =
-                            (repeatUnitsFoundInGnomadByClassification[classification] || [])
-                              .length > 0
-                          return (
-                            <option
-                              key={classification}
-                              value={`classification/${classification}`}
-                              disabled={!foundInGnomad}
-                            >
-                              {foundInGnomad
-                                ? `All ${classification}`
-                                : `All ${classification} (not found in gnomAD)`}
-                            </option>
-                          )
-                        })}
-                      </optgroup>
-                    </>
-                  )}
-                  {['pathogenic', 'benign', 'unknown']
-                    .filter(
-                      (classification) =>
-                        (allRepeatUnitsByClassification[classification] || []).length > 0
-                    )
-                    .map((classification) => (
-                      <optgroup
-                        key={classification}
-                        label={`${classification.charAt(0).toUpperCase()}${classification.slice(
-                          1
-                        )}`}
-                      >
-                        {allRepeatUnitsByClassification[classification].map((repeatUnit: any) => {
-                          const foundInGnomad = repeatUnitsFoundInGnomad.has(repeatUnit)
-                          const notes = []
-                          if (repeatUnit === shortTandemRepeat.reference_repeat_unit) {
-                            notes.push('reference')
-                          }
-                          if (!foundInGnomad) {
-                            notes.push('not found in gnomAD')
-                          }
-                          return (
-                            <option key={repeatUnit} value={repeatUnit} disabled={!foundInGnomad}>
-                              {repeatUnit}
-                              {notes.length > 0 && ` (${notes.join(', ')})`}
-                            </option>
-                          )
-                        })}
-                      </optgroup>
-                    ))}
-                </>
-              )}
-            </Select>
-          </label>
+              </Select>
+            </label>
+          )}
 
           <label
             htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
           >
-            Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            y-Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
               value={selectedScaleType}
-              onChange={(e: any) => {
+              onChange={(e: { target: { value: ScaleType } }) => {
                 setSelectedScaleType(e.target.value)
               }}
             >
               <option value="linear">Linear</option>
-              <option value="log">Log</option>
+              {logScaleAllowed(selectedColorBy) && <option value="log">Log</option>}
+              <option value="linear-truncated-50">Linear: Truncated at 50</option>
+              <option value="linear-truncated-200">Linear: Truncated at 200</option>
+              <option value="linear-truncated-1000">Linear: Truncated at 1000</option>
             </Select>
           </label>
         </ControlSection>
@@ -419,7 +441,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
                 value={selectedDisease}
-                onChange={(e: any) => {
+                onChange={(e: { target: { value: string } }) => {
                   setSelectedDisease(e.target.value)
                 }}
               >
@@ -436,9 +458,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         )}
 
         {!(
-          (selectedRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
-          selectedRepeatUnit === 'classification/pathogenic' ||
-          ((allRepeatUnitsByClassification as any).pathogenic || []).includes(selectedRepeatUnit)
+          (selectedAlleleSizeRepeatUnit === '' && allRepeatUnitsFoundInGnomadArePathogenic) ||
+          selectedAlleleSizeRepeatUnit === 'classification/pathogenic' ||
+          ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
+            selectedAlleleSizeRepeatUnit
+          )
         ) && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
@@ -452,41 +476,26 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Genotype Distribution <InfoButton topic="str-genotype-distribution" />
         </h2>
         <ShortTandemRepeatGenotypeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ axisLabels: any; maxRepeats: (string | und... Remove this comment to see the full error message
           axisLabels={getGenotypeDistributionPlotAxisLabels(shortTandemRepeat, {
             selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
           })}
-          maxRepeats={[
-            max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              max(d.slice(0, 2))
-            ),
-            max(shortTandemRepeat.genotype_distribution.distribution, (d: any) =>
-              min(d.slice(0, 2))
-            ),
-          ]}
+          maxRepeats={maxGenotypeDistributionRepeats(shortTandemRepeat)}
           genotypeDistribution={getSelectedGenotypeDistribution(shortTandemRepeat, {
             selectedRepeatUnits: selectedGenotypeDistributionRepeatUnits,
-            selectedPopulationId,
+            selectedPopulation,
+            selectedSex,
           })}
           xRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' &&
-              allRepeatUnitsFoundInGnomadArePathogenic) ||
-            ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits.split(' / ')[0]
-            )
+            isRepunitSelectionPathogenic(selectedGenotypeDistributionRepeatUnits, 0)
               ? plotRanges
               : []
           }
           yRanges={
-            (selectedGenotypeDistributionRepeatUnits === '' &&
-              allRepeatUnitsFoundInGnomadArePathogenic) ||
-            ((allRepeatUnitsByClassification as any).pathogenic || []).includes(
-              selectedGenotypeDistributionRepeatUnits.split(' / ')[1]
-            )
+            isRepunitSelectionPathogenic(selectedGenotypeDistributionRepeatUnits, 1)
               ? plotRanges
               : []
           }
-          onSelectBin={(bin: any) => {
+          onSelectBin={(bin: GenotypeBin) => {
             if (bin.xRange[0] !== bin.xRange[1] || bin.yRange[0] !== bin.yRange[1]) {
               setSelectedGenotypeDistributionBin(bin)
             }
@@ -495,15 +504,16 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         <ControlSection style={{ marginTop: '0.5em' }}>
           <ShortTandemRepeatPopulationOptions
             id={`${shortTandemRepeat.id}-genotype-distribution`}
-            populationIds={populationIds}
-            selectedPopulationId={selectedPopulationId}
-            onSelectPopulationId={setSelectedPopulationId}
+            populations={populations}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            setSelectedPopulation={setSelectedPopulation}
+            setSelectedSex={setSelectedSex}
           />
-
           <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
             shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
-            value={selectedGenotypeDistributionRepeatUnits}
-            onChange={setSelectedGenotypeDistributionRepeatUnits}
+            selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
+            setSelectedRepeatUnits={setSelectedGenotypeDistributionRepeatUnits}
           />
         </ControlSection>
         {shortTandemRepeat.associated_diseases.length > 1 && (
@@ -516,7 +526,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
                 value={selectedDisease}
-                onChange={(e: any) => {
+                onChange={(e: { target: { value: string } }) => {
                   setSelectedDisease(e.target.value)
                 }}
               >
@@ -534,11 +544,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
         {((selectedGenotypeDistributionRepeatUnits === '' &&
           !allRepeatUnitsFoundInGnomadArePathogenic) ||
-          !selectedGenotypeDistributionRepeatUnits
-            .split(' / ')
-            .every((repeatUnit) =>
-              ((allRepeatUnitsByClassification as any).pathogenic || []).includes(repeatUnit)
-            )) && (
+          !(selectedGenotypeDistributionRepeatUnits as string[]).every((repeatUnit) =>
+            ((allRepeatUnitsByClassification as any).pathogenic || []).includes(repeatUnit)
+          )) && (
           <p style={{ marginBottom: 0 }}>
             <Badge level="info">Note</Badge> This plot includes non-pathogenic repeat units. Use the
             &ldquo;Repeat units&rdquo; menu to view specific repeat units.
@@ -548,7 +556,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
       {selectedGenotypeDistributionBin && (
         <Modal
-          title={(selectedGenotypeDistributionBin as any).label}
+          title={selectedGenotypeDistributionBin.label}
           size="large"
           // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; title: any; size: "larg... Remove this comment to see the full error message
           initialFocusOnButton={false}
@@ -558,9 +566,11 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         >
           <ShortTandemRepeatGenotypeDistributionBinDetails
             shortTandemRepeatOrAdjacentRepeat={shortTandemRepeat}
-            selectedPopulationId={selectedPopulationId}
-            selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
             bin={selectedGenotypeDistributionBin}
+            selectedRepeatUnits={selectedGenotypeDistributionRepeatUnits}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            repeatUnitPairs={genotypeDistributionRepunitPairs}
           />
         </Modal>
       )}
@@ -570,13 +580,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Age Distribution <InfoButton topic="str-age-distribution" />
         </h2>
         <ShortTandemRepeatAgeDistributionPlot
-          // @ts-expect-error TS(2322) FIXME: Type '{ ageDistribution: any; maxRepeats: number; ... Remove this comment to see the full error message
-          ageDistribution={(shortTandemRepeat as any).age_distribution}
-          maxRepeats={
-            shortTandemRepeat.allele_size_distribution.distribution[
-              shortTandemRepeat.allele_size_distribution.distribution.length - 1
-            ][0]
-          }
+          ageDistribution={shortTandemRepeat.age_distribution}
+          maxRepeats={maxAlleleRepeats}
           ranges={allRepeatUnitsFoundInGnomadArePathogenic ? plotRanges : []}
         />
         {!allRepeatUnitsFoundInGnomadArePathogenic && (
@@ -586,7 +591,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         )}
       </section>
 
-      {shortTandemRepeat.adjacent_repeats.length > 0 && (
+      {false && (
         <section style={{ marginBottom: '3em' }}>
           <h2>
             Adjacent Repeats <InfoButton topic="str-adjacent-repeats" />
@@ -597,11 +602,16 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                 <ShortTandemRepeatAdjacentRepeatSection
                   key={adjacentRepeat.id}
                   adjacentRepeat={adjacentRepeat}
-                  populationIds={populationIds}
-                  selectedPopulationId={selectedPopulationId}
-                  onSelectPopulationId={setSelectedPopulationId}
+                  populations={populations}
+                  selectedPopulation={selectedPopulation}
+                  selectedSex={selectedSex}
+                  selectedColorBy={selectedColorBy}
                   selectedScaleType={selectedScaleType}
-                  onSelectScaleType={setSelectedScaleType}
+                  selectedGenotypeDistributionBin={selectedGenotypeDistributionBin}
+                  setSelectedPopulation={setSelectedPopulation}
+                  setSelectedSex={setSelectedSex}
+                  setSelectedScaleType={setSelectedScaleType}
+                  setSelectedGenotypeDistributionBin={setSelectedGenotypeDistributionBin}
                 />
               )
             })
@@ -623,7 +633,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           Read Data{' '}
           <InfoButton
             topic={
-              shortTandemRepeat.allele_size_distribution.repeat_units.length > 1
+              alleleSizeDistributionRepunits.length > 1
                 ? 'str-read-data-multiple-repeat-units'
                 : 'str-read-data'
             }
@@ -631,18 +641,20 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
         </h2>
         <ControlSection style={{ marginBottom: '1em' }}>
           <ShortTandemRepeatPopulationOptions
-            id={`${shortTandemRepeat.id}-read-data`}
-            populationIds={populationIds}
-            selectedPopulationId={selectedPopulationId}
-            onSelectPopulationId={setSelectedPopulationId}
+            id={`${shortTandemRepeat.id}-genotype-distribution`}
+            populations={populations}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            setSelectedPopulation={setSelectedPopulation}
+            setSelectedSex={setSelectedSex}
           />
         </ControlSection>
         <ShortTandemRepeatReads
           datasetId={datasetId}
           shortTandemRepeat={shortTandemRepeat}
-          filter={{
-            ...parseCombinedPopulationId(selectedPopulationId),
-          }}
+          maxRepeats={maxAlleleRepeats}
+          alleleSizeDistributionRepeatUnits={alleleSizeDistributionRepunits}
+          filter={{ population: selectedPopulation, sex: selectedSex }}
         />
       </section>
     </>
