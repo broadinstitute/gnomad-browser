@@ -41,7 +41,7 @@ tabix -p bed /path/to/gencode.bed.bgz
   ```
   gcloud compute instances create <instance-name> \
     --machine-type e2-standard-8 \
-    --zone <zone> --machine-type
+    --zone <zone>
 
   gcloud compute instances attach-disk <instance-name> \
     --disk <new-disk-name> \
