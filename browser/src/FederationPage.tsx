@@ -84,13 +84,14 @@ const datasets: Dataset[] = [
     country: 'Canada',
     samples: '60,000',
     source: 'Canadian Genomic Data Commons',
+    link: 'https://genomicdatacommons.ca',
     lead: 'Jordan Lerner-Ellis',
   },
   {
     country: 'China',
     samples: '10,000',
-    source: 'China Kadoorie Biobank (>500K)',
-    link: 'https://gnomad.org.cn',
+    source:
+      'Advanced Institute of Information Technology-Juno Genomics joint Center for Mendelian Genomics (AIIT-Juno CMG)',
     lead: 'Xiao Li',
   },
   {
@@ -151,8 +152,7 @@ const datasets: Dataset[] = [
   {
     country: 'UK',
     samples: '50,000',
-    source:
-      'Avon Longitudinal Study of Parents and Children (ALSPC), Born in Bradford, Millennium Cohort Study (MCS), Fenland Study',
+    source: 'TBD',
     link: 'https://www.sanger.ac.uk/',
     lead: 'Vivek Iyer',
   },

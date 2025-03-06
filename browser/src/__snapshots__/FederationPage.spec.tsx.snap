@@ -346,7 +346,12 @@ exports[`Federation Page has no unexpected changes 1`] = `
             60,000
           </td>
           <td>
-            Canadian Genomic Data Commons
+            <a
+              className="c8"
+              href="https://genomicdatacommons.ca"
+            >
+              Canadian Genomic Data Commons
+            </a>
           </td>
           <td>
             Jordan Lerner-Ellis
@@ -360,12 +365,7 @@ exports[`Federation Page has no unexpected changes 1`] = `
             10,000
           </td>
           <td>
-            <a
-              className="c8"
-              href="https://gnomad.org.cn"
-            >
-              China Kadoorie Biobank (&gt;500K)
-            </a>
+            Advanced Institute of Information Technology-Juno Genomics joint Center for Mendelian Genomics (AIIT-Juno CMG)
           </td>
           <td>
             Xiao Li
@@ -530,7 +530,7 @@ exports[`Federation Page has no unexpected changes 1`] = `
               className="c8"
               href="https://www.sanger.ac.uk/"
             >
-              Avon Longitudinal Study of Parents and Children (ALSPC), Born in Bradford, Millennium Cohort Study (MCS), Fenland Study
+              TBD
             </a>
           </td>
           <td>
