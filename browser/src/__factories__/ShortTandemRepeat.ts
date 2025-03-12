@@ -7,7 +7,8 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
 
     reference_repeat_unit = 'CTG',
     repeat_units = [],
-    stripy_id = 'STR1',
+    stripy_id = 'STRIPY1',
+    strchive_id = 'STRCHIVE1',
     adjacent_repeats = [],
   } = params
 
@@ -81,6 +82,7 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
     genotype_distribution,
     age_distribution,
     stripy_id,
+    strchive_id,
     adjacent_repeats,
   }
 })
