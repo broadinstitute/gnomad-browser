@@ -77,6 +77,7 @@ query ${operationName}($strId: String!, $datasetId: DatasetId!) {
       distribution
     }
     stripy_id
+    strchive_id
     adjacent_repeats {
       id
       reference_region {
