@@ -145,6 +145,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 for disease in locus["Diseases"]
             ],
             "stripy_id": locus["STRipyName"] if "STRipyName" in locus else None,
+            "strchive_id": locus["STRchiveName"] if "STRchiveName" in locus else None,
             "main_reference_region": _parse_region_id(locus["MainReferenceRegion"]),
             "reference_regions": _parse_reference_regions(locus["ReferenceRegion"]),
             "reference_repeat_unit": locus["ReferenceRepeatUnit"],
@@ -250,6 +251,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
                 hl.tstruct(age_range=hl.tarray(hl.tint), distribution=hl.tarray(hl.tarray(hl.tint)))
             ),
             stripy_id=hl.tstr,
+            strchive_id=hl.tstr,
             adjacent_repeats=hl.tarray(
                 hl.tstruct(
                     id=hl.tstr,
