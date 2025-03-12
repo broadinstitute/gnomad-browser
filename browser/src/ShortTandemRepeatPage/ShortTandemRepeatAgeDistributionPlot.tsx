@@ -1,12 +1,12 @@
 import { max } from 'd3-array'
 import { scaleBand, scaleLog } from 'd3-scale'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
+import { PlotRange, AgeDistributionItem } from './ShortTandemRepeatPage'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -19,9 +19,9 @@ const GraphWrapper = styled.div`
 const labelProps = {
   fontSize: 14,
   textAnchor: 'middle',
-}
+} as const
 
-const ageRangeLabel = (ageRange: any) => {
+const ageRangeLabel = (ageRange: [number | null, number | null]) => {
   const [minAge, maxAge] = ageRange
 
   if (minAge === null) {
@@ -33,9 +33,15 @@ const ageRangeLabel = (ageRange: any) => {
   return `${minAge}-${maxAge}`
 }
 
+type Props = {
+  ageDistribution: AgeDistributionItem[]
+  maxRepeats: number
+  ranges: PlotRange[]
+  size: { width: number }
+}
+
 const ShortTandemRepeatAgeDistributionPlot = withSize()(
-  // @ts-expect-error TS(2339) FIXME: Property 'ageDistribution' does not exist on type ... Remove this comment to see the full error message
-  ({ ageDistribution, maxRepeats, ranges, size: { width } }) => {
+  ({ ageDistribution, maxRepeats, ranges = [], size: { width } }: Props) => {
     const height = Math.min(width, 300)
 
     const margin = {
@@ -53,7 +59,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
     const yNumBins = ageDistribution.length
 
-    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n: any) => {
+    const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n) => {
       const xBinIndex = Math.floor(n / yNumBins)
       const yBinIndex = n % yNumBins
 
@@ -76,22 +82,19 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
       }
     })
 
-    ageDistribution.forEach((ageBin: any, yBinIndex: any) => {
-      // @ts-expect-error TS(7031) FIXME: Binding element 'repeats' implicitly has an 'any' ... Remove this comment to see the full error message
+    ageDistribution.forEach((ageBin, yBinIndex) => {
       ageBin.distribution.forEach(([repeats, nAlleles]) => {
         const xBinIndex = Math.floor(repeats / xBinSize)
         data[xBinIndex * yNumBins + yBinIndex].count += nAlleles
       })
     })
 
-    const xScale = scaleBand()
-      // @ts-expect-error TS(2345) FIXME: Argument of type 'number[]' is not assignable to p... Remove this comment to see the full error message
+    const xScale = scaleBand<number>()
       .domain(Array.from(Array(xNumBins).keys()))
       .range([0, plotWidth])
     const xBandwidth = xScale.bandwidth()
 
-    const yScale = scaleBand()
-      // @ts-expect-error TS(2345) FIXME: Argument of type 'number[]' is not assignable to p... Remove this comment to see the full error message
+    const yScale = scaleBand<number>()
       .domain(Array.from(Array(yNumBins).keys()))
       .range([plotHeight, 0])
     const yBandwidth = yScale.bandwidth()
@@ -99,7 +102,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
     const xMaxNumLabels = Math.floor(plotWidth / 20)
     const xLabelInterval = Math.max(Math.round(xNumBins / xMaxNumLabels), 1)
 
-    const xTickFormat = (binIndex: any) => {
+    const xTickFormat = (binIndex: number) => {
       if (binIndex % xLabelInterval !== 0) {
         return ''
       }
@@ -111,16 +114,12 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
       return `${binIndex * xBinSize} - ${binIndex * xBinSize + xBinSize - 1}`
     }
 
-    const yTickFormat = (binIndex: any) => {
+    const yTickFormat = (binIndex: number) => {
       return ageRangeLabel(ageDistribution[binIndex].age_range)
     }
 
     const opacityScale = scaleLog()
-      // @ts-expect-error TS(2345) FIXME: Argument of type '(string | number | undefined)[]'... Remove this comment to see the full error message
-      .domain([
-        1,
-        max(ageDistribution, (ageBin: any) => max(ageBin.distribution, (d: any) => d[1])),
-      ])
+      .domain([1, max(ageDistribution, (ageBin) => max(ageBin.distribution, (d) => d[1])) || 2])
       .range([0.1, 1])
 
     return (
@@ -129,7 +128,6 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
           <AxisBottom
             label="Repeats"
             labelOffset={xBinSize === 1 ? 10 : 30}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             scale={xScale}
@@ -153,8 +151,7 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
                       fontSize: 10,
                       textAnchor: 'end',
                       transform: `translate(0, 0), rotate(-40 ${
-                        // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                        xScale(binIndex) + xBandwidth / 2
+                        (xScale(binIndex) || 0) + xBandwidth / 2
                       }, 0)`,
                     }
                   }
@@ -164,7 +161,6 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
           <AxisLeft
             label="Age"
             labelOffset={42}
-            // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
             labelProps={labelProps}
             left={margin.left}
             scale={yScale}
@@ -182,8 +178,8 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left},${margin.top})`}>
             {data
-              .filter((d: any) => d.count !== 0)
-              .map((d: any) => {
+              .filter((d) => d.count !== 0)
+              .map((d) => {
                 return (
                   <React.Fragment key={`${d.xBinIndex}-${d.yBinIndex}`}>
                     <TooltipAnchor
@@ -212,21 +208,19 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 
           <g transform={`translate(${margin.left}, 0)`}>
             {ranges
-              .filter((range: any) => range.start !== range.stop)
-              .filter((range: any) => range.start <= maxRepeats)
-              .map((range: any, rangeIndex: any) => {
+              .filter((range) => range.start !== range.stop)
+              .filter((range) => range.start <= maxRepeats)
+              .map((range, rangeIndex) => {
                 const startBinIndex = Math.floor(range.start / xBinSize)
                 const startX =
-                  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                  xScale(startBinIndex) +
+                  (xScale(startBinIndex) || 0) +
                   ((range.start - startBinIndex * xBinSize) / xBinSize) * xBandwidth
 
                 let stopX
                 if (range.stop <= maxRepeats) {
                   const stopBinIndex = Math.floor(range.stop / xBinSize)
                   stopX =
-                    // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-                    xScale(stopBinIndex) +
+                    (xScale(stopBinIndex) || 0) +
                     ((range.stop - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
                 } else {
                   stopX = plotWidth
@@ -305,28 +299,5 @@ const ShortTandemRepeatAgeDistributionPlot = withSize()(
 )
 
 ShortTandemRepeatAgeDistributionPlot.displayName = 'ShortTandemRepeatAgeDistributionPlot'
-
-ShortTandemRepeatAgeDistributionPlot.propTypes = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ ageDistribution: PropTypes.Requireable<(Pr... Remove this comment to see the full error message
-  ageDistribution: PropTypes.arrayOf(
-    PropTypes.shape({
-      age_range: PropTypes.arrayOf(PropTypes.number).isRequired,
-      distribution: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-    })
-  ),
-  maxRepeats: PropTypes.number.isRequired,
-  ranges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      stop: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
-}
-
-ShortTandemRepeatAgeDistributionPlot.defaultProps = {
-  // @ts-expect-error TS(2322) FIXME: Type '{ ranges: never[]; }' is not assignable to t... Remove this comment to see the full error message
-  ranges: [],
-}
 
 export default ShortTandemRepeatAgeDistributionPlot

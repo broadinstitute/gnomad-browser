@@ -8,8 +8,10 @@ pipeline = Pipeline()
 pipeline.add_task(
     "prepare_short_tandem_repeats",
     prepare_gnomad_v3_short_tandem_repeats,
-    "/gnomad_v3/gnomad_v3_short_tandem_repeats.ht",
-    {"path": "gs://gcp-public-data--gnomad/release/3.1.3/json/gnomAD_STR_distributions__2022_01_20.json.gz"},
+    "/gnomad_v4/gnomad_v4_short_tandem_repeats.ht",
+    {
+        "path": "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/strs/2024_07_24/gnomAD_STR_distributions__gnomad-v2__2024_07_24.json"
+    },
 )
 
 ###############################################

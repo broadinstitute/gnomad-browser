@@ -4,8 +4,8 @@ import { UserVisibleError } from '../errors'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const SHORT_TANDEM_REPEAT_INDICES = {
-  gnomad_r3: 'gnomad_v3_short_tandem_repeats',
-  gnomad_r4: 'gnomad_v3_short_tandem_repeats',
+  gnomad_r3: 'gnomad_v3_short_tandem_repeats-2025-03-12--19-18',
+  gnomad_r4: 'gnomad_v3_short_tandem_repeats-2025-03-12--19-18',
 }
 
 const SUMMARY_FIELDS = [
@@ -14,6 +14,7 @@ const SUMMARY_FIELDS = [
   'value.gene',
   'value.associated_diseases',
   'value.stripy_id',
+  'value.strchive_id',
   'value.reference_region',
   'value.reference_repeat_unit',
 ]
