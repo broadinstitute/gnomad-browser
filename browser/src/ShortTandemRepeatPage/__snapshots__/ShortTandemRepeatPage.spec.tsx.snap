@@ -130,33 +130,138 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -304,7 +409,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -616,7 +722,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -857,7 +964,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -995,33 +1103,138 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -1169,7 +1382,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -1481,7 +1695,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -1722,7 +1937,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -1860,33 +2076,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -2034,7 +2355,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -2346,7 +2668,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -2587,7 +2910,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -2725,33 +3049,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -2899,7 +3328,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -3211,7 +3641,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -3452,7 +3883,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -3590,33 +4022,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -3764,7 +4301,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -4076,7 +4614,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -4317,7 +4856,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -4455,33 +4995,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -4629,7 +5274,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -4941,7 +5587,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -5182,7 +5829,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -5320,33 +5968,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -5494,7 +6247,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -5806,7 +6560,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -6047,7 +6802,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -6185,33 +6941,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -6359,7 +7220,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -6671,7 +7533,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -6912,7 +7775,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -7050,33 +7914,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -7224,7 +8193,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -7536,7 +8506,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -7777,7 +8748,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -7915,33 +8887,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -8089,7 +9166,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -8401,7 +9479,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -8642,7 +9721,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -8780,33 +9860,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -8954,7 +10139,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -9266,7 +10452,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -9507,7 +10694,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -9645,33 +10833,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -9819,7 +11112,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -10131,7 +11425,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -10372,7 +11667,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -10510,33 +11806,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -10684,7 +12085,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -10996,7 +12398,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -11237,7 +12640,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -11375,33 +12779,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -11549,7 +13058,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -11861,7 +13371,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -12102,7 +13613,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -12240,33 +13752,138 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -12414,7 +14031,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -12726,7 +14344,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -12967,7 +14586,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -13105,33 +14725,138 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -13279,7 +15004,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -13591,7 +15317,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -13832,7 +15559,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -13970,33 +15698,138 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -14144,7 +15977,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -14456,7 +16290,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -14697,7 +16532,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -14835,33 +16671,138 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -15009,7 +16950,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -15321,7 +17263,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -15562,7 +17505,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />
@@ -15700,33 +17644,138 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
     </ShortTandemRepeatPage__ResponsiveSection>
     <ShortTandemRepeatPage__ResponsiveSection>
-      <React.Fragment>
-        <h2>
-          External Resources
-        </h2>
-        <List>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://stripy.org/database/STR1"
-            >
-              STRipy
-            </Link__ExternalLink>
-          </List__ListItem>
-          <List__ListItem>
-            <Link__ExternalLink
-              href="https://strchive.org/database/STR1.html"
-            >
-              STRchive
-            </Link__ExternalLink>
-          </List__ListItem>
-        </List>
-      </React.Fragment>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
       <h2>
         TRs in gnomAD
       </h2>
@@ -15874,7 +17923,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -16186,7 +18236,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             ],
             "reference_repeat_unit": "CTG",
             "repeat_units": [],
-            "stripy_id": "STR1",
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
           }
         }
       />
@@ -16427,7 +18478,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
           ],
           "reference_repeat_unit": "CTG",
           "repeat_units": [],
-          "stripy_id": "STR1",
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
         }
       }
     />

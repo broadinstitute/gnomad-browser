@@ -80,7 +80,8 @@ type ShortTandemRepeat {
   id: String!
   gene: ShortTandemRepeatGene!
   associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
-  stripy_id: String!
+  stripy_id: String
+  strchive_id: String
   main_reference_region: ShortTandemRepeatReferenceRegion!
   reference_regions: [ShortTandemRepeatReferenceRegion!]!
   reference_repeat_unit: String!
@@ -91,6 +92,7 @@ type ShortTandemRepeatDetails {
   gene: ShortTandemRepeatGene!
   associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
   stripy_id: String
+  strchive_id: String
   main_reference_region: ShortTandemRepeatReferenceRegion!
   reference_regions: [ShortTandemRepeatReferenceRegion!]!
   reference_repeat_unit: String!
