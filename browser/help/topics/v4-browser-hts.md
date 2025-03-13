@@ -292,7 +292,7 @@ Row fields:
 - `end2`: SV end position on `chrom2`.
 - `length`: SV length. 
 - `type`: SV type.
-- `alts`: SV type.
+- `alts`: SV type, including mobile element insertion types.
 - `xpos`: Genomic start position of SV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
 - `xend`: Genomic end position of SV (format: chromosomeposition).
 - `xpos2`: Genomic start position of SV on second chromosome (format: chromosomeposition). 
