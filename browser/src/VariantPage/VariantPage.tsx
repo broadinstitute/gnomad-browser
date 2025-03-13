@@ -385,7 +385,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
       </Section>
 
       <Section>
-        <h2>Variant Effect Predictor</h2>
+        <h2>Ensembl Variant Effect Predictor</h2>
         {/* @ts-expect-error TS(2741) FIXME: Property 'reference_genome' is missing in type '{ ... Remove this comment to see the full error message */}
         <VariantTranscriptConsequences variant={variant} />
       </Section>
