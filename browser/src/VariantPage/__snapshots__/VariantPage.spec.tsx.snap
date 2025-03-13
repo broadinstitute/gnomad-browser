@@ -659,7 +659,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -10599,7 +10599,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -20542,7 +20542,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -30485,7 +30485,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -40428,7 +40428,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -50371,7 +50371,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
         >
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-            href="https://databrowser.researchallofus.org/variants/13-123-A-C"
+            href="https://databrowser.researchallofus.org/snvsindels/13-123-A-C"
             rel="noopener noreferrer"
             target="_blank"
           >
