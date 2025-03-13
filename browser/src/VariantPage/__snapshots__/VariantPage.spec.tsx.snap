@@ -1485,7 +1485,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -11425,7 +11425,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -21368,7 +21368,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -31311,7 +31311,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -41254,7 +41254,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -51197,7 +51197,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -60785,7 +60785,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -68799,7 +68799,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -78863,7 +78863,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -88927,7 +88927,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -98991,7 +98991,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
@@ -109055,7 +109055,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
       className="VariantPage__Section-sc-hd87ur-0 CMQAN"
     >
       <h2>
-        Variant Effect Predictor
+        Ensembl Variant Effect Predictor
       </h2>
       <div>
         <p>
