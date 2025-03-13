@@ -315,8 +315,8 @@ Row fields:
       - `af`: Allele frequency (biallelic sites only) across samples in genetic ancestry group.
       - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only) across samples in genetic ancestry group.
       - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only) across samples in genetic ancestry group.
-    - `copy_numbers`: Array containing information about copy number.
-      - `copy_number`: Copy numbers observed across samples for copy number variant sites.
+    - `copy_numbers`: Array containing information about multiallelic CNVs.
+      - `copy_number`: Copy numbers observed across samples.
       - `ac`: Allele count of SV.
     - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only).
     - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
