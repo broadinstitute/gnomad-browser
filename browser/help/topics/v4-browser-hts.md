@@ -265,3 +265,69 @@ Row fields:
   - `af_cutoff`: Allele frequency cutoff.
   - `data`: Struct containing variant co-occurrence data.
   - `hom_total`: Total count of homozygous variants.
+
+#### gnomAD v4.1 copy number variant (CNV) Hail Table annotations
+
+#### gnomAD v4.1 browser structural variant (SV) Hail Table annotations
+Row fields:
+- `qual`: Quality of the structural variant (SV).
+- `filters`: Quality filter of SV.
+- `algorithms`: Source algorithms that contributed to SV call.
+- `bothsides_support: Whether SV has read-level support for both sides of breakpoint. True indicates higher-confidence variants.
+- `cpx_intervals`: Genomic intervals constituting complex variant.
+- `cpx_type`: Subtype of complex variants.
+- `evidence`: Classes of evidence supporting final genotype.
+- `pesr_gt_overdispersion`: Whether PESR genotyping data is overdispersed. Flags sites where genotypes are likely noisier.
+- `source`: Source of inserted sequence.
+- `strands`: Breakpoint strandedness. One of `[++,+-,-+,--]`.
+- `unresolved_type`: Class of unresolved variant.
+- `par`: Whether SV overlaps pseudoautosomal region.
+- `variant_id`: SV ID.
+- `reference_genome`: Reference genome version.
+- `chrom`: Chromosome of SV.
+- `pos`: SV start position.
+- `end`: SV end position.
+- `chrom2`: Second chromosome involved in SV.
+- `pos2`: SV start position on `chrom2`.
+- `end2`: SV end position on `chrom2`.
+- `length`: SV length. 
+- `type`: SV type.
+- `alts`: SV type.
+- `xpos`: Genomic start position of SV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `xend`: Genomic end position of SV (format: chromosomeposition).
+- `xpos2`: Genomic start position of SV on second chromosome (format: chromosomeposition). 
+- `xend2`: Genomic end position of SV on the second chromosome (format: chromosomeposition).
+- `consequences`: Array containing SV consequence information.
+  - `consequence`: Predicted consequence of the structural variant on gene(s).
+  - `genes`: Array containing name(s) of the affected gene(s).
+- `intergenic`: Whether SV falls entirely in intergenic sequences.
+- `major_consequence`: Predicted most severe consequences of SV.
+- `genes`: Set of gene(s) disrupted by SV.
+- `freq`: Struct containing variant frequency information.
+  - `all`: Frequency calculated across all 63,046 genome samples included in SV callset.
+    - `ac`: Allele count of SV.
+    - `an`: Total number of alleles in called genotypes.
+    - `af`: Allele frequency (biallelic sites only).
+    - `gen_anc_grps`: Array containing information about genetic ancestry group information.
+      - `id`: Genetic ancestry group label.
+      - `ac`: Allele count of the SV across samples in genetic ancestry group.
+      - `an`: Total number of alleles in called genotypes across samples in genetic ancestry group.
+      - `af`: Allele frequency (biallelic sites only) across samples in genetic ancestry group.
+      - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only) across samples in genetic ancestry group.
+      - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only) across samples in genetic ancestry group.
+    - `copy_numbers`: Array containing information about copy number.
+      - `copy_number`: Copy numbers observed across samples for copy number variant sites.
+      - `ac`: Allele count of SV.
+    - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only).
+    - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
+- `age_distribution`:  Struct containing age distribution information for variant.
+  - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
+    - `bin_freq`: Array containing the frequency of individuals in this bin.
+    - `bin_edges`: Array containing the edges of each bin of the histogram.
+    - `n_smaller`: Number of individuals with lower age than the lowest bin.
+    - `n_larger`: Number of individuals with a higher age than the highest bin.
+  - `hom`: Struct containing age distribution information for individuals homozygous for this variant. Structured to allow easy histogram creation. Contains same fields as `het` above.
+- `genotype_quality`:  Struct containing information used to display genotype quality (GQ) histograms.
+  - `all`: Struct containing GQ information about all samples. Contains same fields as `het` and `hom` in `age_distribution` struct above.
+  - `alt`: Struct containing GQ information across samples with alternative alleles (either heterozygous or homozygous). Contains same fields as `het` and `hom` in `age_distribution` struct above.
+
