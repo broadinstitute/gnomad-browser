@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GeneReferences snapshot has no unexpected changes 1`] = `
+[
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+    href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Ensembl
+  </a>,
+  ",",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+    href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    UCSC Browser
+  </a>,
+  ",",
+  " ",
+  <button
+    className="Button__TextButton-sc-1eobygi-3 gWkUTz"
+    onClick={[Function]}
+    type="button"
+  >
+    and more
+  </button>,
+]
+`;
