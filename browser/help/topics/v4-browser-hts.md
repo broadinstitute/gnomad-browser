@@ -3,11 +3,11 @@ id: v4-browser-hts
 title: 'gnomAD v4 Browser Hail Tables'
 ---
 
-In addition to our [variants tables](/downloads#v4-variants), we release two data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
+In addition to our [variants tables](/downloads#v4-variants), we release four data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
 
-## gnomAD v4.1 exome/genome/joint variant table
+## gnomAD v4.1 exome/genome/joint short variant table
 
-To convert the standard gnomAD variant release tables into a format more suitable for browser display, we join the exome, genome, and joint tables on locus/allele to create a single table. This process ensures that they share the same site-level annotations, thus saving space and optimizing database/API queries. Additionally, allele counts and frequencies are structured in a JSON-like format that is more easily consumable by web applications. The table may also include subset data not visible in the browser.
+To convert the standard gnomAD short variant (SNV/indel) release tables into a format more suitable for browser display, we join the exome, genome, and joint tables on locus/allele to create a single table. This process ensures that they share the same site-level annotations, thus saving space and optimizing database/API queries. Additionally, allele counts and frequencies are structured in a JSON-like format that is more easily consumable by web applications. The table may also include subset data not visible in the browser.
 
 Each row (i.e., variant) in this table will have distinct allele frequency information and quality metrics depending whether it was present in the exome or genome callsets but will share common annotations such as [VEP annotations](https://useast.ensembl.org/info/docs/tools/vep/index.html) and _in silico_ predictors.
 
@@ -18,6 +18,12 @@ The script for how this table is created can be found [here](https://github.com/
 These tables underlie the gene models data seen in the browser, which contains detailed information on exon-coding regions, transcripts, identifiers, gene constraint, and co-occurrence data. The data from these tables are derived from [GENCODE](https://www.gencodegenes.org/human/release_39.html), the [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/), [MANE transcripts](https://www.ncbi.nlm.nih.gov/refseq/MANE/), [GTEx](https://gtexportal.org/home/) (coming soon), and from gnomAD secondary analyses.
 
 The script for how this table is created can be found [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/genes.py).
+
+## gnomAD v4.1 CNV and SV tables
+
+To convert the copy number and structural variant (CNV and SV, respectively) datasets for display in the browser, we convert the [VCF](https://gnomad.broadinstitute.org/data#v4-structural-variants) releases to Hail Table format and add the genotype quality and age distribution histogram information.
+
+The scripts for how these tables are created can be found [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/gnomad_v4_cnvs.py) (CNVs) and [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/gnomad_sv_v3.py) (SVs).
 
 # Browser Hail Table Field Descriptions
 
