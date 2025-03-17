@@ -30,7 +30,7 @@ const ShortTandemRepeatColorBySelect = ({
 }: Props) => {
   return (
     <Label htmlFor={`short-tandem-repeat-${id}-color-by-select`}>
-      Color By: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+      Color by: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         id={`short-tandem-repeat-${id}-color-by-select`}
         value={selectedColorBy}

@@ -457,7 +457,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             <label
               htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
             >
-              Show ranges for{' '}
+              Show thresholds for:{' '}
               {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
@@ -542,7 +542,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             <label
               htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
             >
-              Show ranges for{' '}
+              Show thresholds for:{' '}
               {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
