@@ -3,8 +3,8 @@ import { UserVisibleError } from '../errors'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 const SHORT_TANDEM_REPEAT_INDICES = {
-  gnomad_r3: 'gnomad_v3_short_tandem_repeats',
-  gnomad_r4: 'gnomad_v3_short_tandem_repeats',
+  gnomad_r3: 'gnomad_v3_short_tandem_repeats-2025-03-17--19-04',
+  gnomad_r4: 'gnomad_v3_short_tandem_repeats-2025-03-17--19-04',
 }
 
 const SUMMARY_FIELDS = [

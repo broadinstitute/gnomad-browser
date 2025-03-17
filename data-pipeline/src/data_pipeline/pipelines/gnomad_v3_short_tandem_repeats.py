@@ -10,7 +10,7 @@ pipeline.add_task(
     prepare_gnomad_v3_short_tandem_repeats,
     "/gnomad_v4/gnomad_v4_short_tandem_repeats.ht",
     {
-        "path": "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/strs/2024_07_24/gnomAD_STR_distributions__gnomad-v2__2024_07_24.json"
+        "path": "gs://gnomad-browser-data-pipeline/inputs/secondary-analyses/strs/2025_03_17/gnomAD_STR_distributions__gnomad-v2__2025_03_17.json"
     },
 )
 
