@@ -324,7 +324,30 @@ const GnomadV3Downloads = () => (
         </ExternalLink>
         .
       </p>
-
+      <b>Update (March 2025)</b>: [
+      <a href="https://gnomad.broadinstitute.org/news/changelog/">changelog entry</a>]
+      <FileList>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks label="README" path="/release/3.1.3/tsv/README__2025_03_17.txt" />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Genotypes (TSV)"
+            path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2025_03_17.tsv.gz"
+          />
+        </ListItem>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label="Distributions (JSON)"
+            path="/release/3.1.3/json/gnomAD_STR_distributions__2025_03_17.json.gz"
+          />
+        </ListItem>
+      </FileList>
+      <br />
+      <b>Original release:</b>
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
