@@ -247,14 +247,21 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
           </div>
         </div>
         <p>
-          For more information about Tandem Repeats in gnomAD, read our
+          For more information about Tandem Repeats in gnomAD, see our
            
           <a
             href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/"
           >
             blog post
           </a>
-          .
+           
+          and the
+           
+          <a
+            href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages"
+          >
+            change log for March, 2025
+          </a>
         </p>
         <div
           class="TableWrapper-sc-1ep26r3-0 edvjZa"
@@ -282,7 +289,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   <button
                     type="button"
                   >
-                    Reference repeat unit
+                    Reference region
                   </button>
                 </th>
                 <th
@@ -292,7 +299,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   <button
                     type="button"
                   >
-                    Region
+                    Repeat unit
                   </button>
                 </th>
                 <th
@@ -302,7 +309,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   <button
                     type="button"
                   >
-                    Inheritance mode
+                    Gene region
+                  </button>
+                </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    Inheritance
                   </button>
                 </th>
                 <th
@@ -331,9 +348,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  3:345-456
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   GCC
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -346,16 +371,15 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   Imaginary inheritance mode
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/309548"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    FRAXE
+                    : 
                     FRAXE mental retardation
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -371,9 +395,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  1:123-234
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   GCA
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -383,19 +415,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <td
                   style="white-space: nowrap;"
                 >
-                  X-linked recessive
+                  XR
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/313200"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    SBMA
+                    : 
                     Spinal and bulbar muscular atrophy
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -411,9 +442,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  2:234-345
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   NGC
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -423,28 +462,26 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <td
                   style="white-space: nowrap;"
                 >
-                  X-linked recessive, Z-linked recessive
+                  XR, Z-linked recessive
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/308350"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    DEE1
+                    : 
                     Developmental and epileptic encephalopathy-1
-                  </a>
-                  , 
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/300419"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  </div>
+                  <br />
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    MRXARX
+                    : 
                     X-linked mental retardation with or without seizures
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -460,9 +497,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  4:456-567
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   CAG
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -472,19 +517,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <td
                   style="white-space: nowrap;"
                 >
-                  Autosomal dominant
+                  AD
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/125370"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    DRPLA
+                    : 
                     Dentatorubral-pallidoluysian atrophy
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -500,9 +544,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  5:567-678
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   TGC
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -515,16 +567,15 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   Autosomal miscellaneous
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/164400"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    SCA1
+                    : 
                     Spinocerebellar ataxia 1
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -540,9 +591,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  7:789-1012
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   ATTCT
+                   (
+                  5
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -552,19 +611,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <td
                   style="white-space: nowrap;"
                 >
-                  Autosomal recessive
+                  AR
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/603516"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    SCA10
+                    : 
                     Spinocerebellar ataxia 10
-                  </a>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -580,9 +638,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   </a>
                 </th>
                 <td
-                  style="min-width: 18ch;"
+                  style="min-width: 20ch;"
+                >
+                  6:678-789
+                </td>
+                <td
+                  style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
                 >
                   GCT
+                   (
+                  3
+                  )
                 </td>
                 <td
                   style="white-space: nowrap;"
@@ -592,28 +658,26 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <td
                   style="white-space: nowrap;"
                 >
-                  Autosomal dominant, Autosomal recessive
+                  AD, AR
                 </td>
                 <td
-                  style="min-width: 30ch;"
+                  style="min-width: 40ch;"
                 >
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/183090"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    SCA2
+                    : 
                     Made-up disease 1
-                  </a>
-                  , 
-                  <a
-                    class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                    href="https://omim.org/entry/183090"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  </div>
+                  <br />
+                  <div
+                    style="display: inline-block; padding: 3px 0px;"
                   >
+                    SCA2
+                    : 
                     Spinocerebellar ataxia 2
-                  </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -865,14 +929,21 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
         </div>
       </div>
       <p>
-        For more information about Tandem Repeats in gnomAD, read our
+        For more information about Tandem Repeats in gnomAD, see our
          
         <a
           href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/"
         >
           blog post
         </a>
-        .
+         
+        and the
+         
+        <a
+          href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages"
+        >
+          change log for March, 2025
+        </a>
       </p>
       <div
         class="TableWrapper-sc-1ep26r3-0 edvjZa"
@@ -900,7 +971,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <button
                   type="button"
                 >
-                  Reference repeat unit
+                  Reference region
                 </button>
               </th>
               <th
@@ -910,7 +981,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <button
                   type="button"
                 >
-                  Region
+                  Repeat unit
                 </button>
               </th>
               <th
@@ -920,7 +991,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 <button
                   type="button"
                 >
-                  Inheritance mode
+                  Gene region
+                </button>
+              </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  Inheritance
                 </button>
               </th>
               <th
@@ -949,9 +1030,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                3:345-456
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 GCC
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -964,16 +1053,15 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 Imaginary inheritance mode
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/309548"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  FRAXE
+                  : 
                   FRAXE mental retardation
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -989,9 +1077,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                1:123-234
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 GCA
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1001,19 +1097,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
               <td
                 style="white-space: nowrap;"
               >
-                X-linked recessive
+                XR
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/313200"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  SBMA
+                  : 
                   Spinal and bulbar muscular atrophy
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -1029,9 +1124,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                2:234-345
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 NGC
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1041,28 +1144,26 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
               <td
                 style="white-space: nowrap;"
               >
-                X-linked recessive, Z-linked recessive
+                XR, Z-linked recessive
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/308350"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  DEE1
+                  : 
                   Developmental and epileptic encephalopathy-1
-                </a>
-                , 
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/300419"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                </div>
+                <br />
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  MRXARX
+                  : 
                   X-linked mental retardation with or without seizures
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -1078,9 +1179,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                4:456-567
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 CAG
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1090,19 +1199,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
               <td
                 style="white-space: nowrap;"
               >
-                Autosomal dominant
+                AD
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/125370"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  DRPLA
+                  : 
                   Dentatorubral-pallidoluysian atrophy
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -1118,9 +1226,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                5:567-678
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 TGC
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1133,16 +1249,15 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 Autosomal miscellaneous
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/164400"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  SCA1
+                  : 
                   Spinocerebellar ataxia 1
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -1158,9 +1273,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                7:789-1012
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 ATTCT
+                 (
+                5
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1170,19 +1293,18 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
               <td
                 style="white-space: nowrap;"
               >
-                Autosomal recessive
+                AR
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/603516"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  SCA10
+                  : 
                   Spinocerebellar ataxia 10
-                </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -1198,9 +1320,17 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 </a>
               </th>
               <td
-                style="min-width: 18ch;"
+                style="min-width: 20ch;"
+              >
+                6:678-789
+              </td>
+              <td
+                style="min-width: 22ch; max-width: 22ch; word-break: break-all; overflow-wrap: break-word;"
               >
                 GCT
+                 (
+                3
+                )
               </td>
               <td
                 style="white-space: nowrap;"
@@ -1210,28 +1340,26 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
               <td
                 style="white-space: nowrap;"
               >
-                Autosomal dominant, Autosomal recessive
+                AD, AR
               </td>
               <td
-                style="min-width: 30ch;"
+                style="min-width: 40ch;"
               >
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/183090"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  SCA2
+                  : 
                   Made-up disease 1
-                </a>
-                , 
-                <a
-                  class="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
-                  href="https://omim.org/entry/183090"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                </div>
+                <br />
+                <div
+                  style="display: inline-block; padding: 3px 0px;"
                 >
+                  SCA2
+                  : 
                   Spinocerebellar ataxia 2
-                </a>
+                </div>
               </td>
             </tr>
           </tbody>

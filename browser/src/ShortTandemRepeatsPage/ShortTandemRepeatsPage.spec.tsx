@@ -57,6 +57,11 @@ const strApiResponse = {
           inheritance_mode: 'X-linked recessive',
         },
       ],
+      main_reference_region: {
+        chrom: '1',
+        start: 123,
+        stop: 234,
+      },
     },
     {
       id: 'ARX_1',
@@ -80,6 +85,11 @@ const strApiResponse = {
           inheritance_mode: 'Z-linked recessive',
         },
       ],
+      main_reference_region: {
+        chrom: '2',
+        start: 234,
+        stop: 345,
+      },
     },
     {
       id: 'AFF2',
@@ -97,6 +107,11 @@ const strApiResponse = {
           inheritance_mode: 'Imaginary inheritance mode',
         },
       ],
+      main_reference_region: {
+        chrom: '3',
+        start: 345,
+        stop: 456,
+      },
     },
     {
       id: 'ATN1',
@@ -114,6 +129,11 @@ const strApiResponse = {
           inheritance_mode: 'Autosomal dominant',
         },
       ],
+      main_reference_region: {
+        chrom: '4',
+        start: 456,
+        stop: 567,
+      },
     },
     {
       id: 'ATXN1',
@@ -131,6 +151,11 @@ const strApiResponse = {
           inheritance_mode: 'Autosomal miscellaneous',
         },
       ],
+      main_reference_region: {
+        chrom: '5',
+        start: 567,
+        stop: 678,
+      },
     },
     {
       id: 'ATXN2',
@@ -154,6 +179,11 @@ const strApiResponse = {
           inheritance_mode: 'Autosomal recessive',
         },
       ],
+      main_reference_region: {
+        chrom: '6',
+        start: 678,
+        stop: 789,
+      },
     },
     {
       id: 'ATXN10',
@@ -171,6 +201,11 @@ const strApiResponse = {
           inheritance_mode: 'Autosomal recessive',
         },
       ],
+      main_reference_region: {
+        chrom: '7',
+        start: 789,
+        stop: 1012,
+      },
     },
   ],
 }
@@ -219,30 +254,30 @@ describe('ShortTandemRepeatsPage', () => {
         </MemoryRouter>
       )
 
-      const referenceRepeatUnitButton = screen.getByText('Reference repeat unit')
+      const referenceRepeatUnitButton = screen.getByText('Repeat unit')
 
       await user.click(referenceRepeatUnitButton)
       const ascendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
       expect(ascendingIds).toEqual([
-        'ATXN10', // ATTCT
         'ATN1', // CAG
         'AR', // GCA
         'AFF2', // GCC
         'ATXN2', // GCT
         'ARX_1', // NGC
         'ATXN1', // TGC
+        'ATXN10', // ATTCT
       ])
 
       await user.click(referenceRepeatUnitButton)
       const descendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
       expect(descendingIds).toEqual([
+        'ATXN10', // ATTCT
         'ATXN1', // TGC
         'ARX_1', // NGC
         'ATXN2', // GCT
         'AFF2', // GCC
         'AR', // GCA
         'ATN1', // CAG
-        'ATXN10', // ATTCT
       ])
     })
 
@@ -255,7 +290,7 @@ describe('ShortTandemRepeatsPage', () => {
         </MemoryRouter>
       )
 
-      const regionButton = screen.getByText('Region')
+      const regionButton = screen.getByText('Gene region')
 
       await user.click(regionButton)
       const ascendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
@@ -291,15 +326,15 @@ describe('ShortTandemRepeatsPage', () => {
         </MemoryRouter>
       )
 
-      const inheritanceModeButton = screen.getByText('Inheritance mode')
+      const inheritanceModeButton = screen.getByText('Inheritance')
 
       await user.click(inheritanceModeButton)
       const ascendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
       expect(ascendingIds).toEqual([
         'ATN1', // Autosomal dominant
         'ATXN2', // Autosomal dominant, Autosomal recessive
-        'ATXN1', // Autosomal miscellaneous
         'ATXN10', // Autosomal recessive
+        'ATXN1', // Autosomal miscellaneous
         'AFF2', // Imaginary inheritance mode
         'AR', // X-linked recessive
         'ARX_1', // X-linked recessive, Z-linked recessive
@@ -311,8 +346,8 @@ describe('ShortTandemRepeatsPage', () => {
         'ARX_1', // X-linked recessive, Z-linked recessive
         'AR', // X-linked recessive
         'AFF2', // Imaginary inheritance mode
-        'ATXN10', // Autosomal recessive
         'ATXN1', // Autosomal miscellaneous
+        'ATXN10', // Autosomal recessive
         'ATXN2', // Autosomal dominant, Autosomal recessive
         'ATN1', // Autosomal dominant
       ])
@@ -332,25 +367,25 @@ describe('ShortTandemRepeatsPage', () => {
       await user.click(diseaseNameButton)
       const ascendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
       expect(ascendingIds).toEqual([
-        'ATN1', // Dentatorubral-pallidoluysian atrophy
         'ARX_1', // Developmental and epileptic encephalopathy-1, X-linked mental retardation with or without seizures
+        'ATN1', // Dentatorubral-pallidoluysian atrophy
         'AFF2', // FRAXE mental retardation
-        'ATXN2', // Made-up disease 1, Spinocerebellar ataxia 2
         'AR', // Spinal and bulbar muscular atrophy
         'ATXN1', // Spinocerebellar ataxia 1
         'ATXN10', // Spinocerebellar ataxia 10
+        'ATXN2', // Made-up disease 1, Spinocerebellar ataxia 2
       ])
 
       await user.click(diseaseNameButton)
       const descendingIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
       expect(descendingIds).toEqual([
+        'ATXN2', // Made-up disease 1, Spinocerebellar ataxia 2
         'ATXN10', // Spinocerebellar ataxia 10
         'ATXN1', // Spinocerebellar ataxia 1
         'AR', // Spinal and bulbar muscular atrophy
-        'ATXN2', // Made-up disease 1, Spinocerebellar ataxia 2
         'AFF2', // FRAXE mental retardation
-        'ARX_1', // Developmental and epileptic encephalopathy-1, X-linked mental retardation with or without seizures
         'ATN1', // Dentatorubral-pallidoluysian atrophy
+        'ARX_1', // Developmental and epileptic encephalopathy-1, X-linked mental retardation with or without seizures
       ])
     })
   })

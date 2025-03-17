@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BaseTable, ExternalLink, Page } from '@gnomad/ui'
+import { BaseTable, Page } from '@gnomad/ui'
 
 import {
   DatasetId,
@@ -23,10 +23,16 @@ type ShortTandemRepeat = {
     symbol: string
     region: string
   }
+  main_reference_region: {
+    chrom: string
+    start: number
+    stop: number
+  }
   reference_repeat_unit: string
+  strchive_id: string
   associated_diseases: {
-    name: string
     symbol: string
+    name: string
     omim_id?: string
     inheritance_mode: string
   }[]
@@ -38,36 +44,54 @@ type ShortTandemRepeatsPageProps = {
 
 type NormalizedShortTandemRepeat = {
   id: string
+  main_reference_region: string
   reference_repeat_unit: string
+  strchive_id: string
   region: string
+  links: string
   inheritance_modes: string[]
   associated_diseases: {
+    symbol: string
     name: string
     omim_id?: string
   }[]
   // These two could be recomputed on the fly, but it's simpler and more
   // efficient to do so once up front.
+  reference_repeat_unit_compare_key: string
   inheritance_mode_compare_key: string
   associated_disease_name_compare_key: string
 }
 
+const INHERITANCE_MODE_ABBREVIATIONS = {
+  'Autosomal dominant': 'AD',
+  'Autosomal recessive': 'AR',
+  'X-linked dominant': 'XD',
+  'X-linked recessive': 'XR',
+} as const
+
 const columnSpecifiers: ColumnSpecifier<NormalizedShortTandemRepeat>[] = [
   { key: 'id', label: 'ID', tooltip: null, compareValueFunction: stringCompareFunction('id') },
   {
-    key: 'reference_repeat_unit',
-    label: 'Reference repeat unit',
+    key: 'main_reference_region',
+    label: 'Reference region',
     tooltip: null,
-    compareValueFunction: stringCompareFunction('reference_repeat_unit'),
+    compareValueFunction: stringCompareFunction('main_reference_region'),
+  },
+  {
+    key: 'reference_repeat_unit',
+    label: 'Repeat unit',
+    tooltip: null,
+    compareValueFunction: stringCompareFunction('reference_repeat_unit_compare_key'),
   },
   {
     key: 'region',
-    label: 'Region',
+    label: 'Gene region',
     tooltip: null,
     compareValueFunction: stringCompareFunction('region'),
   },
   {
     key: 'inheritance_modes',
-    label: 'Inheritance mode',
+    label: 'Inheritance',
     tooltip: null,
     compareValueFunction: stringCompareFunction('inheritance_mode_compare_key'),
   },
@@ -82,30 +106,47 @@ const columnSpecifiers: ColumnSpecifier<NormalizedShortTandemRepeat>[] = [
 const normalizeShortTandemRepeat = (
   shortTandemRepeat: ShortTandemRepeat
 ): NormalizedShortTandemRepeat => {
-  const { id, reference_repeat_unit } = shortTandemRepeat
+  const { id, main_reference_region, reference_repeat_unit, strchive_id } = shortTandemRepeat
+  const main_reference_region_id = `${main_reference_region.chrom}:${main_reference_region.start}-${main_reference_region.stop}`
   const region = shortTandemRepeat.gene.region
-
   const inheritance_modes = Array.from(
-    new Set(shortTandemRepeat.associated_diseases.map((disease) => disease.inheritance_mode))
+    new Set(
+      shortTandemRepeat.associated_diseases.map(
+        (disease) =>
+          INHERITANCE_MODE_ABBREVIATIONS[
+            disease.inheritance_mode as keyof typeof INHERITANCE_MODE_ABBREVIATIONS
+          ] || disease.inheritance_mode
+      )
+    )
   ).sort()
   const associated_diseases = shortTandemRepeat.associated_diseases
-    .map(({ name, omim_id }) => ({
+    .map(({ symbol, name, omim_id }) => ({
+      symbol,
       name,
       omim_id,
     }))
     .sort((a, b) => a.name.localeCompare(b.name))
 
+  const reference_repeat_unit_compare_key = `${reference_repeat_unit.length
+    .toString()
+    .padStart(3, '0')} ${reference_repeat_unit}`
   const inheritance_mode_compare_key = inheritance_modes.join('_')
   const associated_disease_name_compare_key = associated_diseases
-    .map((disease) => disease.name)
+    .map((disease) => `${disease.symbol}: ${disease.name}`)
     .join('_')
+
+  const links = ''
 
   return {
     id,
+    main_reference_region: main_reference_region_id,
     reference_repeat_unit,
+    strchive_id,
     inheritance_modes,
     region,
+    links,
     associated_diseases,
+    reference_repeat_unit_compare_key,
     inheritance_mode_compare_key,
     associated_disease_name_compare_key,
   }
@@ -121,11 +162,14 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
   return (
     <>
       <p>
-        For more information about Tandem Repeats in gnomAD, read our{' '}
+        For more information about Tandem Repeats in gnomAD, see our{' '}
         <a href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
           blog post
+        </a>{' '}
+        and the{' '}
+        <a href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages">
+          change log for March, 2025
         </a>
-        .
       </p>
 
       <TableWrapper>
@@ -143,28 +187,34 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
                       {shortTandemRepeat.id}
                     </Link>
                   </th>
-                  <td style={{ minWidth: '18ch' }}>{shortTandemRepeat.reference_repeat_unit}</td>
+                  <td style={{ minWidth: '20ch' }}>{shortTandemRepeat.main_reference_region}</td>
+                  <td
+                    style={{
+                      minWidth: '22ch',
+                      maxWidth: '22ch',
+                      wordBreak: 'break-all',
+                      overflowWrap: 'break-word',
+                    }}
+                  >
+                    {shortTandemRepeat.reference_repeat_unit} (
+                    {shortTandemRepeat.reference_repeat_unit.length})
+                  </td>
                   <td style={{ whiteSpace: 'nowrap' }}>{shortTandemRepeat.region}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>
                     {shortTandemRepeat.inheritance_modes.join(', ')}
                   </td>
-                  <td style={{ minWidth: '30ch' }}>
+                  <td style={{ minWidth: '40ch' }}>
                     {shortTandemRepeat.associated_diseases
                       .map((disease) => {
                         return (
                           <React.Fragment key={disease.name}>
-                            {disease.omim_id ? (
-                              // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-                              <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
-                                {disease.name}
-                              </ExternalLink>
-                            ) : (
-                              disease.name
-                            )}
+                            <div style={{ display: 'inline-block', padding: '3px 0px' }}>
+                              {disease.symbol}: {disease.name}
+                            </div>
                           </React.Fragment>
                         )
                       })
-                      .flatMap((el: any) => [', ', el])
+                      .flatMap((el: any) => [<br />, el])
                       .slice(1)}
                   </td>
                 </tr>
@@ -187,10 +237,16 @@ query ${operationName}($datasetId: DatasetId!) {
       symbol
       region
     }
+    main_reference_region {
+      chrom
+      start
+      stop
+    }
     reference_repeat_unit
+    strchive_id
     associated_diseases {
-      name
       symbol
+      name
       omim_id
       inheritance_mode
     }
