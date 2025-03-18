@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShortTandemRepeatAttributes displays no gene link for an STR with empty string for associated gene 1`] = `
+<dl
+  className="AttributeList-sc-1yjjegy-0 boDRvX"
+  style={
+    {
+      "marginTop": "1.25em",
+    }
+  }
+>
+  
+  <div>
+    <dt>
+      Gene region
+    </dt>
+    <dd>
+      coding:polyglutamine
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Reference region
+    </dt>
+    <dd>
+      <a
+        className="Link-sc-14lgydv-0-Link jBvaYQ"
+        href="/region/1-10000000-15000000"
+        onClick={[Function]}
+      >
+        1
+        :
+        10000000
+        -
+        15000000
+      </a>
+    </dd>
+  </div>
+</dl>
+`;
+
+exports[`ShortTandemRepeatAttributes has no unexected changes 1`] = `
+<dl
+  className="AttributeList-sc-1yjjegy-0 boDRvX"
+  style={
+    {
+      "marginTop": "1.25em",
+    }
+  }
+>
+  <div>
+    <dt>
+      Gene
+    </dt>
+    <dd>
+      <a
+        className="Link-sc-14lgydv-0-Link jBvaYQ"
+        href="/gene/ENSG00000000001"
+        onClick={[Function]}
+      >
+        ABCD1
+      </a>
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Gene region
+    </dt>
+    <dd>
+      coding:polyglutamine
+    </dd>
+  </div>
+  <div>
+    <dt>
+      Reference region
+    </dt>
+    <dd>
+      <a
+        className="Link-sc-14lgydv-0-Link jBvaYQ"
+        href="/region/1-10000000-15000000"
+        onClick={[Function]}
+      >
+        1
+        :
+        10000000
+        -
+        15000000
+      </a>
+    </dd>
+  </div>
+</dl>
+`;
