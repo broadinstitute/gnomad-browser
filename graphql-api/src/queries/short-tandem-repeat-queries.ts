@@ -1,4 +1,3 @@
-import { withCache } from '../cache'
 import { DATASET_LABELS } from '../datasets'
 import { UserVisibleError } from '../errors'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
@@ -18,7 +17,7 @@ const SUMMARY_FIELDS = [
   'value.reference_repeat_unit',
 ]
 
-const _fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
+export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
     throw new UserVisibleError(
@@ -43,12 +42,6 @@ const _fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
 
   return hits.map((hit: any) => hit._source.value)
 }
-
-export const fetchAllShortTandemRepeats = withCache(
-  _fetchAllShortTandemRepeats,
-  (_: any, datasetId: any) => `short_tandem_repeats:${datasetId}`,
-  { expiration: 86400 }
-)
 
 export const fetchShortTandemRepeatById = async (
   esClient: any,
