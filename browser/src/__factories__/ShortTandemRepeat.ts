@@ -1,6 +1,12 @@
 import { Factory } from 'fishery'
 import { ShortTandemRepeat } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 
+export const DEFAULT_GENE = {
+  ensembl_id: 'ENSG00000000001',
+  symbol: 'ABCD1',
+  region: 'coding:polyglutamine',
+}
+
 const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, associations }) => {
   const {
     id = 'STR1',
@@ -13,7 +19,7 @@ const shortTandemRepeatFactory = Factory.define<ShortTandemRepeat>(({ params, as
   } = params
 
   const {
-    gene = { ensembl_id: 'ENSG00000000001', symbol: 'ABCD1', region: 'coding:polyglutamine' },
+    gene = DEFAULT_GENE,
     associated_diseases = [
       {
         name: 'disease',

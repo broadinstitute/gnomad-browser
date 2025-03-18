@@ -145,11 +145,13 @@ type ShortTandemRepeatAttributesProps = {
 const ShortTandemRepeatAttributes = ({ shortTandemRepeat }: ShortTandemRepeatAttributesProps) => {
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      <AttributeListItem label="Gene">
-        <Link to={`/gene/${shortTandemRepeat.gene.ensembl_id}`}>
-          {shortTandemRepeat.gene.symbol}
-        </Link>
-      </AttributeListItem>
+      {shortTandemRepeat.gene.ensembl_id && shortTandemRepeat.gene.ensembl_id !== '' && (
+        <AttributeListItem label="Gene">
+          <Link to={`/gene/${shortTandemRepeat.gene.ensembl_id}`}>
+            {shortTandemRepeat.gene.symbol}
+          </Link>
+        </AttributeListItem>
+      )}
       <AttributeListItem label="Gene region">{shortTandemRepeat.gene.region}</AttributeListItem>
       <AttributeListItem label="Reference region">
         <Link
