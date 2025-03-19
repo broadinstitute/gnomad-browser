@@ -267,6 +267,33 @@ Row fields:
   - `hom_total`: Total count of homozygous variants.
 
 #### gnomAD v4.1 copy number variant (CNV) Hail Table annotations
+Row fields:
+- `qual`: float64 - NA
+- `filters`: set<str> -NA
+- `variant_id`: Variant name identifier.
+- `reference_genome`: Reference genome.
+- `chrom`: Chromosome.
+- `pos`: CNV start position.
+- `end`: CNV end position.
+- `length`: CNV length.
+- `type`: CNV type (deletion vs duplication).
+- `alts`: CNV type (same as `type`).
+- `xpos`:  Genomic start position of CNV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `xend`:  Genomic end position of CNV (format: chromosomeposition).
+- `genes`: Set of gene(s) impacted by CNV.
+- `freq`: Struct containing variant frequency information.
+  - `sc`: Site count; number of individuals with CNV.
+  - `sn`: Site number; total number of individuals evaluated for carrying CNV.
+  - `sf`: Site frequency; proportion of individuals carrying CNV.
+  - `gen_anc_grps`: Array containing information about genetic ancestry group information.
+    - `id`: Genetic ancestry group label.
+    - `sc`: Site count; number of individuals with CNV in genetic ancestry group.
+    - `sn`:  Site number; total number of individuals evaluated for carrying CNV in genetic ancestry group.
+    - `sf`: Site frequency; proportion of individuals carrying CNV in genetic ancestry group.
+- `posmin`: Minimum start position across all calls grouped in variant.
+- `posmax`: Maximum start position across all calls grouped in variant.
+- `endmin`: Minimum end position across all calls grouped in variant.
+- `endmax`: Maximum end position across all calls grouped in variant.
 
 #### gnomAD v4.1 browser structural variant (SV) Hail Table annotations
 Row fields:
