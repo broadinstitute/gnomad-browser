@@ -268,8 +268,6 @@ Row fields:
 
 #### gnomAD v4.1 copy number variant (CNV) Hail Table annotations
 Row fields:
-- `qual`: Quality of the copy number variant (CNV).
-- `filters`: Quality filter of CNV.
 - `variant_id`: Variant name identifier.
 - `reference_genome`: Reference genome.
 - `chrom`: Chromosome.
