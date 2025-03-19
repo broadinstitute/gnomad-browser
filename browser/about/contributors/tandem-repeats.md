@@ -1,3 +1,5 @@
 - **Ben Weisburd**
 - Nehir Edibe Kurtas
+- Phil Darnowsky
+- Nick Watts
 - Grace VanNoy
