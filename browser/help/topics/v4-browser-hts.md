@@ -330,4 +330,3 @@ Row fields:
 - `genotype_quality`:  Struct containing information used to display genotype quality (GQ) histograms.
   - `all`: Struct containing GQ information about all samples. Contains same fields as `het` and `hom` in `age_distribution` struct above.
   - `alt`: Struct containing GQ information across samples with alternative alleles (either heterozygous or homozygous). Contains same fields as `het` and `hom` in `age_distribution` struct above.
-
