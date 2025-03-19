@@ -1,5 +1,6 @@
 import React from 'react'
 
+// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import OurDnaImage from './ourdna.png'
 
 const OurDnaLogo = (props: any) => (

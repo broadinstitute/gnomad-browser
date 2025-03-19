@@ -10,7 +10,7 @@ updates:
       interval: 'weekly'
     open-pull-requests-limit: 0
     reviewers:
-      - 'broadinstitute/gnomad-browser'
+      - 'populationgenomics/gnomad-browser'
   - package-ecosystem: 'pip'
     directories:
       - '/'
@@ -20,11 +20,11 @@ updates:
       interval: 'weekly'
     open-pull-requests-limit: 0
     reviewers:
-      - 'broadinstitute/gnomad-browser'
+      - 'populationgenomics/gnomad-browser'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 0
     reviewers:
-      - 'broadinstitute/gnomad-browser'
+      - 'populationgenomics/gnomad-browser'

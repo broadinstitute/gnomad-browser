@@ -6,4 +6,4 @@ metadata:
     tier: production
 spec:
   domains:
-    - gnomad.broadinstitute.org
+    - ourdna.populationgenomics.org.au

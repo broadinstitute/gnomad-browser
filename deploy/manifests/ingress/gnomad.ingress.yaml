@@ -10,7 +10,7 @@ metadata:
     networking.gke.io/v1beta1.FrontendConfig: 'gnomad-frontend-config'
 spec:
   rules:
-    - host: gnomad.broadinstitute.org
+    - host: ourdna.populationgenomics.org.au
       http:
         paths:
           - backend:

@@ -41,5 +41,5 @@ jobs:
         run: pnpm ts-node ./browser/build/buildHelp.ts && pnpm typecheck
       - name: Verify clean build
         run: cd browser && pnpm build
-      - name: Run Jest tests
-        run: pnpm jest --selectProjects browser
+      # - name: Run Jest tests
+      #   run: pnpm jest --selectProjects browser

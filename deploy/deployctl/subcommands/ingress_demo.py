@@ -23,6 +23,41 @@ spec:
       targetPort: 80
 """
 
+# INGRESS_MANIFEST_TEMPLATE = """---
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: gnomad-ingress-demo-{name}
+#   labels:
+#     tier: demo
+# spec:
+#   rules:
+#     - http:
+#         paths:
+#           - path: /reads
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: {reads_service}
+#                 port:
+#                   number: 80
+#           - path: /reads/*
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: {reads_service}
+#                 port:
+#                   number: 80
+#           - path:
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: gnomad-browser-demo-{name}
+#                 port:
+#                   number: 80
+# """
+
 INGRESS_MANIFEST_TEMPLATE = """---
 ---
 apiVersion: networking.k8s.io/v1
@@ -35,20 +70,6 @@ spec:
   rules:
     - http:
         paths:
-          - path: /reads
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {reads_service}
-                port:
-                  number: 80
-          - path: /reads/*
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {reads_service}
-                port:
-                  number: 80
           - path:
             pathType: ImplementationSpecific
             backend:

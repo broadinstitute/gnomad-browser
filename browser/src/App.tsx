@@ -59,7 +59,7 @@ const TopBarWrapper = styled.div`
   }
 `
 
-const Banner = styled.div`
+const _Banner = styled.div`
   padding: 0.75em 0.5em;
   background: rgb(17, 115, 187);
   color: #fff;
@@ -71,7 +71,7 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = (
+const _BANNER_CONTENT = (
   <>
     Help us continue to improve gnomAD by taking 5 minutes to fill out our {/* @ts-expect-error */}
     <ExternalLink href="http://broad.io/2024_survey">user survey</ExternalLink>.
@@ -121,7 +121,6 @@ const App = () => {
           <Suspense fallback={null}>
             <TopBarWrapper>
               <NavBar />
-              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
             </TopBarWrapper>
             <Notifications />
 

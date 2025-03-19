@@ -1,0 +1,109 @@
+name: Deploy
+on:
+  # Building on manual dispatch, and pushes to dev / main. But restricting
+  workflow_dispatch:
+  push:
+    branches:
+      - ourdna-browser-dev
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_DEV_PROJECT }}
+  GKE_CLUSTER: ourdna-dev    # Add your cluster name here.
+  GKE_ZONE: australia-southeast1-a   # Add your cluster zone here.
+  DEPLOYMENT_NAME: ourdna-browser-dev-green # Add your deployment name here.
+  DOCKER_REGISTRY: australia-southeast1-docker.pkg.dev
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy to DEV
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      CLOUDSDK_CORE_DISABLE_PROMPTS: 1
+      # used for generating API
+      API_DOCKER: gnomad/gnomad-api
+      BROWSER_DOCKER: gnomad/gnomad-browser
+
+    defaults:
+      run:
+        shell: bash -eo pipefail -l {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Setup env vars based on short SHA"
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+          apiImageId=$DOCKER_REGISTRY/$PROJECT_ID/$API_DOCKER:$calculatedSha
+          echo "API_DOCKER_ID=$apiImageId" >> $GITHUB_ENV
+
+          webImageId=$DOCKER_REGISTRY/$PROJECT_ID/$BROWSER_DOCKER:$calculatedSha
+          echo "BROWSER_DOCKER_ID=$webImageId" >> $GITHUB_ENV
+
+      - name: "Confirm git commit SHA output"
+        run: echo ${{ env.COMMIT_SHORT_SHA }}
+
+      - id: "google-cloud-auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: "projects/891247401758/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-deploy@${{ secrets.GKE_DEV_PROJECT }}.iam.gserviceaccount.com"
+
+      - id: "google-cloud-sdk-setup"
+        name: "Set up Cloud SDK"
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: "gke-gcloud-auth-plugin"
+
+      - name: "gcloud docker auth"
+        run: |
+          gcloud --quiet auth configure-docker $DOCKER_REGISTRY
+
+      - name: "build API image"
+        run: |
+          docker build \
+            --pull --provenance=false \
+            --tag ${{ env.API_DOCKER_ID }} \
+            -f deploy/dockerfiles/browser/api.dockerfile \
+            .
+
+      - name: "build Browser image"
+        run: |
+          echo 'GNOMAD_API_URL="https://ourdna-dev.popgen.rocks/api"' > browser/build.env
+          docker build \
+            --pull --provenance=false \
+            --tag ${{ env.BROWSER_DOCKER_ID }} \
+            -f deploy/dockerfiles/browser/browser.dockerfile \
+            .
+
+      # Push the Docker image to Google Container Registry
+      - name: Publish
+        run: |-
+          docker push ${{ env.API_DOCKER_ID }}
+          docker push ${{ env.BROWSER_DOCKER_ID }}
+
+      # Configure kubectl
+      - name: "gcloud kubectl"
+        run: |-
+          gcloud container clusters get-credentials $GKE_CLUSTER --region=$GKE_ZONE
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy API
+        run: |-
+          kubectl set image deployment/gnomad-api-$DEPLOYMENT_NAME app=${{ env.API_DOCKER_ID }}
+          kubectl rollout status deployment/gnomad-api-$DEPLOYMENT_NAME
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy Web
+        run: |-
+          kubectl set image deployment/gnomad-browser-$DEPLOYMENT_NAME web=${{ env.BROWSER_DOCKER_ID }}
+          kubectl rollout status deployment/gnomad-browser-$DEPLOYMENT_NAME

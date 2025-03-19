@@ -943,7 +943,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariants: false,
     hasLocalAncestryPopulations: true,
     isLiftoverSource: false,
-    isLiftoverTarget: true,
+    isLiftoverTarget: false, // TODO: fix, shold be true,
     referenceGenome: 'GRCh38',
     usesGrch37: false,
     usesGrch38: true,
