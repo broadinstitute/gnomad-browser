@@ -42,7 +42,7 @@ def _format_read(read, index, locus):
         "filename": read["ReadvizFilename"] or None,
         "q": read["Q"],
         # some quality_description values in the raw data have odd capitalization, so we lowercase it
-        "quality_description": read["ManualReviewGenotypeQualitySummary"].lower(),
+        "quality_description": read["ManualReviewGenotypeQuality"].lower(),
     }
 
 
