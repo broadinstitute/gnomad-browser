@@ -72,7 +72,7 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
   return (
     <div>
       <AttributeList style={{ marginBottom: '1em' }}>
-        <AttributeListItem label="Population">
+        <AttributeListItem label="Genetic ancestry group">
           {GNOMAD_POPULATION_NAMES[read.population]}
         </AttributeListItem>
         <AttributeListItem label="Sex">{read.sex}</AttributeListItem>
@@ -80,25 +80,25 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
           {read.age || 'Not available for this sample'}
         </AttributeListItem>
         <AttributeListItem label="Allele 1">
-          {read.alleles[0].repeats} x {read.alleles[0].repeat_unit} with confidence interval:{' '}
+          {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
           {read.alleles[0].repeats_confidence_interval.lower}-
-          {read.alleles[0].repeats_confidence_interval.upper}
+          {read.alleles[0].repeats_confidence_interval.upper} confidence interval
         </AttributeListItem>
         <AttributeListItem label="Allele 2">
           {read.alleles.length > 1 ? (
             <>
-              {read.alleles[1].repeats} x {read.alleles[1].repeat_unit} with confidence interval:{' '}
+              {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
               {read.alleles[1].repeats_confidence_interval.lower}-
-              {read.alleles[1].repeats_confidence_interval.upper}
+              {read.alleles[1].repeats_confidence_interval.upper} confidence interval
             </>
           ) : (
             'None'
           )}
         </AttributeListItem>
-        <AttributeListItem label="Manual review genotype quality">
+        <AttributeListItem label="Manual review">
           {qualityDescriptionLabels[read.quality_description]}
         </AttributeListItem>
-        <AttributeListItem label="Q genotype quality">{read.q_score.toFixed(3)}</AttributeListItem>
+        <AttributeListItem label="Q score">{read.q_score.toFixed(3)}</AttributeListItem>
       </AttributeList>
       <ShortTandemRepeatReadImageWrapper>
         <ShortTandemRepeatReadImage
@@ -516,7 +516,7 @@ const ShortTandemRepeatReadsQualityFilterControls = ({
       </ShortTandemRepeatReadsFilterControlWrapper>
       <ShortTandemRepeatReadsFilterControlWrapper key="q-score">
         <Label htmlFor="short-tandem-repeat-reads-q-score-filter">
-          Q-score: &nbsp;
+          Q score: &nbsp;
           {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id="short-tandem-repeat-reads-q-score-filter"

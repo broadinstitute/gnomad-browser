@@ -6,6 +6,7 @@ import { ColorBy, ScaleType } from './ShortTandemRepeatAlleleSizeDistributionPlo
 
 const Label = styled.label`
   padding-right: 1em;
+  white-space: nowrap;
 `
 
 type Props = {
@@ -30,7 +31,7 @@ const ShortTandemRepeatColorBySelect = ({
 }: Props) => {
   return (
     <Label htmlFor={`short-tandem-repeat-${id}-color-by-select`}>
-      Color by: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+      Color by: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         id={`short-tandem-repeat-${id}-color-by-select`}
         value={selectedColorBy}
