@@ -7432,9 +7432,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         For more information about these files, see our
          
         <a
-          className="-Link c13"
+          className="c11"
           href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables"
-          onClick={[Function]}
+          rel="noopener noreferrer"
+          target="_blank"
         >
           changelog entry
         </a>
@@ -8753,9 +8754,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         For more information on DNVs, see the
          
         <a
-          className="-Link c13"
-          href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes/"
-          onClick={[Function]}
+          className="c11"
+          href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           DNVs changelog
         </a>
