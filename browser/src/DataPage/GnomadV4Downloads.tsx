@@ -270,9 +270,10 @@ const GnomadV4Downloads = () => {
 
         <p>
           For more information about these files, see our{' '}
-          <Link to="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables">
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables">
             changelog entry
-          </Link>{' '}
+          </ExternalLink>{' '}
           on the browser tables, and the <Link to="/help/v4-browser-hts">help text</Link>.
         </p>
 
@@ -537,9 +538,10 @@ const GnomadV4Downloads = () => {
         <SectionTitle id="v4-de-novo">De novo variants (DNVs)</SectionTitle>
         <p>
           For more information on DNVs, see the{' '}
-          <Link to="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes/">
+          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes">
             DNVs changelog
-          </Link>{' '}
+          </ExternalLink>{' '}
         </p>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
