@@ -8735,6 +8735,136 @@ exports[`Data Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c8 c9"
+            href="#v4-de-novo"
+            id="v4-de-novo"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          De novo variants (DNVs)
+        </h2>
+      </span>
+      <p>
+        For more information on DNVs, see the
+         
+        <a
+          className="-Link c13"
+          href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes/"
+          onClick={[Function]}
+        >
+          DNVs changelog
+        </a>
+         
+      </p>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            High-quality coding DNVs Hail table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for High-quality coding DNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for High-quality coding DNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            High-quality coding DNVs TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download High-quality coding DNVs TSV from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download High-quality coding DNVs TSV from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
+            High-quality coding DNVs README
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for High-quality coding DNVs README"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for High-quality coding DNVs README"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c15"
+    >
+      <span
+        className="c6"
+      >
+        <h2
+          className="c16"
+        >
+          <a
+            aria-hidden="true"
+            className="c8 c9"
             href="#v4-resources"
             id="v4-resources"
           >

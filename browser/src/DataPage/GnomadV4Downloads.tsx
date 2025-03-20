@@ -534,6 +534,42 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-de-novo">De novo variants (DNVs)</SectionTitle>
+        <p>
+          For more information on DNVs, see the{' '}
+          <Link to="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes/">
+            DNVs changelog
+          </Link>{' '}
+        </p>
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="High-quality coding DNVs Hail table"
+              path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="High-quality coding DNVs TSV"
+              path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="High-quality coding DNVs README"
+              path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.README.md"
+              includeAzure={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-resources">Resources</SectionTitle>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
