@@ -26,6 +26,11 @@ import {
   maxGenotypeDistributionRepeats,
 } from './shortTandemRepeatHelpers'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import styled from "styled-components";
+
+const Label = styled.label`
+  white-space: nowrap;
+`
 
 type Props = {
   adjacentRepeat: ShortTandemRepeatAdjacentRepeat
@@ -93,8 +98,8 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
           setSelectedSex={setSelectedSex}
         />
 
-        <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}>
-          Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+        <Label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}>
+          Repeat unit: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-unit`}
             value={selectedRepeatUnit}
@@ -112,10 +117,10 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
               </option>
             ))}
           </Select>
-        </label>
+        </Label>
 
-        <label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
-          y-scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+        <Label htmlFor={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}>
+          y-scale: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id={`short-tandem-repeat-${adjacentRepeat.id}-repeat-counts-scale`}
             value={selectedScaleType}
@@ -129,7 +134,7 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
             <option value="linear-truncated-200">Linear: Truncated at 200</option>
             <option value="linear-truncated-1000">Linear: Truncated at 1000</option>
           </Select>
-        </label>
+        </Label>
       </ControlSection>
 
       <h4 style={{ marginBottom: '0.66em' }}>Genotype Distribution</h4>

@@ -19,8 +19,10 @@ const Wrapper = styled.div`
   }
 `
 
+
 const Label = styled.label`
   padding-right: 1em;
+  white-space: nowrap;
 `
 
 type Props = {
@@ -66,7 +68,7 @@ const ShortTandemRepeatPopulationOptions = ({
       </Label>
 
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
-        Sex: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+        Sex: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex}
