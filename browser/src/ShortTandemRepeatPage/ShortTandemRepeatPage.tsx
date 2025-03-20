@@ -370,7 +370,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
           {alleleSizeDistributionRepunits.length > 1 && (
             <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
-              Repeat unit: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              Repeat unit: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
                 value={selectedAlleleSizeRepeatUnit}
@@ -436,7 +436,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           <label
             htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
           >
-            y-Scale: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            y-Scale: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
               value={selectedScaleType}
