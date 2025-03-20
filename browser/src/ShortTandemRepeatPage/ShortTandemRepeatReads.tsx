@@ -355,6 +355,7 @@ const ShortTandemRepeatReadsFilterControlsWrapper = styled.div`
 `
 
 const ShortTandemRepeatReadsFilterControlWrapper = styled.div`
+  display: inline-block;
   margin-bottom: 0.5em;
   display: inline-block;
 
