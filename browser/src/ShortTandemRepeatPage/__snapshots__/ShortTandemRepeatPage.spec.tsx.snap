@@ -478,7 +478,7 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -1451,7 +1451,7 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -2424,7 +2424,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -3397,7 +3397,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -4370,7 +4370,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -5343,7 +5343,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -6316,7 +6316,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -7289,7 +7289,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -8262,7 +8262,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -9235,7 +9235,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -10208,7 +10208,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -11181,7 +11181,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -12154,7 +12154,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -13127,7 +13127,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -14100,7 +14100,7 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -15073,7 +15073,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -16046,7 +16046,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -17019,7 +17019,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
@@ -17992,7 +17992,7 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
       <label
         htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
       >
-        y-Scale: 
+        y-Scale:  
         <Select
           id="short-tandem-repeat-STR1-allele-size-distribution-scale"
           onChange={[Function]}
