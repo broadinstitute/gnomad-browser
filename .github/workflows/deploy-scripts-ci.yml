@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - ourdna-browser-dev
+      - ourdna-browser
     paths:
       - 'deploy/deployctl/**'
   pull_request:

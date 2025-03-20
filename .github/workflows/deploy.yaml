@@ -1,6 +1,5 @@
 name: Deploy
 on:
-  # Building on manual dispatch, and pushes to dev / main. But restricting
   workflow_dispatch:
   push:
     branches:
@@ -11,22 +10,21 @@ permissions:
   contents: read
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_DEV_PROJECT }}
-  GKE_CLUSTER: ourdna-dev    # Add your cluster name here.
-  GKE_ZONE: australia-southeast1-a   # Add your cluster zone here.
-  DEPLOYMENT_NAME: ourdna-browser-dev-green # Add your deployment name here.
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+  GKE_ZONE: australia-southeast1-a
+  DEPLOYMENT_NAME: ${{ secrets.GKE_PROJECT }}-green
   DOCKER_REGISTRY: australia-southeast1-docker.pkg.dev
 
 jobs:
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy to DEV
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{ github.ref_name == 'ourdna-browser' && 'production' || 'development' }}
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       CLOUDSDK_CORE_DISABLE_PROMPTS: 1
-      # used for generating API
       API_DOCKER: gnomad/gnomad-api
       BROWSER_DOCKER: gnomad/gnomad-browser
 
@@ -55,8 +53,8 @@ jobs:
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v2"
         with:
-          workload_identity_provider: "projects/891247401758/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: "github-deploy@${{ secrets.GKE_DEV_PROJECT }}.iam.gserviceaccount.com"
+          workload_identity_provider: "projects/${{ secrets.GKE_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-deploy@${{ secrets.GKE_PROJECT }}.iam.gserviceaccount.com"
 
       - id: "google-cloud-sdk-setup"
         name: "Set up Cloud SDK"
@@ -64,11 +62,11 @@ jobs:
         with:
           install_components: "gke-gcloud-auth-plugin"
 
-      - name: "gcloud docker auth"
+      - name: "Docker auth"
         run: |
           gcloud --quiet auth configure-docker $DOCKER_REGISTRY
 
-      - name: "build API image"
+      - name: "Build API image"
         run: |
           docker build \
             --pull --provenance=false \
@@ -76,23 +74,23 @@ jobs:
             -f deploy/dockerfiles/browser/api.dockerfile \
             .
 
-      - name: "build Browser image"
+      - name: "Build Browser image"
         run: |
-          echo 'GNOMAD_API_URL="https://ourdna-dev.popgen.rocks/api"' > browser/build.env
+          echo 'GNOMAD_API_URL="${{ secrets.GNOMAD_API_URL }}"' > browser/build.env
           docker build \
             --pull --provenance=false \
             --tag ${{ env.BROWSER_DOCKER_ID }} \
             -f deploy/dockerfiles/browser/browser.dockerfile \
             .
 
-      # Push the Docker image to Google Container Registry
-      - name: Publish
+      # Push the Docker image to Google Artifact Registry
+      - name: "Publish to Artifact Registry"
         run: |-
           docker push ${{ env.API_DOCKER_ID }}
           docker push ${{ env.BROWSER_DOCKER_ID }}
 
       # Configure kubectl
-      - name: "gcloud kubectl"
+      - name: "Authenticate kubectl"
         run: |-
           gcloud container clusters get-credentials $GKE_CLUSTER --region=$GKE_ZONE
 
