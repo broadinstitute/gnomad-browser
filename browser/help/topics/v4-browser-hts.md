@@ -338,12 +338,12 @@ Row fields:
       - `ac`: Allele count of the SV across samples in genetic ancestry group.
       - `an`: Total number of alleles in called genotypes across samples in genetic ancestry group.
       - `af`: Allele frequency (biallelic sites only) across samples in genetic ancestry group.
-      - `hemizygote_count`: Number of samples with hemizygous genotypes (biallelic sites only) across samples in genetic ancestry group.
+      - `hemizygote_count`: Number of XY samples with hemizygous genotypes (biallelic sites on sex chromosomes only) across samples in genetic ancestry group.
       - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only) across samples in genetic ancestry group.
     - `copy_numbers`: Array containing information about multiallelic CNVs.
       - `copy_number`: Copy numbers observed across samples.
       - `ac`: Allele count of SV.
-    - `hemizygote_count`: Number of samples with hemizygous genotypes (biallelic sites only).
+    - `hemizygote_count`: Number of XY samples with hemizygous genotypes (biallelic sites on sex chromosomes only).
     - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
 - `age_distribution`:  Struct containing age distribution information for variant.
   - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
