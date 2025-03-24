@@ -1,0 +1,26 @@
+services:
+  elasticsearch:
+    image: elasticsearch:8.12.1
+    container_name: catalog-service-es
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./catalog-data:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+volumes:
+  redis_data:

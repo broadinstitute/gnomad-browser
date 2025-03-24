@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
-    "@gnomad/dataset-metadata": "*",
+    "@gnomad/dataset-metadata": "workspace:*",
     "@gnomad/identifiers": "3.0.0",
     "@gnomad/markdown-loader": "2.0.0",
     "@gnomad/region-viewer": "4.0.0",

@@ -1,5 +1,5 @@
 FROM --platform=linux/amd64 node:18.17-alpine
-RUN npm install -g pnpm@^8.14.3
+RUN npm install -g pnpm@^10.6.2
 
 RUN mkdir /app && chown node:node /app
 

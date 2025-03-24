@@ -1,7 +1,7 @@
 services:
   browser:
     build:
-      context: .
+      context: ../
       dockerfile: deploy/dockerfiles/browser/browser.dockerfile
       target: build
     command:
@@ -13,7 +13,7 @@ services:
       - GNOMAD_API_URL
       - READS_API_URL
     ports:
-      - 8008:8008
+      - 8010:8008
     volumes:
       - ./browser/about:/home/node/app/browser/about
       - ./browser/help:/home/node/app/browser/help

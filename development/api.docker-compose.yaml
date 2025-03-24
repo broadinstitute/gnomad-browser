@@ -1,17 +1,21 @@
 services:
-  elasticsearch-proxy:
-    image: gcr.io/google.com/cloudsdktool/cloud-sdk
-    command:
-      - sh
-      - -c
-      - gcloud container clusters get-credentials gnomad-prod --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
+  elasticsearch:
+    image: elasticsearch:8.12.1
+    container_name: catalog-service-es
     environment:
-      - PROJECT
-      - ZONE
-    ports:
-      - 9200:9200
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
-      - $HOME/.config/gcloud:/root/.config/gcloud
+      - ./catalog-data:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
   redis:
     image: redis:alpine
     ports:
@@ -20,24 +24,25 @@ services:
       - redis_data:/data
   api:
     build:
-      context: .
+      context: ../
       dockerfile: deploy/dockerfiles/browser/api.dockerfile
-    command: pnpm run node /build/app.js
+    platform: linux/amd64
+    # command: pnpm run node /build/app.js
     environment:
       - NODE_ENV=development
       - PORT=8000
-      - ELASTICSEARCH_URL=http://elasticsearch-proxy:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD
       - CACHE_REDIS_URL=redis://redis:6379/1
       - RATE_LIMITER_REDIS_URL=redis://redis:6379/2
     ports:
-      - 8010:8000
+      - 888:8000
     volumes:
       - ./dataset-metadata:/app/dataset-metadata
       - ./graphql-api/src:/app/graphql-api/src
     depends_on:
-      - elasticsearch-proxy
+      - elasticsearch
       - redis
 volumes:
   redis_data:

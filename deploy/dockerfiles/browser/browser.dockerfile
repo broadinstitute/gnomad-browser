@@ -16,7 +16,7 @@ COPY --chown=node:node pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 COPY --chown=node:node dataset-metadata/package.json dataset-metadata/package.json
 COPY --chown=node:node browser/package.json browser/package.json
-RUN pnpm install --production false --frozen-lockfile
+RUN  pnpm install --no-frozen-lockfile
 
 # Copy source
 COPY --chown=node:node babel.config.js .
@@ -27,7 +27,7 @@ COPY --chown=node:node browser browser
 
 # Build
 COPY --chown=node:node browser/build.env .
-RUN export $(cat build.env | xargs); cd browser && pnpm build
+RUN export $(cat build.env | xargs); cd browser && pnpm install && pnpm build
 
 # Compress static files for use with nginx's gzip_static
 RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)$' \
