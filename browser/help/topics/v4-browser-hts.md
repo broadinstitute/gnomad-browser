@@ -343,7 +343,7 @@ Row fields:
     - `copy_numbers`: Array containing information about multiallelic CNVs.
       - `copy_number`: Copy numbers observed across samples.
       - `ac`: Allele count of SV.
-    - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only).
+    - `hemizygote_count`: Number of samples with hemizygous genotypes (biallelic sites only).
     - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
 - `age_distribution`:  Struct containing age distribution information for variant.
   - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
