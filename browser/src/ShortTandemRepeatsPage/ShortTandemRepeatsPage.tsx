@@ -167,7 +167,7 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
           blog post
         </a>{' '}
         and the{' '}
-        <a href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages">
+        <a href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/">
           change log for March, 2025
         </a>
       </p>
