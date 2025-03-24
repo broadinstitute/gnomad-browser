@@ -286,7 +286,7 @@ Row fields:
   - `gen_anc_grps`: Array containing information about genetic ancestry group information.
     - `id`: Genetic ancestry group label.
     - `sc`: Site count; number of individuals with CNV in genetic ancestry group.
-    - `sn`:  Site number; total number of individuals evaluated for carrying CNV in genetic ancestry group.
+    - `sn`: Site number; total number of individuals evaluated for carrying CNV in genetic ancestry group.
     - `sf`: Site frequency; proportion of individuals carrying CNV in genetic ancestry group.
 - `posmin`: Minimum start position across all calls grouped in variant.
 - `posmax`: Maximum start position across all calls grouped in variant.
@@ -338,7 +338,7 @@ Row fields:
       - `ac`: Allele count of the SV across samples in genetic ancestry group.
       - `an`: Total number of alleles in called genotypes across samples in genetic ancestry group.
       - `af`: Allele frequency (biallelic sites only) across samples in genetic ancestry group.
-      - `hemizygote_count`: Number of samples with heterozygous genotypes (biallelic sites only) across samples in genetic ancestry group.
+      - `hemizygote_count`: Number of samples with hemizygous genotypes (biallelic sites only) across samples in genetic ancestry group.
       - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only) across samples in genetic ancestry group.
     - `copy_numbers`: Array containing information about multiallelic CNVs.
       - `copy_number`: Copy numbers observed across samples.
