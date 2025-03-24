@@ -258,7 +258,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
           and the
            
           <a
-            href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages"
+            href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/"
           >
             change log for March, 2025
           </a>
@@ -940,7 +940,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
         and the
          
         <a
-          href="https://gnomad.broadinstitute.org/news/changelog/2025-03-known-disease-associated-tandem-repeat-pages"
+          href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/"
         >
           change log for March, 2025
         </a>
