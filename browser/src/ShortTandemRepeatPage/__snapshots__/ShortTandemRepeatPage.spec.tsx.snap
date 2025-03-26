@@ -266,12 +266,23 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -1239,12 +1250,23 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -2212,12 +2234,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -3185,12 +3218,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -4158,12 +4202,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -5131,12 +5186,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -6104,12 +6170,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -7077,12 +7154,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -8050,12 +8138,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -9023,12 +9122,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -9996,12 +10106,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -10969,12 +11090,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -11942,12 +12074,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -12915,12 +13058,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -13888,12 +14042,23 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -14861,12 +15026,23 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -15834,12 +16010,23 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -16807,12 +16994,23 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
@@ -17780,12 +17978,23 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         TRs in gnomAD
       </h2>
       <p>
-        <withRouter()
-          preserveSelectedDataset={true}
-          to="/short-tandem-repeats"
-        >
-          Known disease-associated TRs 
-        </withRouter()>
+        <List>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="/short-tandem-repeats"
+            >
+              Known disease-associated TRs
+               
+            </Link__ExternalLink>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
       </p>
     </ShortTandemRepeatPage__ResponsiveSection>
   </ShortTandemRepeatPage__FlexWrapper>
