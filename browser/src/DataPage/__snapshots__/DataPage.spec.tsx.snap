@@ -14270,7 +14270,16 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        For more information about these files, see our blog post on
+        These files contain the data that underlies the 
+        <a
+          className="c11"
+          href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          gnomAD tandem repeat pages
+        </a>
+        . For more information, see our blog post on
          
         <a
           className="c11"
@@ -14287,7 +14296,7 @@ exports[`Data Page has no unexpected changes 1`] = `
       </b>
       : [
       <a
-        href="https://gnomad.broadinstitute.org/news/changelog/"
+        href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/"
       >
         changelog entry
       </a>

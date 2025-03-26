@@ -317,7 +317,11 @@ const GnomadV3Downloads = () => (
     <DownloadsSection>
       <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
       <p>
-        For more information about these files, see our blog post on{' '}
+        These files contain the data that underlies the {/* @ts-expect-error */}
+        <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4">
+          gnomAD tandem repeat pages
+        </ExternalLink>
+        . For more information, see our blog post on{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
           the addition of short tandem repeat calls to gnomAD
@@ -325,7 +329,10 @@ const GnomadV3Downloads = () => (
         .
       </p>
       <b>Update (March 2025)</b>: [
-      <a href="https://gnomad.broadinstitute.org/news/changelog/">changelog entry</a>]
+      <a href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/">
+        changelog entry
+      </a>
+      ]
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
