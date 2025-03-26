@@ -164,19 +164,6 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         <>
-          {stripy_id && (
-            <>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
-              <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-                <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
-                  STRipy
-                </ExternalLink>
-              </ListItem>
-            </>
-          )}
-        </>
-        <>
           {strchive_id && (
             <>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -184,6 +171,19 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
                 {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={`https://strchive.org/loci/${strchive_id}`}>
                   STRchive
+                </ExternalLink>
+              </ListItem>
+            </>
+          )}
+        </>
+        <>
+          {stripy_id && (
+            <>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
+                  STRipy
                 </ExternalLink>
               </ListItem>
             </>
