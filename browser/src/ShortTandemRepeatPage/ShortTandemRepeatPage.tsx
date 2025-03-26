@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
-
+import Link from '../Link'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import TableWrapper from '../TableWrapper'
 import InfoButton from '../help/InfoButton'
@@ -312,10 +312,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             <List>
               {/* @ts-expect-error */}
               <ListItem>
-                {/* @ts-expect-error */}
-                <ExternalLink href="/short-tandem-repeats">
-                  Known disease-associated TRs{' '}
-                </ExternalLink>
+                <Link to="/short-tandem-repeats">Known disease-associated TRs </Link>
               </ListItem>
               {/* @ts-expect-error */}
               <ListItem>
