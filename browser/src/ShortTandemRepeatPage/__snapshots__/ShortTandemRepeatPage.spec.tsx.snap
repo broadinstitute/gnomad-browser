@@ -268,12 +268,12 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -1252,12 +1252,12 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -2236,12 +2236,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -3220,12 +3220,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -4204,12 +4204,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -5188,12 +5188,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -6172,12 +6172,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -7156,12 +7156,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -8140,12 +8140,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -9124,12 +9124,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -10108,12 +10108,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -11092,12 +11092,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -12076,12 +12076,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -13060,12 +13060,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -14044,12 +14044,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -15028,12 +15028,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -16012,12 +16012,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -16996,12 +16996,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
@@ -17980,12 +17980,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
       <p>
         <List>
           <List__ListItem>
-            <Link__ExternalLink
-              href="/short-tandem-repeats"
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
             >
-              Known disease-associated TRs
-               
-            </Link__ExternalLink>
+              Known disease-associated TRs 
+            </withRouter()>
           </List__ListItem>
           <List__ListItem>
             <Link__ExternalLink
