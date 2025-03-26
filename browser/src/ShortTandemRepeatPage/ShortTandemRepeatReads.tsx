@@ -24,6 +24,7 @@ import {
   genotypeQualityKeys,
 } from './qualityDescription'
 import { qScoreKeys, QScoreBin, qScoreLabels, QScoreBinBounds, qScoreBinBounds } from './qScore'
+import InfoButton from '../help/InfoButton'
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
@@ -141,12 +142,16 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
           </dd>
         </div>
 
-        <InlineKeyValue>
-          <dt>Manual review</dt>
+        <InlineKeyValue style={{ paddingRight: '2em' }}>
+          <dt>
+            Manual review <InfoButton topic="str-genotype-quality-manual-review" />
+          </dt>
           <dd>{qualityDescriptionLabels[read.quality_description]}</dd>
         </InlineKeyValue>
         <InlineKeyValue>
-          <dt>Q score</dt>
+          <dt>
+            Q score <InfoButton topic="str-genotype-quality-q-score" />
+          </dt>
           <dd>{read.q_score.toFixed(3)}</dd>
         </InlineKeyValue>
       </KeyValueList>
