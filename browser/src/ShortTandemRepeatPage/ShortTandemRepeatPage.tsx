@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import Link from '../Link'
 import TableWrapper from '../TableWrapper'
 import InfoButton from '../help/InfoButton'
 import ControlSection from '../VariantPage/ControlSection'
@@ -309,7 +308,23 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           <ExternalResources shortTandemRepeat={shortTandemRepeat} />
           <h2>TRs in gnomAD</h2>
           <p>
-            <Link to="/short-tandem-repeats">Known disease-associated TRs </Link>
+            {/* @ts-expect-error */}
+            <List>
+              {/* @ts-expect-error */}
+              <ListItem>
+                {/* @ts-expect-error */}
+                <ExternalLink href="/short-tandem-repeats">
+                  Known disease-associated TRs{' '}
+                </ExternalLink>
+              </ListItem>
+              {/* @ts-expect-error */}
+              <ListItem>
+                {/* @ts-expect-error */}
+                <ExternalLink href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats">
+                  Data download
+                </ExternalLink>
+              </ListItem>
+            </List>
           </p>
         </ResponsiveSection>
       </FlexWrapper>
@@ -370,7 +385,8 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
 
           {alleleSizeDistributionRepunits.length > 1 && (
             <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
-              Repeat unit: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              Repeat unit: &nbsp;
+              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
                 value={selectedAlleleSizeRepeatUnit}
