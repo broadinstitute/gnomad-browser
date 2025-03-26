@@ -13,7 +13,6 @@ import { Button, Input, Select } from '@gnomad/ui'
 
 import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import AttributeList, { AttributeListItem } from '../AttributeList'
 import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import useRequest from '../useRequest'
@@ -28,6 +27,40 @@ import { qScoreKeys, QScoreBin, qScoreLabels, QScoreBinBounds, qScoreBinBounds }
 
 const ShortTandemRepeatReadImageWrapper = styled.div`
   width: 100%;
+`
+
+const KeyValueList = styled.dl`
+  margin: 0;
+
+  dt,
+  dd {
+    display: inline-block;
+    line-height: 1.75;
+  }
+
+  dt {
+    font-weight: bold;
+    vertical-align: top;
+  }
+
+  dd {
+    margin-left: 0.5ch;
+  }
+
+  @media (max-width: 600px) {
+    dt,
+    dd {
+      display: block;
+    }
+
+    dd {
+      margin-left: 2ch;
+    }
+  }
+`
+const InlineKeyValue = styled.div`
+  display: inline-block;
+  padding-right: 10em;
 `
 
 const ShortTandemRepeatReadImage = styled.img`
@@ -71,35 +104,52 @@ const ShortTandemRepeatRead = ({ read }: ShortTandemRepeatReadProps) => {
 
   return (
     <div>
-      <AttributeList style={{ marginBottom: '1em' }}>
-        <AttributeListItem label="Genetic ancestry group">
-          {GNOMAD_POPULATION_NAMES[read.population]}
-        </AttributeListItem>
-        <AttributeListItem label="Sex">{read.sex}</AttributeListItem>
-        <AttributeListItem label="Age">
-          {read.age || 'Not available for this sample'}
-        </AttributeListItem>
-        <AttributeListItem label="Allele 1">
-          {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
-          {read.alleles[0].repeats_confidence_interval.lower}-
-          {read.alleles[0].repeats_confidence_interval.upper} confidence interval
-        </AttributeListItem>
-        <AttributeListItem label="Allele 2">
-          {read.alleles.length > 1 ? (
-            <>
-              {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
-              {read.alleles[1].repeats_confidence_interval.lower}-
-              {read.alleles[1].repeats_confidence_interval.upper} confidence interval
-            </>
-          ) : (
-            'None'
-          )}
-        </AttributeListItem>
-        <AttributeListItem label="Manual review">
-          {qualityDescriptionLabels[read.quality_description]}
-        </AttributeListItem>
-        <AttributeListItem label="Q score">{read.q_score.toFixed(3)}</AttributeListItem>
-      </AttributeList>
+      <KeyValueList style={{ marginBottom: '1em' }}>
+        <InlineKeyValue>
+          <dt>Genetic ancestry group</dt>
+          <dd>{GNOMAD_POPULATION_NAMES[read.population]}</dd>
+        </InlineKeyValue>
+        <InlineKeyValue>
+          <dt>Sex</dt>
+          <dd>{read.sex}</dd>
+        </InlineKeyValue>
+        <InlineKeyValue>
+          <dt>Age</dt>
+          <dd>{read.age || 'Not available for this sample'}</dd>
+        </InlineKeyValue>
+
+        <div>
+          <dt>Allele 1</dt>
+          <dd>
+            {read.alleles[0].repeat_unit} repeated {read.alleles[0].repeats} times with a{' '}
+            {read.alleles[0].repeats_confidence_interval.lower}-
+            {read.alleles[0].repeats_confidence_interval.upper} confidence interval
+          </dd>
+        </div>
+        <div>
+          <dt>Allele 2</dt>
+          <dd>
+            {read.alleles.length > 1 ? (
+              <>
+                {read.alleles[1].repeat_unit} repeated {read.alleles[1].repeats} times with a{' '}
+                {read.alleles[1].repeats_confidence_interval.lower}-
+                {read.alleles[1].repeats_confidence_interval.upper} confidence interval
+              </>
+            ) : (
+              'None'
+            )}
+          </dd>
+        </div>
+
+        <InlineKeyValue>
+          <dt>Manual review</dt>
+          <dd>{qualityDescriptionLabels[read.quality_description]}</dd>
+        </InlineKeyValue>
+        <InlineKeyValue>
+          <dt>Q score</dt>
+          <dd>{read.q_score.toFixed(3)}</dd>
+        </InlineKeyValue>
+      </KeyValueList>
       <ShortTandemRepeatReadImageWrapper>
         <ShortTandemRepeatReadImage
           alt="REViewer read visualization"
