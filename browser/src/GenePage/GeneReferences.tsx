@@ -38,6 +38,8 @@ const GeneReferences = ({ gene }: Props) => {
   const ucscReferenceGenomeId = referenceGenome === 'GRCh37' ? 'hg19' : 'hg38'
   const ucscUrl = `https://genome.ucsc.edu/cgi-bin/hgTracks?db=${ucscReferenceGenomeId}&position=chr${chrom}%3A${start}-${stop}`
 
+  const gtexUrl = `https://gtexportal.org/home/gene/${geneId}`
+
   return (
     <React.Fragment>
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
@@ -141,6 +143,11 @@ const GeneReferences = ({ gene }: Props) => {
                   >
                     NCBI Genome Data Viewer
                   </ExternalLink>
+                </ListItem>
+                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+                <ListItem>
+                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+                  <ExternalLink href={gtexUrl}>GTEx</ExternalLink>
                 </ListItem>
               </>
             )}
