@@ -3,11 +3,11 @@ id: v4-browser-hts
 title: 'gnomAD v4 Browser Hail Tables'
 ---
 
-In addition to our [variants tables](/downloads#v4-variants), we release two data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
+In addition to our [variants tables](/downloads#v4-variants), we release four data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
 
-## gnomAD v4.1 exome/genome/joint variant table
+## gnomAD v4.1 exome/genome/joint short variant table
 
-To convert the standard gnomAD variant release tables into a format more suitable for browser display, we join the exome, genome, and joint tables on locus/allele to create a single table. This process ensures that they share the same site-level annotations, thus saving space and optimizing database/API queries. Additionally, allele counts and frequencies are structured in a JSON-like format that is more easily consumable by web applications. The table may also include subset data not visible in the browser.
+To convert the standard gnomAD short variant (SNV/indel) release tables into a format more suitable for browser display, we join the exome, genome, and joint tables on locus/allele to create a single table. This process ensures that they share the same site-level annotations, thus saving space and optimizing database/API queries. Additionally, allele counts and frequencies are structured in a JSON-like format that is more easily consumable by web applications. The table may also include subset data not visible in the browser.
 
 Each row (i.e., variant) in this table will have distinct allele frequency information and quality metrics depending whether it was present in the exome or genome callsets but will share common annotations such as [VEP annotations](https://useast.ensembl.org/info/docs/tools/vep/index.html) and _in silico_ predictors.
 
@@ -18,6 +18,12 @@ The script for how this table is created can be found [here](https://github.com/
 These tables underlie the gene models data seen in the browser, which contains detailed information on exon-coding regions, transcripts, identifiers, gene constraint, and co-occurrence data. The data from these tables are derived from [GENCODE](https://www.gencodegenes.org/human/release_39.html), the [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/), [MANE transcripts](https://www.ncbi.nlm.nih.gov/refseq/MANE/), [GTEx](https://gtexportal.org/home/) (coming soon), and from gnomAD secondary analyses.
 
 The script for how this table is created can be found [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/genes.py).
+
+## gnomAD v4.1 CNV and SV tables
+
+To convert the copy number and structural variant (CNV and SV, respectively) datasets for display in the browser, we convert the [VCF](https://gnomad.broadinstitute.org/data#v4-structural-variants) releases to Hail Table format and add the genotype quality and age distribution histogram information.
+
+The scripts for how these tables are created can be found [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/gnomad_v4_cnvs.py) (CNVs) and [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/gnomad_sv_v3.py) (SVs).
 
 # Browser Hail Table Field Descriptions
 
@@ -259,3 +265,93 @@ Row fields:
   - `af_cutoff`: Allele frequency cutoff.
   - `data`: Struct containing variant co-occurrence data.
   - `hom_total`: Total count of homozygous variants.
+
+#### gnomAD v4.1 copy number variant (CNV) Hail Table annotations
+Row fields:
+- `variant_id`: Variant name identifier.
+- `reference_genome`: Reference genome.
+- `chrom`: Chromosome.
+- `pos`: CNV start position.
+- `end`: CNV end position.
+- `length`: CNV length.
+- `type`: CNV type (deletion vs duplication).
+- `alts`: CNV type (same as `type`).
+- `xpos`:  Genomic start position of CNV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `xend`:  Genomic end position of CNV (format: chromosomeposition).
+- `genes`: Set of gene(s) impacted by CNV.
+- `freq`: Struct containing variant frequency information.
+  - `sc`: Site count; number of individuals with CNV.
+  - `sn`: Site number; total number of individuals evaluated for carrying CNV.
+  - `sf`: Site frequency; proportion of individuals carrying CNV.
+  - `gen_anc_grps`: Array containing information about genetic ancestry group information.
+    - `id`: Genetic ancestry group label.
+    - `sc`: Site count; number of individuals with CNV in genetic ancestry group.
+    - `sn`: Site number; total number of individuals evaluated for carrying CNV in genetic ancestry group.
+    - `sf`: Site frequency; proportion of individuals carrying CNV in genetic ancestry group.
+- `posmin`: Minimum start position across all calls grouped in variant.
+- `posmax`: Maximum start position across all calls grouped in variant.
+- `endmin`: Minimum end position across all calls grouped in variant.
+- `endmax`: Maximum end position across all calls grouped in variant.
+
+#### gnomAD v4.1 browser structural variant (SV) Hail Table annotations
+Row fields:
+- `qual`: Quality of the structural variant (SV).
+- `filters`: Quality filter of SV.
+- `algorithms`: Source algorithms that contributed to SV call.
+- `bothsides_support: Whether SV has read-level support for both sides of breakpoint. True indicates higher-confidence variants.
+- `cpx_intervals`: Genomic intervals constituting complex variant.
+- `cpx_type`: Subtype of complex variants.
+- `evidence`: Classes of evidence supporting final genotype.
+- `pesr_gt_overdispersion`: Whether PESR genotyping data is overdispersed. Flags sites where genotypes are likely noisier.
+- `source`: Source of inserted sequence.
+- `strands`: Breakpoint strandedness. One of `[++,+-,-+,--]`.
+- `unresolved_type`: Class of unresolved variant.
+- `par`: Whether SV overlaps pseudoautosomal region.
+- `variant_id`: SV ID.
+- `reference_genome`: Reference genome version.
+- `chrom`: Chromosome of SV.
+- `pos`: SV start position.
+- `end`: SV end position.
+- `chrom2`: Second chromosome involved in SV.
+- `pos2`: SV start position on `chrom2`.
+- `end2`: SV end position on `chrom2`.
+- `length`: SV length. 
+- `type`: SV type.
+- `alts`: SV type, including mobile element insertion types.
+- `xpos`: Genomic start position of SV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `xend`: Genomic end position of SV (format: chromosomeposition).
+- `xpos2`: Genomic start position of SV on second chromosome (format: chromosomeposition). 
+- `xend2`: Genomic end position of SV on the second chromosome (format: chromosomeposition).
+- `consequences`: Array containing SV consequence information.
+  - `consequence`: Predicted consequence of the structural variant on gene(s).
+  - `genes`: Array containing name(s) of the affected gene(s).
+- `intergenic`: Whether SV falls entirely in intergenic sequences.
+- `major_consequence`: Predicted most severe consequences of SV.
+- `genes`: Set of gene(s) disrupted by SV.
+- `freq`: Struct containing variant frequency information.
+  - `all`: Frequency calculated across all 63,046 genome samples included in SV callset.
+    - `ac`: Allele count of SV.
+    - `an`: Total number of alleles in called genotypes.
+    - `af`: Allele frequency (biallelic sites only).
+    - `gen_anc_grps`: Array containing information about genetic ancestry group information.
+      - `id`: Genetic ancestry group label.
+      - `ac`: Allele count of the SV across samples in genetic ancestry group.
+      - `an`: Total number of alleles in called genotypes across samples in genetic ancestry group.
+      - `af`: Allele frequency (biallelic sites only) across samples in genetic ancestry group.
+      - `hemizygote_count`: Number of XY samples with hemizygous genotypes (biallelic sites on sex chromosomes only) across samples in genetic ancestry group.
+      - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only) across samples in genetic ancestry group.
+    - `copy_numbers`: Array containing information about multiallelic CNVs.
+      - `copy_number`: Copy numbers observed across samples.
+      - `ac`: Allele count of SV.
+    - `hemizygote_count`: Number of XY samples with hemizygous genotypes (biallelic sites on sex chromosomes only).
+    - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
+- `age_distribution`:  Struct containing age distribution information for variant.
+  - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
+    - `bin_freq`: Array containing the frequency of individuals in this bin.
+    - `bin_edges`: Array containing the edges of each bin of the histogram.
+    - `n_smaller`: Number of individuals with lower age than the lowest bin.
+    - `n_larger`: Number of individuals with a higher age than the highest bin.
+  - `hom`: Struct containing age distribution information for individuals homozygous for this variant. Structured to allow easy histogram creation. Contains same fields as `het` above.
+- `genotype_quality`:  Struct containing information used to display genotype quality (GQ) histograms.
+  - `all`: Struct containing GQ information about all samples. Contains same fields as `het` and `hom` in `age_distribution` struct above.
+  - `alt`: Struct containing GQ information across samples with alternative alleles (either heterozygous or homozygous). Contains same fields as `het` and `hom` in `age_distribution` struct above.
