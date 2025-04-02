@@ -15,7 +15,7 @@
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0",
     "@gnomad/markdown-loader": "2.0.0",
-    "@gnomad/region-viewer": "4.0.0",
+    "@gnomad/region-viewer": "^5.0.0",
     "@gnomad/track-genes": "3.0.0",
     "@gnomad/track-regions": "2.0.0",
     "@gnomad/track-transcripts": "3.0.0",

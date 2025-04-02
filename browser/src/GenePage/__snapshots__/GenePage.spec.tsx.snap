@@ -651,7 +651,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -685,7 +685,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -741,7 +741,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -749,10 +749,10 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -866,10 +866,10 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -883,7 +883,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -1447,13 +1447,13 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -1480,7 +1480,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -2169,7 +2169,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -2203,7 +2203,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -2248,7 +2248,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -2256,10 +2256,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -2373,10 +2373,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -2390,7 +2390,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -2954,13 +2954,13 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -2987,7 +2987,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -3676,7 +3676,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -3710,7 +3710,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -3755,7 +3755,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -3763,10 +3763,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -3880,10 +3880,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -3897,7 +3897,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -4461,13 +4461,13 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -4494,7 +4494,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -5183,7 +5183,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -5217,7 +5217,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -5262,7 +5262,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -5270,10 +5270,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -5387,10 +5387,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -5404,7 +5404,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -5968,13 +5968,13 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -6001,7 +6001,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -6690,7 +6690,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -6724,7 +6724,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -6769,7 +6769,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -6777,10 +6777,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -6894,10 +6894,10 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -6911,7 +6911,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -7475,13 +7475,13 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -7508,7 +7508,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -8197,7 +8197,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -8231,7 +8231,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -8287,7 +8287,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -8295,10 +8295,10 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -8412,10 +8412,10 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -8429,7 +8429,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -8993,13 +8993,13 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -9026,7 +9026,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -9738,7 +9738,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -9772,7 +9772,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -9828,7 +9828,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -9836,10 +9836,10 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -9953,10 +9953,10 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -9970,7 +9970,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -10534,13 +10534,13 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -10567,7 +10567,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -11256,7 +11256,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -11290,7 +11290,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -11346,7 +11346,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -11354,10 +11354,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -11471,10 +11471,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -11488,7 +11488,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -12052,13 +12052,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -12085,7 +12085,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -12114,13 +12114,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         </div>
       </div>
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -12164,7 +12164,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -12892,7 +12892,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -12926,7 +12926,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -12982,7 +12982,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -12990,10 +12990,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -13107,10 +13107,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -13124,7 +13124,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -13688,13 +13688,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -13721,7 +13721,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -13750,13 +13750,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         </div>
       </div>
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -13800,7 +13800,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -14528,7 +14528,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -14562,7 +14562,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -14618,7 +14618,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -14626,10 +14626,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -14743,10 +14743,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -14760,7 +14760,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -15324,13 +15324,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -15357,7 +15357,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -15386,13 +15386,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         </div>
       </div>
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -15436,7 +15436,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -16164,7 +16164,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -16198,7 +16198,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -16254,7 +16254,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -16262,10 +16262,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -16379,10 +16379,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -16396,7 +16396,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -16960,13 +16960,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -16993,7 +16993,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -17022,13 +17022,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         </div>
       </div>
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -17072,7 +17072,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -17800,7 +17800,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -17834,7 +17834,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -17890,7 +17890,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -17898,10 +17898,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -18015,10 +18015,10 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -18032,7 +18032,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -18596,13 +18596,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -18629,7 +18629,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -18658,13 +18658,13 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         </div>
       </div>
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -18708,7 +18708,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -19436,7 +19436,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -19470,7 +19470,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -19527,7 +19527,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -19535,10 +19535,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -19652,10 +19652,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -19669,7 +19669,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -20233,13 +20233,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -20266,7 +20266,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -20978,7 +20978,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -21012,7 +21012,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -21069,7 +21069,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -21077,10 +21077,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -21194,10 +21194,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -21211,7 +21211,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -21775,13 +21775,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -21808,7 +21808,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -22520,7 +22520,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -22554,7 +22554,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -22611,7 +22611,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -22619,10 +22619,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -22736,10 +22736,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -22753,7 +22753,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -23317,13 +23317,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -23350,7 +23350,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -24062,7 +24062,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -24096,7 +24096,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -24153,7 +24153,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -24161,10 +24161,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -24278,10 +24278,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -24295,7 +24295,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -24859,13 +24859,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -24892,7 +24892,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -25604,7 +25604,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -25638,7 +25638,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -25695,7 +25695,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -25703,10 +25703,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -25820,10 +25820,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -25837,7 +25837,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -26401,13 +26401,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -26434,7 +26434,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -27146,7 +27146,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -27180,7 +27180,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -27237,7 +27237,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -27245,10 +27245,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -27362,10 +27362,10 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -27379,7 +27379,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -27943,13 +27943,13 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -27976,7 +27976,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -28688,7 +28688,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -28722,7 +28722,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -28778,7 +28778,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -28786,10 +28786,10 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -28903,10 +28903,10 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -28920,7 +28920,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -29484,13 +29484,13 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -29517,7 +29517,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -30229,7 +30229,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -30263,7 +30263,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -30319,7 +30319,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -30327,10 +30327,10 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -30444,10 +30444,10 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -30461,7 +30461,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -31025,13 +31025,13 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -31058,7 +31058,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -31576,7 +31576,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
           className="GenePage__TableSelectorWrapper-sc-rcxzgc-4 kTbSHB"
         >
           <div
-            className="sc-bdVaJa dDlceV"
+            className="sc-dnqmqq omcmW"
             onClick={[Function]}
           >
             Constraint
@@ -31610,7 +31610,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </button>
           </div>
           <div
-            className="sc-bdVaJa gUKyFV"
+            className="sc-dnqmqq jKTlnJ"
             onClick={[Function]}
           >
             Variant co-occurrence 
@@ -31665,7 +31665,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -31673,10 +31673,10 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
       }
     >
       <div
-        className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+        className="sc-bxivhb glCqXO"
       >
         <div
-          className="Track__TopPanel-sc-1sdyh2h-2 cAuoSY"
+          className="sc-EHOje fhxHOS"
           style={
             {
               "marginLeft": 115,
@@ -31759,10 +31759,10 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
           </div>
         </div>
         <div
-          className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+          className="sc-ifAKCX dBrAUy"
         >
           <div
-            className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+            className="sc-bZQynM hIOTsG"
             style={
               {
                 "width": 115,
@@ -31776,7 +31776,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </div>
           </div>
           <div
-            className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+            className="sc-gzVnrw irZcDK"
             style={
               {
                 "width": 799,
@@ -32556,13 +32556,13 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
         className="GenePage__TrackWrapper-sc-rcxzgc-5 bTCTZj"
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -32582,7 +32582,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,

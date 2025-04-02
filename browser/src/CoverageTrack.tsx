@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { AxisLeft } from '@visx/axis'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 import { Button, Select } from '@gnomad/ui'
 import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'

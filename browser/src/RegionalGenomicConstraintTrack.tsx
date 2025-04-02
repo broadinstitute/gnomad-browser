@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import queryString from 'query-string'
 
-// @ts-expect-error
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -11,6 +10,7 @@ import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-
 import Link from './Link'
 
 import InfoButton from './help/InfoButton'
+import { ScalePosition } from '@gnomad/region-viewer/lib/cjs/coordinates'
 
 const Wrapper = styled.div`
   display: flex;
@@ -157,7 +157,7 @@ const TopPanel = styled.div`
 `
 
 type TrackProps = {
-  scalePosition: (input: string) => number
+  scalePosition: ScalePosition
   width: number
 }
 
@@ -216,6 +216,8 @@ const RegionalGenomicConstraintTrack = ({
   const currentParams = queryString.parse(location.search)
   const variantId = currentParams.variant
 
+  const pos: number = parseInt(variantId.split('-')[1], 10)
+
   return (
     <Wrapper>
       <Track renderLeftPanel={() => renderTrackLeftPanel(constraintRegionSize)}>
@@ -235,26 +237,15 @@ const RegionalGenomicConstraintTrack = ({
                 />
                 {typeof variantId === 'string' && (
                   <>
-                    <rect
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={15}
-                      width={2}
-                      height={30}
-                      fill="#000"
-                    />
-                    <text
-                      x={scalePosition(variantId.split('-')[1])}
-                      y={9}
-                      dy="0.33rem"
-                      textAnchor="middle"
-                    >
+                    <rect x={scalePosition(pos)} y={15} width={2} height={30} fill="#000" />
+                    <text x={scalePosition(pos)} y={9} dy="0.33rem" textAnchor="middle">
                       <Link to={`/variant/${variantId}`}>{variantId}</Link>
                     </text>
                   </>
                 )}
                 {regions.map((region: Region) => {
-                  const startX = scalePosition(region.start.toString())
-                  const stopX = scalePosition(region.stop.toString())
+                  const startX = scalePosition(region.start)
+                  const stopX = scalePosition(region.stop)
                   const regionWidth = stopX - startX
 
                   return (

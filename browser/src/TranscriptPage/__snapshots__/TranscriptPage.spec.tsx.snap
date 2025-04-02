@@ -661,7 +661,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -762,13 +762,13 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -789,7 +789,7 @@ exports[`TranscriptPage with dataset "exac" has no unexpected changes 1`] = `
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -1486,7 +1486,7 @@ exports[`TranscriptPage with dataset "gnomad_cnv_r4" has no unexpected changes 1
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -1587,13 +1587,13 @@ exports[`TranscriptPage with dataset "gnomad_cnv_r4" has no unexpected changes 1
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -1614,7 +1614,7 @@ exports[`TranscriptPage with dataset "gnomad_cnv_r4" has no unexpected changes 1
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -2311,7 +2311,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -2412,13 +2412,13 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -2439,7 +2439,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1" has no unexpected changes 1`]
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -3136,7 +3136,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -3237,13 +3237,13 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -3264,7 +3264,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_controls" has no unexpected ch
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -3961,7 +3961,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -4062,13 +4062,13 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -4089,7 +4089,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_cancer" has no unexpected 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -4786,7 +4786,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -4887,13 +4887,13 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -4914,7 +4914,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_neuro" has no unexpected c
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -5611,7 +5611,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -5712,13 +5712,13 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -5739,7 +5739,7 @@ exports[`TranscriptPage with dataset "gnomad_r2_1_non_topmed" has no unexpected 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -6437,7 +6437,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -6538,13 +6538,13 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -6565,7 +6565,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -7263,7 +7263,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -7364,13 +7364,13 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -7391,7 +7391,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -8089,7 +8089,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -8190,13 +8190,13 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -8217,7 +8217,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -8915,7 +8915,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -9016,13 +9016,13 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -9043,7 +9043,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -9741,7 +9741,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -9842,13 +9842,13 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -9869,7 +9869,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -10567,7 +10567,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -10668,13 +10668,13 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -10695,7 +10695,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -11392,7 +11392,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -11493,13 +11493,13 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -11520,7 +11520,7 @@ exports[`TranscriptPage with dataset "gnomad_r4" has no unexpected changes 1`] =
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -12217,7 +12217,7 @@ exports[`TranscriptPage with dataset "gnomad_r4_non_ukb" has no unexpected chang
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -12318,13 +12318,13 @@ exports[`TranscriptPage with dataset "gnomad_r4_non_ukb" has no unexpected chang
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -12345,7 +12345,7 @@ exports[`TranscriptPage with dataset "gnomad_r4_non_ukb" has no unexpected chang
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -13042,7 +13042,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -13143,13 +13143,13 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -13170,7 +13170,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1" has no unexpected changes 
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -13867,7 +13867,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -13968,13 +13968,13 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -13995,7 +13995,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_controls" has no unexpected
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -14692,7 +14692,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -14793,13 +14793,13 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -14820,7 +14820,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r2_1_non_neuro" has no unexpecte
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,
@@ -15517,7 +15517,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r4" has no unexpected changes 1`
     className="RegionViewer__RegionViewerWrapper-sc-1hxpl0h-0 ikYDAu"
   >
     <div
-      className="RegionViewer__RegionViewerWrapper-sc-tk0egb-0 cgruVM"
+      className="sc-bdVaJa bPGLpq"
       style={
         {
           "width": 994,
@@ -15618,13 +15618,13 @@ exports[`TranscriptPage with dataset "gnomad_sv_r4" has no unexpected changes 1`
         }
       >
         <div
-          className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+          className="sc-bxivhb glCqXO"
         >
           <div
-            className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+            className="sc-ifAKCX dBrAUy"
           >
             <div
-              className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+              className="sc-bZQynM hIOTsG"
               style={
                 {
                   "width": 115,
@@ -15645,7 +15645,7 @@ exports[`TranscriptPage with dataset "gnomad_sv_r4" has no unexpected changes 1`
               </div>
             </div>
             <div
-              className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+              className="sc-gzVnrw irZcDK"
               style={
                 {
                   "width": 799,

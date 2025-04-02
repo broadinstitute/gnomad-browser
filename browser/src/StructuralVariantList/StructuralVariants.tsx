@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button, SegmentedControl } from '@gnomad/ui'
 

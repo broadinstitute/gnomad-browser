@@ -3,7 +3,6 @@ import { scaleLinear } from 'd3-scale'
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { RegionsPlot } from '@gnomad/track-regions'
@@ -194,8 +193,12 @@ const IndividualTissueTrack = ({
     <Track
       // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       renderLeftPanel={() => <TissueName>{gtexTissues[tissue].fullName}</TissueName>}
-      renderRightPanel={({ width }: any) =>
-        width > 36 && (
+      renderRightPanel={({ width }: any) => {
+        if (width <= 36) {
+          return null
+        }
+
+        return (
           <svg width={width} height={31}>
             <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
             <g transform="translate(0, 6)">
@@ -244,7 +247,7 @@ const IndividualTissueTrack = ({
             />
           </svg>
         )
-      }
+      }}
     >
       {({ scalePosition, width }: any) => {
         if (!isExpressed) {
@@ -489,8 +492,11 @@ const TissueExpressionTrack = ({
                 <InfoButton topic="pext" style={{ display: 'inline' }} />
               </TissueName>
             )}
-            renderRightPanel={({ width }: any) =>
-              width > 50 && (
+            renderRightPanel={({ width }) => {
+              if (width <= 50) {
+                return null
+              }
+              return (
                 <svg width={width} height={31}>
                   <line x1={0} y1={6} x2={0} y2={25} stroke="#333" />
                   <g transform="translate(0, 6)">
@@ -507,7 +513,7 @@ const TissueExpressionTrack = ({
                   </g>
                 </svg>
               )
-            }
+            }}
           >
             {({ scalePosition, width }: any) => {
               if (!isExpressed) {
@@ -546,13 +552,14 @@ const TissueExpressionTrack = ({
         {isExpanded && (
           <>
             <Track
-              renderRightPanel={({ width }: any) => {
+              renderRightPanel={({ width }) => {
+                if (width <= 30) {
+                  return null
+                }
                 return (
-                  width > 30 && (
-                    <RightPanel>
-                      <InfoButton topic="pext-track-transcript-tissue-expression" />
-                    </RightPanel>
-                  )
+                  <RightPanel>
+                    <InfoButton topic="pext-track-transcript-tissue-expression" />
+                  </RightPanel>
                 )
               }}
             >

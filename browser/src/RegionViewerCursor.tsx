@@ -1,6 +1,5 @@
 import React from 'react'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Cursor as BaseCursor } from '@gnomad/region-viewer'
 
 const Cursor = (props: any) => (
