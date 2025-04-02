@@ -9,8 +9,7 @@ import { Transcript } from '../TranscriptPage/TranscriptPage'
 import transcriptFactory from '../__factories__/Transcript'
 import { render, screen } from '@testing-library/react'
 import renderer from 'react-test-renderer'
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
-import { RegionViewerContext } from '@gnomad/region-viewer'
+import { RegionViewerContext, regionViewerScale } from '@gnomad/region-viewer'
 import { BrowserRouter } from 'react-router-dom'
 
 describe('Clinvar Variants Track', () => {
@@ -31,11 +30,11 @@ describe('Clinvar Variants Track', () => {
 
   const childProps = {
     centerPanelWidth: 3,
-    isPositionDefined: true,
+    isPositionDefined: () => true,
     leftPanelWidth: 4,
     regions: [],
     rightPanelWidth: 5,
-    scalePosition: (i: number) => i,
+    scalePosition: regionViewerScale([], [0, 500]),
   }
 
   test('renders correctly with default props', () => {

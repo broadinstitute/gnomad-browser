@@ -2,7 +2,6 @@ import { transparentize } from 'polished'
 import React from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 

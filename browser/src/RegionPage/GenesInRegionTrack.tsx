@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { GenesPlot } from '@gnomad/track-genes'
@@ -103,7 +102,7 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
         </TitlePanel>
       )}
       renderTopPanel={() =>
-        genes.length > 0 && (
+        genes.length > 0 ? (
           <TopPanel>
             <Label htmlFor="genes-track-include-non-coding-genes">
               <CheckboxInput
@@ -117,7 +116,7 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
               Include non-coding genes
             </Label>
           </TopPanel>
-        )
+        ) : null
       }
     >
       {({ scalePosition, width }: any) => {

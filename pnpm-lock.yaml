@@ -160,8 +160,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       '@gnomad/region-viewer':
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: ^5.0.0
+        version: 5.0.0(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/track-genes':
         specifier: 3.0.0
         version: 3.0.0
@@ -3091,6 +3091,16 @@ packages:
     resolution: {integrity: sha512-O3gPturO4xM+9KRoCmZXxZ/PjZMStbHrPZ5aZ6z8KGy3OaoYWEZ6tsy4mW1y1/lzUqOOoBM0vXBpXRk1Vzf7Ug==}
     dependencies:
       prop-types: 15.8.1
+    dev: false
+
+  /@gnomad/region-viewer@5.0.0(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-PoTaPqf7IRTvScD3ykv5upXSYNYtIY3MINfLpJXwOnsy3gO9k089QzS9yZBsncR9cuKvBZfmwlaul8AOuEMBqQ==}
+    dependencies:
+      prop-types: 15.8.1
+      styled-components: 4.4.1(react-dom@17.0.2)(react@17.0.2)
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
   /@gnomad/track-genes@3.0.0:

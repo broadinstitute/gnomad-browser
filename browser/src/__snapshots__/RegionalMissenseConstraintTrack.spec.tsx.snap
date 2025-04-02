@@ -5,13 +5,13 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
   className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
 >
   <div
-    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+    className="sc-bxivhb glCqXO"
   >
     <div
-      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+      className="sc-ifAKCX dBrAUy"
     >
       <div
-        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        className="sc-bZQynM hIOTsG"
         style={
           {
             "width": 100,
@@ -55,10 +55,10 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         </div>
       </div>
       <div
-        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        className="sc-gzVnrw irZcDK"
         style={
           {
-            "width": 500,
+            "width": 1440,
           }
         }
       >
@@ -199,7 +199,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         >
           <svg
             height={55}
-            width={500}
+            width={1440}
           >
             <g
               onMouseEnter={[Function]}
@@ -209,8 +209,8 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 fill="#e2e2e2"
                 height={15}
                 stroke="black"
-                width={56}
-                x={124}
+                width={NaN}
+                x={NaN}
                 y={1}
               />
             </g>
@@ -222,8 +222,8 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
                 fill="#e2e2e2"
                 height={15}
                 stroke="black"
-                width={54}
-                x={346}
+                width={NaN}
+                x={NaN}
                 y={1}
               />
             </g>
@@ -233,78 +233,48 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
               <g>
                 <line
                   stroke="#424242"
-                  x1={50}
-                  x2={50}
+                  x1={NaN}
+                  x2={NaN}
                   y1={2}
                   y2={11}
                 />
                 <line
                   stroke="#424242"
-                  x1={50}
-                  x2={180}
+                  x1={NaN}
+                  x2={NaN}
                   y1={7}
                   y2={7}
                 />
                 <line
                   stroke="#424242"
-                  x1={180}
-                  x2={180}
+                  x1={NaN}
+                  x2={NaN}
                   y1={2}
                   y2={11}
                 />
-                <rect
-                  fill="#fafafa"
-                  height={5}
-                  width={30}
-                  x={100}
-                  y={3}
-                />
-                <text
-                  dy="0.33em"
-                  textAnchor="middle"
-                  x={115}
-                  y={8}
-                >
-                  0.35
-                </text>
               </g>
               <g>
                 <line
                   stroke="#424242"
-                  x1={250}
-                  x2={250}
+                  x1={NaN}
+                  x2={NaN}
                   y1={2}
                   y2={11}
                 />
                 <line
                   stroke="#424242"
-                  x1={250}
-                  x2={400}
+                  x1={NaN}
+                  x2={NaN}
                   y1={7}
                   y2={7}
                 />
                 <line
                   stroke="#424242"
-                  x1={400}
-                  x2={400}
+                  x1={NaN}
+                  x2={NaN}
                   y1={2}
                   y2={11}
                 />
-                <rect
-                  fill="#fafafa"
-                  height={5}
-                  width={30}
-                  x={310}
-                  y={3}
-                />
-                <text
-                  dy="0.33em"
-                  textAnchor="middle"
-                  x={325}
-                  y={8}
-                >
-                  0.37
-                </text>
               </g>
             </g>
           </svg>
