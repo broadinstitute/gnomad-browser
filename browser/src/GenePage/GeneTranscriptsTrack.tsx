@@ -2,7 +2,6 @@ import { max, mean } from 'd3-array'
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import TranscriptsTrack from '@gnomad/track-transcripts'
@@ -83,12 +82,13 @@ const GeneTranscriptsTrack = ({
     <>
       <Track
         renderRightPanel={({ width }: any) => {
+          if (width <= 30) {
+            return null
+          }
           return (
-            width > 30 && (
-              <RightPanel>
-                <InfoButton topic="transcript-tissue-expression" />
-              </RightPanel>
-            )
+            <RightPanel>
+              <InfoButton topic="transcript-tissue-expression" />
+            </RightPanel>
           )
         }}
       >

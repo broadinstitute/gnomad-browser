@@ -4,25 +4,26 @@ import { describe, expect, test } from '@jest/globals'
 
 import TissueExpressionTrack, { TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
-import { RegionViewerContext } from '@gnomad/region-viewer'
+import { RegionViewerContext, regionViewerScale } from '@gnomad/region-viewer'
 
 import geneFactory from '../__factories__/Gene'
 
 describe('TissueExpressionTrack', () => {
   test('snapshot has no unexpected changes', () => {
+    const regions = [
+      {
+        start: 0,
+        stop: 100,
+      },
+    ]
+
     const regionViewerProps = {
       centerPanelWidth: 500,
-      isPositionDefined: true,
+      isPositionDefined: () => true,
       leftPanelWidth: 100,
-      regions: [
-        {
-          start: 0,
-          stop: 100,
-        },
-      ],
+      regions,
       rightPanelWidth: 100,
-      scalePosition: (i: number) => i,
+      scalePosition: regionViewerScale(regions, [0, 100]),
     }
 
     const testTranscriptId = 'transcript-1337'

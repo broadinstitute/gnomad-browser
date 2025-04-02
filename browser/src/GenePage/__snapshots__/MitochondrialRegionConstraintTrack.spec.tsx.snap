@@ -5,13 +5,13 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
   className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
 >
   <div
-    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+    className="sc-bxivhb glCqXO"
   >
     <div
-      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+      className="sc-ifAKCX dBrAUy"
     >
       <div
-        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        className="sc-bZQynM hIOTsG"
         style={
           {
             "width": 4,
@@ -55,7 +55,7 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
         </div>
       </div>
       <div
-        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        className="sc-gzVnrw irZcDK"
         style={
           {
             "width": 3,
@@ -107,8 +107,8 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
                 fill="#9b001f"
                 height={15}
                 stroke="black"
-                width={111}
-                x={555}
+                width={247.76785714285714}
+                x={0}
                 y={1}
               />
             </g>
@@ -120,8 +120,8 @@ exports[`MitochondrialRegionConstraintTrack for a protein gene track has no unex
                 fill="#9b001f"
                 height={15}
                 stroke="black"
-                width={111}
-                x={777}
+                width={247.76785714285717}
+                x={250}
                 y={1}
               />
             </g>
@@ -140,13 +140,13 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
   className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
 >
   <div
-    className="Track__OuterWrapper-sc-1sdyh2h-0 bBMGlf"
+    className="sc-bxivhb glCqXO"
   >
     <div
-      className="Track__InnerWrapper-sc-1sdyh2h-1 cEOGGC"
+      className="sc-ifAKCX dBrAUy"
     >
       <div
-        className="Track__SidePanel-sc-1sdyh2h-3 iSYzDq"
+        className="sc-bZQynM hIOTsG"
         style={
           {
             "width": 4,
@@ -190,7 +190,7 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
         </div>
       </div>
       <div
-        className="Track__CenterPanel-sc-1sdyh2h-4 iAyrrk"
+        className="sc-gzVnrw irZcDK"
         style={
           {
             "width": 3,
@@ -242,8 +242,8 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
                 fill="#9b001f"
                 height={15}
                 stroke="black"
-                width={111}
-                x={555}
+                width={247.76785714285714}
+                x={0}
                 y={1}
               />
             </g>
@@ -255,8 +255,8 @@ exports[`MitochondrialRegionConstraintTrack for an RNA gene track has no unexpec
                 fill="#9b001f"
                 height={15}
                 stroke="black"
-                width={111}
-                x={777}
+                width={247.76785714285717}
+                x={250}
                 y={1}
               />
             </g>

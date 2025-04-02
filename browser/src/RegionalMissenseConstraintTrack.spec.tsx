@@ -7,18 +7,8 @@ import RegionalMissenseConstraintTrack, {
 } from './RegionalMissenseConstraintTrack'
 import { Gene } from './GenePage/GenePage'
 import geneFactory from './__factories__/Gene'
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
-import { RegionViewerContext } from '@gnomad/region-viewer'
 
 describe('RegionalMissenseConstraint', () => {
-  const childProps = {
-    centerPanelWidth: 500,
-    isPositionDefined: true,
-    leftPanelWidth: 100,
-    rightPanelWidth: 50,
-    scalePosition: (i: number) => i,
-  }
-
   test('has no unexpected changes when the RMC has evidence and passed QC', () => {
     const regions: RegionalMissenseConstraintRegion[] = [
       {
@@ -68,9 +58,7 @@ describe('RegionalMissenseConstraint', () => {
     })
 
     const tree = renderer.create(
-      <RegionViewerContext.Provider value={childProps}>
-        <RegionalMissenseConstraintTrack regionalMissenseConstraint={rmc} gene={gene} />
-      </RegionViewerContext.Provider>
+      <RegionalMissenseConstraintTrack regionalMissenseConstraint={rmc} gene={gene} />
     )
     expect(tree).toMatchSnapshot()
   })

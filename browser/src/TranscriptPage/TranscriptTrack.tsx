@@ -5,7 +5,6 @@ import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-ri
 import React from 'react'
 import styled from 'styled-components'
 
-// @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { Track } from '@gnomad/region-viewer'
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
 import { RegionsPlot } from '@gnomad/track-regions'
