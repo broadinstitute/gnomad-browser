@@ -444,18 +444,18 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -475,14 +475,14 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -584,6 +584,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -601,8 +603,8 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -822,26 +824,6 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -849,13 +831,16 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
         ]
       }
       datasetId="exac"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -1428,18 +1413,18 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -1459,14 +1444,14 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -1568,6 +1553,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -1585,8 +1572,8 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -1806,26 +1793,6 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -1833,13 +1800,16 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
         ]
       }
       datasetId="gnomad_cnv_r4"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -2412,18 +2382,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -2443,14 +2413,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -2552,6 +2522,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -2569,8 +2541,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -2790,26 +2762,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -2817,13 +2769,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
         ]
       }
       datasetId="gnomad_r2_1"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -3396,18 +3351,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -3427,14 +3382,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -3536,6 +3491,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -3553,8 +3510,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -3774,26 +3731,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -3801,13 +3738,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
         ]
       }
       datasetId="gnomad_r2_1_controls"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -4380,18 +4320,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -4411,14 +4351,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -4520,6 +4460,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -4537,8 +4479,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -4758,26 +4700,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -4785,13 +4707,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
         ]
       }
       datasetId="gnomad_r2_1_non_cancer"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -5364,18 +5289,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -5395,14 +5320,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -5504,6 +5429,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -5521,8 +5448,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -5742,26 +5669,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -5769,13 +5676,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
         ]
       }
       datasetId="gnomad_r2_1_non_neuro"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -6348,18 +6258,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -6379,14 +6289,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -6488,6 +6398,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -6505,8 +6417,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -6726,26 +6638,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -6753,13 +6645,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
         ]
       }
       datasetId="gnomad_r2_1_non_topmed"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -7332,18 +7227,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -7363,14 +7258,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -7472,6 +7367,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -7489,8 +7386,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -7710,26 +7607,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -7737,13 +7614,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
         ]
       }
       datasetId="gnomad_r3"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -8316,18 +8196,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -8347,14 +8227,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -8456,6 +8336,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -8473,8 +8355,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -8694,26 +8576,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -8721,13 +8583,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
         ]
       }
       datasetId="gnomad_r3_controls_and_biobanks"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -9300,18 +9165,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -9331,14 +9196,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -9440,6 +9305,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -9457,8 +9324,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -9678,26 +9545,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -9705,13 +9552,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
         ]
       }
       datasetId="gnomad_r3_non_cancer"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -10284,18 +10134,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -10315,14 +10165,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -10424,6 +10274,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -10441,8 +10293,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -10662,26 +10514,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -10689,13 +10521,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
         ]
       }
       datasetId="gnomad_r3_non_neuro"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -11268,18 +11103,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -11299,14 +11134,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -11408,6 +11243,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -11425,8 +11262,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -11646,26 +11483,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -11673,13 +11490,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
         ]
       }
       datasetId="gnomad_r3_non_topmed"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -12252,18 +12072,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -12283,14 +12103,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -12392,6 +12212,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -12409,8 +12231,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -12630,26 +12452,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -12657,13 +12459,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
         ]
       }
       datasetId="gnomad_r3_non_v2"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -13236,18 +13041,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -13267,14 +13072,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -13376,6 +13181,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -13393,8 +13200,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -13614,26 +13421,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -13641,13 +13428,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
         ]
       }
       datasetId="gnomad_r4"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -14220,18 +14010,18 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -14251,14 +14041,14 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -14360,6 +14150,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -14377,8 +14169,8 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -14598,26 +14390,6 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -14625,13 +14397,16 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
         ]
       }
       datasetId="gnomad_r4_non_ukb"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -15204,18 +14979,18 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -15235,14 +15010,14 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -15344,6 +15119,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -15361,8 +15138,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -15582,26 +15359,6 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -15609,13 +15366,16 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
         ]
       }
       datasetId="gnomad_sv_r2_1"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -16188,18 +15948,18 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -16219,14 +15979,14 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -16328,6 +16088,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -16345,8 +16107,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -16566,26 +16328,6 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -16593,13 +16335,16 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
         ]
       }
       datasetId="gnomad_sv_r2_1_controls"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -17172,18 +16917,18 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -17203,14 +16948,14 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -17312,6 +17057,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -17329,8 +17076,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -17550,26 +17297,6 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -17577,13 +17304,16 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
         ]
       }
       datasetId="gnomad_sv_r2_1_non_neuro"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],
@@ -18156,18 +17886,18 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
       alleleSizeDistribution={
         [
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 12,
             "repunit_count": 3,
           },
           {
-            "colorByValue": "",
+            "colorByValue": null,
             "frequency": 123,
             "repunit_count": 4,
           },
         ]
       }
-      colorBy=""
+      colorBy={null}
       maxRepeats={4}
       ranges={[]}
       repeatUnitLength={4}
@@ -18187,14 +17917,14 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
       <ShortTandemRepeatColorBySelect
         id="STR1-color-by"
-        selectedColorBy=""
+        selectedColorBy={null}
         setSelectedColorBy={[Function]}
         setSelectedScaleType={[Function]}
       />
@@ -18296,6 +18026,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         ]
       }
       onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
       xRanges={[]}
       yRanges={[]}
     />
@@ -18313,8 +18045,8 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
             "asj",
           ]
         }
-        selectedPopulation=""
-        selectedSex=""
+        selectedPopulation={null}
+        selectedSex={null}
         setSelectedPopulation={[Function]}
         setSelectedSex={[Function]}
       />
@@ -18534,26 +18266,6 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         topic="str-read-data"
       />
     </h2>
-    <ControlSection
-      style={
-        {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <ShortTandemRepeatPopulationOptions
-        id="STR1-genotype-distribution"
-        populations={
-          [
-            "asj",
-          ]
-        }
-        selectedPopulation=""
-        selectedSex=""
-        setSelectedPopulation={[Function]}
-        setSelectedSex={[Function]}
-      />
-    </ControlSection>
     <ShortTandemRepeatReadsContainer
       alleleSizeDistributionRepeatUnits={
         [
@@ -18561,13 +18273,16 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
         ]
       }
       datasetId="gnomad_sv_r4"
-      filter={
-        {
-          "population": "",
-          "sex": "",
-        }
-      }
       maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
       shortTandemRepeat={
         {
           "adjacent_repeats": [],

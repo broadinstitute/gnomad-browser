@@ -11,8 +11,8 @@ const Label = styled.label`
 
 type Props = {
   id: string
-  selectedColorBy: ColorBy | ''
-  setSelectedColorBy: (newColorBy: ColorBy | '') => void
+  selectedColorBy: ColorBy | null
+  setSelectedColorBy: (newColorBy: ColorBy | null) => void
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
 }
 
@@ -34,9 +34,9 @@ const ShortTandemRepeatColorBySelect = ({
       Color by: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         id={`short-tandem-repeat-${id}-color-by-select`}
-        value={selectedColorBy}
+        value={selectedColorBy || ''}
         onChange={(e: { target: { value: ColorBy | '' } }) => {
-          setSelectedColorBy(e.target.value)
+          setSelectedColorBy(e.target.value === '' ? null : e.target.value)
           if (e.target.value === 'quality_description') {
             setSelectedScaleType('linear-truncated-50')
           }
