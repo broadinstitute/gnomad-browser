@@ -482,36 +482,52 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
             <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
               Min repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Input
-                type="number"
+                type="text"
                 id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}
                 min={0}
                 max={maxRepeats}
-                value={value[alleleIndex].min_repeats}
-                onChange={(e: any) => {
+                value={undefined}
+                defaultValue={value[alleleIndex].min_repeats}
+                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                   const newMinRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
-                  onChangeCallback(
-                    value.map((v, i) =>
-                      i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
+                  if (newMinRepeats !== value[alleleIndex].min_repeats) {
+                    onChangeCallback(
+                      value.map((v, i) =>
+                        i === alleleIndex ? { ...v, min_repeats: newMinRepeats } : v
+                      )
                     )
-                  )
+                  }
+                }}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.code === 'Enter') {
+                    ;(e.target as HTMLInputElement).blur()
+                  }
                 }}
               />
             </Label>{' '}
             <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
               Max repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Input
-                type="number"
+                type="text"
                 id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}
                 min={0}
                 max={maxRepeats}
-                value={value[alleleIndex].max_repeats}
-                onChange={(e: any) => {
+                value={undefined}
+                defaultValue={value[alleleIndex].max_repeats}
+                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                   const newMaxRepeats = Math.max(Math.min(Number(e.target.value), maxRepeats), 0)
-                  onChangeCallback(
-                    value.map((v, i) =>
-                      i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
+                  if (newMaxRepeats !== value[alleleIndex].max_repeats) {
+                    onChangeCallback(
+                      value.map((v, i) =>
+                        i === alleleIndex ? { ...v, max_repeats: newMaxRepeats } : v
+                      )
                     )
-                  )
+                  }
+                }}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.code === 'Enter') {
+                    ;(e.target as HTMLInputElement).blur()
+                  }
                 }}
               />
             </Label>
