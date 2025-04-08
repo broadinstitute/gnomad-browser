@@ -17,6 +17,7 @@ import {
   qualityDescriptionLabels,
 } from './qualityDescription'
 import { qScoreLabels, QScoreBin, qScoreKeys } from './qScore'
+import { Sex } from './ShortTandemRepeatPage'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -41,15 +42,13 @@ export type ScaleType =
   | 'linear-truncated-1000'
   | 'log'
 
-export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId | ''
+export type ColorByValue = GenotypeQuality | QScoreBin | Sex | PopulationId
 
 export type AlleleSizeDistributionItem = {
   repunit_count: number
   frequency: number
-  colorByValue: ColorByValue
+  colorByValue: ColorByValue | null
 }
-
-export type Sex = 'XX' | 'XY'
 
 export type ColorBy = 'quality_description' | 'q_score' | 'population' | 'sex'
 
@@ -108,8 +107,8 @@ const legendLabel = (colorBy: ColorBy, key: string) => fixedLegendLabels[colorBy
 const legendLabels = (colorBy: ColorBy, keys: string[]) =>
   keys.map((key) => legendLabel(colorBy, key))
 
-const colorForValue = (colorBy: ColorBy | '', value: string) =>
-  colorMap[colorBy]?.[value] || defaultColor
+const colorForValue = (colorBy: ColorBy | null, value: string) =>
+  (colorBy && colorMap[colorBy]?.[value]) || defaultColor
 const tickFormat = (n: number) => {
   if (n >= 1e9) {
     return `${(n / 1e9).toPrecision(3)}B`
@@ -133,14 +132,14 @@ type Range = { start: number; stop: number; label: string }
 type Props = {
   maxRepeats: number
   alleleSizeDistribution: AlleleSizeDistributionItem[]
-  colorBy: ColorBy | ''
+  colorBy: ColorBy | null
   repeatUnitLength: number | null
   scaleType: ScaleType
   ranges?: Range[]
   size: { width: number }
 }
 
-type Bin = Partial<Record<ColorByValue, number>> & {
+type Bin = Partial<Record<ColorByValue | '', number>> & {
   index: number
   label: string
   fullFrequency: number
@@ -153,8 +152,8 @@ const legendKeys: Record<ColorBy, string[]> = {
   population: ['nfe', 'afr', 'fin', 'amr', 'ami', 'asj', 'eas', 'mid', 'oth', 'sas'],
 }
 
-const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
-  if (colorBy === '') {
+const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | null }) => {
+  if (colorBy === null) {
     return null
   }
 
@@ -172,12 +171,12 @@ const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | '' }) => {
   )
 }
 
-const tooltipContent = (data: Bin, colorBy: ColorBy | '', key: ColorByValue | ''): string => {
+const tooltipContent = (data: Bin, colorBy: ColorBy | null, key: ColorByValue | ''): string => {
   const repeatText = data.label === '1' ? '1 repeat' : `${data.label} repeats`
   const alleles = data[key] || 0
   const alleleText = alleles === 1 ? '1 allele' : `${alleles} alleles`
   const colorByText =
-    colorBy === '' ? '' : `, ${colorByLabels[colorBy]} is ${legendLabel(colorBy, key)}`
+    colorBy === null ? '' : `, ${colorByLabels[colorBy]} is ${legendLabel(colorBy, key)}`
   return `${repeatText}${colorByText}: ${alleleText}`
 }
 
@@ -220,11 +219,12 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       const binsByColorByValue = alleleSizeDistribution.reduce((acc, item) => {
         const binIndex = Math.floor(item.repunit_count / binSize)
         const oldBin: Bin = acc[binIndex]
-        const oldFrequency = oldBin[item.colorByValue] || 0
+        const frequencyKey = item.colorByValue || ''
+        const oldFrequency = oldBin[frequencyKey] || 0
         const newFrequency = oldFrequency + item.frequency
         const newBin: Bin = {
           ...oldBin,
-          [item.colorByValue]: newFrequency,
+          [frequencyKey]: newFrequency,
           fullFrequency: oldBin.fullFrequency + item.frequency,
         }
         return { ...acc, [binIndex]: newBin }

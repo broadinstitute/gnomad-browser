@@ -6,8 +6,8 @@ import { genotypeRepunitPairs, isAdjacentRepeat } from './shortTandemRepeatHelpe
 
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedRepeatUnits: string[] | ''
-  setSelectedRepeatUnits: Dispatch<SetStateAction<string[] | ''>>
+  selectedRepeatUnits: string[] | null
+  setSelectedRepeatUnits: Dispatch<SetStateAction<string[] | null>>
 }
 
 const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
@@ -37,9 +37,9 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
       Repeat units: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         id={`short-tandem-repeat-${shortTandemRepeatOrAdjacentRepeat.id}-genotype-distribution-repeat-units`}
-        value={selectedRepeatUnits === '' ? '' : selectedRepeatUnits.join(' / ')}
+        value={selectedRepeatUnits === null ? '' : selectedRepeatUnits.join(' / ')}
         onChange={({ target: { value } }: { target: { value: string } }) => {
-          const newPair: string[] | '' = value === '' ? '' : value.split(' / ')
+          const newPair: string[] | null = value === '' ? null : value.split(' / ')
           setSelectedRepeatUnits(newPair)
         }}
       >

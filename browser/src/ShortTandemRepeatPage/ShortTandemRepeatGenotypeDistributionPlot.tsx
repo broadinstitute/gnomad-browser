@@ -6,7 +6,9 @@ import styled from 'styled-components'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
-import { GenotypeDistributionItem } from './ShortTandemRepeatPage'
+import { GenotypeDistributionItem, Sex } from './ShortTandemRepeatPage'
+
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
@@ -31,6 +33,8 @@ type Props = {
   yRanges: PlotRange[]
   onSelectBin: (bin: Bin) => void
   size: { width: number }
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
 }
 
 export type Bin = {

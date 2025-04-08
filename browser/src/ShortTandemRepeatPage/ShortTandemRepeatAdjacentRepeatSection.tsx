@@ -5,10 +5,9 @@ import { Modal, Select } from '@gnomad/ui'
 import ControlSection from '../VariantPage/ControlSection'
 
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
-import { ShortTandemRepeatAdjacentRepeat } from './ShortTandemRepeatPage'
+import { ShortTandemRepeatAdjacentRepeat, Sex } from './ShortTandemRepeatPage'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   ScaleType,
-  Sex,
   ColorBy,
 } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot, {
@@ -26,7 +25,7 @@ import {
   maxGenotypeDistributionRepeats,
 } from './shortTandemRepeatHelpers'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const Label = styled.label`
   white-space: nowrap;
@@ -35,15 +34,15 @@ const Label = styled.label`
 type Props = {
   adjacentRepeat: ShortTandemRepeatAdjacentRepeat
   selectedScaleType: ScaleType
-  selectedPopulation: PopulationId | ''
-  selectedSex: Sex | ''
-  selectedColorBy: ColorBy | ''
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
+  selectedColorBy: ColorBy | null
   populations: PopulationId[]
   selectedGenotypeDistributionBin: GenotypeBin | null
   setSelectedGenotypeDistributionBin: Dispatch<SetStateAction<GenotypeBin | null>>
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
-  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
-  setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
+  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | null>>
+  setSelectedSex: Dispatch<SetStateAction<Sex | null>>
 }
 
 const ShortTandemRepeatAdjacentRepeatSection = ({
@@ -57,15 +56,15 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
   setSelectedPopulation,
   setSelectedSex,
 }: Props) => {
-  const [selectedRepeatUnit, setSelectedRepeatUnit] = useState(
-    adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : ''
+  const [selectedRepeatUnit, setSelectedRepeatUnit] = useState<string | null>(
+    adjacentRepeat.repeat_units.length === 1 ? adjacentRepeat.repeat_units[0] : null
   )
 
   const genotypeDistributionPairs = genotypeRepunitPairs(adjacentRepeat)
   const defaultGenotypeDistributionRepeatUnits =
-    genotypeDistributionPairs.length === 1 ? genotypeDistributionPairs[0] : ''
+    genotypeDistributionPairs.length === 1 ? genotypeDistributionPairs[0] : null
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
-    useState<string[] | ''>(defaultGenotypeDistributionRepeatUnits)
+    useState<string[] | null>(defaultGenotypeDistributionRepeatUnits)
 
   const [selectedGenotypeDistributionBin, setSelectedGenotypeDistributionBin] =
     useState<GenotypeBin | null>(null)
@@ -155,6 +154,8 @@ const ShortTandemRepeatAdjacentRepeatSection = ({
         }}
         xRanges={[]}
         yRanges={[]}
+        selectedPopulation={selectedPopulation}
+        selectedSex={selectedSex}
       />
 
       <ControlSection>

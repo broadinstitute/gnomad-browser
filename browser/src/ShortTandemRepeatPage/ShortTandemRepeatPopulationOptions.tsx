@@ -5,7 +5,7 @@ import { Select } from '@gnomad/ui'
 
 import { PopulationId, GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulations'
 
-import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
+import { Sex } from './ShortTandemRepeatPage'
 
 const Wrapper = styled.div`
   @media (max-width: 600px) {
@@ -19,7 +19,6 @@ const Wrapper = styled.div`
   }
 `
 
-
 const Label = styled.label`
   padding-right: 1em;
   white-space: nowrap;
@@ -28,10 +27,10 @@ const Label = styled.label`
 type Props = {
   id: string
   populations: PopulationId[]
-  selectedPopulation: PopulationId | ''
-  selectedSex: Sex | ''
-  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | ''>>
-  setSelectedSex: Dispatch<SetStateAction<Sex | ''>>
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
+  setSelectedPopulation: Dispatch<SetStateAction<PopulationId | null>>
+  setSelectedSex: Dispatch<SetStateAction<Sex | null>>
 }
 
 const ShortTandemRepeatPopulationOptions = ({
@@ -53,9 +52,9 @@ const ShortTandemRepeatPopulationOptions = ({
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
-          value={selectedPopulation}
+          value={selectedPopulation || ''}
           onChange={(e: { target: { value: PopulationId | '' } }) =>
-            setSelectedPopulation(e.target.value)
+            setSelectedPopulation(e.target.value === '' ? null : e.target.value)
           }
         >
           <option value="">Global</option>
@@ -71,8 +70,10 @@ const ShortTandemRepeatPopulationOptions = ({
         Sex: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
-          value={selectedSex}
-          onChange={(e: { target: { value: Sex | '' } }) => setSelectedSex(e.target.value)}
+          value={selectedSex || ''}
+          onChange={(e: { target: { value: Sex | '' } }) =>
+            setSelectedSex(e.target.value === '' ? null : e.target.value)
+          }
         >
           <option value="">All</option>
           <option value="XX">XX</option>

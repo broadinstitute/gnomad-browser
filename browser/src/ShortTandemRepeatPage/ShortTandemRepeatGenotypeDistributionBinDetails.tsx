@@ -6,17 +6,16 @@ import {
   ShortTandemRepeat,
   ShortTandemRepeatAdjacentRepeat,
   GenotypeDistributionItem,
+  Sex,
 } from './ShortTandemRepeatPage'
 
 import { getSelectedGenotypeDistribution } from './shortTandemRepeatHelpers'
 
-import { Sex } from './ShortTandemRepeatAlleleSizeDistributionPlot'
-
 type Props = {
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat
-  selectedPopulation: string | ''
-  selectedSex: Sex | ''
-  selectedRepeatUnits: string[] | ''
+  selectedPopulation: string | null
+  selectedSex: Sex | null
+  selectedRepeatUnits: string[] | null
   repeatUnitPairs: string[][]
   bin: {
     label: string
