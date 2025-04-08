@@ -4,28 +4,30 @@ import {
   GenotypeDistributionCohort,
   GenotypeDistributionItem,
   ShortTandemRepeatAdjacentRepeat,
+  Sex,
 } from './ShortTandemRepeatPage'
 
 import {
   ColorBy,
-  Sex,
   ColorByValue,
   AlleleSizeDistributionItem,
 } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+
 type AlleleSizeDistributionParams = {
-  selectedPopulation: string | ''
-  selectedSex: Sex | ''
-  selectedColorBy: ColorBy | ''
-  selectedRepeatUnit: string
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
+  selectedColorBy: ColorBy | null
+  selectedRepeatUnit: string | null
 }
 
 const addCohortToAlleleSizeDistribution = (
   cohort: AlleleSizeDistributionCohort,
-  colorBy: ColorBy | '',
+  colorBy: ColorBy | null,
   distribution: Record<string, AlleleSizeDistributionItem>
 ): Record<string, AlleleSizeDistributionItem> => {
-  let colorByValue: ColorByValue = ''
+  let colorByValue: ColorByValue | null = null
   if (colorBy === 'quality_description') {
     colorByValue = cohort.quality_description
   } else if (colorBy === 'q_score') {
@@ -70,21 +72,22 @@ export const getSelectedAlleleSizeDistribution = (
   }: AlleleSizeDistributionParams
 ): AlleleSizeDistributionItem[] => {
   const matchingRepunits: Set<string> =
+    selectedRepeatUnit !== null &&
     selectedRepeatUnit.startsWith('classification') &&
     !isAdjacentRepeat(shortTandemRepeatOrAdjacentRepeat)
       ? repunitsWithClassification(shortTandemRepeatOrAdjacentRepeat, selectedRepeatUnit.slice(15))
-      : new Set([selectedRepeatUnit])
+      : new Set([selectedRepeatUnit!])
 
   const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
-      if (selectedPopulation !== '' && cohort.ancestry_group !== selectedPopulation) {
+      if (selectedPopulation !== null && cohort.ancestry_group !== selectedPopulation) {
         return acc
       }
-      if (selectedSex !== '' && cohort.sex !== selectedSex) {
+      if (selectedSex !== null && cohort.sex) {
         return acc
       }
 
-      if (selectedRepeatUnit !== '' && !matchingRepunits.has(cohort.repunit)) {
+      if (selectedRepeatUnit !== null && !matchingRepunits.has(cohort.repunit)) {
         return acc
       }
       return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, acc)
@@ -117,21 +120,21 @@ export const getSelectedGenotypeDistribution = (
     selectedPopulation,
     selectedSex,
   }: {
-    selectedRepeatUnits: string[] | ''
-    selectedPopulation: string | ''
-    selectedSex: Sex | ''
+    selectedRepeatUnits: string[] | null
+    selectedPopulation: string | null
+    selectedSex: Sex | null
   }
 ): GenotypeDistributionItem[] => {
   const itemsByRepunitCounts: Record<string, GenotypeDistributionItem> =
     shortTandemRepeatOrAdjacentRepeat.genotype_distribution.reduce((acc, cohort) => {
-      if (selectedPopulation !== '' && cohort.ancestry_group !== selectedPopulation) {
+      if (selectedPopulation !== null && cohort.ancestry_group !== selectedPopulation) {
         return acc
       }
-      if (selectedSex !== '' && cohort.sex !== selectedSex) {
+      if (selectedSex !== null && cohort.sex !== selectedSex) {
         return acc
       }
       if (
-        selectedRepeatUnits !== '' &&
+        selectedRepeatUnits !== null &&
         (cohort.short_allele_repunit !== selectedRepeatUnits[0] ||
           cohort.long_allele_repunit !== selectedRepeatUnits[1])
       ) {
@@ -144,9 +147,9 @@ export const getSelectedGenotypeDistribution = (
 
 export const getGenotypeDistributionPlotAxisLabels = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
-  { selectedRepeatUnits }: { selectedRepeatUnits: string[] | '' }
+  { selectedRepeatUnits }: { selectedRepeatUnits: string[] | null }
 ) => {
-  if (selectedRepeatUnits !== '') {
+  if (selectedRepeatUnits !== null) {
     if (selectedRepeatUnits[0] === selectedRepeatUnits[1]) {
       return genotypeRepunitPairs(shortTandemRepeatOrAdjacentRepeat).length === 1
         ? ['longer allele', 'shorter allele']
