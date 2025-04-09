@@ -216,8 +216,6 @@ const RegionalGenomicConstraintTrack = ({
   const currentParams = queryString.parse(location.search)
   const variantId = currentParams.variant
 
-  const pos: number = parseInt(variantId.split('-')[1], 10)
-
   return (
     <Wrapper>
       <Track renderLeftPanel={() => renderTrackLeftPanel(constraintRegionSize)}>
@@ -237,8 +235,19 @@ const RegionalGenomicConstraintTrack = ({
                 />
                 {typeof variantId === 'string' && (
                   <>
-                    <rect x={scalePosition(pos)} y={15} width={2} height={30} fill="#000" />
-                    <text x={scalePosition(pos)} y={9} dy="0.33rem" textAnchor="middle">
+                    <rect
+                      x={scalePosition(parseInt(variantId.split('-')[1], 10))}
+                      y={15}
+                      width={2}
+                      height={30}
+                      fill="#000"
+                    />
+                    <text
+                      x={scalePosition(parseInt(variantId.split('-')[1], 10))}
+                      y={9}
+                      dy="0.33rem"
+                      textAnchor="middle"
+                    >
                       <Link to={`/variant/${variantId}`}>{variantId}</Link>
                     </text>
                   </>
