@@ -163,17 +163,17 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/track-genes':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 3.0.1
+        version: 3.0.1(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/track-regions':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.0.1
+        version: 2.0.1(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/track-transcripts':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 3.0.1
+        version: 3.0.1(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/track-variants':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.0.1
+        version: 2.0.1(react-dom@17.0.2)(react@17.0.2)
       '@gnomad/ui':
         specifier: 2.0.0
         version: 2.0.0(react-dom@17.0.2)(react@17.0.2)
@@ -3087,12 +3087,6 @@ packages:
       yaml: 2.3.4
     dev: false
 
-  /@gnomad/region-viewer@4.0.0:
-    resolution: {integrity: sha512-O3gPturO4xM+9KRoCmZXxZ/PjZMStbHrPZ5aZ6z8KGy3OaoYWEZ6tsy4mW1y1/lzUqOOoBM0vXBpXRk1Vzf7Ug==}
-    dependencies:
-      prop-types: 15.8.1
-    dev: false
-
   /@gnomad/region-viewer@5.0.0(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-PoTaPqf7IRTvScD3ykv5upXSYNYtIY3MINfLpJXwOnsy3gO9k089QzS9yZBsncR9cuKvBZfmwlaul8AOuEMBqQ==}
     dependencies:
@@ -3103,34 +3097,46 @@ packages:
       - react-dom
     dev: false
 
-  /@gnomad/track-genes@3.0.0:
-    resolution: {integrity: sha512-J6e43FdIEZK9MnDqdk3x8fEz7zRD05ygdde7Dig1r4tEyad2IAHz+nq1LqkaBwYt/v32crzqjcZhsHDOgFqqmA==}
+  /@gnomad/track-genes@3.0.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-ft1BbO5dWrXyUJuTQOMT8nyRw3W2ZZr1+iiWJhnkDoWTWK0DVfvEW98PGMeTL0Z9IpuuEDbhFLL121fLfnhyeA==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0
+      '@gnomad/region-viewer': 5.0.0(react-dom@17.0.2)(react@17.0.2)
       prop-types: 15.8.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
-  /@gnomad/track-regions@2.0.0:
-    resolution: {integrity: sha512-v5UXW5VMiGUtjkbkjVf1zHMhNrH1sOAZIIttPde4+tlzSv/BgP4xz1sFJeNQsQIbb71ST1flve907bkGYwQDqQ==}
+  /@gnomad/track-regions@2.0.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-FCWOdepeDdOW1Ae/xvG8v72Bz+W6tqNEQ5ecAUchwlJ7RtPbaDP6NP9c6OJymc6P/lTTI2IVTn8BRXP4o9KPRg==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0
+      '@gnomad/region-viewer': 5.0.0(react-dom@17.0.2)(react@17.0.2)
       prop-types: 15.8.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
-  /@gnomad/track-transcripts@3.0.0:
-    resolution: {integrity: sha512-z8uvWsj2mCbIb9aDVqEzpZRhpiRbCTedQMl8rqKbT+ZiqlrWQqktboiCDp/cxOLiTAKtQXFyy9ulVlhPAyFeIA==}
+  /@gnomad/track-transcripts@3.0.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-hgDWBcHvNc9GIUaXV3QlO3CAwbXze0+cBGdJlfNT4WF0g0mLX/Ulc0A/h574Hy1WYzkNZjZLZsGZqC3JMrPriA==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0
-      '@gnomad/track-regions': 2.0.0
+      '@gnomad/region-viewer': 5.0.0(react-dom@17.0.2)(react@17.0.2)
+      '@gnomad/track-regions': 2.0.1(react-dom@17.0.2)(react@17.0.2)
       prop-types: 15.8.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
-  /@gnomad/track-variants@2.0.0:
-    resolution: {integrity: sha512-aEovnIcqdhSqHD8plc9neFrjy/k8d7Osaq0eOKqLvH83kjBxklnKIWtpm2rruLlNl3NFZzIRQWSR4IIoiz43kg==}
+  /@gnomad/track-variants@2.0.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-U/aMhbtEA3DjIOLrMSN+1Nvg4B1L737NKt48Qdagl+ryVZtpSeB5XMvmbYZb5k3TDmvs1F3frAR6Sw8tMjIjAA==}
     dependencies:
-      '@gnomad/region-viewer': 4.0.0
+      '@gnomad/region-viewer': 5.0.0(react-dom@17.0.2)(react@17.0.2)
       d3-scale: 2.2.2
       prop-types: 15.8.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
     dev: false
 
   /@gnomad/ui@2.0.0(react-dom@17.0.2)(react@17.0.2):
