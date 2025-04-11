@@ -9,7 +9,11 @@ import { AnyD3Scale } from '@visx/scale'
 import { LegendOrdinal } from '@visx/legend'
 
 import { TooltipAnchor } from '@gnomad/ui'
-import { GNOMAD_POPULATION_NAMES, PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import {
+  GNOMAD_POPULATION_NAMES,
+  PopulationId,
+  getPopulationsInDataset,
+} from '@gnomad/dataset-metadata/gnomadPopulations'
 import { colorByLabels } from './ShortTandemRepeatColorBySelect'
 import {
   genotypeQualityKeys,
@@ -149,7 +153,10 @@ const legendKeys: Record<ColorBy, string[]> = {
   quality_description: [...genotypeQualityKeys],
   q_score: [...qScoreKeys],
   sex: ['XX', 'XY'],
-  population: ['nfe', 'afr', 'fin', 'amr', 'ami', 'asj', 'eas', 'mid', 'oth', 'sas'],
+  // default v4 populations uses "remaining" for "Remaining Individuals" ID, but this data uses the deprecated "oth" ID
+  population: getPopulationsInDataset('gnomad_r4').map((populationId) =>
+    populationId === 'remaining' ? 'oth' : populationId
+  ),
 }
 
 const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | null }) => {
