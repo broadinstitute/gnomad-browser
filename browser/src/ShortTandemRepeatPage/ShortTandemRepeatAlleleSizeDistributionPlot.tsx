@@ -233,13 +233,13 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     }, [alleleSizeDistribution, binSize, emptyBins])
 
     const keys = useMemo(() => {
-      const keySet: Record<string, boolean> = data
+      const presentKeys: Record<string, boolean> = data
         .flatMap((bin) => Object.keys(bin))
         .reduce((acc, key) => ({ ...acc, [key]: true }), {})
-      return Object.keys(keySet).filter(
-        (key) => key !== 'index' && key !== 'label' && key !== 'fullFrequency'
-      )
-    }, [data])
+      const allKeys = colorBy ? legendKeys[colorBy] : ['']
+      const keysInLegendOrder = allKeys.filter((key) => presentKeys[key])
+      return keysInLegendOrder
+    }, [data, colorBy])
     // maps binIndex and colorByValue to a y and y start
 
     const xScale = scaleBand<number>()
