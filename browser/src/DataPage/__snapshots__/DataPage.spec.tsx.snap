@@ -8095,6 +8095,33 @@ exports[`Data Page has no unexpected changes 1`] = `
           className="c20"
         >
           <span>
+            Genome SV Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Genome SV Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Genome SV Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c20"
+        >
+          <span>
             Genome SV VCF
           </span>
           <br />
@@ -8405,6 +8432,33 @@ exports[`Data Page has no unexpected changes 1`] = `
       <ul
         className="c19"
       >
+        <li
+          className="c20"
+        >
+          <span>
+            Exome CNV Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Exome CNV Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Exome CNV Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
         <li
           className="c20"
         >
