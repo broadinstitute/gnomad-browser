@@ -60,3 +60,11 @@ def prepare_gnomad_v4_cnvs(vcf_path):
 
     ds = ds.drop("locus", "alleles", "info", "rsid")
     return ds
+
+
+def prepare_public_gnomad_v4_cnvs(input_path):
+    ds = hl.read_table(input_path)
+    ds = ds.transmute(freq=ds.freq.annotate(gen_anc_grps=ds.freq.populations).drop("populations"))
+    ds = ds.drop(ds.filters)
+    ds = ds.drop(ds.qual)
+    return ds
