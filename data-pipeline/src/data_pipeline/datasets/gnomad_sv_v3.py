@@ -282,3 +282,11 @@ def annotate_with_histograms(svs_path, histograms_path):
     histograms = histograms.key_by(histograms.variant_id).drop("locus", "alleles")
     ds = ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
     return ds
+
+
+def prepare_public_structural_variants(input_path):
+    ds = hl.read_table(input_path)
+    ds = ds.transmute(
+        freq=ds.freq.annotate(all=ds.freq.all.annotate(gen_anc_grps=ds.freq.all.populations).drop("populations"))
+    )
+    return ds
