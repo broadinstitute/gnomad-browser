@@ -412,6 +412,14 @@ const GnomadV4Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
+            <GetUrlButtons
+              label="Genome SV Hail Table"
+              path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.ht"
+              includeAzure={false}
+            />
+          </ListItem>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
             <DownloadLinks
               label="Genome SV VCF"
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.vcf.gz"
@@ -458,6 +466,14 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              label="Exome CNV Hail Table"
+              path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.all.ht"
+              includeAzure={false}
+            />
+          </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
