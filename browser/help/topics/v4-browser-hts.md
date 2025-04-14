@@ -164,7 +164,6 @@ Row fields:
 - `gene_version`: Gene version.
 - `gencode_symbol`: GENCODE gene symbol.
 - `chrom`: Chromosome in which gene is located.
-- `strand`: Gene strand.
 - `start`: Gene genomic start position (position only).
 - `stop`: Gene genomic stop position (position only).
 - `xstart`: Gene genomic start position (format: chromosomeposition). xstart can be calculated with ((chrom \* 10<sup>9</sup>) + pos), note that chrX is encoded as 23, chrY as 24, and chrM as 25. e.g. `1-55051215` becomes `1055051215`, and `X:9786429` becomes `23009786429`.
