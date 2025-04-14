@@ -4,6 +4,7 @@ from data_pipeline.datasets.gnomad_sv_v3 import (
     import_svs_from_vcfs,
     annotate_with_histograms,
     add_variant_id_upper_case,
+    prepare_public_structural_variants,
 )
 
 
@@ -40,6 +41,13 @@ pipeline.add_task(
     },
 )
 
+pipeline.add_task(
+    "prepare_public_structural_variants",
+    prepare_public_structural_variants,
+    "/gnomad_sv_v3/gnomad.v4.1.sv.sites.ht",
+    {"input_path": pipeline.get_task("add_histograms")},
+)
+
 ###############################################
 # Outputs
 ###############################################
@@ -47,6 +55,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "structural_variants": "add_variant_id_upper_case",
+        "public_structural_variants": "prepare_public_structural_variants",
     }
 )
 
