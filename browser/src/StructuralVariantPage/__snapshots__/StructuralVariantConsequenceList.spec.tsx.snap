@@ -1,5 +1,407 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StructuralVariantConsequenceList expanding genes list for consequence in category copy_gain with >3 genes expands to show all genes 1`] = `
+<DocumentFragment>
+  <ol
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+  >
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        copy gain 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC"
+          >
+            ABC
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF"
+          >
+            DEF
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/GHI"
+          >
+            GHI
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 1 more
+          </button>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</DocumentFragment>
+`;
+
+exports[`StructuralVariantConsequenceList expanding genes list for consequence in category dup_lof with >3 genes expands to show all genes 1`] = `
+<DocumentFragment>
+  <ol
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+  >
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        int. exon duplication 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC"
+          >
+            ABC
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF"
+          >
+            DEF
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/GHI"
+          >
+            GHI
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 1 more
+          </button>
+        </li>
+      </ol>
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        partial exon duplication 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/MNO"
+          >
+            MNO
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/PQR"
+          >
+            PQR
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/STU"
+          >
+            STU
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 2 more
+          </button>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</DocumentFragment>
+`;
+
+exports[`StructuralVariantConsequenceList expanding genes list for consequence in category lof with >3 genes expands to show all genes 1`] = `
+<DocumentFragment>
+  <ol
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+  >
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        loss of function 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC"
+          >
+            ABC
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF"
+          >
+            DEF
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/GHI"
+          >
+            GHI
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 1 more
+          </button>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</DocumentFragment>
+`;
+
+exports[`StructuralVariantConsequenceList expanding genes list for consequence in category other with >3 genes expands to show all genes 1`] = `
+<DocumentFragment>
+  <ol
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+  >
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        inversion span 
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC"
+          >
+            ABC
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF"
+          >
+            DEF
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/GHI"
+          >
+            GHI
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 1 more
+          </button>
+        </li>
+      </ol>
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        partial duplication 
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/MNO"
+          >
+            MNO
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/PQR"
+          >
+            PQR
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/STU"
+          >
+            STU
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <button
+            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            type="button"
+          >
+            and 2 more
+          </button>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</DocumentFragment>
+`;
+
 exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] = `
 <DocumentFragment>
   <ol
