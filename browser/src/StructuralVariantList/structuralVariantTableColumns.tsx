@@ -13,20 +13,22 @@ import {
 } from './structuralVariantConsequences'
 import { svTypeColors, svTypeLabels } from './structuralVariantTypes'
 import { Context } from './StructuralVariants'
+import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 
-const renderConsequence = (variant: any, _key: any, { colorKey, highlightWords }: any) => {
+const renderConsequence = (
+  variant: StructuralVariant,
+  _key: any,
+  { colorKey, highlightWords }: any
+) => {
   const { consequence } = variant
   let renderedConsequence = ''
   if (consequence) {
     renderedConsequence = svConsequenceLabels[consequence]
-  } else if (variant.intergenic) {
-    renderedConsequence = 'intergenic'
   }
   return (
     <Cell>
       {consequence && colorKey === 'consequence' && (
         <VariantCategoryMarker
-          // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
           color={svConsequenceCategoryColors[svConsequenceCategories[consequence] || 'other']}
         />
       )}
@@ -35,10 +37,9 @@ const renderConsequence = (variant: any, _key: any, { colorKey, highlightWords }
   )
 }
 
-const renderType = (variant: any, _key: any, { colorKey, highlightWords }: any) => (
+const renderType = (variant: StructuralVariant, _key: any, { colorKey, highlightWords }: any) => (
   <Cell>
     {colorKey === 'type' && (
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       <VariantCategoryMarker color={svTypeColors[variant.type] || svTypeColors.OTH} />
     )}
     <Highlighter
@@ -79,7 +80,7 @@ const structuralVariantTableColumns = [
     heading: 'Class',
     minWidth: 130,
     compareFunction: makeStringCompareFunction('type'),
-    getSearchTerms: (variant: any) => [svTypeLabels[variant.type]],
+    getSearchTerms: (variant: StructuralVariant) => [svTypeLabels[variant.type]],
     render: renderType,
   },
 
@@ -88,7 +89,9 @@ const structuralVariantTableColumns = [
     heading: 'Consequence',
     minWidth: 160,
     compareFunction: makeStringCompareFunction('consequence'),
-    getSearchTerms: (variant: any) => [svConsequenceLabels[variant.consequence] || ''],
+    getSearchTerms: (variant: StructuralVariant) => [
+      svConsequenceLabels[variant.consequence] || '',
+    ],
     render: renderConsequence,
   },
 
@@ -98,7 +101,7 @@ const structuralVariantTableColumns = [
     contextNotes: 'Not shown when viewing Y chromosome',
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hom'),
-    render: (variant: any) => renderAlleleCountCell(variant, 'ac_hom'),
+    render: (variant: StructuralVariant) => renderAlleleCountCell(variant, 'ac_hom'),
     shouldShowInContext: (context: Context) => context.chrom !== 'Y',
   },
 
@@ -108,8 +111,8 @@ const structuralVariantTableColumns = [
     contextNotes: 'Only shown when viewing X or Y chromosomes',
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('ac_hemi'),
-    render: (variant: any) => renderAlleleCountCell(variant, 'ac_hemi'),
-    shouldShowInContext: (context: any) => context.chrom === 'X' || context.chrom === 'Y',
+    render: (variant: StructuralVariant) => renderAlleleCountCell(variant, 'ac_hemi'),
+    shouldShowInContext: (context: Context) => context.chrom === 'X' || context.chrom === 'Y',
   },
 
   {
@@ -117,7 +120,7 @@ const structuralVariantTableColumns = [
     heading: 'Size',
     minWidth: 100,
     compareFunction: makeNumericCompareFunction('length'),
-    render: (variant: any) => {
+    render: (variant: StructuralVariant) => {
       let s
       if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
         s = '—'
@@ -141,7 +144,7 @@ const structuralVariantTableColumns = [
     heading: 'Position',
     minWidth: 200,
     compareFunction: makeNumericCompareFunction('pos'),
-    render: (variant: any) => {
+    render: (variant: StructuralVariant) => {
       let position
       if (variant.type === 'INS') {
         position = `${variant.pos}`
@@ -161,7 +164,9 @@ const structuralVariantTableColumns = [
     heading: 'Source',
     grow: 0,
     minWidth: 70,
-    render: (variant: any) => <SampleSourceIcon source="genome" filters={variant.filters} />,
+    render: (variant: StructuralVariant) => (
+      <SampleSourceIcon source="genome" filters={variant.filters} />
+    ),
   },
 
   {
@@ -170,8 +175,8 @@ const structuralVariantTableColumns = [
     isRowHeader: true,
     minWidth: 110,
     compareFunction: makeStringCompareFunction('variant_id'),
-    getSearchTerms: (variant: any) => [variant.variant_id],
-    render: (variant: any, _key: any, { highlightWords }: any) => (
+    getSearchTerms: (variant: StructuralVariant) => [variant.variant_id],
+    render: (variant: StructuralVariant, _key: any, { highlightWords }: any) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
           <Highlighter

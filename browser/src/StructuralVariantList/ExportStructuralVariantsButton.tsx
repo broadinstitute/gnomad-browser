@@ -6,31 +6,35 @@ import { svConsequenceLabels } from './structuralVariantConsequences'
 import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 import { svTypeLabels } from './structuralVariantTypes'
 
-const columns = [
+type ColumnSpecifier = { label: string; getValue: (_: StructuralVariant) => string }
+
+const columns: ColumnSpecifier[] = [
   {
     label: 'Variant ID',
-    getValue: (variant: any) => variant.variant_id,
+    getValue: (variant) => variant.variant_id,
   },
   {
     label: 'Consequence',
-    getValue: (variant: any) => {
-      const { consequence } = variant
-      if (consequence) {
-        return svConsequenceLabels[consequence]
-      }
-      if (variant.intergenic) {
-        return 'intergenic'
+    getValue: (variant) => {
+      const { major_consequence } = variant
+      if (major_consequence) {
+        return svConsequenceLabels[major_consequence]
       }
       return ''
     },
   },
   {
     label: 'Class',
-    getValue: (variant: any) => svTypeLabels[variant.type] || variant.type,
+    getValue: (variant) => {
+      if (variant.type) {
+        return svTypeLabels[variant.type] || variant.type
+      }
+      return ''
+    },
   },
   {
     label: 'Position',
-    getValue: (variant: any) => {
+    getValue: (variant) => {
       if (variant.type === 'INS') {
         return `${variant.pos}`
       }
@@ -44,7 +48,7 @@ const columns = [
   },
   {
     label: 'Size',
-    getValue: (variant: any) => {
+    getValue: (variant) => {
       if (variant.type === 'CTX' || variant.type === 'BND' || variant.length === -1) {
         return ''
       }
@@ -54,27 +58,27 @@ const columns = [
   },
   {
     label: 'Allele Count',
-    getValue: (variant: any) => JSON.stringify(variant.ac),
+    getValue: (variant) => JSON.stringify(variant.ac),
   },
   {
     label: 'Allele Number',
-    getValue: (variant: any) => JSON.stringify(variant.an),
+    getValue: (variant) => JSON.stringify(variant.an),
   },
   {
     label: 'Allele Frequency',
-    getValue: (variant: any) => JSON.stringify(variant.af),
+    getValue: (variant) => JSON.stringify(variant.af),
   },
   {
     label: 'Homozygote Count',
-    getValue: (variant: any) => JSON.stringify(variant.ac_hom),
+    getValue: (variant) => JSON.stringify(variant.ac_hom),
   },
 ]
 
-const exportVariantsToCsv = (variants: any, baseFileName: any) => {
+const exportVariantsToCsv = (variants: StructuralVariant[], baseFileName: string) => {
   const headerRow = columns.map((c) => c.label)
 
   const csv = `${headerRow}\r\n${variants
-    .map((variant: any) =>
+    .map((variant) =>
       columns
         .map((c) => c.getValue(variant))
         .map((val) =>

@@ -80,34 +80,42 @@ const rankedConsequences = [
     label: 'intergenic',
     category: 'other',
   },
-]
+] as const
+
+type RankedConsequence = (typeof rankedConsequences)[number]
+
+export type SVConsequenceTerm = RankedConsequence['term']
+type SVConsequenceLabel = RankedConsequence['label']
+type SVConsequenceCategory = RankedConsequence['category']
 
 export const svConsequences = rankedConsequences.map((csq) => csq.term)
 
-export const svConsequenceCategories = rankedConsequences.reduce(
-  (acc, csq) => ({
-    ...acc,
-    [csq.term]: csq.category,
-  }),
-  Object.create(null)
-)
+export const svConsequenceCategories: Record<SVConsequenceTerm, SVConsequenceCategory> =
+  rankedConsequences.reduce(
+    (acc, csq) => ({
+      ...acc,
+      [csq.term]: csq.category,
+    }),
+    Object.create(null)
+  )
 
-export const svConsequenceLabels = rankedConsequences.reduce(
-  (acc, csq) => ({
-    ...acc,
-    [csq.term]: csq.label,
-  }),
-  Object.create(null)
-)
+export const svConsequenceLabels: Record<SVConsequenceTerm, SVConsequenceLabel> =
+  rankedConsequences.reduce(
+    (acc, csq) => ({
+      ...acc,
+      [csq.term]: csq.label,
+    }),
+    Object.create(null)
+  )
 
-export const svConsequenceCategoryLabels = {
+export const svConsequenceCategoryLabels: Record<SVConsequenceCategory, string> = {
   lof: 'pLoF',
   dup_lof: 'Int. exon duplication',
   copy_gain: 'Copy gain',
   other: 'Other',
 }
 
-export const svConsequenceCategoryColors = {
+export const svConsequenceCategoryColors: Record<SVConsequenceCategory, string> = {
   lof: '#D43925',
   dup_lof: '#7459B2',
   copy_gain: '#2376B2',

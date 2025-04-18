@@ -33,7 +33,8 @@ const structuralVariantFactory = Factory.define<StructuralVariant>(
       ac_hemi = null,
     } = params
 
-    const { age_distribution = null, consequences = [], genotype_quality = null } = associations
+    const { age_distribution = null, genotype_quality = null } = associations
+    const consequences = associations.consequences || null
 
     const { serialNumber = 999 } = transientParams
 

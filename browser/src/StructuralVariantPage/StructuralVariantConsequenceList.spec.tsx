@@ -4,10 +4,11 @@ import { expect, test, describe } from '@jest/globals'
 import svFactory from '../__factories__/StructuralVariant'
 import StructuralVariantConsequenceList from './StructuralVariantConsequenceList'
 import { BrowserRouter } from 'react-router-dom'
+import { SVConsequence } from './StructuralVariantPage'
 
 describe('StructuralVariantConsequenceList', () => {
   test('should have no unexpected changes', () => {
-    const consequences = [
+    const consequences: SVConsequence[] = [
       { consequence: 'lof', genes: null },
       { consequence: 'lof', genes: ['ABC123'] },
       { consequence: 'lof', genes: ['ABC123', 'QRSTUV'] },

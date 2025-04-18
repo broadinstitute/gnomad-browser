@@ -17,6 +17,7 @@ import StructuralVariantConsequenceList from './StructuralVariantConsequenceList
 import StructuralVariantGenotypeQualityMetrics from './StructuralVariantGenotypeQualityMetrics'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
 import SVReferenceList from './SVReferenceList'
+import { SVConsequenceTerm } from '../StructuralVariantList/structuralVariantConsequences'
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,6 +32,11 @@ const ResponsiveSection = styled.section`
     width: 100%;
   }
 `
+
+export type SVConsequence = {
+  consequence: SVConsequenceTerm
+  genes: string[] | null
+}
 
 // NB that this type corresponds to the GraphQL schema for StructuralVariantDetails, rather than the GraphQL version of StructuralVariant. However, we can use the same type on this end for both, since StructuralVariantDetails is a superset of
 export type StructuralVariant = {
@@ -47,13 +53,8 @@ export type StructuralVariant = {
   hemizygote_count: number | null
   chrom: string
   chrom2: string | null
-  major_consequence: string | null
-  consequences:
-    | {
-        consequence: string
-        genes: string[] | null
-      }[]
-    | null
+  major_consequence: SVConsequenceTerm | null
+  consequences: SVConsequence[] | null
   copy_numbers:
     | {
         copy_number: number
@@ -88,7 +89,7 @@ export type StructuralVariant = {
   qual: number | null
   type: string | null
   variant_id: string
-  consequence: string | null
+  consequence: SVConsequenceTerm | null
   ac_hom: number | null
   ac_hemi: number | null
 }
