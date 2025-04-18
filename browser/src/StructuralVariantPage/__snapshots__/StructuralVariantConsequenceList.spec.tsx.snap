@@ -1,0 +1,224 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] = `
+<DocumentFragment>
+  <ol
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+  >
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        loss of function 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      />
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        loss of function 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC123"
+          >
+            ABC123
+          </a>
+        </li>
+      </ol>
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        loss of function 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/ABC123"
+          >
+            ABC123
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/QRSTUV"
+          >
+            QRSTUV
+          </a>
+        </li>
+      </ol>
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        copy gain 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      />
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        copy gain 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF234"
+          >
+            DEF234
+          </a>
+        </li>
+      </ol>
+    </li>
+    <li
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+    >
+      <h3>
+        copy gain 
+        <button
+          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+          >
+            More information
+          </span>
+        </button>
+      </h3>
+      <ol
+        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+      >
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/DEF234"
+          >
+            DEF234
+          </a>
+        </li>
+        <li
+          class="List__ListItem-sc-4j87st-1 gGPLUe"
+        >
+          <a
+            class="Link-sc-14lgydv-0-Link jBvaYQ"
+            href="/gene/LLLLLL"
+          >
+            LLLLLL
+          </a>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</DocumentFragment>
+`;
