@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: gnomad-prod-certificate
+  name: ourdna-prod-certificate
   labels:
     tier: production
 spec:

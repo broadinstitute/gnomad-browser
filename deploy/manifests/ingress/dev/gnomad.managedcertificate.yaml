@@ -1,0 +1,9 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ourdna-browser-dev
+  labels:
+    tier: production
+spec:
+  domains:
+    - ourdna-dev.popgen.rocks

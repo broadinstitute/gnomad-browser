@@ -5,42 +5,43 @@ metadata:
   labels:
     tier: production
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: gnomad-prod-global-ip
-    networking.gke.io/managed-certificates: gnomad-prod-certificate
+    kubernetes.io/ingress.global-static-ip-name: ourdna-browser-dev
+    networking.gke.io/managed-certificates: ourdna-browser-dev
     networking.gke.io/v1beta1.FrontendConfig: 'gnomad-frontend-config'
 spec:
   rules:
-    - host: ourdna.populationgenomics.org.au
+    - host: ourdna-dev.popgen.rocks
       http:
         paths:
-          - backend:
-              service:
-                name: reads-bluegreen-active-prod
-                port:
-                  number: 80
-            path: /reads
-            pathType: ImplementationSpecific
-          - backend:
-              service:
-                name: reads-bluegreen-active-prod
-                port:
-                  number: 80
-            path: /reads/*
-            pathType: ImplementationSpecific
-          - backend:
-              service:
-                name: reads-bluegreen-preview-prod
-                port:
-                  number: 80
-            path: /preview-reads
-            pathType: ImplementationSpecific
-          - backend:
-              service:
-                name: reads-bluegreen-preview-prod
-                port:
-                  number: 80
-            path: /preview-reads/*
-            pathType: ImplementationSpecific
+          # Do not have READS at this stge
+          # - backend:
+          #     service:
+          #       name: reads-bluegreen-active-dev
+          #       port:
+          #         number: 80
+          #   path: /reads
+          #   pathType: ImplementationSpecific
+          # - backend:
+          #     service:
+          #       name: reads-bluegreen-active-dev
+          #       port:
+          #         number: 80
+          #   path: /reads/*
+          #   pathType: ImplementationSpecific
+          # - backend:
+          #     service:
+          #       name: reads-bluegreen-preview-dev
+          #       port:
+          #         number: 80
+          #   path: /preview-reads
+          #   pathType: ImplementationSpecific
+          # - backend:
+          #     service:
+          #       name: reads-bluegreen-preview-dev
+          #       port:
+          #         number: 80
+          #   path: /preview-reads/*
+          #   pathType: ImplementationSpecific
           - backend:
               service:
                 name: gnomad-blog

@@ -42,7 +42,7 @@ def describe_services() -> None:
     print("active browser deployment:", browser_deployment)
 
 
-def apply_services(browser_deployment: str = None) -> None:
+def apply_services(browser_deployment: str = None, env: str = None) -> None:
     if browser_deployment:
         if not k8s_deployment_exists(f"gnomad-browser-{browser_deployment}"):
             raise RuntimeError(f"browser deployment {browser_deployment} not found")
@@ -56,17 +56,17 @@ def apply_services(browser_deployment: str = None) -> None:
 
     kubectl(["apply", "-f", "-"], input=manifest)
 
-    print(f"Updated production ingresses. browser: '{browser_deployment}' ")
+    print(f"Updated {env} ingresses. browser: '{browser_deployment}' ")
 
 
-def apply_ingress(browser_deployment: str = None, quiet: bool = False) -> None:
-    apply_services(browser_deployment)
+def apply_ingress(browser_deployment: str = None, env: str = None, quiet: bool = False) -> None:
+    apply_services(browser_deployment, env)
 
-    if quiet or input("Apply changes to production ingress (y/n) ").lower() == "y":
+    if quiet or input(f"Apply changes to {env} ingress (y/n) ").lower() == "y":
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.backendconfig.yaml")])
         kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.frontendconfig.yaml")])
-        kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.ingress.yaml")])
-        kubectl(["apply", "-f", os.path.join(manifests_directory(), "gnomad.managedcertificate.yaml")])
+        kubectl(["apply", "-f", os.path.join(manifests_directory(), f"{env}/gnomad.ingress.yaml")])
+        kubectl(["apply", "-f", os.path.join(manifests_directory(), f"{env}/gnomad.managedcertificate.yaml")])
 
 
 def main(argv: typing.List[str]) -> None:
@@ -79,10 +79,12 @@ def main(argv: typing.List[str]) -> None:
     apply_services_parser = subparsers.add_parser("update")
     apply_services_parser.set_defaults(action=apply_services)
     apply_services_parser.add_argument("--browser-deployment")
+    apply_services_parser.add_argument("--env")
 
     apply_ingress_parser = subparsers.add_parser("apply-ingress")
     apply_ingress_parser.set_defaults(action=apply_ingress)
     apply_ingress_parser.add_argument("--browser-deployment")
+    apply_ingress_parser.add_argument("--env")
     apply_ingress_parser.add_argument("--quiet", action="store_true")
 
     args = parser.parse_args(argv)
