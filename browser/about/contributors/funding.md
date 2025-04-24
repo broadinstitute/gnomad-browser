@@ -1,20 +1,7 @@
-**Current Funding**
+Garvan Institute of Medical Research and Murdoch Children’s Research Institute contribute to the development of this resource via their significant funding support for the Centre for Population Genomics, enabled through the generosity of donors.
 
-- NIH/NHGRI U24HG011450<br/>(MPIs: Rehm and Daly)
-- NIH/NHGRI U01HG011755<br/>(MPIs: O’Donnell-Luria, Rehm and Talkowski)
-- NIMH MH115957<br/>(PI: Talkowski)
-- NICHD HD081256<br/>(PI: Talkowski)
-- Broad Institute contributes data storage, computing resources, and human effort
+Funding for this research has also been provided by the Australian Government’s Medical Research Future Fund (MRFF) grant 2015969 (CIA Daniel MacArthur; 2022-2027) from the Genomics Health Futures Mission and by the National Health and Medical Research Council (NHMRC) investigator grant 2009982 (CIA Daniel MacArthur; 2022-2026).
 
-<br/>
+The contents of this published material are solely the responsibility of the authors and do not reflect the views of the Commonwealth of Australia or the NHMRC.
 
-**Past Funding**
-
-- NIGMS R01 GM104371<br/>(PI: MacArthur)
-- NIDDK U54 DK105566<br/>(PIs: MacArthur and Neale)
-- NHGRI U24 HG010262<br/>(PI: Philippakis)
-- NIMH R56 MH115957<br/>(PI: Talkowski)
-- NHLBI R01 HL143295<br/>(PI: Green)
-- Wellcome Trust WT200990/Z/16/Z<br/>(PI: Birney)
-- BioMarin
-- Sanofi-Genzyme
+The OurDNA program also receives support from Google’s Digital Future Initiative.

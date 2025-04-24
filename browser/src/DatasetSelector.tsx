@@ -463,16 +463,16 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
   const { datasetOptions, selectedDataset } = props
 
   const {
-    includeShortVariants = true,
-    includeStructuralVariants = true,
-    includeExac = true,
-    includeGnomad2 = true,
-    includeGnomad2Subsets = true,
-    includeGnomad3 = true,
-    includeGnomad3Subsets = true,
-    includeGnomad4 = true,
-    includeGnomad4Subsets = false,
-    includeCopyNumberVariants = true,
+    includeShortVariants = false,
+    includeStructuralVariants = false,
+    includeExac = false,
+    includeGnomad2 = false,
+    includeGnomad2Subsets = false,
+    includeGnomad3 = false,
+    includeGnomad3Subsets = false,
+    includeGnomad4 = false,
+    includeGnomad4Subsets = true,
+    includeCopyNumberVariants = false,
     urlBuilder = datasetLink,
   } = datasetOptions
 
@@ -510,12 +510,19 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
     }
 
     if (includeGnomad4Subsets) {
+      // shortVariantDatasets[1].children.push({
+      //   id: 'gnomad_r4_non_ukb',
+      //   label: labelForDataset('gnomad_r4_non_ukb'),
+      //   url: urlBuilder(window.location, 'gnomad_r4_non_ukb'),
+      //   description: `${sampleCounts.gnomad_r4_non_ukb.total.toLocaleString()} samples`,
+      //   childReferenceGenome: referenceGenome('gnomad_r4_non_ukb'),
+      // })
       shortVariantDatasets[1].children.push({
-        id: 'gnomad_r4_non_ukb',
-        label: labelForDataset('gnomad_r4_non_ukb'),
-        url: urlBuilder(window.location, 'gnomad_r4_non_ukb'),
-        description: `${sampleCounts.gnomad_r4_non_ukb.total.toLocaleString()} samples`,
-        childReferenceGenome: referenceGenome('gnomad_r4_non_ukb'),
+        id: 'gnomad_r4_ourdna',
+        label: labelForDataset('gnomad_r4_ourdna'),
+        url: urlBuilder(window.location, 'gnomad_r4_ourdna'),
+        description: `${sampleCounts.gnomad_r4_ourdna.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r4_ourdna'),
       })
     }
 

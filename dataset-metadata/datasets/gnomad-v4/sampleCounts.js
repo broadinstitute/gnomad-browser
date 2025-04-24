@@ -46,6 +46,23 @@ const sampleCounts = {
       exomesTotal: 314392,
       total: 314392,
     },
+    ourdna: {
+      exomes: {
+        afr: 0,
+        amr: 0,
+        asj: 0,
+        eas: 0,
+        fin: 0,
+        mid: 0,
+        nfe: 0,
+        remaining: 0,
+        sas: 0,
+        XX: 123,
+        XY: 123,
+      },
+      exomesTotal: 123,
+      total: 123,
+    },
   },
   total: 807162,
 }

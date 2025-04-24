@@ -1,188 +1,118 @@
-- Maria Abreu
-- Amina Abubakar
-- Rolf Adolfsson
-- Carlos A Aguilar Salinas
-- Tariq Ahmad
-- Christine M. Albert
-- Nicholette Allred
-- Matthieu Allez
-- David Altshuler
-- Celso Arango López
-- Diego Ardissino
-- Gil Atzmon
-- John Barnard
-- Laurent Beaugerie
-- Gary Beecham
-- Emelia J. Benjamin
-- Charles Bernstein
-- Douglas Blackwood
-- Michael Boehnke
-- Lori Bonnycastle
-- Erwin Bottinger
-- Donald Bowden
-- Matthew Bown
-- Hannia Campos
-- John Chambers
-- Juliana Chan
-- Daniel Chasman
-- Lea Ann Chen
-- Rex Chisholm
-- Judy Cho
-- Rajiv Chowdhury
-- Mina Chung
-- Wendy Chung
-- Bruce Cohen
-- Adolfo Correa
-- Aiden Corvin
-- Nick Craddock
-- Dana Dabelea
-- Mark Daly
-- John Danesh
-- Dawood Darbar
-- Joshua Denny
-- Richard H. Duerr
-- Ravindranath Duggirala
-- Josée Dupuis
-- Patrick T. Ellinor
-- Roberto Elosua
-- Jeanette Erdmann
-- Tõnu Esko
-- Martt Färkkilä
-- Diane Fatkin
-- William Faubion
-- Gemma Figtree
-- Jose Florez
-- Andre Franke
-- Michel Georges
-- Gad Getz
-- David Glahn
-- Ben Glaser
-- Stephen Glatt
-- Fernando Goes
-- David Goldstein
-- Clicerio Gonzalez
-- Leif Groop
-- Christopher Haiman
-- Ira Hall
-- Craig Hanis
-- James Hanyok
-- Matthew Harms
-- Mikko Hiltunen
-- Matti Holi
-- Christina Hultman
-- Chaim Jalas
-- Mikko Kallela
-- Jaakko Kaprio
-- Elizabeth W. Karlson
-- Sekar Kathiresan
-- Eimear Kenny
-- Bong-Jo Kim
-- Young Jin Kim
-- George Kirov
-- Jaspal Kooner
-- Seppo Koskinen
-- Harlan M. Krumholz
-- Subra Kugathasan
-- Juozas Kupcinskas
-- Soo Heon Kwak
-- Markku Laakso
-- Mikael Landén
-- Terho Lehtimäki
-- James Lewis
-- Ruth Loos
-- Edouard Louis
-- Steven A. Lubitz
-- Ronald Ma
-- Daniel MacArthur
-- Dara Manoach
-- Gregory M. Marcus
-- Jaume Marrugat
-- Kari Mattila
-- Steve McCarroll
-- Mark McCarthy
-- Jacob McCauley
-- Dermot McGovern
-- Ruth McPherson
-- Andrew McQuillian
-- James Meigs
-- Olle Melander
-- Deborah Meyers
-- Lili Milani
-- Braxton Mitchell
-- Paul Moayyedi
-- Sanghamitra Mohanty
-- Aliya Naheed
-- Andrea Natale
-- Saman Nazarian
-- Ben Neale
-- Charles R Newton
-- Peter Nilsson
-- Michael O'Donovan
-- Yuki Okada
-- Dost Ongur
-- Roel Ophoff
-- Lorena Orozco
-- Willem Ouwehand
-- Michael Owen
-- Nick Owen
-- Colin Palmer
-- Aarno Palotie
-- Mara Parellada
-- Kyong Soo Park
-- Carlos Pato
-- Nancy Pedersen
-- Danielle Posthuma
-- Ann Pulver
-- Dan Rader
-- Nazneen Rahman
-- Andreas Reif
-- Alex Reiner
-- Anne Remes
-- Stephen Rich
-- John D. Rioux
-- Samuli Ripatti
-- Jason Roberts
-- Elise Robinson
-- Dan Roden
-- Jerome I. Rotter
-- Guy Rouleau
-- Christian Ruff
-- Marc Sabatine
-- Danish Saleheen
-- Veikko Salomaa
-- Nilesh Samani
-- Akira Sawa
-- Jeremiah Scharf
-- Heribert Schunkert
-- Svati Shah
-- Moore Shoemaker
-- Tai Shyong
-- Edwin K. Silverman
-- Jurgita Skieceviciene
-- Pamela Sklar
-- Gustav Smith
-- Jordan Smoller
-- Hilkka Soininen
-- Harry Sokol
-- Tim Spector
-- David St Clair
-- Nathan Stitziel
-- Patrick Sullivan
-- Jaana Suvisaari
-- Kent Taylor
-- Yik-Ying Teo
-- Tuomi Tiinamaija
-- Ming Tsuang
-- Dan Turner
-- Teresa Tusie Luna
-- Erkki Vartiainen
-- Marquis Vawter
-- Severine Vermeire
-- Elisabet Vilella
-- James Ware
-- Hugh Watkins
-- Rinse Weersma
-- Maija Wessman
-- James Wilson
-- Ramnik Xavier
-- Robert Yolken
+### Director
+
+- Prof Daniel MacArthur
+- Garvan Institute of Medical Research and Murdoch Children’s Research Institute
+- Centre for Population Genomics
+- Conjoint Professor, University of New South Wales
+
+### Garvan Institute of Medical Research
+
+- Assoc Prof Jodie Ingles
+- Prof Joseph Powell
+- Assoc Prof Sarah Kummerfeld
+- Dr Ira Deveson
+- Ms Mary-Anne Young
+
+### Murdoch Children’s Research Institute
+
+- Prof Martin Delatycki
+- Prof Melissa Wake
+- Assoc Prof Sebastian Lunke
+- Dr Danya Vears
+
+### Australian Genomics
+
+- Mrs Tiffany Boughtwood
+
+### University of Melbourne
+
+- Assoc Prof Ilias Goranitis
+
+### University of Oxford
+
+- Prof Julian Savulescu
+
+### Australian Institute of Health Innovation
+
+- Dr Stephanie Best
+
+### Australian National University
+
+- Prof Alex Brown
+- Mrs Azure Hermes
+
+### Monash University
+
+- Assoc Prof Paul Lacaze
+- Prof Melissa Southey
+
+### Australian Red Cross Lifeblood
+
+- Prof David Irving
+- Dr Rachel Thorpe
+- Dr Surendra Karki
+
+### University of South Australia
+
+- Assoc Prof Beben Benyamin
+- Assoc Prof Sang Hong Lee
+
+### The University of Queensland
+
+- Prof Naomi Wray
+- Dr Sonia Shah
+- Dr Loic Yengo
+
+### Federation of Ethnic Communities' Councils of Australia
+
+- Ms Mary Ann Geronimo
+
+### University Technology Sydney
+
+- Assoc Prof Alison McEwen
+
+### King Edward Memorial Hospital for Women
+
+- Prof Gareth Baynam
+
+### NSW Health Pathology
+
+- Dr Cliff Meldrum
+
+### Pathology Queensland
+
+- Mr Ben Lundie
+
+### Children's Hospital at Westmead
+
+- Prof Bruce Bennetts
+
+### SA Pathology
+
+- Assoc Prof Karin Kassahn
+
+### PathWest
+
+- Dr Mark Davis
+
+### Invitae
+
+- Dr Mona Saleh
+
+### University of New South Wales
+
+- Prof Edwin Kirk
+
+### The Sax Institute
+
+- Dr Martin McNamara
+
+### Broad Institute of Harvard and MIT
+
+- Professor Heidi Rehm
+- Professor Michael Talkowski
+
+### University of Adelaide
+
+- Dr Azmeraw Amare
+

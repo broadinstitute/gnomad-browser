@@ -12,18 +12,18 @@ import headshotImages from './headshotLoader'
 // Members of the "Contributors" section
 // @ts-expect-error
 import dataGenerationContributors from '../../about/contributors/data-generation.md'
-// @ts-expect-error
-import productionAndAnalysisContributors from '../../about/contributors/production-and-analysis.md'
-// @ts-expect-error
-import structuralVariantsContributors from '../../about/contributors/structural-variation.md'
-// @ts-expect-error
-import mitochondrialVariantsContributors from '../../about/contributors/mitochondrial-variation.md'
-// @ts-expect-error
-import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
-// @ts-expect-error
-import ethicsContributors from '../../about/contributors/ethics.md'
-// @ts-expect-error
-import tandemRepeatContributors from '../../about/contributors/tandem-repeats.md'
+// ts-expect-error
+// import productionAndAnalysisContributors from '../../about/contributors/production-and-analysis.md'
+// ts-expect-error
+// import structuralVariantsContributors from '../../about/contributors/structural-variation.md'
+// ts-expect-error
+// import mitochondrialVariantsContributors from '../../about/contributors/mitochondrial-variation.md'
+// ts-expect-error
+// import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
+// ts-expect-error
+// import ethicsContributors from '../../about/contributors/ethics.md'
+// ts-expect-error
+// import tandemRepeatContributors from '../../about/contributors/tandem-repeats.md'
 
 // Members of the 'Alumni' Section
 // @ts-expect-error
@@ -196,39 +196,33 @@ const Contributors = styled.div`
 const TeamPage = () => {
   return (
     <InfoPage>
-      <DocumentTitle title="The gnomAD Team" />
+      <DocumentTitle title="The Team" />
       {/* // @ts-expect-error */}
       <PageHeading
         // @ts-expect-error
         id="the-gnomad-team"
       >
-        The gnomAD Team
+        The OurDNA Browser Team
       </PageHeading>
       <Team>
         <TeamSection>
-          <h2 id="gnomad-committee">gnomAD Steering Committee</h2>
+          <h2 id="gnomad-committee">Steering Committee</h2>
           <p>
-            The gnomAD Steering Committee (SC) consists of investigators with expertise in genomic
-            sequencing, computational analysis, and rare disease genomics as well as key staff who
-            are deeply involved with building and maintaining gnomAD.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
           <br />
 
-          <h3 id="co-directors">gnomAD Co-Directors</h3>
+          <h3 id="co-directors">OurDNA Browser Co-Directors</h3>
           {renderTeamMembers(teamMembers.gnomadCoDirectors)}
 
-          <h3 id="steering-committee">gnomAD Steering Committee</h3>
+          <h3 id="steering-committee">OurDNA Browser Steering Committee</h3>
           {renderTeamMembers(teamMembers.gnomadCommittee)}
         </TeamSection>
 
         <TeamSection>
-          <h2 id="scientific-advisory-board">gnomAD&apos;s Scientific Advisory Board</h2>
+          <h2 id="scientific-advisory-board">OurDNA Browser&apos;s Scientific Advisory Board</h2>
           <p>
-            Our Scientific Advisory Board, consists of a geographically and ethnically diverse set
-            of individuals with backgrounds spanning genomics research, clinical service and ELSI
-            work. The role of the gnomAD SAB is to provide guidance on the development of our
-            resource and how we can best and most equitably serve the scientific and clinical
-            communities.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
           {renderTeamMembers(teamMembers.scientificAdvisoryBoard)}
         </TeamSection>
@@ -238,10 +232,7 @@ const TeamPage = () => {
         <TeamSection>
           <h2 id="gnomad-staff">Staff</h2>
           <p>
-            Our staff includes individuals with a variety of backgrounds and skills including
-            software development, computational biology, project management, and clinical genetics.
-            The team works to create the gnomAD datasets, develop and support the browser, answer
-            all gnomAD emails, and handle all the regulatory requirements, amongst many other roles.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
 
           <br />
@@ -267,44 +258,6 @@ const TeamPage = () => {
                 <Contributors
                   aria-labelledby="data-generation-contributors"
                   dangerouslySetInnerHTML={{ __html: dataGenerationContributors.html }}
-                />
-                <br />
-                <h3 id="broad-genomics-platform">Broad Genomics Platform</h3>
-                <Contributors
-                  aria-labelledby="broad-genomics-platform"
-                  dangerouslySetInnerHTML={{ __html: broadGenomicsPlatformContributors.html }}
-                />
-              </ResponsiveColumn>
-              <ResponsiveColumn>
-                <h3 id="structural-variation-contributors">Structural Variants</h3>
-                <Contributors
-                  aria-labelledby="structural-variation-contributors"
-                  dangerouslySetInnerHTML={{ __html: structuralVariantsContributors.html }}
-                />
-                <br />
-                <h3 id="mitochondrial-variants-contributors">Mitochondrial Variants</h3>
-                <Contributors
-                  aria-labelledby="mitochondrial-variants-contributors"
-                  dangerouslySetInnerHTML={{ __html: mitochondrialVariantsContributors.html }}
-                />
-              </ResponsiveColumn>
-              <ResponsiveColumn>
-                <h3 id="ethics-contributors">Production and Analysis</h3>
-                <Contributors
-                  aria-labelledby="production-and-analysis-contributors"
-                  dangerouslySetInnerHTML={{ __html: productionAndAnalysisContributors.html }}
-                />
-                <br />
-                <h3 id="ethics-contributors">Ethics</h3>
-                <Contributors
-                  aria-labelledby="ethics-contributors"
-                  dangerouslySetInnerHTML={{ __html: ethicsContributors.html }}
-                />
-                <br />
-                <h3 id="tandem-repeats-contributors">Tandem Repeats</h3>
-                <Contributors
-                  aria-labelledby="tandem-repeats-contributors"
-                  dangerouslySetInnerHTML={{ __html: tandemRepeatContributors.html }}
                 />
               </ResponsiveColumn>
             </ColumnList>

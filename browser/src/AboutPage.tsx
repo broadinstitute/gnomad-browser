@@ -4,14 +4,11 @@ import { PageHeading } from '@gnomad/ui'
 
 // @ts-expect-error
 import aboutContent from '../about/about.md'
-// @ts-expect-error
-import contributingProjectsList from '../about/contributors/contributing-projects.md'
+// import contributingProjectsList from '../about/contributors/contributing-projects.md'
 // @ts-expect-error
 import fundingSources from '../about/contributors/funding.md'
-// @ts-expect-error
-import dataContributorsList from '../about/contributors/data-contributors.md'
-// @ts-expect-error
-import gcbrContent from '../about/contributors/gcbr/gcbr.md'
+// import dataContributorsList from '../about/contributors/data-contributors.md'
+// import gcbrContent from '../about/contributors/gcbr/gcbr.md'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
@@ -61,7 +58,7 @@ const Contributors = styled.div`
   }
 `
 
-const PrincipalInvestigators = styled(Contributors)`
+const _PrincipalInvestigators = styled(Contributors)`
   columns: 2;
 
   @media (max-width: 992px) {
@@ -77,25 +74,22 @@ const FundingSources = styled(Contributors)`
 
 export default () => (
   <InfoPage>
-    <DocumentTitle title="About gnomAD" />
+    <DocumentTitle title="About OurDNA Browser" />
     <PageHeading
       // @ts-expect-error
 
       id="about-gnomad"
     >
-      About gnomAD
+      About OurDNA Browser
     </PageHeading>
 
     {/* Import about blurb from .md file */}
     <MarkdownContent dangerouslySetInnerHTML={{ __html: aboutContent.html }} />
 
     {/* Funding Section */}
-    <SectionHeader>Funding</SectionHeader>
+    <SectionHeader id="funding">Funding</SectionHeader>
     <Credits>
-      <CreditsSection
-        // @ts-expect-error
-        width="45%"
-      >
+      <CreditsSection>
         <FundingSources
           aria-labelledby="funding"
           dangerouslySetInnerHTML={{ __html: fundingSources.html }}
@@ -106,33 +100,13 @@ export default () => (
         </p>
       </CreditsSection>
 
-      <CreditsSection
-        // @ts-expect-error
-        width="45%"
-      >
-        <FundingSources
-          aria-labelledby="gcbr"
-          dangerouslySetInnerHTML={{ __html: gcbrContent.html }}
-        />
-      </CreditsSection>
     </Credits>
 
     {/* Data Contributors and Projects Section (Formerly PI's and Projects) */}
-    <SectionHeader>Data Contributors</SectionHeader>
+    {/* <SectionHeader>Data Contributors</SectionHeader>
     <Credits>
       <CreditsSection
-        // @ts-expect-error
-        width="45%"
-      >
-        <h3 id="principal-investigators">Data Contributors</h3>
-        <PrincipalInvestigators
-          aria-labelledby="principal-investigators"
-          dangerouslySetInnerHTML={{ __html: dataContributorsList.html }}
-        />
-      </CreditsSection>
-      <CreditsSection
-        // @ts-expect-error
-        width="45%"
+        width="34%"
       >
         <h3 id="contributing-projects">Contributing projects</h3>
         <Contributors
@@ -140,6 +114,15 @@ export default () => (
           dangerouslySetInnerHTML={{ __html: contributingProjectsList.html }}
         />
       </CreditsSection>
-    </Credits>
+      <CreditsSection
+        width="66%"
+      >
+        <h3 id="principal-investigators">Data Contributors</h3>
+        <PrincipalInvestigators
+          aria-labelledby="principal-investigators"
+          dangerouslySetInnerHTML={{ __html: dataContributorsList.html }}
+        />
+      </CreditsSection>
+    </Credits> */}
   </InfoPage>
 )

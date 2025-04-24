@@ -110,6 +110,11 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
+          <Link to="/federated" onClick={closeMenu}>
+            Federated
+          </Link>
+        </li>
+        <li>
           <Link to="/stats" onClick={closeMenu}>
             Stats
           </Link>
@@ -121,13 +126,13 @@ const NavBar = () => {
         </li>
         {/* two <a> tags instead of <Link>s because the blog is a separate application */}
         <li>
-          <a href="https://ourdna.populationgenomics.org.au/news/">Blog</a>
+          <a href="/news/">Blog</a>
         </li>
-        <li>
+        {/* <li>
           <Link to="/data" onClick={closeMenu}>
             Data
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/contact" onClick={closeMenu}>
             Contact

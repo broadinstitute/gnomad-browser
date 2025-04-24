@@ -1,28 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, PageHeading } from '@gnomad/ui'
+import { /* ExternalLink, */ PageHeading } from '@gnomad/ui'
 
-import Link from '../Link'
+// import Link from '../Link'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
 
-import { SectionTitle, StyledParagraph, CodeBlock } from './downloadsPageStyles'
+// import { SectionTitle, StyledParagraph, CodeBlock } from './downloadsPageStyles'
 
-import DataPageTableOfContents from './TableOfContents'
+// import DataPageTableOfContents from './TableOfContents'
 
 // @ts-expect-error
 import styles from './DataPage.module.css'
 
-import GnomadV4Downloads from './GnomadV4Downloads'
-import GnomadV3Downloads from './GnomadV3Downloads'
-import GnomadV2Downloads from './GnomadV2Downloads'
-import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
-import ExacDownloads from './ExacDownloads'
-import GraphQLDocs from './GraphQLDocs'
+// import GnomadV4Downloads from './GnomadV4Downloads'
+// import GnomadV3Downloads from './GnomadV3Downloads'
+// import GnomadV2Downloads from './GnomadV2Downloads'
+// import GnomadV2LiftoverDownloads from './GnomadV2LiftoverDownloads'
+// import ExacDownloads from './ExacDownloads'
+// import GraphQLDocs from './GraphQLDocs'
 
-const TextSection = styled.div`
+const _TextSection = styled.div`
   width: 70%;
 
   @media (max-width: 900px) {
@@ -30,7 +30,7 @@ const TextSection = styled.div`
   }
 `
 
-const TableOfContentsSection = styled.div`
+const _TableOfContentsSection = styled.div`
   /* stylelint-disable-next-line value-no-vendor-prefix */
   position: -webkit-sticky;
   position: sticky;
@@ -45,7 +45,7 @@ const TableOfContentsSection = styled.div`
   }
 `
 
-const BottomSpacer = styled.div`
+const _BottomSpacer = styled.div`
   margin-bottom: 40rem;
 `
 
@@ -58,35 +58,34 @@ const DataPage = () => {
       <DocumentTitle title="Data" />
       <PageHeading>Data</PageHeading>
 
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    {/* 
       <TableOfContentsSection>
         <DataPageTableOfContents />
-      </TableOfContentsSection>
+      </TableOfContentsSection> */}
 
-      <TextSection>
+     {/* <TextSection>
         <div>
           <SectionTitle id="summary" theme={{ type: 'datasets' }}>
             Summary
           </SectionTitle>
           <StyledParagraph>
             gnomAD data is available for download through{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://cloud.google.com/public-datasets">
               Google Cloud Public Datasets
             </ExternalLink>
             , the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://registry.opendata.aws/">
               Registry of Open Data on AWS
             </ExternalLink>
             , and{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
               Azure Open Datasets
             </ExternalLink>
             . We recommend using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
               Hail utilities for gnomAD
             </ExternalLink>{' '}
@@ -94,9 +93,7 @@ const DataPage = () => {
           </StyledParagraph>
           <StyledParagraph>
             In addition to the files listed below,{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://terra.bio/a-demo-workspace-for-working-with-gnomad-data-in-terra/">
               a demo workspace for working with gnomAD data
             </ExternalLink>
@@ -108,7 +105,6 @@ const DataPage = () => {
             records as needed may be more suitable than working with downloaded gnomAD data. If
             you&apos;re unsure which would be better for your use case, please reach out to the
             browser team on the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://discuss.gnomad.broadinstitute.org/">
               gnomAD forum
             </ExternalLink>
@@ -118,7 +114,6 @@ const DataPage = () => {
           <h3>Google Cloud Public Datasets</h3>
           <p>
             Files can be browsed and downloaded using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
           </p>
 
@@ -128,7 +123,6 @@ const DataPage = () => {
 
           <p>
             gnomAD variants are also available as a{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
               BigQuery dataset
             </ExternalLink>
@@ -146,7 +140,6 @@ const DataPage = () => {
 
           <p>
             Files can be browsed and downloaded using the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.aws.amazon.com/cli/">
               AWS Command Line Interface
             </ExternalLink>
@@ -161,12 +154,10 @@ const DataPage = () => {
 
           <p>
             Files can be browsed and downloaded using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10">
               AzCopy
             </ExternalLink>{' '}
             or{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://azure.microsoft.com/en-us/features/storage-explorer/">
               Azure Storage Explorer
             </ExternalLink>
@@ -179,7 +170,6 @@ const DataPage = () => {
 
           <StyledParagraph>
             gnomAD variants are also available in Parquet format.{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
               Find more information on the Azure website
             </ExternalLink>
@@ -199,12 +189,11 @@ const DataPage = () => {
           <StyledParagraph>
             Within a versioned release, datasets available for download fall under two categories.
             The Core Dataset is the gnomAD database and analyses created and maintained by the{' '}
-            {/* @ts-expect-error */}
             <ExternalLink href="https://gnomad.broadinstitute.org/team#production-staff">
               gnomAD production team
             </ExternalLink>
             . Secondary Analyses are additional analyses developed in collaboration with
-            laboratories of the {/* @ts-expect-error */}
+            laboratories of the
             <ExternalLink href="https://gnomad.broadinstitute.org/team#steering-committee">
               gnomAD steering committee
             </ExternalLink>
@@ -227,7 +216,8 @@ const DataPage = () => {
         <GraphQLDocs />
 
         <BottomSpacer />
-      </TextSection>
+      </TextSection> */}
+
     </InfoPage>
   )
 }

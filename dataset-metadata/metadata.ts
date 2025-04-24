@@ -20,6 +20,7 @@ export const datasetLabels = {
   gnomad_cnv_r4: 'gnomAD CNVs v4.1.0',
   gnomad_r4: 'gnomAD v4.1.0',
   gnomad_r4_non_ukb: 'gnomAD v4.1.0 (non-UKB)',
+  gnomad_r4_ourdna: 'gnomAD v4.1.0 (OurDNA)',
 } as const
 export type DatasetId = keyof typeof datasetLabels
 
@@ -943,7 +944,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariants: false,
     hasLocalAncestryPopulations: true,
     isLiftoverSource: false,
-    isLiftoverTarget: false, // TODO: fix, shold be true,
+    isLiftoverTarget: true,
     referenceGenome: 'GRCh38',
     usesGrch37: false,
     usesGrch38: true,
@@ -1026,6 +1027,56 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasRelatedVariants: true,
     hasJointFrequencyData: false,
     hasVRSData: true,
+  },
+  gnomad_r4_ourdna: {
+    isSubset: true,
+    hasConstraints: true,
+    hasVariantCoocurrence: false,
+    hasNonCodingConstraints: true,
+    hasExome: true,
+    genesHaveExomeCoverage: true,
+    genesHaveGenomeCoverage: true,
+    transcriptsHaveExomeCoverage: true,
+    regionsHaveExomeCoverage: true,
+    regionsHaveGenomeCoverage: true,
+    hasShortVariants: true,
+    hasStructuralVariants: false,
+    hasCopyNumberVariants: false,
+    hasLocalAncestryPopulations: false, // Do not have for OurDNA
+    isLiftoverSource: false,
+    isLiftoverTarget: false, // Not needed for OurDNA
+    referenceGenome: 'GRCh38',
+    usesGrch37: false,
+    usesGrch38: true,
+    isV3Subset: false,
+    isV2: false,
+    isV3: false,
+    isV4: true,
+    isExac: false,
+    isSVs: false,
+    hasV2Genome: false,
+    metricsIncludeLowQualityGenotypes: false,
+    has1000GenomesPopulationFrequencies: false,
+    hasAlleleBalance: true,
+    hasRelatedVariants: true,
+    showAllIndividualsInAgeDistributionByDefault: true,
+    hasExons: true,
+    hasShortTandemRepeats: false,
+    hasMitochondrialGenomeCoverage: false,
+    hasMitochondrialVariants: false,
+    hasNonCodingReadData: true,
+    readsDatasetId: 'gnomad_r4',
+    readsIncludeLowQualityGenotypes: false,
+    coverageDatasetId: 'gnomad_r4',
+    variantFeedbackDescription: 'gnomAD v4',
+    isV4SVs: false,
+    shortVariantDatasetId: 'gnomad_r4_ourdna',
+    structuralVariantDatasetId: 'gnomad_sv_r4',
+    isV4CNVs: false,
+    copyNumberVariantDatasetId: 'gnomad_cnv_r4',
+    hasCopyNumberVariantCoverage: false,
+    hasJointFrequencyData: true,
+    hasVRSData: false,
   },
 }
 
@@ -1155,7 +1206,7 @@ export const hasCopyNumberVariantCoverage = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasCopyNumberVariantCoverage')
 
 export const baseDatasetForReferenceGenome = (genome: ReferenceGenome): DatasetId =>
-  genome === 'GRCh37' ? 'gnomad_r2_1' : 'gnomad_r4'
+  genome === 'GRCh37' ? 'gnomad_r2_1' : 'gnomad_r4_ourdna'
 
 export const hasJointFrequencyData = (datasetId: DatasetId): boolean =>
   getMetadata(datasetId, 'hasJointFrequencyData')

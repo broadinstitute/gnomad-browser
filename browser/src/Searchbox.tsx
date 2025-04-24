@@ -32,24 +32,6 @@ const getDefaultSearchDataset = (selectedDataset: any) => {
     if (selectedDataset.startsWith('gnomad_r4')) {
       return 'gnomad_r4'
     }
-    if (selectedDataset.startsWith('gnomad_r3')) {
-      return 'gnomad_r3'
-    }
-    if (selectedDataset.startsWith('gnomad_r2')) {
-      return 'gnomad_r2_1'
-    }
-    if (selectedDataset.startsWith('gnomad_sv_r2')) {
-      return 'gnomad_sv_r2_1'
-    }
-    if (selectedDataset === 'exac') {
-      return 'exac'
-    }
-    if (selectedDataset === 'gnomad_sv_r4') {
-      return 'gnomad_sv_r4'
-    }
-    if (selectedDataset === 'gnomad_cnv_r4') {
-      return 'gnomad_cnv_r4'
-    }
   }
   return 'gnomad_r4'
 }
@@ -66,6 +48,7 @@ export default withRouter((props: any) => {
 
   const currentParams = queryString.parse(location.search)
   const defaultSearchDataset = getDefaultSearchDataset(currentParams.dataset)
+  /* @ts-expect-error TS(TS2345) FIXME: Argument of type 'string' is not assignable to parameter. */
   const [searchDataset, setSearchDataset] = useState<DatasetId>(defaultSearchDataset)
 
   // Update search dataset when active dataset changes.
@@ -73,14 +56,15 @@ export default withRouter((props: any) => {
   useEffect(() => {
     return history.listen((newLocation: any) => {
       const newParams = queryString.parse(newLocation.search)
+      /* @ts-expect-error TS(TS2345) FIXME: Argument of type 'string' is not assignable to parameter. */
       setSearchDataset(getDefaultSearchDataset(newParams.dataset))
     })
   })
 
   const innerSearchbox = useRef(null)
 
-  const grch38Datasets: DatasetId[] = ['gnomad_r4', 'gnomad_r3', 'gnomad_sv_r4', 'gnomad_cnv_r4']
-  const grch37Datasets: DatasetId[] = ['gnomad_r2_1', 'gnomad_sv_r2_1', 'exac']
+  const grch38Datasets: DatasetId[] = ['gnomad_r4_ourdna']
+  // const grch37Datasets: DatasetId[] = []
 
   return (
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
@@ -97,11 +81,6 @@ export default withRouter((props: any) => {
       >
         <optgroup label="GRCh38">
           {grch38Datasets.map((datasetId) => (
-            <option value={datasetId}>{labelForDataset(datasetId)}</option>
-          ))}
-        </optgroup>
-        <optgroup label="GRCh37">
-          {grch37Datasets.map((datasetId) => (
             <option value={datasetId}>{labelForDataset(datasetId)}</option>
           ))}
         </optgroup>

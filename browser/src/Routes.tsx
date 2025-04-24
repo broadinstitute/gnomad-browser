@@ -13,6 +13,7 @@ const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
 const DataPage = lazy(() => import('./DataPage/DataPage'))
+const FederationPage = lazy(() => import('./FederationPage'))
 const HelpPage = lazy(() => import('./help/HelpPage'))
 const HelpTopicPage = lazy(() => import('./help/HelpTopicPage'))
 const HomePage = lazy(() => import('./HomePage'))
@@ -39,7 +40,7 @@ const LiftoverDisambiguationPage = lazy(() => import('./VariantPage/LiftoverDisa
 const PageNotFoundPage = lazy(() => import('./PageNotFoundPage'))
 const SearchRedirectPage = lazy(() => import('./SearchRedirectPage'))
 
-const defaultDataset = 'gnomad_r4'
+const defaultDataset = 'gnomad_r4_ourdna'
 
 const Routes = () => {
   // ==================================================================================
@@ -168,6 +169,8 @@ const Routes = () => {
       <Route exact path="/about" component={AboutPage} />
 
       <Route exact path="/team" component={TeamPage} />
+
+      <Route exact path="/federated" component={FederationPage} />
 
       {/* /downloads is the legacy path to the data page, which we still support here because there are lots of extant links to fragments within /downloads, and those get stripped if you use a redirect. */}
       <Route exact path="/downloads" component={DataPage} />

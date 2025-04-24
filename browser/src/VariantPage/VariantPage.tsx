@@ -24,7 +24,7 @@ import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import { BaseQuery } from '../Query'
-import ReadData from '../ReadData/ReadData'
+// import ReadData from '../ReadData/ReadData'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -475,10 +475,10 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <h2>Site Quality Metrics</h2>
         <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
       </ResponsiveSection>
-      <Section>
+      {/* <Section>
         <h2>Read Data</h2>
         <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
-      </Section>
+      </Section> */}
     </FlexWrapper>
   )
 }

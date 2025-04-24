@@ -124,7 +124,7 @@ const config = {
             minifyJS: true,
           },
     }),
-    new FaviconsWebpackPlugin('./src/logo.svg'),
+    new FaviconsWebpackPlugin('./src/ourdna.png'),
   ],
   // Use browserslist queries from .browserslistrc
   // Set to web in development as workaround for https://github.com/webpack/webpack-dev-server/issues/2758

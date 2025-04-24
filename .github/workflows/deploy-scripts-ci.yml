@@ -2,7 +2,6 @@ name: Deploy scripts CI
 on:
   push:
     branches:
-      - main
       - ourdna-browser-dev
       - ourdna-browser
     paths:
