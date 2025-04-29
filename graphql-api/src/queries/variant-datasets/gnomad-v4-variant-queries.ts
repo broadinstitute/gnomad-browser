@@ -96,11 +96,11 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   const subsetGenomeFreq = variant.genome.freq.all || {}
   const subsetJointFreq = variant.joint?.freq[subset] || {}
 
-  const hasExomeVariant = variant.exome?.freq?.[subset]?.ac_raw || false
-  const hasGenomeVariant = subsetGenomeFreq.ac_raw
-  const hasJointFrequencyData = subsetJointFreq.ac_raw
+  const hasExomeVariant = variant.exome?.freq?.[subset]?.ac || false
+  const hasGenomeVariant = subsetGenomeFreq.ac
+  const hasJointFrequencyData = subsetJointFreq.ac
 
-  if (!subsetGenomeFreq.ac_raw && !(variant.exome?.freq?.[subset] || {}).ac_raw) {
+  if (!subsetGenomeFreq.ac && !(variant.exome?.freq?.[subset] || {}).ac) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
@@ -318,9 +318,9 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
     const subsetGenomeFreq = variant.genome.freq.all || {}
     const subsetJointFreq = variant.joint?.freq[subset] || {}
 
-    const hasExomeVariant = variant.exome?.freq?.[subset]?.ac_raw || false 
-    const hasGenomeVariant = subsetGenomeFreq.ac_raw
-    const hasJointVariant = subsetJointFreq.ac_raw
+    const hasExomeVariant = variant.exome?.freq?.[subset]?.ac || false 
+    const hasGenomeVariant = subsetGenomeFreq.ac
+    const hasJointVariant = subsetJointFreq.ac
 
     if (hasExomeVariant && variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
       exomeFilters.push('AC0')
@@ -467,8 +467,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
       .map((hit: any) => hit._source.value)
       .filter(
         (variant: any) =>
-          (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-          variant.exome?.freq?.[subset]?.ac_raw > 0
+          (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+          variant.exome?.freq?.[subset]?.ac > 0
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
@@ -516,8 +516,8 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome?.freq?.[subset]?.ac_raw > 0
+        (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+        variant.exome?.freq?.[subset]?.ac > 0
     )
     .map(shapeVariantSummary(subset, { type: 'region' }))
 }
@@ -581,8 +581,8 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome?.freq?.[subset]?.ac_raw > 0
+        (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+        variant.exome?.freq?.[subset]?.ac > 0
     )
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
@@ -627,8 +627,8 @@ const fetchMatchingVariants = async (
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome?.freq?.[subset]?.ac_raw > 0
+        (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+        variant.exome?.freq?.[subset]?.ac > 0
     )
     .map((variant: any) => ({
       variant_id: variant.variant_id,
