@@ -4,7 +4,6 @@ import {
   labelForDataset,
   referenceGenome,
   isLiftoverSource,
-  baseDatasetForReferenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import DocumentTitle from '../DocumentTitle'
@@ -97,7 +96,7 @@ query ${operationName}($source_variant_id: String, $liftover_variant_id: String,
                 <Redirect
                   to={{
                     pathname: `/variant/${data.liftover[0][correspondingVariantField].variant_id}`,
-                    search: `dataset=${baseDatasetForReferenceGenome(toReferenceGenome)}`,
+                    search: `dataset=${toDatasetId}`,
                   }}
                 />
               )
@@ -114,11 +113,10 @@ query ${operationName}($source_variant_id: String, $liftover_variant_id: String,
                       ) => {
                         const variantId =
                           correspondingVariant[correspondingVariantField]!.variant_id
-                        const datasetToLink = baseDatasetForReferenceGenome(toReferenceGenome)
                         return (
                           <li key={variantId}>
                             <Link
-                              to={`/variant/${variantId}?dataset=${datasetToLink}`}
+                              to={`/variant/${variantId}?dataset=${toDatasetId}`}
                               preserveSelectedDataset={false}
                             >
                               {variantId}
