@@ -100,7 +100,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   const hasGenomeVariant = subsetGenomeFreq.ac_raw
   const hasJointFrequencyData = subsetJointFreq.ac_raw
 
-  if (!subsetGenomeFreq.ac_raw && !(variant.exome?.freq[subset] || {}).ac_raw) {
+  if (!subsetGenomeFreq.ac_raw && !(variant.exome?.freq?.[subset] || {}).ac_raw) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
@@ -108,7 +108,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   const genomeFilters = variant.genome.filters || []
   const jointFilters = variant.joint?.flags || []
 
-  if (hasExomeVariant && variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
+  if (hasExomeVariant && variant.exome?.freq?.[subset]?.ac === 0 && !exomeFilters.includes('AC0')) {
     exomeFilters.push('AC0')
   }
   if (variant.genome.freq.all.ac === 0 && !genomeFilters.includes('AC0')) {
@@ -175,10 +175,10 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     exome: hasExomeVariant
       ? {
           ...variant.exome,
-          ...variant.exome?.freq[subset],
+          ...variant.exome?.freq?.[subset],
           filters: exomeFilters,
           flags: exomeFlags,
-          populations: variant.exome?.freq[subset].ancestry_groups,
+          populations: variant.exome?.freq?.[subset]?.ancestry_groups,
           faf95: hasExomeVariant &&
             variant.exome?.faf95 && {
               popmax_population: variant.exome?.faf95.grpmax_gen_anc,
