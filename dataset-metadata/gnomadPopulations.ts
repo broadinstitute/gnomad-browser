@@ -15,7 +15,8 @@ export const GNOMAD_POPULATION_NAMES = {
   sas: 'South Asian',
   rmi: 'Remaining',
   remaining: 'Remaining',
-  unc: 'Unclassified',
+  european: 'European',
+  unclassified: 'Unclassified',
 
   // EAS subpopulations
   eas_jpn: 'Japanese',
@@ -76,8 +77,8 @@ const v4Populations: PopulationId[] = [
   // 'ami', // v4 does not directly include amish, but v3 does and v4 genomes are from v3
   // 'sas',
   // 'remaining',
-  'eur',
-  'unc',
+  'european',
+  'unclassified',
 ]
 
 export const populationsInDataset = {
