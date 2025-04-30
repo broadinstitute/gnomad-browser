@@ -15,6 +15,8 @@ export const GNOMAD_POPULATION_NAMES = {
   sas: 'South Asian',
   rmi: 'Remaining',
   remaining: 'Remaining',
+  European: 'European',
+  Unclassified: 'Unclassified',
 
   // EAS subpopulations
   eas_jpn: 'Japanese',
