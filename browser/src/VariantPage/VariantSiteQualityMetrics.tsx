@@ -476,6 +476,7 @@ const getAvailableMetrics = (datasetId: any) => {
   if (isV4(datasetId)) {
     return [
       'SiteQuality',
+      'inbreeding_coeff',
       'InbreedingCoeff',
       'AS_FS',
       'AS_MQ',
