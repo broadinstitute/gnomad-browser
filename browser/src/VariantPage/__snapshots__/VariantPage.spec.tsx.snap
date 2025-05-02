@@ -1513,9 +1513,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -1567,9 +1565,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -1627,9 +1623,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -11453,9 +11447,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -11507,9 +11499,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -11567,9 +11557,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -21396,9 +21384,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -21450,9 +21436,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -21510,9 +21494,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -31339,9 +31321,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -31393,9 +31373,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -31453,9 +31431,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -41282,9 +41258,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -41336,9 +41310,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -41396,9 +41368,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -51225,9 +51195,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -51279,9 +51247,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -51339,9 +51305,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -60813,9 +60777,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -60867,9 +60829,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -60927,9 +60887,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -68827,9 +68785,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -68881,9 +68837,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -68941,9 +68895,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -78891,9 +78843,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -78945,9 +78895,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -79005,9 +78953,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -88955,9 +88901,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -89009,9 +88953,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -89069,9 +89011,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -99019,9 +98959,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -99073,9 +99011,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -99133,9 +99069,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -109083,9 +109017,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
           <li
             className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 BzXEE"
           >
-            <h3>
-              
-            </h3>
+            <h3 />
             <ol
               className="List__OrderedList-sc-4j87st-2 gKjCRF"
             >
@@ -109137,9 +109069,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={
@@ -109197,9 +109127,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                         </dt>
                         <dd
                           className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        >
-                          
-                        </dd>
+                        />
                       </div>
                       <div
                         style={

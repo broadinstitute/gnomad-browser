@@ -341,25 +341,19 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
           <dt>
             Rearranged Segments
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -946,17 +940,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -1555,17 +1545,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -2158,17 +2144,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -2749,17 +2731,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -3338,17 +3316,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -3929,17 +3903,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -4520,17 +4490,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -5690,25 +5656,19 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
           <dt>
             Rearranged Segments
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -6295,17 +6255,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -6904,17 +6860,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -7507,17 +7459,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -8098,17 +8046,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -8687,17 +8631,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -9278,17 +9218,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -9869,17 +9805,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -11039,25 +10971,19 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
           <dt>
             Rearranged Segments
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -11644,17 +11570,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -12253,17 +12175,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -12856,17 +12774,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -13447,17 +13361,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -14036,17 +13946,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -14627,17 +14533,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>
@@ -15218,17 +15120,13 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           <dt>
             Evidence
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
         <div>
           <dt>
             Algorithms
           </dt>
-          <dd>
-            
-          </dd>
+          <dd />
         </div>
       </dl>
     </section>

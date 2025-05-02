@@ -9,7 +9,6 @@ exports[`ShortTandemRepeatAttributes displays no gene link for an STR with empty
     }
   }
 >
-  
   <div>
     <dt>
       Gene region

@@ -977,7 +977,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           y1={0}
                           y2={0}
                         />
-                        
                       </g>
                       <g
                         className="visx-group visx-axis visx-axis-left"
@@ -5059,7 +5058,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y1={0}
                         y2={0}
                       />
-                      
                     </g>
                     <g
                       className="visx-group visx-axis visx-axis-left"
@@ -6430,7 +6428,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y1={0}
                         y2={0}
                       />
-                      
                     </g>
                     <g
                       className="visx-group visx-axis visx-axis-left"

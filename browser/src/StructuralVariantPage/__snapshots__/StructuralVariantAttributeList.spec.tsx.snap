@@ -208,17 +208,13 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
     <dt>
       Evidence
     </dt>
-    <dd>
-      
-    </dd>
+    <dd />
   </div>
   <div>
     <dt>
       Algorithms
     </dt>
-    <dd>
-      
-    </dd>
+    <dd />
   </div>
 </dl>
 `;
