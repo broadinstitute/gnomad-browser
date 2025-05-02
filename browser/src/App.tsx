@@ -1,5 +1,4 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
-import { hot } from 'react-hot-loader/root'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -135,4 +134,4 @@ const App = () => {
   )
 }
 
-export default hot(App)
+export default App
