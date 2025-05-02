@@ -7,13 +7,6 @@ const { EnvironmentPlugin } = require('webpack')
 const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
-const extraResolveOptions = isDev
-  ? {
-      alias: {
-        'react-dom': '@hot-loader/react-dom',
-      },
-    }
-  : {}
 
 const gaTrackingId = process.env.GA_TRACKING_ID
 if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
@@ -95,7 +88,7 @@ const config = {
       },
     ],
   },
-  resolve: { extensions: ['.tsx', '.ts', '.js'], ...extraResolveOptions },
+  resolve: { extensions: ['.tsx', '.ts', '.js'] },
   output: {
     path: path.resolve(__dirname, './dist/public'),
     publicPath: '/',
