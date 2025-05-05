@@ -30,10 +30,10 @@ const Wrapper = styled.div`
 const getDefaultSearchDataset = (selectedDataset: any) => {
   if (selectedDataset) {
     if (selectedDataset.startsWith('gnomad_r4')) {
-      return 'gnomad_r4'
+      return 'gnomad_r4_ourdna'
     }
   }
-  return 'gnomad_r4'
+  return 'gnomad_r4_ourdna'
 }
 
 export default withRouter((props: any) => {
