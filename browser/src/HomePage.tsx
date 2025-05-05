@@ -173,20 +173,13 @@ export default () => (
       Funding
       </Link>
       {' '}
-      and
-      {' '}
-      <Link to="/team">
-      Team
-      </Link>
-      {' '}
-      pages.
+      page.
     </p>
     <p>
     The OurDNA browser is part of the{' '}
-    {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-    <ExternalLink href="https://gnomad.broadinstitute.org/federated">
-    federated gnomAD network
-    </ExternalLink>.
+    <Link to="/federated">
+      federated gnomAD network
+    </Link>.
     </p>
     <p>
     Aggregate data download is currently under development. Please check back for a release date.

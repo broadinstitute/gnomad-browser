@@ -6,54 +6,76 @@ The ARC, NHMRC and Universities Australia have also developed a supplementary gu
 
 ## Expectations For Data Use
 
-### CPG’s Core Value 
+This database contains allele frequency information across diverse population samples. While we make this resource available to encourage scientific discovery, we emphasise that appropriate interpretation requires specialised expertise in population genetics, statistical genetics, and clinical genomics.
 
-We invite users to share in the core CPG value: We remember that our data comes from people. We aim to centre community interests in all uses of the data. Read more about how communities have participated in the building of the OurDNA Browser.
+Furthermore, we invite all users to share in the core CPG value: *We remember that our data comes from people*. We aim to centre community interests in all uses of the data. [Read more about how communities have participated in the building of the OurDNA Browser](https://populationgenomics.org.au/about-us/resources/publications/).
 
-### CPG’s Commitment to Communities
 
-The OurDNA Browser includes data that have been collected in partnership with communities whose genetic ancestries are underrepresented in genomics research. Community leaders have championed the program within their communities and advocated for community members’ participation to ensure their access to genomic advances. We take community members’ entrustment of their data to us and our promise to deliver benefits to communities seriously. We share these data with the expectation that they will be used in the spirit of the trust that communities have placed in CPG.
+### Intended Users
 
-### Guidelines for responsible use of the data:
+This resource is designed for researchers and clinicians with formal training in genetics and genomics who understand the limitations of population genetic data.
+
+### Important Limitations
+
+1. **Biology is complex**: Most human traits and diseases are influenced by hundreds or thousands of genetic variants working together, in combination with environmental factors. Single variants rarely predict meaningful differences in physical traits or disease risk.
+
+2. **Context matters**: The effect of any single genetic variant depends on the broader genetic background in which it exists. A variant's association with a trait in one ancestry group may not translate to similar effects in another.
+
+3. **Many studies are biased**: Published associations between variants and traits often derive from studies with limited population diversity and sample sizes, which makes generalisations across populations scientifically unsound.
+
+4. **Population labels are overly simplistic**: The ancestry categories used in this database are practical groupings, not biologically distinct entities. Human genetic variation is continuous across populations, and these categories oversimplify this complexity.
+
+5. **Statistical vs. clinical significance**: Statistical associations do not necessarily indicate biological mechanisms or clinical relevance.
+
+### Prohibited Uses
+This data should not be used to:
+
+* Make any attempt to identify individual research participants from whom the data were obtained
+
+* Make claims about inherent biological differences between ancestry groups
+
+* Infer that certain populations have greater or lesser predisposition to specific traits based on allele frequencies alone
+
+* Support racial or ethnic stereotypes
+
+* Make clinical decisions without appropriate medical expertise and additional evidence
+
+Misuse or misinterpretation of this data can perpetuate harmful stereotypes and lead to scientific conclusions that are not supported by evidence. Use of these data in ways that violate these terms of use will be reported to the relevant institutions and funding agencies (where applicable), and may result in the public naming of the individuals and organisations responsible for this misuse. While we will also block IP addresses associated with violations, we recognise that such technical measures have limitations and do not provide absolute protection against determined bad actors.
+
+### Guidelines for Responsible Use of the Data
+The OurDNA Browser includes data that have been collected in partnership with communities whose genetic ancestries are underrepresented in genomics research. Community leaders have championed the program within their communities and advocated for community members’ participation to ensure their access to genomic advances. *We take community members’ entrustment of their data to us and our promise to deliver benefits to communities seriously*. We share these data with the expectation that they will be used in the spirit of the trust that communities have placed in CPG.
 
 We encourage users to consider the following principles when working with the data:
 
-- **Community benefit** - consider how your research will benefit OurDNA’s participating communities, either directly or indirectly
+* **Community benefit** - consider how your research will benefit OurDNA’s participating communities, either directly or indirectly
 
-- **Ethical reflection** - consider how your research may be used by others and what impact this will have on communities  
+* **Ethical reflection** - consider how your research may be used by others and what impact this will have on communities  
 
-- **Contextual interpretation** - consider whether you have appropriately considered historical, social, and environmental contexts in how you have interpreted population genetic differences
+* **Contextual interpretation** - consider whether you have appropriately considered historical, social, and environmental contexts in how you have interpreted population genetic differences
 
-- **Responsible reporting** - ensure that you are using appropriate terminology and framing that minimises the chance that your research will be misused  
-
-
-Data on genetic variation in diverse ancestry groups have been misused in the past for ideological reasons. We provide guidance on appropriate uses of the data and on reducing the likelihood of your research being misused. 
+* **Responsible reporting** - ensure that you are using appropriate terminology and framing that minimises the chance that your research will be misused  
 
 ### Community Engagement
 
 Community engagement and participation have been central to building the OurDNA Browser. We strongly encourage researchers to:
 
-- Engage, consult, and partner with communities where relevant
-- Consider accessible ways to disseminate their findings to communities
-- Include community perspectives in research whenever suitable
+* Engage, consult, and partner with communities where relevant
+* Consider accessible ways to disseminate their findings to communities
+* Include community perspectives in research whenever suitable
 
-[You can find resources on how to do this here.](https://populationgenomics.org.au/about-us/resources/publications/)
-
-
-### Re-identification
-
-It is prohibited to make any attempt to identify individual research participants from whom the data were obtained. Use of these data in ways that violate the Terms of Use, including through attempts at reidentification, will result in public naming of the individuals responsible for this misuse and their associated organisations.
-
+[You can find resources on how to do this here](https://populationgenomics.org.au/about-us/resources/publications/).
 
 ## Open Access Policy
 
 Open science is transparent and accessible knowledge that is shared and developed through collaborative networks.
 
-The CPG is firmly committed to Open Science and maximising the community benefit of knowledge produced from the OurDNA project and other programmes of work. This includes, but is not limited to, making aggregate data available, code open-source, posting pre-prints, and prioritising publishing in journals that support open access to support engagement, making it easier to publish, access and communicate scientific knowledge more broadly. By doing so, CPG supports equitable participation and access to data and data processing infrastructures for low and middle income countries.
+The CPG is firmly committed to Open Science and maximising the community benefit of knowledge produced from the OurDNA project and other programs of work. This includes, but is not limited to, making aggregate data available, making code open-source, posting pre-prints, and prioritising publishing in journals that support open access to support engagement, which make it easier to publish, access and communicate scientific knowledge more broadly. By doing so, CPG supports equitable participation and access to data and data processing infrastructures for low and middle income countries.
 
 
 ## Licence
 
 The OurDNA aggregate data is available free under the [Creative Commons BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.en). We request that you actively acknowledge and give attribution to the CPG with appropriate credit linking back to the project’s page. We also request that you provide a link to the licence, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the CPG endorses you or your use. If you remix, transform, or build upon the material, you must distribute your contributions under the same licence as the original. Attribution supports future efforts to release other data. It also reduces the amount of "orphaned data", helping retain links to authoritative sources.
+
+Citation instructions are provided on our Publications page.
 
 

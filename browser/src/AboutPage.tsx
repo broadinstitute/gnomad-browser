@@ -94,10 +94,6 @@ export default () => (
           aria-labelledby="funding"
           dangerouslySetInnerHTML={{ __html: fundingSources.html }}
         />
-        <p>
-          The vast majority of the data storage, computing resources, and human effort used to
-          generate this call set were donated by the Broad Institute
-        </p>
       </CreditsSection>
 
     </Credits>
