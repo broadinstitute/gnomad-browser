@@ -105,11 +105,6 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/team" onClick={closeMenu}>
-            Team
-          </Link>
-        </li>
-        <li>
           <Link to="/federated" onClick={closeMenu}>
             Federated
           </Link>
@@ -122,6 +117,11 @@ const NavBar = () => {
         <li>
           <Link to="/policies" onClick={closeMenu}>
             Policies
+          </Link>
+        </li>
+        <li>
+          <Link to="/publications" onClick={closeMenu}>
+            Publications
           </Link>
         </li>
         {/* two <a> tags instead of <Link>s because the blog is a separate application */}
