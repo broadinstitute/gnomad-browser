@@ -7888,70 +7888,6 @@ exports[`Data Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c8 c9"
-            href="#v4-local-ancestry"
-            id="v4-local-ancestry"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Local ancestry
-        </h2>
-      </span>
-      <ul
-        className="c19"
-      >
-        <li
-          className="c20"
-        >
-          <span>
-            Sites VCF
-          </span>
-          <br />
-          <span>
-            Download from
-             
-            <a
-              aria-label="Download Sites VCF from Google"
-              className="c11"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
-              onClick={[Function]}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Google
-            </a>
-             / 
-            <a
-              aria-label="Download Sites VCF from Amazon"
-              className="c11"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
-              onClick={[Function]}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Amazon
-            </a>
-          </span>
-        </li>
-      </ul>
-    </section>
-    <section
-      className="c15"
-    >
-      <span
-        className="c6"
-      >
-        <h2
-          className="c16"
-        >
-          <a
-            aria-hidden="true"
-            className="c8 c9"
             href="#v4-constraint"
             id="v4-constraint"
           >
@@ -14236,7 +14172,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        For more information about these files, see our blog post on
+        For more information about these files, see our blog posts on local ancestry inference for
          
         <a
           className="c11"
@@ -14244,9 +14180,18 @@ exports[`Data Page has no unexpected changes 1`] = `
           rel="noopener noreferrer"
           target="_blank"
         >
-          local ancestry inference for Latino/Admixed American samples in gnomAD
+          Admixed American
         </a>
-        .
+        and
+        <a
+          className="c11"
+          href="https://gnomad.broadinstitute.org/news/2024-10-local-ancestry-inference-for-african-african-american-samples-in-gnomad/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          African/African American
+        </a>
+        samples in gnomAD.
       </p>
       <ul
         className="c19"
@@ -14255,14 +14200,14 @@ exports[`Data Page has no unexpected changes 1`] = `
           className="c20"
         >
           <span>
-            Sites VCF
+            Admixed American Sites VCF
           </span>
           <br />
           <span>
             Download from
              
             <a
-              aria-label="Download Sites VCF from Google"
+              aria-label="Download Admixed American Sites VCF from Google"
               className="c11"
               href="https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
               onClick={[Function]}
@@ -14273,7 +14218,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             </a>
              / 
             <a
-              aria-label="Download Sites VCF from Amazon"
+              aria-label="Download Admixed American Sites VCF from Amazon"
               className="c11"
               href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
               onClick={[Function]}
@@ -14284,9 +14229,57 @@ exports[`Data Page has no unexpected changes 1`] = `
             </a>
              / 
             <a
-              aria-label="Download Sites VCF from Microsoft"
+              aria-label="Download Admixed American Sites VCF from Microsoft"
               className="c11"
               href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
+          </span>
+        </li>
+      </ul>
+      <ul
+        className="c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+             African/African American Sites VCF
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download  African/African American Sites VCF from Google"
+              className="c11"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download  African/African American Sites VCF from Amazon"
+              className="c11"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download  African/African American Sites VCF from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
