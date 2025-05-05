@@ -295,20 +295,35 @@ const GnomadV3Downloads = () => (
     <DownloadsSection>
       <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
       <p>
-        For more information about these files, see our blog post on{' '}
+        For more information about these files, see our blog posts on local ancestry inference for{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
-          local ancestry inference for Latino/Admixed American samples in gnomAD
+          Admixed American
         </ExternalLink>
-        .
+        and
+        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+        <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-10-local-ancestry-inference-for-african-african-american-samples-in-gnomad/">
+          African/African American
+        </ExternalLink>
+        samples in gnomAD.
       </p>
 
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <DownloadLinks
-            label="Sites VCF"
+            label="Admixed American Sites VCF"
             path="/release/3.1/local_ancestry/genomes/gnomad.genomes.v3.1.local_ancestry.amr.vcf.bgz"
+          />
+        </ListItem>
+      </FileList>
+
+      <FileList>
+        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+        <ListItem>
+          <DownloadLinks
+            label=" African/African American Sites VCF"
+            path="/release/4.1/local_ancestry/genomes/gnomad.genomes.v4.1.local_ancestry.afr.vcf.bgz"
           />
         </ListItem>
       </FileList>
