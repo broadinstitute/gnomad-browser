@@ -4,7 +4,10 @@ export const getConsequenceForContext = (context: any) => {
       return (variant: any) =>
         (variant.transcript_consequences || []).find((csq: any) => csq.gene_id === context.geneId)
     case 'region':
-      return (variant: any) => (variant.transcript_consequences || [])[0]
+      return (variant: any) =>
+        (variant.transcript_consequences || []).filter((csq: any) =>
+          csq.gene_id.startsWith('ENSG')
+        )[0]
     case 'transcript':
       return (variant: any) =>
         (variant.transcript_consequences || []).find(
