@@ -291,7 +291,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Exome copy number variant Hail Table"
               path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.all.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -299,7 +298,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Genome structural variant Hail Table"
               path="/release/4.1/genome_sv/gnomad.v4.1.sv.sites.ht"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -520,7 +518,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Annotation-level pext for all possible SNVs Hail table"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -528,7 +525,6 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Annotation-level pext for all possible SNVs TSV"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -536,7 +532,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Base-level pext Hail table"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.base_level.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -544,7 +539,6 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Base-level pext TSV"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.base_level.tsv.gz"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
@@ -565,7 +559,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="High-quality coding DNVs Hail table"
               path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.ht"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -573,7 +566,6 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="High-quality coding DNVs TSV"
               path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
-              includeAzure={false}
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -581,7 +573,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="High-quality coding DNVs README"
               path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.README.md"
-              includeAzure={false}
             />
           </ListItem>
         </FileList>
