@@ -699,7 +699,6 @@ const GnomadV3Downloads = () => (
           <DownloadLinks
             label="Mitochondrial gene constraint README"
             path="/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint_README.txt"
-            includeAzure={false}
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}

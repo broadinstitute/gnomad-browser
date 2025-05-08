@@ -7518,6 +7518,15 @@ exports[`Data Page has no unexpected changes 1`] = `
           >
             Amazon
           </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Exome copy number variant Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -7544,6 +7553,15 @@ exports[`Data Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Genome structural variant Hail Table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
       </ul>
@@ -8682,6 +8700,15 @@ exports[`Data Page has no unexpected changes 1`] = `
           >
             Amazon
           </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Annotation-level pext for all possible SNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -8714,6 +8741,17 @@ exports[`Data Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download Annotation-level pext for all possible SNVs TSV from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
         </li>
         <li
@@ -8741,6 +8779,15 @@ exports[`Data Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for Base-level pext Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
         <li
@@ -8773,6 +8820,17 @@ exports[`Data Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Base-level pext TSV from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/pext/gnomad.pext.gtex_v10.base_level.tsv.gz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
@@ -8846,6 +8904,15 @@ exports[`Data Page has no unexpected changes 1`] = `
           >
             Amazon
           </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for High-quality coding DNVs Hail table"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
+          </button>
         </li>
         <li
           className="c20"
@@ -8878,6 +8945,17 @@ exports[`Data Page has no unexpected changes 1`] = `
             >
               Amazon
             </a>
+             / 
+            <a
+              aria-label="Download High-quality coding DNVs TSV from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
+            </a>
           </span>
         </li>
         <li
@@ -8905,6 +8983,15 @@ exports[`Data Page has no unexpected changes 1`] = `
             type="button"
           >
             Amazon
+          </button>
+           / 
+          <button
+            aria-label="Show Microsoft URL for High-quality coding DNVs README"
+            className="c21"
+            onClick={[Function]}
+            type="button"
+          >
+            Microsoft
           </button>
         </li>
       </ul>
@@ -16351,6 +16438,17 @@ exports[`Data Page has no unexpected changes 1`] = `
               target="_blank"
             >
               Amazon
+            </a>
+             / 
+            <a
+              aria-label="Download Mitochondrial gene constraint README from Microsoft"
+              className="c11"
+              href="https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/secondary_analyses/mito_constraint/mito_gene_constraint_README.txt"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Microsoft
             </a>
           </span>
         </li>
