@@ -58,6 +58,11 @@ The ClinVar pipelines must be run on clusters with an appropriate version of VEP
   ./deployctl dataproc-cluster start <cluster-name>
   ```
 
+  NOTE: Starting with `gnomad version 4.1`, it is highly recommended to specify a
+  custom OS image that was built for that gnomAD version. To see these images, run
+  `gcloud compute images list --filter="family=dataproc-custom-image"`. You can then
+  pass the desired image name to the above `start` command using the `--image` flag.
+
 - Run a pipeline.
 
   A list of all pipelines can be seen with `./deployctl data-pipeline run --help`.
