@@ -334,6 +334,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -799,6 +800,7 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -1300,6 +1302,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -1809,6 +1812,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -2326,6 +2330,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -2843,6 +2848,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -3360,6 +3366,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -3841,6 +3848,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -4320,6 +4328,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -4807,6 +4816,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -5294,6 +5304,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -5781,6 +5792,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -6268,6 +6280,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -6741,6 +6754,7 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -7220,6 +7234,7 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -7693,6 +7708,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -8172,6 +8188,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -8659,6 +8676,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,
@@ -9132,6 +9150,7 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c0:visited,

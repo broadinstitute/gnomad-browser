@@ -9,7 +9,7 @@ exports[`MitochondrialVariantsInRegion with dataset exac has no unexpected chang
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -60,7 +60,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1 has no unexpecte
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -78,7 +78,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_controls has no 
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -96,7 +96,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_cancer has n
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -114,7 +114,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_neuro has no
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -132,7 +132,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r2_1_non_topmed has n
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/region/M-123-456?dataset=gnomad_r3"
     onClick={[Function]}
   >
