@@ -126,7 +126,6 @@ const HmtVarInfo = ({ variant }: HmtVarInfoProps) => {
     response && (
       <div style={{ marginTop: '0.25em' }}>
         <AttributeName>
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.hmtvar.uniba.it/">HmtVar</ExternalLink>
         </AttributeName>
         <AttributeValue>
@@ -168,7 +167,6 @@ class HmtVarInfoErrorBoundary extends React.Component<
       return (
         <div style={{ marginTop: '0.25em' }}>
           <AttributeName>
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://www.hmtvar.uniba.it/">HmtVar</ExternalLink>
           </AttributeName>
           <AttributeValue>An error occurred when fetching data</AttributeValue>
@@ -211,7 +209,6 @@ const MitochondrialVariantTranscriptConsequence = ({
         {variant.mitotip_trna_prediction && (
           <div style={{ marginTop: '0.25em' }}>
             <AttributeName>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink href="https://www.mitomap.org/MITOMAP/MitoTipInfo">
                 MitoTIP
               </ExternalLink>
@@ -226,7 +223,6 @@ const MitochondrialVariantTranscriptConsequence = ({
         {variant.pon_mt_trna_prediction && (
           <div style={{ marginTop: '0.25em' }}>
             <AttributeName>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink href="http://structure.bmc.lu.se/PON-mt-tRNA/about.html/">
                 PON-mt-tRNA
               </ExternalLink>

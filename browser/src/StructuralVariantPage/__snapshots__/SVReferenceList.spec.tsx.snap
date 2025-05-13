@@ -46,7 +46,6 @@ exports[`SVReferenceList with dataset exac selected for SV of type BND has no un
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -152,7 +151,6 @@ exports[`SVReferenceList with dataset exac selected for SV of type CTX has no un
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -493,7 +491,6 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type BND 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -599,7 +596,6 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type CTX 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -940,7 +936,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type BND ha
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -1046,7 +1041,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type CTX ha
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -1387,7 +1381,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -1493,7 +1486,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -1834,7 +1826,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -1940,7 +1931,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -2281,7 +2271,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -2387,7 +2376,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -2728,7 +2716,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -2834,7 +2821,6 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -3175,7 +3161,6 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type BND has 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -3281,7 +3266,6 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type CTX has 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -3622,7 +3606,6 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -3728,7 +3711,6 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -4069,7 +4051,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -4175,7 +4156,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -4516,7 +4496,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -4622,7 +4601,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -4963,7 +4941,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -5069,7 +5046,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -5410,7 +5386,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type B
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -5516,7 +5491,6 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type C
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -5857,7 +5831,6 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type BND has 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -5963,7 +5936,6 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type CTX has 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -6304,7 +6276,6 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -6410,7 +6381,6 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -6751,7 +6721,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type BND
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -6857,7 +6826,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type CTX
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -7198,7 +7166,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -7304,7 +7271,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -7645,7 +7611,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -7751,7 +7716,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrnull%3A0-5000"
@@ -8092,7 +8056,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type BND h
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"
@@ -8198,7 +8161,6 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type CTX h
       position
     </a>
     ,
-     
     <a
       className="c2"
       href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chrnull%3A0-5000"

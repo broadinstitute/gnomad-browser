@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { ExternalLink, Link as StyledLink, PageHeading } from '@gnomad/ui'
@@ -7,6 +7,7 @@ import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
 type Props = {
+  children: ReactNode
   location: {
     pathname?: string
     search?: string
@@ -81,11 +82,9 @@ ${error.stack}
             And submit this bug report as{' '}
             <ul>
               <li>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={issueURL}>an issue on GitHub</ExternalLink> or{' '}
               </li>
               <li>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
               </li>
             </ul>
@@ -95,11 +94,9 @@ ${error.stack}
             <br />
             <br />
             <p>
-              Alternately, you can{' '}
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-              <ExternalLink href={emailURL}>email us</ExternalLink>. Please note that we prioritize
-              answering issues on Github and topics on the Forum, so if you choose to email it may
-              take us longer to respond.
+              Alternately, you can <ExternalLink href={emailURL}>email us</ExternalLink>. Please
+              note that we prioritize answering issues on Github and topics on the Forum, so if you
+              choose to email it may take us longer to respond.
             </p>
           </p>
         </InfoPage>

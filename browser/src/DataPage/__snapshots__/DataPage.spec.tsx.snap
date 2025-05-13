@@ -486,8 +486,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           Azure Open Datasets
         </a>
-        . We recommend using
-         
+        . We recommend using 
         <a
           className="c11"
           href="https://hail.is/"
@@ -703,7 +702,8 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           gnomAD production team
         </a>
-        . Secondary Analyses are additional analyses developed in collaboration with laboratories of the 
+        . Secondary Analyses are additional analyses developed in collaboration with laboratories of the
+         
         <a
           className="c11"
           href="https://gnomad.broadinstitute.org/team#steering-committee"
@@ -14410,7 +14410,8 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        These files contain the data that underlies the 
+        These files contain the data that underlies the
+         
         <a
           className="c11"
           href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4"
@@ -14983,7 +14984,8 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        For more information about these files, see the 
+        For more information about these files, see the
+         
         <a
           className="c11"
           href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing"
@@ -14993,7 +14995,8 @@ exports[`Data Page has no unexpected changes 1`] = `
           README
         </a>
          
-        and the 
+        and the
+         
         <a
           className="c11"
           href="https://docs.google.com/spreadsheets/d/179I6AUPOQ09jdsFbKcwcDQugFt4pmL-NNOD_3_rsidA/edit?usp=sharing"

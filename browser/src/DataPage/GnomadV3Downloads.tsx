@@ -88,7 +88,6 @@ const GnomadV3Downloads = () => (
       <SectionTitle id="v3-variants">Variants</SectionTitle>
       <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
           gnomAD v3.1.2 blog post
         </ExternalLink>
@@ -150,7 +149,6 @@ const GnomadV3Downloads = () => (
       <p>
         These files contain individual genotypes for all samples in the HGDP and 1KG subsets. For
         more information, see the{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
           gnomAD v3.1.2 blog post
         </ExternalLink>{' '}
@@ -217,7 +215,6 @@ const GnomadV3Downloads = () => (
       <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
       <p>
         For details about these files, see the{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
           gnomAD v3.1 Mitochondrial DNA Variants blog post
         </ExternalLink>
@@ -266,7 +263,6 @@ const GnomadV3Downloads = () => (
       </SectionTitle>
       <p>
         For more information about these files, see our blog post on{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
           using the gnomAD genetic ancestry group principal components analysis loadings and random
           forest classifier on your dataset
@@ -296,12 +292,10 @@ const GnomadV3Downloads = () => (
       <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
       <p>
         For more information about these files, see our blog posts on local ancestry inference for{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
           Admixed American
         </ExternalLink>{' '}
         and{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-10-local-ancestry-inference-for-african-african-american-samples-in-gnomad/">
           African/African American
         </ExternalLink>{' '}
@@ -332,12 +326,11 @@ const GnomadV3Downloads = () => (
     <DownloadsSection>
       <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
       <p>
-        These files contain the data that underlies the {/* @ts-expect-error */}
+        These files contain the data that underlies the{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4">
           gnomAD tandem repeat pages
         </ExternalLink>
         . For more information, see our blog post on{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
           the addition of short tandem repeat calls to gnomAD
         </ExternalLink>
@@ -438,11 +431,11 @@ const GnomadV3Downloads = () => (
     <DownloadsSection>
       <SectionTitle id="v3-hgdp-1kg-tutorials">HGDP + 1KG tutorials</SectionTitle>
       <p>
-        For more information about these files, see the {/* @ts-expect-error */}
+        For more information about these files, see the{' '}
         <ExternalLink href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing">
           README
         </ExternalLink>{' '}
-        and the {/* @ts-expect-error */}
+        and the{' '}
         <ExternalLink href="https://docs.google.com/spreadsheets/d/179I6AUPOQ09jdsFbKcwcDQugFt4pmL-NNOD_3_rsidA/edit?usp=sharing">
           File Descriptions.
         </ExternalLink>
@@ -457,14 +450,12 @@ const GnomadV3Downloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          {/* @ts-expect-error */}
           <ExternalLink href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing">
             README
           </ExternalLink>
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          {/* @ts-expect-error */}
           <ExternalLink href="https://docs.google.com/spreadsheets/d/179I6AUPOQ09jdsFbKcwcDQugFt4pmL-NNOD_3_rsidA/edit?usp=sharing">
             File Descriptions
           </ExternalLink>

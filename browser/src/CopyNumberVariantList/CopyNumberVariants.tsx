@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   margin-bottom: 1em;
 `
 
-const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x: any, i: any) => `${i + 1}`), 'X', 'Y']
+const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (_x: any, i: any) => `${i + 1}`), 'X', 'Y']
 
 const DEFAULT_COLUMNS = ['source', 'class', 'pos', 'length', 'sc', 'sn', 'sf']
 
@@ -92,7 +92,7 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   })
   const { sortKey, sortOrder } = sortState
 
-  const setSortKey = useCallback((newSortKey) => {
+  const setSortKey = useCallback((newSortKey: string) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
         return {
@@ -123,31 +123,51 @@ const CopyNumberVariants = ({ context, exportFileName, variants }: CopyNumberVar
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
   const shouldHighlightTableRow = useCallback(
-    (variant) => {
+    (variant: CopyNumberVariantPropType) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
   )
 
-  const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
-    if (tracks.current && !scrollUpdateWasRequested) {
-      ;(tracks.current as any).scrollTo(
-        Math.round(scrollOffset * (TRACK_HEIGHT / TABLE_ROW_HEIGHT))
-      )
-    }
-  }, [])
+  const onScrollTable = useCallback(
+    ({
+      scrollOffset,
+      scrollUpdateWasRequested,
+    }: {
+      scrollOffset: number
+      scrollUpdateWasRequested: boolean
+    }) => {
+      if (tracks.current && !scrollUpdateWasRequested) {
+        ;(tracks.current as any).scrollTo(
+          Math.round(scrollOffset * (TRACK_HEIGHT / TABLE_ROW_HEIGHT))
+        )
+      }
+    },
+    []
+  )
 
-  const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
-    if (table.current && !scrollUpdateWasRequested) {
-      ;(table.current as any).scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
-    }
-  }, [])
+  const onScrollTracks = useCallback(
+    ({
+      scrollOffset,
+      scrollUpdateWasRequested,
+    }: {
+      scrollOffset: number
+      scrollUpdateWasRequested: boolean
+    }) => {
+      if (table.current && !scrollUpdateWasRequested) {
+        ;(table.current as any).scrollTo(
+          Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT))
+        )
+      }
+    },
+    []
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
     // eslint-disable-next-line consistent-return
-    (variant) => {
+    (variant: CopyNumberVariantPropType) => {
       if (colorKey === 'type') {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         return cnvTypeColors[variant.type]

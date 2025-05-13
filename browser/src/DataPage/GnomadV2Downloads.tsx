@@ -185,7 +185,6 @@ const GnomadV2Downloads = () => {
         <SectionTitle id="v2-variants">Variants</SectionTitle>
         <p>
           <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/README.txt">
             gnomAD v2.1.1 README
           </ExternalLink>
@@ -418,7 +417,6 @@ const GnomadV2Downloads = () => {
         <SectionTitle id="v2-ancestry-classification">Ancestry classification</SectionTitle>
         <p>
           For more information about these files, see our blog post on{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
             using the gnomAD ancestry principal components analysis loadings and random forest
             classifier on your dataset
@@ -533,7 +531,6 @@ const GnomadV2Downloads = () => {
           </ExternalLink>{' '}
           Descriptions of the fields in these files can be found in the Supplementary Dataset 11
           section on pages 74-77 of the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.nature.com/articles/s41586-020-2308-7#Sec12">
             Supplementary Information
           </ExternalLink>

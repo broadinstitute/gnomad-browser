@@ -31,7 +31,6 @@ const SubmissionsList = ({ submissions }: SubmissionsListProps) => (
             {submission.conditions
               .map((condition) =>
                 condition.medgen_id ? (
-                  // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                   <ExternalLink
                     key={condition.medgen_id}
                     href={`https://www.ncbi.nlm.nih.gov/medgen/${condition.medgen_id}/`}

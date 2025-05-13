@@ -366,7 +366,6 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         {/* @ts-expect-error TS(2739) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
         <ReferenceList variant={variant} />
         <h2>Feedback</h2>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>

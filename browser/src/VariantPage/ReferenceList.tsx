@@ -36,7 +36,6 @@ export const NcbiReference = (variantRsids: string[]) => {
           {(
             variantRsids
               .map((rsid) => (
-                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink key={rsid} href={`https://www.ncbi.nlm.nih.gov/snp/${rsid}`}>
                   {rsid}
                 </ExternalLink>
@@ -80,7 +79,6 @@ export const ReferenceList = ({ variant }: Props) => {
 
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
 
@@ -101,7 +99,6 @@ export const ReferenceList = ({ variant }: Props) => {
       {variant.reference_genome === 'GRCh38' && (
         // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href={allOfUsURL}>All of Us</ExternalLink>
         </ListItem>
       )}
