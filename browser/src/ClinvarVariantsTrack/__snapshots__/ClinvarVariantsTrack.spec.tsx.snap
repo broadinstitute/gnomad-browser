@@ -57,6 +57,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c28:visited,

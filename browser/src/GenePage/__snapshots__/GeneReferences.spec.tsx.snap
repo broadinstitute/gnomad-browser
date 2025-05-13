@@ -3,7 +3,7 @@
 exports[`GeneReferences snapshot has no unexpected changes 1`] = `
 [
   <a
-    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
     href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
     rel="noopener noreferrer"
     target="_blank"
@@ -13,7 +13,7 @@ exports[`GeneReferences snapshot has no unexpected changes 1`] = `
   ",",
   " ",
   <a
-    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
     href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
     rel="noopener noreferrer"
     target="_blank"
