@@ -26,7 +26,6 @@ export const getPreferredTranscript = (gene: any) => {
       preferredTranscriptDescription = (
         <React.Fragment>
           Transcript is the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
           transcript for this gene
         </React.Fragment>
@@ -35,7 +34,6 @@ export const getPreferredTranscript = (gene: any) => {
       preferredTranscriptDescription = (
         <React.Fragment>
           Transcript is a different version of the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
           transcript for this gene
         </React.Fragment>

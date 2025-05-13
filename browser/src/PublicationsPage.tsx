@@ -61,7 +61,6 @@ const PaperCitation = ({
         </>
         {citationDownloadLink && (
           <div>
-            {/* @ts-expect-error */}
             <ExternalLink href={citationDownloadLink}>Download citation</ExternalLink>{' '}
           </div>
         )}

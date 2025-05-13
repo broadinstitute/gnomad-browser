@@ -247,21 +247,18 @@ export default () => (
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://www.broadinstitute.org/videos/mpg-primer-using-gnomad-tips-and-tricks">
           Using gnomAD - tips and tricks (video)
         </ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://www.broadinstitute.org/videos/gnomad-using-large-genomic-data-sets-interpret-human-genetic-variation">
           gnomAD: Using large genomic data sets to interpret human genetic variation (video)
         </ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://rarediseasegenomics.org/blog/six-lessons-for-variant-interpretation">
           Six lessons for variant interpretation
         </ExternalLink>
@@ -301,7 +298,6 @@ export default () => (
         terms of use
       </Link>
       . Sign up for our{' '}
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://groups.google.com/forum/#!forum/exac_data_announcements">
         mailing list
       </ExternalLink>{' '}

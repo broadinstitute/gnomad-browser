@@ -36,6 +36,11 @@ exports[`StructuralVariants has no unexpected changes 1`] = `
   </StructuralVariants__ControlWrapper>
   <StructuralVariants__Wrapper>
     <ForwardRef
+      forwardedRef={
+        {
+          "current": null,
+        }
+      }
       highlightedVariant={null}
       numTracksRendered={3}
       onHover={[Function]}

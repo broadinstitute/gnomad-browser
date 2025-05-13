@@ -124,7 +124,7 @@ const TableColumnSelectionModal = ({
   )
 
   const onDragEnd = useCallback(
-    (result) => {
+    (result: any) => {
       if (!result.destination) {
         return
       }

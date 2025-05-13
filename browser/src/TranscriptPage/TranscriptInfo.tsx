@@ -36,9 +36,7 @@ const TranscriptReferences = ({ transcript }: TranscriptReferencesProps) => {
 
   return (
     <React.Fragment>
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>,{' '}
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
     </React.Fragment>
   )
