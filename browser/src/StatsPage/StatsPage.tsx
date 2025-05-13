@@ -337,7 +337,6 @@ const StatsPage = () => {
               <p>
                 To learn more about how we determine genetic ancestry groups please see our{' '}
                 <Link to="help/ancestry">help page</Link> and{' '}
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-genetic-ancestry">
                   blog post
                 </ExternalLink>{' '}

@@ -175,7 +175,7 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
       {isV4(datasetId) && (
         <>
           <Badge level="info">Note</Badge> For more detailed and up to date SpliceAI and Pangolin
-          predictions, please visit our {/* @ts-expect-error */}
+          predictions, please visit our
           <ExternalLink
             href={`https://spliceailookup.broadinstitute.org/#variant=chr${variant.variant_id}&hg=38&distance=500&mask=0&ra=0}`}
           >

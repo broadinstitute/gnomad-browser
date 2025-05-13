@@ -973,7 +973,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
@@ -1578,7 +1577,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
@@ -6288,7 +6286,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
@@ -6893,7 +6890,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
@@ -11603,7 +11599,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
@@ -12208,7 +12203,6 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
             position
           </a>
           ,
-           
           <a
             className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"

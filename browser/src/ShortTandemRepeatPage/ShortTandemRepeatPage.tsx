@@ -168,7 +168,6 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
             <>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={`https://strchive.org/loci/${strchive_id}`}>
                   STRchive
                 </ExternalLink>
@@ -181,7 +180,6 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
             <>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
                   STRipy
                 </ExternalLink>
@@ -319,7 +317,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               </ListItem>
               {/* @ts-expect-error */}
               <ListItem>
-                {/* @ts-expect-error */}
                 <ExternalLink href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats">
                   Data download
                 </ExternalLink>

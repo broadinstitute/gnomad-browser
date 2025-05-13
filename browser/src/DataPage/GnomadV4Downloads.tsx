@@ -117,12 +117,10 @@ const GnomadV4Downloads = () => {
         <SectionTitle id="v4-variants">Variants</SectionTitle>
         <p>
           For more information, read the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
             gnomAD v4.0.0 blog post
           </ExternalLink>{' '}
           and the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1">
             gnomAD v4.1.0 blog post
           </ExternalLink>
@@ -270,7 +268,6 @@ const GnomadV4Downloads = () => {
 
         <p>
           For more information about these files, see our{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-08-release-gnomad-browser-tables">
             changelog entry
           </ExternalLink>{' '}
@@ -342,7 +339,6 @@ const GnomadV4Downloads = () => {
         </SectionTitle>
         <p>
           For more information about these files, see our blog post on{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
             using the gnomAD genetic ancestry group principal components analysis loadings and
             random forest classifier on your dataset
@@ -534,7 +530,6 @@ const GnomadV4Downloads = () => {
         <SectionTitle id="v4-de-novo">De novo variants (DNVs)</SectionTitle>
         <p>
           For more information on DNVs, see the{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes">
             DNVs changelog
           </ExternalLink>{' '}

@@ -76,7 +76,6 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
         <h2>External Resources</h2>
         <CNVReferenceList variant={variant} />
         <h2>Feedback</h2>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>

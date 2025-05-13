@@ -143,7 +143,7 @@ const Variants = ({
   })
   const { sortKey, sortOrder } = sortState
 
-  const setSortKey = useCallback((newSortKey) => {
+  const setSortKey = useCallback((newSortKey: string) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
         return {
@@ -333,7 +333,6 @@ const Variants = ({
           {renderedVariants.length ? (
             <VariantTable
               ref={table}
-              // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; columns: any[... Remove this comment to see the full error message
               columns={renderedTableColumns}
               highlightText={filter.searchText}
               highlightedVariantId={variantHoveredInTrack}

@@ -151,8 +151,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     </a>
   </p>
   <p>
-    For questions about gnomAD, check out the
-     
+    For questions about gnomAD, check out the 
     <a
       className="c3"
       href="/help"

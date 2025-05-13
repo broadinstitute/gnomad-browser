@@ -400,14 +400,12 @@ class ReadData extends Component<ReadDataProps, ReadDataState> {
       <div>
         <p>
           This interactive{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://github.com/igvteam/igv.js">IGV.js</ExternalLink> visualization
           shows reads that went into calling this variant. Reads may not be available for every
           sample carrying this variant.
         </p>
         <p>
           These are reassembled reads produced by{' '}
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php#--bamOutput">
             GATK HaplotypeCaller --bamOutput
           </ExternalLink>
