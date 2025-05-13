@@ -65,6 +65,7 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,

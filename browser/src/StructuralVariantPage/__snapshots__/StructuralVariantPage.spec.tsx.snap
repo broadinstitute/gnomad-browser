@@ -268,7 +268,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -370,7 +370,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -383,7 +383,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -873,7 +873,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -889,7 +889,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -965,7 +965,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -975,7 +975,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -988,7 +988,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -1478,7 +1478,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -1494,7 +1494,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -1570,7 +1570,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -1580,7 +1580,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -1593,7 +1593,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -2083,7 +2083,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -2167,7 +2167,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -2180,7 +2180,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -2670,7 +2670,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -2754,7 +2754,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -2767,7 +2767,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -3257,7 +3257,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -3339,7 +3339,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -3352,7 +3352,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -3842,7 +3842,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -3926,7 +3926,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -3939,7 +3939,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -4429,7 +4429,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -4513,7 +4513,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -4526,7 +4526,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -5583,7 +5583,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -5685,7 +5685,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -5698,7 +5698,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -6188,7 +6188,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -6204,7 +6204,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -6280,7 +6280,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -6290,7 +6290,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -6303,7 +6303,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -6793,7 +6793,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -6809,7 +6809,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -6885,7 +6885,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -6895,7 +6895,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -6908,7 +6908,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -7398,7 +7398,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -7482,7 +7482,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -7495,7 +7495,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -7985,7 +7985,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -8069,7 +8069,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -8082,7 +8082,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -8572,7 +8572,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -8654,7 +8654,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -8667,7 +8667,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -9157,7 +9157,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -9241,7 +9241,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -9254,7 +9254,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -9744,7 +9744,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -9828,7 +9828,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -9841,7 +9841,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -10898,7 +10898,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -11000,7 +11000,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -11013,7 +11013,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -11503,7 +11503,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -11519,7 +11519,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -11595,7 +11595,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -11605,7 +11605,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -11618,7 +11618,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -12108,7 +12108,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -12124,7 +12124,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/22-0-5876"
               onClick={[Function]}
             >
@@ -12200,7 +12200,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           UCSC
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -12210,7 +12210,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
           ,
            
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr22%3A0-5876"
             rel="noopener noreferrer"
             target="_blank"
@@ -12223,7 +12223,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -12713,7 +12713,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -12797,7 +12797,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -12810,7 +12810,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -13300,7 +13300,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -13384,7 +13384,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -13397,7 +13397,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -13887,7 +13887,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-0-5123"
               onClick={[Function]}
             >
@@ -13969,7 +13969,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A0-5123"
             rel="noopener noreferrer"
             target="_blank"
@@ -13982,7 +13982,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -14472,7 +14472,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -14556,7 +14556,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -14569,7 +14569,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -15059,7 +15059,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -15143,7 +15143,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -15156,7 +15156,7 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"

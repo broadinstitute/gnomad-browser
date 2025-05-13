@@ -48,6 +48,7 @@ exports[`Data Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c23:visited,
@@ -65,6 +66,7 @@ exports[`Data Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c11:visited,
@@ -181,6 +183,7 @@ exports[`Data Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c13:visited,
@@ -31170,75 +31173,73 @@ exports[`Data Page has no unexpected changes 1`] = `
       </a>
       .
     </p>
-    <div>
-      <div
+    <div
+      className="react-tabs"
+      data-rttabs={true}
+      onClick={[Function]}
+      onKeyDown={[Function]}
+    >
+      <ul
+        className="c25"
         role="tablist"
       >
-        <ul
-          className="c25"
+        <li
+          aria-controls="panel:r0:0"
+          aria-disabled="false"
+          aria-selected="true"
+          className="c26 react-tabs__tab--selected"
+          data-rttab={true}
+          id="tab:r0:0"
+          role="tab"
+          tabIndex="0"
         >
-          <li>
-            <div
-              aria-controls="commandLineQuery-panel"
-              aria-selected={true}
-              className="c26"
-              id="commandLineQuery"
-              onFocus={[Function]}
-              role="tab"
-              tabIndex={0}
-            >
-              <div
-                className="c27"
-              >
-                Command Line
-              </div>
-            </div>
-          </li>
-          <li>
-            <div
-              aria-controls="pythonQuery-panel"
-              aria-selected={false}
-              className="c26"
-              id="pythonQuery"
-              onFocus={[Function]}
-              role="tab"
-              tabIndex={-1}
-            >
-              <div
-                className="c28"
-              >
-                Python
-              </div>
-            </div>
-          </li>
-          <li>
-            <div
-              aria-controls="jsQuery-panel"
-              aria-selected={false}
-              className="c26"
-              id="jsQuery"
-              onFocus={[Function]}
-              role="tab"
-              tabIndex={-1}
-            >
-              <div
-                className="c28"
-              >
-                JavaScript
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
+          <div
+            className="c27"
+          >
+            Command Line
+          </div>
+        </li>
+        <li
+          aria-controls="panel:r0:1"
+          aria-disabled="false"
+          aria-selected="false"
+          className="c26"
+          data-rttab={true}
+          id="tab:r0:1"
+          role="tab"
+          tabIndex={null}
+        >
+          <div
+            className="c28"
+          >
+            Python
+          </div>
+        </li>
+        <li
+          aria-controls="panel:r0:2"
+          aria-disabled="false"
+          aria-selected="false"
+          className="c26"
+          data-rttab={true}
+          id="tab:r0:2"
+          role="tab"
+          tabIndex={null}
+        >
+          <div
+            className="c28"
+          >
+            JavaScript
+          </div>
+        </li>
+      </ul>
+      <div
+        className="c29"
+      >
         <div
-          aria-describedby="commandLineQuery"
-          aria-hidden={false}
-          className="c29"
-          id="commandLineQuery-panel"
-          onKeyDown={[Function]}
+          aria-labelledby="tab:r0:0"
+          className="react-tabs__tab-panel react-tabs__tab-panel--selected"
+          id="panel:r0:0"
           role="tabpanel"
-          style={{}}
         >
           <code
             className="c30"
@@ -31372,115 +31373,17 @@ END_OF_QUERY
           </code>
         </div>
         <div
-          aria-describedby="pythonQuery"
-          aria-hidden={true}
-          className="c29"
-          id="pythonQuery-panel"
-          onKeyDown={[Function]}
+          aria-labelledby="tab:r0:1"
+          className="react-tabs__tab-panel"
+          id="panel:r0:1"
           role="tabpanel"
-          style={
-            {
-              "display": "none",
-            }
-          }
-        >
-          <code
-            className="c30"
-          >
-            # This example uses the GQL GraphQL client library.
-#
-# To install: pip3 install gql
-#
-# GQL is one popular Python GraphQL client, but there are others.
-# See https://graphql.org/community/tools-and-libraries/?tags=python_client
-
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-
-transport = AIOHTTPTransport(url="https://gnomad.broadinstitute.org/api")
-client = Client(transport=transport, fetch_schema_from_transport=True)
-
-# For brevity, and to keep the focus on the Python code, we don't include every
-# field from the raw query here.
-
-query = gql(
-    """
-    query VariantsInGene {
-      gene(gene_symbol: "BRCA1", reference_genome: GRCh38) {
-        variants(dataset: gnomad_r4) {
-          variant_id
-          pos
-          exome {
-            ac
-            ac_hemi
-            ac_hom
-            an
-            af
-          }
-        }
-      }
-    }
-"""
-)
-
-# Execute the query on the transport
-result = await client.execute_async(query)
-print(result)
-          </code>
-        </div>
+        />
         <div
-          aria-describedby="jsQuery"
-          aria-hidden={true}
-          className="c29"
-          id="jsQuery-panel"
-          onKeyDown={[Function]}
+          aria-labelledby="tab:r0:2"
+          className="react-tabs__tab-panel"
+          id="panel:r0:2"
           role="tabpanel"
-          style={
-            {
-              "display": "none",
-            }
-          }
-        >
-          <code
-            className="c30"
-          >
-            // This example uses only the JS standard library, but more sophisticated
-// clients are also available. See
-// https://graphql.org/community/tools-and-libraries/?tags=javascript_client
-
-// For brevity, and to keep the focus on the JS code, we don't include every
-// field from the raw query here.
-
-query = \`
-  query VariantsInGene {
-    gene(gene_symbol: "BRCA1", reference_genome: GRCh38) {
-      variants(dataset: gnomad_r4) {
-        variant_id
-        pos
-        exome {
-          ac
-          ac_hemi
-          ac_hom
-          an
-          af
-        }
-      }
-    }
-  }\`;
-
-fetch("https://gnomad.broadinstitute.org/api", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  body: JSON.stringify({ query }),
-})
-  .then((r) =&gt; r.json())
-  .then((data) =&gt; console.log(JSON.stringify(data)));
-
-          </code>
-        </div>
+        />
       </div>
     </div>
     <div

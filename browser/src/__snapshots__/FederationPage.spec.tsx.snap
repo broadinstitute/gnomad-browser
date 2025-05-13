@@ -5,6 +5,7 @@ exports[`Federation Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c8:visited,

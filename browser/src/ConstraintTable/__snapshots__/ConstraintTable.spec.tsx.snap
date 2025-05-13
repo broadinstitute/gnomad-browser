@@ -208,7 +208,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -291,7 +291,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial RNA g
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -414,7 +414,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -541,7 +541,7 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -936,7 +936,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with ava
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -1399,7 +1399,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -1482,7 +1482,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -1605,7 +1605,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -1732,7 +1732,7 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -2127,7 +2127,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with avail
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -2590,7 +2590,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -2673,7 +2673,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -2796,7 +2796,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -2923,7 +2923,7 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -3321,7 +3321,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene w
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -3789,7 +3789,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -3872,7 +3872,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -3995,7 +3995,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -4122,7 +4122,7 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -4520,7 +4520,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -4988,7 +4988,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -5071,7 +5071,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -5194,7 +5194,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -5321,7 +5321,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -5719,7 +5719,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene 
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -6187,7 +6187,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -6270,7 +6270,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -6393,7 +6393,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -6520,7 +6520,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -6918,7 +6918,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -7386,7 +7386,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -7469,7 +7469,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -7592,7 +7592,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -7719,7 +7719,7 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -8546,7 +8546,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with availab
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -9009,7 +9009,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -9092,7 +9092,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -9215,7 +9215,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -9342,7 +9342,7 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -9737,7 +9737,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -10200,7 +10200,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -10283,7 +10283,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -10406,7 +10406,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -10533,7 +10533,7 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -10928,7 +10928,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with av
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -11391,7 +11391,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -11474,7 +11474,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -11597,7 +11597,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -11724,7 +11724,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -12122,7 +12122,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gen
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -12590,7 +12590,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -12673,7 +12673,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -12796,7 +12796,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -12923,7 +12923,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -13321,7 +13321,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and ge
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -13789,7 +13789,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -13872,7 +13872,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -13995,7 +13995,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -14122,7 +14122,7 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -14517,7 +14517,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with avai
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
@@ -14980,7 +14980,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -15063,7 +15063,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -15186,7 +15186,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -15313,7 +15313,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
   "Constraint metrics based on transcript",
   " ",
   <a
-    className="Link-sc-14lgydv-0-Link jBvaYQ"
+    className="Link-sc-14lgydv-0-Link csqFBR"
     href="/transcript/transcript-999"
     onClick={[Function]}
   >
@@ -15457,7 +15457,7 @@ exports[`ConstraintTable with exac dataset and gene with available constraints h
     Ensembl canonical
      transcript (
     <a
-      className="Link-sc-14lgydv-0-Link jBvaYQ"
+      className="Link-sc-14lgydv-0-Link csqFBR"
       href="/transcript/transcript-999"
       onClick={[Function]}
     >
