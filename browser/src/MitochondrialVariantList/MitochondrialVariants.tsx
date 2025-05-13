@@ -112,7 +112,7 @@ const MitochondrialVariants = ({
   })
   const { sortKey, sortOrder } = sortState
 
-  const setSortKey = useCallback((newSortKey) => {
+  const setSortKey = useCallback((newSortKey: string) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
         return {
@@ -139,11 +139,11 @@ const MitochondrialVariants = ({
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
-  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
+  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState<string | null>(null)
   const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
 
   const shouldHighlightTableRow = useCallback(
-    (variant) => {
+    (variant: { variant_id: string }) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
@@ -165,8 +165,8 @@ const MitochondrialVariants = ({
     []
   )
 
-  const [positionLastClicked, setPositionLastClicked] = useState(null)
-  const onNavigatorClick = useCallback((position) => {
+  const [positionLastClicked, setPositionLastClicked] = useState<number | null>(null)
+  const onNavigatorClick = useCallback((position: number) => {
     setSortState({
       sortKey: 'variant_id',
       sortOrder: 'ascending',

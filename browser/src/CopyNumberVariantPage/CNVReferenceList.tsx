@@ -12,7 +12,6 @@ type CNVUCSCLinksProps = {
 }
 
 const CNVUCSCLinks = ({ variant }: CNVUCSCLinksProps) => {
-  // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
   return <ExternalLink href={ucscUrl(variant.chrom, variant.pos, variant.end)}>UCSC</ExternalLink>
 }
 

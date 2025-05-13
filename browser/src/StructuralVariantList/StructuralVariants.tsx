@@ -74,6 +74,11 @@ type StructuralVariantsProps = {
   variants: StructuralVariant[]
 }
 
+type ScrollProps = {
+  scrollOffset: number
+  scrollUpdateWasRequested: boolean
+}
+
 const StructuralVariants = ({ context, exportFileName, variants }: StructuralVariantsProps) => {
   const table = useRef(null)
   const tracks = useRef(null)
@@ -127,7 +132,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   })
   const { sortKey, sortOrder } = sortState
 
-  const setSortKey = useCallback((newSortKey) => {
+  const setSortKey = useCallback((newSortKey: string) => {
     setSortState((prevSortState) => {
       if (newSortKey === prevSortState.sortKey) {
         return {
@@ -157,13 +162,13 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
 
   const shouldHighlightTableRow = useCallback(
-    (variant) => {
+    (variant: any) => {
       return variant.variant_id === variantHoveredInTrack
     },
     [variantHoveredInTrack]
   )
 
-  const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
+  const onScrollTable = useCallback(({ scrollOffset, scrollUpdateWasRequested }: ScrollProps) => {
     if (tracks.current && !scrollUpdateWasRequested) {
       ;(tracks.current as any).scrollTo(
         Math.round(scrollOffset * (TRACK_HEIGHT / TABLE_ROW_HEIGHT))
@@ -171,7 +176,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
     }
   }, [])
 
-  const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }) => {
+  const onScrollTracks = useCallback(({ scrollOffset, scrollUpdateWasRequested }: ScrollProps) => {
     if (table.current && !scrollUpdateWasRequested) {
       ;(table.current as any).scrollTo(Math.round(scrollOffset * (TABLE_ROW_HEIGHT / TRACK_HEIGHT)))
     }
@@ -179,7 +184,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
 
   const [colorKey, setColorKey] = useState('type')
   const trackColor = useCallback(
-    (variant) => {
+    (variant: StructuralVariant) => {
       if (colorKey === 'type') {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         return svTypeColors[variant.type] || svTypeColors.OTH
@@ -237,7 +242,7 @@ const StructuralVariants = ({ context, exportFileName, variants }: StructuralVar
       </ControlWrapper>
       <Wrapper>
         <StructuralVariantTracks
-          ref={tracks}
+          forwardedRef={tracks}
           highlightedVariant={variantHoveredInTable}
           numTracksRendered={numRowsRendered}
           onHover={setVariantHoveredInTrack}

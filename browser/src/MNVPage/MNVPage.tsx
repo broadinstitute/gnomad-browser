@@ -104,7 +104,6 @@ const MNVPage = ({ datasetId, variantId }: Props) => (
                   <List>
                     {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                     <ListItem>
-                      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                       <ExternalLink
                         href={`https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${
                           variant.chrom
@@ -117,7 +116,6 @@ const MNVPage = ({ datasetId, variantId }: Props) => (
                     </ListItem>
                   </List>
                   <h2>Feedback</h2>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
                     Report an issue with this variant
                   </ExternalLink>

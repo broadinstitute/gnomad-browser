@@ -42,9 +42,7 @@ const GeneReferences = ({ gene }: Props) => {
 
   return (
     <React.Fragment>
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>,{' '}
-      {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>,{' '}
       <TextButton
         onClick={() => {
@@ -66,17 +64,14 @@ const GeneReferences = ({ gene }: Props) => {
           <List>
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>
             </ListItem>
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
             </ListItem>
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink
                 href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneSymbol}`}
               >
@@ -86,13 +81,11 @@ const GeneReferences = ({ gene }: Props) => {
             {omimId && (
               // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
               <ListItem>
-                {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                 <ExternalLink href={`https://omim.org/entry/${omimId}`}>OMIM</ExternalLink>
               </ListItem>
             )}
             {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink
                 href={`https://deciphergenomics.org/gene/${geneId}/overview/protein-genomic-info`}
               >
@@ -103,21 +96,18 @@ const GeneReferences = ({ gene }: Props) => {
               <>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href={`https://search.clinicalgenome.org/kb/genes/${hgncId}`}>
                     ClinGen
                   </ExternalLink>
                 </ListItem>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href={`https://search.thegencc.org/genes/${hgncId}`}>
                     Gene Curation Coalition (GenCC)
                   </ExternalLink>
                 </ListItem>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink
                     href={`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/${hgncId}`}
                   >
@@ -130,14 +120,12 @@ const GeneReferences = ({ gene }: Props) => {
               <>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href={`https://www.ncbi.nlm.nih.gov/gene/?term=${ncbiId}`}>
                     NCBI
                   </ExternalLink>
                 </ListItem>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink
                     href={`https://www.ncbi.nlm.nih.gov/genome/gdv/browser/gene/?id=${ncbiId}`}
                   >
@@ -146,7 +134,6 @@ const GeneReferences = ({ gene }: Props) => {
                 </ListItem>
                 {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href={gtexUrl}>GTEx</ExternalLink>
                 </ListItem>
               </>

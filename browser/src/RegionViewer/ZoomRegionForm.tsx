@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Input } from '@gnomad/ui'
 
-import ZoomRegionOverview from './ZoomRegionOverview'
+import ZoomRegionOverview, { ZoomRegion } from './ZoomRegionOverview'
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,14 +30,8 @@ const RegionControlsWrapper = styled(Wrapper)`
 `
 
 type Props = {
-  defaultZoomRegion?: {
-    start: number
-    stop: number
-  }
-  regionViewerRegions: {
-    start: number
-    stop: number
-  }[]
+  defaultZoomRegion?: ZoomRegion
+  regionViewerRegions: ZoomRegion[]
   renderOverview: (...args: any[]) => any
   onSubmit: (...args: any[]) => any
 }
@@ -46,13 +40,13 @@ const ZoomRegionForm = forwardRef<any, Props>(
   ({ defaultZoomRegion, regionViewerRegions, renderOverview, onSubmit }, ref) => {
     const overviewRef = useRef(null)
 
-    const [zoomRegion, _setZoomRegion] = useState(
+    const [zoomRegion, _setZoomRegion] = useState<ZoomRegion>(
       defaultZoomRegion || {
         start: regionViewerRegions[0].start,
         stop: regionViewerRegions[regionViewerRegions.length - 1].stop,
       }
     )
-    const setZoomRegion = useCallback((newZoomRegion) => {
+    const setZoomRegion = useCallback((newZoomRegion: Parameters<typeof _setZoomRegion>[0]) => {
       _setZoomRegion(newZoomRegion)
       if (overviewRef.current) {
         ;(overviewRef.current as any).setZoomRegion(newZoomRegion)
@@ -132,7 +126,7 @@ const ZoomRegionForm = forwardRef<any, Props>(
               value={zoomRegion.start}
               onChange={(e: any) => {
                 const newStart = Number(e.target.value)
-                setZoomRegion((prevZoomRegion: any) => ({
+                setZoomRegion((prevZoomRegion: ZoomRegion) => ({
                   ...prevZoomRegion,
                   start: newStart,
                 }))

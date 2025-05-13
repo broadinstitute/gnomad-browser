@@ -227,7 +227,6 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
             />
             <label htmlFor="star-filtering">
               Filter by{' '}
-              {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
               <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
                 review status
               </ExternalLink>

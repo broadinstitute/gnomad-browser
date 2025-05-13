@@ -65,4 +65,6 @@ VariantTable.defaultProps = {
 
 const MemoizedVariantTable = memo(VariantTable)
 
-export default forwardRef((props, ref) => <MemoizedVariantTable {...props} forwardedRef={ref} />)
+export default forwardRef<typeof VariantTable, Props>((props, ref) => (
+  <MemoizedVariantTable {...props} forwardedRef={ref} />
+))

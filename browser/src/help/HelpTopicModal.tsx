@@ -43,7 +43,6 @@ const HelpTopicModal = ({ topicId, ...otherProps }: Props) => {
     // @ts-expect-error TS(2741) FIXME: Property 'onRequestClose' is missing in type '{ ch... Remove this comment to see the full error message
     <Modal {...otherProps} size="large" title={title}>
       <p style={{ marginTop: 0, fontSize: '16px' }}>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={`/help/${topicId}`}>View this information in a new tab.</ExternalLink>
       </p>
 
